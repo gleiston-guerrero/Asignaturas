@@ -1,0 +1,681 @@
+% ============================================================
+% EXAMEN PARCIAL — UNIDAD I · Paralelo B
+% Ingeniería de Requisitos · UTEQ · 2025-2026
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+% ── Paquetes ─────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{geometry}
+\geometry{left=2.2cm,right=2.2cm,top=1.8cm,bottom=2cm,headheight=22pt}
+\usepackage{enumitem}
+\usepackage{array,tabularx,booktabs,colortbl}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{multicol}
+\usepackage{lastpage}
+
+% ── Colores institucionales ─────────────────────────────────
+\definecolor{uteqgreen}{HTML}{1B6B3A}
+\definecolor{uteqgold}{HTML}{E8A317}
+\definecolor{lightgray}{HTML}{F2F2F2}
+\definecolor{darkgreen}{HTML}{1B5E30}
+\definecolor{redborder}{HTML}{CC3333}
+
+% ── Encabezado y pie ─────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\headrule}{\hbox to\headwidth{%
+		\color{uteqgreen}\leaders\hrule height \headrulewidth\hfill}}
+\lhead{\small\color{uteqgreen}\textbf{Ingeniería de Requisitos $\cdot$ Unidad I}}
+\rhead{\small\color{uteqgreen}\textbf{UTEQ $\cdot$ 2025-2026}}
+\cfoot{\thepage\ de \pageref{LastPage}}
+
+% ── Comandos auxiliares ──────────────────────────────────────
+\newcommand{\pts}[1]{%
+	\hfill\tikz[baseline=(X.base)]{%
+		\node[fill=uteqgold,text=white,font=\small\bfseries,
+		rounded corners=3pt,inner sep=3pt](X){#1};}}
+
+\newcommand{\lineas}[1]{%
+	\par\vspace{4pt}%
+	\foreach \i in {1,...,#1}{%
+		.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,%
+		.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,%
+		.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,%
+		.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,.\,%
+		.\,.\,.\,.\par\vspace{4pt}}}
+
+\newcommand{\secbox}[1]{%
+	\par\vspace{8pt}%
+	\noindent\colorbox{uteqgreen}{%
+		\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\color{white}\bfseries\large #1}}%
+	\par\vspace{6pt}}
+
+% Macro para encabezado de tabla (evita Misplaced \noalign)
+\newcommand{\thdr}[1]{\cellcolor{darkgreen}\color{white}\bfseries #1}
+
+% ============================================================
+\begin{document}
+	
+	% ── PORTADA ──────────────────────────────────────────────────
+	\thispagestyle{fancy}
+	\begin{center}
+		\colorbox{uteqgreen}{\parbox{\linewidth}{\centering\color{white}\bfseries
+				\vspace{6pt}
+				UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO\\[2pt]
+				\small\itshape La primera universidad agropecuaria del Ecuador
+				\vspace{6pt}}}
+	\end{center}
+	
+	\vspace{1.5cm}
+	\begin{center}
+		{\LARGE\bfseries EXAMEN PARCIAL\\UNIDAD I}\\[10pt]
+		{\large Fundamentos de Ingeniería de Requisitos\\y Proceso de Requisitos}
+	\end{center}
+	
+	\vspace{1cm}
+	\noindent
+	\fbox{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\begin{tabularx}{\linewidth}{@{}>{\bfseries\color{uteqgreen}}l X@{}}
+				Asignatura:        & Ingeniería de Requisitos \\[4pt]
+				Resultado de       & \textit{Aplica los fundamentos teóricos de la IR} \\
+				Aprendizaje:       & \textit{identificando tipos, propiedades y el proceso} \\
+				& \textit{de requisitos para analizar su aplicabilidad} \\
+				& \textit{en proyectos de software reales.} \\[4pt]
+				Modalidad:         & Individual $\cdot$ Presencial \\
+				Tiempo:            & 120 minutos \\
+				Puntaje total:     & \textbf{10 puntos} \\
+				Período:           & 2025--2026 \\
+	\end{tabularx}}}
+	
+	\vspace{0.8cm}
+	\noindent
+	\fbox{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\begin{tabularx}{\linewidth}{@{}>{\bfseries}l X@{}}
+				Apellidos y Nombres: & \hrulefill \\[8pt]
+				Cédula / ID:         & \hrulefill \\[8pt]
+				Paralelo:            & B \hspace{2cm} \textbf{Fecha:} \hrulefill \\
+	\end{tabularx}}}
+	
+	% ── INSTRUCCIONES ────────────────────────────────────────────
+	\newpage
+	
+	\noindent\fcolorbox{redborder}{white}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			{\color{redborder}\bfseries INSTRUCCIONES GENERALES --- Lea antes de comenzar:}
+			\begin{enumerate}[leftmargin=*,itemsep=2pt]
+				\item Lea cuidadosamente el caso de estudio completo antes de responder
+				cualquier tarea.
+				\item Todas las tareas se derivan del mismo contexto; sus respuestas deben
+				ser coherentes entre sí.
+				\item Fundamente cada respuesta con terminología técnica de la IR vista en
+				la Unidad~I.
+				\item Las respuestas sin justificación o que usen términos vagos sin
+				cuantificar no tendrán puntaje.
+				\item No se permite consulta de material externo, dispositivos electrónicos
+				ni comunicación con terceros.
+				\item Escriba con letra legible.\ Si usa tabla, respétela; si escribe
+				párrafos, organícelos claramente.
+	\end{enumerate}}}
+	
+	% ── CASO DE ESTUDIO ──────────────────────────────────────────
+	\newpage
+	
+	\begin{center}
+		{\large\bfseries CASO DE ESTUDIO:\\[4pt]
+			SISTEMA DE GESTIÓN ACADÉMICA\\
+			DEL INSTITUTO TECNOLÓGICO «SIMÓN BOLÍVAR»}
+	\end{center}
+	
+	\vspace{6pt}
+	\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\textbf{Contexto general}\\[4pt]
+			El Instituto Tecnológico Superior «Simón Bolívar», ubicado en Babahoyo,
+			Ecuador, atiende a \textbf{3\,200 estudiantes} distribuidos en 12 carreras
+			tecnológicas. Actualmente, los procesos de matrícula, registro de
+			calificaciones, control de asistencia y emisión de certificados se realizan
+			de forma \textbf{manual mediante hojas de cálculo y documentos impresos},
+			lo que genera duplicación de datos, errores en actas de notas, retrasos en
+			la emisión de certificados y dificultad para generar reportes estadísticos
+			para los organismos de control (SENESCYT y CES).
+			
+			La dirección del instituto ha decidido contratar el desarrollo de un
+			\textbf{Sistema de Gestión Académica (SGA-SB)}. Usted ha sido designado
+			como \textbf{analista líder de requisitos} del proyecto.
+			
+			Durante las primeras reuniones con los stakeholders, se recopilaron las
+			siguientes declaraciones:}}
+	
+	\vspace{8pt}
+	
+	% ── Declaraciones de stakeholders ────────────────────────────
+	\noindent\colorbox{uteqgreen!15}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\textbf{\color{uteqgreen}Ing.\ Marlene Salazar --- Rectora del Instituto}}}
+	
+	\noindent\textit{«Necesito un sistema que me permita tomar decisiones con datos
+		reales. Quiero ver en un panel cuántos estudiantes hay matriculados por
+		carrera, la tasa de deserción y las calificaciones promedio por período.
+		El sistema debe estar disponible siempre, especialmente en época de
+		matrículas. No puede fallar.»}
+	
+	\vspace{6pt}
+	\noindent\colorbox{uteqgreen!15}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\textbf{\color{uteqgreen}Lic.\ Roberto Cedeño --- Coordinador Académico}}}
+	
+	\noindent\textit{«Los docentes deben poder registrar calificaciones parciales
+		y finales con sus respectivos componentes ---prácticas, exámenes y
+		proyectos--- y que el sistema calcule promedios automáticamente. Si un
+		estudiante tiene una calificación reprobatoria, el sistema debe alertar
+		al tutor asignado para que active el acompañamiento académico.»}
+	
+	\vspace{6pt}
+	\noindent\colorbox{uteqgreen!15}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\textbf{\color{uteqgreen}Prof.\ Diana Moreira --- Docente titular}}}
+	
+	\noindent\textit{«Yo necesito ver la lista de estudiantes de cada materia
+		antes de la primera clase. Si un estudiante no está matriculado, no puedo
+		aceptarlo. Y cuando registro notas, necesito que el sistema me confirme
+		que se guardaron correctamente. Rápido, porque tengo muchas materias.»}
+	
+	\vspace{6pt}
+	\noindent\colorbox{uteqgreen!15}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\textbf{\color{uteqgreen}Ing.\ Carlos Zambrano --- Jefe de TI del Instituto}}}
+	
+	\noindent\textit{«El sistema debe desplegarse en la infraestructura local:
+		tenemos un servidor Ubuntu 22.04~LTS con PostgreSQL~15. No podemos usar
+		nube pública porque la normativa del CES para institutos tecnológicos
+		exige que los datos académicos permanezcan en servidores nacionales.
+		Además, debe integrarse con el sistema de cobros existente, el
+		FinanCES~v1.8.»}
+	
+	\vspace{6pt}
+	\noindent\colorbox{uteqgreen!15}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\textbf{\color{uteqgreen}Ab.\ Patricia Loor --- Secretaria General}}}
+	
+	\noindent\textit{«El sistema debe cumplir con la normativa del CES y de
+		SENESCYT para registro académico. Necesito generar actas de calificaciones
+		con firma electrónica, certificados de matrícula y récords académicos
+		que los estudiantes puedan descargar en PDF. Cada período reportamos
+		indicadores al SIIES.»}
+	
+	\vspace{6pt}
+	\noindent\colorbox{uteqgreen!15}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+			\textbf{\color{uteqgreen}Sr.\ Kevin Astudillo --- Representante estudiantil}}}
+	
+	\noindent\textit{«Cuando me matriculo, quiero ver las materias disponibles
+		según mi malla, saber los horarios y que no se crucen. Si ya aprobé una
+		materia, que no me la ofrezca otra vez. Y quiero consultar mis notas
+		desde el celular sin tener que ir a secretaría.»}
+	
+	% ── BORRADOR DE REQUISITOS ───────────────────────────────────
+	\newpage
+	
+	\secbox{BORRADOR INICIAL DE REQUISITOS --- elaborado por un analista junior}
+	
+	\vspace{4pt}
+	\noindent
+	\begin{tabular}{@{}c p{13cm}@{}}
+		\toprule
+		\textbf{ID} & \textbf{Enunciado del requisito} \\
+		\midrule
+		R-01 & El sistema debe ser rápido al cargar las listas de estudiantes. \\[3pt]
+		R-02 & El docente registrará las calificaciones parciales y finales de cada
+		estudiante en la materia asignada. \\[3pt]
+		R-03 & El sistema enviará una alerta al tutor cuando un estudiante obtenga
+		una calificación reprobatoria. \\[3pt]
+		R-04 & El sistema debe ser seguro y proteger los datos académicos. \\[3pt]
+		R-05 & El sistema funcionará 24 horas al día, 7 días a la semana, sin
+		interrupciones. \\[3pt]
+		R-06 & El sistema debe ser compatible con Ubuntu 22.04~LTS y
+		PostgreSQL~15. \\[3pt]
+		R-07 & El sistema generará actas de calificaciones en formato PDF de forma
+		automática. \\[3pt]
+		R-08 & El sistema debe integrarse con el FinanCES~v1.8 para verificar pagos
+		antes de permitir la matrícula. \\[3pt]
+		R-09 & El estudiante podrá consultar sus calificaciones desde un dispositivo
+		móvil. \\[3pt]
+		R-10 & El sistema debe cumplir con la normativa del CES y SENESCYT para
+		el registro académico de institutos tecnológicos. \\
+		\bottomrule
+	\end{tabular}
+	
+	% ============================================================
+	%                    T A R E A S
+	% ============================================================
+	
+	\newpage
+	\secbox{TAREA --- Clasificación y Tipología del Sistema}
+	
+	% ── 1.1 ──────────────────────────────────────────────────────
+	\subsection*{1.1~~Tipo de sistema \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Clasifique el SGA-SB según la tipología de sistemas estudiada en la
+	Unidad~I (\textit{sistema de información, embebido, software-intensivo o
+		adaptativo}). Justifique su respuesta considerando las características
+	del sistema y las declaraciones de los stakeholders.
+	
+	\lineas{4}
+	
+	% ── 1.2 ──────────────────────────────────────────────────────
+	\subsection*{1.2~~Límite del sistema (\textit{system boundary}) \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Identifique con precisión qué componentes, procesos y actores pertenecen
+	al sistema y cuáles quedan fuera pero interactúan con él. Presente su
+	respuesta en \textbf{dos listas diferenciadas}.
+	
+	\vspace{6pt}
+	\noindent
+	\begin{tabular}{|p{7cm}|p{7cm}|}
+		\hline
+		\thdr{Dentro del límite del sistema} &
+		\thdr{Fuera del límite (interactúa con el sistema)} \\
+		\hline
+		& \\[4cm]
+		\hline
+	\end{tabular}
+	
+	% ── 1.3 ──────────────────────────────────────────────────────
+	\subsection*{1.3~~Declaración de Visión \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Redacte una declaración de \textbf{visión} del SGA-SB en no más de cinco
+	líneas, que comunique: el objetivo estratégico, el valor que aportará y
+	el problema que resuelve, conforme al concepto de visión del framework
+	de IR.
+	
+	\lineas{5}
+	
+	% ── 1.4 ──────────────────────────────────────────────────────
+	\newpage
+	\subsection*{1.4~~Perspectivas de contexto \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	De las \textbf{ocho perspectivas de contexto} de la IR (uso, sujeto, TI,
+	desarrollo, negocio, innovación, sociedad, técnica), identifique las
+	\textbf{tres más relevantes} para este proyecto. Para cada una, indique
+	un elemento concreto del caso que la activa y explique por qué es
+	importante considerarla.
+	
+	\vspace{6pt}
+	\noindent
+	\begin{tabular}{|l|p{5cm}|p{5.5cm}|}
+		\hline
+		\thdr{Perspectiva} &
+		\thdr{Elemento concreto del caso} &
+		\thdr{Importancia para la IR} \\
+		\hline
+		& & \\[1.5cm]
+		\hline
+		& & \\[1.5cm]
+		\hline
+		& & \\[1.5cm]
+		\hline
+	\end{tabular}
+	
+	% ============================================================
+	\newpage
+	\secbox{TAREA --- Identificación y Clasificación de Stakeholders y Requisitos}
+	
+	% ── 2.1 ──────────────────────────────────────────────────────
+	\subsection*{2.1~~Tabla de stakeholders \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Elabore una tabla de stakeholders con las columnas indicadas. Identifique
+	\textbf{al menos un conflicto real} entre dos stakeholders del caso.
+	
+	\vspace{6pt}
+	\noindent
+	{\small
+		\begin{tabular}{|l|p{2.8cm}|l|p{3.8cm}|}
+			\hline
+			\thdr{Stakeholder} &
+			\thdr{Rol en el proceso IR} &
+			\thdr{Tipo de req.\ principal} &
+			\thdr{Posible conflicto de interés} \\
+			\hline
+			& & & \\[0.9cm]\hline
+			& & & \\[0.9cm]\hline
+			& & & \\[0.9cm]\hline
+			& & & \\[0.9cm]\hline
+			& & & \\[0.9cm]\hline
+			& & & \\[0.9cm]\hline
+	\end{tabular}}
+	
+	% ── 2.2 ──────────────────────────────────────────────────────
+	\subsection*{2.2~~Clasificación de requisitos extraídos \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	De las declaraciones de los stakeholders, extraiga y clasifique
+	exactamente: \textbf{4~requisitos funcionales}, \textbf{3~requisitos no
+		funcionales} y \textbf{2~restricciones del sistema}.
+	
+	\vspace{6pt}
+	\noindent
+	{\small
+		\begin{tabular}{|c|p{5.5cm}|p{2.8cm}|p{2cm}|}
+			\hline
+			\thdr{ID} &
+			\thdr{Enunciado (paráfrasis)} &
+			\thdr{Stakeholder fuente} &
+			\thdr{Clasificación} \\
+			\hline
+			RF-1  & & & \\[0.6cm]\hline
+			RF-2  & & & \\[0.6cm]\hline
+			RF-3  & & & \\[0.6cm]\hline
+			RF-4  & & & \\[0.6cm]\hline
+			NFR-1 & & & \\[0.6cm]\hline
+			NFR-2 & & & \\[0.6cm]\hline
+			NFR-3 & & & \\[0.6cm]\hline
+			REST-1 & & & \\[0.6cm]\hline
+			REST-2 & & & \\[0.6cm]\hline
+	\end{tabular}}
+	
+	% ── 2.3 ──────────────────────────────────────────────────────
+	\newpage
+	\subsection*{2.3~~De necesidad de usuario a requisito cuantificable \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	La Prof.\ Diana Moreira indica: \textit{«Rápido, porque tengo muchas
+		materias.»} Explique por qué es una \textbf{necesidad del usuario} y no
+	un requisito bien formulado. Luego reescríbala como \textbf{requisito no
+		funcional cuantificable} que cumpla verificabilidad y completitud.
+	
+	\vspace{6pt}
+	\textbf{Explicación:}
+	
+	\lineas{3}
+	
+	\textbf{Requisito NFR reformulado:}
+	
+	\lineas{2}
+	
+	% ============================================================
+	\newpage
+	\secbox{TAREA --- Análisis Crítico del Borrador de Requisitos}
+	
+	% ── 3.1 ──────────────────────────────────────────────────────
+	\subsection*{3.1~~Auditoría del borrador R-01 a R-10 \pts{1.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Analice cada requisito del borrador e identifique los problemas desde la
+	perspectiva de las propiedades de un buen requisito. Para los que no
+	presenten problemas, indíquelo explícitamente y justifique. Complete la
+	tabla siguiente.
+	
+	\vspace{6pt}
+	\noindent
+	{\small
+		\begin{tabular}{|c|p{3.2cm}|p{2.5cm}|p{5.5cm}|}
+			\hline
+			\thdr{ID} &
+			\thdr{Problema detectado} &
+			\thdr{Propiedad violada} &
+			\thdr{Versión corregida y cuantificada} \\
+			\hline
+			R-01 & & & \\[0.7cm]\hline
+			R-02 & & & \\[0.7cm]\hline
+			R-03 & & & \\[0.7cm]\hline
+			R-04 & & & \\[0.7cm]\hline
+			R-05 & & & \\[0.7cm]\hline
+			R-06 & & & \\[0.7cm]\hline
+			R-07 & & & \\[0.7cm]\hline
+			R-08 & & & \\[0.7cm]\hline
+			R-09 & & & \\[0.7cm]\hline
+			R-10 & & & \\[0.7cm]\hline
+	\end{tabular}}
+	
+	% ── 3.2 ──────────────────────────────────────────────────────
+	\newpage
+	\subsection*{3.2~~Relación entre R-05 y R-06: restricción, dependencia o
+		inconsistencia \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Analice el par R-05 («funcionará 24/7 sin interrupciones») y R-06
+	(«compatible con Ubuntu 22.04~LTS»). ¿Qué propiedad del conjunto de
+	requisitos podría verse comprometida si el servidor requiere reinicios
+	para actualizaciones de seguridad del kernel? Explique la relación entre
+	ambos e indique si existe una dependencia, una restricción o una
+	inconsistencia potencial.
+	
+	\lineas{4}
+	
+	% ── 3.3 ──────────────────────────────────────────────────────
+	\subsection*{3.3~~Tratamiento correcto de R-10 en el proceso de IR \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	El requisito R-10 es técnicamente real pero, como está redactado, presenta
+	un problema fundamental. Identifique el problema, clasifíquelo
+	correctamente (funcional, no funcional o restricción) y proponga cómo
+	debería tratarse en el proceso de IR para que sea accionable para el
+	equipo de desarrollo.
+	
+	\lineas{6}
+	
+	% ============================================================
+	\newpage
+	\secbox{TAREA --- Selección y Justificación del Proceso de Requisitos}
+	
+	% ── 4.1 ──────────────────────────────────────────────────────
+	\subsection*{4.1~~Cuadro comparativo de modelos del proceso de requisitos
+		\pts{1.0 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Compare los tres modelos (cascada, iterativo, ágil) evaluando los
+	criterios indicados \textbf{en el contexto específico del SGA-SB}.
+	Concluya con una recomendación fundamentada del modelo más adecuado,
+	citando al menos \textbf{tres razones} basadas en el caso.
+	
+	\vspace{6pt}
+	\noindent
+	\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
+		\hline
+		\thdr{Criterio de evaluación} &
+		\thdr{Cascada} &
+		\thdr{Iterativo} &
+		\thdr{Ágil} \\
+		\hline
+		Gestión de cambios de requisitos & & & \\[1cm]\hline
+		Participación de los stakeholders del instituto & & & \\[1cm]\hline
+		Adecuación al tipo de sistema (SGA-SB) & & & \\[1cm]\hline
+		Riesgo principal en este contexto & & & \\[1cm]\hline
+		Nivel de documentación requerido & & & \\[1cm]\hline
+	\end{tabular}
+	
+	\vspace{6pt}
+	\textbf{Recomendación fundamentada (modelo seleccionado y tres razones):}
+	
+	\lineas{5}
+	
+	% ── 4.2 ──────────────────────────────────────────────────────
+	\newpage
+	\subsection*{4.2~~Gestión de un cambio de alcance emergente \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	El Ing.\ Zambrano señala a mitad de la reunión: \textit{«Ah, y también
+		necesitamos que el sistema pueda exportar datos en formato XML para el
+		reporte semestral al SIIES de SENESCYT, porque eso nos piden cada
+		semestre.»} Desde el \textbf{framework de IR}, identifique:
+	\begin{enumerate}[label=(\alph*),itemsep=2pt]
+		\item en qué actividad del proceso se detectó este nuevo requisito,
+		\item a qué tipo de artefacto debe incorporarse, y
+		\item qué actividad transversal del framework debe activarse.
+	\end{enumerate}
+	
+	\lineas{3}
+	
+	% ── 4.3 ──────────────────────────────────────────────────────
+	\subsection*{4.3~~Propiedades emergentes del SGA-SB \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Identifique \textbf{dos propiedades emergentes} del SGA-SB. Para cada
+	una: nómbrela, explique por qué es emergente y describa qué combinación
+	de componentes la genera.
+	
+	\vspace{6pt}
+	\textbf{1) Nombre:} \dotfill
+	
+	\textbf{Por qué es emergente:} \dotfill
+	
+	\hphantom{\textbf{Por qué es emergente:}} \dotfill
+	
+	\textbf{Componentes que la generan:} \dotfill
+	
+	\vspace{8pt}
+	\textbf{2) Nombre:} \dotfill
+	
+	\textbf{Por qué es emergente:} \dotfill
+	
+	\hphantom{\textbf{Por qué es emergente:}} \dotfill
+	
+	\textbf{Componentes que la generan:} \dotfill
+	
+	% ============================================================
+	\newpage
+	\secbox{TAREA --- Aplicación de ISO/IEC 25010 y Síntesis}
+	
+	% ── 5.1 ──────────────────────────────────────────────────────
+	\subsection*{5.1~~Especificación de NFR según ISO/IEC 25010 \pts{1.0 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Especifique cuatro requisitos no funcionales del SGA-SB, uno por cada
+	característica de calidad indicada. Cada requisito debe ser
+	\textbf{cuantificable y verificable}.
+	
+	\vspace{6pt}
+	\noindent
+	{\small
+		\begin{tabular}{|p{2.2cm}|p{2cm}|p{4.5cm}|p{4.5cm}|}
+			\hline
+			\thdr{\scriptsize Característica ISO 25010} &
+			\thdr{Subcategoría} &
+			\thdr{Requisito NFR cuantificado} &
+			\thdr{Criterio de verificación} \\
+			\hline
+			Fiabilidad & & & \\[1.2cm]\hline
+			Seguridad & & & \\[1.2cm]\hline
+			Usabilidad & & & \\[1.2cm]\hline
+			Eficiencia de desempeño & & & \\[1.2cm]\hline
+	\end{tabular}}
+	
+	% ── 5.2 ──────────────────────────────────────────────────────
+	\subsection*{5.2~~Resolución de conflicto de prioridades entre stakeholders
+		\pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	La Ing.\ Salazar enfatiza la disponibilidad permanente y el panel de
+	indicadores en tiempo real; la Prof.\ Moreira enfatiza la velocidad del
+	registro de notas y la confirmación inmediata. Desde la perspectiva del
+	proceso de requisitos y el rol del analista, explique qué debe hacer el
+	analista ante este conflicto y qué actividad del proceso de IR se activa
+	para resolverlo.
+	
+	\lineas{5}
+	
+	% ── 5.3 ──────────────────────────────────────────────────────
+	\subsection*{5.3~~Reflexión y argumento técnico final \pts{0.5 pts}}
+	
+	\noindent\rule{4pt}{12pt}\hspace{4pt}%
+	Un colega afirma: \textit{«Para un instituto tecnológico pequeño como
+		este, no tiene sentido hacer todo este proceso de IR. Con preguntar a la
+		rectora qué quiere y empezar a programar es suficiente.»} Elabore un
+	argumento técnico fundamentado (\textbf{mínimo 150 palabras}) que refute
+	esta afirmación, considerando: el tipo de sistema, las consecuencias de
+	requisitos deficientes en sistemas académicos críticos, la calidad del
+	proceso de IR y el impacto sobre la calidad del producto final.
+	
+	\lineas{9}
+	
+	% ============================================================
+	\newpage
+	\secbox{RÚBRICA DE EVALUACIÓN}
+	
+	\vspace{6pt}
+	\noindent
+	{\small
+		\begin{tabular}{|c|p{3.8cm}|p{5.5cm}|c|}
+			\hline
+			\thdr{Tarea} &
+			\thdr{Capacidad evaluada} &
+			\thdr{Indicadores de logro} &
+			\thdr{Puntaje} \\
+			\hline
+			T1 & Clasifica el sistema, define el límite, formula la visión e identifica
+			perspectivas de contexto &
+			Tipo de sistema correcto y justificado; límite preciso y diferenciado;
+			visión alineada al RA; perspectivas pertinentes con evidencia del caso &
+			2.0 \\
+			\hline
+			T2 & Identifica stakeholders, clasifica requisitos y transforma
+			necesidades en NFR cuantificables &
+			Tabla de stakeholders completa con conflictos identificados;
+			clasificación RF/NFR/restricción correcta; NFR con métricas verificables &
+			1.5 \\
+			\hline
+			T3 & Detecta deficiencias en requisitos, aplica propiedades de calidad y
+			propone correcciones &
+			Propiedad violada identificada con precisión; corrección cuantificada;
+			análisis de relación R-05/R-06; tratamiento adecuado de R-10 &
+			2.5 \\
+			\hline
+			T4 & Selecciona y justifica el modelo de proceso; aplica el framework de
+			IR ante cambios &
+			Cuadro comparativo con criterios contextualizados al SGA-SB;
+			recomendación con 3 razones válidas; actividades del framework
+			correctamente identificadas; propiedades emergentes justificadas &
+			2.0 \\
+			\hline
+			T5 & Especifica NFR según ISO/IEC 25010; resuelve conflictos entre
+			stakeholders; argumenta el valor de la IR &
+			NFR cuantificados por característica con criterio de verificación;
+			actividad de resolución correcta; argumento técnico coherente
+			$\geq$~150 palabras &
+			2.0 \\
+			\hline
+			\multicolumn{3}{|r|}{\cellcolor{darkgreen}\color{white}\bfseries TOTAL} &
+			\cellcolor{darkgreen}\color{white}\bfseries 10.0 \\
+			\hline
+	\end{tabular}}
+	
+	\vspace{10pt}
+	\textbf{Criterios transversales de calidad --- aplican a todas las tareas:}
+	
+	\begin{itemize}[leftmargin=*,itemsep=2pt]
+		\item \textbf{Pertinencia:} Las respuestas deben usar el contexto del
+		SGA-SB, no ejemplos genéricos.
+		\item \textbf{Fundamentación:} Uso correcto y preciso de la terminología
+		técnica de la IR (Unidad~I).
+		\item \textbf{Coherencia:} Las respuestas de distintas tareas deben ser
+		consistentes entre sí.
+		\item \textbf{Cuantificación:} Todo requisito formulado o reformulado debe
+		incluir métricas verificables. Términos vagos como «rápido»,
+		«seguro» o «confiable» sin cuantificar reducen el puntaje
+		proporcionalmente.
+		\item \textbf{Extensión:} Ni tan breve que carezca de sustento, ni tan
+		extensa que exceda el tiempo disponible.
+	\end{itemize}
+	
+	% ── PIE FINAL ────────────────────────────────────────────────
+	\vfill
+	\begin{center}
+		\rule{5cm}{0.4pt}\hspace{3cm}\rule{5cm}{0.4pt}\\[4pt]
+		{\small Firma del Docente \hspace{3.5cm} Revisado por}\\
+		{\small Ingeniería de Requisitos \hspace{2cm} Coordinación de Carrera}
+	\end{center}
+	
+	\vspace{6pt}
+	\begin{center}
+		{\footnotesize Universidad Técnica Estatal de Quevedo $\cdot$ Facultad de
+			Ciencias de la Ingeniería $\cdot$ Carrera de Ingeniería de Software
+			$\cdot$ Período 2025--2026}
+	\end{center}
+	
+\end{document}
