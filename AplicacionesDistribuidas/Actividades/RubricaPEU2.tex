@@ -1,0 +1,492 @@
+\documentclass[11pt,a4paper,landscape]{article}
+\usepackage[left=1.2cm,right=1.2cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{array,booktabs,tabularx,longtable,multirow,colortbl}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{hyperref}
+
+% ── Colors ──
+\definecolor{primary}{HTML}{1B4F72}
+\definecolor{secondary}{HTML}{2E86C1}
+\definecolor{accent}{HTML}{D4E6F1}
+\definecolor{lightbg}{HTML}{EBF5FB}
+\definecolor{lvl4}{HTML}{27AE60}
+\definecolor{lvl3}{HTML}{F39C12}
+\definecolor{lvl2}{HTML}{E67E22}
+\definecolor{lvl1}{HTML}{E74C3C}
+\definecolor{lvl0}{HTML}{95A5A6}
+\definecolor{darktext}{HTML}{2C3E50}
+\definecolor{graytext}{HTML}{7F8C8D}
+
+% ── Headers/Footers ──
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\small\color{primary}\textbf{UTEQ} \color{graytext}| Ing.\ Software | Aplicaciones Distribuidas | \color{secondary}\textbf{R\'ubrica PE-U2}}
+\fancyfoot[C]{\small\color{graytext}R\'ubrica derivada de la Gu\'ia de Pr\'actica Experimental N°\,2 (GA-SUM-02) --- Per\'iodo 2026-2027}
+\fancyfoot[R]{\small\color{graytext}\thepage}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ── Section styling ──
+\titleformat{\section}{\large\bfseries\color{primary}}{}{0em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{secondary}}{}{0em}{}
+
+% ── Compact lists ──
+\setlist{nosep,leftmargin=1.2em}
+
+% ── Column types ──
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash\small}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash\small}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash\footnotesize}p{#1}}
+
+\begin{document}
+	
+	% ════════════════════════════════════════════════════════════════
+	% TITLE
+	% ════════════════════════════════════════════════════════════════
+	\begin{center}
+		{\Large\bfseries\color{primary} UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}\\[2pt]
+		{\small\color{graytext} Facultad de Ciencias de la Computaci\'on y Dise\~no Digital --- Carrera de Ingenier\'ia de Software}\\[8pt]
+		{\large\bfseries\color{secondary} R\'UBRICA DE EVALUACI\'ON --- PR\'ACTICA EXPERIMENTAL UNIDAD 2}\\[4pt]
+		{\normalsize\bfseries\color{primary} Contenerizaci\'on y Despliegue de Microservicios REST con Docker y API Gateway}
+	\end{center}
+	
+	\vspace{4pt}
+	
+	% ── Info table ──
+	\begin{center}
+		\begin{tabular}{|C{4.5cm}|C{3.5cm}|C{5cm}|C{3cm}|C{4cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{C\'odigo} & \color{white}\textbf{Semana} & \color{white}\textbf{Modalidad} & \color{white}\textbf{Calificaci\'on} & \color{white}\textbf{Entregable}\\
+			\hline
+			GA-SUM-02 / PE-U2 & Semana 7 & Grupal (3--4 integrantes) & 0--100 pts & Repo + LaTeX + Demo\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{4pt}
+	
+	% ════════════════════════════════════════════════════════════════
+	\section{Escala de Evaluaci\'on}
+	% ════════════════════════════════════════════════════════════════
+	
+	\begin{center}
+		\begin{tabular}{|C{4cm}|P{8cm}|C{2.5cm}|P{8cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Nivel} & \color{white}\textbf{Descripci\'on} & \color{white}\textbf{Equivalencia} & \color{white}\textbf{Significado pr\'actico}\\
+			\hline
+			\rowcolor{green!8} \textbf{4 --- Sobresaliente} & Cumple todos los requisitos con calidad cient\'ifica & 90--100 & Implementaci\'on completa, Docker funcional, documento impecable\\
+			\hline
+			\rowcolor{yellow!8} \textbf{3 --- Satisfactorio} & Cumple requisitos con calidad acad\'emica s\'olida & 75--89 & Funcional con deficiencias menores en documento o pruebas\\
+			\hline
+			\rowcolor{orange!8} \textbf{2 --- En desarrollo} & Cumple parcialmente, requiere mejoras & 60--74 & Implementaci\'on incompleta o documento con deficiencias significativas\\
+			\hline
+			\rowcolor{red!8} \textbf{1 --- Insuficiente} & No cumple est\'andares m\'inimos & 40--59 & Trabajo muy incompleto o con errores graves\\
+			\hline
+			\rowcolor{gray!10} \textbf{0 --- Ausente} & No entregado o plagio & $<$40 & Criterio no desarrollado\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{4pt}
+	
+	% ════════════════════════════════════════════════════════════════
+	\section{Condiciones Obligatorias de Aprobaci\'on}
+	% ════════════════════════════════════════════════════════════════
+	
+	\begin{center}
+		\begin{tabular}{|P{10cm}|P{7cm}|P{5.5cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Condici\'on} & \color{white}\textbf{Verificaci\'on} & \color{white}\textbf{Consecuencia}\\
+			\hline
+			Documento LaTeX compila sin errores con pdflatex & El docente ejecuta pdflatex sobre el .tex & {\color{lvl1}\textbf{D4 = 0 pts si no compila}}\\
+			\hline
+			Repositorio GitHub con commits de todos los integrantes ($\geq$3 significativos c/u) & Verificaci\'on del historial de commits & {\color{lvl1}\textbf{$-$25\% nota individual}}\\
+			\hline
+			M\'inimo 6 referencias IEEE con DOI verificable & Docente verifica al azar 3 referencias & {\color{lvl1}\textbf{$-$5 pts en D4}}\\
+			\hline
+			\texttt{docker-compose up --build} levanta el sistema sin errores & Demo en vivo durante evaluaci\'on & {\color{lvl1}\textbf{D1 m\'ax = 2/4 si falla}}\\
+			\hline
+			M\'inimo 12 p\'aginas de contenido (sin portada ni bibliograf\'ia) & Conteo de p\'aginas del PDF & {\color{lvl1}\textbf{Penalizaci\'on en D4}}\\
+			\hline
+			Archivo .env.example sin valores reales en el repositorio & Verificaci\'on en GitHub & {\color{lvl1}\textbf{$-$3 pts en D5}}\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{4pt}
+	
+	% ════════════════════════════════════════════════════════════════
+	\section{Distribuci\'on de Pesos por Dimensi\'on}
+	% ════════════════════════════════════════════════════════════════
+	
+	\begin{center}
+		\begin{tabular}{|P{6.5cm}|P{11.5cm}|C{2cm}|C{2cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Dimensi\'on} & \color{white}\textbf{Criterios} & \color{white}\textbf{N° Crit.} & \color{white}\textbf{Peso}\\
+			\hline
+			\rowcolor{lightbg} \textbf{D1 --- Implementaci\'on T\'ecnica} & 1.1 Microservicios REST, 1.2 API Gateway + JWT, 1.3 Docker Compose & 3 & \textbf{35\%}\\
+			\hline
+			\textbf{D2 --- Pruebas y Resultados} & 2.1 Flujos Postman, 2.2 Tabla de resultados & 2 & \textbf{15\%}\\
+			\hline
+			\rowcolor{lightbg} \textbf{D3 --- Fundamento Te\'orico} & 3.1 Teor\'ia U3 completa, 3.2 Preguntas Anexo B & 2 & \textbf{15\%}\\
+			\hline
+			\textbf{D4 --- Calidad Documento LaTeX} & 4.1 Estructura/formato, 4.2 Figuras/tablas/c\'odigo, 4.3 Referencias & 3 & \textbf{20\%}\\
+			\hline
+			\rowcolor{lightbg} \textbf{D5 --- Repositorio y Colaboraci\'on} & 5.1 Estructura repo, 5.2 Colaboraci\'on Git & 2 & \textbf{10\%}\\
+			\hline
+			\textbf{D6 --- Redacci\'on Cient\'ifica} & 6.1 Precisi\'on terminol\'ogica, 6.2 Conclusiones individuales & 2 & \textbf{5\%}\\
+			\hline
+			\rowcolor{primary}\color{white}\textbf{TOTAL} & & \color{white}\textbf{14} & \color{white}\textbf{100\%}\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\newpage
+	
+	% ════════════════════════════════════════════════════════════════
+	\section{R\'ubrica Detallada por Dimensi\'on}
+	% ════════════════════════════════════════════════════════════════
+	
+	{\small\itshape C\'alculo: Nivel (0--4) $\times$ (Peso/4) = Puntos obtenidos. Ejemplo: criterio 1.1 (peso 12\%), nivel 3 $\to$ 3 $\times$ (12/4) = 9 pts sobre 12.}
+	
+	\vspace{6pt}
+	
+	% ──────────────────── D1 ────────────────────
+	\subsection{D1 --- Implementaci\'on T\'ecnica (35\%)}
+	
+	\begin{center}
+		\footnotesize
+		\begin{tabular}{|P{2.2cm}|C{1cm}|L{8.2cm}|L{3.8cm}|L{3.8cm}|L{3cm}|L{2cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Criterio} & \color{white}\textbf{Peso} &
+			\cellcolor{lvl4}\color{white}\textbf{4 --- Sobresaliente} &
+			\cellcolor{lvl3}\color{white}\textbf{3 --- Satisfactorio} &
+			\cellcolor{lvl2}\color{white}\textbf{2 --- En desarrollo} &
+			\cellcolor{lvl1}\color{white}\textbf{1 --- Insuficiente} &
+			\cellcolor{lvl0}\color{white}\textbf{0}\\
+			\hline
+			
+			\rowcolor{lightbg}
+			\textbf{1.1 Microservicios REST} &
+			\textbf{12\%} &
+			Tres microservicios funcionales: auth-service (login+JWT 1h, validate), resource-service (CRUD completo con verificaci\'on JWT), notification-service (registra eventos). Cada uno con BD propia. Endpoints responden JSON \{status, data, message, timestamp\}. Contratos OpenAPI 3.0 en YAML. C\'odigo en lstlisting. &
+			Tres microservicios funcionales. JWT implementado. 1--2 endpoints sin formato JSON completo o sin OpenAPI. C\'odigo parcial en lstlisting. &
+			Dos microservicios funcionales o tres con errores. JWT parcial. Sin OpenAPI. Sin BD independientes. &
+			Un microservicio funcional o con errores graves. Sin JWT o sin separaci\'on de servicios. &
+			No implementado.\\
+			\hline
+			
+			\textbf{1.2 API Gateway + JWT} &
+			\textbf{11\%} &
+			Nginx en puerto 8080 con rutas: /api/auth/*$\to$8001, /api/resources/*$\to$8002, /api/notifications/*$\to$8003. Rate limiting 100 req/min por IP. Logging completo (timestamp, m\'etodo, ruta, IP, c\'odigo). Configuraci\'on nginx.conf en lstlisting. &
+			Nginx funcional con rutas correctas. Rate limiting o logging parcial. Configuraci\'on presente pero sin lstlisting completo. &
+			Nginx funciona pero con rutas incompletas. Sin rate limiting ni logging. &
+			Nginx no funciona o acceso directo a microservicios sin gateway. &
+			Sin API Gateway.\\
+			\hline
+			
+			\rowcolor{lightbg}
+			\textbf{1.3 Docker Compose} &
+			\textbf{12\%} &
+			Dockerfile multi-stage (builder+runtime) para cada microservicio. docker-compose.yml con 3 microservicios + BDs + Nginx + red bridge. \texttt{docker-compose up -{}-build} levanta sin errores. .env.example incluido. Dockerfiles en lstlisting con comentarios. &
+			Docker funcional. docker-compose levanta con ajustes menores. Dockerfile sin multi-stage o sin .env.example. &
+			Docker parcial: solo algunos servicios contenerizados. docker-compose requiere intervenci\'on manual. &
+			Dockerfile presente pero no funciona. docker-compose no levanta. &
+			Sin Docker.\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{6pt}
+	
+	% ──────────────────── D2 ────────────────────
+	\subsection{D2 --- Pruebas y Resultados (15\%)}
+	
+	\begin{center}
+		\footnotesize
+		\begin{tabular}{|P{2.2cm}|C{1cm}|L{8.2cm}|L{3.8cm}|L{3.8cm}|L{3cm}|L{2cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Criterio} & \color{white}\textbf{Peso} &
+			\cellcolor{lvl4}\color{white}\textbf{4 --- Sobresaliente} &
+			\cellcolor{lvl3}\color{white}\textbf{3 --- Satisfactorio} &
+			\cellcolor{lvl2}\color{white}\textbf{2 --- En desarrollo} &
+			\cellcolor{lvl1}\color{white}\textbf{1 --- Insuficiente} &
+			\cellcolor{lvl0}\color{white}\textbf{0}\\
+			\hline
+			
+			\rowcolor{lightbg}
+			\textbf{2.1 Flujos Postman (Anexo A)} &
+			\textbf{8\%} &
+			3 flujos end-to-end documentados con capturas: (1) register$\to$login$\to$JWT, (2) GET sin token (401)$\to$con token (200)$\to$CRUD, (3) crear recurso$\to$verificar notificaci\'on. Capturas con request, headers y response visibles. &
+			3 flujos presentes pero capturas incompletas (sin headers o sin response body). &
+			1--2 flujos documentados. Sin capturas de Postman o con capturas ilegibles. &
+			Menciona pruebas sin documentaci\'on formal ni capturas. &
+			Sin pruebas.\\
+			\hline
+			
+			\textbf{2.2 Tabla de resultados} &
+			\textbf{7\%} &
+			Tabla booktabs: endpoint | m\'etodo | c\'odigo esperado | c\'odigo obtenido | latencia (ms). Cubre todos los endpoints de los 3 microservicios. An\'alisis de resultados con observaciones. &
+			Tabla presente con la mayor\'ia de endpoints. Formato parcial booktabs. Sin an\'alisis. &
+			Tabla b\'asica sin formato booktabs. Pocos endpoints cubiertos. &
+			Lista de pruebas sin tabla formal. &
+			Sin resultados.\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{6pt}
+	
+	% ──────────────────── D3 ────────────────────
+	\subsection{D3 --- Fundamento Te\'orico (15\%)}
+	
+	\begin{center}
+		\footnotesize
+		\begin{tabular}{|P{2.2cm}|C{1cm}|L{8.2cm}|L{3.8cm}|L{3.8cm}|L{3cm}|L{2cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Criterio} & \color{white}\textbf{Peso} &
+			\cellcolor{lvl4}\color{white}\textbf{4 --- Sobresaliente} &
+			\cellcolor{lvl3}\color{white}\textbf{3 --- Satisfactorio} &
+			\cellcolor{lvl2}\color{white}\textbf{2 --- En desarrollo} &
+			\cellcolor{lvl1}\color{white}\textbf{1 --- Insuficiente} &
+			\cellcolor{lvl0}\color{white}\textbf{0}\\
+			\hline
+			
+			\rowcolor{lightbg}
+			\textbf{3.1 Teor\'ia U3 completa (4 subtemas)} &
+			\textbf{10\%} &
+			Cubre: (4.1) Monolito$\to$SOA$\to$Microservicios con tabla comparativa + 9 principios. (4.2) EDA, CQRS, Saga, API Gateway. (4.3) REST (6 principios Fielding), OpenAPI, JWT (estructura + flujo), REST vs gRPC vs GraphQL. (4.4) VM vs contenedores, Docker (daemon, imagen, contenedor), Dockerfile, Compose, intro Kubernetes. Cada subtema $\geq$300 palabras, $\geq$2 refs IEEE, diagrama propio, c\'odigo en lstlisting. &
+			3 de 4 subtemas completos. Algunos con $<$300 palabras. Diagramas presentes pero no todos propios. &
+			2 subtemas cubiertos o todos superficialmente. Pocas referencias. Sin diagramas. &
+			Marco te\'orico gen\'erico sin cubrir subtemas espec\'ificos de U3. &
+			Sin fundamento te\'orico.\\
+			\hline
+			
+			\textbf{3.2 Preguntas Anexo B (4 obligatorias)} &
+			\textbf{5\%} &
+			Responde las 4: (1) Database per Service, (2) Circuit Breaker si resource-service cae, (3) rendimiento con/sin API Gateway + cuello de botella, (4) escalar a 3 r\'eplicas con Compose + cambios en Nginx. Respuestas con datos y referencias. &
+			3 de 4 preguntas respondidas con argumentaci\'on t\'ecnica. &
+			2 preguntas o todas superficialmente. &
+			1 pregunta respondida. &
+			Sin respuestas.\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\newpage
+	
+	% ──────────────────── D4 ────────────────────
+	\subsection{D4 --- Calidad del Documento LaTeX (20\%)}
+	
+	\begin{center}
+		\footnotesize
+		\begin{tabular}{|P{2.2cm}|C{1cm}|L{8.2cm}|L{3.8cm}|L{3.8cm}|L{3cm}|L{2cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Criterio} & \color{white}\textbf{Peso} &
+			\cellcolor{lvl4}\color{white}\textbf{4 --- Sobresaliente} &
+			\cellcolor{lvl3}\color{white}\textbf{3 --- Satisfactorio} &
+			\cellcolor{lvl2}\color{white}\textbf{2 --- En desarrollo} &
+			\cellcolor{lvl1}\color{white}\textbf{1 --- Insuficiente} &
+			\cellcolor{lvl0}\color{white}\textbf{0}\\
+			\hline
+			
+			\rowcolor{lightbg}
+			\textbf{4.1 Estructura y formato} &
+			\textbf{7\%} &
+			Portada, resumen biling\"ue ($\leq$200 pal.), fundamento te\'orico U3, arquitectura C4 como figura, implementaci\'on, resultados, an\'alisis, conclusiones individuales ($\geq$150 pal.\ c/u), bibliograf\'ia. Compila sin errores. $\geq$12 p\'ags contenido. &
+			Estructura reconocible. Resumen solo espa\~nol. Compila con advertencias. 10--11 p\'ags. &
+			Estructura incompleta. Sin resumen o sin conclusiones individuales. 8--9 p\'ags. &
+			Estructura informal. $<$8 p\'ags. &
+			No LaTeX o no compila.\\
+			\hline
+			
+			\textbf{4.2 Figuras, tablas, c\'odigo} &
+			\textbf{7\%} &
+			Diagrama C4 nivel 2 con \texttt{\textbackslash caption} y \texttt{\textbackslash ref}. Contratos OpenAPI en lstlisting YAML. Dockerfiles comentados en lstlisting. nginx.conf en lstlisting. Tablas booktabs. Todas las figuras originales del equipo. &
+			Mayor\'ia con caption/ref. C\'odigo en lstlisting parcial. Tablas sin booktabs completo. &
+			Figuras sin caption/ref. C\'odigo en verbatim. Sin lstlisting. &
+			Sin uso de entornos LaTeX. &
+			Sin elementos formales.\\
+			\hline
+			
+			\rowcolor{lightbg}
+			\textbf{4.3 Referencias IEEE} &
+			\textbf{6\%} &
+			$\geq$6 refs IEEE con DOI verificable. Estilo biblatex IEEE consistente. Incluye fuentes de la gu\'ia (Newman, Fielding, Burns, Richardson, RFC 7519). \texttt{\textbackslash cite} correcto en texto. &
+			6+ refs formato IEEE. 1--2 sin DOI o formato inconsistente. &
+			4--5 refs. Formato parcial IEEE. &
+			$<$4 refs o no acad\'emicas. &
+			Sin bibliograf\'ia.\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{6pt}
+	
+	% ──────────────────── D5 ────────────────────
+	\subsection{D5 --- Repositorio y Trabajo Colaborativo (10\%)}
+	
+	\begin{center}
+		\footnotesize
+		\begin{tabular}{|P{2.2cm}|C{1cm}|L{8.2cm}|L{3.8cm}|L{3.8cm}|L{3cm}|L{2cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Criterio} & \color{white}\textbf{Peso} &
+			\cellcolor{lvl4}\color{white}\textbf{4 --- Sobresaliente} &
+			\cellcolor{lvl3}\color{white}\textbf{3 --- Satisfactorio} &
+			\cellcolor{lvl2}\color{white}\textbf{2 --- En desarrollo} &
+			\cellcolor{lvl1}\color{white}\textbf{1 --- Insuficiente} &
+			\cellcolor{lvl0}\color{white}\textbf{0}\\
+			\hline
+			
+			\rowcolor{lightbg}
+			\textbf{5.1 Estructura repositorio} &
+			\textbf{5\%} &
+			Estructura organizada: /auth-service/, /resource-service/, /notification-service/, /gateway/ (nginx.conf), /docs/api/ (YAML OpenAPI), docker-compose.yml, .env.example, README.md con instrucciones completas. &
+			Estructura organizada. README presente pero incompleto. Alg\'un archivo en ubicaci\'on incorrecta. &
+			Archivos presentes sin organizaci\'on por carpetas. README b\'asico o ausente. &
+			Repositorio desordenado. Sin README. &
+			Sin repositorio.\\
+			\hline
+			
+			\textbf{5.2 Colaboraci\'on Git} &
+			\textbf{5\%} &
+			Todos los integrantes con $\geq$3 commits significativos. Historial progresivo y colaborativo. Mensajes descriptivos. &
+			Todos con commits pero alguno $<$3 o no significativos. &
+			Un integrante concentra $>$80\% de commits. &
+			Alg\'un integrante con 0 commits. &
+			Sin Git.\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{6pt}
+	
+	% ──────────────────── D6 ────────────────────
+	\subsection{D6 --- Redacci\'on Cient\'ifica (5\%)}
+	
+	\begin{center}
+		\footnotesize
+		\begin{tabular}{|P{2.2cm}|C{1cm}|L{8.2cm}|L{3.8cm}|L{3.8cm}|L{3cm}|L{2cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Criterio} & \color{white}\textbf{Peso} &
+			\cellcolor{lvl4}\color{white}\textbf{4 --- Sobresaliente} &
+			\cellcolor{lvl3}\color{white}\textbf{3 --- Satisfactorio} &
+			\cellcolor{lvl2}\color{white}\textbf{2 --- En desarrollo} &
+			\cellcolor{lvl1}\color{white}\textbf{1 --- Insuficiente} &
+			\cellcolor{lvl0}\color{white}\textbf{0}\\
+			\hline
+			
+			\rowcolor{lightbg}
+			\textbf{6.1 Precisi\'on terminol\'ogica} &
+			\textbf{2.5\%} &
+			Terminolog\'ia t\'ecnica precisa y consistente. Afirmaciones respaldadas con datos o referencias. Voz pasiva t\'ecnica. Sin adjetivos vac\'ios. &
+			Mayormente correcta con 2--3 imprecisiones. &
+			Inconsistente. Afirmaciones vagas. &
+			Incorrecta de manera sistem\'atica. &
+			Texto no t\'ecnico.\\
+			\hline
+			
+			\textbf{6.2 Conclusiones individuales} &
+			\textbf{2.5\%} &
+			Cada integrante presenta conclusi\'on individual $\geq$150 palabras con reflexi\'on personal, aprendizajes t\'ecnicos espec\'ificos y conexi\'on con la pr\'actica. &
+			Presentes pero alguna $<$150 palabras o gen\'erica. &
+			Conclusiones grupales sin individualizaci\'on. &
+			Conclusiones m\'inimas sin reflexi\'on. &
+			Sin conclusiones.\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\newpage
+	
+	% ════════════════════════════════════════════════════════════════
+	\section{Hoja de Puntuaci\'on del Evaluador}
+	% ════════════════════════════════════════════════════════════════
+	
+	\begin{center}
+		\small
+		\setlength{\extrarowheight}{6pt}
+		\begin{tabular}{|P{9.5cm}|C{1.8cm}|C{1.5cm}|C{1.5cm}|C{1.5cm}|P{7.5cm}|}
+			\hline
+			\rowcolor{primary}\color{white}\textbf{Criterio} & \color{white}\textbf{Nivel (0--4)} & \color{white}\textbf{Peso \%} & \color{white}\textbf{Pts m\'ax} & \color{white}\textbf{Pts obtd} & \color{white}\textbf{Observaci\'on del evaluador}\\
+			\hline
+			
+			\rowcolor{accent}\multicolumn{2}{|l|}{\textbf{D1 --- IMPLEMENTACI\'ON T\'ECNICA}} & \textbf{35\%} & & &\\
+			\hline
+			\quad 1.1\ \ Microservicios REST (auth, resource, notification) & \_\_\_ & 12\% & & &\\
+			\hline
+			\quad 1.2\ \ API Gateway (Nginx) + JWT + rate limiting & \_\_\_ & 11\% & & &\\
+			\hline
+			\quad 1.3\ \ Docker Compose + Dockerfile multi-stage & \_\_\_ & 12\% & & &\\
+			\hline
+			
+			\rowcolor{accent}\multicolumn{2}{|l|}{\textbf{D2 --- PRUEBAS Y RESULTADOS}} & \textbf{15\%} & & &\\
+			\hline
+			\quad 2.1\ \ Flujos Postman end-to-end (Anexo A: 3 flujos) & \_\_\_ & 8\% & & &\\
+			\hline
+			\quad 2.2\ \ Tabla booktabs de resultados por endpoint & \_\_\_ & 7\% & & &\\
+			\hline
+			
+			\rowcolor{accent}\multicolumn{2}{|l|}{\textbf{D3 --- FUNDAMENTO TE\'ORICO}} & \textbf{15\%} & & &\\
+			\hline
+			\quad 3.1\ \ Teor\'ia U3 completa (4 subtemas $\times$ 300 pal.) & \_\_\_ & 10\% & & &\\
+			\hline
+			\quad 3.2\ \ Preguntas de an\'alisis obligatorias (Anexo B) & \_\_\_ & 5\% & & &\\
+			\hline
+			
+			\rowcolor{accent}\multicolumn{2}{|l|}{\textbf{D4 --- CALIDAD DOCUMENTO LaTeX}} & \textbf{20\%} & & &\\
+			\hline
+			\quad 4.1\ \ Estructura y formato cient\'ifico & \_\_\_ & 7\% & & &\\
+			\hline
+			\quad 4.2\ \ Figuras, tablas, ecuaciones y c\'odigo (lstlisting) & \_\_\_ & 7\% & & &\\
+			\hline
+			\quad 4.3\ \ Gesti\'on de referencias y citas IEEE & \_\_\_ & 6\% & & &\\
+			\hline
+			
+			\rowcolor{accent}\multicolumn{2}{|l|}{\textbf{D5 --- REPOSITORIO Y COLABORACI\'ON}} & \textbf{10\%} & & &\\
+			\hline
+			\quad 5.1\ \ Estructura del repositorio GitHub & \_\_\_ & 5\% & & &\\
+			\hline
+			\quad 5.2\ \ Colaboraci\'on Git ($\geq$3 commits/integrante) & \_\_\_ & 5\% & & &\\
+			\hline
+			
+			\rowcolor{accent}\multicolumn{2}{|l|}{\textbf{D6 --- REDACCI\'ON CIENT\'IFICA}} & \textbf{5\%} & & &\\
+			\hline
+			\quad 6.1\ \ Precisi\'on terminol\'ogica y argumentaci\'on & \_\_\_ & 2.5\% & & &\\
+			\hline
+			\quad 6.2\ \ Conclusiones individuales ($\geq$150 pal.\ c/u) & \_\_\_ & 2.5\% & & &\\
+			\hline
+			
+			\rowcolor{primary}\color{white}\textbf{CALIFICACI\'ON FINAL (sobre 100)} & & \color{white}\textbf{100\%} & \color{white}\textbf{100} & \color{white}\textbf{\_\_\_ / 100} & \color{white}Firma: \rule{3cm}{0.4pt}\ \ Fecha: \rule{2cm}{0.4pt}\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{10pt}
+	
+	% ════════════════════════════════════════════════════════════════
+	\section{Nota Metodol\'ogica}
+	% ════════════════════════════════════════════════════════════════
+	
+	{\small\color{darktext}
+		Esta r\'ubrica fue derivada \'integramente de los requisitos verificables establecidos en la \textbf{Gu\'ia de Pr\'actica Experimental N°\,2} del documento \textit{Gu\'ias de Pr\'actica Experimental --- Aplicaciones Distribuidas} (v4.0, 2025), utilizando la estructura y escala de evaluaci\'on de la r\'ubrica cient\'ifica TA-PFC-E1 como marco de referencia. Cada criterio se mapea directamente a un requisito expl\'icito del procedimiento (Pasos 1--5), los requisitos obligatorios del documento LaTeX, los flujos de prueba del Anexo A y las preguntas de an\'alisis obligatorias del Anexo B.
+		
+		\vspace{4pt}
+		\textbf{Diferencias clave respecto a la r\'ubrica PE-U1:}
+		\begin{itemize}[leftmargin=1.5em]
+			\item D1 sube de 30\% a \textbf{35\%} por la mayor complejidad t\'ecnica (3 microservicios + API Gateway + Docker + JWT vs.\ 2 protocolos + Lamport).
+			\item D2 baja de 20\% a \textbf{15\%} porque el an\'alisis estad\'istico de latencia se reemplaza por pruebas funcionales end-to-end.
+			\item Se requieren \textbf{contratos OpenAPI 3.0}, \textbf{Dockerfiles multi-stage} y \textbf{configuraci\'on Nginx} en lstlisting --- elementos ausentes en PE-U1.
+			\item Las preguntas del Anexo B son espec\'ificas a microservicios: Database per Service, Circuit Breaker, rendimiento del API Gateway, escalado con r\'eplicas.
+		\end{itemize}
+	}
+	
+\end{document}

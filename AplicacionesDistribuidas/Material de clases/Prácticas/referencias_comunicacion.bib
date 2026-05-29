@@ -1,0 +1,259 @@
+% ============================================================
+%  referencias_comunicacion.bib
+%  Bibliografía en formato BibLaTeX (IEEE style)
+%  Guías de Implementación — Comunicación en Sistemas Distribuidos
+%  Asignatura: Aplicaciones Distribuidas (ISR-701) — UTEQ
+% ============================================================
+
+% ── Libros Fundamentales ─────────────────────────────────────
+
+@book{vanSteen2023,
+	author    = {van Steen, Maarten and Tanenbaum, Andrew S.},
+	title     = {Distributed Systems},
+	edition   = {4th},
+	note      = {Version 4.03},
+	publisher = {Maarten van Steen},
+	address   = {Maastricht, The Netherlands},
+	year      = {2023},
+	month     = {1},
+	isbn      = {978-90-815406-3-6},
+	url       = {https://www.distributed-systems.net},
+}
+
+@book{coulouris2012,
+	author    = {Coulouris, George and Dollimore, Jean and Kindberg, Tim and Blair, Gordon},
+	title     = {Distributed Systems: Concepts and Design},
+	edition   = {5th},
+	publisher = {Addison-Wesley},
+	address   = {Boston, MA, USA},
+	year      = {2012},
+	isbn      = {978-0-13-214301-1},
+}
+
+@book{kurose2017,
+	author    = {Kurose, James F. and Ross, Keith W.},
+	title     = {Redes de Computadoras: Un Enfoque Descendente},
+	edition   = {7th},
+	publisher = {Pearson},
+	address   = {Mexico City, Mexico},
+	year      = {2017},
+	isbn      = {978-607-32-4053-3},
+}
+
+@book{stevens2004,
+	author    = {Stevens, W. Richard and Fenner, Bill and Rudoff, Andrew M.},
+	title     = {{UNIX} Network Programming, Volume 1: The Sockets Networking API},
+	edition   = {3rd},
+	publisher = {Addison-Wesley Professional},
+	address   = {Boston, MA, USA},
+	year      = {2004},
+	isbn      = {978-0-13-141155-5},
+}
+
+@book{indrasiri2020,
+	author    = {Indrasiri, Kasun and Kuruppu, Danesh},
+	title     = {gRPC: Up and Running},
+	edition   = {1st},
+	publisher = {O'Reilly Media},
+	address   = {Sebastopol, CA, USA},
+	year      = {2020},
+	isbn      = {978-1-4920-5728-4},
+}
+
+@book{burns2025,
+	author    = {Burns, Brendan},
+	title     = {Designing Distributed Systems},
+	edition   = {2nd},
+	publisher = {O'Reilly Media},
+	address   = {Sebastopol, CA, USA},
+	year      = {2025},
+	isbn      = {978-1-09-815635-0},
+}
+
+@book{newman2021,
+	author    = {Newman, Sam},
+	title     = {Building Microservices: Designing Fine-Grained Systems},
+	edition   = {2nd},
+	publisher = {O'Reilly Media},
+	address   = {Sebastopol, CA, USA},
+	year      = {2021},
+	isbn      = {978-1-4920-3402-5},
+}
+
+@book{kleppmann2017,
+	author    = {Kleppmann, Martin},
+	title     = {Designing Data-Intensive Applications},
+	edition   = {1st},
+	publisher = {O'Reilly Media},
+	address   = {Sebastopol, CA, USA},
+	year      = {2017},
+	isbn      = {978-1-4493-7332-0},
+}
+
+% ── Artículos y RFC ──────────────────────────────────────────
+
+@article{lamport1978,
+	author    = {Lamport, Leslie},
+	title     = {Time, Clocks, and the Ordering of Events in a Distributed System},
+	journal   = {Communications of the ACM},
+	volume    = {21},
+	number    = {7},
+	pages     = {558--565},
+	year      = {1978},
+	month     = jul,
+	doi       = {10.1145/359545.359563},
+}
+
+@article{birrell1984,
+	author    = {Birrell, Andrew D. and Nelson, Bruce Jay},
+	title     = {Implementing Remote Procedure Calls},
+	journal   = {ACM Transactions on Computer Systems},
+	volume    = {2},
+	number    = {1},
+	pages     = {39--59},
+	year      = {1984},
+	month     = feb,
+	doi       = {10.1145/2080.357392},
+}
+
+@misc{fette2011,
+	author    = {Fette, Ian and Melnikov, Alexey},
+	title     = {{The WebSocket Protocol}},
+	howpublished = {Internet Engineering Task Force, RFC 6455},
+	year      = {2011},
+	month     = dec,
+	doi       = {10.17487/RFC6455},
+	url       = {https://www.rfc-editor.org/rfc/rfc6455},
+}
+
+@techreport{slee2007,
+	author      = {Slee, Mark and Agarwal, Aditya and Kwiatkowski, Marc},
+	title       = {{Thrift}: Scalable Cross-Language Services Implementation},
+	institution = {Facebook},
+	year        = {2007},
+	url         = {https://thrift.apache.org/static/files/thrift-20070401.pdf},
+}
+
+@inproceedings{waldo1994,
+	author    = {Waldo, Jim and Wyant, Geoff and Wollrath, Ann and Kendall, Samuel C.},
+	title     = {A Note on Distributed Computing},
+	booktitle = {Proceedings of the Workshop on Mobile Object Systems},
+	year      = {1994},
+	address   = {Kaiserslautern, Germany},
+	publisher = {Springer},
+	pages     = {49--64},
+	doi       = {10.1007/3-540-62852-5_6},
+}
+
+@article{brewer2012,
+	author    = {Brewer, Eric A.},
+	title     = {{CAP} Twelve Years Later: How the ``Rules'' Have Changed},
+	journal   = {IEEE Computer},
+	volume    = {45},
+	number    = {2},
+	pages     = {23--29},
+	year      = {2012},
+	month     = feb,
+	doi       = {10.1109/MC.2012.37},
+}
+
+@article{blinowski2022,
+	author    = {Blinowski, Grzegorz and Ojdowska, Anna and Przybylek, Adam},
+	title     = {Monolithic vs. Microservice Architecture: A Performance and Scalability Evaluation},
+	journal   = {IEEE Access},
+	volume    = {10},
+	pages     = {20357--20374},
+	year      = {2022},
+	doi       = {10.1109/ACCESS.2022.3152803},
+}
+
+% ── Documentación y estándares ───────────────────────────────
+
+@misc{grpcio2024,
+	author       = {{gRPC Authors}},
+	title        = {{gRPC}: A high performance, open source universal {RPC} framework},
+	howpublished = {[Online]},
+	year         = {2024},
+	url          = {https://grpc.io/docs/},
+	note         = {Accessed: May 2026},
+}
+
+@misc{thrift2024,
+	author       = {{Apache Software Foundation}},
+	title        = {Apache Thrift: Software Framework for Scalable Cross-Language Services},
+	howpublished = {[Online]},
+	year         = {2024},
+	url          = {https://thrift.apache.org/docs/},
+	note         = {Accessed: May 2026},
+}
+
+@misc{protobuf2024,
+	author       = {{Google LLC}},
+	title        = {Protocol Buffers Documentation},
+	howpublished = {[Online]},
+	year         = {2024},
+	url          = {https://protobuf.dev/},
+	note         = {Accessed: May 2026},
+}
+
+@misc{oracleRMI2024,
+	author       = {{Oracle Corporation}},
+	title        = {Java Remote Method Invocation ({RMI})},
+	howpublished = {[Online]},
+	year         = {2024},
+	url          = {https://docs.oracle.com/en/java/javase/21/docs/api/java.rmi/module-summary.html},
+	note         = {Accessed: May 2026},
+}
+
+@misc{springWS2024,
+	author       = {{Broadcom Inc.}},
+	title        = {Spring Framework: {WebSocket} Support},
+	howpublished = {[Online]},
+	year         = {2024},
+	url          = {https://docs.spring.io/spring-framework/reference/web/websocket.html},
+	note         = {Accessed: May 2026},
+}
+
+@misc{jdk21docs,
+	author       = {{Oracle Corporation}},
+	title        = {{Java} Platform, Standard Edition 21 -- {API} Specification},
+	howpublished = {[Online]},
+	year         = {2023},
+	url          = {https://docs.oracle.com/en/java/javase/21/docs/api/},
+	note         = {Accessed: May 2026},
+}
+
+% ── Artículos de investigación adicionales ───────────────────
+
+@article{karabey2021,
+	author    = {Karabey Aksakalli, Isil and Celik, Tunc and Can, Ahmet Burak and Tekinerdogan, Bedir},
+	title     = {Deployment and Communication Patterns in Microservice Architectures: A Systematic Literature Review},
+	journal   = {Journal of Systems and Software},
+	volume    = {180},
+	pages     = {111014},
+	year      = {2021},
+	month     = oct,
+	doi       = {10.1016/j.jss.2021.111014},
+}
+
+@article{fielding2002,
+	author    = {Fielding, Roy T. and Taylor, Richard N.},
+	title     = {Principled Design of the Modern {Web} Architecture},
+	journal   = {ACM Transactions on Internet Technology},
+	volume    = {2},
+	number    = {2},
+	pages     = {115--150},
+	year      = {2002},
+	month     = may,
+	doi       = {10.1145/514183.514185},
+}
+
+@misc{rfc7540,
+	author    = {Belshe, Mike and Peon, Roberto and Thomson, Martin},
+	title     = {Hypertext Transfer Protocol Version 2 ({HTTP/2})},
+	howpublished = {Internet Engineering Task Force, RFC 7540},
+	year      = {2015},
+	month     = may,
+	doi       = {10.17487/RFC7540},
+	url       = {https://www.rfc-editor.org/rfc/rfc7540},
+}

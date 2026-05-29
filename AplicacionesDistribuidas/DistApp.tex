@@ -1,0 +1,189 @@
+\documentclass[12pt,a4paper,final]{book}
+%paquetes por defecto
+\usepackage{adjustbox}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage[spanish,es-tabla]{babel}
+
+\usepackage{newunicodechar}
+\newunicodechar{^^a0}{~}
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+%Ruta relativa en el formato de Windows:
+\graphicspath{{images/}}
+%Paquete para hipervinculos 
+
+\usepackage{glossaries}
+
+%%\usepackage[utf8]{inputenc}
+
+%otros paquetes
+\usepackage{booktabs}
+%\usepackage{breakurl}
+\usepackage{xurl}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage{cite} % para contraer referencias
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage[T1]{fontenc}
+%\usepackage{fourier}
+\usepackage[myheadings]{fullpage}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{listingsutf8}
+\usepackage{lmodern}
+\usepackage{longtable}
+\usepackage[protrusion=true, expansion=true]{microtype}
+\usepackage{parskip} % Agrega este paquete para evitar la indentación después de tablas, imágenes, listas, etc.
+\usepackage{pstricks,pst-node}
+%\usepackage{pxfonts}
+\usepackage{rotating}
+\usepackage{setspace}
+\usepackage{sectsty}
+\usepackage{subcaption}
+%\usepackage{tablefootnote}
+\usepackage{tabularx}
+\usepackage[most]{tcolorbox}
+\usepackage{url, lipsum}
+\usepackage{upquote}
+\usepackage{xcolor}
+%\usepackage[hidelinks]{hyperref}
+
+\setcounter{topnumber}{8}
+\setcounter{bottomnumber}{8}
+\setcounter{totalnumber}{8}
+
+% Definir los colores
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{azulcielo}{RGB}{135,206,235}
+\definecolor{lightblue}{rgb}{0.68, 0.85, 0.90}
+
+%Espaciado de la indentación de los párrafos
+\setlength{\parindent}{18pt}
+
+% Estilo de fuente
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	commentstyle=\color{codegreen},
+	keepspaces=true,
+	keywordstyle=\color{magenta},
+	numbers=left,
+	numbersep=5pt,
+	numberstyle=\tiny\color{codegray},
+	escapechar=\\
+	stringstyle=\color{codepurple},
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+
+% Configuración del paquete listings
+\lstset{style=mystyle}
+\lstset{escapechar=\%}
+
+\lstset{
+	language=Java,
+	basicstyle=\ttfamily\footnotesize,
+	showstringspaces=false,
+	keywordstyle=\bfseries\color{blue},
+	commentstyle=\itshape\color{gray},
+	stringstyle=\color{orange},
+	numbers=left,
+	numberstyle=\tiny,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4
+}
+
+\newtcolorbox{TextBox}[2]{
+	colback=blue!10,
+	colframe=azulcielo,
+	coltext=black,
+	arc=4pt,
+	boxrule=1.2pt,
+	leftrule=10pt,
+	rightrule=0pt,
+	toprule=2pt,
+	bottomrule=0pt,
+	enhanced,
+	%fontupper=\sffamily\small,
+	title=#1,
+	coltitle=black,
+	sharpish corners,
+	drop shadow,
+	sharp corners,
+	#2
+}
+
+%%\DeclareUnicodeCharacter{00A0}{~}
+%\setlength{\parindent}{0cm} esto sirve para quitar todas las sandrias de los parragos
+\setlength{\parskip}{2.5mm} % separacion entre parrafos
+\renewcommand{\lstlistingname}{Listado} %espaniol del listing
+
+\newglossary[glg]{general}{gls}{glo}{Glosario}
+\makeglossaries
+
+%Tamaño de texto fijo para que el tamaño del papel no influya.
+%\setlength{\textheight}{650pt}
+%\setlength{\textwidth}{500pt}
+\graphicspath{ {./images/} }
+%NO por ser el último (casi) que se debe cargar
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=magenta,
+	urlcolor=blue,
+	citecolor=black,
+}
+
+\usepackage{footnotehyper}
+\usepackage{tablefootnote}
+
+\begin{document}
+	%ajustar algunas longitudes para invocar el problema
+	\baselineskip15pt
+	
+	\author{\textbf{\Large {Gleiston Cicerón Guerrero Ulloa}}}
+	\title{Aplicaciones Distribuidas: Un enfoque desde la Ingeniería de Software}
+	\date{}
+	
+	\maketitle
+	\pagenumbering{Roman} % para comenzar la numeracion de paginas en numeros
+	\include{chapters/prefacio}
+	\tableofcontents
+	\pagenumbering{arabic}
+	\include{chapters/introbook}
+	\include{chapters/introAppDist}
+	\include{chapters/fundAppDist}
+	\include{chapters/challenges}
+	\include{chapters/arqDist}
+	\include{chapters/bdDist}
+	%\include{chapters/storeAppDist}
+	%\include{chapters/DevAppDist}
+	%\include{chapters/CaseStudyAppDist}
+	%\include{chapters/FutureAppDist}
+	%\include{chapters/conclusions}
+	%\include{chapters/references}
+	%\include{chapters/appendice}
+	
+	\clearpage
+	\include{glosaries}
+	\printglossary[type=\acronymtype]
+	%\printglossaries
+	
+	\bibliographystyle{ieeetr}
+	\bibliography{bibliografia}
+\end{document}

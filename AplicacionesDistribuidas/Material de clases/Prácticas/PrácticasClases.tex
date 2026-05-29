@@ -1,0 +1,2117 @@
+% ============================================================
+%  GUÍAS DE IMPLEMENTACIÓN — COMUNICACIÓN EN SD
+%  Sockets TCP/UDP · WebSockets · RPC · gRPC · RMI
+%  Asignatura: Aplicaciones Distribuidas (ISR-701)
+%  UTEQ — Ing. de Software — Nivel 7
+%  Docente: Guerrero Ulloa Gleiston Ciceron
+% ============================================================
+\documentclass[12pt, a4paper, openany]{book}
+
+% ── Encoding & fuentes ───────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{csquotes}
+
+% ── Márgenes y layout ────────────────────────────────────────
+\usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+
+% ── Colores corporativos ─────────────────────────────────────
+\usepackage[table,xcdraw,dvipsnames]{xcolor}
+\definecolor{uteqGreen}    {RGB}{0,130,60}
+\definecolor{uteqDark}     {RGB}{0,80,35}
+\definecolor{uteqLight}    {RGB}{230,247,236}
+\definecolor{practiceBlue} {RGB}{0,70,140}
+\definecolor{practiceLight}{RGB}{230,240,255}
+\definecolor{noteOrange}   {RGB}{180,83,9}
+\definecolor{noteLight}    {RGB}{255,243,205}
+\definecolor{warnRed}      {RGB}{185,28,28}
+\definecolor{warnLight}    {RGB}{254,226,226}
+\definecolor{codeGray}     {RGB}{246,248,250}
+\definecolor{codeBorder}   {RGB}{180,190,200}
+\definecolor{stepBlue}     {RGB}{37,99,235}
+
+% ── Tipografía ───────────────────────────────────────────────
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ── Matemáticas ──────────────────────────────────────────────
+\usepackage{amsmath,amssymb,amsthm}
+
+% ── Tablas ───────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+
+% ── Figuras ──────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{font=small, labelfont=bf}
+
+% ── TikZ ─────────────────────────────────────────────────────
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, shapes, positioning, calc, fit,
+	backgrounds, decorations.pathreplacing,
+	decorations.markings, matrix, chains}
+\tikzset{
+	srvbox/.style={rectangle, rounded corners=4pt,
+		draw=practiceBlue, fill=practiceLight,
+		minimum width=2.0cm, minimum height=0.8cm,
+		font=\small\bfseries, align=center},
+	clibox/.style={rectangle, rounded corners=4pt,
+		draw=uteqDark, fill=uteqLight,
+		minimum width=2.0cm, minimum height=0.8cm,
+		font=\small\bfseries, align=center},
+	netbox/.style={rectangle, rounded corners=6pt,
+		draw=gray!60, fill=gray!10,
+		minimum width=1.8cm, minimum height=0.8cm,
+		font=\small, align=center},
+	msgArrow/.style={-Stealth, thick, draw=stepBlue},
+	retArrow/.style={-Stealth, thick, draw=uteqDark, dashed},
+	stepnum/.style={circle, draw=practiceBlue, fill=practiceBlue,
+		text=white, font=\bfseries\small, minimum size=0.55cm, inner sep=0pt},
+}
+
+% ── Listings (código) ────────────────────────────────────────
+\usepackage{listings}
+\usepackage{lstautogobble}
+
+% Caracteres especiales en listings
+\lstset{
+	inputencoding=utf8,
+	extendedchars=true,
+	literate=
+	{á}{{\'{a}}}1 {é}{{\'{e}}}1 {í}{{\'{i}}}1
+	{ó}{{\'{o}}}1 {ú}{{\'{u}}}1 {ñ}{{\~{n}}}1
+	{Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{I}}}1
+	{Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1 {Ñ}{{\~{N}}}1
+	{¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1,
+}
+
+\lstdefinestyle{JavaStyle}{
+	language=Java,
+	basicstyle=\ttfamily\footnotesize,
+	keywordstyle=\color{blue!80!black}\bfseries,
+	commentstyle=\color{green!50!black}\itshape,
+	stringstyle=\color{red!70!black},
+	numberstyle=\tiny\color{gray},
+	backgroundcolor=\color{codeGray},
+	rulecolor=\color{codeBorder},
+	numbers=left, numbersep=8pt, stepnumber=1,
+	breaklines=true, breakatwhitespace=false,
+	frame=single, framesep=5pt,
+	tabsize=4, showstringspaces=false,
+	captionpos=b, belowskip=0.8em, aboveskip=0.8em,
+	mathescape=false, texcl=false,
+	morekeywords={var, record, sealed, permits, yield, instanceof},
+}
+
+\lstdefinestyle{XMLStyle}{
+	language=XML,
+	basicstyle=\ttfamily\footnotesize,
+	keywordstyle=\color{blue!70!black}\bfseries,
+	stringstyle=\color{red!70!black},
+	commentstyle=\color{green!50!black}\itshape,
+	backgroundcolor=\color{noteLight},
+	rulecolor=\color{noteOrange},
+	numbers=left, numbersep=8pt,
+	breaklines=true, frame=single, tabsize=2,
+	captionpos=b, belowskip=0.8em, aboveskip=0.8em,
+}
+
+\lstdefinestyle{ProtoStyle}{
+	basicstyle=\ttfamily\footnotesize,
+	keywordstyle=\color{practiceBlue}\bfseries,
+	stringstyle=\color{red!70!black},
+	commentstyle=\color{green!50!black}\itshape,
+	backgroundcolor=\color{practiceLight},
+	rulecolor=\color{practiceBlue},
+	numbers=left, numbersep=8pt,
+	breaklines=true, frame=single, tabsize=2,
+	captionpos=b, belowskip=0.8em, aboveskip=0.8em,
+	morekeywords={syntax, package, service, message, rpc, returns,
+		string, int32, int64, bool, float, double, repeated,
+		stream, option, import},
+}
+
+\lstdefinestyle{BashStyle}{
+	language=bash,
+	basicstyle=\ttfamily\footnotesize\color{white},
+	keywordstyle=\color{yellow!80!white}\bfseries,
+	commentstyle=\color{gray!60!white}\itshape,
+	stringstyle=\color{green!60!white},
+	backgroundcolor=\color{black!85},
+	rulecolor=\color{black},
+	numbers=none, frame=single,
+	breaklines=true, tabsize=2,
+	captionpos=b, belowskip=0.8em, aboveskip=0.8em,
+}
+
+% ── tcolorbox ────────────────────────────────────────────────
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, most}
+
+\newtcolorbox{objetivobox}[1]{
+	enhanced, breakable,
+	colback=uteqLight, colframe=uteqGreen,
+	fonttitle=\bfseries\color{white},
+	title={Objetivo: #1},
+	arc=4pt, boxrule=1pt,
+	left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+\newtcolorbox{notabox}{
+	enhanced, breakable,
+	colback=noteLight, colframe=noteOrange,
+	fonttitle=\bfseries\color{white},
+	title={Nota importante},
+	arc=4pt, boxrule=1pt,
+	left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+\newtcolorbox{advertenciabox}{
+	enhanced, breakable,
+	colback=warnLight, colframe=warnRed,
+	fonttitle=\bfseries\color{white},
+	title={Advertencia},
+	arc=4pt, boxrule=1pt,
+	left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+\newtcolorbox{prerequisitobox}{
+	enhanced, breakable,
+	colback=practiceLight, colframe=practiceBlue,
+	fonttitle=\bfseries\color{white},
+	title={Prerrequisitos},
+	arc=4pt, boxrule=1pt,
+	left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+\newtcolorbox{resultadobox}{
+	enhanced, breakable,
+	colback=uteqLight, colframe=uteqGreen,
+	fonttitle=\bfseries\color{white},
+	title={Resultado esperado en consola},
+	arc=4pt, boxrule=1pt,
+	left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+% ── Encabezados numerados de pasos ───────────────────────────
+\newcounter{paso}[section]
+\newcommand{\resetpasos}{\setcounter{paso}{0}}
+\newcommand{\paso}[1]{%
+	\stepcounter{paso}%
+	\medskip\noindent
+	\begin{tcolorbox}[enhanced, colback=white, colframe=practiceBlue,
+		boxrule=0.8pt, arc=3pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+		before upper={\noindent}]
+		\textcolor{practiceBlue}{\textbf{Paso \arabic{paso}.}} #1
+	\end{tcolorbox}%
+}
+
+% ── Hyperlinks ───────────────────────────────────────────────
+\usepackage[colorlinks=true, linkcolor=practiceBlue,
+urlcolor=uteqDark, citecolor=uteqGreen]{hyperref}
+\usepackage{url}
+
+% ── Bibliografía ─────────────────────────────────────────────
+\usepackage[backend=biber, style=ieee, sorting=none]{biblatex}
+\addbibresource{referencias_comunicacion.bib}
+
+% Fix: listings Java language hace activos los chars < y > globalmente.
+% Esto rompe TikZ. Restablecer catcodes al inicio del documento.
+\AtBeginDocument{%
+	\catcode`\>=12\relax
+	\catcode`\<=12\relax
+}
+
+% ── Headers/Footers ──────────────────────────────────────────
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{uteqDark}{\textbf{ISR-701 — Aplicaciones Distribuidas}}}
+\fancyhead[R]{\small\textcolor{gray}{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Comandos auxiliares ───────────────────────────────────────
+\newcommand{\code}[1]{\texttt{\small#1}}
+\newcommand{\archivo}[1]{\texttt{\textbf{#1}}}
+\newcommand{\paquete}[1]{\texttt{#1}}
+\newcommand{\menu}[1]{\textit{#1}}
+
+% ════════════════════════════════════════════════════════════
+\begin{document}
+	% ════════════════════════════════════════════════════════════
+	
+	% ── PORTADA ──────────────────────────────────────────────────
+	\begin{titlepage}
+		\centering
+		{\large \textbf{Universidad Técnica Estatal de Quevedo}}\\[0.3em]
+		{\normalsize Facultad de Ciencias de la Computación y Diseño Digital}\\
+		{\normalsize Carrera de Ingeniería de Software}\\[2em]
+		
+		\rule{\linewidth}{1.5pt}\\[0.6em]
+		{\LARGE \textbf{Guías de Implementación}}\\[0.4em]
+		{\Large Mecanismos de Comunicación\\en Sistemas Distribuidos con Java}\\[0.4em]
+		\rule{\linewidth}{1.5pt}\\[1.5em]
+		
+		{\large
+			\begin{tabular}{rl}
+				\textbf{Asignatura:}  & Aplicaciones Distribuidas (ISR-701)\\[0.3em]
+				\textbf{Unidad:}      & 1 — Generalidades de los Sistemas Distribuidos\\[0.3em]
+				\textbf{Nivel:}       & Séptimo semestre — Ingeniería de Software\\[0.3em]
+				\textbf{IDE:}         & IntelliJ IDEA 2024.x\\[0.3em]
+				\textbf{Lenguaje:}    & Java 21 (LTS) + Maven 3.9+\\[0.3em]
+				\textbf{Período:}     & Regular 2026-2027\\[0.3em]
+				\textbf{Docente:}     & Ing. Gleiston Guerrero Ulloa, Mg.Sc.\\
+			\end{tabular}
+		}\\[2em]
+		
+		\begin{tcolorbox}[colback=uteqLight, colframe=uteqGreen,
+			fonttitle=\bfseries\color{white}, title={Contenido de este documento},
+			arc=4pt, boxrule=1pt]
+			\begin{enumerate}
+				\item \textbf{Guía 1} — Sockets TCP y UDP
+				\item \textbf{Guía 2} — WebSockets con Jakarta EE / Spring Boot
+				\item \textbf{Guía 3} — RPC con Apache Thrift
+				\item \textbf{Guía 4} — gRPC con Protocol Buffers
+				\item \textbf{Guía 5} — RMI (Remote Method Invocation)
+			\end{enumerate}
+			Cada guía incluye: fundamento teórico, diagrama de arquitectura,
+			código fuente completo paso a paso, ejecución desde IntelliJ IDEA
+			y verificación de resultados.
+		\end{tcolorbox}
+		
+		\vfill
+		{\small UTEQ · Quevedo, Los Ríos, Ecuador · \today}
+	\end{titlepage}
+	
+	% ── TOC ──────────────────────────────────────────────────────
+	\tableofcontents
+	\listoffigures
+	\newpage
+	
+	% ════════════════════════════════════════════════════════════
+	%  INTRODUCCIÓN TRANSVERSAL
+	% ════════════════════════════════════════════════════════════
+	\chapter*{Introducción}
+	\addcontentsline{toc}{chapter}{Introducción}
+	\markboth{Introducción}{Introducción}
+	
+	Los sistemas distribuidos modernos utilizan múltiples mecanismos de comunicación
+	entre procesos (\emph{Inter-Process Communication}, IPC). La elección del mecanismo
+	correcto determina la latencia, el throughput, la complejidad del código y la
+	interoperabilidad del sistema~\parencite{vanSteen2023}.
+	
+	Este documento presenta cinco guías de implementación progresivas para Java~21 con
+	IntelliJ IDEA, cubriendo el espectro completo desde los sockets de bajo nivel hasta
+	la invocación de métodos remotos de alto nivel:
+	
+	\begin{table}[H]
+		\centering
+		\caption{Comparativa de mecanismos de comunicación cubiertos en las guías}
+		\label{tab:comparativa}
+		\begin{tabularx}{\linewidth}{@{}lXXXX@{}}
+			\toprule
+			\textbf{Mecanismo} & \textbf{Nivel} & \textbf{Protocolo} & \textbf{Tipado} & \textbf{Uso típico} \\
+			\midrule
+			Sockets TCP  & Bajo   & TCP/IP   & Sin tipado & Streaming, chat \\
+			Sockets UDP  & Bajo   & UDP/IP   & Sin tipado & VoIP, gaming, DNS \\
+			WebSocket    & Medio  & HTTP/WS  & Sin tipado & Tiempo real, notif. \\
+			RPC (Thrift) & Alto   & TCP/bin  & Fuerte     & Microservicios \\
+			gRPC         & Alto   & HTTP/2   & Fuerte     & Microservicios \\
+			RMI          & Alto   & JRMP     & Java       & Sistemas Java \\
+			\bottomrule
+		\end{tabularx}
+	\end{table}
+	
+	\begin{prerequisitobox}
+		Antes de comenzar cualquier guía, verificar la instalación de:
+		\begin{itemize}
+			\item \textbf{JDK 21} (Adoptium Temurin 21 LTS): \code{java -\/\/-version}
+			\item \textbf{Maven 3.9+}: \code{mvn -\/\/-version}
+			\item \textbf{IntelliJ IDEA} 2024.x (Community o Ultimate)
+			\item \textbf{Git} 2.x: para control de versiones del código
+		\end{itemize}
+	\end{prerequisitobox}
+	
+	% ════════════════════════════════════════════════════════════
+	%  GUÍA 1 — SOCKETS TCP/UDP
+	% ════════════════════════════════════════════════════════════
+	\chapter{Guía 1: Sockets TCP y UDP}
+	\resetpasos
+	
+	\begin{objetivobox}{Sockets TCP y UDP}
+		Implementar un sistema de mensajería distribuida usando sockets TCP
+		(orientado a conexión, entrega garantizada) y UDP (sin conexión, baja latencia),
+		comprendiendo las diferencias arquitectónicas entre ambos protocolos~\parencite{stevens2004}.
+	\end{objetivobox}
+	
+	\section{Fundamento teórico}
+	
+	Un \textbf{socket} es la abstracción del sistema operativo que permite a dos procesos
+	en red intercambiar datos. Representa un endpoint de comunicación identificado por la
+	tupla \texttt{(IP, puerto, protocolo)}~\parencite{coulouris2012}.
+	
+	\subsection{TCP vs. UDP}
+	
+	\textbf{TCP} (\textit{Transmission Control Protocol}) establece una conexión antes de
+	transferir datos mediante el \emph{three-way handshake} (SYN $\to$ SYN-ACK $\to$ ACK).
+	Garantiza: entrega en orden, detección y retransmisión de pérdidas, y control de flujo
+	mediante ventana deslizante~\parencite{kurose2017}.
+	
+	\textbf{UDP} (\textit{User Datagram Protocol}) envía datagramas independientes sin
+	establecer conexión previa. Ofrece latencia mínima al costo de no garantizar orden ni
+	entrega, siendo adecuado cuando la pérdida ocasional de paquetes es tolerable
+	(VoIP, juegos en línea, DNS)~\parencite{kurose2017}.
+	
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[node distance=1.0cm and 2.5cm, font=\small]
+			% TCP
+			\node[clibox] (cliTCP) {Cliente TCP};
+			\node[srvbox, right=3.0cm of cliTCP] (srvTCP) {Servidor TCP};
+			\draw[msgArrow] (cliTCP.north east) -- node[above, font=\tiny]{SYN}
+			([yshift=4pt]srvTCP.north west);
+			\draw[retArrow] ([yshift=-4pt]srvTCP.north west) -- node[below, font=\tiny]{SYN-ACK}
+			(cliTCP.south east);
+			\draw[msgArrow] ([yshift=8pt]cliTCP.east) -- node[above, font=\tiny]{ACK}
+			([yshift=8pt]srvTCP.west);
+			\draw[msgArrow] (cliTCP.east) -- node[above, font=\tiny]{datos}
+			(srvTCP.west);
+			% UDP
+			\node[clibox, below=2.0cm of cliTCP] (cliUDP) {Cliente UDP};
+			\node[srvbox, right=3.0cm of cliUDP] (srvUDP) {Servidor UDP};
+			\draw[msgArrow] (cliUDP.east) -- node[above, font=\tiny]{datagrama (sin handshake)}
+			(srvUDP.west);
+			\node[left=0.2cm of cliTCP, font=\bfseries\small, text=practiceBlue] {TCP};
+			\node[left=0.2cm of cliUDP, font=\bfseries\small, text=uteqDark] {UDP};
+		\end{tikzpicture}
+		\caption{Comparativa del flujo de establecimiento de conexión TCP vs. UDP}
+		\label{fig:tcp_udp}
+	\end{figure}
+	
+	\section{Estructura del proyecto Maven}
+	
+	\paso{Abrir IntelliJ IDEA. Ir a \menu{File $\to$ New $\to$ Project}.
+		Seleccionar \textbf{Maven Archetype}, elegir \code{org.apache.maven.archetypes:maven-archetype-quickstart},
+		definir:}
+	
+	\begin{itemize}
+		\item \textbf{GroupId:} \code{ec.edu.uteq.distribuidas}
+		\item \textbf{ArtifactId:} \code{guia01-sockets}
+		\item \textbf{Version:} \code{1.0-SNAPSHOT}
+	\end{itemize}
+	
+	\paso{Reemplazar el contenido de \archivo{pom.xml} con la siguiente configuración
+		para Java 21:}
+	
+	\begin{lstlisting}[style=XMLStyle, caption={pom.xml --- Configuración del proyecto}]
+		<?xml version="1.0" encoding="UTF-8"?>
+		<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		<modelVersion>4.0.0</modelVersion>
+		<groupId>ec.edu.uteq.distribuidas</groupId>
+		<artifactId>guia01-sockets</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<properties>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		</properties>
+		</project>
+	\end{lstlisting}
+	
+	\section{Implementación de Sockets TCP}
+	
+	\paso{Crear el paquete \code{ec.edu.uteq.distribuidas.tcp} dentro de
+		\code{src/main/java}. Clic derecho sobre \code{ec.edu.uteq.distribuidas}
+		$\to$ \menu{New $\to$ Package} $\to$ ingresar \code{tcp}.}
+	
+	\paso{Crear la clase \archivo{ServidorTCP.java} en el paquete \code{tcp}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ServidorTCP.java --- Servidor multihilo con ThreadPool}]
+		package ec.edu.uteq.distribuidas.tcp;
+		
+		import java.io.*;
+		import java.net.*;
+		import java.time.LocalDateTime;
+		import java.time.format.DateTimeFormatter;
+		import java.util.concurrent.*;
+		import java.util.concurrent.atomic.*;
+		
+		/**
+		* Servidor TCP multihilo con pool de hilos fijo.
+		* Escucha en el puerto 9000 y atiende comandos:
+		*   HORA   -> retorna la hora actual del servidor
+		*   ECO    -> retorna el mensaje prefijado con ECO:
+		*   SALIR  -> cierra la conexion del cliente
+		*/
+		public class ServidorTCP {
+			
+			private static final int PUERTO = 9000;
+			private static final int MAX_HILOS = 10;
+			private static final AtomicInteger contadorClientes = new AtomicInteger(0);
+			
+			public static void main(String[] args) throws IOException {
+				ExecutorService pool = Executors.newFixedThreadPool(MAX_HILOS);
+				
+				try (ServerSocket servidor = new ServerSocket(PUERTO)) {
+					System.out.println("[" + timestamp() + "] Servidor listo en :" + PUERTO);
+					
+					while (true) {
+						Socket cliente = servidor.accept();   // BLOQUEA hasta nueva conexion
+						int id = contadorClientes.incrementAndGet();
+						System.out.println("[" + timestamp() + "] Cliente #" + id
+						+ " conectado desde " + cliente.getInetAddress());
+						pool.submit(new ManejadorCliente(cliente, id));
+					}
+				}
+			}
+			
+			public static String timestamp() {
+				return LocalDateTime.now()
+				.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"));
+			}
+			
+			// Clase interna para manejar cada cliente en su propio hilo
+			static class ManejadorCliente implements Runnable {
+				private final Socket socket;
+				private final int idCliente;
+				
+				ManejadorCliente(Socket socket, int idCliente) {
+					this.socket   = socket;
+					this.idCliente = idCliente;
+				}
+				
+				@Override
+				public void run() {
+					try (BufferedReader entrada  = new BufferedReader(
+					new InputStreamReader(socket.getInputStream()));
+					PrintWriter   salida   = new PrintWriter(
+					socket.getOutputStream(), true)) {
+						
+						String linea;
+						while ((linea = entrada.readLine()) != null) {
+							System.out.println("[" + ServidorTCP.timestamp()
+							+ "] Cliente#" + idCliente + " > " + linea);
+							
+							if (linea.equalsIgnoreCase("HORA")) {
+								salida.println("HORA_ACTUAL:" + ServidorTCP.timestamp());
+								
+							} else if (linea.toUpperCase().startsWith("ECO")) {
+								String mensaje = linea.length() > 4
+								? linea.substring(4) : "(vacio)";
+								salida.println("ECO[#" + idCliente + "]:" + mensaje);
+								
+							} else if (linea.equalsIgnoreCase("SALIR")) {
+								salida.println("ADIOS:hasta luego cliente #" + idCliente);
+								System.out.println("[" + ServidorTCP.timestamp()
+								+ "] Cliente #" + idCliente + " desconectado.");
+								break;
+								
+							} else {
+								salida.println("ERROR:comando desconocido -> " + linea);
+							}
+						}
+					} catch (IOException e) {
+						System.err.println("Error cliente #" + idCliente + ": " + e.getMessage());
+					}
+				}
+			}
+		}
+	\end{lstlisting}
+	
+	\paso{Crear la clase \archivo{ClienteTCP.java} en el mismo paquete \code{tcp}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ClienteTCP.java --- Cliente interactivo}]
+		package ec.edu.uteq.distribuidas.tcp;
+		
+		import java.io.*;
+		import java.net.*;
+		import java.util.Scanner;
+		
+		/**
+		* Cliente TCP interactivo.
+		* Envía comandos al servidor y muestra la respuesta.
+		* Uso: ejecutar desde IntelliJ -> Run 'ClienteTCP.main()'
+		*/
+		public class ClienteTCP {
+			
+			private static final String HOST  = "localhost";
+			private static final int    PUERTO = 9000;
+			
+			public static void main(String[] args) throws IOException {
+				try (Socket socket  = new Socket(HOST, PUERTO);
+				BufferedReader entrada = new BufferedReader(
+				new InputStreamReader(socket.getInputStream()));
+				PrintWriter salida = new PrintWriter(
+				socket.getOutputStream(), true);
+				Scanner teclado = new Scanner(System.in)) {
+					
+					System.out.println("Conectado a " + HOST + ":" + PUERTO);
+					System.out.println("Comandos disponibles: HORA | ECO <texto> | SALIR");
+					System.out.println("---------------------------------------------------");
+					
+					String comando;
+					while (true) {
+						System.out.print("> ");
+						comando = teclado.nextLine().trim();
+						if (comando.isEmpty()) continue;
+						
+						salida.println(comando);   // enviar al servidor
+						String respuesta = entrada.readLine();
+						System.out.println("Servidor: " + respuesta);
+						
+						if (comando.equalsIgnoreCase("SALIR")) break;
+					}
+				}
+				System.out.println("Conexion cerrada.");
+			}
+		}
+	\end{lstlisting}
+	
+	\section{Implementación de Sockets UDP}
+	
+	\paso{Crear el paquete \code{ec.edu.uteq.distribuidas.udp} y la clase
+		\archivo{ServidorUDP.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ServidorUDP.java --- Servidor sin conexión}]
+		package ec.edu.uteq.distribuidas.udp;
+		
+		import java.net.*;
+		import java.time.LocalDateTime;
+		import java.time.format.DateTimeFormatter;
+		
+		/**
+		* Servidor UDP sin conexion.
+		* Recibe datagramas de hasta 1024 bytes y responde en el
+		* mismo socket. No tiene estado entre paquetes.
+		*/
+		public class ServidorUDP {
+			
+			private static final int PUERTO   = 9001;
+			private static final int TAM_BUF  = 1024;
+			
+			public static void main(String[] args) throws Exception {
+				try (DatagramSocket socket = new DatagramSocket(PUERTO)) {
+					System.out.println("Servidor UDP escuchando en puerto " + PUERTO);
+					
+					byte[] buffer = new byte[TAM_BUF];
+					while (true) {
+						DatagramPacket paquete =
+						new DatagramPacket(buffer, buffer.length);
+						socket.receive(paquete);   // BLOQUEA hasta recibir datagrama
+						
+						String mensaje = new String(paquete.getData(),
+						0, paquete.getLength());
+						String hora = LocalDateTime.now()
+						.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"));
+						
+						System.out.println("[" + hora + "] Recibido de "
+						+ paquete.getAddress() + ":" + paquete.getPort()
+						+ " -> " + mensaje);
+						
+						// Preparar respuesta
+						String respuesta = "ACK:" + mensaje + " @" + hora;
+						byte[] resp = respuesta.getBytes();
+						DatagramPacket respPkt = new DatagramPacket(
+						resp, resp.length,
+						paquete.getAddress(), paquete.getPort());
+						socket.send(respPkt);
+					}
+				}
+			}
+		}
+	\end{lstlisting}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ClienteUDP.java --- Cliente sin conexión}]
+		package ec.edu.uteq.distribuidas.udp;
+		
+		import java.net.*;
+		import java.util.Scanner;
+		
+		/**
+		* Cliente UDP: envía un datagrama y espera respuesta con
+		* timeout de 3 segundos.
+		*/
+		public class ClienteUDP {
+			
+			private static final String HOST    = "localhost";
+			private static final int    PUERTO  = 9001;
+			private static final int    TIMEOUT = 3000;  // ms
+			private static final int    TAM_BUF = 1024;
+			
+			public static void main(String[] args) throws Exception {
+				try (DatagramSocket socket = new DatagramSocket()) {
+					socket.setSoTimeout(TIMEOUT);
+					InetAddress servidor = InetAddress.getByName(HOST);
+					Scanner sc = new Scanner(System.in);
+					
+					System.out.println("Cliente UDP. Escribe un mensaje (o 'salir'):");
+					while (sc.hasNextLine()) {
+						String linea = sc.nextLine().trim();
+						if (linea.equalsIgnoreCase("salir")) break;
+						
+						byte[] datos = linea.getBytes();
+						DatagramPacket pkt = new DatagramPacket(
+						datos, datos.length, servidor, PUERTO);
+						socket.send(pkt);
+						
+						// Esperar respuesta
+						byte[] buf = new byte[TAM_BUF];
+						DatagramPacket resp = new DatagramPacket(buf, buf.length);
+						try {
+							socket.receive(resp);
+							System.out.println("Respuesta: "
+							+ new String(resp.getData(), 0, resp.getLength()));
+						} catch (SocketTimeoutException e) {
+							System.out.println("Timeout: no se recibio respuesta en "
+							+ TIMEOUT + "ms");
+						}
+					}
+				}
+			}
+		}
+	\end{lstlisting}
+	
+	\section{Ejecución desde IntelliJ IDEA}
+	
+	\paso{Ejecutar \textbf{ServidorTCP}: clic derecho sobre la clase $\to$
+		\menu{Run 'ServidorTCP.main()'}. Debe aparecer:}
+	
+	\begin{resultadobox}
+		\begin{lstlisting}[style=BashStyle]
+			[10:05:32.001] Servidor listo en :9000
+		\end{lstlisting}
+	\end{resultadobox}
+	
+	\paso{Ejecutar \textbf{ClienteTCP}: ir a \menu{Run $\to$ Edit Configurations
+			$\to$ + $\to$ Application}, configurar la clase \code{ClienteTCP} y ejecutar.
+		Probar los comandos:}
+	
+	\begin{resultadobox}
+		\begin{lstlisting}[style=BashStyle]
+			> HORA
+			Servidor: HORA_ACTUAL:10:05:40.234
+			> ECO Hola UTEQ
+			Servidor: ECO[#1]:Hola UTEQ
+			> SALIR
+			Servidor: ADIOS:hasta luego cliente #1
+		\end{lstlisting}
+	\end{resultadobox}
+	
+	\paso{Para el UDP: ejecutar \textbf{ServidorUDP} primero, luego
+		\textbf{ClienteUDP}. Para ejecutar múltiples instancias simultáneas del cliente,
+		activar \menu{Allow multiple instances} en la configuración de ejecución.}
+	
+	\begin{notabox}
+		TCP usa \code{ServerSocket.accept()} que bloquea hasta recibir una conexión.
+		Cada cliente se atiende en un hilo separado del \code{ExecutorService}.
+		UDP usa \code{DatagramSocket.receive()} que bloquea hasta recibir un datagrama,
+		sin estado entre paquetes.
+	\end{notabox}
+	
+	% ════════════════════════════════════════════════════════════
+	%  GUÍA 2 — WEBSOCKETS
+	% ════════════════════════════════════════════════════════════
+	\chapter{Guía 2: WebSockets con Spring Boot}
+	\resetpasos
+	
+	\begin{objetivobox}{WebSockets con Spring Boot}
+		Implementar un servidor de chat en tiempo real usando el protocolo WebSocket
+		sobre HTTP/1.1, habilitando comunicación bidireccional y persistente entre
+		clientes y servidor~\parencite{fette2011}.
+	\end{objetivobox}
+	
+	\section{Fundamento teórico}
+	
+	\textbf{WebSocket} (RFC 6455~\parencite{fette2011}) es un protocolo de comunicación
+	que establece un canal full-duplex sobre una única conexión TCP. A diferencia de
+	HTTP, que es petición-respuesta (half-duplex), WebSocket mantiene la conexión
+	abierta permitiendo que el servidor envíe datos al cliente sin que este los solicite.
+	
+	El ciclo de vida tiene tres fases:
+	\begin{enumerate}
+		\item \textbf{Handshake HTTP}: el cliente envía una cabecera
+		\code{Upgrade: websocket}. El servidor responde \code{101 Switching Protocols}.
+		\item \textbf{Transferencia de frames}: datos se transmiten en frames binarios
+		o de texto, eficientemente.
+		\item \textbf{Cierre}: cualquiera de los extremos envía un frame \code{CLOSE}.
+	\end{enumerate}
+	
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[node distance=0.5cm and 3.5cm, font=\small]
+			\node[clibox] (cli) {Browser / Cliente};
+			\node[srvbox, right=4.0cm of cli] (srv) {Servidor Spring Boot};
+			
+			\draw[msgArrow] ([yshift=30pt]cli.east)  --
+			node[above, font=\tiny]{GET /ws HTTP/1.1\quad Upgrade: websocket}
+			([yshift=30pt]srv.west);
+			\draw[retArrow] ([yshift=18pt]srv.west) --
+			node[below, font=\tiny]{101 Switching Protocols}
+			([yshift=18pt]cli.east);
+			\draw[msgArrow] ([yshift=4pt]cli.east)  --
+			node[above, font=\tiny]{frame texto: ''Hola sala''}
+			([yshift=4pt]srv.west);
+			\draw[retArrow] ([yshift=-8pt]srv.west) --
+			node[below, font=\tiny]{frame texto: ''[user] Hola sala'' (broadcast)}
+			([yshift=-8pt]cli.east);
+			\draw[msgArrow] ([yshift=-22pt]cli.east) --
+			node[above, font=\tiny]{frame CLOSE}
+			([yshift=-22pt]srv.west);
+		\end{tikzpicture}
+		\caption{Ciclo de vida de una conexión WebSocket sobre HTTP}
+		\label{fig:websocket_lifecycle}
+	\end{figure}
+	
+	\section{Crear proyecto Spring Boot}
+	
+	\paso{Abrir IntelliJ IDEA $\to$ \menu{File $\to$ New $\to$ Project $\to$
+			Spring Initializr}. Configurar:}
+	
+	\begin{itemize}
+		\item \textbf{Name:} \code{guia02-websocket}
+		\item \textbf{Language:} Java
+		\item \textbf{Type:} Maven
+		\item \textbf{Java:} 21
+		\item \textbf{Package name:} \code{ec.edu.uteq.distribuidas.ws}
+	\end{itemize}
+	
+	\paso{En la pantalla de dependencias, buscar y agregar:
+		\textbf{WebSocket} (Spring WebSocket). Hacer clic en \menu{Finish}.}
+	
+	El \archivo{pom.xml} generado incluirá automáticamente:
+	
+	\begin{lstlisting}[style=XMLStyle, caption={Dependencia WebSocket en pom.xml}]
+		<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		<dependency>
+		<groupId>org.webjars</groupId>
+		<artifactId>webjars-locator-core</artifactId>
+		</dependency>
+	\end{lstlisting}
+	
+	\section{Configuración del servidor WebSocket}
+	
+	\paso{Crear la clase de configuración \archivo{WebSocketConfig.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={WebSocketConfig.java --- Configuración STOMP sobre WebSocket}]
+		package ec.edu.uteq.distribuidas.ws.config;
+		
+		import org.springframework.context.annotation.Configuration;
+		import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+		import org.springframework.web.socket.config.annotation.*;
+		
+		/**
+		* Configura el broker de mensajes STOMP sobre WebSocket.
+		* STOMP (Simple Text Oriented Messaging Protocol) agrega
+		* un protocolo de mensajeria sobre el canal WebSocket raw.
+		*/
+		@Configuration
+		@EnableWebSocketMessageBroker
+		public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+			
+			@Override
+			public void configureMessageBroker(MessageBrokerRegistry config) {
+				// Prefijo de los topics a los que los clientes se suscriben
+				config.enableSimpleBroker("/topic");
+				// Prefijo de los mensajes enviados al servidor
+				config.setApplicationDestinationPrefixes("/app");
+			}
+			
+			@Override
+			public void registerStompEndpoints(StompEndpointRegistry registry) {
+				// Endpoint WebSocket con fallback SockJS para navegadores sin soporte
+				registry.addEndpoint("/ws-chat")
+				.setAllowedOriginPatterns("*")
+				.withSockJS();
+			}
+		}
+	\end{lstlisting}
+	
+	\paso{Crear el modelo de mensaje \archivo{MensajeChat.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={MensajeChat.java --- Modelo de mensaje del chat}]
+		package ec.edu.uteq.distribuidas.ws.model;
+		
+		import java.time.LocalDateTime;
+		import java.time.format.DateTimeFormatter;
+		
+		/**
+		* Record inmutable que representa un mensaje de chat.
+		* Los records de Java 16+ generan automaticamente constructor,
+		* getters, equals, hashCode y toString.
+		*/
+		public record MensajeChat(
+		String usuario,
+		String contenido,
+		String tipo,     // "UNIRSE" | "MENSAJE" | "SALIR"
+		String timestamp
+		) {
+			// Constructor compacto: valida y asigna timestamp si es null
+			public MensajeChat {
+				if (timestamp == null) {
+					timestamp = LocalDateTime.now()
+					.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+				}
+			}
+		}
+	\end{lstlisting}
+	
+	\paso{Crear el controlador de mensajes \archivo{ChatController.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ChatController.java --- Manejador de mensajes STOMP}]
+		package ec.edu.uteq.distribuidas.ws.controller;
+		
+		import ec.edu.uteq.distribuidas.ws.model.MensajeChat;
+		import org.springframework.messaging.handler.annotation.*;
+		import org.springframework.messaging.simp.SimpMessageSendingOperations;
+		import org.springframework.stereotype.Controller;
+		
+		/**
+		* Controlador de mensajes WebSocket.
+		* @MessageMapping mapea los mensajes STOMP enviados al servidor.
+		* @SendTo especifica el topic al que se reenvian los mensajes.
+		*/
+		@Controller
+		public class ChatController {
+			
+			private final SimpMessageSendingOperations messagingTemplate;
+			
+			public ChatController(SimpMessageSendingOperations messagingTemplate) {
+				this.messagingTemplate = messagingTemplate;
+			}
+			
+			/**
+			* Recibe mensajes en /app/chat.enviar
+			* y los reenvía a todos los suscriptores de /topic/sala-general.
+			*/
+			@MessageMapping("/chat.enviar")
+			@SendTo("/topic/sala-general")
+			public MensajeChat enviarMensaje(MensajeChat mensaje) {
+				System.out.println("[WS] " + mensaje.usuario() + ": " + mensaje.contenido());
+				return mensaje;
+			}
+			
+			/**
+			* Notifica a toda la sala cuando un usuario nuevo se une.
+			*/
+			@MessageMapping("/chat.unirse")
+			@SendTo("/topic/sala-general")
+			public MensajeChat unirse(MensajeChat mensaje,
+			@Header("simpSessionId") String sessionId) {
+				System.out.println("[WS] Usuario '" + mensaje.usuario()
+				+ "' entró. SessionId: " + sessionId);
+				return new MensajeChat(mensaje.usuario(),
+				mensaje.usuario() + " se unió a la sala.",
+				"UNIRSE", null);
+			}
+		}
+	\end{lstlisting}
+	
+	\paso{Crear el cliente HTML \archivo{chat.html} en \code{src/main/resources/static}
+		para probar desde el navegador:}
+	
+	\begin{lstlisting}[style=XMLStyle, caption={chat.html --- Cliente WebSocket en el navegador}]
+		<!DOCTYPE html>
+		<html lang="es">
+		<head>
+		<meta charset="UTF-8"/>
+		<title>Chat WebSocket - UTEQ</title>
+		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+		</head>
+		<body>
+		<h2>Chat en Tiempo Real (WebSocket + STOMP)</h2>
+		<input id="usuario" placeholder="Tu nombre" />
+		<button onclick="conectar()">Conectar</button>
+		<hr/>
+		<div id="mensajes" style="height:300px;overflow-y:auto;border:1px solid #ccc"></div>
+		<input id="texto" placeholder="Escribe un mensaje..." style="width:70%"/>
+		<button onclick="enviar()">Enviar</button>
+		
+		<script>
+		let stompClient = null;
+		
+		function conectar() {
+			const socket = new SockJS('/ws-chat');
+			stompClient = Stomp.over(socket);
+			stompClient.connect({}, frame => {
+				// Suscribirse al topic de la sala
+				stompClient.subscribe('/topic/sala-general', msg => {
+					const m = JSON.parse(msg.body);
+					mostrar('[' + m.timestamp + '] ' + m.usuario + ': ' + m.contenido);
+				});
+				// Anunciar ingreso
+				stompClient.send('/app/chat.unirse', {},
+				JSON.stringify({usuario: document.getElementById('usuario').value,
+					contenido: '', tipo: 'UNIRSE', timestamp: null}));
+			});
+		}
+		
+		function enviar() {
+			const texto = document.getElementById('texto').value;
+			stompClient.send('/app/chat.enviar', {},
+			JSON.stringify({usuario: document.getElementById('usuario').value,
+				contenido: texto, tipo: 'MENSAJE', timestamp: null}));
+			document.getElementById('texto').value = '';
+		}
+		
+		function mostrar(txt) {
+			const div = document.getElementById('mensajes');
+			div.innerHTML += '<p>' + txt + '</p>';
+			div.scrollTop = div.scrollHeight;
+		}
+		</script>
+		</body>
+		</html>
+	\end{lstlisting}
+	
+	\section{Ejecución}
+	
+	\paso{Ejecutar la clase principal de Spring Boot: clic derecho $\to$
+		\menu{Run 'Guia02WebsocketApplication'}. Esperar hasta ver:}
+	
+	\begin{resultadobox}
+		\begin{lstlisting}[style=BashStyle]
+			Started Guia02WebsocketApplication in 2.3s (JVM running for 2.8)
+			Tomcat started on port 8080 (http)
+		\end{lstlisting}
+	\end{resultadobox}
+	
+	\paso{Abrir \textbf{dos} pestañas de navegador en
+		\url{http://localhost:8080/chat.html}. En cada pestaña introducir
+		un nombre de usuario diferente, hacer clic en \textbf{Conectar} y enviar
+		mensajes. Los mensajes deben aparecer en \emph{ambas} pestañas en tiempo real.}
+	
+	% ════════════════════════════════════════════════════════════
+	%  GUÍA 3 — RPC CON APACHE THRIFT
+	% ════════════════════════════════════════════════════════════
+	\chapter{Guía 3: RPC con Apache Thrift}
+	\resetpasos
+	
+	\begin{objetivobox}{RPC con Apache Thrift}
+		Implementar un sistema de llamada a procedimiento remoto (RPC) usando Apache
+		Thrift, que genera automáticamente el código de serialización (stub/skeleton)
+		a partir de un archivo de definición de interfaz (\code{.thrift})~\parencite{slee2007}.
+	\end{objetivobox}
+	
+	\section{Fundamento teórico}
+	
+	\textbf{RPC} (\textit{Remote Procedure Call}) permite a un proceso invocar un
+	procedimiento en otro proceso, posiblemente en otra máquina, como si fuera local.
+	El mecanismo transparente de comunicación se logra mediante dos componentes
+	generados automáticamente~\parencite{birrell1984}:
+	
+	\begin{itemize}
+		\item \textbf{Stub cliente} (proxy): intercepta la llamada, serializa los
+		parámetros (\emph{marshalling}), los envía por la red y devuelve el resultado.
+		\item \textbf{Skeleton servidor}: recibe los bytes, los deserializa
+		(\emph{unmarshalling}) e invoca la implementación real.
+	\end{itemize}
+	
+	\textbf{Apache Thrift}~\parencite{slee2007} es un framework de Facebook (2007) que
+	define interfaces en un IDL (\textit{Interface Definition Language}) propio y genera
+	código para más de 20 lenguajes.
+	
+	\section{Configuración del proyecto}
+	
+	\paso{Crear un proyecto Maven en IntelliJ con GroupId
+		\code{ec.edu.uteq.distribuidas}, ArtifactId \code{guia03-rpc}.}
+	
+	\paso{Agregar la dependencia de Thrift en \archivo{pom.xml}:}
+	
+	\begin{lstlisting}[style=XMLStyle, caption={pom.xml --- Dependencia Apache Thrift}]
+		<dependencies>
+		<dependency>
+		<groupId>org.apache.thrift</groupId>
+		<artifactId>libthrift</artifactId>
+		<version>0.19.0</version>
+		</dependency>
+		</dependencies>
+		
+		<build>
+		<plugins>
+		<plugin>
+		<groupId>org.apache.thrift.tools</groupId>
+		<artifactId>maven-thrift-plugin</artifactId>
+		<version>0.1.11</version>
+		<configuration>
+		<thriftExecutable>thrift</thriftExecutable>
+		<generator>java</generator>
+		</configuration>
+		<executions>
+		<execution>
+		<id>thrift-sources</id>
+		<phase>generate-sources</phase>
+		<goals><goal>compile</goal></goals>
+		</execution>
+		</executions>
+		</plugin>
+		</plugins>
+		</build>
+	\end{lstlisting}
+	
+	\begin{notabox}
+		Si Thrift no está instalado en el sistema, descargarlo de
+		\url{https://thrift.apache.org/download} y agregar el ejecutable al PATH.
+		En Ubuntu/Debian: \code{sudo apt install thrift-compiler}.
+	\end{notabox}
+	
+	\section{Definición del IDL}
+	
+	\paso{Crear el directorio \code{src/main/thrift} y dentro el archivo
+		\archivo{calculadora.thrift}:}
+	
+	\begin{lstlisting}[style=ProtoStyle, caption={calculadora.thrift --- Definición IDL de la calculadora remota}]
+		/**
+		* Definicion IDL de Thrift para una Calculadora Remota.
+		* El compilador de Thrift genera automaticamente:
+		*   - Calculadora.java (interfaz del servicio)
+		*   - Calculadora.Client (stub del cliente)
+		*   - Calculadora.Processor (skeleton del servidor)
+		*/
+		namespace java ec.edu.uteq.distribuidas.rpc.gen
+		
+		/** Excepcion de dominio para operaciones invalidas */
+		exception OperacionInvalidaException {
+			1: required string mensaje
+		}
+		
+		/** Servicio de calculadora distribuida */
+		service Calculadora {
+			
+			/** Suma dos numeros de doble precision */
+			double sumar(1: double a, 2: double b)
+			
+			/** Resta b de a */
+			double restar(1: double a, 2: double b)
+			
+			/** Multiplica dos numeros */
+			double multiplicar(1: double a, 2: double b)
+			
+			/** Divide a entre b. Lanza excepcion si b == 0 */
+			double dividir(1: double a, 2: double b)
+			throws (1: OperacionInvalidaException ex)
+			
+			/** Retorna el nombre del servidor que atendio */
+			string nombreServidor()
+		}
+	\end{lstlisting}
+	
+	\paso{Generar el código Java. En la terminal integrada de IntelliJ
+		(\menu{View $\to$ Tool Windows $\to$ Terminal}):}
+	
+	\begin{lstlisting}[style=BashStyle]
+		# Desde la raiz del proyecto
+		thrift --gen java -out src/main/java src/main/thrift/calculadora.thrift
+	\end{lstlisting}
+	
+	Esto genera en \code{src/main/java/ec/edu/uteq/distribuidas/rpc/gen/}
+	los archivos: \archivo{Calculadora.java} y \archivo{OperacionInvalidaException.java}.
+	
+	\section{Implementación servidor y cliente}
+	
+	\paso{Implementar la lógica del servidor en \archivo{CalculadoraImpl.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={CalculadoraImpl.java --- Implementación de la lógica RPC}]
+		package ec.edu.uteq.distribuidas.rpc.server;
+		
+		import ec.edu.uteq.distribuidas.rpc.gen.Calculadora;
+		import ec.edu.uteq.distribuidas.rpc.gen.OperacionInvalidaException;
+		import org.apache.thrift.TException;
+		
+		/**
+		* Implementación concreta de la interfaz generada por Thrift.
+		* Esta es la logica de negocio real; el stub/skeleton
+		* son transparentes para el programador.
+		*/
+		public class CalculadoraImpl implements Calculadora.Iface {
+			
+			@Override
+			public double sumar(double a, double b) throws TException {
+				System.out.printf("RPC sumar(%.2f, %.2f)%n", a, b);
+				return a + b;
+			}
+			
+			@Override
+			public double restar(double a, double b) throws TException {
+				System.out.printf("RPC restar(%.2f, %.2f)%n", a, b);
+				return a - b;
+			}
+			
+			@Override
+			public double multiplicar(double a, double b) throws TException {
+				System.out.printf("RPC multiplicar(%.2f, %.2f)%n", a, b);
+				return a * b;
+			}
+			
+			@Override
+			public double dividir(double a, double b)
+			throws OperacionInvalidaException, TException {
+				System.out.printf("RPC dividir(%.2f, %.2f)%n", a, b);
+				if (b == 0.0) {
+					throw new OperacionInvalidaException(
+					"Division por cero no permitida");
+				}
+				return a / b;
+			}
+			
+			@Override
+			public String nombreServidor() throws TException {
+				return "ServidorThrift@" + java.net.InetAddress.getLocalHost().getHostName();
+			}
+		}
+	\end{lstlisting}
+	
+	\paso{Crear \archivo{ServidorRPC.java} que arranca el servidor Thrift:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ServidorRPC.java --- Servidor multihilo Thrift}]
+		package ec.edu.uteq.distribuidas.rpc.server;
+		
+		import ec.edu.uteq.distribuidas.rpc.gen.Calculadora;
+		import org.apache.thrift.server.*;
+		import org.apache.thrift.transport.*;
+		
+		/**
+		* Servidor RPC usando Apache Thrift.
+		* TThreadPoolServer usa un pool de hilos para atender
+		* multiples clientes en paralelo.
+		*/
+		public class ServidorRPC {
+			
+			private static final int PUERTO = 9090;
+			
+			public static void main(String[] args) throws Exception {
+				Calculadora.Processor<CalculadoraImpl> processor =
+				new Calculadora.Processor<>(new CalculadoraImpl());
+				
+				TServerTransport transport = new TServerSocket(PUERTO);
+				
+				TThreadPoolServer.Args serverArgs =
+				new TThreadPoolServer.Args(transport)
+				.processor(processor)
+				.minWorkerThreads(5)
+				.maxWorkerThreads(20);
+				
+				TServer server = new TThreadPoolServer(serverArgs);
+				System.out.println("Servidor Thrift (RPC) escuchando en :" + PUERTO);
+				server.serve();   // BLOQUEA hasta que el servidor se detenga
+			}
+		}
+	\end{lstlisting}
+	
+	\paso{Crear \archivo{ClienteRPC.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ClienteRPC.java --- Cliente RPC con Thrift}]
+		package ec.edu.uteq.distribuidas.rpc.client;
+		
+		import ec.edu.uteq.distribuidas.rpc.gen.*;
+		import org.apache.thrift.protocol.*;
+		import org.apache.thrift.transport.*;
+		
+		/**
+		* Cliente que invoca metodos remotos en el servidor Thrift.
+		* Desde el codigo del cliente, llamar dividir() parece una
+		* llamada local, pero en realidad viaja por la red (RPC).
+		*/
+		public class ClienteRPC {
+			
+			private static final String HOST  = "localhost";
+			private static final int    PUERTO = 9090;
+			
+			public static void main(String[] args) throws Exception {
+				try (TTransport transport = new TSocket(HOST, PUERTO)) {
+					transport.open();
+					
+					TProtocol protocol = new TBinaryProtocol(transport);
+					Calculadora.Client cliente = new Calculadora.Client(protocol);
+					
+					System.out.println("Conectado al servidor: " + cliente.nombreServidor());
+					System.out.printf("5 + 3 = %.2f%n", cliente.sumar(5, 3));
+					System.out.printf("10 - 4 = %.2f%n", cliente.restar(10, 4));
+					System.out.printf("6 x 7 = %.2f%n", cliente.multiplicar(6, 7));
+					System.out.printf("15 / 4 = %.4f%n", cliente.dividir(15, 4));
+					
+					// Prueba de excepcion remota
+					try {
+						cliente.dividir(10, 0);
+					} catch (OperacionInvalidaException ex) {
+						System.out.println("Excepcion capturada: " + ex.getMessage());
+					}
+				}
+			}
+		}
+	\end{lstlisting}
+	
+	\section{Ejecución}
+	
+	\paso{Ejecutar \textbf{ServidorRPC} primero. Salida esperada:}
+	
+	\begin{resultadobox}
+		\begin{lstlisting}[style=BashStyle]
+			Servidor Thrift (RPC) escuchando en :9090
+		\end{lstlisting}
+	\end{resultadobox}
+	
+	\paso{Ejecutar \textbf{ClienteRPC}. Salida esperada:}
+	
+	\begin{resultadobox}
+		\begin{lstlisting}[style=BashStyle]
+			Conectado al servidor: ServidorThrift@mi-pc
+			5 + 3 = 8.00
+			10 - 4 = 6.00
+			6 x 7 = 42.00
+			15 / 4 = 3.7500
+			Excepcion capturada: Division por cero no permitida
+		\end{lstlisting}
+	\end{resultadobox}
+	
+	% ════════════════════════════════════════════════════════════
+	%  GUÍA 4 — gRPC
+	% ════════════════════════════════════════════════════════════
+	\chapter{Guía 4: gRPC con Protocol Buffers}
+	\resetpasos
+	
+	\begin{objetivobox}{gRPC con Protocol Buffers}
+		Implementar un sistema de comunicación de alto rendimiento usando gRPC con
+		Protocol Buffers (Protobuf) sobre HTTP/2, incluyendo llamadas unarias y
+		streaming bidireccional~\parencite{indrasiri2020}.
+	\end{objetivobox}
+	
+	\section{Fundamento teórico}
+	
+	\textbf{gRPC} (Google Remote Procedure Call) es un framework RPC moderno
+	que usa \textbf{HTTP/2} como transporte y \textbf{Protocol Buffers} (Protobuf)
+	como formato de serialización binario~\parencite{indrasiri2020}.
+	
+	Ventajas sobre alternativas:
+	\begin{itemize}
+		\item \textbf{HTTP/2}: multiplexing de múltiples RPCs sobre una sola conexión
+		TCP (sin head-of-line blocking), compresión de headers (HPACK).
+		\item \textbf{Protobuf}: 3-10$\times$ más compacto que JSON; 5-10$\times$ más
+		rápido de serializar/deserializar.
+		\item \textbf{Tipado fuerte}: el compilador \code{protoc} genera código
+		verificado en tiempo de compilación para más de 20 lenguajes.
+		\item \textbf{Streaming bidireccional}: cliente y servidor pueden enviarse
+		flujos de mensajes simultáneamente.
+	\end{itemize}
+	
+	gRPC define cuatro tipos de llamadas:
+	\begin{enumerate}
+		\item \textbf{Unaria}: cliente envía un mensaje, recibe uno.
+		\item \textbf{Server streaming}: cliente envía uno, recibe un stream.
+		\item \textbf{Client streaming}: cliente envía stream, recibe uno.
+		\item \textbf{Bidireccional}: ambos envían y reciben streams simultáneamente.
+	\end{enumerate}
+	
+	\section{Configuración del proyecto}
+	
+	\paso{Crear proyecto Maven en IntelliJ con ArtifactId \code{guia04-grpc}.
+		Configurar \archivo{pom.xml} con las dependencias de gRPC y el plugin protoc:}
+	
+	\begin{lstlisting}[style=XMLStyle, caption={pom.xml --- Dependencias gRPC con generación automática}]
+		<properties>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<grpc.version>1.62.2</grpc.version>
+		<protobuf.version>3.25.3</protobuf.version>
+		<protoc.version>3.25.3</protoc.version>
+		</properties>
+		
+		<dependencies>
+		<dependency>
+		<groupId>io.grpc</groupId>
+		<artifactId>grpc-netty-shaded</artifactId>
+		<version>${grpc.version}</version>
+		</dependency>
+		<dependency>
+		<groupId>io.grpc</groupId>
+		<artifactId>grpc-protobuf</artifactId>
+		<version>${grpc.version}</version>
+		</dependency>
+		<dependency>
+		<groupId>io.grpc</groupId>
+		<artifactId>grpc-stub</artifactId>
+		<version>${grpc.version}</version>
+		</dependency>
+		<dependency>
+		<groupId>com.google.protobuf</groupId>
+		<artifactId>protobuf-java</artifactId>
+		<version>${protobuf.version}</version>
+		</dependency>
+		<!-- Anotacion @Generated requerida por el codigo generado -->
+		<dependency>
+		<groupId>javax.annotation</groupId>
+		<artifactId>javax.annotation-api</artifactId>
+		<version>1.3.2</version>
+		</dependency>
+		</dependencies>
+		
+		<build>
+		<extensions>
+		<extension>
+		<groupId>kr.motd.maven</groupId>
+		<artifactId>os-maven-plugin</artifactId>
+		<version>1.7.1</version>
+		</extension>
+		</extensions>
+		<plugins>
+		<plugin>
+		<groupId>org.xolstice.maven.plugins</groupId>
+		<artifactId>protobuf-maven-plugin</artifactId>
+		<version>0.6.1</version>
+		<configuration>
+		<protocArtifact>
+		com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}
+		</protocArtifact>
+		<pluginId>grpc-java</pluginId>
+		<pluginArtifact>
+		io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
+		</pluginArtifact>
+		</configuration>
+		<executions>
+		<execution>
+		<goals>
+		<goal>compile</goal>
+		<goal>compile-custom</goal>
+		</goals>
+		</execution>
+		</executions>
+		</plugin>
+		</plugins>
+		</build>
+	\end{lstlisting}
+	
+	\section{Definición del contrato Protobuf}
+	
+	\paso{Crear el directorio \code{src/main/proto} y el archivo
+		\archivo{mensajeria.proto}:}
+	
+	\begin{lstlisting}[style=ProtoStyle, caption={mensajeria.proto --- Definición del servicio gRPC}]
+		syntax = "proto3";
+		
+		package ec.edu.uteq.distribuidas.grpc;
+		option java_package = "ec.edu.uteq.distribuidas.grpc.gen";
+		option java_outer_classname = "MensajeriaProto";
+		option java_multiple_files = true;
+		
+		// -- Mensajes de solicitud y respuesta -------------
+		message SolicitudMensaje {
+			string remitente   = 1;
+			string contenido   = 2;
+			int64  timestamp   = 3;  // Reloj de Lamport
+		}
+		
+		message RespuestaMensaje {
+			string servidor    = 1;
+			string contenido   = 2;
+			int64  timestamp   = 3;
+			bool   exito       = 4;
+		}
+		
+		message SolicitudStream {
+			string usuario = 1;
+			int32  cantidad = 2;  // Cuantos mensajes transmitir
+		}
+		
+		// -- Definicion del servicio gRPC -------------------
+		service ServicioMensajeria {
+			
+			// Llamada unaria: cliente envia 1 mensaje, recibe 1 respuesta
+			rpc EnviarMensaje(SolicitudMensaje) returns (RespuestaMensaje);
+			
+			// Server streaming: el servidor envia multiples respuestas
+			rpc RecibirNoticias(SolicitudStream) returns (stream RespuestaMensaje);
+			
+			// Bidireccional: cliente y servidor intercambian streams
+			rpc ChatBidireccional(stream SolicitudMensaje)
+			returns (stream RespuestaMensaje);
+		}
+	\end{lstlisting}
+	
+	\paso{Generar el código Java ejecutando desde la terminal de IntelliJ:}
+	
+	\begin{lstlisting}[style=BashStyle]
+		mvn generate-sources
+	\end{lstlisting}
+	
+	El código se genera en \code{target/generated-sources/protobuf/}.
+	IntelliJ lo detecta automáticamente si se ejecutó \menu{Maven $\to$ Reload Project}.
+	
+	\section{Implementación del servidor gRPC}
+	
+	\paso{Crear \archivo{MensajeriaServiceImpl.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={MensajeriaServiceImpl.java --- Implementación de los tres tipos de llamada}]
+		package ec.edu.uteq.distribuidas.grpc.server;
+		
+		import ec.edu.uteq.distribuidas.grpc.gen.*;
+		import io.grpc.stub.StreamObserver;
+		
+		import java.util.concurrent.atomic.AtomicLong;
+		
+		/**
+		* Implementacion de los tres tipos de llamada gRPC:
+		*   1. Unaria
+		*   2. Server streaming
+		*   3. Bidireccional
+		*/
+		public class MensajeriaServiceImpl
+		extends ServicioMensajeriaGrpc.ServicioMensajeriaImplBase {
+			
+			private final AtomicLong relojLamport = new AtomicLong(0);
+			
+			// -- 1. Llamada unaria -----------------------------
+			@Override
+			public void enviarMensaje(SolicitudMensaje request,
+			StreamObserver<RespuestaMensaje> responseObserver) {
+				// Regla R3 del reloj de Lamport
+				long ts = Math.max(relojLamport.get(), request.getTimestamp()) + 1;
+				relojLamport.set(ts);
+				
+				System.out.printf("[gRPC Unario] %s: %s (ts=%d)%n",
+				request.getRemitente(), request.getContenido(), ts);
+				
+				RespuestaMensaje respuesta = RespuestaMensaje.newBuilder()
+				.setServidor("ServidorGRPC")
+				.setContenido("ACK: " + request.getContenido())
+				.setTimestamp(ts)
+				.setExito(true)
+				.build();
+				
+				responseObserver.onNext(respuesta);
+				responseObserver.onCompleted();
+			}
+			
+			// -- 2. Server streaming ---------------------------
+			@Override
+			public void recibirNoticias(SolicitudStream request,
+			StreamObserver<RespuestaMensaje> responseObserver) {
+				String usuario = request.getUsuario();
+				int cantidad   = request.getCantidad();
+				
+				System.out.printf("[gRPC Streaming] Enviando %d noticias a %s%n",
+				cantidad, usuario);
+				
+				for (int i = 1; i <= cantidad; i++) {
+					long ts = relojLamport.incrementAndGet();
+					RespuestaMensaje noticia = RespuestaMensaje.newBuilder()
+					.setServidor("ServidorGRPC")
+					.setContenido("Noticia #" + i + " para " + usuario)
+					.setTimestamp(ts)
+					.setExito(true)
+					.build();
+					responseObserver.onNext(noticia);
+					
+					try { Thread.sleep(500); } catch (InterruptedException ignored) {}
+				}
+				responseObserver.onCompleted();
+			}
+			
+			// -- 3. Chat bidireccional -------------------------
+			@Override
+			public StreamObserver<SolicitudMensaje> chatBidireccional(
+			StreamObserver<RespuestaMensaje> responseObserver) {
+				
+				return new StreamObserver<>() {
+					@Override
+					public void onNext(SolicitudMensaje msg) {
+						long ts = Math.max(relojLamport.get(), msg.getTimestamp()) + 1;
+						relojLamport.set(ts);
+						System.out.printf("[gRPC Bidir] %s: %s%n",
+						msg.getRemitente(), msg.getContenido());
+						// Eco con el timestamp actualizado
+						responseObserver.onNext(RespuestaMensaje.newBuilder()
+						.setServidor("ServidorGRPC")
+						.setContenido("[" + msg.getRemitente() + "] "
+						+ msg.getContenido())
+						.setTimestamp(ts)
+						.setExito(true)
+						.build());
+					}
+					
+					@Override
+					public void onError(Throwable t) {
+						System.err.println("Error en stream: " + t.getMessage());
+					}
+					
+					@Override
+					public void onCompleted() {
+						responseObserver.onCompleted();
+					}
+				};
+			}
+		}
+	\end{lstlisting}
+	
+	\paso{Crear \archivo{ServidorGRPC.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ServidorGRPC.java --- Servidor gRPC sobre HTTP/2}]
+		package ec.edu.uteq.distribuidas.grpc.server;
+		
+		import io.grpc.Server;
+		import io.grpc.ServerBuilder;
+		
+		public class ServidorGRPC {
+			
+			private static final int PUERTO = 50051;
+			
+			public static void main(String[] args) throws Exception {
+				Server server = ServerBuilder.forPort(PUERTO)
+				.addService(new MensajeriaServiceImpl())
+				.build()
+				.start();
+				
+				System.out.println("Servidor gRPC iniciado en puerto " + PUERTO);
+				Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
+				server.awaitTermination();
+			}
+		}
+	\end{lstlisting}
+	
+	\paso{Crear \archivo{ClienteGRPC.java} para probar los tres tipos de llamada:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ClienteGRPC.java --- Cliente que demuestra los tres tipos de llamada}]
+		package ec.edu.uteq.distribuidas.grpc.client;
+		
+		import ec.edu.uteq.distribuidas.grpc.gen.*;
+		import io.grpc.*;
+		import io.grpc.stub.StreamObserver;
+		
+		import java.util.Iterator;
+		import java.util.concurrent.*;
+		import java.util.concurrent.atomic.AtomicLong;
+		
+		public class ClienteGRPC {
+			
+			private static final AtomicLong reloj = new AtomicLong(0);
+			
+			public static void main(String[] args) throws Exception {
+				ManagedChannel canal = ManagedChannelBuilder
+				.forAddress("localhost", 50051)
+				.usePlaintext()           // Sin TLS (solo para desarrollo)
+				.build();
+				
+				ServicioMensajeriaGrpc.ServicioMensajeriaBlockingStub
+				stubBloqueante = ServicioMensajeriaGrpc.newBlockingStub(canal);
+				ServicioMensajeriaGrpc.ServicioMensajeriaStub
+				stubAsync = ServicioMensajeriaGrpc.newStub(canal);
+				
+				// -- 1. Llamada unaria -------------------------
+				System.out.println("=== 1. Llamada Unaria ===");
+				SolicitudMensaje solicitud = SolicitudMensaje.newBuilder()
+				.setRemitente("ClienteA")
+				.setContenido("Hola desde gRPC")
+				.setTimestamp(reloj.incrementAndGet())
+				.build();
+				RespuestaMensaje resp = stubBloqueante.enviarMensaje(solicitud);
+				System.out.println("Respuesta: " + resp.getContenido()
+				+ " (ts=" + resp.getTimestamp() + ")");
+				
+				// -- 2. Server streaming -----------------------
+				System.out.println("\n=== 2. Server Streaming (3 noticias) ===");
+				Iterator<RespuestaMensaje> noticias = stubBloqueante.recibirNoticias(
+				SolicitudStream.newBuilder()
+				.setUsuario("ClienteA")
+				.setCantidad(3)
+				.build());
+				while (noticias.hasNext()) {
+					System.out.println("  << " + noticias.next().getContenido());
+				}
+				
+				// -- 3. Bidireccional -------------------------
+				System.out.println("\n=== 3. Chat Bidireccional ===");
+				CountDownLatch latch = new CountDownLatch(1);
+				StreamObserver<SolicitudMensaje> emisor =
+				stubAsync.chatBidireccional(new StreamObserver<>() {
+					@Override
+					public void onNext(RespuestaMensaje r) {
+						System.out.println("  << " + r.getContenido());
+					}
+					@Override
+					public void onError(Throwable t) {
+						latch.countDown();
+					}
+					@Override
+					public void onCompleted() {
+						System.out.println("Stream completado.");
+						latch.countDown();
+					}
+				});
+				
+				// Enviar 3 mensajes en el stream del cliente
+				for (int i = 1; i <= 3; i++) {
+					emisor.onNext(SolicitudMensaje.newBuilder()
+					.setRemitente("ClienteA")
+					.setContenido("Mensaje bidireccional #" + i)
+					.setTimestamp(reloj.incrementAndGet())
+					.build());
+					Thread.sleep(300);
+				}
+				emisor.onCompleted();
+				latch.await(5, TimeUnit.SECONDS);
+				
+				canal.shutdown();
+			}
+		}
+	\end{lstlisting}
+	
+	\section{Ejecución}
+	
+	\paso{Ejecutar \menu{Maven $\to$ generate-sources} para compilar el \code{.proto}.
+		Luego ejecutar \textbf{ServidorGRPC}. Verificar:}
+	
+	\begin{resultadobox}
+		\begin{lstlisting}[style=BashStyle]
+			Servidor gRPC iniciado en puerto 50051
+		\end{lstlisting}
+	\end{resultadobox}
+	
+	\paso{Ejecutar \textbf{ClienteGRPC}. Salida esperada:}
+	
+	\begin{resultadobox}
+		\begin{lstlisting}[style=BashStyle]
+			=== 1. Llamada Unaria ===
+			Respuesta: ACK: Hola desde gRPC (ts=2)
+			
+			=== 2. Server Streaming (3 noticias) ===
+			<< Noticia #1 para ClienteA
+			<< Noticia #2 para ClienteA
+			<< Noticia #3 para ClienteA
+			
+			=== 3. Chat Bidireccional ===
+			<< [ClienteA] Mensaje bidireccional #1
+			<< [ClienteA] Mensaje bidireccional #2
+			<< [ClienteA] Mensaje bidireccional #3
+			Stream completado.
+		\end{lstlisting}
+	\end{resultadobox}
+	
+	% ════════════════════════════════════════════════════════════
+	%  GUÍA 5 — RMI
+	% ════════════════════════════════════════════════════════════
+	\chapter{Guía 5: Java RMI (Remote Method Invocation)}
+	\resetpasos
+	
+	\begin{objetivobox}{Java RMI}
+		Implementar un sistema RMI nativo de Java que permita invocar métodos de objetos
+		remotos como si fueran locales, usando el registro RMI como servicio de nombres
+		y la serialización de objetos Java~\parencite{waldo1994}.
+	\end{objetivobox}
+	
+	\section{Fundamento teórico}
+	
+	\textbf{RMI} (Remote Method Invocation) es la implementación de RPC de Java,
+	introducida en Java 1.1. Permite a un programa Java invocar métodos de un objeto
+	Java ubicado en otra JVM (Java Virtual Machine), posiblemente en otro host~\parencite{waldo1994}.
+	
+	Arquitectura de tres capas:
+	\begin{itemize}
+		\item \textbf{Capa de stub/skeleton}: generados en tiempo de compilación
+		(Java 5+: generados automáticamente, no requiere \code{rmic}).
+		\item \textbf{Capa de referencia remota}: maneja la semántica de llamada
+		(at-most-once), gestión de la conexión TCP subyacente.
+		\item \textbf{Capa de transporte}: usa JRMP (\textit{Java Remote Method Protocol})
+		sobre TCP. Serialización nativa de Java.
+	\end{itemize}
+	
+	El \textbf{RMI Registry} (puerto 1099 por defecto) actúa como servicio de
+	nombres: el servidor registra sus objetos con \code{Naming.bind()},
+	el cliente los localiza con \code{Naming.lookup()}~\parencite{vanSteen2023}.
+	
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[node distance=0.5cm and 2.5cm, font=\small]
+			% JVM Cliente
+			\node[clibox] (app)    {App Cliente};
+			\node[netbox, below=0.8cm of app] (stub)  {Stub (proxy)};
+			\draw[-Stealth, thick] (app) -- node[right, font=\tiny]{invoca} (stub);
+			
+			% RMI Registry
+			\node[netbox, right=2.5cm of app] (reg)   {RMI Registry\\(puerto 1099)};
+			
+			% JVM Servidor
+			\node[srvbox, right=2.5cm of reg] (impl)  {Impl. remota};
+			\node[netbox, below=0.8cm of impl] (skel) {Skeleton};
+			\draw[-Stealth, thick] (skel) -- node[right, font=\tiny]{delega} (impl);
+			
+			% Flujos
+			\draw[msgArrow] (app.east) -- node[above, font=\tiny]{lookup(''Calculadora'')}
+			(reg.west);
+			\draw[retArrow] (reg.west) -- node[below, font=\tiny]{stub remoto}
+			([yshift=-6pt]app.east);
+			\draw[msgArrow] (stub.east) -- node[above, font=\tiny]{JRMP/TCP}
+			(skel.west);
+			\draw[retArrow] (skel.west) -- node[below, font=\tiny]{resultado}
+			([yshift=-6pt]stub.east);
+			\draw[msgArrow] (impl.west) to[bend left=30]
+			node[above, font=\tiny]{bind(''Calculadora'')} (reg.east);
+			
+			% Etiquetas JVM
+			\node[above=0.1cm of app, font=\bfseries\small,
+			text=practiceBlue] {JVM Cliente};
+			\node[above=0.1cm of impl, font=\bfseries\small,
+			text=uteqDark] {JVM Servidor};
+			\node[above=0.1cm of reg, font=\bfseries\small,
+			text=gray!70] {Registry};
+		\end{tikzpicture}
+		\caption{Arquitectura completa del sistema RMI con tres JVMs}
+		\label{fig:rmi_arquitectura}
+	\end{figure}
+	
+	\section{Estructura del proyecto}
+	
+	\paso{Crear proyecto Maven con ArtifactId \code{guia05-rmi}.
+		No se requieren dependencias externas: RMI es parte del JDK estándar.}
+	
+	\begin{lstlisting}[style=XMLStyle, caption={pom.xml para proyecto RMI}]
+		<properties>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		</properties>
+		<!-- Sin dependencias adicionales: RMI esta en java.rmi del JDK -->
+	\end{lstlisting}
+	
+	\section{Interfaz remota}
+	
+	\paso{Crear el paquete \code{ec.edu.uteq.distribuidas.rmi.api} y la
+		interfaz remota \archivo{CalculadoraRemota.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={CalculadoraRemota.java --- Interfaz del objeto remoto}]
+		package ec.edu.uteq.distribuidas.rmi.api;
+		
+		import java.rmi.Remote;
+		import java.rmi.RemoteException;
+		
+		/**
+		* Interfaz remota RMI.
+		* REGLAS OBLIGATORIAS para interfaces RMI:
+		*   1. Debe extender java.rmi.Remote.
+		*   2. Cada metodo DEBE declarar throws RemoteException
+		*      (para manejar fallos de red transparentemente).
+		*   3. Los parametros y el valor de retorno deben ser:
+		*      - Tipos primitivos, o
+		*      - Implementar java.io.Serializable, o
+		*      - Implementar Remote (objetos remotos anidados).
+		*/
+		public interface CalculadoraRemota extends Remote {
+			
+			double sumar(double a, double b) throws RemoteException;
+			double restar(double a, double b) throws RemoteException;
+			double multiplicar(double a, double b) throws RemoteException;
+			double dividir(double a, double b) throws RemoteException;
+			String obtenerInfo() throws RemoteException;
+			
+			// Metodos adicionales (Java 21)
+			double potencia(double base, double exponente) throws RemoteException;
+			double raizCuadrada(double n) throws RemoteException;
+		}
+	\end{lstlisting}
+	
+	\section{Implementación del objeto remoto}
+	
+	\paso{Crear el paquete \code{ec.edu.uteq.distribuidas.rmi.server} y la implementación \archivo{CalculadoraImpl.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={CalculadoraImpl.java --- Implementación del objeto remoto}]
+		package ec.edu.uteq.distribuidas.rmi.server;
+		
+		import ec.edu.uteq.distribuidas.rmi.api.CalculadoraRemota;
+		import java.rmi.RemoteException;
+		import java.rmi.server.UnicastRemoteObject;
+		
+		/**
+		* Implementacion concreta del objeto remoto.
+		*
+		* OBLIGATORIO: extender UnicastRemoteObject.
+		* Esto hace que el objeto:
+		*   - Se exporte automaticamente al instanciarse.
+		*   - Use TCP para recibir llamadas remotas.
+		*   - Sea elegible para garbage collection remoto.
+		*
+		* Alternativa: NO extender UnicastRemoteObject y usar
+		*   UnicastRemoteObject.exportObject(this, 0) manualmente.
+		*/
+		public class CalculadoraImpl
+		extends UnicastRemoteObject
+		implements CalculadoraRemota {
+			
+			private static final long serialVersionUID = 1L;
+			
+			private final String nombreServidor;
+			
+			// El constructor DEBE declarar throws RemoteException
+			public CalculadoraImpl(String nombre) throws RemoteException {
+				super();   // exporta el objeto (asigna puerto TCP aleatorio)
+				this.nombreServidor = nombre;
+			}
+			
+			@Override
+			public double sumar(double a, double b) throws RemoteException {
+				logLlamada("sumar", a, b);
+				return a + b;
+			}
+			
+			@Override
+			public double restar(double a, double b) throws RemoteException {
+				logLlamada("restar", a, b);
+				return a - b;
+			}
+			
+			@Override
+			public double multiplicar(double a, double b) throws RemoteException {
+				logLlamada("multiplicar", a, b);
+				return a * b;
+			}
+			
+			@Override
+			public double dividir(double a, double b) throws RemoteException {
+				logLlamada("dividir", a, b);
+				if (b == 0.0) {
+					// Se puede lanzar RemoteException o una excepcion serializable propia
+					throw new RemoteException("Division por cero no permitida");
+				}
+				return a / b;
+			}
+			
+			@Override
+			public double potencia(double base, double exp) throws RemoteException {
+				return Math.pow(base, exp);
+			}
+			
+			@Override
+			public double raizCuadrada(double n) throws RemoteException {
+				if (n < 0) throw new RemoteException("Raiz de negativo no definida en R");
+				return Math.sqrt(n);
+			}
+			
+			@Override
+			public String obtenerInfo() throws RemoteException {
+				return "Servidor RMI: " + nombreServidor
+				+ " | JVM: " + System.getProperty("java.version")
+				+ " | Hilos activos: " + Thread.activeCount();
+			}
+			
+			private void logLlamada(String metodo, double a, double b) {
+				System.out.printf("[RMI] %s(%.2f, %.2f) invocado%n", metodo, a, b);
+			}
+		}
+	\end{lstlisting}
+	
+	\paso{Crear \archivo{ServidorRMI.java} que arranca el registry y exporta el objeto:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ServidorRMI.java --- Servidor que registra el objeto remoto}]
+		package ec.edu.uteq.distribuidas.rmi.server;
+		
+		import java.rmi.Naming;
+		import java.rmi.registry.LocateRegistry;
+		
+		/**
+		* Servidor RMI:
+		*   1. Crea el RMI Registry en el puerto 1099.
+		*   2. Instancia el objeto remoto (lo exporta automaticamente).
+		*   3. Lo registra en el Registry con un nombre.
+		*/
+		public class ServidorRMI {
+			
+			private static final int PUERTO_REGISTRY = 1099;
+			private static final String NOMBRE       = "CalculadoraDistribuida";
+			
+			public static void main(String[] args) {
+				try {
+					// Paso 1: Crear el registry en este proceso
+					LocateRegistry.createRegistry(PUERTO_REGISTRY);
+					System.out.println("RMI Registry creado en puerto " + PUERTO_REGISTRY);
+					
+					// Paso 2: Instanciar e implementacion (se exporta automaticamente)
+					CalculadoraImpl calculadora = new CalculadoraImpl("UTEQ-Servidor-01");
+					
+					// Paso 3: Registrar con el nombre buscable por clientes
+					// URL: rmi://host:puerto/nombre
+					String url = "rmi://localhost:" + PUERTO_REGISTRY + "/" + NOMBRE;
+					Naming.bind(url, calculadora);
+					
+					System.out.println("Objeto registrado en: " + url);
+					System.out.println("Servidor RMI listo. Esperando clientes...");
+					System.out.println(calculadora.obtenerInfo());
+					
+					// El servidor se mantiene vivo mientras el registry exista
+					// En produccion usar join() en lugar de sleep
+					Thread.currentThread().join();
+					
+				} catch (Exception e) {
+					System.err.println("Error en ServidorRMI: " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
+	\end{lstlisting}
+	
+	\section{Cliente RMI}
+	
+	\paso{Crear el paquete \code{ec.edu.uteq.distribuidas.rmi.client} y
+		la clase \archivo{ClienteRMI.java}:}
+	
+	\begin{lstlisting}[style=JavaStyle, caption={ClienteRMI.java --- Cliente que invoca métodos remotos}]
+		package ec.edu.uteq.distribuidas.rmi.client;
+		
+		import ec.edu.uteq.distribuidas.rmi.api.CalculadoraRemota;
+		import java.rmi.Naming;
+		import java.rmi.RemoteException;
+		
+		/**
+		* Cliente RMI.
+		* IMPORTANTE: El cliente SOLO necesita la interfaz CalculadoraRemota.java.
+		* NO necesita la implementacion CalculadoraImpl.java.
+		* Esta es la "transparencia de acceso" de RMI.
+		*/
+		public class ClienteRMI {
+			
+			private static final String HOST   = "localhost";
+			private static final int    PUERTO = 1099;
+			private static final String NOMBRE = "CalculadoraDistribuida";
+			
+			public static void main(String[] args) {
+				String url = "rmi://" + HOST + ":" + PUERTO + "/" + NOMBRE;
+				
+				try {
+					// lookup() devuelve un stub (proxy) que parece un objeto local
+					CalculadoraRemota calc =
+					(CalculadoraRemota) Naming.lookup(url);
+					
+					System.out.println("Conectado a: " + calc.obtenerInfo());
+					System.out.println("-----------------------------------");
+					
+					// Todas estas llamadas viajan por la red transparentemente
+					System.out.printf("10 + 5   = %.2f%n", calc.sumar(10, 5));
+					System.out.printf("10 - 5   = %.2f%n", calc.restar(10, 5));
+					System.out.printf("10 x 5   = %.2f%n", calc.multiplicar(10, 5));
+					System.out.printf("10 / 4   = %.4f%n", calc.dividir(10, 4));
+					System.out.printf("2 ^ 10   = %.0f%n", calc.potencia(2, 10));
+					System.out.printf("sqrt(2)  = %.6f%n", calc.raizCuadrada(2));
+					
+					// Prueba de excepcion remota
+					try {
+						calc.dividir(5, 0);
+					} catch (RemoteException e) {
+						System.out.println("Excepcion remota: " + e.getCause().getMessage());
+					}
+					
+				} catch (Exception e) {
+					System.err.println("Error en ClienteRMI: " + e.getMessage());
+				}
+			}
+		}
+	\end{lstlisting}
+	
+	\section{Ejecución}
+	
+	\paso{Ejecutar \textbf{ServidorRMI} primero. Salida esperada:}
+	
+	\begin{resultadobox}
+		\begin{lstlisting}[style=BashStyle]
+			RMI Registry creado en puerto 1099
+			Objeto registrado en: rmi://localhost:1099/CalculadoraDistribuida
+			Servidor RMI listo. Esperando clientes...
+			Servidor RMI: UTEQ-Servidor-01 | JVM: 21.0.3 | Hilos activos: 4
+		\end{lstlisting}
+	\end{resultadobox}
+	
+	\paso{Ejecutar \textbf{ClienteRMI}. Salida esperada:}
+	
+	\begin{resultadobox}
+		\begin{lstlisting}[style=BashStyle]
+			Conectado a: Servidor RMI: UTEQ-Servidor-01 | JVM: 21.0.3 | Hilos activos: 5
+			-----------------------------------
+			10 + 5   = 15.00
+			10 - 5   = 5.00
+			10 x 5   = 50.00
+			10 / 4   = 2.5000
+			2 ^ 10   = 1024
+			sqrt(2)  = 1.414214
+			Excepcion remota: Division por cero no permitida
+		\end{lstlisting}
+	\end{resultadobox}
+	
+	\begin{advertenciabox}
+		Si aparece \code{java.rmi.ConnectException: Connection refused to host}: verificar que
+		el \textbf{ServidorRMI} esté ejecutándose antes que el cliente. En redes locales con
+		múltiples interfaces de red, puede ser necesario agregar
+		\code{-Djava.rmi.server.hostname=IP\_del\_servidor} como argumento de JVM al servidor.
+	\end{advertenciabox}
+	
+	\paso{Para simular dos JVMs en equipos distintos: cambiar \code{HOST} en
+		\archivo{ClienteRMI.java} a la IP del servidor. El cliente solo necesita la
+		interfaz \code{CalculadoraRemota.java} en su classpath.}
+	
+	% ════════════════════════════════════════════════════════════
+	%  ANÁLISIS COMPARATIVO
+	% ════════════════════════════════════════════════════════════
+	\chapter{Análisis Comparativo}
+	
+	\section{Cuadro sinóptico de mecanismos}
+	
+	\begin{table}[H]
+		\centering
+		\caption{Comparativa técnica de los cinco mecanismos de comunicación implementados}
+		\label{tab:comparativa_final}
+		\setlength{\tabcolsep}{4pt}
+		\begin{tabularx}{\linewidth}{@{}lXXXXX@{}}
+			\toprule
+			\textbf{Criterio} &
+			\textbf{TCP/UDP} &
+			\textbf{WebSocket} &
+			\textbf{Thrift RPC} &
+			\textbf{gRPC} &
+			\textbf{RMI} \\
+			\midrule
+			Protocolo base    & TCP / UDP  & HTTP $\to$ WS & TCP (bin)   & HTTP/2     & JRMP/TCP \\
+			Serialización     & Manual     & JSON/texto     & Thrift bin  & Protobuf   & Java ser.\\
+			Tipado IDL        & Ninguno    & Ninguno        & \code{.thrift} & \code{.proto} & Java iface\\
+			Streaming         & Sí (TCP)   & Bidireccional  & No nativo   & Sí (4 tipos)& No     \\
+			Multilenguaje     & Sí         & Sí             & 20+ lang.   & 20+ lang.  & Solo Java\\
+			Overhead (aprox.) & Muy bajo   & Bajo           & Bajo        & Muy bajo   & Alto     \\
+			Complejidad conf. & Baja       & Media          & Media       & Media      & Baja     \\
+			Caso de uso ideal & Chat, bin  & Tiempo real    & Microserv.  & Microserv. & Java-Java\\
+			\bottomrule
+		\end{tabularx}
+	\end{table}
+	
+	\section{Criterios de selección}
+	
+	Para elegir el mecanismo de comunicación en un proyecto distribuido, considerar:
+	
+	\begin{enumerate}
+		\item \textbf{¿Es solo Java?} RMI es la opción más simple. De lo contrario,
+		descartar RMI.
+		\item \textbf{¿Requiere tiempo real en el browser?} WebSocket es la única
+		opción con soporte nativo en navegadores sin polling.
+		\item \textbf{¿Rendimiento crítico entre microservicios?} gRPC con Protobuf
+		ofrece la mejor relación latencia/throughput.
+		\item \textbf{¿Control total sobre la red?} Sockets TCP/UDP permiten optimizar
+		cada byte, al costo de mayor complejidad de desarrollo.
+		\item \textbf{¿Necesita interoperar con sistemas legados?} Apache Thrift tiene
+		soporte para más lenguajes incluyendo C++ y Erlang.
+	\end{enumerate}
+	
+	% ════════════════════════════════════════════════════════════
+	%  BIBLIOGRAFÍA
+	% ════════════════════════════════════════════════════════════
+	\printbibliography[title={Referencias Bibliográficas}]
+	
+\end{document}

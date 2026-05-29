@@ -1,0 +1,579 @@
+% =========================
+% Glosario — Sistemas y Aplicaciones Distribuidas
+% =========================
+\newglossaryentry{adaptacion}{
+	name={Adaptación},
+	text={adaptación},
+	first={adaptación},
+	plural={adaptaciones},
+	firstplural={adaptaciones},
+	sort={adaptacion},
+	description={Capacidad de un sistema o componente para ajustarse a cambios en el entorno, requisitos o condiciones operativas sin perder funcionalidad esencial.},
+	symbol={🔄},
+	see={reconfiguracion,estabilidad},
+	type={general}
+}
+
+\newglossaryentry{adaptacioncontrolada}{
+	name={Adaptación Controlada},
+	text={adaptación controlada},
+	first={adaptación controlada},
+	plural={adaptaciones controladas},
+	firstplural={adaptaciones controladas},
+	sort={adaptacioncontrolada},
+	description={Proceso de adaptación gobernado por reglas, políticas o mecanismos definidos que limitan y supervisan los cambios realizados en un sistema.},
+	symbol={🎛},
+	see={adaptacion,reconfiguracion},
+	type={general}
+}
+
+\newglossaryentry{aplicacion}{
+	name={Aplicación},
+	text={aplicación},
+	first={aplicación},
+	plural={aplicaciones},
+	firstplural={aplicaciones},
+	sort={aplicacion},
+	description={Programa informático diseñado para realizar una o varias tareas específicas para el usuario, ejecutándose sobre un sistema computacional determinado.},
+	symbol={🧩},
+	type=main
+}
+
+\newglossaryentry{aplicaciondistribuida}{
+	name={Aplicación Distribuida},
+	text={aplicación distribuida},
+	first={aplicación distribuida},
+	plural={aplicaciones distribuidas},
+	firstplural={aplicaciones distribuidas},
+	sort={aplicaciondistribuida},
+	description={Aplicación cuyo procesamiento se reparte entre múltiples nodos interconectados que cooperan mediante mecanismos de comunicación para ofrecer un servicio unificado.},
+	symbol={🌐},
+	type=main
+}
+
+\newglossaryentry{arquitectonico}{
+	name={Arquitectónico},
+	text={arquitectónico},
+	first={arquitectónico},
+	plural={arquitectónicos},
+	firstplural={arquitectónicos},
+	sort={arquitectonico},
+	description={Relativo a la arquitectura de un sistema, incluyendo su estructura, componentes, relaciones y principios de diseño.},
+	symbol={🏗},
+	see={arquitectura,enfoquearquitectonico},
+	type={general}
+}
+
+\newglossaryentry{arquitectura}{
+	name={Arquitectura},
+	text={arquitectura},
+	first={arquitectura},
+	plural={arquitecturas},
+	firstplural={arquitecturas},
+	sort={arquitectura},
+	description={Estructura fundamental de un sistema que define componentes, relaciones, principios de diseño y restricciones técnicas.},
+	symbol={🏗},
+	type=main
+}
+
+\newglossaryentry{arquitecturadistribuida}{
+	name={Arquitectura Distribuida},
+	text={arquitectura distribuida},
+	first={arquitectura distribuida},
+	plural={arquitecturas distribuidas},
+	firstplural={arquitecturas distribuidas},
+	sort={arquitecturadistribuida},
+	description={Arquitectura en la que los componentes del sistema se encuentran desplegados en distintos nodos y coordinados mediante redes de comunicación.},
+	symbol={🗺},
+	type=main
+}
+
+\newglossaryentry{asincrona}{
+	name={Asíncrona},
+	text={asíncrona},
+	first={asíncrona},
+	plural={asíncronas},
+	firstplural={asíncronas},
+	sort={asincrona},
+	description={Característica de un proceso o mecanismo de comunicación en el que las operaciones no requieren sincronización temporal estricta entre emisor y receptor, permitiendo la ejecución independiente y no bloqueante.},
+	symbol={⏳},
+	type=main
+}
+
+\newglossaryentry{coherencia}{
+	name={Coherencia},
+	text={coherencia},
+	first={coherencia},
+	plural={coherencias},
+	firstplural={coherencias},
+	sort={coherencia},
+	description={Grado de consistencia lógica y alineación entre los elementos que conforman un sistema o modelo conceptual.},
+	symbol={🧩},
+	see={coherenciainterna,arquitectura},
+	type={general}
+}
+
+\newglossaryentry{coherenciainterna}{
+	name={Coherencia Interna},
+	text={coherencia interna},
+	first={coherencia interna},
+	plural={coherencias internas},
+	firstplural={coherencias internas},
+	sort={coherenciainterna},
+	description={Propiedad que asegura que los componentes y decisiones internas de un sistema no presenten contradicciones entre sí.},
+	symbol={✔},
+	see={coherencia,arquitectura},
+	type={general}
+}
+
+\newglossaryentry{componente}{
+	name={Componente},
+	text={componente},
+	first={componente},
+	plural={componentes},
+	firstplural={componentes},
+	sort={componente},
+	description={Unidad modular de software con responsabilidades bien definidas, capaz de interactuar con otros componentes a través de interfaces.},
+	symbol={🔩},
+	type=main
+}
+
+\newglossaryentry{comunicacion}{
+	name={Comunicación},
+	text={comunicación},
+	first={comunicación},
+	plural={comunicaciones},
+	firstplural={comunicaciones},
+	sort={comunicacion},
+	description={Proceso mediante el cual dos o más entidades intercambian información a través de un medio o protocolo definido.},
+	symbol={📡},
+	type=main
+}
+
+\newglossaryentry{comunicacionasincrona}{
+	name={Comunicación Asíncrona},
+	text={comunicación asíncrona},
+	first={comunicación asíncrona},
+	plural={comunicaciones asíncronas},
+	firstplural={comunicaciones asíncronas},
+	sort={comunicacionasincrona},
+	description={Modelo de comunicación en el que el emisor no espera una respuesta inmediata del receptor.},
+	symbol={⏳},
+	type=main
+}
+
+\newglossaryentry{comunicacionprocesos}{
+	name={Comunicación entre Procesos},
+	text={comunicación entre procesos},
+	first={comunicación entre procesos},
+	plural={comunicaciones entre procesos},
+	firstplural={comunicaciones entre procesos},
+	sort={comunicacionprocesos},
+	description={Mecanismo que permite el intercambio de datos y sincronización entre procesos que se ejecutan de manera concurrente.},
+	symbol={🔄},
+	type=main
+}
+
+\newglossaryentry{comunicacionsincrona}{
+	name={Comunicación Síncrona},
+	text={comunicación síncrona},
+	first={comunicación síncrona},
+	plural={comunicaciones síncronas},
+	firstplural={comunicaciones síncronas},
+	sort={comunicacionsincrona},
+	description={Modelo de comunicación en el que el emisor espera la respuesta del receptor antes de continuar su ejecución.},
+	symbol={⏱},
+	type=main
+}
+
+\newglossaryentry{consistenciadatos}{
+	name={Consistencia de Datos},
+	text={consistencia de datos},
+	first={consistencia de datos},
+	plural={consistencias de datos},
+	firstplural={consistencias de datos},
+	sort={consistenciadatos},
+	description={Propiedad que garantiza que todos los nodos de un sistema distribuido observan el mismo estado lógico de los datos.},
+	symbol={✔},
+	type=main
+}
+
+\newglossaryentry{disponibilidad}{
+	name={Disponibilidad},
+	text={disponibilidad},
+	first={disponibilidad},
+	plural={disponibilidades},
+	firstplural={disponibilidades},
+	sort={disponibilidad},
+	description={Capacidad de un sistema para permanecer operativo y accesible durante un periodo determinado.},
+	symbol={🟢},
+	type=main
+}
+
+\newglossaryentry{enfoque}{
+	name={Enfoque},
+	text={enfoque},
+	first={enfoque},
+	plural={enfoques},
+	firstplural={enfoques},
+	sort={enfoque},
+	description={Perspectiva conceptual o metodológica adoptada para analizar, diseñar o resolver un problema determinado.},
+	symbol={🔍},
+	see={enfoquearquitectonico},
+	type={general}
+}
+
+\newglossaryentry{enfoquearquitectonico}{
+	name={Enfoque Arquitectónico},
+	text={enfoque arquitectónico},
+	first={enfoque arquitectónico},
+	plural={enfoques arquitectónicos},
+	firstplural={enfoques arquitectónicos},
+	sort={enfoquearquitectonico},
+	description={Orientación de diseño que prioriza decisiones estructurales, patrones y estilos arquitectónicos para satisfacer atributos de calidad del sistema.},
+	symbol={🗺},
+	see={arquitectura,arquitectonico},
+	type={general}
+}
+
+\newglossaryentry{escalabilidad}{
+	name={Escalabilidad},
+	text={escalabilidad},
+	first={escalabilidad},
+	plural={escalabilidades},
+	firstplural={escalabilidades},
+	sort={escalabilidad},
+	description={Capacidad de un sistema para aumentar su rendimiento al incrementar recursos computacionales.},
+	symbol={📈},
+	type=main
+}
+
+\newglossaryentry{escalable}{
+	name={Escalable},
+	text={escalable},
+	first={escalable},
+	plural={escalables},
+	firstplural={escalables},
+	sort={escalable},
+	description={Propiedad de un sistema que puede adaptarse eficientemente al crecimiento de la carga de trabajo.},
+	symbol={➕},
+	type=main
+}
+
+
+\newglossaryentry{estabilidad}{
+	name={Estabilidad},
+	text={estabilidad},
+	first={estabilidad},
+	plural={estabilidades},
+	firstplural={estabilidades},
+	sort={estabilidad},
+	description={Capacidad de un sistema para mantener un comportamiento predecible y controlado ante cambios internos o externos.},
+	symbol={⚖},
+	see={adaptacion,operatividad},
+	type={general}
+}
+
+\newglossaryentry{interaccion}{
+	name={Interacción},
+	text={interacción},
+	first={interacción},
+	plural={interacciones},
+	firstplural={interacciones},
+	sort={interaccion},
+	description={Proceso mediante el cual dos o más entidades intercambian información o coordinan acciones dentro de un sistema.},
+	symbol={🤝},
+	see={comunicacion,componente},
+	type={general}
+}
+
+\newglossaryentry{interconectado}{
+	name={Interconectado},
+	text={interconectado},
+	first={interconectado},
+	plural={interconectados},
+	firstplural={interconectados},
+	sort={interconectado},
+	description={Estado en el que múltiples nodos o sistemas se encuentran enlazados mediante una red de comunicación.},
+	symbol={🔗},
+	type=main
+}
+
+\newglossaryentry{mecanismo}{
+	name={Mecanismo},
+	text={mecanismo},
+	first={mecanismo},
+	plural={mecanismos},
+	firstplural={mecanismos},
+	sort={mecanismo},
+	description={Conjunto de técnicas o procedimientos utilizados para implementar una funcionalidad específica.},
+	symbol={⚙},
+	type=main
+}
+
+\newglossaryentry{mecanismorecuperacion}{
+	name={Mecanismo de Recuperación},
+	text={mecanismo de recuperación},
+	first={mecanismo de recuperación},
+	plural={mecanismos de recuperación},
+	firstplural={mecanismos de recuperación},
+	sort={mecanismorecuperacion},
+	description={Estrategia que permite restaurar el funcionamiento normal de un sistema tras una falla.},
+	symbol={♻},
+	type=main
+}
+
+\newglossaryentry{nodo}{
+	name={Nodo},
+	text={nodo},
+	first={nodo},
+	plural={nodos},
+	firstplural={nodos},
+	sort={nodo},
+	description={Unidad computacional individual dentro de un sistema distribuido.},
+	symbol={🖥},
+	type=main
+}
+
+\newglossaryentry{operatividad}{
+	name={Operatividad},
+	text={operatividad},
+	first={operatividad},
+	plural={operatividades},
+	firstplural={operatividades},
+	sort={operatividad},
+	description={Grado en que un sistema se encuentra en condiciones de funcionamiento efectivo y continuo.},
+	symbol={⚙},
+	see={disponibilidad,estabilidad},
+	type={general}
+}
+
+\newglossaryentry{operatividadsistema}{
+	name={Operatividad del Sistema},
+	text={operatividad del sistema},
+	first={operatividad del sistema},
+	plural={operatividades del sistema},
+	firstplural={operatividades del sistema},
+	sort={operatividadsistema},
+	description={Estado global que refleja la capacidad del sistema para ejecutar correctamente sus funciones bajo condiciones reales de operación.},
+	symbol={🟢},
+	see={operatividad,disponibilidad,sistemadistribuido},
+	type={general}
+}
+
+\newglossaryentry{protocolo}{
+	name={Protocolo},
+	text={protocolo},
+	first={protocolo},
+	plural={protocolos},
+	firstplural={protocolos},
+	sort={protocolo},
+	description={Conjunto de reglas que gobiernan la comunicación entre entidades de un sistema.},
+	symbol={📜},
+	type=main
+}
+
+\newglossaryentry{protocoloestandarizado}{
+	name={Protocolo Estandarizado},
+	text={protocolo estandarizado},
+	first={protocolo estandarizado},
+	plural={protocolos estandarizados},
+	firstplural={protocolos estandarizados},
+	sort={protocoloestandarizado},
+	description={Protocolo definido y aceptado por organismos de estandarización para asegurar interoperabilidad.},
+	symbol={🏛},
+	type=main
+}
+
+\newglossaryentry{reconfiguracion}{
+	name={Reconfiguración},
+	text={reconfiguración},
+	first={reconfiguración},
+	plural={reconfiguraciones},
+	firstplural={reconfiguraciones},
+	sort={reconfiguracion},
+	description={Modificación dinámica de la estructura, configuración o comportamiento de un sistema para responder a cambios operativos.},
+	symbol={🔧},
+	see={adaptacion,adaptacioncontrolada},
+	type={general}
+}
+
+\newglossaryentry{recuperacion}{
+	name={Recuperación},
+	text={recuperación},
+	first={recuperación},
+	plural={recuperaciones},
+	firstplural={recuperaciones},
+	sort={recuperacion},
+	description={Proceso mediante el cual un sistema vuelve a un estado operativo tras una interrupción.},
+	symbol={🔁},
+	type=main
+}
+
+\newglossaryentry{recursocomputacional}{
+	name={Recurso Computacional},
+	text={recurso computacional},
+	first={recurso computacional},
+	plural={recursos computacionales},
+	firstplural={recursos computacionales},
+	sort={recursocomputacional},
+	description={Elemento físico o lógico utilizado para el procesamiento, almacenamiento o comunicación de información.},
+	symbol={💾},
+	type=main
+}
+
+\newglossaryentry{redundancia}{
+	name={Redundancia},
+	text={redundancia},
+	first={redundancia},
+	plural={redundancias},
+	firstplural={redundancias},
+	sort={redundancia},
+	description={Duplicación de componentes o datos para aumentar la confiabilidad del sistema.},
+	symbol={📦},
+	type=main
+}
+
+\newglossaryentry{rendimiento}{
+	name={Rendimiento},
+	text={rendimiento},
+	first={rendimiento},
+	plural={rendimientos},
+	firstplural={rendimientos},
+	sort={rendimiento},
+	description={Medida de la eficiencia con la que un sistema ejecuta sus operaciones.},
+	symbol={🚀},
+	type=main
+}
+
+\newglossaryentry{seguridad}{
+	name={Seguridad},
+	text={seguridad},
+	first={seguridad},
+	plural={seguridades},
+	firstplural={seguridades},
+	sort={seguridad},
+	description={Propiedad de un sistema informático orientada a proteger datos, recursos y servicios frente a accesos no autorizados, alteraciones, interrupciones o divulgación indebida, garantizando confidencialidad, integridad y disponibilidad.},
+	symbol={🔐},
+	type={general}
+}
+
+\newglossaryentry{seguridadistribuida}{
+	name={Seguridad Distribuida},
+	text={seguridad distribuida},
+	first={seguridad distribuida},
+	plural={seguridades distribuidas},
+	firstplural={seguridades distribuidas},
+	sort={seguridaddistribuida},
+	description={Enfoque de seguridad aplicado a sistemas distribuidos que protege nodos, comunicaciones y servicios mediante mecanismos coordinados de autenticación, autorización, cifrado, control de acceso y tolerancia a fallos en entornos descentralizados.},
+	symbol={🛡},
+	type={general}
+}
+
+\newglossaryentry{servicio}{
+	name={Servicio},
+	text={servicio},
+	first={servicio},
+	plural={servicios},
+	firstplural={servicios},
+	sort={servicio},
+	description={Funcionalidad ofrecida por un componente o sistema a través de una interfaz definida.},
+	symbol={🛎},
+	type=main
+}
+
+\newglossaryentry{sincrona}{
+	name={Síncrona},
+	text={síncrona},
+	first={síncrona},
+	plural={síncronas},
+	firstplural={síncronas},
+	sort={sincrona},
+	description={Característica de un proceso que requiere coordinación temporal estricta entre participantes.},
+	symbol={⏲},
+	type=main
+}
+
+\newglossaryentry{sistema}{
+	name={Sistema},
+	text={sistema},
+	first={sistema},
+	plural={sistemas},
+	firstplural={sistemas},
+	sort={sistema},
+	description={Conjunto organizado de componentes que interactúan para cumplir un objetivo común.},
+	symbol={🧠},
+	type=main
+}
+
+\newglossaryentry{sistemadistribuido}{
+	name={Sistema Distribuido},
+	text={sistema distribuido},
+	first={sistema distribuido},
+	plural={sistemas distribuidos},
+	firstplural={sistemas distribuidos},
+	sort={sistemadistribuido},
+	description={Sistema compuesto por múltiples nodos autónomos que cooperan mediante comunicación para ofrecer servicios.},
+	symbol={🌍},
+	type=main
+}
+
+\newglossaryentry{subyacente}{
+	name={Subyacente},
+	text={subyacente},
+	first={subyacente},
+	plural={subyacentes},
+	firstplural={subyacentes},
+	sort={subyacente},
+	description={Característica que describe aquello que se encuentra implícito, oculto o que sirve de base fundamental para el funcionamiento de un sistema, proceso o tecnología.},
+	symbol={⬇},
+	type={general}
+}
+
+\newglossaryentry{tecnologia}{
+	name={Tecnología},
+	text={tecnología},
+	first={tecnología},
+	plural={tecnologías},
+	firstplural={tecnologías},
+	sort={tecnologia},
+	description={Conjunto de conocimientos, técnicas, herramientas y métodos aplicados de forma sistemática para el diseño, desarrollo y operación de sistemas informáticos.},
+	symbol={🧪},
+	type={general}
+}
+
+\newglossaryentry{tecnologiasubyacente}{
+	name={Tecnología Subyacente},
+	text={tecnología subyacente},
+	first={tecnología subyacente},
+	plural={tecnologías subyacentes},
+	firstplural={tecnologías subyacentes},
+	sort={tecnologiasubyacente},
+	description={Tecnología fundamental que soporta y habilita el funcionamiento de un sistema o aplicación, incluyendo plataformas, protocolos, infraestructuras y mecanismos sobre los cuales se construyen servicios de mayor nivel.},
+	symbol={🧱},
+	type={general}
+}
+
+\newglossaryentry{toleranciafallos}{
+	name={Tolerancia a Fallos},
+	text={tolerancia a fallos},
+	first={tolerancia a fallos},
+	plural={tolerancias a fallos},
+	firstplural={tolerancias a fallos},
+	sort={toleranciafallos},
+	description={Capacidad de un sistema para continuar operando correctamente ante fallas parciales.},
+	symbol={🛡},
+	type=main
+}
+
+\newglossaryentry{tolerantefallos}{
+	name={Tolerante a Fallos},
+	text={tolerante a fallos},
+	first={tolerante a fallos},
+	plural={tolerantes a fallos},
+	firstplural={tolerantes a fallos},
+	sort={tolerantefallos},
+	description={Propiedad de un sistema diseñado para resistir fallas sin interrumpir su funcionamiento.},
+	symbol={🧱},
+	type=main
+}

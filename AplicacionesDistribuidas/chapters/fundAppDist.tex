@@ -1,0 +1,312 @@
+\chapter{Generalidades de los sistemas distribuidos}
+
+\section{Conceptos relacionados}
+\noindent
+
+El núcleo fundamental para entender los sistemas y aplicaciones distribuidas, esta formado por muchos conceptos, cada uno aportando a la eficiencia, seguridad y manejo efectivo de los recursos en entornos distribuidos. Entre los más importantes se pueden citar:
+
+\begin{itemize}
+	\item \textbf{Aplicación Distribuida:} Es un software diseñado para funcionar en un conjunto de computadoras interconectadas, pero independientes. Cada una de estas computadoras realiza una parte del trabajo, colaborando para alcanzar objetivos comunes. Las aplicaciones distribuidas son cruciales en entornos donde el procesamiento de datos y tareas requiere ser repartido entre varios nodos para mejorar el rendimiento, la escalabilidad y la disponibilidad.
+	
+	\item \textbf{Sistema Distribuido:} Consiste en un grupo de elementos independientes, como computadoras y dispositivos, que se comunican y coordinan sus acciones mediante el paso de mensajes a través de una red. La clave de estos sistemas es su transparencia: a pesar de estar distribuidos geográficamente y ser independientes, aparecen ante el usuario como un único sistema cohesivo.
+	
+	\item \textbf{Computación Distribuida:} Se refiere al uso de una red de computadoras independientes que trabajan juntas para resolver problemas complejos. En la computación distribuida, las tareas son divididas en subprocesos más pequeños, que luego son procesados en paralelo por diferentes computadoras en la red, lo que permite un procesamiento de datos más eficiente y rápido que en un solo sistema computacional.
+	
+	\item \textbf{Escalabilidad:} Refiere a la habilidad de un sistema para adaptarse y manejar un aumento en la carga de trabajo sin comprometer el rendimiento. En los sistemas distribuidos, la escalabilidad puede ser vertical (añadiendo más recursos a un nodo existente) o horizontal (añadiendo más nodos al sistema).
+	
+	\item \textbf{Tolerancia a Fallos:} Es la capacidad de un sistema para continuar operando correctamente en presencia de fallas de hardware o software. Esto se logra a través de la redundancia de componentes y la capacidad de reconfiguración automática para eludir componentes dañados.
+	
+	\item \textbf{Transparencia:} En sistemas distribuidos, la transparencia se refiere a ocultar los detalles de la distribución de los recursos y procesos del usuario. Incluye aspectos como la transparencia de ubicación, fallas, concurrencia y replicación.
+	
+	\item \textbf{Concurrencia:} Se refiere a la capacidad de un sistema para permitir que múltiples procesos o transacciones operen simultáneamente, lo cual es fundamental en entornos distribuidos para mejorar el rendimiento y la eficiencia.
+	
+	\item \textbf{Middleware:} Es una capa de software que proporciona servicios comunes y abstracciones de bajo nivel, facilitando el desarrollo de aplicaciones distribuidas al manejar detalles como la comunicación entre procesos, gestión de datos y la consistencia.
+	
+	\item \textbf{Replicación de Datos:} Es el proceso de duplicar datos en diferentes nodos de un sistema distribuido. Mejora la disponibilidad y accesibilidad de los datos, y puede ayudar a equilibrar la carga y mejorar el rendimiento del sistema.
+	
+	\item \textbf{Balanceo de Carga:} Implica la distribución inteligente de las tareas computacionales entre diferentes nodos para optimizar el uso de recursos, minimizar el tiempo de respuesta y evitar la sobrecarga de cualquier nodo individual.
+	
+	\item \textbf{Latencia de Red:} Es el tiempo de demora en la transmisión de datos a través de la red. En sistemas distribuidos, una baja latencia es crucial para asegurar que la comunicación entre los nodos sea rápida y eficiente.
+	
+	\item \textbf{Protocolo de Comunicación:} Conjunto de reglas y procedimientos para el intercambio de datos entre los nodos de un sistema distribuido. Estos protocolos aseguran que la comunicación sea efectiva, segura y eficiente.
+	
+	\item \textbf{Arquitectura Cliente-Servidor:} Modelo en el cual múltiples clientes solicitan servicios y recursos a uno o más servidores centrales. Este modelo es fundamental en muchas aplicaciones de Internet y redes internas.
+	
+	\item \textbf{Arquitectura Peer-to-Peer (P2P):} En este modelo, cada nodo o participante en la red actúa tanto como cliente como servidor, compartiendo recursos y comunicándose directamente entre sí, lo que facilita la descentralización de los servicios y recursos.
+	
+	\item \textbf{Arquitectura Orientada a Servicios (SOA):} es un enfoque de diseño de software donde las funcionalidades se encapsulan en servicios independientes, a menudo distribuidos a través de una red. Cada servicio en SOA es una unidad discreta de funcionalidad que puede ser accedida de forma remota, y que se comunica con otros servicios a través de protocolos de red estandarizados, como HTTP.
+	
+	\item \textbf{Arquitectura Orientada a Microservicios (AOM):} es un enfoque de diseño de software que estructura una aplicación como una colección de servicios pequeños y altamente desacoplados. Cada microservicio es independiente, ejecutándose en su propio proceso, y se comunica con otros microservicios a través de mecanismos ligeros, a menudo una API HTTP.
+\end{itemize}
+
+\section{Escalabilidad}
+La escalabilidad es un concepto multifacético y esencial en el ámbito de las aplicaciones y sistemas distribuidos, así como en el desarrollo de software. Es crucial distinguir entre la escalabilidad en el sentido de expansión y adaptación de infraestructuras y sistemas, y las transformaciones que ocurren en el desarrollo de las aplicaciones, incluyendo la adición de nuevas funcionalidades.
+
+Mientras que la escalabilidad en sistemas distribuidos implica la habilidad de un sistema para adaptarse y responder eficientemente a cargas de trabajo crecientes, ya sea a través de la expansión de recursos en un nodo existente (escalabilidad vertical) o añadiendo más nodos al sistema (escalabilidad horizontal), la agregación de funcionalidades se enfoca en el enriquecimiento y evolución de las capacidades de una aplicación. Este proceso de agregar nuevas características y funcionalidades es un aspecto vital del desarrollo continuo del software, impulsando su relevancia y utilidad en un entorno tecnológico en constante cambio. Al entender estas dos facetas, se puede apreciar cómo cada una contribuye a la robustez, eficiencia y sostenibilidad de las aplicaciones en el dinámico mundo de la tecnología de la información.
+
+\subsection{Definición de Escalabilidad}
+La escalabilidad es la capacidad de un sistema, red o proceso para manejar un volumen creciente de trabajo de manera efectiva o su potencial para ser ampliado para acomodar ese crecimiento. En el contexto de la tecnología de la información y el software, se refiere a la habilidad de un sistema para incrementar su capacidad de procesamiento, manejo de tráfico, o capacidad de almacenamiento en respuesta a un aumento en la demanda. Se puede hablar tanto de escalabilidad vertical y de escalabilidad horizontal. Es un aspecto crítico en el diseño de sistemas y aplicaciones, asegurando que puedan ajustarse y mantener un rendimiento óptimo a medida que cambian las necesidades y las condiciones operativas.
+
+\subsubsection{Escalabilidad Horizontal}
+Implica añadir más nodos al sistema (por ejemplo, más servidores en un cluster) para aumentar la capacidad de procesamiento o manejo de carga.
+
+\subsubsection{Escalabilidad Vertical}
+Se refiere a mejorar las capacidades de un nodo existente (como aumentar la memoria o la CPU de un servidor).
+
+\subsection{Agregación de Funcionalidades}
+La agregación de funcionalidades en el desarrollo de software se refiere al proceso de añadir nuevas características, servicios o capacidades a una aplicación o sistema existente. Esto implica expandir el conjunto de funcionalidades que el software puede ofrecer a sus usuarios, con el objetivo de mejorar la experiencia del usuario, satisfacer requisitos adicionales, incorporar nuevas tecnologías o responder a las demandas cambiantes del mercado. La agregación de funcionalidades puede variar desde pequeñas actualizaciones y mejoras hasta importantes revisiones que añaden capacidades completamente nuevas al sistema. Este proceso es un aspecto clave del ciclo de vida del desarrollo del software, contribuyendo al crecimiento y adaptación continuos de la aplicación a las necesidades emergentes y a las oportunidades de innovación.
+
+\subsubsection{Desarrollo o Evolución de la Aplicación}
+La adición de nuevas funcionalidades a una aplicación implica expandir o mejorar sus capacidades y características para satisfacer requisitos adicionales o proporcionar mayor valor a los usuarios. Esto podría incluir agregar nuevas características, mejorar la interfaz de usuario, integrar nuevos servicios, etc.
+
+\subsubsection{Impacto en la Escalabilidad}
+Aunque la adición de funcionalidades no es escalabilidad per se, puede tener implicaciones en la escalabilidad de la aplicación. Por ejemplo, las nuevas funcionalidades podrían aumentar la demanda de recursos, lo que a su vez podría requerir escalar la aplicación horizontal o verticalmente.
+
+\begin{tcolorbox}[colback=yellow!10!white, colframe=blue!50!black, title=Resumiendo, coltitle=white]
+	Mientras que la escalabilidad se enfoca específicamente en la capacidad del sistema para manejar cargas de trabajo crecientes, la agregación de funcionalidades se centra en el desarrollo del producto y en la expansión de sus capacidades. Ambos aspectos son cruciales para el éxito y la longevidad de una aplicación, pero atienden a necesidades diferentes dentro del ciclo de vida del desarrollo del software.
+\end{tcolorbox}
+
+\section{Características}
+En el estudio de las aplicaciones distribuidas, es imperativo comprender a fondo sus características distintivas. Estas características no solo definen la naturaleza y el comportamiento de las aplicaciones distribuidas, sino que también establecen los cimientos sobre los cuales se construyen y operan. A continuación, se presentan detalladamente las características clave de las aplicaciones distribuidas. Esta exposición detallada tiene como objetivo proporcionar una comprensión clara y profunda de cada característica, incluyendo su definición, relevancia en el contexto de sistemas distribuidos, y ejemplos prácticos que ilustran su aplicación en escenarios reales. Este análisis es crucial para aquellos que buscan explorar o profundizar en el campo de las aplicaciones distribuidas, ya que estas características son fundamentales para el diseño, la implementación y la operación efectiva de tales sistemas.
+
+\subsection{Concurrencia}
+
+Definición: La concurrencia en aplicaciones distribuidas se refiere a la capacidad del sistema de ejecutar múltiples procesos o transacciones al mismo tiempo, en paralelo, aprovechando el hecho de que los componentes distribuidos pueden operar simultáneamente. Esto mejora el rendimiento global y la eficiencia del sistema, permitiendo el manejo de varias tareas y solicitudes de usuarios de manera simultánea sin conflictos.
+
+La concurrencia es crucial en entornos donde el tiempo de respuesta y el manejo eficiente de múltiples tareas simultáneas son esenciales. Esto implica un diseño cuidadoso para evitar problemas como el bloqueo de datos y las condiciones de carrera.
+
+Por ejemplo, se puede imaginar una oficina de correos con varios mostradores. Cada mostrador representa un nodo en una aplicación distribuida, y cada cliente siendo atendido en un mostrador es similar a un proceso en ejecución. Así como varios mostradores pueden atender a varios clientes a la vez, en las aplicaciones distribuidas, múltiples nodos pueden manejar diferentes tareas al mismo tiempo.
+
+Para mejor comprensión, la concurrencia se puede asemejar a una orquesta donde cada músico (nodo) toca su parte de manera sincronizada con los demás, pero cada uno es responsable de su propio instrumento (proceso).
+
+\subsection{Escalabilidad}
+
+La escalabilidad en aplicaciones distribuidas es la capacidad del sistema para adaptarse y manejar un incremento en la carga de trabajo añadiendo recursos (como hardware o capacidad de procesamiento) de manera eficiente. La escalabilidad puede ser horizontal, donde se añaden más nodos al sistema, o vertical, donde se mejoran los recursos de los nodos existentes.
+
+Un sistema escalable puede atender a un número creciente de usuarios o gestionar una mayor cantidad de datos sin degradar el rendimiento, lo que es especialmente importante en aplicaciones con demandas de uso fluctuantes.
+
+Se puede considera un servicio de streaming de video que debe adaptarse a un número cada vez mayor de usuarios. Al igual que un servicio de streaming puede añadir más servidores para manejar más usuarios, una aplicación distribuida puede aumentar su capacidad añadiendo más nodos. Es como expandir una red de carreteras para acomodar más tráfico; a medida que aumenta el número de vehículos, se construyen más carriles o carreteras.
+
+\subsection{Tolerancia a Fallos}
+
+La tolerancia a fallos en un sistema distribuido se refiere a la capacidad del sistema para continuar funcionando correctamente y ofrecer sus servicios esperados, incluso cuando uno o varios de sus componentes fallan. Esto se logra mediante redundancia, donde múltiples instancias de componentes críticos garantizan que la falla de uno no paralice el sistema.
+
+La implementación efectiva de la tolerancia a fallos implica estrategias como replicación de datos, conmutación por error y sistemas de recuperación para asegurar la continuidad del servicio en caso de fallos inesperados.
+
+Por ejemplo, en un sistema de reservas de vuelo, si uno de los servidores falla, otro servidor puede tomar su lugar para asegurar que el sistema siga funcionando. La tolerancia a fallos es como un equipo de remo en el que si uno de los remeros se cansa o se detiene, los demás remeros mantienen el bote en movimiento.
+
+\subsection{Transparencia}
+
+La transparencia en sistemas distribuidos implica ocultar la complejidad y las características de distribución del sistema a los usuarios y programadores. Esto incluye transparencia de ubicación (ocultar dónde están ubicados los recursos), transparencia de fallos (ocultar fallos y recuperaciones de componentes), y transparencia de replicación (ocultar que los recursos están replicados).
+
+La transparencia es esencial para simplificar el diseño, el desarrollo y la interacción del usuario con el sistema, haciendo que la compleja red de componentes distribuidos parezca un único sistema unificado y coherente.
+
+Un ejemplo claro de la transparencia, es cuando se usa un motor de búsqueda como Google, no se necesita saber en qué servidor específico se está procesando tu consulta. Es como ver una película en el cine; se disfruta de la película sin necesidad de entender la complejidad técnica detrás de la proyección.
+
+\subsection{Independencia de Recursos}
+
+La independencia de recursos en un sistema distribuido significa que cada componente opera de forma autónoma con sus propios recursos. Aunque los componentes trabajan juntos para lograr un objetivo común, cada uno realiza sus operaciones utilizando sus propios recursos computacionales y de almacenamiento.
+
+Esta independencia facilita la modularidad y flexibilidad del sistema, permitiendo que cada componente sea desarrollado, mantenido, y escalado independientemente de los demás.
+
+Por ejemplo, en una red de sensores para el monitoreo del clima, cada sensor opera independientemente recogiendo datos, pero contribuye a un entendimiento global del clima. Análogo a una colmena donde cada abeja realiza su tarea, pero todas juntas contribuyen al bienestar de la colmena.
+
+\subsection{Comunicación a través de la Red}
+
+En aplicaciones distribuidas, la comunicación entre los diferentes componentes y nodos del sistema se realiza a través de una red. Esto involucra el intercambio de datos y mensajes utilizando protocolos de red estandarizados y mecanismos de comunicación eficientes para coordinar las operaciones y procesos entre los nodos distribuidos.
+
+La eficacia de la comunicación en red es crucial para el rendimiento y la fiabilidad del sistema distribuido, y debe gestionarse cuidadosamente para manejar aspectos como la latencia, el ancho de banda y la seguridad de los datos transmitidos.
+
+Un ejemplo claro son los cajeros automáticos de un banco que se comunican con el servidor central del banco a través de una red para validar transacciones. Similar a lo que sucede con el servicio postal, donde diferentes oficinas de correos (nodos) se comunican enviando cartas (mensajes) a través de la red de servicios postales.
+
+\begin{tcolorbox}[colback=yellow!10!white, colframe=blue!50!black, title=Resumiendo, coltitle=white]
+	Cada una de estas características aporta a la robustez, eficiencia y flexibilidad de las aplicaciones distribuidas, permitiendo que se adapten a una variedad de necesidades y escenarios en el mundo real. Entender estas características es esencial para cualquier persona interesada en el campo de las aplicaciones distribuidas.
+\end{tcolorbox}
+
+\section{Clasificación y tipos}
+
+La clasificación de las aplicaciones distribuidas puede realizarse desde diversos puntos de vista, cada uno centrado en aspectos distintos de su estructura, funcionamiento y propósito. A continuación, se presenta una clasificación desde varios puntos de vista relevantes:
+
+\subsection{Según la Arquitectura de Aplicación}
+
+\subsubsection{Cliente-Servidor}
+Donde los clientes hacen solicitudes a servidores centralizados que procesan y devuelven la información.
+
+Este modelo se basa en la relación entre clientes que solicitan recursos o servicios y servidores que los proveen. Los servidores pueden contener recursos como bases de datos, archivos, o programas que procesan las solicitudes de los clientes.
+
+Un ejemplo común es una aplicación web donde el navegador (cliente) solicita páginas web a un servidor web, que las procesa y devuelve los resultados.
+
+\subsubsection{Peer-to-Peer (P2P)}
+Cada nodo en la red actúa tanto como cliente como servidor, compartiendo recursos y comunicación de manera directa. En P2P, cada nodo de la red funciona tanto como cliente como servidor. Este modelo es eficaz para compartir recursos y datos de manera descentralizada.
+
+Las redes de intercambio de archivos, donde los usuarios comparten y descargan archivos directamente entre sí, sin la necesidad de un servidor central, son un ejemplo claro de aplicaciones P2P.
+
+\subsubsection{Basadas en Microservicios}
+Aplicaciones compuestas por servicios pequeños, independientes y acoplados de manera flexible. Los microservicios son pequeñas, independientes y modularmente desplegadas. Facilitan el desarrollo ágil, permitiendo actualizaciones y mejoras rápidas en componentes específicos sin afectar el sistema en su conjunto.
+
+Un ejemplo de este tipo de aplicaciones son las aplicaciones de comercio electrónico donde diferentes servicios gestionan el inventario, el procesamiento de pedidos y la interfaz de usuario.
+
+\subsubsection{Multicapa o N-Tier}
+Aplicaciones divididas en capas (presentación, lógica de negocio, datos), cada una potencialmente distribuida en diferentes servidores o nodos.
+
+\subsection{Según el Tipo de Tarea Realizada}
+
+\subsubsection{Procesamiento de Transacciones}
+Como sistemas bancarios y comercio electrónico, que manejan transacciones de datos en tiempo real. Estos sistemas están diseñados para manejar transacciones en tiempo real, asegurando la integridad y la confiabilidad de los datos en entornos donde se realizan múltiples operaciones simultáneamente.
+
+Por Ejemplo, los sistemas de gestión de reservas en aerolíneas, donde las reservas, cancelaciones y cambios se procesan en tiempo real.
+
+\subsubsection{Sistemas de Bases de Datos Distribuidas} 
+Donde la gestión y almacenamiento de datos se distribuye entre varios nodos. Estos sistemas distribuyen el almacenamiento y procesamiento de datos entre múltiples nodos, mejorando la accesibilidad, el rendimiento y la redundancia.
+
+Por ejemplo las bases de datos en sistemas bancarios que permiten transacciones simultáneas y consistentes en múltiples ubicaciones, son bases de datos distribuidas.
+
+\subsubsection{Sistemas de Archivos Distribuidos}
+Permiten el acceso y manejo de archivos distribuidos a través de una red. Proporcionan acceso unificado a archivos que están distribuidos en varios servidores. Estos sistemas garantizan la consistencia y la eficiencia en el acceso a los datos. Ejemplo: Google Drive, donde los usuarios pueden acceder y editar archivos almacenados en múltiples servidores a través de Internet.
+
+\subsubsection{Computación en la Nube}
+La computación en la nube proporciona una variedad de servicios esenciales, como cómputo, almacenamiento y acceso a aplicaciones, todos accesibles a través de Internet. Este modelo permite a los usuarios acceder a recursos extensivos según sus necesidades específicas y pagar únicamente por los servicios que utilizan. Un ejemplo destacado de proveedor de estos servicios es Amazon Web Services (AWS), que ofrece desde alojamiento de sitios web hasta soluciones avanzadas de análisis de big data. AWS se ha establecido como un líder en el ámbito de la computación en la nube, ofreciendo una diversidad de herramientas y plataformas que abarcan una amplia gama de aplicaciones y necesidades empresariales.
+
+\subsubsection{Sistemas de telemedicina}
+Utilizan aplicaciones distribuidas para conectar a pacientes con profesionales médicos a distancia, permitiendo diagnósticos, consultas y seguimientos a través de redes. Ejemplo: Plataformas de teleconsultas médicas, donde los pacientes pueden recibir asesoramiento médico desde la comodidad de su hogar.
+
+\subsection{Según la Escala de Distribución}
+En la clasificación de aplicaciones distribuidas según su escala de distribución, se distinguen dos categorías fundamentales: los sistemas distribuidos locales y los sistemas distribuidos globales o descentralizados. Esta distinción se basa en la amplitud geográfica sobre la que los sistemas operan y cómo esta influencia afecta su diseño, funcionamiento y objetivos. Mientras que los sistemas locales se concentran en áreas restringidas, los globales abarcan una red extensa, a menudo internacional, proporcionando una perspectiva única sobre la escalabilidad y la gestión de recursos.
+
+\subsubsection{Sistemas Distribuidos Locales}
+Estos sistemas funcionan dentro de una red local o un área geográfica limitada. Son ideales para aplicaciones que requieren una rápida interacción y coordinación de componentes dentro de un entorno cerrado, como un edificio corporativo o un campus universitario.
+
+\subsubsection{Sistemas Distribuidos Globales o Descentralizados}
+Operan a través de distancias más extensas, aprovechando redes mundiales como Internet. Estos sistemas son eficientes para conectar usuarios y recursos distribuidos globalmente, ofreciendo soluciones a gran escala, como los servicios de comercio electrónico o redes sociales.
+
+\subsection{Según el Nivel de Acoplamiento}
+La categorización de los sistemas distribuidos según su nivel de acoplamiento se centra en cómo los componentes individuales del sistema interactúan y dependen unos de otros. El acoplamiento fuerte implica una interdependencia significativa entre componentes, mientras que el acoplamiento débil o desacoplamiento destaca la independencia y la modularidad. Esta clasificación es crucial para comprender cómo los cambios en un componente pueden afectar al resto del sistema y cómo se maneja la integración y la flexibilidad en diferentes arquitecturas de aplicaciones.
+
+\subsubsection{Acoplamiento Fuerte}
+En estos sistemas, los componentes están estrechamente interconectados y dependen significativamente unos de otros. A menudo, los cambios en un componente pueden requerir cambios en otros, lo que los hace ideales para aplicaciones donde la integración y la coherencia son críticas.
+
+\subsubsection{Acoplamiento Débil o Desacoplamiento}
+Caracterizados por componentes más independientes que interactúan a través de interfaces bien definidas y estandarizadas. Esta independencia facilita la flexibilidad y la escalabilidad, permitiendo que los componentes se desarrollen y mantengan de manera más autónoma.
+
+\subsection{Según el Modelo de Consistencia de Datos}
+El modelo de consistencia de datos en aplicaciones distribuidas es un aspecto fundamental que afecta la forma en que los datos son accesibles y manejados a través de múltiples nodos. La consistencia estricta asegura que todos los nodos vean los mismos datos simultáneamente, mientras que la consistencia eventual permite cierta latencia en la sincronización de datos entre nodos. La elección entre estos modelos tiene implicaciones profundas en términos de rendimiento, tolerancia a fallos y experiencia del usuario final.
+
+\subsubsection{Consistencia Estricta}
+En este modelo, todos los nodos del sistema ven los mismos datos al mismo tiempo. Es crucial para aplicaciones que requieren una visión unificada y precisa de los datos, como los sistemas de procesamiento de transacciones en tiempo real.
+
+\subsubsection{Consistencia Eventual}
+Permite desviaciones temporales en la consistencia de los datos entre los nodos. Aunque los nodos pueden no estar sincronizados en todo momento, eventualmente alcanzarán un estado consistente. Es útil en aplicaciones donde la disponibilidad y la tolerancia a fallos son más importantes que la coherencia inmediata de los datos.
+
+\subsection{Según la Naturaleza del Uso}
+La clasificación de aplicaciones distribuidas según la naturaleza de su uso divide los sistemas en dos categorías principales: de propósito general y específicos del dominio. Los sistemas de propósito general, como los sistemas operativos distribuidos y middleware, ofrecen una amplia gama de funcionalidades aplicables a una variedad de aplicaciones. Por otro lado, los sistemas específicos del dominio están diseñados para satisfacer requisitos particulares en áreas especializadas, como las telecomunicaciones o el monitoreo ambiental.
+
+\subsubsection{De Propósito General}
+Incluyen sistemas operativos distribuidos y middleware que proporcionan funcionalidades generales para una amplia gama de aplicaciones. Estos sistemas son la base para el desarrollo de aplicaciones distribuidas más específicas, ofreciendo una amplia gama de servicios y recursos.
+
+\subsubsection{Específicos del Dominio}
+Diseñados para satisfacer las necesidades específicas de ciertos dominios, como sistemas de telecomunicaciones, redes de sensores o sistemas de monitoreo ambiental. Estos sistemas están optimizados para tareas y entornos particulares, proporcionando soluciones especializadas.
+
+\subsection{Según el Modelo de Comunicación}
+El modelo de comunicación es un criterio esencial en la clasificación de sistemas distribuidos, diferenciando entre comunicación síncrona y asíncrona. La comunicación síncrona se basa en un intercambio de mensajes en tiempo real, lo que es esencial para tareas que requieren una sincronización y coordinación inmediatas. La comunicación asíncrona, por otro lado, permite una mayor flexibilidad y eficiencia en el manejo de tareas independientes y es fundamental en aplicaciones donde los procesos no necesitan una respuesta instantánea.
+
+\subsubsection{Comunicación Síncrona}
+Los nodos en este modelo se comunican mediante un intercambio de mensajes en tiempo real, con una espera activa de respuestas inmediatas. Es esencial en situaciones donde la coordinación y la sincronización instantánea son cruciales.
+
+\subsubsection{Comunicación Asíncrona}
+En este enfoque, los nodos se comunican sin esperar respuestas inmediatas, lo que permite a los procesos continuar su ejecución mientras esperan la comunicación. Esta modalidad es clave para aplicaciones donde la eficiencia y la independencia de los procesos son prioritarias.
+
+Cada uno de estos puntos de vista ofrece una perspectiva única sobre las aplicaciones distribuidas, destacando la diversidad y la amplitud de este campo. Entender estas clasificaciones ayuda a los ingenieros de software y a los arquitectos de sistemas a diseñar soluciones que mejor se adapten a las necesidades específicas de cada situación.
+
+\section{Diferencias entre Paradigmas y Arquitecturas de Sistemas Distribuidos}
+Los paradigmas y las arquitecturas de los sistemas distribuidos son dos aspectos fundamentales en el diseño y la implementación de estos sistemas. Aunque están estrechamente relacionados, tienen diferencias clave y también comparten ciertas similitudes.
+
+\subsection{Enfoque y Alcance}
+En la exploración de las aplicaciones distribuidas, la distinción entre paradigma y arquitectura, particularmente en lo que respecta a su enfoque y alcance, es de suma importancia. Mientras que el paradigma proporciona una base para el modelo operativo y los patrones de interacción, delineando cómo se comunican y colaboran los elementos del sistema, la arquitectura ofrece una perspectiva de la disposición y estructura del sistema. Esta sección se adentra en cómo el enfoque y alcance de cada uno de estos aspectos desempeñan un papel vital en la definición de las capacidades y el funcionamiento general de las aplicaciones distribuidas, resaltando su importancia en el diseño integral del sistema.
+
+\subsubsection{Paradigmas}
+Se enfocan en el modelo de comunicación y la interacción entre los componentes del sistema. Los paradigmas abordan cómo los diferentes nodos del sistema se conectan y cooperan para realizar tareas, como en los modelos Cliente-Servidor o Peer-to-Peer.
+
+\subsubsection{Arquitecturas}
+Tratan la estructura y organización del sistema. Las arquitecturas definen la disposición de los componentes del sistema, cómo se dividen las responsabilidades y cómo se estructura el software, como en las arquitecturas basadas en microservicios o sistemas multicapa.
+
+\subsection{Orientación}
+La diferenciación entre el paradigma y la arquitectura en aplicaciones distribuidas, especialmente en términos de su orientación, es un aspecto crucial que incide profundamente en su desarrollo y rendimiento. El paradigma, enfocado en las técnicas de interacción y comunicación, establece el marco para cómo los componentes del sistema interactúan y procesan información. En contraste, la arquitectura se enfoca en cómo estos componentes están organizados y se relacionan entre sí dentro del sistema. Esta distinción es esencial para entender la eficacia con la que un sistema puede ser organizado, mantenido y evolucionado, y las siguientes páginas explorarán estas diferencias para arrojar luz sobre su impacto en la funcionalidad y eficiencia de las aplicaciones distribuidas.
+
+\subsubsection{Paradigmas}
+Son más orientados a la metodología de interacción y comunicación en el sistema.
+
+\subsubsection{Arquitecturas}
+Están más orientadas a la disposición física y lógica de los componentes del sistema y su organización.
+
+\subsection{Flexibilidad y Cambio}
+Al considerar las aplicaciones distribuidas, es imperativo comprender cómo los paradigmas y las arquitecturas influyen en la flexibilidad del sistema y su capacidad para adaptarse a los cambios. Mientras que el paradigma determina la flexibilidad operativa y la capacidad de adaptación a nuevas formas de interacción y procesamiento, la arquitectura dicta cómo los cambios estructurales pueden ser incorporados dentro del sistema. Esta sección se dedicará a examinar cómo cada uno de estos componentes críticos facilita o restringe la capacidad del sistema para evolucionar y responder a nuevos requerimientos o tecnologías, subrayando su relevancia en el mantenimiento y la actualización efectiva de los sistemas distribuidos.
+
+\subsubsection{Paradigmas}
+Cambiar el paradigma de un sistema distribuido a menudo implica una reorganización fundamental de cómo los nodos interactúan.
+
+\subsubsection{Arquitecturas}
+La arquitectura puede ser más flexible y permitir ajustes y cambios sin alterar completamente la metodología subyacente de comunicación del sistema.
+
+\section{Semejanzas entre Paradigmas y Arquitecturas de Sistemas Distribuidos}
+Al abordar el complejo mundo de las aplicaciones distribuidas, es esencial reconocer no solo las diferencias, sino también las semejanzas fundamentales entre los paradigmas y las arquitecturas que rigen estos sistemas. Aunque cada uno desempeña un papel distinto en la estructuración y operación de las aplicaciones, existen puntos de convergencia clave que subyacen a su éxito y eficacia. Estas semejanzas, a menudo pasadas por alto, proporcionan una visión integral de cómo los sistemas distribuidos pueden ser diseñados y optimizados para funcionar de manera cohesiva y eficiente. En la siguiente sección, se explorarán estas similitudes, destacando cómo la combinación de enfoques estratégicos y estructurales contribuye al desarrollo robusto y al funcionamiento armónico de las aplicaciones distribuidas, desempeñando un papel crucial en la consecución de objetivos comunes como la escalabilidad, la flexibilidad y la tolerancia a fallos.
+
+\subsection{Objetivo de Diseño Eficiente}
+Ambos buscan diseñar sistemas distribuidos eficientes y efectivos, aunque desde diferentes perspectivas (comunicación vs. estructura).
+
+\subsection{Necesidad de Escalabilidad y Tolerancia a Fallos}
+Tanto los paradigmas como las arquitecturas se centran en crear sistemas que sean escalables y tolerantes a fallos, aspectos clave en los sistemas distribuidos.
+
+\subsection{Uso en Ambientes Distribuidos}
+Ambos se aplican en entornos donde los recursos y procesos están distribuidos física o lógicamente.
+
+\subsection{Influencia en el Rendimiento y Mantenibilidad}
+La elección tanto del paradigma como de la arquitectura tiene un impacto significativo en el rendimiento global del sistema y en su mantenibilidad.
+
+\begin{tcolorbox}[colback=yellow!10!white, colframe=blue!50!black, title=Resumiendo, coltitle=white]
+	Mientras que los paradigmas de los sistemas distribuidos se centran en cómo los componentes del sistema interactúan y comunican, las arquitecturas tratan sobre la estructura organizativa y la disposición de estos componentes. Sin embargo, ambos son cruciales para el diseño efectivo de sistemas distribuidos y a menudo deben considerarse en conjunto para lograr un sistema cohesivo y funcional.
+\end{tcolorbox}
+
+\section{Paradigmas de los sistemas distribuidos}
+Los paradigmas de los sistemas distribuidos representan los enfoques fundamentales o modelos sobre los cuales se construyen y operan estos sistemas. Cada paradigma aborda cómo los componentes del sistema interactúan, se coordinan y gestionan los recursos y los datos. Aquí se presentan algunos de los paradigmas clave en los sistemas distribuidos.
+
+\subsection{Paradigma Cliente-Servidor}
+
+Este es uno de los paradigmas más comunes y tradicionales en los sistemas distribuidos. En este modelo, los clientes solicitan servicios o recursos a los servidores, que luego procesan estas solicitudes y devuelven los resultados. Es un modelo de comunicación unidireccional donde los servidores son proveedores pasivos de recursos o servicios.
+
+En sus aplicaciones se pueden mencionar: Aplicaciones web, servicios de correo electrónico, bases de datos en línea.
+
+\subsection{Paradigma Peer-to-Peer (P2P)}
+En el paradigma P2P, cada nodo en la red actúa tanto como cliente como servidor. Este modelo promueve una arquitectura descentralizada donde los nodos comparten recursos entre sí directamente, sin la necesidad de un servidor central.
+
+Las principales aplicaciones de P2P se encuentran: Redes de compartición de archivos, criptomonedas, comunicaciones descentralizadas.
+
+\subsection{Paradigma Basado en Espacios de Tuplas}
+Este paradigma utiliza un espacio de tuplas como medio para la comunicación entre los procesos. Los procesos pueden escribir, leer y tomar tuplas (conjuntos de datos ordenados) en un espacio compartido que es accesible por todos los nodos en la red.
+
+Las aplicaciones basado en espacios de tuplas se encuentran los sistemas de coordinación, aplicaciones de procesamiento de datos distribuidos.
+
+\subsection{Paradigma de Publicación/Suscripción}
+Este modelo se centra en la difusión de información a múltiples receptores. Los productores de datos publican mensajes en temas, y los consumidores se suscriben a los temas de su interés. Cuando se publica un mensaje en un tema, todos los suscriptores de ese tema lo reciben.
+
+En Java se pueden implementar utilizando la API JMS (Java Message Service). Las principales aplicaciones de este paradigma son: Sistemas de mensajería, notificaciones en tiempo real, feeds de noticias.
+
+\subsection{Modelo de Colas de Mensajes}
+
+Este paradigma utiliza colas para la gestión de mensajes entre productores y consumidores. Los mensajes se almacenan en colas hasta que pueden ser procesados, lo que ayuda a desacoplar los procesos productores y consumidores.
+
+Entre las aplicaciones de este paradigma se pueden citar a los sistemas de procesamiento de transacciones, sistemas de gestión de colas, middleware orientado a mensajes. En java se pueden implementar usando la misma API que se utiliza para implementar el paradigma \textit{Publicación/Suscripción}.
+
+\subsection{Modelo de Solicitud de Servicio}
+
+El paradigma modelo de solicitud de servicio, los clientes emiten solicitudes de servicios a través de la red y esperan respuestas. Es similar al cliente-servidor, pero con énfasis en la solicitud y prestación de servicios específicos, a menudo a través de interfaces de programación de aplicaciones (APIs).
+
+Entre los modelos de solicitud de servicio se pueden citar a: Servicios web RESTful, microservicios, APIs de software.
+
+\subsection{Computación en la Nube}
+Aunque más un modelo de entrega que un paradigma de comunicación, la computación en la nube es central en los sistemas distribuidos modernos. Ofrece recursos de computación, almacenamiento y aplicaciones como servicios a través de Internet, basados en la demanda y el pago por uso.
+
+Entre los servicios de computación en la nube se pueden citar: Software como servicio (SaaS), Infraestructura como servicio (IaaS) y Plataforma como servicio (PaaS).
+
+Cada uno de estos paradigmas ofrece una metodología distinta para abordar los desafíos inherentes a los sistemas distribuidos, como la coordinación, la comunicación y la gestión de datos. La elección del paradigma adecuado depende de los requisitos específicos del sistema, su escala, y el entorno operativo.
+
+

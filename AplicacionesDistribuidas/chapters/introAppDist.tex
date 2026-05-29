@@ -1,0 +1,387 @@
+\chapter{Introducción a las aplicaciones distribuidas}
+\noindent
+Las aplicaciones distribuidas representan un pilar fundamental en el desarrollo de software moderno, desempeñando un rol crucial en la manera en que los sistemas informáticos interactúan y colaboran en un entorno globalizado y digitalizado. En este capítulo, se abordarán los conceptos clave relacionados con las aplicaciones distribuidas, proporcionando un marco comprensivo para los estudiantes de Ingeniería de Software que buscan profundizar su entendimiento en esta temática vital.
+
+\section{¿Qué son las aplicaciones distribuidas?}
+\noindent
+Para entender las aplicaciones distribuidas, es fundamental examinar sus características, estructura y modelos de comunicación \cite{Wang2017127}. En la Tabla \ref{tab:DistAppItems}, se presentan los elementos esenciales que conforman estas aplicaciones.
+
+\noindent
+\begin{table}[htbp]
+	\centering
+	\caption{Elementos fundamentales de las aplicaciones distribuidas}
+	\label{tab:DistAppItems}
+	\begin{tabularx}{\textwidth}{l X X}
+		\toprule
+		\textbf{Nombre} & \textbf{Descripción} & \textbf{Referencias} \\
+		\midrule
+		\Gls{arquitecturadistribuida} &
+		Modelo de diseño en el que los \glspl{componente} del sistema se ejecutan en múltiples \glspl{nodo} \glspl{interconectado}, cooperando mediante comunicación en red para ofrecer \glspl{servicio} \glspl{escalable} y \glspl{tolerantefallos}. &
+		\cite{Tanenbaum2023Distributed,Coulouris2011Distributed}\\
+		
+		\Gls{comunicacionprocesos} &
+		Mecanismos que permiten el intercambio de mensajes y datos entre componentes distribuidos, incluyendo comunicación \gls{sincrona} y \gls{asincrona} mediante \glspl{protocoloestandarizado}. &
+		\cite{Coulouris2011Distributed,Birman2012Guide} \\
+		
+		\Gls{escalabilidad} &
+		Capacidad del \gls{sistemadistribuido} para incrementar su \gls{rendimiento} y \gls{disponibilidad} al añadir \glspl{recursocomputacional}, sin afectar negativamente su funcionamiento global. &
+		\cite{Kleppmann2022Designing,Newman2021Microservices} \\
+		
+		\Gls{toleranciafallos} &
+		Habilidad del \gls{sistema} para continuar operando correctamente ante fallos parciales de nodos, redes o \glspl{servicio}, mediante \gls{redundancia} y \glspl{mecanismorecuperacion}. &
+		\cite{Tanenbaum2023Distributed,Birman2012Guide} \\
+		
+		\Gls{consistenciadatos} &
+		Propiedad que garantiza que los datos compartidos entre nodos distribuidos mantengan coherencia, considerando modelos como consistencia fuerte, eventual o causal. &
+		\cite{Kleppmann2022Designing,Coulouris2011Distributed} \\
+		
+		\Gls{seguridadistribuida} &
+		Conjunto de mecanismos para proteger la comunicación, los datos y los servicios en entornos distribuidos, incluyendo autenticación, autorización y cifrado. &
+		\cite{Stallings2022Network,Fernandes2021Security} \\
+		
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\subsection{Definición}
+\noindent
+Una aplicación distribuida se define como un sistema de software diseñado para dividir el trabajo entre múltiples componentes que pueden residir en diferentes ubicaciones geográficas, pero que colaboran y se comunican entre sí para lograr un objetivo común \cite{Zeng2012distributed,Urquhart2021flow}. Estas aplicaciones están diseñadas para mejorar la eficiencia, la escalabilidad y la disponibilidad de los servicios de software \cite{Litiu2001,Barcellos1994hetnos}.
+
+Esta definición engloba varios elementos clave que se describen a continuación:
+
+\begin{enumerate}
+	\item \textbf{Sistema de software}: 
+	Un conjunto de programas de computadora, procedimientos, reglas y documentación asociada que participan en las operaciones de procesamiento de datos de un sistema computacional \cite{Ekenstedt2023}.
+	
+	\item \textbf{Componentes}: 
+	Unidades individuales de software que realizan funciones específicas dentro de una aplicación. En una aplicación distribuida, estos componentes pueden residir en diferentes ubicaciones geográficas y comunicarse entre sí a través de una red \cite{Zeng2012distributed}.
+	
+	\item \textbf{Ubicaciones geográficas}: 
+	Las ubicaciones físicas en las que residen los componentes de una aplicación distribuida. Estas ubicaciones pueden variar desde diferentes servidores en un mismo centro de datos hasta servidores ubicados en diferentes partes del mundo \cite{Zeng2012distributed}.
+	
+	\item \textbf{Colaboración y se comunicación}: 
+	Los componentes de una aplicación distribuida trabajan juntos, compartiendo datos e información a través de una red, para lograr un objetivo común \cite{Urquhart2021flow}.
+	
+	\item \textbf{Objetivo común}: 
+	El propósito principal de una aplicación distribuida. Todos los componentes trabajan en conjunto para alcanzar este objetivo \cite{Kanjula2023distributed}.
+	
+	\item \textbf{Eficiencia}: 
+	La capacidad de una aplicación distribuida para utilizar los recursos de manera óptima y realizar las tareas de manera más rápida y eficaz \cite{Cai2023distributed}.
+	
+	\item \textbf{Escalabilidad}: 
+	La capacidad de una aplicación distribuida para manejar un crecimiento en la carga de trabajo, agregando más recursos o componentes sin afectar el rendimiento del sistema \cite{Priyeshkumar2019scalable}.
+	
+	\item \textbf{Disponibilidad}: 
+	La capacidad de una aplicación distribuida para estar operativa y accesible durante el máximo tiempo posible, minimizando los tiempos de inactividad y maximizando la productividad \cite{Melo2021distributed}.
+\end{enumerate}
+
+			\subsection{Arquitectura}
+				\noindent
+				La arquitectura en las aplicaciones distribuidas constituye el eje estructural que define la organización, interacción y coordinación de los componentes de un sistema que opera sobre múltiples nodos interconectados \cite{Tanenbaum2023Distributed,Coulouris2011Distributed}. Su diseño no se limita a una disposición técnica de módulos, sino que establece los principios que gobiernan la distribución de responsabilidades, la comunicación entre procesos, la gestión de datos y la evolución del sistema a lo largo de su ciclo de vida \cite{Kleppmann2022Designing}. Una arquitectura bien definida permite que el sistema mantenga coherencia funcional y operativa aun cuando sus elementos se ejecutan en entornos heterogéneos y geográficamente dispersos.
+				
+				Desde una perspectiva estructural, la arquitectura distribuida promueve la descomposición del sistema en componentes relativamente autónomos, cada uno con responsabilidades claramente delimitadas \cite{Newman2021Microservices}. Esta descomposición favorece la modularidad, el desacoplamiento y la reutilización, facilitando la incorporación de nuevas funcionalidades o la sustitución de componentes sin comprometer el funcionamiento global. En este contexto, patrones arquitectónicos como cliente-servidor, arquitecturas multicapa, orientadas a servicios o basadas en microservicios proporcionan marcos conceptuales que permiten organizar el sistema de manera escalable y mantenible \cite{Coulouris2011Distributed}.
+				
+				La arquitectura también cumple un papel central en la materialización del sistema en entornos de ejecución reales. Las decisiones arquitectónicas influyen directamente en la forma en que los componentes son instanciados, configurados y distribuidos en infraestructuras físicas o virtuales \cite{Tanenbaum2023Distributed}. Aspectos como la asignación de servicios a nodos específicos, el balanceo de carga, la replicación de componentes y la gestión de dependencias son consecuencia directa del modelo arquitectónico adoptado. En este sentido, la arquitectura actúa como un puente entre el diseño conceptual del sistema y su puesta en operación efectiva.
+				
+				Asimismo, la arquitectura condiciona la manera en que el sistema se adapta a cambios en la demanda o en el entorno operativo. La capacidad de escalar horizontal o verticalmente, de aislar fallos y de recuperarse ante interrupciones parciales depende en gran medida de cómo se han definido las interacciones entre componentes y de qué mecanismos de coordinación y supervisión se han incorporado \cite{Kleppmann2022Designing}. Una arquitectura distribuida sólida permite que el sistema continúe prestando sus servicios de forma consistente, incluso ante condiciones adversas o incrementos significativos de carga.
+				
+				En términos de interacción con el sistema, la arquitectura influye de forma indirecta en la percepción de calidad, rendimiento y disponibilidad. Aunque estos aspectos se manifiestan en niveles superiores, su origen se encuentra en decisiones arquitectónicas relacionadas con la ubicación de los servicios, la latencia de las comunicaciones, la consistencia de los datos y la gestión de concurrencia \cite{Stallings2022Network}. Una arquitectura adecuada contribuye a que el sistema ofrezca respuestas oportunas, comportamiento predecible y continuidad operativa, independientemente de la complejidad interna de su implementación.
+				
+				La \gls{arquitectura} en las \glspl{aplicaciondistribuida} debe concebirse como una estructura flexible y evolutiva, capaz de adaptarse a cambios en los requisitos, en las \glspl{tecnologiasubyacente} y en las condiciones de operación \cite{Tanenbaum2023Distributed,Newman2021Microservices}. Un enfoque arquitectónico que contemple la modificación progresiva de \glspl{componente}, la incorporación de nuevos \glspl{servicio} y la reconfiguración de interacciones permite preservar la \gls{estabilidad} del \gls{sistema} sin comprometer su coherencia interna. Esta capacidad de adaptación controlada resulta esencial para sostener la \gls{operatividadsistema} a largo plazo y para asegurar su alineación permanente con las necesidades organizacionales y técnicas que motivaron su desarrollo.
+				
+				La diversidad de \glspl{enfoquearquitectonico} empleados en las aplicaciones distribuidas responde a distintos contextos de uso, restricciones técnicas y objetivos de diseño. Cada arquitectura adopta supuestos específicos respecto a la distribución de componentes, los mecanismos de comunicación, la gestión de datos y la tolerancia a fallos. En consecuencia, resulta necesario analizar las arquitecturas más representativas utilizadas en este dominio, con el fin de comprender sus características, alcances y condiciones de aplicación en sistemas distribuidos contemporáneos.
+				
+			\subsection{Arquitecturas de Sistemas Distribuidos}
+			\noindent
+			
+				\subsubsection{Arquitectura Cliente-Servidor}
+				\noindent
+					En la arquitectura Cliente-Servidor, los componentes fundamentales son los clientes y los servidores. El cliente es el elemento que inicia la comunicación, solicitando servicios o recursos al servidor. El servidor, por su parte, es el componente que recibe y procesa las solicitudes del cliente, y envía una respuesta de vuelta al cliente \cite{Francisco2021}. Este tipo de arquitectura es prevalente en aplicaciones web, donde los navegadores web actúan como clientes que solicitan páginas y servicios a servidores web. La comunicación entre el cliente y el servidor se realiza a través de protocolos de red, siendo el HTTP uno de los más comunes \cite{Colaso2019accuracy,Francisco2021}.
+					
+					La arquitectura cliente–servidor constituye uno de los estilos fundamentales sobre los cuales se han construido históricamente los sistemas distribuidos. En este enfoque, la funcionalidad del sistema se organiza alrededor de componentes que solicitan servicios y componentes que los proporcionan, estableciendo una relación asimétrica claramente definida. La literatura clásica y contemporánea coincide en que este modelo simplifica la estructuración inicial de sistemas distribuidos al separar explícitamente la provisión de servicios del consumo de los mismos, lo que facilita su comprensión, diseño y evolución controlada \cite{Tanenbaum2023Distributed,Coulouris2011Distributed}.
+					
+					Desde el punto de vista estructural, esta arquitectura permite centralizar capacidades críticas, como el acceso a datos o la ejecución de lógica de negocio, en nodos especializados. Esta centralización favorece el control, la coherencia y la aplicación uniforme de políticas de seguridad y consistencia. No obstante, diversos estudios han señalado que dicha centralización introduce riesgos asociados a la escalabilidad y a la disponibilidad, particularmente cuando el servidor se convierte en un cuello de botella o en un punto único de fallo \cite{Bass2013Architecture,Stallings2022Network}.
+					
+					La evolución de la arquitectura cliente–servidor ha dado lugar a múltiples variantes que buscan mitigar estas limitaciones, tales como la replicación de servidores, el uso de balanceadores de carga y la distribución de responsabilidades en múltiples servidores especializados. Estas extensiones han sido ampliamente documentadas en la literatura de arquitectura de software como mecanismos para mejorar atributos de calidad como rendimiento, disponibilidad y tolerancia a fallos, sin abandonar el principio organizativo básico del modelo \cite{Coulouris2011Distributed,Ozkaya2020ASurvey}.
+					
+					En contextos contemporáneos, la arquitectura cliente–servidor se integra frecuentemente con infraestructuras virtualizadas y entornos en la nube, donde los servidores pueden instanciarse, escalarse o reemplazarse dinámicamente. Estudios recientes muestran que esta arquitectura sigue siendo relevante en aplicaciones web, sistemas empresariales y plataformas distribuidas, especialmente cuando se combina con prácticas modernas de despliegue y gestión automatizada \cite{ieeeaccess2025architecture,cloud2023distributed}.
+					
+					A nivel sistémico, la arquitectura cliente–servidor continúa siendo un punto de referencia conceptual para el análisis y la comparación de arquitecturas más avanzadas. Muchos estilos arquitectónicos actuales, como las arquitecturas multicapa o los microservicios, pueden entenderse como extensiones o refinamientos de este modelo básico. La literatura científica destaca que su valor no radica únicamente en su implementación directa, sino también en su papel formativo y estructurante dentro del cuerpo de conocimiento de los sistemas distribuidos \cite{Tanenbaum2023Distributed,Bass2013Architecture}.
+					
+			\subsubsection{Arquitectura Multicapas - N-Tiers}
+			\noindent
+				En la arquitectura de Tres Capas, se dividen las responsabilidades en tres componentes principales: la capa de presentación, la capa de lógica de negocio y la capa de datos. La capa de presentación es el interfaz de usuario, donde se recogen las interacciones del usuario final. La capa de lógica de negocio es el núcleo del sistema, donde se procesan las solicitudes, se ejecuta la lógica de negocio y se toman las decisiones. La capa de datos es el componente responsable de almacenar y recuperar la información, interactuando con bases de datos o sistemas de almacenamiento. La separación clara de responsabilidades facilita el mantenimiento y la escalabilidad del sistema \cite{Soltani2022,Xing2023research}.
+				
+				La arquitectura multicapa organiza un sistema distribuido mediante una separación explícita de responsabilidades en capas lógicas (p.\,ej., presentación, lógica de negocio y acceso a datos), usualmente materializadas en \textit{tiers} desplegables de forma independiente. Esta descomposición introduce una estructura estable para controlar dependencias, acotar el impacto de los cambios y facilitar la evolución del sistema sin comprometer su coherencia global \cite{Ozkaya2020ASurvey,ContrerasRivas2025Layered}.
+				
+				En términos de diseño, la multicapa favorece contratos claros entre capas y promueve el desacoplamiento, al restringir que cada capa conozca únicamente las abstracciones que requiere para cumplir su función. Esta disciplina reduce la propagación de cambios y habilita estrategias de reutilización y pruebas por niveles, especialmente cuando se aplican principios de modularidad y encapsulamiento a la lógica de negocio \cite{Ozkaya2020ASurvey}.
+				
+				En el plano operativo, la arquitectura multicapa permite decisiones de despliegue que asignan \textit{tiers} a nodos distintos, ajustando la topología al entorno de ejecución. Por ejemplo, la capa de presentación puede ubicarse cerca de los usuarios para reducir latencia, mientras que la capa de datos puede residir en infraestructuras especializadas para persistencia y resiliencia, manteniendo la consistencia del sistema como propiedad arquitectónica gobernada por la separación de capas \cite{ContrerasRivas2025Layered,Ozkaya2020ASurvey}.
+				
+				La multicapa también habilita mecanismos de escalado y control de carga diferenciados por \textit{tier}. El escalado horizontal de la presentación y parte de la lógica de negocio puede responder a picos de demanda, mientras que la persistencia y la gestión transaccional requieren estrategias complementarias, como replicación y particionado, que se integran al diseño mediante patrones de acceso a datos y control de concurrencia \cite{ContrerasRivas2025Layered}.
+				
+				En sistemas que integran múltiples aplicaciones y equipos, la multicapa ofrece una base de comprensión compartida que facilita la gobernanza técnica, la auditoría de decisiones y la comunicación entre roles. Esta cualidad resulta especialmente relevante cuando se requiere mantener trazabilidad de decisiones arquitectónicas y su correspondencia con vistas y preocupaciones del sistema, reduciendo ambigüedades en la documentación y en el mantenimiento \cite{Ozkaya2020ASurvey}.
+				
+
+			\subsubsection{Arquitectura Peer-to-Peer (P2P)}
+				\noindent
+				En una arquitectura Peer-to-Peer, los componentes principales son los nodos, que son entidades con las mismas capacidades y responsabilidades. No hay una distinción clara entre clientes y servidores; cada nodo puede actuar como cliente o servidor según sea necesario. Los nodos se comunican directamente entre sí, sin necesidad de un servidor centralizado, lo cual es común en sistemas de compartición de archivos y sistemas de comunicación descentralizados. Cada nodo tiene la responsabilidad de gestionar sus propios recursos y comunicarse con otros nodos de forma autónoma \cite{Yamunapeer}.
+				
+				La arquitectura \textit{peer-to-peer} distribuye responsabilidades entre nodos que actúan simultáneamente como clientes y servidores, evitando la dependencia estricta de un punto central. Este enfoque busca mejorar robustez y escalabilidad mediante participación cooperativa, a costa de desafíos en coordinación, búsqueda, seguridad y control de consistencia \cite{Masinde2020PeerToPeer}.
+				
+				En el diseño, P2P se materializa mediante superposición (\textit{overlay}) y protocolos de descubrimiento/encaminamiento que permiten localizar recursos en un conjunto dinámico de nodos. La literatura destaca que la dinámica de membresía y la heterogeneidad de los participantes obligan a incorporar mecanismos de tolerancia a \textit{churn}, reputación y protección contra ataques de enrutamiento o suplantación \cite{Masinde2020PeerToPeer}.
+				
+				En escenarios contemporáneos, P2P se combina con tecnologías descentralizadas como blockchain para reforzar propiedades de integridad y trazabilidad en la coordinación entre pares. En particular, revisiones de aplicaciones de blockchain en contextos distribuidos destacan el uso de redes P2P como sustrato de diseminación y consenso, aunque subrayan limitaciones de escalabilidad, latencia y costos computacionales \cite{LiuZhangHan2021P2ASurvey}.
+				
+				La operación de sistemas P2P requiere políticas explícitas para control de recursos, balanceo de carga y mitigación de comportamiento malicioso. La ausencia de control central intensifica la importancia de protocolos criptográficos, gestión de identidades y estrategias de auditoría distribuida cuando el sistema gestiona datos sensibles o requiere garantías de no repudio \cite{Masinde2020PeerToPeer,LiuZhangHan2021P2ASurvey}.
+				
+				En aplicaciones reales, P2P se utiliza para distribución de contenido, colaboración descentralizada y servicios resilientes a fallos de infraestructura. Su adecuación depende de la capacidad de mantener propiedades de seguridad y de desempeño bajo condiciones cambiantes, así como de la disciplina en el diseño del \textit{overlay} y de los mecanismos de coordinación \cite{Masinde2020PeerToPeer}.
+				
+
+			\subsubsection{Arquitectura Basada en Servicios}
+				\noindent
+				En una arquitectura Basada en Servicios, los componentes principales son los servicios, que son entidades independientes diseñadas para realizar tareas específicas. Los servicios se comunican entre sí para lograr un objetivo común, y pueden estar ubicados en diferentes servidores o incluso en diferentes ubicaciones geográficas \cite{Zeng2012distributed,Hogie2023}. La Arquitectura Orientada a Servicios (SOA) y las APIs basadas en REST son ejemplos de este tipo de arquitectura. Cada servicio es autónomo y puede ser reutilizado en diferentes aplicaciones, facilitando la integración y la interoperabilidad \cite{Devin2020,Ahmad2023,Hogie2023}.
+				
+				La arquitectura orientada a servicios (SOA) estructura aplicaciones distribuidas como un conjunto de servicios con fronteras funcionales definidas, expuestos mediante contratos y mecanismos de comunicación estandarizados. El propósito central consiste en lograr interoperabilidad y reutilización a través de servicios autónomos, de modo que procesos organizacionales y capacidades de negocio se articulen como composiciones de servicios \cite{Niknejad2020Understanding}.
+				
+				La adopción de SOA implica decisiones de diseño orientadas a contratos estables, descubrimiento y composición. En particular, la formalización del contrato (interfaces, políticas y semántica) se considera crítica para preservar compatibilidad en escenarios donde los consumidores del servicio evolucionan de manera independiente. Esta orientación refuerza la integración flexible y reduce el acoplamiento directo entre sistemas heterogéneos \cite{Niknejad2020Understanding}.
+				
+				En la materialización operacional, SOA suele apoyarse en infraestructuras de integración (p.\,ej., \textit{service buses}, orquestación y mediación) que gestionan enrutamiento, transformación y políticas transversales. Tales mecanismos aportan capacidades de control, monitoreo y gobernanza, aunque introducen costos de complejidad que deben ser controlados mediante prácticas de arquitectura y gestión de servicios \cite{Niknejad2020Understanding}.
+				
+				La calidad de servicio en SOA se vincula estrechamente con la gestión de dependencias y con la consistencia de las políticas de seguridad, versionado y acuerdos de nivel de servicio. En entornos con múltiples dominios, la consistencia de dichas políticas evita comportamientos divergentes y reduce riesgos de fallos sistémicos derivados de integraciones frágiles \cite{Niknejad2020Understanding}.
+				
+				En organizaciones con ecosistemas de sistemas preexistentes, SOA se utiliza para encapsular legados como servicios y habilitar la modernización incremental. La estabilidad del contrato permite que la renovación tecnológica se realice con menor fricción, al preservar la interfaz pública mientras se mejora la implementación interna, siempre que exista disciplina de gobernanza y gestión de cambios \cite{Niknejad2020Understanding}.
+				
+
+		\subsubsection{Arquitectura Basada en Microservicios}
+		\noindent
+			La arquitectura de microservicios es una variante de la arquitectura basada en servicios, donde la aplicación se divide en un conjunto de servicios pequeños e independientes llamados microservicios. Cada microservicio es responsable de una tarea específica y puede ser desarrollado, implementado y escalado de forma independiente. Los microservicios se comunican entre sí mediante APIs, y cada uno tiene su propio ciclo de vida, lo que facilita la gestión de la aplicación y permite una mayor flexibilidad y agilidad en el desarrollo y la operación del sistema \cite{Rusek2021}.
+			
+			La arquitectura de microservicios representa una especialización de la orientación a servicios, caracterizada por servicios de menor granularidad, despliegue independiente y alineación frecuente con capacidades de dominio. Su adopción persigue incrementar la agilidad evolutiva, permitiendo que componentes cambien y se desplieguen sin coordinación rígida a nivel de todo el sistema \cite{Aksakalli2021Deployment}.
+			
+			Desde el punto de vista estructural, microservicios enfatiza fronteras bien definidas y reduce dependencias internas mediante APIs y contratos explícitos. Esta organización favorece la sustitución y evolución incremental, aunque exige mayor disciplina en el diseño de interfaces, manejo de compatibilidad y control de acoplamiento a nivel de comunicación y datos \cite{Aksakalli2021Deployment}.
+			
+			En la puesta en operación, la independencia de despliegue conduce a topologías donde servicios se distribuyen en múltiples nodos y se coordinan mediante tecnologías de comunicación heterogéneas (p.\,ej., invocación remota, mensajería y pub/sub). La literatura evidencia que los patrones de despliegue y comunicación son determinantes para la calidad del sistema, afectando observabilidad, confiabilidad y desempeño \cite{Aksakalli2021Deployment}.
+			
+			Microservicios incrementa la necesidad de automatización operacional (CI/CD, observabilidad, gestión de configuración y fallos). La fragmentación funcional incrementa puntos potenciales de fallo y exige mecanismos de tolerancia a fallos, control de reintentos, \textit{circuit breakers} y monitoreo distribuido para sostener niveles aceptables de disponibilidad \cite{Aksakalli2021Deployment}.
+			
+			La escalabilidad se gestiona típicamente mediante replicación selectiva de servicios calientes y particionado de carga, lo que requiere coherencia entre el diseño del servicio, su modelo de datos y el patrón de comunicación. En particular, la revisión sistemática sobre patrones de despliegue y comunicación reporta la centralidad de decisiones como sincronía vs. asincronía, y su efecto sobre latencia y acoplamiento temporal \cite{Aksakalli2021Deployment}.
+			
+		\subsubsection{Arquitectura Basada en Componentes Distribuidos}
+			\noindent
+			La arquitectura basada en componentes distribuidos organiza el sistema como unidades reutilizables con interfaces explícitas, donde la composición y reconfiguración se ejecutan en un entorno distribuido. Este enfoque favorece modularidad y sustitución controlada, siempre que existan especificaciones precisas de contratos, dependencias y protocolos de interacción \cite{CoullonEtAl2023CSUR}.
+			
+			Un aspecto central es la capacidad de reconfiguración: añadir, retirar o reemplazar componentes mientras el sistema mantiene propiedades críticas. En ambientes distribuidos, la reconfiguración introduce riesgos de inconsistencias transitorias, condiciones de carrera y violación de invariantes, lo que impulsa el uso de técnicas de verificación y modelos formales para garantizar corrección \cite{CoullonEtAl2023CSUR}.
+			
+			Desde una perspectiva metodológica, la literatura sistematiza la reconfiguración distribuida como un problema de coordinación: asegurar que múltiples nodos converjan hacia una configuración válida, preservando seguridad y progreso. En particular, se destacan enfoques orientados a verificación para probar que ciertas reconfiguraciones preservan propiedades funcionales y no funcionales bajo supuestos operacionales \cite{CoullonEtAl2023CSUR}.
+			
+			En la implementación, la arquitectura por componentes distribuidos suele apoyarse en contenedores, \textit{middleware} o marcos de componentes que gestionan ciclo de vida, inyección de dependencias y comunicación. Sin embargo, el beneficio de reutilización se materializa plenamente cuando las interfaces se mantienen estables y se controlan versiones, de modo que la composición no dependa de detalles internos \cite{CoullonEtAl2023CSUR}.
+			
+			En operación, la observabilidad y el control de configuración resultan esenciales para sostener trazabilidad: el estado del sistema se interpreta como una composición activa de componentes y conectores. La verificación orientada a reconfiguración aporta un marco para razonar sobre cambios, disminuir riesgos de regresión y sostener mantenibilidad en ciclos evolutivos frecuentes \cite{CoullonEtAl2023CSUR}.
+			
+		\subsubsection{Arquitectura Dirigida por Eventos (Event-Driven)}
+			\noindent
+			La arquitectura dirigida por eventos (EDA) estructura la coordinación del sistema mediante la producción, transmisión y consumo de eventos, favoreciendo acoplamiento débil y reactividad ante cambios de estado. Su principio operativo consiste en que los componentes reaccionen a eventos observables, lo que habilita composición flexible y facilita la integración de múltiples productores y consumidores \cite{Cabane2024Impact}.
+			
+			En el diseño, EDA se apoya en modelos de publicación/suscripción y en el tratamiento de eventos como elementos de integración. Esta elección incrementa la autonomía de los componentes y reduce dependencias directas, aunque desplaza la complejidad hacia la definición de esquemas, garantías de entrega, ordenamiento y tratamiento de duplicados \cite{Cabane2024Impact}.
+			
+			En la implementación y operación, los \textit{brokers} de mensajería y plataformas de \textit{streaming} actúan como infraestructura central para desacoplar productores y consumidores. La observabilidad y el control de flujo se vuelven fundamentales, ya que el comportamiento global emerge de múltiples interacciones asíncronas y puede ser difícil de rastrear si no se diseñan trazas y correlaciones adecuadas \cite{Cabane2024Impact}.
+			
+			La evidencia empírica sobre desempeño sugiere que la adopción de EDA no debe asumirse como mejora automática: el impacto depende de patrones de carga, de la infraestructura de mensajería y del costo de serialización, enrutamiento y consumo. Un estudio exploratorio compara una aplicación monolítica con una implementación basada en eventos y reporta diferencias relevantes en consumo de recursos y tiempos de respuesta bajo ciertas condiciones \cite{Cabane2024Impact}.
+			
+			EDA resulta especialmente adecuada cuando el sistema exige integración extensible y procesamiento reactivo, siempre que se definan políticas explícitas para consistencia, idempotencia y manejo de fallos. Bajo estas condiciones, la arquitectura puede ofrecer una evolución más flexible del ecosistema, preservando independencia funcional y permitiendo incorporar nuevos consumidores sin alterar productores existentes \cite{Cabane2024Impact}.
+			
+			\subsubsection{Arquitectura Auto-Adaptativa}
+			\noindent
+			Las arquitecturas auto-adaptativas incorporan mecanismos de retroalimentación que permiten al sistema ajustar su comportamiento frente a variaciones del entorno y del propio estado interno. El principio consiste en cerrar el ciclo entre observación, análisis, decisión y ejecución de cambios, reduciendo intervención manual y aumentando resiliencia ante incertidumbre \cite{Ozkaya2020ASurvey}.
+			
+			En el diseño, la auto-adaptación exige separar el sistema gestionado de la lógica de gestión, definiendo objetivos y políticas de adaptación. La literatura de alta calidad enfatiza que estas decisiones deben estar conectadas con requisitos de calidad y con modelos que permitan razonar sobre compensaciones (p.\,ej., rendimiento vs. consumo) y sobre riesgos de adaptación incorrecta \cite{Ozkaya2020ASurvey}.
+			
+			En implementación, la adaptación se concreta mediante sensores, monitores, modelos de estado y actuadores, además de mecanismos para aplicar configuraciones o reconfigurar componentes. La evidencia industrial reporta motivaciones y dificultades recurrentes: complejidad de ingeniería, validación de decisiones de adaptación, y necesidad de observabilidad para justificar cambios automatizados \cite{Ozkaya2020ASurvey}.
+			
+			En entornos distribuidos, la auto-adaptación puede ser descentralizada para evitar cuellos de botella y puntos únicos de fallo. Un estudio de mapeo sobre auto-adaptación descentralizada analiza cómo distribuir funciones de monitoreo, análisis y planificación entre componentes coordinados, y resalta desafíos de coordinación y consistencia de decisiones entre nodos \cite{QuinEtAl2021Decentralized}.
+			
+			La operación de sistemas auto-adaptativos requiere garantías sobre estabilidad y seguridad de las adaptaciones, así como estrategias para auditar decisiones, revertir cambios y mantener disponibilidad. La literatura enfatiza que la auto-adaptación aporta valor cuando sus decisiones se justifican con evidencia (métricas, modelos y validación), preservando control y trazabilidad en el ciclo de vida \cite{Weyns2023CSUR,QuinEtAl2021Decentralized}.
+			
+		\subsubsection{Arquitectura Serverless}
+			\noindent
+			La arquitectura \textit{serverless} propone un modelo donde la ejecución se expresa como funciones o servicios administrados por el proveedor, abstraídos de la gestión directa de servidores. Su atractivo proviene de la elasticidad automatizada, pago por uso y reducción del esfuerzo de administración de infraestructura, desplazando responsabilidades hacia servicios gestionados \cite{ShafieiEtAl2022Serverless,WenEtAl2023CSUR}.
+			
+			En el diseño, \textit{serverless} favorece componentes pequeños y orientados a eventos, integrados mediante servicios gestionados (colas, \textit{streams}, almacenamiento, autenticación). Esta modularidad incrementa agilidad, aunque exige atención a limitaciones de ejecución (tiempos máximos, estado efímero), composición de funciones y definición de flujos que preserven consistencia y confiabilidad \cite{ShafieiEtAl2022Serverless}.
+			
+			Desde la perspectiva de rendimiento, el fenómeno de \textit{cold start} y la variabilidad de latencia se vuelven consideraciones arquitectónicas. La literatura sistematiza desafíos como observabilidad, depuración distribuida, control de costos y \textit{vendor lock-in}, destacando la necesidad de prácticas explícitas para instrumentación y pruebas en arquitecturas fuertemente gestionadas \cite{ShafieiEtAl2022Serverless,WenEtAl2023CSUR}.
+			
+			En operación, \textit{serverless} introduce un modelo de escalado guiado por eventos y carga, en el que la plataforma controla aprovisionamiento y concurrencia. Esto reduce tareas administrativas tradicionales, pero demanda gobernanza para evitar explosión de dependencias, configuraciones inconsistentes y exposición de superficie de ataque mediante integraciones numerosas \cite{ShafieiEtAl2022Serverless}.
+			
+			La adopción efectiva de \textit{serverless} requiere alinear diseño, pruebas y monitoreo con el modelo de ejecución gestionada. La literatura resalta que el valor se maximiza cuando se diseñan límites claros, estrategias de manejo de estado (p.\,ej., almacenamiento externo) y controles de observabilidad y costos que mantengan el sistema predecible en condiciones de operación reales \cite{WenEtAl2023CSUR}.
+			
+		\subsubsection{Arquitectura de Sistemas de Sistemas (SoS)}
+			\noindent
+			Los sistemas de sistemas (SoS) integran múltiples sistemas constituyentes con autonomía operacional y administrativa, coordinados para ofrecer capacidades emergentes que no están presentes en cada sistema por separado. Su arquitectura se ocupa de interoperabilidad, coordinación y gobernanza entre entidades que evolucionan de forma independiente \cite{SantosEtAl2022CSUR,Fang2022JSyst}.
+			
+			En el diseño, la heterogeneidad y la autonomía obligan a especificar interfaces, acuerdos de interoperabilidad y mecanismos de composición que toleren evolución asíncrona. La literatura indica que la evaluación arquitectónica en SoS debe considerar atributos de calidad a escala de ecosistema, incluyendo dependencias entre constituyentes, riesgos de integración y efectos de propagación de fallos \cite{SantosEtAl2022CSUR}.
+			
+			En la implementación, SoS se materializa como una federación de sistemas conectados mediante protocolos, adaptadores y, en ocasiones, infraestructuras comunes (p.\,ej., \textit{gateways}, buses o plataformas compartidas). La dificultad principal radica en que la arquitectura no controla totalmente las decisiones internas de cada constituyente, por lo que el diseño debe asumir cambios parciales y estados degradados como condiciones normales \cite{SantosEtAl2022CSUR,Fang2022JSyst}.
+			
+			La evaluación arquitectónica en SoS ha sido sistematizada como un área con desafíos particulares: selección de criterios, técnicas y evidencias para juzgar alternativas cuando los constituyentes y sus objetivos no están plenamente alineados. En este marco, se destacan métodos y perspectivas para analizar el estado del arte y las líneas de evolución, incluyendo cómo medir efectivamente atributos de calidad en escenarios con múltiples propietarios \cite{SantosEtAl2022CSUR}.
+			
+			La selección de arquitecturas en SoS se aborda como un problema de decisión bajo restricciones técnicas y organizacionales, donde la coordinación y la evolución a largo plazo son tan críticas como el rendimiento inmediato. Un estudio de encuesta en IEEE Systems Journal analiza cuestiones, métodos y oportunidades para la selección arquitectónica en SoS, enfatizando la necesidad de marcos que integren complejidad técnica y consideraciones de gobernanza \cite{Fang2022JSyst}.
+			
+			
+			
+Cada una de estas arquitecturas tiene sus propias ventajas y desventajas (ver tabla \ref{tabla:arquitecturas}), y la elección de una arquitectura específica depende de una variedad de factores, incluidos los requisitos de la aplicación, la complejidad del sistema, el presupuesto disponible y las habilidades del equipo de desarrollo. Los estudiantes de Ingeniería de Software deben ser capaces de evaluar los pros y los contras de cada arquitectura y seleccionar la que mejor se adapte a las necesidades de su aplicación.
+
+\begin{table}[h!]
+	\centering
+	\caption{Comparativa de las características, ventajas y desventajas de diferentes arquitecturas de aplicaciones distribuidas.}
+	\begin{tabular}{|p{2.8cm}|p{3.8cm}|p{3.8cm}|p{3.8cm}|}
+		\hline
+		\textbf{Arquitectura} & \textbf{Características} & \textbf{Ventajas} & \textbf{Desventajas} \\
+		\hline
+		\textbf{Cliente-Servidor} & División de tareas entre clientes que solicitan servicios y servidores que los proveen. & Simplicidad en diseño. & Punto único de falla en el servidor. \\
+		\hline
+		\textbf{Tres Capas} & Extensión de cliente-servidor con una capa intermedia para la lógica de negocio. & Separación clara de responsabilidades. & Mayor complejidad en la comunicación  \\
+		\hline
+		\textbf{Peer-to-Peer} & Todos los nodos tienen las mismas capacidades y responsabilidades. & Descentralización. & Dificultad en la gestión y seguridad . \\
+		\hline
+		\textbf{Basada en Servicios} & Utiliza servicios independientes que se comunican entre sí. & Reutilización de servicios en diferentes aplicaciones. & Posible latencia en la comunicación entre servicios\cite{Hogie2023}. \\
+		\hline
+		\textbf{Microservicios} & Descompone la aplicación en servicios pequeños e independientes. & Desarrollo, implementación y escalado independiente de cada microservicio. & Complejidad en la gestión de múltiples servicios independientes \cite{Rusek2021}. \\
+		\hline
+		\end{tabular}
+		\label{tabla:arquitecturas}
+	\end{table}
+
+	\subsection{Modelos de Comunicación}
+	\noindent
+	Los modelos de comunicación en aplicaciones distribuidas describen cómo los distintos componentes del sistema interactúan y comparten información entre ellos \cite{Balador2017}. La elección del modelo de comunicación adecuado es fundamental para el diseño y funcionamiento eficiente de una aplicación distribuida \cite{Moll2021survey}.
+	
+	Entre los modelos de comunicación se pueden mencionar:
+	
+	\begin{itemize}
+		\item \textbf{Comunicación síncrona:} el remitente envía un mensaje y se bloquea mientras espera una respuesta del receptor.
+		\item \textbf{Comunicación Asíncrona:} el remitente envía un mensaje y continúa con sus tareas sin esperar una respuesta inmediata del receptor.
+		\item \textbf{Comunicación en Grupo:} La comunicación en grupo implica el intercambio de mensajes entre varios remitentes y receptores, facilitando la coordinación y la colaboración entre múltiples componentes.
+		\item \textbf{Comunicación Basada en Colas de Mensajes:} La comunicación basada en colas de mensajes utiliza colas para almacenar y gestionar los mensajes que se envían entre los componentes del sistema.
+		\item \textbf{Comunicación Basada en Publicación y Suscripción}: La comunicación basada en publicación y suscripción es un modelo en el que los remitentes publican mensajes en temas específicos y los receptores se suscriben a los temas que les interesan.
+	\end{itemize}
+
+\section{Importancia en el mundo actual}
+\noindent
+Las aplicaciones distribuidas juegan un papel vital en la era digital, ofreciendo beneficios significativos en comparación con los sistemas monolíticos. A continuación, se analizan los roles, beneficios y desafíos de estas aplicaciones en el mundo actual \cite{Chauhan2023otp}.
+
+\noindent
+\begin{tabular}{|l|p{10cm}|}
+	\hline
+	Título & Descripción \\
+	\hline
+	Rol en la Era Digital & Discutir el papel crucial de las aplicaciones distribuidas en la actualidad. \\
+	\hline
+	Beneficios & Resaltar los beneficios y ventajas que ofrecen estas aplicaciones en comparación con los sistemas monolíticos. \\
+	\hline
+	Desafíos & Analizar los desafíos y dificultades asociados con el desarrollo y mantenimiento de aplicaciones distribuidas. \\
+	\hline
+\end{tabular}
+
+\subsection{Rol en la Era Digital}
+\noindent
+Las aplicaciones distribuidas son fundamentales en la era digital debido a su capacidad para permitir la colaboración y la comunicación a través de diferentes ubicaciones geográficas, superando así las barreras físicas. Esto es esencial en un mundo globalizado donde las organizaciones y los individuos están dispersos geográficamente \cite{Zeng2012distributed}. Además, estas aplicaciones facilitan la integración de diferentes tecnologías y plataformas, lo que es crucial para aprovechar las ventajas de la diversidad tecnológica de hoy en día. En resumen, las aplicaciones distribuidas son clave para potenciar la colaboración, la integración tecnológica y la globalización en la era digital \cite{Sin2021digital}.
+
+\subsection{Beneficios}
+\noindent
+Las aplicaciones distribuidas ofrecen una serie de beneficios que las hacen atractivas para las organizaciones y los desarrolladores. Entre ellos se incluyen la escalabilidad, ya que es más fácil añadir recursos o componentes a una aplicación distribuida en comparación con un sistema monolítico; la flexibilidad, ya que las aplicaciones distribuidas pueden ser desarrolladas y mantenidas por equipos independientes; y la redundancia, lo que mejora la fiabilidad del sistema, ya que si un componente falla, los otros pueden continuar funcionando \cite{SomoskHoi2019airline}. Además, las aplicaciones distribuidas suelen ser más eficientes desde el punto de vista de los recursos, ya que pueden distribuir la carga de trabajo entre varios servidores o nodos \cite{Francisco2021,Ghosh2020}.
+
+\subsection{Desafíos}
+\noindent
+A pesar de sus beneficios, las aplicaciones distribuidas también presentan desafíos. Uno de los principales es la complejidad de gestionar y coordinar los diferentes componentes y servicios que forman parte de la aplicación. Esto puede dar lugar a problemas de sincronización y consistencia de los datos. Además, la seguridad es una preocupación importante, ya que los datos deben ser transmitidos a través de redes, lo que puede exponerlos a posibles ataques o interceptaciones. Otro desafío es garantizar la disponibilidad y el rendimiento de la aplicación, especialmente cuando los componentes están distribuidos en diferentes ubicaciones geográficas \cite{Zeng2012distributed}. Estos desafíos requieren un enfoque cuidadoso y una planificación meticulosa por parte de los desarrolladores y los equipos de operaciones para garantizar el éxito de una aplicación distribuida \cite{SomoskHoi2019airline}.
+
+Para asegurar un correcto funcionamiento de las aplicaciones distribuidas, es crucial abordar varios aspectos fundamentales que garantizan la coherencia y la seguridad de los datos, así como la disponibilidad y el rendimiento óptimo del sistema. Estos conceptos, detallados a continuación, son pilares en el diseño, desarrollo y mantenimiento de aplicaciones distribuidas, y deben ser cuidadosamente considerados por los ingenieros de software y los equipos de operaciones.
+
+\begin{itemize}
+	\item \textbf{\textit{Sincronización: }}Proceso por el cual se coordinan los datos o actividades en diferentes componentes o sistemas para garantizar la consistencia y la corrección \cite{Francisco2021,Kumar2023}.
+	\item \textbf{\textit{Consistencia de los datos: }}Propiedad que asegura que los datos son precisos, confiables y reflejan la realidad actual \cite{Sushant2023,Shivani2023,Baorong2023}.
+	\item \textbf{\textit{Seguridad: }}Medidas y protocolos implementados para proteger los datos y los sistemas de posibles amenazas o ataques \cite{Alaba2024smart,Kumar2023,Shivani2023}.
+	\item \textbf{\textit{Disponibilidad: }}Capacidad de un sistema para estar operativo y accesible cuando es necesario.
+	\item \textbf{\textit{Rendimiento: }}Medida de la eficiencia y eficacia con la que un sistema realiza sus funciones \cite{Wang2017127,Kumar2023,Baorong2023}.
+\end{itemize}
+
+\section{Ejemplos de aplicaciones distribuidas en la vida cotidiana}
+\noindent
+Las aplicaciones distribuidas están presentes en muchos aspectos de nuestra vida diaria, desde las redes sociales hasta los sistemas bancarios \cite{You2023multi}. A continuación, se exploran algunos de estos ejemplos en detalle.
+
+\noindent
+\begin{tabular}{|l|p{10cm}|}
+	\hline
+	Título & Descripción \\
+	\hline
+	Redes Sociales & Examinar cómo las aplicaciones distribuidas facilitan la interacción social en línea. \\
+	\hline
+	Sistemas Bancarios & Analizar el uso de aplicaciones distribuidas en el procesamiento de transacciones bancarias. \\
+	\hline
+	Internet de las Cosas (IoT) & Explorar el papel de las aplicaciones distribuidas en el desarrollo de soluciones IoT. \\
+	\hline
+\end{tabular}
+
+\subsection{Redes Sociales}
+\noindent
+Las redes sociales son un ejemplo paradigmático de aplicaciones distribuidas en la vida cotidiana, donde millones de usuarios interactúan en tiempo real, compartiendo información, imágenes y mensajes. En una red social, los datos de los usuarios están almacenados en diferentes servidores y centros de datos distribuidos geográficamente, lo cual es esencial para garantizar la disponibilidad y la rápida accesibilidad de la información \cite{Zeng2012distributed}.
+
+Cuando un usuario sube una foto o un mensaje, este se almacena en un servidor y se distribuye a otros servidores para ser mostrado a los amigos o seguidores del usuario. Esto implica una compleja coordinación y sincronización entre diferentes componentes de software y hardware para asegurar que los datos sean consistentes y estén disponibles en tiempo real para todos los usuarios, independientemente de su ubicación geográfica \cite{Fischer2023}.
+
+Las redes sociales también enfrentan desafíos significativos en términos de seguridad, ya que deben proteger los datos personales de los usuarios y asegurar que la información compartida sea accesible solo para las personas autorizadas. Esto requiere la implementación de medidas de seguridad robustas, incluida la encriptación de datos, la autenticación de usuarios y el control de acceso \cite{Almadani2023,Fischer2023}.
+
+Además, las redes sociales deben garantizar un alto rendimiento para proporcionar una experiencia de usuario fluida y agradable, incluso durante los picos de tráfico. Esto implica optimizar los algoritmos de procesamiento de datos, utilizar técnicas de almacenamiento en caché y asegurar una infraestructura de red eficiente \cite{Fischer2023}.
+
+\begin{tcolorbox}[colback=yellow!10!white, colframe=green!50!black, title=Resumiendo]
+	Las redes sociales son un claro ejemplo de cómo las aplicaciones distribuidas están integradas en nuestra vida cotidiana, ofreciendo beneficios en términos de disponibilidad, accesibilidad y compartición de información, pero también enfrentando desafíos en áreas como la seguridad, la consistencia de los datos y el rendimiento.
+\end{tcolorbox}
+
+\subsection{Sistemas Bancarios}
+\noindent
+Las aplicaciones distribuidas son fundamentales en varios sistemas que impactan nuestra vida cotidiana, desde la banca y la salud hasta la logística y más allá. Estas aplicaciones garantizan la eficiencia, seguridad y disponibilidad de los servicios, y su implementación es vital para el funcionamiento óptimo de estos sistemas en el mundo digital actual \cite{Almadani2023}.
+
+Los sistemas bancarios son un ejemplo destacado de la utilidad y eficacia de las aplicaciones distribuidas en la vida cotidiana. En estos sistemas, los servicios y operaciones bancarias se distribuyen a través de una red de servidores y componentes de software que trabajan de manera coordinada para gestionar millones de transacciones y datos de clientes de forma segura y eficiente \cite{Priya2023}.
+
+En el ámbito de los sistemas bancarios, la distribución de las aplicaciones se realiza de la siguiente manera:
+
+\begin{enumerate}
+	\item \textbf{Distribución Geográfica:} Los bancos operan en múltiples ubicaciones geográficas, y sus sistemas informáticos están distribuidos en diferentes centros de datos y sucursales. Esto permite que los clientes accedan a sus cuentas y realicen transacciones desde cualquier lugar del mundo \cite{Zeng2012distributed}.
+	
+	\item \textbf{Distribución de Servicios:} Los servicios bancarios, como la gestión de cuentas, las transacciones y los pagos, se dividen en diferentes componentes de software que se comunican entre sí para proporcionar un servicio completo al cliente. Estos componentes pueden estar ubicados en diferentes servidores o incluso en diferentes centros de datos \cite{Ali2023Nav}.
+	
+	\item \textbf{Seguridad Distribuida:} La seguridad en los sistemas bancarios es de vital importancia, y se logra mediante la implementación de medidas de seguridad distribuidas, como la encriptación de datos, la autenticación multifactor y los protocolos de comunicación segura. Esto garantiza que la información del cliente esté protegida, incluso cuando se transmite a través de una red \cite{Almadani2023,Shivani2023}.
+	
+	\item \textbf{Redundancia y Respaldo:} Los sistemas bancarios distribuidos están diseñados para ser altamente disponibles y resistentes a fallos. Esto se logra mediante la implementación de redundancia en los servidores y en los centros de datos, así como mediante la creación de copias de respaldo de los datos en ubicaciones geográficamente dispersas. Esto asegura que el sistema esté operativo y los datos estén seguros, incluso en caso de fallos en el hardware o desastres naturales \cite{Ahmed2013,Siddiqui2023}.
+\end{enumerate}
+
+\noindent
+Pero no son los únicos que se benefician de las aplicaciones distribuidas. Otros ejemplos prominentes incluyen los sistemas de gestión de cadenas de suministro, que utilizan aplicaciones distribuidas para rastrear y gestionar productos desde el fabricante hasta el consumidor final, garantizando la eficiencia en el proceso y la transparencia en la cadena de suministro. Los sistemas de salud también aprovechan las aplicaciones distribuidas para gestionar la información del paciente y proporcionar acceso a los datos médicos en tiempo real, mejorando la atención al paciente y la eficiencia operativa.
+
+En la tabla \ref{tabla:aplicaciones-distribuidas}, se presentan diversos tipos de sistemas que emplean aplicaciones distribuidas, acompañados de ejemplos ilustrativos y una descripción de sus características fundamentales.
+
+\begin{table}[h!]
+	\centering
+	\caption{Tipos de Aplicaciones Distribuidas, Ejemplos y Características Principales}	
+	\begin{tabular}{|p{4cm}|p{3cm}|p{8cm}|}
+		\hline
+		\textbf{Tipo de Aplicación Distribuida} & \textbf{Ejemplos} & \textbf{Características Principales} \\
+		\hline
+		Sistemas de procesamiento de transacciones & Sistemas bancarios, PayPal & - Manejo de transacciones en tiempo real, Alta disponibilidad y seguridad, Sincronización y consistencia de datos \cite{Almadani2023}. \\
+		\hline
+		Sistemas de gestión de bases de datos distribuidas & MySQL Cluster, Oracle RAC & - Distribución de datos en varios nodos, Consultas y actualizaciones concurrentes, Tolerancia a fallos y escalabilidad. \\
+		\hline
+		Sistemas de gestión de cadenas de suministro & IBM Food Trust, VeChain & - Rastreo de productos en la cadena de suministro, Transparencia y trazabilidad, Mejora de la eficiencia operativa. \\
+		\hline
+		Sistemas de salud & Historias clínicas electrónicas, Telemedicina & - Gestión de información del paciente, Acceso en tiempo real a datos médicos, Mejora de la atención al paciente. \\
+		\hline
+		Sistemas de computación en la nube & AWS, Google Cloud Platform & - Escalabilidad y flexibilidad, Pago por uso, Acceso remoto a recursos computacionales. \\
+		\hline
+		Redes sociales & Facebook, Twitter & - Conexión de usuarios en todo el mundo, Compartir información en tiempo real, Publicidad y análisis de datos de usuarios. \\
+		\hline
+	\end{tabular}
+	\label{tabla:aplicaciones-distribuidas}
+\end{table}
+
+\begin{tcolorbox}[colback=yellow!10!white, colframe=green!50!black, title=Resumiendo]
+	Las aplicaciones distribuidas son fundamentales en la era digital y juegan un papel vital en la operatividad de los servicios financieros. Los sistemas bancarios, con su arquitectura distribuida, proporcionan servicios eficientes, seguros y disponibles en todo momento para los clientes, asegurando la consistencia y sincronización de los datos y protegiendo la información del cliente a través de medidas de seguridad como la encriptación y la autenticación.
+\end{tcolorbox}

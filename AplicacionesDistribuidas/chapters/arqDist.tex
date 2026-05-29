@@ -1,0 +1,247 @@
+\chapter{Arquitecturas de aplicaciones distribuidas}
+
+La arquitectura de aplicaciones distribuidas es un enfoque de diseño de software que busca crear sistemas informáticos donde los componentes y servicios se ejecutan en diferentes máquinas físicas o virtuales interconectadas a través de una red. En esta arquitectura, el arquitecto de software juega un papel fundamental en el diseño, planificación y desarrollo del sistema distribuido.
+
+\section{Arquitecto de Software}
+El arquitecto de software tiene la responsabilidad de definir la estructura global de la aplicación, asegurándose de que los diferentes componentes puedan comunicarse entre sí de manera eficiente y confiable. Sus principales funciones incluyen:
+
+\begin{enumerate}
+	\item \textbf{Análisis de requerimientos:} Trabaja en estrecha colaboración con los stakeholders para comprender y analizar los requerimientos del sistema, identificando objetivos, funcionalidades, restricciones y expectativas del sistema.
+	\item \textbf{Diseño de la arquitectura:} Define la estructura y el diseño general del sistema, seleccionando patrones de diseño, identificando componentes clave, definiendo interfaces y distribuyendo responsabilidades entre los diferentes módulos y capas del sistema.
+	\item \textbf{Toma de decisiones técnicas:} Selecciona tecnologías, plataformas y herramientas adecuadas para el desarrollo del sistema, evaluando las mejores opciones para cumplir con los requerimientos y objetivos del proyecto.
+	\item \textbf{Coordinación del equipo de desarrollo:} Colabora con el equipo de desarrollo, brindando orientación y dirección técnica, asegurándose de que se sigan las pautas de diseño y arquitectura establecidas.
+	\item \textbf{Resolución de problemas y mitigación de riesgos:} Anticipa posibles problemas y riesgos técnicos, proponiendo soluciones y estrategias para mitigarlos, y considerando la tolerancia a fallos y medidas de seguridad.
+	\item \textbf{Evaluación y mejora continua:} Realiza revisiones y evaluaciones periódicas de la arquitectura y el diseño del sistema, buscando oportunidades de mejora y realizando ajustes para mantener una arquitectura robusta y adaptable.
+	\item \textbf{Colaboración con otros roles:} Trabaja en conjunto con otros roles como analistas, testers, gerentes de proyecto y otros arquitectos para asegurar una visión global y alineada del proyecto.
+\end{enumerate}
+
+	\section{Principales arquitecturas de aplicaciones distribuidas}
+	Existen varias arquitecturas de aplicaciones informáticas utilizadas en el desarrollo de software. A continuación, se mencionan algunas arquitecturas comunes:
+	
+	\subsection{Arquitectura cliente-servidor}
+	Este enfoque se basa en la separación de responsabilidades entre clientes y servidores. Los clientes solicitan y consumen servicios o recursos proporcionados por los servidores, que los procesan y devuelven respuestas. Ejemplos de clientes incluyen navegadores web y aplicaciones móviles, mientras que ejemplos de servidores incluyen servidores web como Apache o Nginx y servidores de bases de datos como MySQL o PostgreSQL.
+	
+	\subsubsection{Ejemplo: Sistema de Gestión Académica}
+	El Sistema de Gestión Académica (SGA) es un ejemplo que abarca la gestión de estudiantes, profesores, asignaturas, matrículas, registros y calificaciones. La estructura del proyecto desarrollado en Java sigue una arquitectura por capas, facilitando la organización y modularidad del código:
+	
+	\begin{verbatim}
+		ProyectoGestionAcademica
+		|-- src
+		|   `-- main
+		|       `-- java
+		|           `-- com
+		|               `-- gestionacademica
+		|                   |-- presentacion
+		|                   |   |-- MainApp.java
+		|                   |   `-- ...
+		|                   |-- logicanegocio
+		|                   |   |-- EstudianteService.java
+		|                   |   |-- ProfesorService.java
+		|                   |   |-- AsignaturaService.java
+		|                   |   |-- MatriculaService.java
+		|                   |   |-- RegistroService.java
+		|                   |   `-- CalificacionService.java
+		|                   |-- persistencia
+		|                   |   |-- EstudianteRepository.java
+		|                   |   |-- ProfesorRepository.java
+		|                   |   |-- AsignaturaRepository.java
+		|                   |   |-- MatriculaRepository.java
+		|                   |   |-- RegistroRepository.java
+		|                   |   `-- CalificacionRepository.java
+		|                   |-- modelos
+		|                   |   |-- Estudiante.java
+		|                   |   |-- Profesor.java
+		|                   |   |-- Asignatura.java
+		|                   |   |-- Matricula.java
+		|                   |   |-- Registro.java
+		|                   |   `-- Calificacion.java
+		|                   `-- GestionAcademicaApplication.java
+		|-- resources
+		|   |-- application.properties
+		|   `-- ...
+		|-- test
+		|   `-- java
+		|       `-- com
+		|           `-- gestionacademica
+		|               |-- presentacion
+		|               |   `-- ...
+		|               |-- logicanegocio
+		|               |   |-- EstudianteServiceTest.java
+		|               |   |-- ProfesorServiceTest.java
+		|               |   |-- AsignaturaServiceTest.java
+		|               |   |-- MatriculaServiceTest.java
+		|               |   |-- RegistroServiceTest.java
+		|               |   `-- CalificacionServiceTest.java
+		|               |-- persistencia
+		|               |   |-- EstudianteRepositoryTest.java
+		|               |   |-- ProfesorRepositoryTest.java
+		|               |   |-- AsignaturaRepositoryTest.java
+		|               |   |-- MatriculaRepositoryTest.java
+		|               |   |-- RegistroRepositoryTest.java
+		|               |   `-- CalificacionRepositoryTest.java
+		|           `-- ...
+		|-- target
+		|   `-- ...
+		|-- .gitignore
+		|-- pom.xml
+		`-- README.md
+	\end{verbatim}
+	
+	\subsubsection{Comunicación Cliente-Servidor}
+	La comunicación entre clientes y servidores se realiza a través de protocolos de red como HTTP/HTTPS, TCP/IP y protocolos específicos de bases de datos como JDBC u ODBC.
+	
+	\subsubsection{Ventajas de la Arquitectura Cliente-Servidor en Aplicaciones Distribuidas}
+	\begin{itemize}
+		\item \textbf{Escalabilidad:} Permite la escalabilidad vertical y horizontal.
+		\item \textbf{Facilidad de Mantenimiento:} La separación de responsabilidades facilita la actualización y el mantenimiento de componentes individuales.
+		\item \textbf{Seguridad:} Implementa medidas de seguridad centralizadas.
+		\item \textbf{Interoperabilidad:} Los clientes pueden desarrollarse en diferentes plataformas y tecnologías.
+		\item \textbf{Distribución Geográfica:} Permite la distribución geográfica de los servidores.
+	\end{itemize}
+	
+	\begin{tcolorbox}[colback=yellow!10!white, colframe=blue!50!black, title=Concluyendo, coltitle=white]
+		Aunque la arquitectura cliente-servidor es ampliamente utilizada y ofrece muchas ventajas, también tiene sus limitaciones, como la dependencia de la disponibilidad del servidor y la necesidad de una red confiable para la comunicación entre clientes y servidores. Además, en aplicaciones modernas, se pueden adoptar enfoques más avanzados, como la arquitectura de microservicios, para abordar desafíos específicos y lograr una mayor flexibilidad y escalabilidad.
+	\end{tcolorbox}
+	
+	\subsection{Arquitectura de 3 capas}
+	La arquitectura de 3 capas divide una aplicación en tres capas distintas: presentación, lógica de aplicación y datos. Esta división facilita la modularidad, escalabilidad y mantenimiento del software distribuido.
+	
+	\subsubsection{Capa de Presentación (Interfaz de Usuario)}
+	Gestiona las interacciones del usuario, la presentación de datos y la recopilación de entradas del usuario.
+	
+	\subsubsection{Capa de Lógica de Aplicación (Lógica de Negocio)}
+	Contiene la lógica central de la aplicación, procesando las solicitudes del usuario y aplicando reglas de negocio.
+	
+	\subsubsection{Capa de Datos (Acceso a Datos)}
+	Encargada del acceso, manipulación y almacenamiento de los datos utilizados por la aplicación.
+	
+	\subsubsection{Ventajas de la Arquitectura de 3 Capas para Aplicaciones Distribuidas}
+	\begin{itemize}
+		\item \textbf{Modularidad:} Facilita la gestión de módulos y la reutilización de código.
+		\item \textbf{Escalabilidad:} Cada capa puede escalar de forma independiente.
+		\item \textbf{Mantenimiento y Evolución:} Facilita las actualizaciones y el mantenimiento continuo del software.
+		\item \textbf{Integración de Tecnologías:} Permite la integración de diferentes tecnologías y herramientas en cada capa.
+		\item \textbf{Seguridad:} Ayuda a proteger los datos sensibles y controlar el acceso a ellos.
+	\end{itemize}
+	
+	\subsection{Arquitecturas basadas en servicios (SOA) y en microservicios}
+	La arquitectura basada en servicios (SOA) y la arquitectura basada en microservicios buscan abordar la complejidad y escalabilidad de las aplicaciones distribuidas al descomponerlas en componentes más pequeños y autónomos.
+	
+	\subsubsection{Arquitectura Basada en Servicios (SOA)}
+	SOA se centra en la creación y el uso de servicios reutilizables y modulares en una aplicación, accesibles a través de una interfaz estandarizada como servicios web o API.
+	
+	\subsubsection{Arquitectura Basada en Microservicios}
+	Los microservicios son unidades de funcionalidad completa que se ejecutan de forma independiente y se comunican con otros microservicios a través de protocolos ligeros como HTTP o gRPC.
+	
+	\subsubsection{Comparación entre SOA y Microservicios}
+	\begin{itemize}
+		\item \textbf{Tamaño y Enfoque:} Los microservicios son más pequeños y específicos que los servicios en SOA.
+		\item \textbf{Independencia:} Los microservicios son más independientes entre sí en comparación con los servicios en SOA.
+		\item \textbf{Gestión y Complejidad:} La arquitectura de microservicios puede ser más compleja de gestionar debido a su número y diversidad.
+	\end{itemize}
+	
+	\begin{tcolorbox}[colback=yellow!10!white, colframe=blue!50!black, title=Resumiendo, coltitle=white]
+		Tanto SOA como la arquitectura basada en microservicios son enfoques efectivos para el diseño de aplicaciones distribuidas. La elección entre ellos depende de la naturaleza y los requisitos específicos del proyecto.
+	\end{tcolorbox}
+	
+	\subsection{Arquitectura sin servidor (Serverless)}
+	La arquitectura sin servidor permite a los desarrolladores centrarse en escribir código y funciones sin preocuparse por la infraestructura subyacente. Los proveedores de servicios en la nube gestionan la infraestructura y la escalabilidad automática.
+	
+	\subsubsection{Características Principales}
+	\begin{itemize}
+		\item \textbf{Modelo de Pago por Uso:} Los desarrolladores solo pagan por el tiempo de ejecución real de sus funciones.
+		\item \textbf{Escalabilidad Automática:} La infraestructura escala automáticamente para manejar cargas variables.
+		\item \textbf{Event-Driven:} Las funciones se desencadenan en respuesta a eventos.
+	\end{itemize}
+	
+	\subsubsection{Beneficios}
+	\begin{itemize}
+		\item \textbf{Agilidad:} Desarrollo y despliegue rápidos de funciones.
+		\item \textbf{Eficiencia de Costos:} El modelo de pago por uso es más eficiente en costos.
+		\item \textbf{Elasticidad:} Manejo eficiente de picos de tráfico.
+	\end{itemize}
+	
+	\subsubsection{Desafíos}
+	\begin{itemize}
+		\item \textbf{Gestión de Estado:} La gestión del estado y la persistencia de datos pueden ser más complicadas.
+		\item \textbf{Límites de Tiempo de Ejecución:} Las funciones suelen tener límites de tiempo de ejecución.
+		\item \textbf{Rendimiento:} El tiempo de inicio de una función puede introducir latencia.
+	\end{itemize}
+	
+	\begin{tcolorbox}[colback=yellow!10!white, colframe=blue!50!black, title=Resumiendo, coltitle=white]
+		La arquitectura sin servidor es una forma poderosa de diseñar aplicaciones distribuidas sin preocuparse por la gestión de servidores. Permite a los desarrolladores enfocarse en la lógica de la aplicación y aprovechar la escalabilidad automática y el modelo de pago por uso proporcionados por los servicios en la nube.
+	\end{tcolorbox}
+	
+	\section{Modelos de Comunicación}
+		Los modelos de comunicación en sistemas distribuidos incluyen:
+		
+		\subsection{Comunicación Síncrona}
+			La comunicación síncrona es un modelo en el que el remitente se bloquea mientras espera una respuesta del receptor. Este bloqueo significa que el remitente no puede realizar ninguna otra tarea hasta que reciba una respuesta. Este tipo de comunicación es útil en situaciones donde es crucial completar una acción antes de proceder con la siguiente, garantizando que ambas partes estén sincronizadas.
+			
+			En términos técnicos, la comunicación síncrona se utiliza frecuentemente en protocolos de red como HTTP, donde un cliente (remitente) realiza una solicitud a un servidor (receptor) y espera hasta recibir una respuesta antes de continuar. Esta espera puede ser problemática en sistemas con alta latencia, ya que el tiempo de respuesta puede ser considerablemente largo \cite{Cai2023distributed,RamonCortes2021}.
+			
+			Algunas de las aplicaciones en el mundo real se pueden citar:
+			
+			\begin{itemize}
+				\item \textbf{Sistemas Bancarios:} En transacciones financieras, es vital confirmar que una operación se haya completado exitosamente antes de proceder a la siguiente. Aquí, la comunicación síncrona asegura la integridad y consistencia de las transacciones.
+				\item \textbf{Procesos de Autenticación:} En aplicaciones que requieren autenticación de usuario, como el inicio de sesión en un sistema, es necesario que el sistema espere la validación del usuario antes de permitir el acceso a otros recursos.
+				\item \textbf{Aplicaciones de transferencia de archivos:} En la transferencia de archivos, especialmente en protocolos como FTP, la comunicación es síncrona, ya que el cliente espera a que el archivo se haya transferido completamente antes de proceder con otra operación. Este enfoque garantiza que el archivo se haya recibido correctamente antes de continuar con otras tareas.
+			\end{itemize}
+			
+		\subsection{Comunicación Asíncrona}
+			La comunicación asíncrona es un modelo en el que el remitente envía un mensaje y puede continuar con otras tareas sin esperar una respuesta inmediata del receptor. Este modelo es ideal para sistemas con altas latencias o donde la carga de trabajo es impredecible, ya que permite una mayor flexibilidad y eficiencia en la gestión de tareas.
+			\cite{RamonCortes2021}.
+			
+			En la comunicación asíncrona, se utilizan mecanismos como callbacks, promesas o mensajes en cola para manejar la respuesta cuando esté disponible. Este modelo es fundamental en la programación basada en eventos y es común en tecnologías web modernas como JavaScript con AJAX o Fetch API.
+			
+			La comunicación asíncrona como la síncrona tiene sus aplicaciones en el mundo real, entre ellas se tienen:
+			
+			\begin{itemize}
+				\item \textbf{Aplicaciones Web:} En el desarrollo web, las solicitudes AJAX permiten que las aplicaciones web actualicen datos de forma asíncrona sin recargar la página completa, mejorando la experiencia del usuario.
+				\item \textbf{Procesamiento de Grandes Volúmenes de Datos:} En sistemas de procesamiento de datos masivos, como Hadoop, las tareas de procesamiento pueden ser ejecutadas de manera asíncrona, permitiendo que el sistema continúe operando mientras se procesan los datos.
+				\item \textbf{Aplicaciones de Mensajería:} Servicios de mensajería instantánea como WhatsApp o Slack utilizan comunicación asíncrona para enviar y recibir mensajes, lo que permite a los usuarios seguir interactuando con la aplicación mientras esperan respuestas.
+			\end{itemize}
+		
+		\subsection{Comunicación en Grupo}
+			La comunicación en grupo implica el intercambio de mensajes entre varios remitentes y receptores, facilitando la coordinación y colaboración. Este modelo es esencial en aplicaciones donde múltiples participantes necesitan compartir información simultáneamente.
+			 \cite{Hogie2023,Donta2022}.
+		
+			Este tipo de comunicación puede implementarse mediante multicast o broadcast. Multicast permite que los mensajes se envíen a un grupo específico de receptores interesados, mientras que broadcast envía los mensajes a todos los nodos de una red.
+			
+			Así mismo la comunicación en grupo tiene sus aplicaciones, entre ellas se pueden mencionar:
+			
+			\begin{itemize}
+				\item \textbf{Aplicaciones de Conferencia:} En videoconferencias, webinars y clases en línea, la comunicación en grupo permite a múltiples participantes interactuar y colaborar en tiempo real.
+				\item \textbf{Juegos Multijugador:} En juegos en línea, la comunicación en grupo es crucial para la coordinación entre jugadores, donde las actualizaciones sobre el estado del juego se envían a todos los participantes simultáneamente.
+				\item \textbf{Sistemas de Control de Tráfico Aéreo:} Los sistemas de control de tráfico aéreo utilizan la comunicación en grupo para coordinar las operaciones entre múltiples aviones y controladores en diferentes ubicaciones.
+			\end{itemize}
+			
+		\subsection{Comunicación Basada en Colas de Mensajes}
+			La comunicación basada en colas de mensajes utiliza colas para almacenar y gestionar los mensajes enviados entre componentes del sistema. Este modelo garantiza que los mensajes no se pierdan y permite a los receptores procesar los mensajes a su propio ritmo \cite{Urquhart2021flow,Hogie2023,Donta2022}..
+			
+			Las colas de mensajes permiten la comunicación asíncrona y desacoplada entre los componentes del sistema. Tecnologías como RabbitMQ, Apache Kafka y Amazon SQS son populares para implementar este modelo. Las colas pueden ser persistentes, asegurando que los mensajes se almacenen hasta que sean procesados exitosamente \cite{Pilyai2024Implementation}.
+			
+			Este modelo de comunicaciones ha tenido su empuje en los últimos años, siendo aplicado en sistemas de tecnologías emergentes o de cambios constantes, tales como: 
+			
+			\begin{itemize}
+				\item \textbf{Sistemas de Comercio Electrónico:} En plataformas de comercio electrónico, las colas de mensajes pueden gestionar el procesamiento de pedidos, asegurando que cada orden se procese independientemente y sin pérdida de datos.
+				\item \textbf{Procesamiento de Datos en Tiempo Real:} En sistemas de análisis de datos en tiempo real, las colas de mensajes pueden manejar flujos de datos continuos, permitiendo que los datos se procesen a medida que llegan.
+				\item \textbf{Microservicios:} En arquitecturas de microservicios, las colas de mensajes permiten la comunicación entre servicios de manera eficiente y desacoplada, facilitando la escalabilidad y la resiliencia del sistema.
+			\end{itemize}
+			
+		\subsection{Comunicación Basada en Publicación y Suscripción}
+			En la comunicación basada en publicación y suscripción, los remitentes publican mensajes en temas específicos y los receptores se suscriben a los temas que les interesan. Este enfoque permite una comunicación eficiente y dirigida \cite{Urquhart2021flow,Shang2019}.
+			
+			La implementación de la comunicación basada en publicación y suscripción es común en sistemas distribuidos y arquitecturas orientadas a eventos. Tecnologías como MQTT \cite{Sharma2024Efficient}, Apache Kafka \cite{Raptis2023Survey} y Redis \cite{Maharjan2023Benchmarking} Pub/Sub son utilizadas para implementar este modelo. Los mensajes se publican en canales específicos, y solo los suscriptores de esos canales reciben los mensajes.
+			
+			Entre las aplicaciones en las que se puede encontrar la implementación del modelo de comunicación basado en publicación y suscripción, se pueden mencionar algunos, entre ellos:
+			
+			\begin{itemize}
+				\item \textbf{Aplicaciones IoT:} En el Internet de las Cosas (IoT), los dispositivos pueden publicar datos en temas específicos y otros dispositivos o sistemas pueden suscribirse para recibir estos datos y actuar en consecuencia.
+				\item \textbf{Sistemas de Notificación:} En sistemas de notificación, como los utilizados en redes sociales y aplicaciones móviles, las notificaciones se publican en temas a los que los usuarios están suscritos.
+				\item \textbf{Sistemas de Monitorización:} En sistemas de monitorización y alerta, los eventos críticos se publican y los sistemas de monitorización se suscriben para recibir notificaciones y tomar medidas inmediatas.
+			\end{itemize}
+			
+		\begin{tcolorbox}[colback=yellow!10!white, colframe=lightblue!50!white, title=Concluyendo, coltitle=blue]
+			Cada uno de estos modelos tiene sus ventajas y desventajas, y la elección depende de las necesidades específicas de la aplicación y los requisitos del sistema. Los estudiantes de Ingeniería de Software deben comprender estos modelos de comunicación y ser capaces de seleccionar y aplicar el modelo más adecuado para su aplicación distribuida.
+		\end{tcolorbox}
