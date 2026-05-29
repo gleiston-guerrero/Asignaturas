@@ -1,0 +1,376 @@
+% ============================================================
+%  DIRECTRICES PARA LA EXPOSICIÓN — Primer Corte
+%  Ingeniería de Requisitos ISR-401
+%  Universidad Técnica Estatal de Quevedo
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[a4paper, top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+
+\usepackage[table]{xcolor}
+\definecolor{darkblue}{HTML}{1A3A5C}
+\definecolor{midblue}{HTML}{2E6DA4}
+\definecolor{gold}{HTML}{C8A951}
+\definecolor{lightgray}{HTML}{F2F2F2}
+\definecolor{rowgray}{HTML}{EEEEEE}
+\definecolor{alertred}{HTML}{C0392B}
+\definecolor{okgreen}{HTML}{27AE60}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+\hypersetup{colorlinks=true, linkcolor=midblue, urlcolor=midblue,
+	pdftitle={Directrices Exposición Primer Corte -- IR ISR-401 UTEQ}}
+
+% ── Encabezado y pie ─────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot[L]{\footnotesize\color{darkblue}UTEQ · Ingeniería de Requisitos ISR-401 · Directrices de Exposición}
+\fancyfoot[R]{\footnotesize\color{darkblue}Página \thepage}
+
+% ── Secciones ────────────────────────────────────────────
+\titleformat{\section}{\large\bfseries\color{darkblue}}{\thesection.}{0.5em}{}
+[\vspace{-4pt}\textcolor{gold}{\rule{\linewidth}{1.5pt}}\vspace{2pt}]
+\titlespacing{\section}{0pt}{12pt}{6pt}
+
+\titleformat{\subsection}{\normalsize\bfseries\color{midblue}}{\thesubsection}{0.5em}{}
+\titlespacing{\subsection}{0pt}{8pt}{4pt}
+
+% ── Columnas ─────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ── Utilidades ───────────────────────────────────────────
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\newcommand{\goldrule}{\noindent\textcolor{gold}{\rule{\linewidth}{2pt}}}
+
+% Celdas coloreadas
+\newcommand{\hdark}[1]{\cellcolor{darkblue}\textbf{\textcolor{white}{\small #1}}}
+\newcommand{\hmid}[1]{\cellcolor{midblue}\textbf{\textcolor{white}{\small #1}}}
+\newcommand{\hgray}[1]{\cellcolor{lightgray}\textbf{\color{darkblue}\small #1}}
+
+% Cajas
+\newtcolorbox{alertbox}[1][]{
+	colback=alertred!8, colframe=alertred!80, fonttitle=\bfseries\color{white},
+	title=#1, arc=2pt, boxrule=0.8pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+	coltitle=white, colbacktitle=alertred!80
+}
+
+\newtcolorbox{infobox}[1][]{
+	colback=midblue!6, colframe=midblue!70, fonttitle=\bfseries\color{white},
+	title=#1, arc=2pt, boxrule=0.8pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+	coltitle=white, colbacktitle=midblue!70
+}
+
+\newtcolorbox{okbox}[1][]{
+	colback=okgreen!6, colframe=okgreen!70, fonttitle=\bfseries\color{white},
+	title=#1, arc=2pt, boxrule=0.8pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+	coltitle=white, colbacktitle=okgreen!70
+}
+
+% ============================================================
+\begin{document}
+	
+	% ── ENCABEZADO ───────────────────────────────────────────
+	\begin{center}
+		{\large\bfseries\color{darkblue}Universidad Técnica Estatal de Quevedo}\\[2pt]
+		{\normalsize\bfseries\color{midblue}Facultad de Ciencias de la Computación · Carrera de Ingeniería de Software}\\[5pt]
+	\end{center}
+	\goldrule
+	\vspace{4pt}
+	\begin{center}
+		{\LARGE\bfseries\color{darkblue}DIRECTRICES PARA LA EXPOSICIÓN}\\[4pt]
+		{\large\color{midblue}Primer Corte — Semana 6 (8 al 14 de junio de 2026)}\\[2pt]
+		{\normalsize\color{darkblue}Asignatura: Ingeniería de Requisitos (ISR-401) · Período 2025--2026}
+	\end{center}
+	\vspace{6pt}
+	
+	% ===========================================================
+	\section{IDENTIFICACIÓN DE LA ACTIVIDAD EVALUATIVA}
+	
+	\noindent\begin{tabularx}{\linewidth}{|L{0.40\linewidth}|X|}
+		\hline
+		\hdark{Campo} & \hdark{Detalle}\\
+		\hline
+		\small Tipo de evaluación & \small Gestión de Aula (GA) — Exposiciones\\
+		\hline
+		\rowcolor{rowgray}\small Tema de la exposición & \small \textbf{Herramientas automatizadas para la Ingeniería de Requisitos}\\
+		\hline
+		\small Semana programada & \small Semana 6: del 8 al 14 de junio de 2026\\
+		\hline
+		\rowcolor{rowgray}\small Unidad curricular & \small Unidad 2: Elicitación y Análisis de Requisitos\\
+		\hline
+		\small Resultado de aprendizaje evaluado & \small Aplica técnicas de elicitación y análisis de requisitos para identificar, clasificar y modelar los requisitos funcionales y no funcionales, asegurando completitud y coherencia.\\
+		\hline
+		\rowcolor{rowgray}\small Contenido temático de la semana & \small Tema 3: Metas, Escenarios y Requisitos Orientados a Solución (subtemas 7.1 a 7.4 del programa analítico)\\
+		\hline
+		\small Modalidad & \small Grupal · Presencial\\
+		\hline
+		\rowcolor{rowgray}\small Habilidades blandas evaluadas & \small Comunicación efectiva, liderazgo, trabajo en equipo\\
+		\hline
+	\end{tabularx}
+	
+	% ===========================================================
+	\section{ARTÍCULOS CIENTÍFICOS ASIGNABLES}
+	
+	Cada grupo expondrá \textbf{un (1) artículo} de la siguiente lista. El docente asignará el artículo a cada grupo. Todos los artículos abordan herramientas automatizadas (IA, LLMs, sistemas expertos, NLP) aplicadas a alguna fase de la Ingeniería de Requisitos.
+	
+	\vspace{4pt}
+	\noindent\begin{tabularx}{\linewidth}{|C{0.04\linewidth}|L{0.58\linewidth}|L{0.32\linewidth}|}
+		\hline
+		\hdark{\#} & \hdark{Artículo} & \hdark{Enfoque de automatización}\\
+		\hline
+		\small A1 & \small Cheng et al. --- \textit{Generative AI for Requirements Engineering: A Systematic Literature Review} (Software: Practice and Experience, 2026) & \small IA generativa (LLMs) en todo el proceso de IR\\
+		\hline
+		\rowcolor{rowgray}\small A2 & \small Stein et al. --- \textit{Integrating the capabilities offered by large language models into the requirements engineering process} (Digital Engineering, 2026) & \small Integración práctica de LLMs en el flujo de trabajo de IR\\
+		\hline
+		\small A3 & \small Shah et al. --- \textit{Explainability and compliance in AI tools for design artifact generation} (Information and Software Technology, 2026) & \small Explicabilidad y confianza en herramientas de IA para IR\\
+		\hline
+		\rowcolor{rowgray}\small A4 & \small Kuchenbuch et al. --- \textit{The Impact of Artificial Intelligence on Quality in Smart Grid Requirements Engineering} (IEEE Access, 2026) & \small Sistema experto SGAAIRE para calidad de casos de uso\\
+		\hline
+		\small A5 & \small Riaz et al. --- \textit{Enhancing Security Requirements Engineering for IoT Smart Homes: A BERT-based Approach to Automate completeness checking} & \small NLP (BERT) para verificación automática de completitud en requisitos de seguridad\\
+		\hline
+		\rowcolor{rowgray}\small A6 & \small --- \textit{Dynamic Expert System Approach for Requirements Engineering in the Context of the Vehicle Development Process at an OEM} & \small Sistema experto dinámico para IR en industria automotriz\\
+		\hline
+		\small A7 & \small --- \textit{A systematic literature review on model-based requirements engineering} & \small IR basada en modelos (MBRE)\\
+		\hline
+		\rowcolor{rowgray}\small A8 & \small --- \textit{Evaluating the requirements engineering process in model transformation development} & \small Evaluación de procesos de IR en transformación de modelos\\
+		\hline
+		\small A9 & \small --- \textit{Addressing Legal Requirements in Requirements Engineering} & \small Integración automatizada de requisitos legales en IR\\
+		\hline
+	\end{tabularx}
+	
+	% ===========================================================
+	\section{ESTRUCTURA OBLIGATORIA DE LA EXPOSICIÓN}
+	
+	La exposición debe organizarse en \textbf{exactamente seis (6) bloques}, en el orden indicado. No se permite alterar la secuencia ni omitir ningún bloque.
+	
+	\vspace{4pt}
+	\noindent\begin{tabularx}{\linewidth}{|C{0.06\linewidth}|L{0.22\linewidth}|C{0.10\linewidth}|X|}
+		\hline
+		\hdark{N.°} & \hdark{Bloque} & \hdark{Duración} & \hdark{Contenido específico exigido}\\
+		\hline
+		\small 1 & \small \textbf{Contextualización del problema} & \small 2 min & \small Enunciar en máximo 3 oraciones el problema que aborda el artículo. Citar al menos \textbf{un dato cuantitativo} del artículo que justifique la relevancia del problema (ejemplo: porcentaje de proyectos fallidos, costo de defectos en requisitos, tamaño de la muestra del estudio).\\
+		\hline
+		\rowcolor{rowgray}\small 2 & \small \textbf{Metodología o herramienta propuesta} & \small 4 min & \small Explicar \textbf{cómo funciona} la herramienta/enfoque propuesto. Incluir: (a) tipo de técnica de IA/automatización empleada (LLM, BERT, sistema experto, NLP clásico, etc.); (b) entrada que recibe la herramienta (requisitos en lenguaje natural, documentos SRS, casos de uso, etc.); (c) salida que produce (clasificación, requisitos generados, alertas, métricas, etc.); (d) al menos un diagrama, flujo o esquema visual que resuma el funcionamiento.\\
+		\hline
+		\small 3 & \small \textbf{Resultados principales} & \small 3 min & \small Presentar los resultados del estudio con \textbf{datos concretos}: métricas de rendimiento (precision, recall, F1, accuracy), porcentajes de mejora, comparaciones antes/después, o hallazgos de encuestas con valores numéricos. Prohibido decir ``los resultados fueron buenos''; exigido decir \textit{qué} valor se obtuvo y \textit{en qué} métrica.\\
+		\hline
+		\rowcolor{rowgray}\small 4 & \small \textbf{Conexión con la asignatura} & \small 3 min & \small Vincular explícitamente la herramienta con \textbf{al menos dos (2)} conceptos de las Unidades 1 o 2 de la asignatura. La tabla de la Sección~\ref{sec:vinculacion} indica los conceptos válidos y cómo formular la conexión.\\
+		\hline
+		\small 5 & \small \textbf{Análisis crítico del grupo} & \small 2 min & \small Responder las \textbf{cuatro (4) preguntas obligatorias} de la Sección~\ref{sec:critico}. Cada respuesta debe tener mínimo 2 oraciones de fundamentación.\\
+		\hline
+		\rowcolor{rowgray}\small 6 & \small \textbf{Conclusiones y cierre} & \small 1 min & \small Enunciar exactamente 3 conclusiones: una sobre la herramienta, una sobre su impacto en la IR, y una sobre su aplicabilidad en el contexto ecuatoriano o en proyectos académicos de la UTEQ.\\
+		\hline
+		\multicolumn{2}{|l|}{\cellcolor{gold!20}\textbf{\small TOTAL}} & \cellcolor{gold!20}\textbf{\small 15 min} & \cellcolor{gold!20}\small Tiempo máximo estricto. Se penaliza exceder o no alcanzar el 80\% del tiempo (12 min).\\
+		\hline
+	\end{tabularx}
+	
+	% ===========================================================
+	\section{VINCULACIÓN OBLIGATORIA CON LA ASIGNATURA}\label{sec:vinculacion}
+	
+	En el Bloque 4, cada grupo debe seleccionar \textbf{mínimo dos (2)} conceptos de la columna izquierda y formular la conexión usando la estructura de la columna derecha.
+	
+	\vspace{4pt}
+	\noindent\begin{tabularx}{\linewidth}{|L{0.38\linewidth}|X|}
+		\hline
+		\hdark{Concepto del sílabo (Unidades 1--2)} & \hdark{Formato exigido de la conexión}\\
+		\hline
+		\small Clasificación de requisitos: RF, NFR, restricciones (Subtema 2.2--2.3) & \small ``La herramienta [nombre] automatiza la clasificación de requisitos porque [explicar mecanismo]. Esto impacta la actividad de [análisis/elicitación] del framework de IR al [beneficio concreto].''\\
+		\hline
+		\rowcolor{rowgray}\small Propiedades de un buen requisito: completitud, consistencia, verificabilidad, no ambigüedad (Subtema 2.2) & \small ``La herramienta mejora/compromete la propiedad de [nombre] porque [razón técnica]. Sin la herramienta, esta propiedad se verifica mediante [técnica manual]; con ella, [qué cambia].''\\
+		\hline
+		\small Framework de IR: actividades core (elicitación, análisis, especificación, validación, gestión) y actividades transversales (Subtema 3.4) & \small ``La herramienta interviene en la actividad core de [nombre] del framework de IR. Específicamente, automatiza [tarea concreta] que antes requería [esfuerzo manual].''\\
+		\hline
+		\rowcolor{rowgray}\small Taxonomía de calidad ISO/IEC 25010 (Subtema 2.4) & \small ``La herramienta contribuye a la característica de calidad [nombre de ISO 25010] al [mecanismo]. Esto afecta los NFR del sistema porque [razón].''\\
+		\hline
+		\small Técnicas de elicitación: entrevistas, workshops, observación, design thinking, prototipos (Subtemas 5.1--5.4) & \small ``La herramienta complementa/reemplaza la técnica de [nombre] porque [razón]. La ventaja frente a la técnica manual es [dato]; la limitación es [dato].''\\
+		\hline
+		\rowcolor{rowgray}\small Priorización de requisitos: MoSCoW, Kano (Subtema 6.1) & \small ``La herramienta asiste en la priorización al [mecanismo]. Comparada con MoSCoW/Kano manual, la herramienta [ventaja] pero [limitación].''\\
+		\hline
+		\small Metas y escenarios: descomposición AND/OR, casos de uso, user stories (Subtemas 7.1--7.3) & \small ``La herramienta genera/analiza [metas/escenarios/casos de uso] a partir de [entrada]. Esto se relaciona con el modelamiento de [metas/escenarios] porque [razón].''\\
+		\hline
+		\rowcolor{rowgray}\small Estándar IEEE 29148:2018 — Estructura del ERS/SRS (Referencia transversal) & \small ``La herramienta produce artefactos compatibles/incompatibles con la estructura IEEE 29148 porque [razón]. Para cumplir el estándar, sería necesario [acción].''\\
+		\hline
+	\end{tabularx}
+	
+	\begin{alertbox}[\textbf{!} Conexiones no válidas (generan penalización)]
+		Las siguientes formulaciones \textbf{no cuentan} como conexión válida:
+		\begin{itemize}[leftmargin=14pt, itemsep=2pt]
+			\item ``Este artículo se relaciona con la IR porque trata sobre requisitos.'' \textrightarrow\ Tautología, no aporta análisis.
+			\item ``La herramienta es útil para los ingenieros de software.'' \textrightarrow\ Genérico, no vincula con ningún concepto específico.
+			\item ``Esto se vio en clase.'' \textrightarrow\ No especifica qué concepto ni cómo se vincula.
+		\end{itemize}
+	\end{alertbox}
+	
+	% ===========================================================
+	\section{PREGUNTAS OBLIGATORIAS DEL ANÁLISIS CRÍTICO}\label{sec:critico}
+	
+	En el Bloque 5, cada grupo debe responder \textbf{las cuatro (4) preguntas} siguientes. No se permite sustituirlas por otras ni omitir alguna.
+	
+	\begin{enumerate}[leftmargin=18pt, itemsep=6pt, label=\textbf{P\arabic*.}]
+		\item \textbf{¿La herramienta reemplaza o complementa al analista de requisitos humano?} Responder con una postura definida (reemplaza / complementa / depende del contexto) y justificar con \textbf{al menos un argumento técnico} extraído del artículo y \textbf{un argumento propio} del grupo.
+		
+		\item \textbf{¿Qué propiedad de calidad de los requisitos (completitud, consistencia, verificabilidad, no ambigüedad, trazabilidad) mejora la herramienta y cuál podría comprometer?} Nombrar una propiedad que mejora y una que podría verse afectada negativamente. Justificar ambas con evidencia del artículo o razonamiento técnico.
+		
+		\item \textbf{¿Es aplicable esta herramienta en un proyecto de desarrollo de software en Ecuador (empresa local, proyecto académico de la UTEQ, institución pública)?} Responder sí o no, e indicar: (a) al menos una barrera concreta (costo, idioma, infraestructura, regulación, capacitación); (b) al menos una oportunidad concreta.
+		
+		\item \textbf{¿Qué riesgo ético implica automatizar esta fase de la IR?} Identificar un riesgo ético específico (sesgo en los datos de entrenamiento, pérdida de juicio humano, dependencia tecnológica, privacidad de los datos del stakeholder, etc.) y proponer una medida de mitigación en una oración.
+	\end{enumerate}
+	
+	% ===========================================================
+	\section{ESPECIFICACIONES TÉCNICAS DE LA PRESENTACIÓN}
+	
+	\subsection{Diapositivas}
+	
+	\noindent\begin{tabularx}{\linewidth}{|L{0.35\linewidth}|X|}
+		\hline
+		\hdark{Especificación} & \hdark{Valor exigido}\\
+		\hline
+		\small Cantidad mínima de diapositivas & \small 10 diapositivas (sin contar portada y referencias)\\
+		\hline
+		\rowcolor{rowgray}\small Cantidad máxima de diapositivas & \small 18 diapositivas (sin contar portada y referencias)\\
+		\hline
+		\small Texto máximo por diapositiva & \small 6 líneas de texto o 40 palabras (lo que se cumpla primero). El resto debe ser visual: diagramas, tablas, capturas, esquemas.\\
+		\hline
+		\rowcolor{rowgray}\small Diapositiva de portada (obligatoria) & \small Debe incluir: logo UTEQ, nombre de la asignatura (ISR-401), título del artículo, nombres completos de todos los integrantes, fecha de exposición, paralelo.\\
+		\hline
+		\small Diapositiva de referencias (obligatoria) & \small Referencia completa del artículo en formato IEEE. Adicionalmente, las fuentes complementarias consultadas.\\
+		\hline
+		\rowcolor{rowgray}\small Elementos visuales mínimos & \small Al menos \textbf{3 elementos visuales originales} (no copiados del artículo): un diagrama de flujo o arquitectura de la herramienta, una tabla comparativa o de resultados, y un esquema de la conexión con la asignatura.\\
+		\hline
+		\small Herramientas permitidas & \small Canva, PowerPoint, Google Slides, Beamer (\LaTeX), Prezi. Se prohíbe usar plantillas con animaciones excesivas que consuman tiempo.\\
+		\hline
+		\rowcolor{rowgray}\small Idioma & \small Español. Los términos técnicos en inglés que no tengan traducción aceptada se mantienen en inglés y se explican en la primera mención (ejemplo: ``\textit{recall} (sensibilidad o tasa de verdaderos positivos)'').\\
+		\hline
+	\end{tabularx}
+	
+	\subsection{Participación de los integrantes}
+	
+	\begin{infobox}[\textbf{\textgreater\textgreater} Regla de participación equitativa]
+		\textbf{Todos los integrantes del grupo deben exponer oralmente durante la presentación.} La distribución mínima es: cada integrante expone al menos un (1) bloque completo de la estructura. El docente podrá dirigir preguntas a cualquier integrante, incluyendo los bloques que no expuso, para verificar dominio del contenido completo. Si un integrante no asiste el día de la exposición sin justificación oficial, su nota individual en esta actividad es cero (0).
+	\end{infobox}
+	
+	\subsection{Demostración práctica}
+	
+	Cada grupo debe incluir \textbf{al menos una (1)} de las siguientes demostraciones prácticas dentro de su exposición:
+	
+	\begin{enumerate}[leftmargin=18pt, itemsep=4pt, label=\alph*)]
+		\item \textbf{Réplica del artículo:} reproducir un experimento o ejemplo del artículo (usar un LLM para clasificar requisitos, ejecutar un prompt de elicitación, aplicar la herramienta en un caso simulado).
+		\item \textbf{Ejemplo aplicado al SGEH:} tomar 2--3 requisitos del caso de estudio del SGEH (Hospital Regional Los Ríos) visto en la Unidad 1, y mostrar cómo la herramienta los procesaría (clasificaría, mejoraría, validaría, etc.).
+		\item \textbf{Comparativa antes/después:} mostrar un requisito ambiguo o incompleto \textit{antes} de aplicar la herramienta y el resultado \textit{después}, con las propiedades de calidad que se mejoraron.
+	\end{enumerate}
+	
+	\begin{alertbox}[\textbf{!} Demostraciones no válidas]
+		\textbf{No cuenta} como demostración práctica: leer una captura de pantalla del artículo, mostrar la página web de una herramienta sin interactuar con ella, o describir verbalmente un ejemplo sin mostrarlo visualmente en una diapositiva.
+	\end{alertbox}
+	
+	% ===========================================================
+	\section{ERRORES FRECUENTES QUE DEBEN EVITARSE}
+	
+	\noindent\begin{tabularx}{\linewidth}{|C{0.04\linewidth}|L{0.44\linewidth}|X|}
+		\hline
+		\hdark{\#} & \hdark{Error} & \hdark{Consecuencia y corrección}\\
+		\hline
+		\small 1 & \small \textcolor{alertred}{Leer las diapositivas textualmente} en lugar de explicar con palabras propias. & \small Demuestra que el expositor no entiende el contenido. \textbf{Corrección:} cada expositor debe poder explicar su bloque sin mirar la pantalla durante al menos el 70\% del tiempo.\\
+		\hline
+		\rowcolor{rowgray}\small 2 & \small \textcolor{alertred}{Copiar tablas o figuras del artículo} sin explicarlas ni reinterpretarlas. & \small No evidencia comprensión. \textbf{Corrección:} si se usa una figura del artículo, el expositor debe explicar \textit{qué representa cada eje, columna o elemento} y \textit{qué conclusión se extrae}.\\
+		\hline
+		\small 3 & \small \textcolor{alertred}{No mencionar datos cuantitativos} del artículo (decir ``los resultados fueron positivos'' sin cifras). & \small Reduce la credibilidad. \textbf{Corrección:} citar al menos 3 valores numéricos del estudio (tamaño de muestra, métrica de rendimiento, porcentaje de mejora).\\
+		\hline
+		\rowcolor{rowgray}\small 4 & \small \textcolor{alertred}{Omitir la conexión con la asignatura} o hacerla de forma genérica. & \small Pierde el propósito académico de la actividad. \textbf{Corrección:} seguir estrictamente los formatos de la Sección~\ref{sec:vinculacion}.\\
+		\hline
+		\small 5 & \small \textcolor{alertred}{Un solo integrante habla} y los demás permanecen en silencio. & \small Viola la regla de participación equitativa y las habilidades blandas evaluadas (trabajo en equipo, liderazgo). \textbf{Corrección:} asignar bloques con anticipación y ensayar.\\
+		\hline
+		\rowcolor{rowgray}\small 6 & \small \textcolor{alertred}{No prepararse para preguntas.} Responder ``no sé'' o ``eso no lo vimos'' a preguntas sobre el artículo. & \small Indica lectura superficial. \textbf{Corrección:} cada integrante debe leer el artículo completo, no solo la sección que le toca exponer.\\
+		\hline
+		\small 7 & \small \textcolor{alertred}{Exceder el tiempo} asignado (más de 15 minutos) o usar menos de 12 minutos. & \small Refleja mala gestión del tiempo. \textbf{Corrección:} ensayar con cronómetro al menos 2 veces antes de la exposición. Designar a un integrante como cronometrista.\\
+		\hline
+		\rowcolor{rowgray}\small 8 & \small \textcolor{alertred}{Usar términos técnicos en inglés sin definirlos} la primera vez que aparecen. & \small Dificulta la comprensión de los compañeros. \textbf{Corrección:} en la primera mención, decir el término en inglés + su traducción o definición breve.\\
+		\hline
+	\end{tabularx}
+	
+	% ===========================================================
+	\section{RÚBRICA DE EVALUACIÓN}
+	
+	\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|C{0.08\linewidth}|X|}
+		\hline
+		\hdark{Criterio} & \hdark{Peso} & \hdark{Indicadores de logro para puntaje completo}\\
+		\hline
+		\small Dominio del contenido del artículo & \small 25\% & \small Explica el problema, metodología y resultados con datos cuantitativos y sin leer diapositivas. Responde preguntas del docente con precisión.\\
+		\hline
+		\rowcolor{rowgray}\small Conexión con la asignatura (Bloque 4) & \small 20\% & \small Vincula al menos 2 conceptos del sílabo con el formato exigido. Las conexiones son pertinentes, no genéricas.\\
+		\hline
+		\small Análisis crítico (Bloque 5) & \small 20\% & \small Responde las 4 preguntas obligatorias con postura definida, argumentos técnicos y propuestas concretas.\\
+		\hline
+		\rowcolor{rowgray}\small Demostración práctica & \small 15\% & \small Presenta al menos 1 demostración válida (réplica, ejemplo SGEH o comparativa antes/después) con evidencia visual.\\
+		\hline
+		\small Calidad de las diapositivas y elementos visuales & \small 10\% & \small Cumple las especificaciones técnicas (10--18 slides, máx.\ 40 palabras/slide, 3 elementos visuales originales, portada y referencias correctas).\\
+		\hline
+		\rowcolor{rowgray}\small Comunicación oral y participación equitativa & \small 10\% & \small Todos los integrantes exponen. Contacto visual con la audiencia, volumen adecuado, lenguaje técnico preciso, respeto del tiempo (12--15 min).\\
+		\hline
+	\end{tabularx}
+	
+	% ===========================================================
+	\section{FUENTES COMPLEMENTARIAS RECOMENDADAS}
+	
+	Además del artículo asignado, cada grupo \textbf{debe consultar al menos dos (2)} de las siguientes fuentes para enriquecer la conexión con la asignatura:
+	
+	\begin{enumerate}[leftmargin=18pt, itemsep=3pt]
+		\item H.~Washizaki (Ed.), \textit{SWEBOK Guide v4.0}, IEEE Computer Society, 2024. — Capítulo 1: Software Requirements.
+		\item IEEE/ISO/IEC 29148:2018, \textit{Systems and software engineering --- Life cycle processes --- Requirements engineering}.
+		\item IREB, \textit{CPRE Foundation Level Syllabus v3.1}, IREB, 2023.
+		\item K.~Pohl, \textit{Requirements Engineering: Fundamentals, Principles, and Techniques}, Springer, 2010. — Capítulos 1--6.
+		\item K.~Wiegers \& J.~Beatty, \textit{Software Requirements}, 3rd ed., Microsoft Press, 2013.
+	\end{enumerate}
+	
+	% ===========================================================
+	\section{CHECKLIST DE ENTREGA PREVIA A LA EXPOSICIÓN}
+	
+	\begin{okbox}[\checkmark\ Verificar antes de presentar — todos los ítems deben cumplirse]
+		\begin{enumerate}[leftmargin=18pt, itemsep=3pt, label=$\square$]
+			\item El artículo asignado fue leído \textbf{completo} por todos los integrantes.
+			\item La presentación tiene entre 10 y 18 diapositivas (sin contar portada y referencias).
+			\item Ninguna diapositiva excede 40 palabras o 6 líneas de texto.
+			\item La portada incluye: logo UTEQ, ISR-401, título del artículo, integrantes, fecha, paralelo.
+			\item La última diapositiva tiene la referencia IEEE del artículo y las fuentes complementarias.
+			\item Hay al menos 3 elementos visuales originales (no copiados del artículo).
+			\item Los 6 bloques de la estructura están completos y en orden.
+			\item Se citan al menos 3 valores numéricos del artículo en los bloques 1, 2 o 3.
+			\item El Bloque 4 vincula al menos 2 conceptos del sílabo con el formato de la Sección~\ref{sec:vinculacion}.
+			\item El Bloque 5 responde las 4 preguntas obligatorias de la Sección~\ref{sec:critico}.
+			\item Hay al menos 1 demostración práctica válida.
+			\item Cada integrante tiene asignado al menos un bloque y ha ensayado su parte.
+			\item Se realizó al menos un ensayo cronometrado (duración entre 12 y 15 minutos).
+			\item Los términos en inglés están definidos en español en la primera mención.
+		\end{enumerate}
+	\end{okbox}
+	
+	\vspace{12pt}
+	\goldrule
+	\begin{center}
+		\small\color{darkblue}\textit{Documento elaborado para la asignatura Ingeniería de Requisitos (ISR-401).}\\
+		\small\color{darkblue}\textit{Universidad Técnica Estatal de Quevedo · Período Académico 2025--2026.}
+	\end{center}
+	
+\end{document}
