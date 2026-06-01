@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" font-family="system-ui, sans-serif">
+    <title>Layout semántico HTML5 — Anatomía visual</title>
+    <desc>Diagrama que muestra cómo se organizan los elementos semánticos HTML5 en una página: header, nav, main, article, section, aside y footer.</desc>
+
+    <!-- Fondo -->
+    <rect width="900" height="700" fill="#FAFBF7"/>
+
+    <!-- Título -->
+    <text x="450" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#2C5F2D">
+        Anatomía de un layout HTML5 semántico
+    </text>
+    <text x="450" y="65" text-anchor="middle" font-size="13" fill="#555" font-style="italic">
+        Cada bloque corresponde a una etiqueta del estándar W3C
+    </text>
+
+    <!-- HEADER -->
+    <rect x="60" y="100" width="780" height="70" fill="#2C5F2D" stroke="#1e4220" stroke-width="2" rx="6"/>
+    <text x="450" y="135" text-anchor="middle" font-size="20" font-weight="bold" fill="white">
+        &lt;header&gt;
+    </text>
+    <text x="450" y="155" text-anchor="middle" font-size="12" fill="#d4e8c4">
+        Cabecera del sitio: logo, título, navegación principal
+    </text>
+
+    <!-- NAV (dentro/junto al header conceptualmente) -->
+    <rect x="60" y="180" width="780" height="40" fill="#97BC62" stroke="#7da348" stroke-width="2" rx="6"/>
+    <text x="450" y="207" text-anchor="middle" font-size="16" font-weight="bold" fill="#1B2A1C">
+        &lt;nav&gt; — Inicio • Artículos • Contacto
+    </text>
+
+    <!-- MAIN container -->
+    <rect x="60" y="240" width="780" height="350" fill="white" stroke="#999" stroke-width="2" stroke-dasharray="6,3" rx="6"/>
+    <text x="80" y="265" font-size="14" font-weight="bold" fill="#555">
+        &lt;main&gt; — Contenido único de ESTA página (uno solo)
+    </text>
+
+    <!-- ARTICLE (dentro de main, izquierda) -->
+    <rect x="85" y="285" width="500" height="280" fill="#D4A017" fill-opacity="0.15" stroke="#D4A017" stroke-width="2" rx="6"/>
+    <text x="335" y="310" text-anchor="middle" font-size="16" font-weight="bold" fill="#7d5d0c">
+        &lt;article&gt;
+    </text>
+    <text x="335" y="328" text-anchor="middle" font-size="11" fill="#7d5d0c" font-style="italic">
+        Contenido autocontenido, distribuible por RSS
+    </text>
+
+    <!-- SECTION 1 dentro del article -->
+    <rect x="105" y="345" width="460" height="65" fill="#D4A017" fill-opacity="0.3" stroke="#b88c14" stroke-width="1.5" rx="4"/>
+    <text x="335" y="370" text-anchor="middle" font-size="14" font-weight="bold" fill="#7d5d0c">
+        &lt;section&gt; — Introducción
+    </text>
+    <text x="335" y="390" text-anchor="middle" font-size="10" fill="#7d5d0c">
+        División temática del artículo
+    </text>
+
+    <!-- SECTION 2 dentro del article -->
+    <rect x="105" y="420" width="460" height="65" fill="#D4A017" fill-opacity="0.3" stroke="#b88c14" stroke-width="1.5" rx="4"/>
+    <text x="335" y="445" text-anchor="middle" font-size="14" font-weight="bold" fill="#7d5d0c">
+        &lt;section&gt; — Desarrollo
+    </text>
+    <text x="335" y="465" text-anchor="middle" font-size="10" fill="#7d5d0c">
+        Otra subdivisión temática
+    </text>
+
+    <!-- SECTION 3 (conclusiones) -->
+    <rect x="105" y="495" width="460" height="55" fill="#D4A017" fill-opacity="0.3" stroke="#b88c14" stroke-width="1.5" rx="4"/>
+    <text x="335" y="520" text-anchor="middle" font-size="14" font-weight="bold" fill="#7d5d0c">
+        &lt;section&gt; — Conclusiones
+    </text>
+
+    <!-- ASIDE -->
+    <rect x="605" y="285" width="215" height="280" fill="#B85042" fill-opacity="0.15" stroke="#B85042" stroke-width="2" rx="6"/>
+    <text x="712" y="310" text-anchor="middle" font-size="16" font-weight="bold" fill="#8b3c32">
+        &lt;aside&gt;
+    </text>
+    <text x="712" y="330" text-anchor="middle" font-size="10" fill="#8b3c32" font-style="italic">
+        Contenido relacionado
+    </text>
+    <text x="712" y="344" text-anchor="middle" font-size="10" fill="#8b3c32" font-style="italic">
+        pero tangencial
+    </text>
+
+    <text x="712" y="380" text-anchor="middle" font-size="11" fill="#8b3c32">• Artículos relacionados</text>
+    <text x="712" y="402" text-anchor="middle" font-size="11" fill="#8b3c32">• Publicidad contextual</text>
+    <text x="712" y="424" text-anchor="middle" font-size="11" fill="#8b3c32">• Widget de etiquetas</text>
+    <text x="712" y="446" text-anchor="middle" font-size="11" fill="#8b3c32">• Suscripción al boletín</text>
+
+    <text x="712" y="500" text-anchor="middle" font-size="9" fill="#666" font-style="italic">
+        Si lo eliminas, el artículo
+    </text>
+    <text x="712" y="513" text-anchor="middle" font-size="9" fill="#666" font-style="italic">
+        sigue teniendo sentido completo
+    </text>
+
+    <!-- FOOTER del sitio -->
+    <rect x="60" y="610" width="780" height="60" fill="#1B2A1C" stroke="#0a1409" stroke-width="2" rx="6"/>
+    <text x="450" y="640" text-anchor="middle" font-size="18" font-weight="bold" fill="white">
+        &lt;footer&gt;
+    </text>
+    <text x="450" y="658" text-anchor="middle" font-size="11" fill="#a5c4a3">
+        Copyright • Enlaces legales • Información de contacto
+    </text>
+
+    <!-- Leyenda lateral con jerarquía -->
+    <text x="20" y="170" font-size="9" fill="#888" transform="rotate(-90 20 170)">CABECERA</text>
+    <text x="20" y="400" font-size="9" fill="#888" transform="rotate(-90 20 400)">CONTENIDO</text>
+    <text x="20" y="650" font-size="9" fill="#888" transform="rotate(-90 20 650)">PIE</text>
+</svg>

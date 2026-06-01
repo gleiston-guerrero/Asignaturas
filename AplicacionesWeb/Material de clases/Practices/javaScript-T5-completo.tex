@@ -1,0 +1,1763 @@
+% =====================================================================
+%  LIBRO ACADÉMICO: APLICACIONES WEB - EDICIÓN AMPLIADA
+%  CAPÍTULO 4 (SEMANA 4): JavaScript moderno y programación asíncrona
+%  Dr. Gleiston Cicerón Guerrero Ulloa, Ph.D. — UTEQ — 2026
+% =====================================================================
+\documentclass[11pt,a4paper,openany]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{parskip}
+
+\usepackage{xcolor}
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{codebg}{RGB}{248,248,242}
+\definecolor{codeborder}{RGB}{180,180,180}
+\definecolor{codekey}{RGB}{0,87,174}
+\definecolor{codestr}{RGB}{196,26,22}
+\definecolor{codecom}{RGB}{113,113,113}
+\definecolor{codefn}{RGB}{123,47,190}
+\definecolor{codeobj}{RGB}{11,107,138}
+\definecolor{codeop}{RGB}{200,123,0}
+\definecolor{codeident}{RGB}{45,128,0}
+\definecolor{codenum}{RGB}{56,58,66}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,arrows.meta,positioning,fit,backgrounds,calc}
+\usetikzlibrary{shapes.geometric,shadows,matrix,decorations.markings}
+\usetikzlibrary{babel}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{breakable,skins,listings}
+
+\newtcolorbox{cajadefinicion}[1]{colback=uteqverde!5,colframe=uteqverde,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaejemplo}[1]{colback=uteqdorado!8,colframe=uteqdorado!80!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaejercicio}[1]{colback=blue!4,colframe=blue!60!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaadvertencia}[1]{colback=red!5,colframe=red!70!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajahistoria}[1]{colback=blue!3,colframe=blue!50!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajabuenas}[1]{colback=green!4,colframe=uteqverde!90!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajacompara}[1]{colback=cyan!5,colframe=cyan!60!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+
+% ---------- Listings ---------------------------------------------------
+\usepackage{listings}
+
+\lstdefinelanguage{JavaScript}{
+	keywords={break,case,catch,continue,debugger,default,delete,do,else,
+		finally,for,function,if,in,instanceof,new,return,switch,this,throw,
+		try,typeof,var,void,while,with,let,const,of,yield,async,await,
+		class,extends,super,static,import,export,from,as,true,false,null,
+		undefined,get,set},
+	ndkeywords={Array,Boolean,Date,Error,Function,JSON,Math,Number,Object,
+		Promise,RegExp,String,Symbol,console,document,window,fetch,Map,Set,
+		WeakMap,WeakSet,Proxy,Reflect,setTimeout,setInterval,clearTimeout,
+		clearInterval,parseInt,parseFloat,isNaN,isFinite,encodeURIComponent,
+		decodeURIComponent,localStorage,sessionStorage,navigator,history,
+		location,XMLHttpRequest,AbortController,URL,URLSearchParams,
+		MutationObserver,IntersectionObserver,EventSource,Worker},
+	sensitive=true,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]',
+	morestring=[b]",
+	morestring=[b]`
+}
+
+\lstdefinestyle{codigobase}{
+	basicstyle=\ttfamily\footnotesize\color{codenum},
+	backgroundcolor=\color{codebg},
+	frame=single,
+	rulecolor=\color{codeborder},
+	numbers=left,
+	numberstyle=\tiny\color{gray!70},
+	numbersep=8pt,
+	stepnumber=1,
+	breaklines=true,
+	breakatwhitespace=true,
+	showstringspaces=false,
+	tabsize=2,
+	keywordstyle=\color{codekey}\bfseries,
+	ndkeywordstyle=\color{codeobj},
+	stringstyle=\color{codestr},
+	commentstyle=\color{codecom}\itshape,
+	captionpos=b,
+	xleftmargin=12pt,
+	xrightmargin=4pt,
+	inputencoding=utf8,
+	extendedchars=true,
+	literate=
+	{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+	{ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1
+	{—}{{---}}1 {…}{{...}}1
+}
+\lstdefinestyle{js}{style=codigobase,language=JavaScript}
+\lstdefinestyle{html}{style=codigobase,language=HTML}
+\lstdefinestyle{shell}{style=codigobase,language=bash}
+
+% ---------- Tablas -----------------------------------------------------
+\usepackage{array}\usepackage{booktabs}\usepackage{longtable}
+\usepackage{tabularx}\usepackage{multirow}
+
+% ---------- Hiperenlaces -----------------------------------------------
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=uteqverde,citecolor=uteqverde,
+	urlcolor=uteqdorado!70!black,
+	pdftitle={Cap. 4 JavaScript Moderno - Aplicaciones Web UTEQ},
+	pdfauthor={Dr. Gleiston Ciceron Guerrero Ulloa}}
+
+% ---------- Listas -----------------------------------------------------
+\usepackage{enumitem}\setlist{itemsep=2pt,topsep=2pt}
+
+% ---------- Epígrafe ---------------------------------------------------
+\usepackage{epigraph}\setlength{\epigraphwidth}{0.72\textwidth}
+
+% ---------- Formato de títulos -----------------------------------------
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+{\normalfont\Huge\bfseries\color{uteqverde}}
+{\filleft\Large Semana \thechapter}
+{1ex}{\titlerule\vspace{1ex}\filright}[\vspace{0.5ex}\titlerule]
+\titleformat{\section}
+{\normalfont\Large\bfseries\color{uteqverde}}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\normalfont\large\bfseries\color{uteqverde!85!black}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+{\normalfont\normalsize\bfseries\color{uteqdorado!90!black}}{\thesubsubsection}{1em}{}
+
+% ---------- Contador de capítulo ---------------------------------------
+\setcounter{chapter}{3}   % el siguiente \chapter será el 4
+
+% =====================================================================
+\begin{document}
+	
+	\setlength{\hfuzz}{3pt}
+	
+	% --------------------- Portada del capítulo --------------------------
+	\begin{titlepage}
+		\centering\vspace*{1.5cm}
+		{\color{uteqverde}\rule{\linewidth}{2pt}}\\[0.8cm]
+		{\Huge\bfseries\color{uteqverde} APLICACIONES WEB}\\[0.5cm]
+		{\Large\itshape Edición ampliada — Historia, fundamentos, prácticas y
+			buenas prácticas profesionales}\\[0.3cm]
+		{\color{uteqverde}\rule{\linewidth}{1pt}}\\[1.5cm]
+		{\LARGE\bfseries Semana 4}\\[0.5cm]
+		{\Huge\bfseries\color{uteqdorado!80!black}
+			JavaScript moderno\\[0.3cm]y programación asíncrona}\\[2cm]
+		{\large\bfseries Universidad Técnica Estatal de Quevedo}\\
+		{\large Facultad de Ciencias de la Computación}\\
+		{\large Carrera de Ingeniería de Software (Rediseño)}\\[0.7cm]
+		{\large\itshape Quinto nivel — Período Académico 2026--2027 PPA}\\[1.5cm]
+		{\large \textbf{Autor:} Dr.\ Gleiston Cicerón Guerrero Ulloa, Ph.D.}\\[2cm]
+		{\color{uteqdorado}\rule{\linewidth}{2pt}}\\[0.5cm]
+		{\large Quevedo, Los Ríos — Ecuador \hfill Mayo de 2026}
+	\end{titlepage}
+	
+	\tableofcontents
+	\newpage
+	
+	% =====================================================================
+	%   CAPÍTULO 4 — JavaScript moderno y programación asíncrona
+	% =====================================================================
+	\chapter{JavaScript moderno y programación asíncrona}
+	\label{cap:semana4}
+	
+	\epigraph{«Cualquier aplicación que pueda escribirse en JavaScript,
+		eventualmente se escribirá en JavaScript.»}
+	{--- \textit{Jeff Atwood, 2007 (Ley de Atwood)}}
+	
+	% ---------- Resultado de aprendizaje ----------------------------------
+	\section*{Resultado de aprendizaje de la semana}
+	\addcontentsline{toc}{section}{Resultado de aprendizaje de la semana}
+	
+	Al concluir la semana~4, el estudiante:
+	\begin{itemize}
+		\item Comprende la evolución histórica y el modelo de ejecución de
+		JavaScript en el navegador.
+		\item Declara variables con \texttt{let}/\texttt{const}, escribe
+		funciones flecha, aplica \emph{destructuring} y \emph{spread}.
+		\item Lee y modifica el árbol DOM, escucha eventos con el patrón
+		\texttt{addEventListener} y aplica delegación de eventos.
+		\item Comprende el \emph{event loop}, la pila de llamadas y la cola
+		de tareas.
+		\item Escribe funciones de orden superior con \texttt{.map()},
+		\texttt{.filter()} y \texttt{.reduce()}.
+		\item Modela y reutiliza comportamiento con cierres (\emph{closures})
+		y con clases ES6.
+		\item Consume APIs REST con \texttt{fetch} y \texttt{async/await},
+		encadena Promises y gestiona errores con \texttt{try/catch}.
+		\item Organiza el código en módulos ES con \texttt{import}/\texttt{export}.
+		\item Aplica las doce buenas prácticas profesionales de JavaScript
+		2026 \cite{flanagan2020javascript,crockford2008javascript}.
+	\end{itemize}
+	
+	% =====================================================================
+	\section{Historia de JavaScript}
+	\label{sec:4.historia}
+	
+	JavaScript nació en 1995 como un lenguaje «de juguete» creado en
+	diez días. Hoy es la \emph{lingua franca} del navegador, ejecuta
+	servidores enteros (Node.js), corre en satélites y dispositivos IoT,
+	y es el lenguaje más usado del mundo según el índice TIOBE 2025.
+	Conocer su historia ayuda a entender por qué tiene particularidades
+	sintácticas y por qué evoluciona tan rápido.
+	
+	\begin{cajahistoria}{De diez días de diseño a la \emph{lingua franca} de la web}
+		En mayo de 1995, Netscape contrató a \textbf{Brendan Eich} para
+		crear un lenguaje de scripting que se ejecutara en el navegador.
+		Le dieron \emph{diez días}. El resultado, llamado originalmente
+		\textbf{Mocha}, luego \textbf{LiveScript} y finalmente
+		\textbf{JavaScript} (1996, por razones de marketing vinculadas a la
+		popularidad de Java), reunía rasgos memorables: tipado dinámico,
+		\emph{first-class functions}, prototipos en lugar de clases,
+		\texttt{undefined} y \texttt{null} como dos formas distintas de
+		«nada» \cite{crockford2008javascript}.
+		
+		Microsoft respondió con JScript en Internet Explorer 3 (1996),
+		provocando una guerra de incompatibilidades que se cerró con la
+		estandarización ECMA en 1997 (\textbf{ECMAScript~1}). Durante una
+		década, JavaScript fue considerado un lenguaje de segunda clase.
+		El cambio llegó con el artículo de Jesse James Garrett que acuñó
+		\textbf{Ajax} (2005) \cite{garrett2005ajax} y con el motor V8 de
+		\textbf{Google Chrome} (2008), que compilaba JS a código nativo y
+		era hasta 100× más rápido que sus predecesores. Ryan Dahl aprovechó
+		V8 para crear \textbf{Node.js} (2009), llevando JS al servidor.
+		
+		\textbf{ECMAScript 2015 (ES6)} fue el mayor salto del lenguaje:
+		clases, módulos, \texttt{let}/\texttt{const}, funciones flecha,
+		Promises y \emph{destructuring}. Desde entonces el estándar se
+		actualiza cada año. ECMAScript 2024 (ES15) es hoy el estándar
+		vigente \cite{ecma2024}; ES2026 incorpora
+		\texttt{Array.fromAsync}, \texttt{Promise.try} y
+		\emph{records/tuples} inmutables.
+	\end{cajahistoria}
+	
+	\subsection{Tabla evolutiva de ECMAScript}
+	\label{sub:4.ecma}
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Versiones más relevantes de ECMAScript.}
+		\label{tab:4.ecma}
+		\footnotesize
+		\begin{tabularx}{\textwidth}{llX}
+			\toprule
+			\textbf{Versión} & \textbf{Año} & \textbf{Aportes principales}\\
+			\midrule
+			ES3        & 1999 & Expresiones regulares, \texttt{try/catch}, manejo de excepciones.\\
+			ES5        & 2009 & \texttt{strict mode}, JSON nativo, \texttt{Array.forEach}, getters/setters.\\
+			ES6 (ES2015) & 2015 & \texttt{let}/\texttt{const}, clases, módulos, arrow functions, Promises,
+			template literals, \emph{destructuring}, \emph{spread}, \texttt{Map}/\texttt{Set}.\\
+			ES2016     & 2016 & \texttt{Array.includes()}, operador exponente \texttt{**}.\\
+			ES2017     & 2017 & \texttt{async/await}, \texttt{Object.entries()}, \texttt{String.padStart()}.\\
+			ES2018     & 2018 & \emph{Rest/spread} en objetos, \texttt{Promise.finally()}, iteradores asíncronos.\\
+			ES2019     & 2019 & \texttt{Array.flat()}, \texttt{Object.fromEntries()}, \texttt{String.trimStart()}.\\
+			ES2020     & 2020 & Optional chaining (\texttt{?.}), nullish coalescing (\texttt{??}), BigInt.\\
+			ES2021     & 2021 & \texttt{String.replaceAll()}, \texttt{Promise.any()}, \texttt{WeakRef}.\\
+			ES2022     & 2022 & Top-level \texttt{await}, campos privados (\texttt{\#}), \texttt{Array.at()}.\\
+			ES2023     & 2023 & \texttt{Array.findLast()}, \texttt{Array.toSorted()}, \texttt{Array.toReversed()}.\\
+			ES2024     & 2024 & \texttt{Object.groupBy()}, \texttt{ArrayBuffer} transferible,
+			\texttt{Promise.withResolvers()}.\\
+			ES2026 \cite{ecma2024} & 2026 & \texttt{Array.fromAsync()}, \texttt{Promise.try()},
+			\emph{records} y \emph{tuples} inmutables.\\
+			\bottomrule
+		\end{tabularx}
+	\end{table}
+	
+	% =====================================================================
+	\section{El modelo de ejecución: event loop y call stack}
+	\label{sec:4.eventloop}
+	
+	Antes de escribir código asíncrono es indispensable comprender
+	\emph{por qué} JavaScript necesita asincronía. El lenguaje corre
+	en un único hilo (\emph{single-threaded}): solo ejecuta una
+	instrucción a la vez. Si una operación lenta —una petición HTTP,
+	una lectura de disco— bloqueara el hilo, la página quedaría
+	congelada. El \textbf{event loop} resuelve este problema delegando
+	las operaciones lentas al entorno (navegador o Node.js) y
+	procesando sus resultados cuando el hilo principal está libre.
+	
+	\begin{cajadefinicion}{Glosario del modelo de ejecución}
+		\begin{description}[leftmargin=4em,style=nextline]
+			\item[\textbf{Call Stack}] Pila de llamadas donde se apilan los
+			marcos de ejecución de las funciones activas. LIFO (último en
+			entrar, primero en salir).
+			\item[\textbf{Web APIs}] Servicios del navegador que gestionan
+			operaciones asíncronas: \texttt{setTimeout}, \texttt{fetch},
+			\texttt{XMLHttpRequest}, eventos del DOM, etc.
+			\item[\textbf{Callback / Task Queue}] Cola donde las Web APIs
+			depositan los callbacks listos para ejecutarse.
+			\item[\textbf{Microtask Queue}] Cola de mayor prioridad para
+			callbacks de Promises (\texttt{.then()}, \texttt{await}) y
+			\texttt{MutationObserver}.
+			\item[\textbf{Event Loop}] Bucle que comprueba continuamente si
+			la Call Stack está vacía; si lo está, mueve primero todas las
+			microtareas y luego una tarea de la Task Queue.
+		\end{description}
+	\end{cajadefinicion}
+	
+	La Figura~\ref{fig:4.eventloop} muestra el modelo completo.
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tikzpicture}[
+			box/.style={rectangle,draw=uteqverde,fill=uteqverde!8,thick,
+				rounded corners=4pt,minimum width=3.2cm,minimum height=1cm,
+				font=\small\bfseries,align=center},
+			qbox/.style={rectangle,draw=uteqdorado!70!black,fill=uteqdorado!10,thick,
+				rounded corners=4pt,minimum width=3.6cm,minimum height=0.85cm,
+				font=\small,align=center},
+			arr/.style={-{Latex[length=2.5mm]},thick,uteqverde},
+			arrd/.style={-{Latex[length=2.5mm]},thick,uteqdorado!80!black},
+			lbl/.style={font=\scriptsize,text=gray!70!black}
+			]
+			% Call Stack
+			\node[box,minimum height=3.8cm,minimum width=3.2cm,align=center]
+			(stack) at (0,0) {};
+			\node[above=0.05cm of stack,font=\small\bfseries\color{uteqverde}]
+			{Call Stack};
+			\node[rectangle,draw=uteqverde!60,fill=white,minimum width=2.8cm,
+			minimum height=0.6cm,font=\scriptsize] at (0,0.9) {frame 2: \texttt{render()}};
+			\node[rectangle,draw=uteqverde!60,fill=white,minimum width=2.8cm,
+			minimum height=0.6cm,font=\scriptsize] at (0,0.2) {frame 1: \texttt{main()}};
+			\node[rectangle,draw=uteqverde!60,fill=uteqverde!5,minimum width=2.8cm,
+			minimum height=0.6cm,font=\scriptsize\itshape] at (0,-0.5) {(vacío)};
+			
+			% Web APIs
+			\node[box,minimum height=3.2cm,minimum width=3.4cm]
+			(webapis) at (5.5,0) {};
+			\node[above=0.05cm of webapis,font=\small\bfseries\color{uteqverde}]
+			{Web APIs};
+			\node[rectangle,draw=uteqverde!40,fill=white,minimum width=3cm,
+			minimum height=0.52cm,font=\scriptsize] at (5.5,0.8) {\texttt{setTimeout(fn,500)}};
+			\node[rectangle,draw=uteqverde!40,fill=white,minimum width=3cm,
+			minimum height=0.52cm,font=\scriptsize] at (5.5,0.2) {\texttt{fetch(url)}};
+			\node[rectangle,draw=uteqverde!40,fill=white,minimum width=3cm,
+			minimum height=0.52cm,font=\scriptsize] at (5.5,-0.4) {\texttt{addEventListener}};
+			
+			% Task Queue
+			\node[qbox,minimum width=3.6cm,minimum height=0.9cm]
+			(taskq) at (5.5,-2.8) {\textbf{Task Queue} (Macrotareas)\\
+				\scriptsize click, timeout, XHR…};
+			
+			% Microtask Queue
+			\node[qbox,minimum width=3.6cm,minimum height=0.9cm,
+			draw=cyan!50!black,fill=cyan!6]
+			(microtaskq) at (0,-2.8) {\textbf{Microtask Queue}\\
+				\scriptsize Promise.then / await};
+			
+			% Event Loop
+			\node[circle,draw=uteqdorado!80!black,fill=uteqdorado!15,thick,
+			minimum size=1.5cm,font=\scriptsize\bfseries,align=center]
+			(loop) at (2.75,-2.8) {Event\\Loop};
+			
+			% Arrows
+			\draw[arr] (stack.east) -- node[above,lbl]{delega}(webapis.west);
+			\draw[arrd] (webapis.south) -- ++(0,-0.5) -| (taskq.north);
+			\draw[arrd] (taskq.west) -- (loop.east);
+			\draw[arrd,cyan!70!black] (microtaskq.east) -- (loop.west);
+			\draw[arr] (loop.north) -- ++(0,0.5) -| node[right,lbl,pos=0.3]
+			{push a stack} (stack.south);
+			\node[lbl,align=center] at (2.75,-4.0)
+			{\textit{1º vacía microtask queue — 2º una tarea de task queue}};
+		\end{tikzpicture}
+		\caption{Modelo de ejecución de JavaScript: call stack, Web APIs,
+			microtask queue, task queue y event loop.}
+		\label{fig:4.eventloop}
+	\end{figure}
+	
+	\begin{cajaejemplo}{Ejemplo 4.0 — Orden de ejecución del event loop}
+		El siguiente código ilustra la prioridad de las colas.
+		
+		\begin{lstlisting}[style=js,numbers=none,caption={Orden observable en la consola},
+			label=lst:4.0]
+			console.log("1 - sincrono");                        // stack inmediato
+			
+			setTimeout(() => console.log("4 - macrotarea"), 0); // task queue
+			
+			Promise.resolve()
+			.then(() => console.log("3 - microtarea"));       // microtask queue
+			
+			console.log("2 - sincrono");                        // stack inmediato
+		\end{lstlisting}
+		
+		\textbf{Salida en consola:}
+		\begin{lstlisting}[style=shell,numbers=none]
+			1 - sincrono
+			2 - sincrono
+			3 - microtarea
+			4 - macrotarea
+		\end{lstlisting}
+		
+		\textbf{Explicación:} Las dos líneas síncronas se ejecutan primero
+		(stack). Luego se vacía la microtask queue (la Promise). Solo
+		entonces el event loop procesa la macrotarea del \texttt{setTimeout},
+		aunque su retardo sea cero.
+	\end{cajaejemplo}
+	
+	% =====================================================================
+	\section{Fundamentos modernos del lenguaje}
+	\label{sec:4.fundamentos}
+	
+	Esta sección cubre las características del lenguaje que todo
+	desarrollador JavaScript 2026 debe dominar antes de abordar el DOM
+	o el código asíncrono.
+	
+	% ----- 4.3.1 Variables -----------------------------------------------
+	\subsection{\texttt{let}, \texttt{const} y el fin de \texttt{var}}
+	\label{sub:4.letconst}
+	
+	La palabra clave \texttt{var} tenía dos defectos graves:
+	\emph{hoisting} (las variables se elevaban silenciosamente al
+	inicio del \emph{scope}) y \emph{function scope} en lugar de
+	\emph{block scope}. ES6 los corrigió con \texttt{let}
+	(mutable, block-scoped) y \texttt{const} (inmutable en
+	referencia, block-scoped). Véase el Listado~\ref{lst:4.1}.
+	
+	\begin{lstlisting}[style=js,numbers=none,caption={Variables en JavaScript moderno},
+		label=lst:4.1]
+		// REGLA PRACTICA: const por defecto, let si muta, var NUNCA
+		const PI = 3.14159;          // inmutable; error si se reasigna
+		let   contador = 0;          // mutable, scope de bloque
+		var   legacy   = "evitar";   // hoisted, scope de funcion - NO usar
+		
+		// Hoisting de var (trampa clasica):
+		console.log(legacy2);        // undefined, NO un ReferenceError
+		var legacy2 = "peligroso";
+		
+		// Block scope de let/const:
+		{
+			let local = 10;
+			const MAX = 100;
+		}
+		// console.log(local); // ReferenceError: local is not defined
+	\end{lstlisting}
+	
+	% ----- 4.3.2 Funciones flecha -----------------------------------------
+	\subsection{Funciones regulares y funciones flecha (\texttt{=>})}
+	\label{sub:4.arrow}
+	
+	Las funciones flecha son más concisas y, crucialmente, \textbf{no
+		enlazan su propio \texttt{this}}: heredan el \texttt{this} del
+	contexto léxico donde fueron definidas. Esto las hace ideales como
+	callbacks pero inadecuadas como métodos de objetos cuando se
+	necesita acceso a la instancia. Véase el Listado~\ref{lst:4.2}.
+	
+	\begin{lstlisting}[style=js,caption={Funciones regulares vs.\ funciones flecha},
+		label=lst:4.2]
+		// Funcion regular con declaracion
+		function sumar(a, b) {
+			return a + b;
+		}
+		
+		// Funcion flecha equivalente (cuerpo conciso)
+		const sumar = (a, b) => a + b;
+		
+		// Arrow sin parametros
+		const ahora = () => new Date().toISOString();
+		
+		// Arrow con cuerpo completo
+		const dividir = (a, b) => {
+			if (b === 0) throw new Error("Division por cero");
+			return a / b;
+		};
+		
+		// Diferencia critica: this lexico
+		function Temporizador() {
+			this.segundos = 0;
+			// INCORRECTO con funcion regular: this sera undefined en strict
+			// setInterval(function() { this.segundos++; }, 1000);
+			
+			// CORRECTO con arrow: hereda this del constructor
+			setInterval(() => {
+				this.segundos++;
+				console.log(this.segundos);
+			}, 1000);
+		}
+		const t = new Temporizador();
+	\end{lstlisting}
+	
+	% ----- 4.3.3 Template literals ----------------------------------------
+	\subsection{Template literals y etiquetas}
+	\label{sub:4.template}
+	
+	Los \emph{template literals} (backticks) permiten interpolación
+	de expresiones, cadenas multilínea y \emph{tagged templates} para
+	sanitización o internacionalización. Véase el Listado~\ref{lst:4.3}.
+	
+	\begin{lstlisting}[style=js,numbers=none,caption={Template literals},label=lst:4.3]
+		const nombre = "Maria";
+		const edad   = 22;
+		
+		// Concatenacion clasica (evitar)
+		const msg1 = "Hola " + nombre + ", tienes " + edad + " anios.";
+		
+		// Template literal (preferido)
+		const msg2 = `Hola ${nombre}, tienes ${edad} anios.`;
+		
+		// Expresion compleja dentro de ${}
+		const precio = 9.5;
+		const iva = 0.15;
+		console.log(`Total con IVA: $${(precio * (1 + iva)).toFixed(2)}`);
+		
+		// Cadena multilinea
+		const html = `
+		<div class="tarjeta">
+		<h2>${nombre}</h2>
+		<p>Edad: ${edad}</p>
+		</div>
+		`;
+	\end{lstlisting}
+	
+	% ----- 4.3.4 Destructuring y spread -----------------------------------
+	\subsection{Destructuring, spread y rest}
+	\label{sub:4.destructuring}
+	
+	\emph{Destructuring} extrae valores de objetos y arrays con
+	sintaxis declarativa concisa. \emph{Spread} (\texttt{...}) expande
+	colecciones en distintos contextos; \emph{rest} recoge el
+	«resto» de elementos en un parámetro. Véase el Listado~\ref{lst:4.4}.
+	
+	\begin{lstlisting}[style=js,caption={Destructuring, spread y rest},label=lst:4.4]
+		// --- Destructuring de objeto ---
+		const usuario = { nombre: "Ana", edad: 22, rol: "admin" };
+		const { nombre, rol } = usuario;               // extrae dos campos
+		const { edad: anios } = usuario;               // renombra: anios = 22
+		const { pais = "EC" } = usuario;              // valor por defecto
+		
+		// --- Destructuring de array ---
+		const colores = ["rojo", "verde", "azul"];
+		const [primero, , tercero] = colores;          // omite el segundo
+		
+		// --- Rest en parametros ---
+		function suma(...numeros) {
+			return numeros.reduce((acc, n) => acc + n, 0);
+		}
+		console.log(suma(1, 2, 3, 4));                // 10
+		
+		// --- Spread para copiar/combinar ---
+		const base   = { x: 1, y: 2 };
+		const copia  = { ...base };                   // copia superficial
+		const amplia = { ...base, z: 3 };             // extiende
+		const nums   = [1, 2, 3];
+		const mas    = [...nums, 4, 5];               // concatena
+		
+		// --- Destructuring en parametros ---
+		function mostrar({ nombre, edad = 0 }) {
+			console.log(`${nombre} tiene ${edad} anios`);
+		}
+		mostrar(usuario);
+	\end{lstlisting}
+	
+	% ----- 4.3.5 Optional chaining y nullish coalescing -------------------
+	\subsection{Optional chaining y nullish coalescing}
+	\label{sub:4.optional}
+	
+	ES2020 introdujo dos operadores que simplifican el acceso seguro
+	a propiedades que pueden no existir y el manejo de valores
+	nulos o indefinidos. Véase el Listado~\ref{lst:4.5}.
+	
+	\begin{lstlisting}[style=js,numbers=none,caption={Optional chaining (\texttt{?.}) y
+			nullish coalescing (\texttt{??})},label=lst:4.5]
+		const resp = {
+			data: {
+				usuario: { nombre: "Luis", avatar: null }
+			}
+		};
+		
+		// Sin optional chaining (propenso a TypeError)
+		// const nombre = resp.data.usuario.nombre; // ok
+		// const ciudad = resp.data.usuario.ciudad.nombre; // TypeError!
+		
+		// Con optional chaining
+		const nombre = resp?.data?.usuario?.nombre;       // "Luis"
+		const ciudad = resp?.data?.usuario?.ciudad?.nombre; // undefined
+		
+		// Invocar metodo opcional
+		const longitud = resp?.data?.usuario?.nombre?.length; // 4
+		
+		// Nullish coalescing: ?? retorna el lado derecho solo si
+		// el izquierdo es null o undefined (NO si es 0 o "")
+		const avatar = resp.data.usuario.avatar ?? "/img/default.png";
+		const total  = 0 ?? 100;     // 0  (0 no es null ni undefined)
+		const total2 = null ?? 100;  // 100
+	\end{lstlisting}
+	
+	% ----- 4.3.6 Funciones de orden superior ------------------------------
+	\subsection{Programación funcional: \texttt{map}, \texttt{filter} y
+		\texttt{reduce}}
+	\label{sub:4.functional}
+	
+	Los tres métodos de array más usados en JavaScript moderno
+	implementan el paradigma funcional: transformar, filtrar y
+	reducir datos sin mutar el array original. Véase el
+	Listado~\ref{lst:4.6}.
+	
+	\begin{lstlisting}[style=js,caption={Funciones de orden superior sobre arrays},
+		label=lst:4.6]
+		const productos = [
+		{ nombre: "Camiseta", precio: 15, activo: true  },
+		{ nombre: "Pantalon", precio: 45, activo: true  },
+		{ nombre: "Sombrero", precio:  8, activo: false },
+		{ nombre: "Zapatos",  precio: 60, activo: true  },
+		];
+		
+		// MAP: transforma cada elemento -> nuevo array
+		const nombres = productos.map(p => p.nombre);
+		// ["Camiseta", "Pantalon", "Sombrero", "Zapatos"]
+		
+		const conIva = productos.map(p => ({
+			...p,
+			precioFinal: +(p.precio * 1.15).toFixed(2)
+		}));
+		
+		// FILTER: conserva solo los que cumplen la condicion
+		const activos = productos.filter(p => p.activo);
+		// 3 productos (sin Sombrero)
+		
+		// REDUCE: acumula un unico valor
+		const totalActivos = productos
+		.filter(p => p.activo)
+		.reduce((suma, p) => suma + p.precio, 0);
+		// 120
+		
+		// CADENA fluida: nombres de activos con precio < 50
+		const baratos = productos
+		.filter(p => p.activo && p.precio < 50)
+		.map(p => p.nombre);
+		// ["Camiseta", "Pantalon"]
+	\end{lstlisting}
+	
+	% =====================================================================
+	\section{Cierres (\emph{closures})}
+	\label{sec:4.closures}
+	
+	Un \textbf{closure} es una función que «recuerda» el entorno
+	léxico en el que fue creada, incluso después de que dicho entorno
+	haya terminado de ejecutarse. Es uno de los conceptos más
+	poderosos —y más incomprendidos— de JavaScript.
+	
+	\begin{cajadefinicion}{Definición formal de closure}
+		Una \textbf{closure} es la combinación de una función y el
+		entorno léxico en el que fue declarada. Ese entorno consiste en
+		las variables locales que estaban en \emph{scope} en el momento
+		de la creación de la función \cite{flanagan2020javascript}.
+	\end{cajadefinicion}
+	
+	\begin{cajaejemplo}{Ejemplo 4.1 (RESUELTO) — Contador con closure}
+		
+		\textbf{Objetivo:} comprender cómo un closure mantiene estado
+		privado sin variables globales.
+		
+		\begin{lstlisting}[style=js,caption={Contador encapsulado con closure},label=lst:4.7]
+			"use strict";
+			
+			// La funcion crearContador devuelve un objeto
+			// cuyas funciones comparten la variable privada 'cuenta'
+			function crearContador(inicio = 0) {
+				let cuenta = inicio;          // variable privada (no accesible desde fuera)
+				
+				return {
+					incrementar()  { cuenta++;      return cuenta; },
+					decrementar()  { cuenta--;      return cuenta; },
+					reiniciar()    { cuenta = inicio; return cuenta; },
+					valor()        { return cuenta; }
+				};
+			}
+			
+			const c1 = crearContador(10);
+			const c2 = crearContador();     // cada instancia tiene su propio 'cuenta'
+			
+			console.log(c1.incrementar()); // 11
+			console.log(c1.incrementar()); // 12
+			console.log(c2.valor());       // 0  (independiente de c1)
+			console.log(c1.reiniciar());   // 10
+		\end{lstlisting}
+		
+		\textbf{Verificación:} intentar acceder a \texttt{c1.cuenta}
+		devuelve \texttt{undefined}: la variable es verdaderamente
+		privada. No existe ninguna API del navegador para acceder al
+		cierre desde el exterior.
+	\end{cajaejemplo}
+	
+	\begin{cajaejemplo}{Ejemplo 4.2 (RESUELTO) — Memoización con closure}
+		
+		\textbf{Objetivo:} cachear resultados de funciones costosas.
+		
+		\begin{lstlisting}[style=js,caption={Memoización genérica},label=lst:4.8]
+			"use strict";
+			
+			function memoizar(fn) {
+				const cache = new Map();                          // almacen privado
+				
+				return function (...args) {
+					const clave = JSON.stringify(args);             // clave unica por argumentos
+					if (cache.has(clave)) {
+						console.log("HIT cache:", clave);
+						return cache.get(clave);
+					}
+					const resultado = fn.apply(this, args);
+					cache.set(clave, resultado);
+					return resultado;
+				};
+			}
+			
+			// Funcion costosa de ejemplo
+			function fibonacci(n) {
+				if (n <= 1) return n;
+				return fibonacci(n - 1) + fibonacci(n - 2);
+			}
+			
+			const fibMemo = memoizar(fibonacci);
+			console.log(fibMemo(35)); // calcula (tarda ~ms)
+			console.log(fibMemo(35)); // HIT cache: instantaneo
+		\end{lstlisting}
+		
+	\end{cajaejemplo}
+	
+	% =====================================================================
+	\section{Prototipos y clases ES6}
+	\label{sec:4.clases}
+	
+	JavaScript usa herencia basada en \emph{prototipos}, no en clases
+	clásicas. La sintaxis \texttt{class} de ES6 es \emph{azúcar
+		sintáctica} sobre el sistema de prototipos: lo hace más legible
+	sin cambiar el modelo subyacente.
+	
+	\begin{cajahistoria}{El malentendido de las «clases» en JavaScript}
+		Cuando Java y C++ dominaban la programación orientada a objetos,
+		Brendan Eich eligió un modelo diferente inspirado en
+		\textbf{Self} (Xerox PARC, 1986): los objetos heredan directamente
+		de otros objetos a través de una cadena de prototipos, sin
+		necesidad de clases. Esta decisión fue pragmática —diez días no
+		dan para más— pero resultó enormemente poderosa.
+		
+		La comunidad pidió clases durante una década. ES6 (2015) las
+		introdujo, pero como \emph{syntactic sugar}: internamente siguen
+		siendo funciones constructoras y prototipos. El desarrollador
+		que comprende esto entiende por qué
+		\texttt{typeof} \texttt{MiClase} es \texttt{"function"} y por qué
+		la cadena de prototipos sigue siendo accesible mediante
+		\texttt{Object.getPrototypeOf()}.
+	\end{cajahistoria}
+	
+	\begin{lstlisting}[style=js,caption={Clases ES6 con herencia y campos privados},
+		label=lst:4.9]
+		"use strict";
+		
+		// Clase base con campo privado (ES2022)
+		class Figura {
+			#color;                               // campo privado
+			
+			constructor(color = "negro") {
+				this.#color = color;
+			}
+			
+			get color() { return this.#color; }   // getter publico
+			
+			describir() {
+				return `Figura de color ${this.#color}`;
+			}
+			
+			// Metodo estatico: pertence a la clase, no a la instancia
+			static esValido(obj) {
+				return obj instanceof Figura;
+			}
+		}
+		
+		// Herencia con extends y super
+		class Rectangulo extends Figura {
+			#ancho;
+			#alto;
+			
+			constructor(ancho, alto, color) {
+				super(color);                       // llama al constructor padre
+				this.#ancho = ancho;
+				this.#alto  = alto;
+			}
+			
+			get area()      { return this.#ancho * this.#alto; }
+			get perimetro() { return 2 * (this.#ancho + this.#alto); }
+			
+			describir() {                         // sobrescribe (override)
+				return `${super.describir()}, ${this.#ancho}x${this.#alto}cm`;
+			}
+		}
+		
+		const r = new Rectangulo(10, 5, "azul");
+		console.log(r.describir());   // Figura de color azul, 10x5cm
+		console.log(r.area);          // 50
+		console.log(Figura.esValido(r)); // true
+	\end{lstlisting}
+	
+	\begin{cajacompara}{Prototype vs.\ Class: ¿qué pasa bajo el capó?}
+		\begin{lstlisting}[style=js,numbers=none]
+			// Con clase ES6
+			class Animal { hablar() { return "..."; } }
+			
+			// Es equivalente a (pre-ES6):
+			function Animal() {}
+			Animal.prototype.hablar = function() { return "..."; };
+			
+			// Verificacion
+			console.log(typeof Animal);              // "function"
+			console.log(Animal.prototype.hablar);   // [Function: hablar]
+		\end{lstlisting}
+	\end{cajacompara}
+	
+	% =====================================================================
+	\section{Manipulación del DOM}
+	\label{sec:4.dom}
+	
+	El \textbf{DOM} (\emph{Document Object Model}) es la
+	representación en memoria de la página HTML, expuesta como un
+	árbol de nodos que JavaScript puede leer y modificar. Cada
+	elemento HTML es un objeto con propiedades y métodos.
+	
+	\begin{cajadefinicion}{El árbol del DOM}
+		El DOM tiene una raíz (\texttt{document}), que contiene
+		\texttt{document.documentElement} (\texttt{<html>}), y de ahí
+		descienden \texttt{<head>} y \texttt{<body>}. Cada nodo puede
+		ser de tipo \texttt{Element}, \texttt{Text} o \texttt{Comment}.
+		La manipulación del DOM debe ser mínima y eficiente: cada
+		modificación puede provocar \emph{reflow} y \emph{repaint}
+		en el navegador.
+	\end{cajadefinicion}
+	
+	\subsection{Selección de elementos}
+	\label{sub:4.dom.select}
+	
+	\begin{lstlisting}[style=js,numbers=none,caption={Métodos de selección del DOM},
+		label=lst:4.10]
+		// Seleccion por ID (devuelve un elemento o null)
+		const titulo = document.getElementById("titulo");
+		
+		// Seleccion con selector CSS (primero que coincide)
+		const btn = document.querySelector(".btn-primario");
+		
+		// Seleccion multiple (devuelve NodeList estatica)
+		const items = document.querySelectorAll("ul li");
+		
+		// Iteracion sobre NodeList
+		items.forEach(item => console.log(item.textContent));
+		// Con spread a Array para usar .map()
+		const textos = [...items].map(li => li.textContent);
+		
+		// Relaciones entre nodos
+		const padre  = btn.parentElement;
+		const hijos  = padre.children;           // HTMLCollection
+		const sig    = btn.nextElementSibling;
+	\end{lstlisting}
+	
+	\subsection{Modificación del DOM}
+	\label{sub:4.dom.modify}
+	
+	\begin{lstlisting}[style=js,numbers=none,caption={Crear, modificar y eliminar nodos},
+		label=lst:4.11]
+		// Crear nodo
+		const parrafo = document.createElement("p");
+		parrafo.textContent = "Hola, DOM!";       // texto plano (seguro vs XSS)
+		parrafo.className   = "resaltado";
+		parrafo.dataset.id  = "42";               // <p data-id="42">
+		
+		// Agregar al documento
+		document.body.appendChild(parrafo);       // al final
+		document.body.prepend(parrafo);           // al inicio
+		// insertBefore(nuevo, referencia)
+		
+		// Modificar atributos
+		parrafo.setAttribute("lang", "es");
+		parrafo.removeAttribute("lang");
+		
+		// Modificar estilos en linea (preferir clases CSS)
+		parrafo.style.color      = "red";
+		parrafo.style.fontWeight = "bold";
+		
+		// Agregar/quitar clases
+		parrafo.classList.add("activo");
+		parrafo.classList.remove("resaltado");
+		parrafo.classList.toggle("visible");      // alterna
+		
+		// Eliminar nodo
+		parrafo.remove();
+	\end{lstlisting}
+	
+	\subsection{Eventos y delegación}
+	\label{sub:4.eventos}
+	
+	\begin{lstlisting}[style=js,caption={Eventos con addEventListener y delegación},
+		label=lst:4.12]
+		"use strict";
+		
+		// Patron basico
+		const boton = document.querySelector("#enviar");
+		boton.addEventListener("click", (e) => {
+			e.preventDefault();                     // cancela accion por defecto
+			console.log("clic en", e.target.id);
+		});
+		
+		// Delegacion de eventos: un solo listener en el contenedor
+		// en lugar de uno por cada hijo (eficiente para listas dinamicas)
+		const lista = document.querySelector("#lista");
+		lista.addEventListener("click", (e) => {
+			const item = e.target.closest("li");    // busca el li mas cercano
+			if (!item) return;                      // clic fuera de un item
+			item.classList.toggle("completado");
+			console.log("toggled:", item.dataset.id);
+		});
+		
+		// Eventos de teclado
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") cerrarModal();
+			if (e.ctrlKey && e.key === "s") guardar(e);
+		});
+		
+		// Eliminar listener (se necesita referencia a la funcion)
+		function manejarScroll() { /* ... */ }
+		window.addEventListener("scroll", manejarScroll);
+		window.removeEventListener("scroll", manejarScroll);
+	\end{lstlisting}
+	
+	\begin{cajaejemplo}{Ejemplo 4.3 (RESUELTO) — Lista de tareas dinámica}
+		
+		\textbf{Objetivo:} aplicar DOM, eventos, delegación y validación
+		de entrada en una mini-aplicación completa.
+		
+		\begin{lstlisting}[style=html,numbers=none,caption={tareas.html},label=lst:4.13html]
+			<!DOCTYPE html>
+			<html lang="es">
+			<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<title>Mis tareas</title>
+			<style>
+			body      { font-family: sans-serif; max-width: 600px; margin: 2rem auto; }
+			ul        { list-style: none; padding: 0; }
+			li        { display: flex; justify-content: space-between;
+				padding: .5rem; border-bottom: 1px solid #eee; }
+			li.hecha  { text-decoration: line-through; color: #999; }
+			button    { cursor: pointer; }
+			</style>
+			</head>
+			<body>
+			<h1>Mis tareas</h1>
+			<form id="form-tarea">
+			<input id="texto-tarea" type="text" placeholder="Nueva tarea..."
+			minlength="3" required>
+			<button type="submit">Agregar</button>
+			</form>
+			<ul id="lista"></ul>
+			<script src="tareas.js" type="module"></script>
+			</body>
+			</html>
+		\end{lstlisting}
+		
+		\begin{lstlisting}[style=js,caption={tareas.js},label=lst:4.13js]
+			"use strict";
+			
+			const form  = document.getElementById("form-tarea");
+			const input = document.getElementById("texto-tarea");
+			const lista = document.getElementById("lista");
+			let   idAuto = 0;
+			
+			// Agregar tarea
+			form.addEventListener("submit", (e) => {
+				e.preventDefault();
+				const texto = input.value.trim();
+				if (texto.length < 3) {
+					input.setCustomValidity("Minimo 3 caracteres");
+					input.reportValidity();
+					return;
+				}
+				input.setCustomValidity("");
+				agregarTarea(texto);
+				input.value = "";
+				input.focus();
+			});
+			
+			function agregarTarea(texto) {
+				const li  = document.createElement("li");
+				li.dataset.id = ++idAuto;
+				li.textContent = texto;
+				
+				const btn = document.createElement("button");
+				btn.textContent = "X";
+				btn.setAttribute("aria-label", "Eliminar tarea");
+				li.appendChild(btn);
+				lista.appendChild(li);
+			}
+			
+			// Delegacion: clic en lista para marcar/eliminar
+			lista.addEventListener("click", (e) => {
+				const li  = e.target.closest("li");
+				if (!li) return;
+				
+				if (e.target.tagName === "BUTTON") {
+					li.remove();                                // eliminar
+				} else {
+					li.classList.toggle("hecha");               // marcar completa
+				}
+			});
+		\end{lstlisting}
+		
+		\textbf{Resultado esperado:}
+		
+		\fbox{\begin{minipage}{0.87\textwidth}
+				\vspace{0.4em}
+				{\Large\bfseries\color{uteqverde} Mis tareas}\\[0.5em]
+				\fbox{\parbox{0.54\linewidth}{Nueva tarea\ldots}}
+				\colorbox{uteqverde}{\textcolor{white}{\bfseries\ Agregar\ }}\\[0.6em]
+				Estudiar JavaScript \hfill \fbox{X}\\[0.15em]\hrule
+				{\color{gray} [completada] Hacer ejercicios HTML} \hfill \fbox{X}\\[0.15em]\hrule
+				Practicar Flexbox \hfill \fbox{X}
+				\vspace{0.4em}
+		\end{minipage}}
+		
+		\medskip
+		La segunda tarea está marcada como completada (tachada) al hacer
+		clic sobre su texto. El botón «X» la elimina.
+	\end{cajaejemplo}
+	
+	% =====================================================================
+	\section{Programación asíncrona: callbacks, Promises y async/await}
+	\label{sec:4.async}
+	
+	La asincronía es ineludible en el navegador: peticiones HTTP,
+	lectura de archivos, temporizadores y eventos del usuario no deben
+	bloquear la interfaz. JavaScript evolucionó a través de tres
+	mecanismos sucesivos para manejarla.
+	
+	\subsection{Callbacks y el \emph{callback hell}}
+	\label{sub:4.callbacks}
+	
+	El patrón más antiguo usa funciones de retorno
+	(\emph{callbacks}) que se pasan como argumento. El problema
+	surge cuando se encadenan: se forma una pirámide de código
+	difícil de leer y mantener, conocida como \emph{callback hell}
+	o \emph{pyramid of doom}. Véase el Listado~\ref{lst:4.14}.
+	
+	\begin{lstlisting}[style=js,numbers=none,caption={\emph{Callback hell} (patrón a evitar)},
+		label=lst:4.14]
+		// ANTI-PATRON: callback hell
+		iniciarSesion(usuario, pass, (err, token) => {
+			if (err) return manejarError(err);
+			obtenerPerfil(token, (err, perfil) => {
+				if (err) return manejarError(err);
+				cargarPreferencias(perfil.id, (err, prefs) => {
+					if (err) return manejarError(err);
+					renderizar(perfil, prefs);        // profundidad maxima: ilegible
+				});
+			});
+		});
+	\end{lstlisting}
+	
+	\subsection{Promises}
+	\label{sub:4.promises}
+	
+	Una \textbf{Promise} representa el resultado eventual de una
+	operación asíncrona. Puede estar en tres estados:
+	\texttt{pending}, \texttt{fulfilled} o \texttt{rejected}.
+	Permite encadenar operaciones con \texttt{.then()} y capturar
+	errores con \texttt{.catch()}, eliminando la pirámide. Véase el
+	Listado~\ref{lst:4.15}.
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tikzpicture}[
+			state/.style={rectangle,draw=uteqverde,fill=uteqverde!8,thick,
+				rounded corners=6pt,minimum width=2.8cm,minimum height=1cm,
+				font=\small\bfseries,align=center},
+			arr/.style={-{Latex[length=2.5mm]},thick},
+			ok/.style={arr,color=uteqverde},
+			fail/.style={arr,color=red!70!black}
+			]
+			\node[state,fill=gray!10,draw=gray!50] (pending) at (0,0) {pending};
+			\node[state,fill=uteqverde!15] (fulfilled) at (4.5,1.2) {fulfilled};
+			\node[state,fill=red!8,draw=red!60] (rejected) at (4.5,-1.2) {rejected};
+			
+			\draw[ok]   (pending.east) -- node[above,font=\scriptsize]{resolve(valor)} (fulfilled.west);
+			\draw[fail] (pending.east) -- node[below,font=\scriptsize]{reject(error)} (rejected.west);
+			
+			\node[draw=uteqverde!40,fill=uteqverde!5,rounded corners,
+			font=\scriptsize,align=center,minimum width=2.4cm]
+			(then) at (8,1.2) {\texttt{.then(fn)}\\ejecuta \texttt{fn}};
+			\node[draw=red!40,fill=red!5,rounded corners,
+			font=\scriptsize,align=center,minimum width=2.4cm]
+			(catch) at (8,-1.2) {\texttt{.catch(fn)}\\maneja error};
+			\node[draw=gray!50,fill=gray!5,rounded corners,
+			font=\scriptsize,align=center,minimum width=2.4cm]
+			(finally) at (8,0) {\texttt{.finally(fn)}\\siempre};
+			
+			\draw[ok]   (fulfilled.east) -- (then.west);
+			\draw[fail] (rejected.east)  -- (catch.west);
+			\draw[ok,dashed]   (fulfilled.east) -- (finally.west);
+			\draw[fail,dashed] (rejected.east)  -- (finally.west);
+		\end{tikzpicture}
+		\caption{Estados y transiciones de una Promise.}
+		\label{fig:4.promise}
+	\end{figure}
+	
+	\begin{lstlisting}[style=js,caption={Crear y encadenar Promises},label=lst:4.15]
+		// Crear una Promise manualmente
+		function esperar(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
+		
+		// Encadenar con .then() / .catch() / .finally()
+		esperar(500)
+		.then(() => {
+			console.log("Paso 1 completado");
+			return esperar(300);              // devuelve otra Promise
+		})
+		.then(() => {
+			console.log("Paso 2 completado");
+			throw new Error("Fallo simulado");
+		})
+		.catch(err => {
+			console.error("Error capturado:", err.message);
+		})
+		.finally(() => {
+			console.log("Siempre se ejecuta");
+		});
+		
+		// Promise.all: espera que TODAS se resuelvan
+		const [datos, config] = await Promise.all([
+		fetch("/api/datos").then(r => r.json()),
+		fetch("/api/config").then(r => r.json())
+		]);
+		
+		// Promise.allSettled: espera TODAS sin importar resultado
+		const resultados = await Promise.allSettled([
+		fetch("/api/a").then(r => r.json()),
+		fetch("/api/b").then(r => r.json())
+		]);
+		resultados.forEach(r => {
+			if (r.status === "fulfilled") console.log("OK:", r.value);
+			else console.error("Fallo:", r.reason.message);
+		});
+		
+		// Promise.race: la primera que resuelva (o rechace) gana
+		const timeout = new Promise((_, reject) =>
+		setTimeout(() => reject(new Error("Timeout")), 3000)
+		);
+		const dato = await Promise.race([fetch("/api/lento"), timeout]);
+	\end{lstlisting}
+	
+	\subsection{\texttt{async}/\texttt{await}: el azúcar de las Promises}
+	\label{sub:4.asyncawait}
+	
+	\texttt{async}/\texttt{await} es sintaxis que convierte el
+	código asíncrono en algo que parece síncrono, eliminando el
+	encadenamiento de \texttt{.then()}. Una función \texttt{async}
+	\emph{siempre} devuelve una Promise. \texttt{await} suspende la
+	ejecución de la función hasta que la Promise se resuelve o
+	rechaza. Véase el Listado~\ref{lst:4.16}.
+	
+	\begin{lstlisting}[style=js,caption={\texttt{async}/\texttt{await} con manejo de errores},
+		label=lst:4.16]
+		"use strict";
+		
+		// Funcion auxiliar: verifica la respuesta HTTP
+		async function respuestaSegura(res) {
+			if (!res.ok) {
+				const cuerpo = await res.text().catch(() => "");
+				throw new Error(`HTTP ${res.status}: ${cuerpo}`);
+			}
+			return res.json();
+		}
+		
+		// Funcion principal async
+		async function obtenerUsuario(id) {
+			try {
+				const res     = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+				const usuario = await respuestaSegura(res);
+				return usuario;
+			} catch (err) {
+				console.error("Error al obtener usuario:", err.message);
+				return null;                      // valor centinela
+			}
+		}
+		
+		// Llamada al nivel de modulo (top-level await en ES2022)
+		const usuario = await obtenerUsuario(1);
+		if (usuario) {
+			console.log(`${usuario.name} <${usuario.email}>`);
+		}
+	\end{lstlisting}
+	
+	\subsection{Cancelar peticiones con AbortController}
+	\label{sub:4.abort}
+	
+	\begin{lstlisting}[style=js,numbers=none,caption={Cancelar fetch con AbortController},
+		label=lst:4.17]
+		"use strict";
+		
+		let controlador = null;
+		
+		async function buscar(termino) {
+			// Cancelar busqueda anterior si aun esta en curso
+			if (controlador) controlador.abort();
+			controlador = new AbortController();
+			const { signal } = controlador;
+			
+			try {
+				const res  = await fetch(
+				`https://api.ejemplo.com/buscar?q=${encodeURIComponent(termino)}`,
+				{ signal }
+				);
+				const data = await res.json();
+				renderizarResultados(data);
+			} catch (err) {
+				if (err.name === "AbortError") {
+					console.log("Busqueda cancelada (nueva consulta)");
+				} else {
+					console.error("Error de red:", err.message);
+				}
+			}
+		}
+		
+		// Uso: buscar en tiempo real al escribir (debounced)
+		document.querySelector("#buscador")
+		.addEventListener("input", e => buscar(e.target.value));
+	\end{lstlisting}
+	
+	\begin{cajaejemplo}{Ejemplo 4.4 (RESUELTO) — Panel de clima con fetch}
+		
+		\textbf{Objetivo:} consumir una API REST pública, mostrar datos
+		en el DOM y manejar errores de red y de lógica de aplicación.
+		
+		\begin{lstlisting}[style=js,caption={clima.js -- modulo completo},label=lst:4.18]
+			"use strict";
+			
+			const API_KEY = "DEMO_KEY";                   // reemplazar con clave real
+			const URL_BASE = "https://api.open-meteo.com/v1/forecast";
+			
+			// Datos de ciudades (sustituye llamada a geocoding por brevedad)
+			const CIUDADES = {
+				quevedo:  { lat: -1.02, lon: -79.46 },
+				guayaquil:{ lat: -2.18, lon: -79.89 },
+				quito:    { lat: -0.22, lon: -78.51 }
+			};
+			
+			async function obtenerClima(ciudad) {
+				const coords = CIUDADES[ciudad.toLowerCase()];
+				if (!coords) throw new Error(`Ciudad desconocida: ${ciudad}`);
+				
+				const params = new URLSearchParams({
+					latitude:  coords.lat,
+					longitude: coords.lon,
+					current:   "temperature_2m,weathercode,wind_speed_10m",
+					timezone:  "America/Guayaquil"
+				});
+				
+				const res = await fetch(`${URL_BASE}?${params}`);
+				if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				return res.json();
+			}
+			
+			function renderClima(data, ciudad) {
+				const { temperature_2m, wind_speed_10m } = data.current;
+				document.getElementById("ciudad").textContent  = ciudad;
+				document.getElementById("temp").textContent    = `${temperature_2m} degC`;
+				document.getElementById("viento").textContent  = `${wind_speed_10m} km/h`;
+			}
+			
+			// Manejador del boton
+			document.getElementById("btn-clima").addEventListener("click", async () => {
+				const ciudad = document.getElementById("input-ciudad").value.trim();
+				const estado = document.getElementById("estado");
+				
+				if (!ciudad) { estado.textContent = "Ingrese una ciudad."; return; }
+				
+				estado.textContent = "Cargando...";
+				try {
+					const data = await obtenerClima(ciudad);
+					renderClima(data, ciudad);
+					estado.textContent = "";
+				} catch (err) {
+					estado.textContent = `Error: ${err.message}`;
+				}
+			});
+		\end{lstlisting}
+		
+		\textbf{Cómo probarlo:} crear \texttt{clima.html} con un
+		\texttt{<input id="input-ciudad">}, \texttt{<button id="btn-clima">},
+		\texttt{<span id="ciudad">}, \texttt{<span id="temp">},
+		\texttt{<span id="viento">} y \texttt{<span id="estado">}.
+		Cargar en el navegador y escribir \texttt{quevedo}.
+	\end{cajaejemplo}
+	
+	% =====================================================================
+	\section{Módulos ES (\texttt{import}/\texttt{export})}
+	\label{sec:4.modulos}
+	
+	Los módulos ES (ESM) son la solución nativa del lenguaje para
+	organizar el código en ficheros independientes con un
+	espacio de nombres propio. Cada módulo tiene su propio scope:
+	no hay variables globales implícitas.
+	
+	\begin{cajahistoria}{Del global soup a los módulos ES}
+		Durante más de quince años, el único mecanismo de modularización
+		en JavaScript era concatenar scripts en el HTML o usar patrones
+		como el \emph{Revealing Module Pattern} (2007, Christian Heilmann)
+		basado en closures. La comunidad inventó soluciones como
+		\textbf{CommonJS} (Node.js, 2009, con \texttt{require()}) y
+		\textbf{AMD} (RequireJS, 2010, con \texttt{define()}). La guerra
+		de formatos terminó con ES2015: los \textbf{módulos ES nativos}
+		son el estándar oficial. Hoy todos los navegadores modernos y
+		Node.js 12+ los soportan sin transpilación.
+	\end{cajahistoria}
+	
+	\begin{lstlisting}[style=js,caption={Módulos ES: export e import},label=lst:4.19]
+		// ============ archivo: matematica.js ============
+		// Exportacion nombrada
+		export const PI = 3.14159265;
+		
+		export function circunferencia(r) {
+			return 2 * PI * r;
+		}
+		
+		export function area(r) {
+			return PI * r ** 2;
+		}
+		
+		// Exportacion por defecto (solo una por modulo)
+		export default class Calculadora {
+			sumar(a, b)  { return a + b; }
+			restar(a, b) { return a - b; }
+		}
+		
+		// ============ archivo: main.js ============
+		// Importacion nombrada
+		import { PI, circunferencia, area } from "./matematica.js";
+		
+		// Importacion por defecto
+		import Calculadora from "./matematica.js";
+		
+		// Importacion con alias
+		import { circunferencia as circ } from "./matematica.js";
+		
+		// Importacion de todo el modulo como objeto
+		import * as Mat from "./matematica.js";
+		
+		console.log(PI);                   // 3.14159265
+		console.log(circunferencia(5));    // 31.416...
+		const calc = new Calculadora();
+		console.log(calc.sumar(3, 4));     // 7
+		console.log(Mat.area(3));          // 28.274...
+	\end{lstlisting}
+	
+	\begin{lstlisting}[style=html,numbers=none,caption={Usar módulos en HTML},
+		label=lst:4.20html]
+		<!-- type="module" activa el scope de modulo -->
+		<!-- y habilita top-level await -->
+		<script type="module" src="main.js"></script>
+		<!-- El atributo defer es implicito en type="module" -->
+	\end{lstlisting}
+	
+	\begin{cajaadvertencia}{CORS y módulos locales}
+		Los módulos ES \textbf{no funcionan} cuando se abre el archivo
+		HTML directamente con \texttt{file://}: el navegador bloquea la
+		carga por política de origen cruzado (CORS). Se necesita un
+		servidor HTTP. En IntelliJ IDEA basta con hacer clic derecho
+		sobre el \texttt{.html} y elegir \textbf{Open in Browser}
+		(IntelliJ inicia automáticamente un servidor local).
+	\end{cajaadvertencia}
+	
+	\subsection{Importación dinámica}
+	\label{sub:4.dynimport}
+	
+	La importación dinámica (\texttt{import()}) carga un módulo
+	bajo demanda. Es clave para el \emph{code splitting} y la
+	carga diferida (\emph{lazy loading}). Véase el
+	Listado~\ref{lst:4.21}.
+	
+	\begin{lstlisting}[style=js,numbers=none,caption={Importación dinámica bajo demanda},
+		label=lst:4.21]
+		document.getElementById("btn-mapa")
+		.addEventListener("click", async () => {
+			// El modulo solo se carga cuando el usuario hace clic
+			const { iniciarMapa } = await import("./mapa.js");
+			iniciarMapa("#contenedor-mapa");
+		});
+	\end{lstlisting}
+	
+	% =====================================================================
+	\section{Ejercicios paso a paso en IntelliJ IDEA}
+	\label{sec:4.ejercicios}
+	
+	Los siguientes ejercicios incluyen instrucciones completas para
+	reproducirlos en IntelliJ IDEA Ultimate con la licencia educativa
+	gratuita de JetBrains.
+	
+	\begin{cajaejercicio}{Ejercicio 4.1 (PROPUESTO) --- Calculadora interactiva}
+		
+		\textbf{Enunciado.} Implementar una calculadora web con JavaScript
+		puro que soporte las cuatro operaciones básicas y muestre el
+		resultado en tiempo real.
+		
+		\textbf{Criterios de aceptación:}
+		\begin{itemize}
+			\item Usa \texttt{const}/\texttt{let} y funciones flecha.
+			\item Valida división por cero con mensaje amigable.
+			\item Tiene \texttt{"use strict"} y \texttt{type="module"}.
+			\item El historial de operaciones se muestra con DOM.
+			\item Limpia el historial con un botón.
+		\end{itemize}
+		
+		\textbf{Pistas:} función \texttt{calcular(a, op, b)} devuelve
+		el resultado o lanza un \texttt{Error}; un listener de
+		\texttt{submit} en el formulario llama a esa función y actualiza
+		el DOM.
+	\end{cajaejercicio}
+	
+	\begin{cajaejercicio}{Ejercicio 4.2 (PROPUESTO) --- Buscador de Pokémon}
+		
+		\textbf{Enunciado.} Construir una página que consuma la PokeAPI
+		pública (\url{https://pokeapi.co/api/v2/pokemon/\{nombre\}}) con
+		\texttt{fetch} y \texttt{async/await}, mostrando imagen, tipos y
+		estadísticas del Pokémon buscado.
+		
+		\textbf{Criterios de aceptación:}
+		\begin{itemize}
+			\item Maneja errores HTTP 404 con mensaje al usuario.
+			\item Usa \texttt{AbortController} para cancelar búsquedas anteriores.
+			\item Muestra un indicador de «cargando...» mientras espera la respuesta.
+			\item El código está organizado en al menos dos módulos ES.
+		\end{itemize}
+	\end{cajaejercicio}
+	
+	\begin{cajaejercicio}{Ejercicio 4.3 (RESUELTO) --- Galería de usuarios con módulos}
+		
+		\textbf{Enunciado.} Crear una galería de usuarios consumiendo la
+		API pública \url{https://randomuser.me/api/?results=12}. Separar
+		la lógica en tres módulos: \texttt{api.js}, \texttt{ui.js} y
+		\texttt{main.js}.
+		
+		\textbf{Pasos en IntelliJ IDEA Ultimate:}
+		
+		\bigskip
+		\textbf{Paso 1 — Crear el proyecto.}
+		
+		En IntelliJ, abrir el menú \textbf{File $\rightarrow$ New $\rightarrow$
+			Project\ldots}, seleccionar \textbf{Empty Project}, escribir el nombre
+		\texttt{galeria-usuarios} y confirmar con \textbf{Create}.
+		\emph{Por qué:} un proyecto vacío evita plantillas innecesarias para un
+		ejercicio de JavaScript puro.
+		
+		\textbf{Paso 2 — Crear la estructura de carpetas.}
+		
+		En el panel \textbf{Project}, hacer clic derecho sobre la raíz y
+		elegir \textbf{New $\rightarrow$ Directory}. Crear la carpeta
+		\texttt{src}. Dentro de ella crear tres archivos JavaScript:
+		\texttt{api.js}, \texttt{ui.js}, \texttt{main.js}, y en la raíz
+		crear \texttt{index.html}.
+		
+		\textbf{Paso 3 — Escribir \texttt{api.js}.}
+		
+		\begin{lstlisting}[style=js,caption={src/api.js},label=lst:4.ej3.api]
+			"use strict";
+			
+			const URL_USUARIOS = "https://randomuser.me/api/";
+			
+			export async function obtenerUsuarios(cantidad = 12) {
+				const params = new URLSearchParams({ results: cantidad, nat: "es,us" });
+				const res = await fetch(`${URL_USUARIOS}?${params}`);
+				if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				const data = await res.json();
+				return data.results;
+			}
+		\end{lstlisting}
+		
+		\emph{Qué hace:} exporta una función asíncrona que consulta la
+		API y devuelve el array de usuarios. Lanza un error si la
+		respuesta HTTP no es exitosa.
+		
+		\textbf{Paso 4 — Escribir \texttt{ui.js}.}
+		
+		\begin{lstlisting}[style=js,caption={src/ui.js},label=lst:4.ej3.ui]
+			"use strict";
+			
+			export function crearTarjeta(usuario) {
+				const { name, email, picture, location } = usuario;
+				const tarjeta = document.createElement("article");
+				tarjeta.className = "tarjeta";
+				
+				tarjeta.innerHTML = `
+				<img src="${picture.large}" alt="Foto de ${name.first}">
+				<h3>${name.first} ${name.last}</h3>
+				<p>${email}</p>
+				<p><small>${location.city}, ${location.country}</small></p>
+				`;
+				return tarjeta;
+			}
+			
+			export function mostrarError(msg) {
+				const contenedor = document.getElementById("galeria");
+				contenedor.innerHTML =
+				`<p class="error">Error: ${msg}. Intente de nuevo.</p>`;
+			}
+			
+			export function mostrarCargando(activo) {
+				document.getElementById("cargando").hidden = !activo;
+			}
+		\end{lstlisting}
+		
+		\emph{Qué hace:} encapsula toda la lógica de creación de nodos
+		DOM. No mezcla lógica de red con presentación.
+		
+		\textbf{Paso 5 — Escribir \texttt{main.js}.}
+		
+		\begin{lstlisting}[style=js,caption={src/main.js},label=lst:4.ej3.main]
+			"use strict";
+			import { obtenerUsuarios }             from "./api.js";
+			import { crearTarjeta, mostrarError, mostrarCargando } from "./ui.js";
+			
+			const galeria = document.getElementById("galeria");
+			
+			async function cargarGaleria() {
+				mostrarCargando(true);
+				galeria.innerHTML = "";
+				try {
+					const usuarios = await obtenerUsuarios(12);
+					const fragmento = document.createDocumentFragment();
+					usuarios.forEach(u => fragmento.appendChild(crearTarjeta(u)));
+					galeria.appendChild(fragmento);         // un solo reflow
+				} catch (err) {
+					mostrarError(err.message);
+				} finally {
+					mostrarCargando(false);
+				}
+			}
+			
+			document.getElementById("btn-recargar")
+			.addEventListener("click", cargarGaleria);
+			
+			cargarGaleria();                            // carga inicial
+		\end{lstlisting}
+		
+		\emph{Por qué \texttt{DocumentFragment}:} agregar elementos
+		uno a uno fuerza un \emph{reflow} por cada inserción. Un
+		fragmento agrupa las inserciones y genera un único \emph{reflow},
+		mejorando el rendimiento.
+		
+		\textbf{Paso 6 — Escribir \texttt{index.html}.}
+		
+		\begin{lstlisting}[style=html,numbers=none,caption={index.html},label=lst:4.ej3.html]
+			<!DOCTYPE html>
+			<html lang="es">
+			<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<title>Galeria de Usuarios</title>
+			<style>
+			*, *::before, *::after { box-sizing: border-box; }
+			body { font-family: system-ui, sans-serif; margin: 0; padding: 1rem;
+				background: #f5f5f5; }
+			h1   { color: #006633; text-align: center; }
+			#galeria { display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+				gap: 1rem; margin-top: 1rem; }
+			.tarjeta { background: white; border-radius: 8px; padding: 1rem;
+				text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
+			.tarjeta img { border-radius: 50%; width: 96px; height: 96px; }
+			.tarjeta h3  { margin: .5rem 0 .25rem; font-size: 1rem; }
+			.tarjeta p   { margin: 0; color: #555; font-size: .85rem; }
+			.error { color: red; grid-column: 1/-1; text-align: center; }
+			button { display: block; margin: 0 auto; padding: .6rem 1.4rem;
+				background: #006633; color: white; border: none;
+				border-radius: 6px; cursor: pointer; font-size: 1rem; }
+			button:hover { background: #004d26; }
+			#cargando { text-align: center; color: #888; margin-top: 2rem; }
+			</style>
+			</head>
+			<body>
+			<h1>Galeria de Usuarios</h1>
+			<button id="btn-recargar">Recargar galeria</button>
+			<p id="cargando" hidden>Cargando...</p>
+			<section id="galeria" aria-live="polite"></section>
+			<script type="module" src="src/main.js"></script>
+			</body>
+			</html>
+		\end{lstlisting}
+		
+		\textbf{Paso 7 — Ejecutar y verificar.}
+		
+		En IntelliJ, hacer clic derecho sobre \texttt{index.html} y
+		elegir \textbf{Open in} $\rightarrow$ \textbf{Chrome} (o el
+		navegador preferido). IntelliJ levanta un servidor HTTP local
+		en \texttt{localhost:63342} automáticamente. Abrir las DevTools
+		(F12) $\rightarrow$ pestaña \textbf{Network} y verificar
+		que la petición a \texttt{randomuser.me} devuelva 200 y un JSON
+		con 12 usuarios. En la pestaña \textbf{Console} no debe aparecer
+		ningún error.
+		
+		\emph{Verificación:} la galería debe mostrar 12 tarjetas con foto,
+		nombre, correo y ciudad. Al hacer clic en «Recargar galería» se
+		obtienen 12 usuarios distintos.
+	\end{cajaejercicio}
+	
+	% =====================================================================
+	\section{Buenas prácticas de JavaScript 2026}
+	\label{sec:4.buenas}
+	
+	\begin{cajabuenas}{Doce reglas profesionales JavaScript 2026}
+		\begin{enumerate}
+			\item \textbf{\texttt{"use strict"}} en todo módulo o
+			\textbf{\texttt{type="module"}} en el \texttt{<script>}
+			(activa \emph{strict mode} implícitamente).
+			\item \textbf{\texttt{const} por defecto}; \texttt{let} solo
+			cuando la variable muta; \texttt{var} nunca.
+			\item \textbf{\texttt{===} sobre \texttt{==}} siempre
+			(comparación estricta evita coerciones silenciosas).
+			\item \textbf{Manejo de errores} con \texttt{try/catch} en
+			todas las funciones \texttt{async}; nunca silenciar un
+			\texttt{catch} vacío.
+			\item \textbf{Validar entradas} de funciones públicas antes de
+			usarlas; lanzar \texttt{TypeError} con mensaje claro.
+			\item \textbf{Funciones pequeñas}, una sola responsabilidad;
+			máximo 20 líneas como heurística.
+			\item \textbf{Sin variables globales}: usar módulos ES con
+			\texttt{type="module"}.
+			\item \textbf{Linter ESLint} con \texttt{eslint-config-airbnb}
+			o \texttt{eslint-config-standard}; integrarlo en IntelliJ.
+			\item \textbf{Tests} con Vitest o Jest; cobertura mínima 70\%
+			en lógica de negocio.
+			\item \textbf{No mezclar} \texttt{.then()} y \texttt{await}
+			en la misma función: elegir un estilo y ser consistente.
+			\item \textbf{Optional chaining} (\texttt{?.}) para acceso
+			seguro a propiedades anidadas; nullish coalescing (\texttt{??})
+			para valores por defecto precisos.
+			\item \textbf{Tipado gradual} con JSDoc (\texttt{@param},
+			\texttt{@returns}) o TypeScript en proyectos serios;
+			IntelliJ IDEA proporciona completado de tipos con JSDoc.
+		\end{enumerate}
+	\end{cajabuenas}
+	
+	\begin{cajaadvertencia}{Anti-patrones frecuentes que se deben evitar}
+		\begin{itemize}
+			\item \textbf{\texttt{innerHTML} con datos del usuario}: riesgo
+			de XSS. Usar \texttt{textContent} o
+			\texttt{element.insertAdjacentText()} para texto sin
+			etiquetas.
+			\item \textbf{Callback hell}: usar \texttt{async/await}.
+			\item \textbf{Polling} con \texttt{setInterval} para actualizar
+			datos: usar WebSocket o Server-Sent Events.
+			\item \textbf{Modificar el DOM en bucle}: usar
+			\texttt{DocumentFragment}.
+			\item \textbf{Olvidar cancelar peticiones}: usar
+			\texttt{AbortController}.
+			\item \textbf{Eval()}: nunca; riesgo de seguridad e impide
+			optimizaciones del motor V8.
+		\end{itemize}
+	\end{cajaadvertencia}
+	
+	% =====================================================================
+	\section{Diagrama de arquitectura: cliente con módulos ES}
+	\label{sec:4.arquitectura}
+	
+	La Figura~\ref{fig:4.modulos} muestra la arquitectura típica
+	de una aplicación de cliente moderna organizada con módulos ES.
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tikzpicture}[
+			mod/.style={rectangle,draw=uteqverde,fill=uteqverde!8,thick,
+				rounded corners=4pt,minimum width=3cm,minimum height=1.1cm,
+				font=\small\bfseries,align=center},
+			ext/.style={rectangle,draw=uteqdorado!70!black,fill=uteqdorado!10,thick,
+				rounded corners=4pt,minimum width=2.8cm,minimum height=1cm,
+				font=\small,align=center},
+			arr/.style={-{Latex[length=2mm]},thick,gray!70!black},
+			imp/.style={arr,dashed,uteqverde!60!black},
+			lbl/.style={font=\scriptsize,color=gray!70!black}
+			]
+			% HTML
+			\node[ext,minimum width=2.2cm,draw=blue!50,fill=blue!5]
+			(html) at (0,5.5) {\texttt{index.html}\\
+				\scriptsize type="module"};
+			
+			% Modulos
+			\node[mod] (main) at (0,3.5)   {\texttt{main.js}\\
+				\scriptsize orquesta};
+			\node[mod] (api)  at (-3.5,1.5) {\texttt{api.js}\\
+				\scriptsize \texttt{fetch}/HTTP};
+			\node[mod] (ui)   at (3.5,1.5)  {\texttt{ui.js}\\
+				\scriptsize DOM/render};
+			\node[mod] (util) at (0,1.5)   {\texttt{utils.js}\\
+				\scriptsize helpers puros};
+			
+			% APIs externas
+			\node[ext] (rest) at (-3.5,-0.5) {API REST\\
+				\scriptsize JSON};
+			\node[ext] (dom)  at (3.5,-0.5)  {DOM del\\navegador};
+			
+			% Flechas
+			\draw[imp] (html) -- node[right,lbl]{carga} (main);
+			\draw[imp] (main) -- node[above left,lbl,pos=0.4]{import} (api);
+			\draw[imp] (main) -- node[above right,lbl,pos=0.4]{import} (ui);
+			\draw[imp] (main) -- node[right,lbl]{import} (util);
+			\draw[imp] (api)  -- node[right,lbl]{import} (util);
+			\draw[arr] (api)  -- node[right,lbl]{\texttt{fetch}} (rest);
+			\draw[arr] (ui)   -- node[right,lbl,align=left]{querySelector\\\\createElement} (dom);
+		\end{tikzpicture}
+		\caption{Arquitectura de una SPA mínima con módulos ES nativos.}
+		\label{fig:4.modulos}
+	\end{figure}
+	
+	% =====================================================================
+	\section*{Resumen de la semana}
+	\addcontentsline{toc}{section}{Resumen de la semana}
+	
+	\begin{cajadefinicion}{Lo esencial de la semana 4}
+		\begin{itemize}
+			\item JavaScript es \textbf{single-threaded} con un \emph{event
+				loop} que permite asincronía sin bloquear la interfaz.
+			\item \textbf{\texttt{const}/\texttt{let}}, funciones flecha,
+			template literals, \emph{destructuring} y \emph{spread} son
+			los pilares del JS moderno; \texttt{var} está obsoleto.
+			\item Las \textbf{funciones de orden superior}
+			(\texttt{.map()}, \texttt{.filter()}, \texttt{.reduce()})
+			transforman datos de forma funcional e inmutable.
+			\item Los \textbf{closures} permiten encapsular estado privado
+			sin necesidad de clases.
+			\item Las \textbf{clases ES6} son azúcar sobre prototipos;
+			los campos privados (\texttt{\#}) datan de ES2022.
+			\item La \textbf{manipulación del DOM} debe ser mínima y usar
+			delegación de eventos para listas dinámicas.
+			\item \textbf{\texttt{async/await}} simplifica el código
+			asíncrono; siempre envolver con \texttt{try/catch}.
+			\item Los \textbf{módulos ES} eliminan el scope global y son
+			el estándar nativo; \texttt{AbortController} cancela peticiones.
+		\end{itemize}
+	\end{cajadefinicion}
+	
+	% =====================================================================
+	% Bibliografía
+	% =====================================================================
+	\bibliographystyle{plain}
+	\bibliography{D:/Repositorios/Asignaturas/AplicacionesWeb/Texto/LibroWebApp}
+	
+\end{document}

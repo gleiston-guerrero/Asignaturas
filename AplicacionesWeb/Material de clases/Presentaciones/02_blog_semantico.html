@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  BLOG SEMÁNTICO — Demostración de <article>, <section>, <nav>
+  ============================================================
+  Archivo:  02_blog_semantico.html
+  Propósito: Mostrar el uso correcto de los elementos semánticos
+             estructurales de HTML5 en una página real.
+  Referencia: Libro Aplicaciones Web - Sección 2.3.4
+  ============================================================
+
+  LECTURA DEL ÁRBOL:
+
+  <body>
+    └── <header>          → Cabecera del SITIO (logo + nav principal)
+        └── <nav>         → Navegación principal
+    └── <main>            → Contenido único de ESTA página (uno solo)
+        └── <article>     → Entrada del blog (autocontenida, RSS-able)
+            └── <header>  → Cabecera del ARTÍCULO (título + meta)
+            └── <section> → Subdivisiones temáticas del artículo
+            └── <footer>  → Pie del artículo (etiquetas, autor)
+        └── <aside>       → Contenido relacionado tangencial
+    └── <footer>          → Pie del SITIO (copyright, contacto)
+
+  REGLA DE ORO — "Prueba RSS":
+    ¿Esto tendría sentido publicado solo en un feed RSS?
+       Sí  → <article>
+       No  → <section>
+  ============================================================
+-->
+<html lang="es-EC">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog de tecnología — Ejemplo semántico HTML5">
+    <title>TechBlog UTEQ — Frameworks modernos en 2026</title>
+</head>
+<body>
+
+    <!-- ========================================================== -->
+    <!-- CABECERA DEL SITIO: aparece en TODAS las páginas del blog   -->
+    <!-- ========================================================== -->
+    <header>
+        <h1>TechBlog UTEQ</h1>
+        <p>Reflexiones sobre desarrollo web desde Quevedo</p>
+
+        <!-- Navegación principal del sitio -->
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/articulos">Artículos</a></li>
+                <li><a href="/autores">Autores</a></li>
+                <li><a href="/contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ========================================================== -->
+    <!-- CONTENIDO PRINCIPAL: único e irrepetible en cada página     -->
+    <!-- Regla: SOLO UN <main> por documento                         -->
+    <!-- ========================================================== -->
+    <main>
+
+        <!-- ====================================================== -->
+        <!-- ARTÍCULO COMPLETO: autocontenido, distribuible por RSS  -->
+        <!-- ====================================================== -->
+        <article>
+
+            <!-- Cabecera del artículo (NO del sitio) -->
+            <header>
+                <h2>El renacimiento de los frameworks meta en 2026</h2>
+                <p>
+                    Publicado por
+                    <a href="/autores/maria-cevallos" rel="author">María Cevallos</a>
+                    el
+                    <time datetime="2026-05-08T14:30:00-05:00">
+                        8 de mayo de 2026 a las 14:30
+                    </time>
+                </p>
+            </header>
+
+            <!-- Introducción del artículo -->
+            <p>
+                Mientras los frameworks tradicionales evolucionan, una nueva
+                generación de meta-frameworks redefine el desarrollo full-stack.
+                En este artículo analizamos tres tendencias dominantes.
+            </p>
+
+            <!-- ================================================== -->
+            <!-- SECCIÓN: subdivisión TEMÁTICA del artículo          -->
+            <!-- No tendría sentido sola en un RSS → <section>       -->
+            <!-- ================================================== -->
+            <section>
+                <h3>1. Server Components ya no son exóticos</h3>
+                <p>
+                    Lo que en 2023 parecía un experimento de React, hoy es la base
+                    arquitectónica de Next.js, SolidStart y Qwik. La separación
+                    entre componentes que corren en el servidor y los que corren
+                    en el cliente se ha vuelto natural.
+                </p>
+                <p>
+                    En la cátedra de Aplicaciones Web exploraremos esta separación
+                    en la <strong>Unidad III</strong> a partir de la semana 11.
+                </p>
+            </section>
+
+            <section>
+                <h3>2. Edge runtime: el código viaja más cerca del usuario</h3>
+                <p>
+                    Vercel Edge, Cloudflare Workers y Deno Deploy llevaron Node.js
+                    a más de 300 ciudades del mundo. El resultado: APIs que
+                    responden en menos de 50&nbsp;ms desde cualquier continente.
+                </p>
+            </section>
+
+            <section>
+                <h3>3. La vuelta de la simplicidad: HTMX y Alpine</h3>
+                <p>
+                    Frente a la complejidad de los SPAs, una corriente minimalista
+                    propone volver a renderizar HTML en el servidor y añadir
+                    interactividad con atributos. HTMX y Alpine lideran este
+                    movimiento, sumando más de 80&nbsp;000 estrellas en GitHub.
+                </p>
+                <figure>
+                    <pre><code>&lt;button hx-post="/like" hx-swap="outerHTML"&gt;
+    Me gusta
+&lt;/button&gt;</code></pre>
+                    <figcaption>
+                        Ejemplo: un botón HTMX que envía un POST sin escribir JavaScript.
+                    </figcaption>
+                </figure>
+            </section>
+
+            <!-- Pie del artículo: metadatos, no del sitio -->
+            <footer>
+                <p>
+                    <strong>Etiquetas:</strong>
+                    <a href="/tag/frameworks">frameworks</a>,
+                    <a href="/tag/2026">2026</a>,
+                    <a href="/tag/full-stack">full-stack</a>
+                </p>
+                <p>
+                    <small>
+                        ¿Te gustó este artículo?
+                        <a href="/suscribir">Suscríbete al feed RSS</a>.
+                    </small>
+                </p>
+            </footer>
+        </article>
+
+        <!-- ====================================================== -->
+        <!-- ASIDE: contenido RELACIONADO pero tangencial            -->
+        <!-- Si lo quitas, el artículo principal sigue siendo válido -->
+        <!-- ====================================================== -->
+        <aside aria-label="Artículos relacionados">
+            <h3>También te puede interesar</h3>
+            <ul>
+                <li><a href="/articulos/web-components">Web Components nativos</a></li>
+                <li><a href="/articulos/wasm-2026">WebAssembly en producción</a></li>
+                <li><a href="/articulos/css-container-queries">Container Queries: la nueva responsividad</a></li>
+            </ul>
+        </aside>
+
+    </main>
+
+    <!-- ========================================================== -->
+    <!-- PIE DEL SITIO: información legal y de contacto              -->
+    <!-- ========================================================== -->
+    <footer>
+        <p>
+            &copy; 2026 TechBlog UTEQ —
+            Universidad Técnica Estatal de Quevedo —
+            Facultad de Ciencias de la Ingeniería
+        </p>
+        <p>
+            <a href="/privacidad">Política de privacidad</a> |
+            <a href="/accesibilidad">Declaración de accesibilidad WCAG 2.1</a>
+        </p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,797 @@
+% ============================================================
+%  JAVASCRIPT ES6+ — De cero a la practica
+%  Ejemplos progresivos para la PE Unidad I
+%  Aplicaciones Web · Ingenieria de Software · UTEQ
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fix-cm}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[left=2.2cm,right=2.2cm,top=2cm,bottom=2cm,headheight=14pt]{geometry}
+\usepackage{xcolor,colortbl,array,longtable,booktabs}
+\usepackage{ragged2e,setspace,parskip,titlesec,fancyhdr,hyperref}
+\usepackage{enumitem,needspace,tcolorbox,amssymb,float,pifont}
+\usepackage{listings}
+\usepackage[protrusion=true,expansion=false]{microtype}
+
+\tcbuselibrary{skins,breakable}
+\DeclareFontShape{T1}{cmtt}{bx}{n}{<->ssub * cmtt/m/n}{}
+
+\definecolor{verde}{RGB}{0,120,48}
+\definecolor{verdeclaro}{RGB}{232,245,238}
+\definecolor{azul}{RGB}{24,95,165}
+\definecolor{ambar}{RGB}{140,85,10}
+\definecolor{ambarclaro}{RGB}{250,238,218}
+\definecolor{rojo}{RGB}{163,45,45}
+\definecolor{morado}{RGB}{83,74,183}
+\definecolor{grisclaro}{RGB}{245,245,245}
+\definecolor{gris}{RGB}{80,80,80}
+\definecolor{dark}{RGB}{38,50,56}
+\definecolor{codigofondo}{RGB}{30,30,46}
+\definecolor{codigotexto}{RGB}{205,214,244}
+\definecolor{keycolor}{RGB}{137,180,250}
+\definecolor{strcolor}{RGB}{166,227,161}
+\definecolor{comcolor}{RGB}{140,148,172}
+\definecolor{numcolor}{RGB}{255,180,100}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\lstdefinestyle{codejs}{
+	backgroundcolor=\color{codigofondo},basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor}\bfseries,stringstyle=\color{strcolor},
+	commentstyle=\color{comcolor}\itshape,numberstyle=\tiny\color{comcolor},
+	numbers=left,numbersep=8pt,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt,language=Java,
+	morekeywords={async,await,export,import,from,const,let,function,try,catch,
+		finally,throw,console,document,fetch,getElementById,addEventListener,
+		forEach,map,filter,reduce,find,DOMContentLoaded,log,error,warn,
+		querySelector,querySelectorAll,textContent,innerHTML,value,
+		preventDefault,checkValidity,reportValidity,FormData,fromEntries,
+		stringify,parse,ok,json,status,statusText,setAttribute,getAttribute,
+		matchMedia,matches,localStorage,getItem,setItem,setTimeout,
+		createElement,append,remove,classList,add,toggle,contains,
+		style,display,none,block,flex}}
+
+\tcbset{base/.style={arc=4pt,boxrule=0.6pt,left=8pt,right=8pt,top=6pt,bottom=6pt,
+		breakable,before upper={\parindent0pt\setlength{\parskip}{5pt}},lines before break=4}}
+\newtcolorbox{cajatip}[2]{base,colback=#1!9,colframe=#1,
+	title={\bfseries\small #2},coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajabanda}{base,colback=azul,colframe=azul,
+	before upper={\parindent0pt\color{white}\setlength{\parskip}{5pt}}}
+\newtcolorbox{cajacodigo}[2]{enhanced,breakable,arc=4pt,colback=codigofondo,colframe=#1,
+	title={\bfseries\small\color{white}#2},left=0pt,right=0pt,top=0pt,bottom=0pt,boxrule=0.8pt,
+	skin first=enhancedfirst,skin middle=enhancedmiddle,skin last=enhancedlast,
+	before upper={\parindent0pt},lines before break=3}
+\newtcolorbox{cajaresultado}[1]{base,colback=verdeclaro,colframe=verde,
+	title={\bfseries\small\color{white} #1},coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajaconcepto}[1]{base,colback=ambarclaro,colframe=ambar,
+	borderline west={4pt}{0pt}{ambar},
+	title={\bfseries\small\color{white} #1},coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajapractica}[1]{base,colback=morado!8,colframe=morado,
+	title={\bfseries\small\color{white} Donde se usa en la practica: #1},
+	coltitle=white,fonttitle=\color{white}}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{gris} UTEQ -- Aplicaciones Web}
+\fancyhead[R]{\small\color{gris} JavaScript ES6+ -- De cero a la practica}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\titleformat{\section}{\large\bfseries\color{azul}}{}{0em}{}
+[{\vspace{-4pt}\color{azul}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\normalsize\bfseries\color{verde}}{}{0em}{\thesubsection\quad}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\setcounter{secnumdepth}{2}
+
+\newcounter{nej}\setcounter{nej}{0}
+
+\setstretch{1.13}\setlength{\parindent}{0pt}
+\hyphenpenalty=1000\exhyphenpenalty=1000
+\hypersetup{colorlinks=true,linkcolor=azul,urlcolor=verde,
+	pdftitle={JavaScript ES6+ De cero a la practica UTEQ}}
+
+\begin{document}
+	
+	\begin{cajabanda}
+		\begin{center}
+			{\scriptsize\bfseries PREPARACION PARA LA PRACTICA EXPERIMENTAL UNIDAD I -- PASO 4}\\[5pt]
+			{\LARGE\bfseries JAVASCRIPT ES6+}\\[3pt]
+			{\large\bfseries De cero a la practica: 30 ejemplos progresivos}\\[3pt]
+			{\normalsize Cada ejemplo construye sobre el anterior hasta llegar al codigo del Paso 4}\\[5pt]
+			{\small Aplicaciones Web -- Ingenieria de Software -- UTEQ 2025-2026}
+		\end{center}
+	\end{cajabanda}
+	
+	\vspace{0.3cm}
+	
+	\begin{cajatip}{azul}{Como usar este documento}
+		Los ejemplos estan numerados del 1 al 30 en orden de dificultad. Cada uno se puede probar en la \textbf{consola del navegador} (F12 $\to$ Console). Al final del documento, el estudiante habra visto cada linea de codigo que necesita escribir en el Paso 4 de la practica.
+		
+		\textbf{Probar cada ejemplo:} abrir Chrome $\to$ F12 $\to$ Console $\to$ pegar $\to$ Enter.
+	\end{cajatip}
+	
+	\vspace{0.3cm}
+	\tableofcontents
+	\vspace{0.5cm}
+	
+	% =============================================================
+	\section{Nivel 1: Variables y tipos de dato}
+	% =============================================================
+	
+	\subsection{const y let: declarar variables}
+	
+	\begin{cajaconcepto}{Concepto}
+		\texttt{const} declara una variable cuya referencia no se puede reasignar. \texttt{let} permite reasignar. \texttt{var} es obsoleto: no usarlo. Regla: usar siempre \texttt{const}; solo \texttt{let} si necesitas cambiar el valor despues.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 1 -- const vs let}
+		\begin{lstlisting}[style=codejs]
+			// const: no se puede reasignar
+			const nombre = "Maria";
+			const edad = 22;
+			const esEstudiante = true;
+			
+			// let: si se puede reasignar
+			let contador = 0;
+			contador = 1;  // OK
+			contador = 2;  // OK
+			
+			// Esto daria ERROR:
+			// nombre = "Juan";  // TypeError: Assignment to constant variable
+			
+			console.log(nombre, edad, esEstudiante, contador);
+			// Maria 22 true 2
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaresultado}{Resultado en consola}
+		\texttt{Maria 22 true 2}
+	\end{cajaresultado}
+	
+	\subsection{Template literals: texto con variables}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 2 -- Template literals con backticks}
+		\begin{lstlisting}[style=codejs]
+			const nombre = "Carlos";
+			const edad = 20;
+			
+			// ANTES (concatenacion fea):
+			const msgViejo = "Hola, " + nombre + ". Tienes " + edad + " anos.";
+			
+			// AHORA (template literal con backticks):
+			const msg = `Hola, ${nombre}. Tienes ${edad} anos.`;
+			
+			// Se puede poner cualquier expresion dentro de ${}:
+			const msg2 = `En 5 anos tendras ${edad + 5} anos.`;
+			
+			console.log(msg);    // Hola, Carlos. Tienes 20 anos.
+			console.log(msg2);   // En 5 anos tendras 25 anos.
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{app.js, ui.js}
+		Los template literals se usan en \texttt{renderizarTarjetas()} para construir el HTML de cada tarjeta, y en los mensajes de error.
+	\end{cajapractica}
+	
+	\subsection{Objetos y arrays}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 3 -- Objetos y arrays basicos}
+		\begin{lstlisting}[style=codejs]
+			// Objeto: coleccion de propiedades clave:valor
+			const usuario = {
+				nombre: "Ana",
+				email: "ana@uteq.edu.ec",
+				edad: 21
+			};
+			
+			// Acceder a propiedades
+			console.log(usuario.nombre);    // Ana
+			console.log(usuario.email);     // ana@uteq.edu.ec
+			
+			// Array: lista ordenada de elementos
+			const colores = ["rojo", "verde", "azul"];
+			console.log(colores[0]);        // rojo
+			console.log(colores.length);    // 3
+			
+			// Array de objetos (lo que devuelve una API):
+			const usuarios = [
+			{ id: 1, name: "Leanne", email: "l@mail.com" },
+			{ id: 2, name: "Ervin",  email: "e@mail.com" },
+			];
+			console.log(usuarios[0].name);  // Leanne
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{api.js}
+		La API devuelve un array de objetos exactamente como \texttt{usuarios} del ejemplo. Cada objeto tiene propiedades como \texttt{id}, \texttt{name}, \texttt{email}.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 2: Funciones y arrow functions}
+	% =============================================================
+	
+	\subsection{Funciones clasicas y arrow functions}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 4 -- Tres formas de escribir una funcion}
+		\begin{lstlisting}[style=codejs]
+			// Forma 1: funcion clasica (funciona, pero es verbosa)
+			function sumar(a, b) {
+				return a + b;
+			}
+			
+			// Forma 2: arrow function con cuerpo
+			const restar = (a, b) => {
+				return a - b;
+			};
+			
+			// Forma 3: arrow function corta (1 expresion = return implicito)
+			const multiplicar = (a, b) => a * b;
+			
+			console.log(sumar(3, 5));       // 8
+			console.log(restar(10, 4));     // 6
+			console.log(multiplicar(3, 7)); // 21
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{Funciones que reciben funciones (callbacks)}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 5 -- forEach, map y filter con arrow functions}
+		\begin{lstlisting}[style=codejs]
+			const numeros = [1, 2, 3, 4, 5];
+			
+			// forEach: ejecuta algo por cada elemento (no devuelve nada)
+			numeros.forEach(n => console.log(n * 2));
+			// 2, 4, 6, 8, 10
+			
+			// map: transforma cada elemento y devuelve un nuevo array
+			const dobles = numeros.map(n => n * 2);
+			console.log(dobles);  // [2, 4, 6, 8, 10]
+			
+			// filter: filtra y devuelve solo los que cumplen la condicion
+			const pares = numeros.filter(n => n % 2 === 0);
+			console.log(pares);   // [2, 4]
+			
+			// Encadenado: filtrar pares y multiplicar por 10
+			const resultado = numeros
+			.filter(n => n % 2 === 0)
+			.map(n => n * 10);
+			console.log(resultado);  // [20, 40]
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{ui.js}
+		En \texttt{renderizarTarjetas()} se usa \texttt{datos.map()} para transformar cada objeto en HTML, y \texttt{.join('')} para unir los fragmentos en un solo string.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 3: El DOM (Document Object Model)}
+	% =============================================================
+	
+	\subsection{Seleccionar elementos del HTML}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 6 -- getElementById y querySelector}
+		\begin{lstlisting}[style=codejs]
+			// getElementById: busca por id (el mas rapido)
+			const titulo = document.getElementById('titulo-datos');
+			console.log(titulo);           // <h2 id="titulo-datos">...</h2>
+			console.log(titulo.textContent); // el texto dentro del h2
+			
+			// querySelector: busca con selector CSS (mas flexible)
+			const nav = document.querySelector('nav');
+			const primerEnlace = document.querySelector('nav a');
+			const btnTema = document.querySelector('#btn-tema');
+			
+			// querySelectorAll: devuelve TODOS los que coinciden
+			const todosLosLinks = document.querySelectorAll('nav a');
+			console.log(todosLosLinks.length); // numero de enlaces
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{Modificar el contenido y atributos}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 7 -- Cambiar texto, HTML y atributos}
+		\begin{lstlisting}[style=codejs]
+			const el = document.getElementById('estado-carga');
+			
+			// textContent: cambia solo el texto (SEGURO contra XSS)
+			el.textContent = 'Cargando datos...';
+			
+			// innerHTML: cambia el HTML interno (PELIGROSO si viene del usuario)
+			el.innerHTML = '<strong>Cargando...</strong>';
+			
+			// setAttribute: cambia cualquier atributo
+			const btn = document.getElementById('btn-tema');
+			btn.setAttribute('aria-pressed', 'true');
+			btn.textContent = 'Modo claro';
+			
+			// Leer un atributo
+			const valor = btn.getAttribute('aria-pressed'); // "true"
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{ui.js}
+		\texttt{mostrarCarga()} usa \texttt{textContent} para mostrar el mensaje. \texttt{renderizarTarjetas()} usa \texttt{innerHTML} pero con \texttt{escapeHTML()} para prevenir XSS. \texttt{toggleTema()} usa \texttt{setAttribute} para cambiar \texttt{aria-pressed}.
+	\end{cajapractica}
+	
+	\subsection{Escuchar eventos}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 8 -- addEventListener}
+		\begin{lstlisting}[style=codejs]
+			// Escuchar clic en un boton
+			const btn = document.getElementById('btn-tema');
+			btn.addEventListener('click', () => {
+				console.log('Boton clickeado!');
+			});
+			
+			// Escuchar cuando el DOM esta listo (ANTES de acceder a elementos)
+			document.addEventListener('DOMContentLoaded', () => {
+				console.log('DOM listo. Ahora puedo buscar elementos.');
+				const titulo = document.getElementById('titulo-datos');
+				// Aqui titulo NUNCA es null
+			});
+			
+			// Escuchar envio de formulario
+			const form = document.getElementById('formulario-pfc');
+			form.addEventListener('submit', (e) => {
+				e.preventDefault(); // Evitar que la pagina se recargue
+				console.log('Formulario enviado sin recargar!');
+			});
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Por que DOMContentLoaded}
+		Si el \texttt{<script>} esta en el \texttt{<head>}, se ejecuta ANTES de que el HTML exista. \texttt{getElementById} devolveria \texttt{null} porque el elemento aun no existe. \texttt{DOMContentLoaded} espera a que todo el HTML este parseado. Alternativa: poner el \texttt{<script>} al final del \texttt{<body>} con \texttt{type="module"} (que es \texttt{defer} automaticamente).
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{app.js}
+		Todo el codigo de \texttt{app.js} esta dentro de \texttt{document.addEventListener('DOMContentLoaded', async () => \{...\})}. El listener del formulario usa \texttt{e.preventDefault()} para evitar la recarga.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 4: Modulos ES6 (import / export)}
+	% =============================================================
+	
+	\subsection{export: exponer funciones de un modulo}
+	
+	\begin{cajacodigo}{morado}{Ejemplo 9 -- export en un modulo}
+		\begin{lstlisting}[style=codejs]
+			// archivo: js/modules/matematicas.js
+			
+			// Export individual (named export)
+			export function sumar(a, b) {
+				return a + b;
+			}
+			
+			export function restar(a, b) {
+				return a - b;
+			}
+			
+			// Variable exportada
+			export const PI = 3.14159;
+			
+			// Funcion privada (sin export = no se puede importar)
+			function logInterno(msg) {
+				console.log(`[mate] ${msg}`);
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{import: usar funciones de otro modulo}
+	
+	\begin{cajacodigo}{morado}{Ejemplo 10 -- import en el archivo principal}
+		\begin{lstlisting}[style=codejs]
+			// archivo: js/app.js
+			
+			// Importar funciones especificas
+			import { sumar, restar, PI } from './modules/matematicas.js';
+			
+			console.log(sumar(3, 5));  // 8
+			console.log(PI);           // 3.14159
+			
+			// NO se puede acceder a logInterno() porque no tiene export
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Requisito en el HTML}
+		Para que \texttt{import}/\texttt{export} funcionen, el script debe tener \texttt{type="module"}:
+		
+		\texttt{<script type="module" src="js/app.js"></script>}
+		
+		Sin \texttt{type="module"} el navegador lanza: \texttt{SyntaxError: Cannot use import statement outside a module}.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{Toda la arquitectura del Paso 4}
+		El PFC tiene 3 modulos: \texttt{api.js} exporta \texttt{obtenerDatos()} y \texttt{enviarDatos()}. \texttt{ui.js} exporta \texttt{mostrarCarga()}, \texttt{renderizarTarjetas()}, \texttt{escapeHTML()}, \texttt{toggleTema()}. \texttt{app.js} importa todo y orquesta.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 5: Promesas y async/await}
+	% =============================================================
+	
+	\subsection{Que es una Promesa}
+	
+	\begin{cajaconcepto}{Concepto}
+		Una \textbf{Promesa} es un objeto que representa un valor que \textbf{todavia no existe} pero existira en el futuro (o fallara). Tiene 3 estados: \textbf{pending} (esperando), \textbf{fulfilled} (exito) y \textbf{rejected} (error). \texttt{fetch()} devuelve una Promesa.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 11 -- Promesa basica con .then()/.catch()}
+		\begin{lstlisting}[style=codejs]
+			// fetch() devuelve una Promesa
+			// .then() se ejecuta cuando la Promesa se resuelve (exito)
+			// .catch() se ejecuta cuando la Promesa se rechaza (error)
+			
+			fetch('https://jsonplaceholder.typicode.com/users/1')
+			.then(respuesta => respuesta.json())
+			.then(usuario => console.log(usuario.name))
+			.catch(error => console.error('Fallo:', error));
+			
+			// Resultado: "Leanne Graham"
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{async/await: Promesas legibles}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 12 -- Lo mismo pero con async/await}
+		\begin{lstlisting}[style=codejs]
+			// async hace que la funcion devuelva una Promesa
+			// await pausa la ejecucion hasta que la Promesa se resuelva
+			// SOLO se puede usar await dentro de una funcion async
+			
+			async function cargarUsuario() {
+				const respuesta = await fetch(
+				'https://jsonplaceholder.typicode.com/users/1'
+				);
+				const usuario = await respuesta.json();
+				console.log(usuario.name);  // "Leanne Graham"
+			}
+			
+			cargarUsuario();
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Por que async/await es mejor que .then()}
+		Comparar los ejemplos 11 y 12: hacen exactamente lo mismo, pero el ejemplo 12 se lee como codigo normal de arriba a abajo. Con \texttt{.then()} encadenado, el codigo se vuelve dificil de leer cuando hay 3 o 4 operaciones asincronas seguidas (``callback hell'').
+	\end{cajaconcepto}
+	
+	% =============================================================
+	\section{Nivel 6: fetch -- hablar con el servidor}
+	% =============================================================
+	
+	\subsection{GET: obtener datos}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 13 -- fetch GET con verificacion de error}
+		\begin{lstlisting}[style=codejs]
+			async function obtenerUsuarios() {
+				const res = await fetch(
+				'https://jsonplaceholder.typicode.com/users'
+				);
+				
+				// IMPORTANTE: fetch NO lanza error con 404 o 500
+				// Solo lanza error si no hay internet o el dominio no existe
+				// Por eso verificamos manualmente:
+				if (!res.ok) {
+					throw new Error(`Error HTTP ${res.status}`);
+				}
+				
+				const datos = await res.json(); // Convertir respuesta a objeto JS
+				console.log(`Recibidos ${datos.length} usuarios`);
+				return datos;
+			}
+			
+			obtenerUsuarios();
+			// Recibidos 10 usuarios
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{api.js --- funcion obtenerDatos()}
+		Este es exactamente el patron de la funcion \texttt{obtenerDatos()} del modulo \texttt{api.js} de la practica.
+	\end{cajapractica}
+	
+	\subsection{POST: enviar datos}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 14 -- fetch POST con JSON}
+		\begin{lstlisting}[style=codejs]
+			async function crearUsuario(datos) {
+				const res = await fetch(
+				'https://jsonplaceholder.typicode.com/users',
+				{
+					method: 'POST',                          // Verbo HTTP
+					headers: { 'Content-Type': 'application/json' }, // Tipo
+					body: JSON.stringify(datos),              // Objeto -> texto JSON
+				}
+				);
+				
+				if (!res.ok) {
+					throw new Error(`Error al crear: ${res.status}`);
+				}
+				
+				return res.json();
+			}
+			
+			// Usar:
+			crearUsuario({ nombre: "Ana", email: "ana@uteq.edu.ec" })
+			.then(resp => console.log('Creado:', resp));
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{api.js --- funcion enviarDatos()}
+		Este es el patron de \texttt{enviarDatos()} que se usa cuando el formulario se envia.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 7: try/catch/finally -- manejar errores}
+	% =============================================================
+	
+	\begin{cajacodigo}{rojo}{Ejemplo 15 -- Los 4 estados que siempre hay que manejar}
+		\begin{lstlisting}[style=codejs]
+			async function cargarDatos() {
+				// ESTADO 1: Cargando
+				console.log('Cargando...');
+				
+				try {
+					const res = await fetch(
+					'https://jsonplaceholder.typicode.com/users?_limit=3'
+					);
+					if (!res.ok) throw new Error(`HTTP ${res.status}`);
+					const datos = await res.json();
+					
+					// ESTADO 2: Exito
+					if (datos.length === 0) {
+						// ESTADO 3: Vacio (exito pero sin datos)
+						console.log('No hay datos.');
+					} else {
+						console.log('Datos:', datos.map(u => u.name));
+					}
+					
+				} catch (error) {
+					// ESTADO 4: Error (red o HTTP)
+					console.error('Error:', error.message);
+					
+				} finally {
+					// SIEMPRE se ejecuta (exito O error)
+					console.log('Fin. Ocultar indicador de carga.');
+				}
+			}
+			
+			cargarDatos();
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaresultado}{Resultado esperado}
+		\texttt{Cargando...}\\
+		\texttt{Datos: ["Leanne Graham", "Ervin Howell", "Clementine Bauch"]}\\
+		\texttt{Fin. Ocultar indicador de carga.}
+	\end{cajaresultado}
+	
+	\begin{cajapractica}{app.js --- funcion cargarDatos()}
+		Este patron de 4 estados es exactamente la funcion \texttt{cargarDatos()} de \texttt{app.js}. La practica usa \texttt{mostrarCarga()} en lugar de \texttt{console.log} y \texttt{renderizarTarjetas()} en lugar de \texttt{console.log} del array.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 8: Manipular el DOM con datos de la API}
+	% =============================================================
+	
+	\subsection{Renderizar datos como HTML}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 16 -- Convertir un array de objetos en tarjetas HTML}
+		\begin{lstlisting}[style=codejs]
+			// Funcion anti-XSS: OBLIGATORIA antes de insertar texto en innerHTML
+			function escapeHTML(texto) {
+				return String(texto)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;');
+			}
+			
+			// Datos que vinieron de la API:
+			const usuarios = [
+			{ id: 1, name: "Leanne Graham", email: "l@mail.com" },
+			{ id: 2, name: "Ervin Howell",  email: "e@mail.com" },
+			];
+			
+			// Convertir cada objeto en HTML con .map() + template literal
+			const html = usuarios.map(u => `
+			<article class="tarjeta">
+			<h3>${escapeHTML(u.name)}</h3>
+			<p>${escapeHTML(u.email)}</p>
+			<p><small>ID: ${u.id}</small></p>
+			</article>
+			`).join('');  // .join('') une los fragmentos en 1 solo string
+			
+			// Insertar en el DOM
+			const contenedor = document.getElementById('contenedor-datos');
+			contenedor.innerHTML = html;
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Por que escapeHTML es obligatorio}
+		Si un usuario malicioso guardara como nombre \texttt{<script>alert('XSS')</script>}, sin \texttt{escapeHTML} ese script se ejecutaria en el navegador de todos los demas usuarios. Con \texttt{escapeHTML}, los \texttt{<} y \texttt{>} se convierten en \texttt{\&lt;} y \texttt{\&gt;}, y el navegador muestra el texto en lugar de ejecutarlo.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{ui.js --- funcion renderizarTarjetas()}
+		Este ejemplo es exactamente lo que hace \texttt{renderizarTarjetas()} en el Paso 4.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 9: localStorage y modo oscuro}
+	% =============================================================
+	
+	\begin{cajacodigo}{morado}{Ejemplo 17 -- localStorage: guardar y leer datos persistentes}
+		\begin{lstlisting}[style=codejs]
+			// Guardar un valor (persiste al cerrar el navegador)
+			localStorage.setItem('tema-pfc', 'oscuro');
+			
+			// Leer un valor (devuelve null si no existe)
+			const tema = localStorage.getItem('tema-pfc');
+			console.log(tema);  // "oscuro"
+			
+			// Eliminar un valor
+			localStorage.removeItem('tema-pfc');
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{morado}{Ejemplo 18 -- Toggle de modo oscuro completo}
+		\begin{lstlisting}[style=codejs]
+			function toggleTema() {
+				const html = document.documentElement; // = <html>
+				const actual = html.getAttribute('data-tema');
+				const nuevo = actual === 'oscuro' ? 'claro' : 'oscuro';
+				
+				// Cambiar el atributo data-tema en <html>
+				html.setAttribute('data-tema', nuevo);
+				
+				// Guardar la preferencia
+				localStorage.setItem('tema-pfc', nuevo);
+				
+				// Actualizar el texto del boton
+				const btn = document.getElementById('btn-tema');
+				btn.textContent = nuevo === 'oscuro' ? 'Modo claro' : 'Modo oscuro';
+				btn.setAttribute('aria-pressed', nuevo === 'oscuro');
+			}
+			
+			// Al cargar la pagina: restaurar la preferencia guardada
+			function cargarTema() {
+				const guardado = localStorage.getItem('tema-pfc');
+				if (guardado) {
+					document.documentElement.setAttribute('data-tema', guardado);
+				}
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{ui.js --- funciones toggleTema() y cargarTema()}
+		Estas dos funciones son exactamente las que van en \texttt{ui.js}. El CSS en \texttt{variables.css} tiene la regla \texttt{[data-tema="oscuro"]} que cambia los colores automaticamente cuando el atributo cambia.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 10: Formularios con JavaScript}
+	% =============================================================
+	
+	\begin{cajacodigo}{verde}{Ejemplo 19 -- Validar y enviar un formulario sin recargar}
+		\begin{lstlisting}[style=codejs]
+			function configurarFormulario() {
+				const form = document.getElementById('formulario-pfc');
+				if (!form) return; // Proteccion si el formulario no existe
+				
+				form.addEventListener('submit', async (e) => {
+					// 1. Evitar que la pagina se recargue
+					e.preventDefault();
+					
+					// 2. Verificar validacion nativa del HTML
+					if (!form.checkValidity()) {
+						form.reportValidity(); // Muestra los mensajes del navegador
+						return; // No continuar si hay errores
+					}
+					
+					// 3. Extraer los datos del formulario como objeto
+					const datos = Object.fromEntries(new FormData(form));
+					console.log('Datos del formulario:', datos);
+					// { nombre: "Ana", email: "ana@...", carrera: "sw", ... }
+					
+					// 4. Enviar a la API
+					try {
+						const resp = await enviarDatos('users', datos);
+						console.log('Enviado:', resp);
+						form.reset(); // Limpiar el formulario
+						
+						// 5. Mostrar confirmacion accesible
+						const estado = document.getElementById('estado-carga');
+						estado.textContent = 'Registro exitoso.';
+						setTimeout(() => { estado.textContent = ''; }, 4000);
+					} catch (error) {
+						console.error('Error al enviar:', error);
+					}
+				});
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Object.fromEntries + FormData}
+		\texttt{new FormData(form)} captura todos los campos del formulario. \texttt{Object.fromEntries()} convierte esos pares clave-valor en un objeto JavaScript plano, listo para enviar como JSON con \texttt{JSON.stringify()}.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{app.js --- funcion configurarFormulario()}
+		Esta funcion es exactamente la que va en \texttt{app.js}. Conecta el formulario HTML con la API sin recargar la pagina.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel FINAL: Todo junto -- el codigo de la practica}
+	% =============================================================
+	
+	\begin{cajatip}{rojo}{Verificacion final}
+		Si entendiste los 19 ejemplos anteriores, puedes leer y escribir cada linea del Paso 4 de la practica. El codigo final es la \textbf{combinacion} de todos los conceptos anteriores:
+	\end{cajatip}
+	
+	\begin{center}
+		\small
+		\begin{tabular}{|C{0.5cm}|L{4cm}|L{5cm}|L{4.5cm}|}
+			\hline
+			\rowcolor{azul}
+			\textcolor{white}{\textbf{\#}} &
+			\textcolor{white}{\textbf{Concepto}} &
+			\textcolor{white}{\textbf{Donde se usa en la practica}} &
+			\textcolor{white}{\textbf{Ejemplo en este documento}} \\
+			\hline
+			1 & \texttt{const} / \texttt{let} & Todas las variables & Ejemplo 1 \\
+			\hline
+			\rowcolor{grisclaro}
+			2 & Template literals & HTML de tarjetas, mensajes de error & Ejemplo 2 \\
+			\hline
+			3 & Objetos y arrays & Datos de la API & Ejemplo 3 \\
+			\hline
+			\rowcolor{grisclaro}
+			4 & Arrow functions & Callbacks de \texttt{map}, \texttt{forEach}, listeners & Ejemplo 4 \\
+			\hline
+			5 & \texttt{.map()} y \texttt{.join()} & \texttt{renderizarTarjetas()} & Ejemplo 5 \\
+			\hline
+			\rowcolor{grisclaro}
+			6 & \texttt{getElementById} & Acceder a elementos del DOM & Ejemplo 6 \\
+			\hline
+			7 & \texttt{textContent} / \texttt{innerHTML} & \texttt{mostrarCarga()}, \texttt{renderizar()} & Ejemplo 7 \\
+			\hline
+			\rowcolor{grisclaro}
+			8 & \texttt{addEventListener} & Click del boton, submit del form & Ejemplo 8 \\
+			\hline
+			9 & \texttt{DOMContentLoaded} & Punto de entrada de \texttt{app.js} & Ejemplo 8 \\
+			\hline
+			\rowcolor{grisclaro}
+			10 & \texttt{export} / \texttt{import} & Arquitectura de 3 modulos & Ejemplos 9 y 10 \\
+			\hline
+			11 & \texttt{async} / \texttt{await} & \texttt{obtenerDatos()}, \texttt{cargarDatos()} & Ejemplo 12 \\
+			\hline
+			\rowcolor{grisclaro}
+			12 & \texttt{fetch()} GET & \texttt{obtenerDatos()} & Ejemplo 13 \\
+			\hline
+			13 & \texttt{fetch()} POST & \texttt{enviarDatos()} & Ejemplo 14 \\
+			\hline
+			\rowcolor{grisclaro}
+			14 & \texttt{try/catch/finally} & 4 estados de carga & Ejemplo 15 \\
+			\hline
+			15 & \texttt{escapeHTML()} & Prevencion XSS & Ejemplo 16 \\
+			\hline
+			\rowcolor{grisclaro}
+			16 & \texttt{.map().join()} + HTML & \texttt{renderizarTarjetas()} & Ejemplo 16 \\
+			\hline
+			17 & \texttt{localStorage} & Persistir el tema oscuro & Ejemplo 17 \\
+			\hline
+			\rowcolor{grisclaro}
+			18 & Toggle de tema & \texttt{toggleTema()} / \texttt{cargarTema()} & Ejemplo 18 \\
+			\hline
+			19 & \texttt{FormData} + \texttt{preventDefault} & \texttt{configurarFormulario()} & Ejemplo 19 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{0.3cm}
+	
+	\begin{cajatip}{verde}{Estas listo}
+		Si puedes explicar cada fila de esta tabla, puedes implementar el Paso 4 completo de la practica sin copiar y pegar. Abre la guia de la PE U1, ve al Paso 4, y veras que cada linea de codigo corresponde a uno de estos 19 ejemplos.
+	\end{cajatip}
+	
+\end{document}

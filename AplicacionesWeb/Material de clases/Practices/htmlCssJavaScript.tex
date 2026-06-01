@@ -1,0 +1,2139 @@
+% ============================================================
+%  HTML5, CSS3 y JavaScript ES6+ — Documento Unificado
+%  De cero a la practica: PE Unidad I completa
+%  Aplicaciones Web · Ingenieria de Software · UTEQ
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fix-cm}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[left=2.2cm,right=2.2cm,top=2cm,bottom=2cm,headheight=14pt]{geometry}
+\usepackage{xcolor,colortbl,array,longtable,booktabs}
+\usepackage{ragged2e,setspace,parskip,titlesec,fancyhdr,hyperref}
+\usepackage{enumitem,needspace,tcolorbox,amssymb,float,pifont}
+\usepackage{listings}
+\usepackage[protrusion=true,expansion=false]{microtype}
+
+\tcbuselibrary{skins,breakable}
+\DeclareFontShape{T1}{cmtt}{bx}{n}{<->ssub * cmtt/m/n}{}
+
+\definecolor{verde}{RGB}{0,120,48}
+\definecolor{verdeclaro}{RGB}{232,245,238}
+\definecolor{azul}{RGB}{24,95,165}
+\definecolor{ambar}{RGB}{140,85,10}
+\definecolor{ambarclaro}{RGB}{250,238,218}
+\definecolor{rojo}{RGB}{163,45,45}
+\definecolor{morado}{RGB}{83,74,183}
+\definecolor{grisclaro}{RGB}{245,245,245}
+\definecolor{gris}{RGB}{80,80,80}
+\definecolor{naranja}{RGB}{200,100,0}
+\definecolor{dark}{RGB}{38,50,56}
+\definecolor{codigofondo}{RGB}{30,30,46}
+\definecolor{codigotexto}{RGB}{205,214,244}
+\definecolor{keycolor}{RGB}{137,180,250}
+\definecolor{strcolor}{RGB}{166,227,161}
+\definecolor{comcolor}{RGB}{140,148,172}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\lstdefinestyle{codecss}{
+	basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor}\bfseries,stringstyle=\color{strcolor},
+	commentstyle=\color{comcolor}\itshape,numberstyle=\tiny\color{comcolor},
+	numbers=left,numbersep=8pt,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt}
+\lstdefinestyle{codehtml}{
+	basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor}\bfseries,stringstyle=\color{strcolor},
+	commentstyle=\color{comcolor}\itshape,numberstyle=\tiny\color{comcolor},
+	numbers=left,numbersep=8pt,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt,language=HTML}
+\lstdefinestyle{codejs}{
+	basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor}\bfseries,stringstyle=\color{strcolor},
+	commentstyle=\color{comcolor}\itshape,numberstyle=\tiny\color{comcolor},
+	numbers=left,numbersep=8pt,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt,language=Java,
+	morekeywords={async,await,export,import,from,const,let,function,try,catch,
+		finally,throw,console,document,fetch,getElementById,addEventListener,
+		forEach,map,filter,reduce,find,DOMContentLoaded,log,error,warn,
+		querySelector,querySelectorAll,textContent,innerHTML,value,
+		preventDefault,checkValidity,reportValidity,FormData,fromEntries,
+		stringify,parse,ok,json,status,statusText,setAttribute,getAttribute,
+		matchMedia,matches,localStorage,getItem,setItem,setTimeout,
+		createElement,append,remove,classList,add,toggle,contains,
+		style,display,none,block,flex}}
+\lstdefinestyle{codebash}{
+	basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor},commentstyle=\color{comcolor}\itshape,
+	numbers=none,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt}
+
+\tcbset{base/.style={arc=4pt,boxrule=0.6pt,left=8pt,right=8pt,top=6pt,bottom=6pt,
+		breakable,before upper={\parindent0pt\setlength{\parskip}{5pt}},lines before break=4}}
+\newtcolorbox{cajatip}[2]{base,colback=#1!9,colframe=#1,
+	title={\bfseries\small #2},coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajabanda}{base,colback=azul,colframe=azul,
+	before upper={\parindent0pt\color{white}\setlength{\parskip}{5pt}}}
+\newtcolorbox{cajacodigo}[2]{enhanced,arc=4pt,colback=codigofondo,colframe=#1,
+	title={\bfseries\small\color{white}#2},left=0pt,right=0pt,top=0pt,bottom=0pt,boxrule=0.8pt,
+	before upper={\parindent0pt}}
+\newtcolorbox{cajaconcepto}[1]{base,colback=ambarclaro,colframe=ambar,
+	borderline west={4pt}{0pt}{ambar},
+	title={\bfseries\small\color{white} #1},coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajapractica}[1]{base,colback=morado!8,colframe=morado,
+	title={\bfseries\small\color{white} Donde se usa en la practica: #1},
+	coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajaresultado}[1]{base,colback=verdeclaro,colframe=verde,
+	title={\bfseries\small\color{white} #1},coltitle=white,fonttitle=\color{white}}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{gris} UTEQ -- Aplicaciones Web}
+\fancyhead[R]{\small\color{gris} HTML5 + CSS3 + JS -- De cero a la practica}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\titleformat{\part}{\LARGE\bfseries\color{azul}}{}{0em}{}
+[{\vspace{-2pt}\color{azul}\rule{\linewidth}{2pt}}]
+\titleformat{\section}{\large\bfseries\color{ambar}}{}{0em}{}
+[{\vspace{-4pt}\color{ambar}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\normalsize\bfseries\color{verde}}{}{0em}{\thesubsection\quad}
+\titlespacing*{\part}{0pt}{20pt}{10pt}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\setcounter{secnumdepth}{2}
+
+\setstretch{1.13}\setlength{\parindent}{0pt}
+\hyphenpenalty=1000\exhyphenpenalty=1000
+\hypersetup{colorlinks=true,linkcolor=azul,urlcolor=verde,
+	pdftitle={HTML5 CSS3 JS De cero a la practica UTEQ}}
+
+\begin{document}
+	
+	\begin{cajabanda}
+		\begin{center}
+			{\scriptsize\bfseries PREPARACION PARA LA PRACTICA EXPERIMENTAL UNIDAD I}\\[5pt]
+			{\LARGE\bfseries HTML5, CSS3 Y JAVASCRIPT ES6+}\\[3pt]
+			{\large\bfseries De cero a la practica: documento unificado}\\[3pt]
+			{\normalsize Teoria, ejemplos progresivos e integracion de las 3 tecnologias}\\[3pt]
+			{\normalsize Paso 2: HTML5 $\to$ Paso 3: CSS3 $\to$ Paso 4: JavaScript $\to$ Integracion}\\[5pt]
+			{\small Aplicaciones Web -- Ingenieria de Software -- UTEQ 2025-2026}
+		\end{center}
+	\end{cajabanda}
+	
+	\vspace{0.3cm}
+	
+	\begin{cajatip}{azul}{Como usar este documento}
+		Este documento cubre los 3 pilares del frontend web en el orden que se necesitan para la practica: primero HTML5 (la estructura), luego CSS3 (la apariencia) y finalmente JavaScript ES6+ (el comportamiento). Cada ejemplo se puede probar creando archivos \texttt{.html}, \texttt{.css} y \texttt{.js} en VS Code con Live Server, o pegando codigo en la consola del navegador (F12). La Parte IV muestra como las 3 tecnologias se conectan en un proyecto real.
+	\end{cajatip}
+	
+	\vspace{0.3cm}
+	\tableofcontents
+	\newpage
+	
+	% =============================================================
+	% PARTE I: HTML5
+	% =============================================================
+	\part{HTML5 -- Estructura y contenido (Paso 2 de la practica)}
+	
+	\section{Que es HTML y como se estructura}
+	
+	\begin{cajaconcepto}{Concepto: HTML}
+		HTML (HyperText Markup Language) define la \textbf{estructura y el contenido} de una pagina web. No es un lenguaje de programacion: es un lenguaje de marcado que usa \textbf{etiquetas} (tags) para indicar al navegador que tipo de contenido es cada elemento. El navegador lee las etiquetas y renderiza el contenido visualmente.
+		
+		Cada etiqueta tiene una apertura \texttt{<tag>} y un cierre \texttt{</tag>}. Algunas son autocontenidas: \texttt{<img>}, \texttt{<input>}, \texttt{<meta>}, \texttt{<br>}, \texttt{<hr>}. Las etiquetas pueden tener \textbf{atributos} que agregan informacion: \texttt{<a href=``url''>} donde \texttt{href} es el atributo.
+	\end{cajaconcepto}
+	
+	\subsection{Estructura minima de un documento HTML5}
+	
+	\begin{cajacodigo}{azul}{HTML-1 -- Documento HTML5 minimo valido}
+		{\color{codigotexto}\small Toda pagina HTML5 comienza con \texttt{<!DOCTYPE html>} que indica al navegador que use el estandar moderno. Sin esta linea, el navegador entra en ``quirks mode'' y se comporta de forma impredecible.}
+		\begin{lstlisting}[style=codehtml]
+			<!DOCTYPE html>
+			<html lang="es">
+			<head>
+			<!-- Metadatos: no se ven en la pagina -->
+			<meta charset="UTF-8">
+			<meta name="viewport"
+			content="width=device-width, initial-scale=1.0">
+			<meta name="description"
+			content="Descripcion breve del sitio">
+			<title>Mi Pagina | UTEQ</title>
+			<!-- Enlace al CSS externo -->
+			<link rel="stylesheet" href="css/main.css">
+			</head>
+			<body>
+			<!-- Contenido visible aqui -->
+			
+			<!-- Script JS al final, con type="module" -->
+			<script type="module" src="js/app.js"></script>
+			</body>
+			</html>
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajatip}{ambar}{Atributos importantes del head}
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \texttt{lang=``es''}: declara el idioma. Sin esto, los lectores de pantalla pronuncian el espanol con fonetica inglesa.
+			\item \texttt{charset=``UTF-8''}: permite caracteres especiales (tildes, ene, emojis).
+			\item \texttt{viewport}: hace que el sitio sea responsivo en moviles. Sin esto, el movil muestra la pagina en miniatura.
+			\item \texttt{<link rel=``stylesheet''>}: conecta el archivo CSS externo. Es la forma correcta (no usar \texttt{<style>} inline).
+			\item \texttt{<script type=``module''>}: conecta el archivo JS con soporte para \texttt{import}/\texttt{export}. Se pone al final del \texttt{<body>}.
+		\end{itemize}
+	\end{cajatip}
+	
+	\section{Etiquetas semanticas HTML5}
+	
+	\begin{cajaconcepto}{Concepto: Semantica}
+		Las etiquetas semanticas describen el \textbf{proposito} del contenido, no su apariencia. Un \texttt{<header>} dice ``esto es el encabezado''; un \texttt{<div>} dice ``esto es un bloque generico''. Google, los lectores de pantalla y las herramientas de desarrollo usan la semantica para entender la pagina.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{verde}{HTML-2 -- Estructura semantica completa con clases CSS}
+		{\color{codigotexto}\small Cada etiqueta semantica tiene un atributo \texttt{class} que la conecta con el CSS. El atributo \texttt{role} refuerza la semantica para lectores de pantalla. Los atributos \texttt{aria-*} agregan informacion de accesibilidad.}
+		\begin{lstlisting}[style=codehtml]
+			<body>
+			<!-- Skip link: primer elemento del body -->
+			<a href="#contenido-principal" class="saltar-nav">
+			Ir al contenido principal
+			</a>
+			
+			<header role="banner">
+			<h1>Nombre del PFC</h1>
+			<nav aria-label="Navegacion principal">
+			<ul>
+			<li><a href="#inicio"
+			aria-current="page">Inicio</a></li>
+			<li><a href="#datos">Datos</a></li>
+			<li><a href="#registro">Registro</a></li>
+			</ul>
+			</nav>
+			<button id="btn-tema"
+			aria-label="Cambiar a modo oscuro"
+			aria-pressed="false">
+			Modo oscuro
+			</button>
+			</header>
+			
+			<main id="contenido-principal" tabindex="-1">
+			<section aria-labelledby="titulo-datos">
+			<h2 id="titulo-datos">Datos del sistema</h2>
+			<span id="estado-carga" aria-live="polite"
+			role="status"></span>
+			<div id="contenedor-datos" role="list"
+			aria-label="Lista de elementos"></div>
+			</section>
+			
+			<section aria-labelledby="titulo-form">
+			<h2 id="titulo-form">Registro</h2>
+			<form id="formulario-pfc" novalidate>
+			<!-- Campos del formulario aqui -->
+			</form>
+			</section>
+			</main>
+			
+			<aside aria-label="Informacion adicional">
+			<h2>Acerca del sistema</h2>
+			<p>Descripcion del PFC.</p>
+			</aside>
+			
+			<footer role="contentinfo">
+			<p>UTEQ 2025 &mdash; Ing. de Software</p>
+			</footer>
+			
+			<script type="module" src="js/app.js"></script>
+			</body>
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{index.html -- estructura completa}
+		Este ejemplo es exactamente el \texttt{<body>} del archivo \texttt{index.html} de la practica. Cada etiqueta semantica (\texttt{header}, \texttt{nav}, \texttt{main}, \texttt{section}, \texttt{aside}, \texttt{footer}) se conecta con el CSS via las propiedades \texttt{grid-area} del layout Grid que se define en el Paso 3.
+	\end{cajapractica}
+	
+	\section{Formularios HTML5 con validacion nativa}
+	
+	\begin{cajaconcepto}{Concepto: Formularios accesibles}
+		Un formulario accesible tiene 4 elementos por cada campo: (1) un \texttt{<label>} con atributo \texttt{for} igual al \texttt{id} del input, (2) un \texttt{<input>} con tipo, validacion y \texttt{aria-describedby}, (3) un \texttt{<span>} de error con \texttt{role=``alert''}, y (4) opcionalmente un texto de ayuda. Los grupos de checkboxes y radios van dentro de \texttt{<fieldset>} con \texttt{<legend>}.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{verde}{HTML-3 -- Formulario con 8 tipos de input}
+		{\color{codigotexto}\small Cada campo usa la clase CSS \texttt{campo-form} que en el Paso 3 se estiliza con Flexbox vertical. Los atributos \texttt{required}, \texttt{minlength}, \texttt{pattern} y \texttt{min/max} activan la validacion nativa del navegador sin JavaScript.}
+		\begin{lstlisting}[style=codehtml]
+			<form id="formulario-pfc" novalidate
+			aria-describedby="instrucciones-form">
+			<p id="instrucciones-form">
+			Campos con * son obligatorios.
+			</p>
+			
+			<!-- 1. text -->
+			<div class="campo-form">
+			<label for="nombre">Nombre *</label>
+			<input type="text" id="nombre" name="nombre"
+			required minlength="3"
+			placeholder="Ej: Maria Garcia"
+			aria-describedby="nombre-error">
+			<span id="nombre-error" class="mensaje-error"
+			role="alert"></span>
+			</div>
+			
+			<!-- 2. email -->
+			<div class="campo-form">
+			<label for="email">Email *</label>
+			<input type="email" id="email" name="email"
+			required placeholder="user@dominio.com">
+			</div>
+			
+			<!-- 3. password -->
+			<div class="campo-form">
+			<label for="clave">Contrasena * (min 8)</label>
+			<input type="password" id="clave" name="clave"
+			required minlength="8">
+			</div>
+			
+			<!-- 4. number -->
+			<div class="campo-form">
+			<label for="edad">Edad *</label>
+			<input type="number" id="edad" name="edad"
+			required min="18" max="99">
+			</div>
+			
+			<!-- 5. date -->
+			<div class="campo-form">
+			<label for="fecha">Fecha nacimiento *</label>
+			<input type="date" id="fecha"
+			name="fecha_nacimiento" required>
+			</div>
+			
+			<!-- 6. tel -->
+			<div class="campo-form">
+			<label for="tel">Telefono</label>
+			<input type="tel" id="tel" name="telefono"
+			pattern="[0-9]{10}"
+			placeholder="0991234567">
+			</div>
+			
+			<!-- 7. range -->
+			<div class="campo-form">
+			<label for="nivel">Experiencia:
+			<output id="val-nivel">5</output>/10</label>
+			<input type="range" id="nivel" name="nivel"
+			min="1" max="10" value="5">
+			</div>
+			
+			<!-- 8. select -->
+			<div class="campo-form">
+			<label for="carrera">Carrera *</label>
+			<select id="carrera" name="carrera" required>
+			<option value="">-- Seleccione --</option>
+			<option value="sw">Ing. Software</option>
+			<option value="si">Sistemas Info.</option>
+			</select>
+			</div>
+			
+			<button type="submit" class="btn-primario">
+			Registrar
+			</button>
+			</form>
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajatip}{verde}{Como el CSS y JS se conectan con este HTML}
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{CSS}: la clase \texttt{campo-form} se estiliza con \texttt{display: flex; flex-direction: column;} en el Paso 3. La clase \texttt{btn-primario} recibe los 5 estados (normal, hover, active, focus-visible, disabled). La clase \texttt{mensaje-error} se colorea con \texttt{var(--color-error)}.
+			\item \textbf{JavaScript}: el \texttt{id=``formulario-pfc''} se usa en el Paso 4 con \texttt{document.getElementById('formulario-pfc')} para capturar el evento \texttt{submit}. El \texttt{id=``estado-carga''} se actualiza con \texttt{textContent} desde \texttt{mostrarCarga()}.
+			\item \textbf{ARIA}: \texttt{aria-live=``polite''} en el span de estado hace que el lector de pantalla anuncie los cambios cuando JavaScript modifica su \texttt{textContent}.
+		\end{itemize}
+	\end{cajatip}
+	
+	\section{Atributos ARIA y accesibilidad}
+	
+	\begin{cajacodigo}{azul}{HTML-4 -- Atributos ARIA mas usados en la practica}
+		{\color{codigotexto}\small ARIA (Accessible Rich Internet Applications) agrega informacion que las etiquetas HTML no pueden expresar por si solas. Solo usar ARIA cuando no existe una etiqueta semantica equivalente.}
+		\begin{lstlisting}[style=codehtml]
+			<!-- aria-label: describe elementos sin texto visible -->
+			<button aria-label="Cerrar modal">X</button>
+			
+			<!-- aria-live: anuncia cambios dinamicos -->
+			<div aria-live="polite" role="status">
+			<!-- JS cambia este texto y el lector lo anuncia -->
+			</div>
+			
+			<!-- aria-pressed: estado de un boton toggle -->
+			<button aria-pressed="false">Modo oscuro</button>
+			
+			<!-- aria-describedby: vincula campo con su error -->
+			<input id="email" aria-describedby="email-error">
+			<span id="email-error" role="alert"></span>
+			
+			<!-- aria-current: indica la pagina activa -->
+			<a href="#inicio" aria-current="page">Inicio</a>
+			
+			<!-- aria-labelledby: titulo de una seccion -->
+			<section aria-labelledby="titulo-datos">
+			<h2 id="titulo-datos">Datos</h2>
+			</section>
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{index.html -- todos los atributos ARIA}
+		Cada atributo ARIA del ejemplo aparece en el HTML de la practica. En el Paso 4, JavaScript modifica \texttt{aria-pressed} del boton de tema con \texttt{btn.setAttribute('aria-pressed', true)} y actualiza el \texttt{textContent} del span con \texttt{aria-live} para que el lector de pantalla anuncie ``Cargando datos...'' o ``Registro exitoso''.
+	\end{cajapractica}
+	
+	\newpage
+	
+	% =============================================================
+	% PARTE II: CSS3
+	% =============================================================
+	\part{CSS3 -- Apariencia visual (Paso 3 de la practica)}
+	
+	\section{Como conectar CSS al HTML}
+	
+	\begin{cajaconcepto}{Concepto: 3 formas de aplicar CSS}
+		CSS se puede aplicar de 3 formas. En la practica usamos SOLO la primera:
+		
+		\begin{enumerate}[leftmargin=1.5em,itemsep=3pt]
+			\item \textbf{Archivo externo} (la correcta): \texttt{<link rel=``stylesheet'' href=``css/main.css''>} en el \texttt{<head>}. Separa estructura (HTML) de presentacion (CSS). Es cacheable y reutilizable.
+			\item \textbf{Etiqueta style} (aceptable para prototipos): \texttt{<style>} en el \texttt{<head>}. Mezcla CSS con HTML. No se reutiliza.
+			\item \textbf{Inline} (nunca usar): \texttt{<p style=``color:red''>}. Imposible de mantener. Tiene la mayor especificidad, lo que rompe la cascada.
+		\end{enumerate}
+	\end{cajaconcepto}
+	
+	\subsection{Selectores: como CSS encuentra los elementos HTML}
+	
+	\begin{cajacodigo}{azul}{CSS-0 -- Selectores y como se aplican al HTML}
+		{\color{codigotexto}\small El selector indica A QUIEN se aplica la regla. El CSS busca en el HTML los elementos que coinciden con el selector y les aplica las propiedades.}
+		\begin{lstlisting}[style=codecss]
+			/* Selector de ETIQUETA: aplica a todos los <h1> */
+			h1 { color: #0066cc; }
+			
+			/* Selector de CLASE: aplica a class="tarjeta" */
+			/* En HTML: <div class="tarjeta">...</div> */
+			.tarjeta { padding: 1.5rem; }
+			
+			/* Selector de ID: aplica a id="header" (unico) */
+			/* En HTML: <header id="header">...</header> */
+			#header { background: navy; }
+			
+			/* Selector de ATRIBUTO: aplica al que tenga ese attr */
+			/* En HTML: <html data-tema="oscuro"> */
+			[data-tema="oscuro"] { --color-fondo: #0f172a; }
+			
+			/* Selector COMPUESTO: <a> dentro de <nav> */
+			nav a { color: white; text-decoration: none; }
+			
+			/* Pseudo-clase: estado del elemento */
+			.btn:hover  { background: #0055aa; }  /* raton encima */
+			.btn:focus  { outline: 3px solid blue; } /* con foco */
+			input:invalid { border-color: red; }   /* campo invalido */
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajatip}{ambar}{Regla de oro: clase para estilos, id para JavaScript}
+		Usar \texttt{class} para aplicar CSS (un mismo estilo se aplica a multiples elementos). Usar \texttt{id} para que JavaScript encuentre un elemento especifico con \texttt{getElementById}. Evitar usar \texttt{id} para CSS porque su especificidad es demasiado alta y dificulta sobrescribir estilos.
+	\end{cajatip}
+	
+	\section{1: Como funciona CSS y el reset minimo}
+	% =============================================================
+	
+	\subsection{Que es CSS y como se conecta al HTML}
+	
+	\begin{cajaconcepto}{Concepto: CSS}
+		CSS (Cascading Style Sheets) define la \textbf{apariencia visual} del HTML: colores, tamanos, posiciones, espaciado, animaciones. Se conecta al HTML de 3 formas: (1) archivo externo con \texttt{<link>} (la mejor), (2) etiqueta \texttt{<style>} en el \texttt{<head>}, (3) atributo \texttt{style=``''} inline (la peor, no usar).
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 1 -- Conectar CSS externo al HTML}
+		\begin{lstlisting}[style=codehtml]
+			<!-- En el <head> del HTML: -->
+			<link rel="stylesheet" href="css/main.css">
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{El selector, la propiedad y el valor}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 2 -- Anatomia de una regla CSS}
+		\begin{lstlisting}[style=codecss]
+			/* selector { propiedad: valor; } */
+			
+			h1 {
+				color: #0066cc;         /* color del texto */
+				font-size: 2rem;        /* tamano de la fuente */
+				margin-bottom: 1rem;    /* espacio debajo */
+			}
+			
+			/* Selector de clase: aplica a todo elemento con class="tarjeta" */
+			.tarjeta {
+				background: #f8f9fa;
+				padding: 1.5rem;
+			}
+			
+			/* Selector de ID: aplica a UN solo elemento con id="header" */
+			#header {
+				background: #0066cc;
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{El reset: por que es obligatorio}
+	
+	\begin{cajaconcepto}{Concepto: Reset CSS}
+		Cada navegador tiene estilos por defecto diferentes. Chrome pone un margen de 8px al body, Firefox pone 8px pero con reglas distintas para listas y tablas, Safari tiene otra variante. Estas diferencias causan que un sitio se vea diferente en cada navegador.
+		
+		El reset elimina esas diferencias estableciendo una base comun. Existen dos enfoques principales: (1) el \textbf{reset completo} (como el de Eric Meyer) que elimina absolutamente todos los estilos por defecto, y (2) el \textbf{reset minimo} (como Normalize.css) que solo corrige las inconsistencias. En la practica usamos un reset minimo de 3 reglas porque es suficiente para proyectos modernos.
+		
+		El selector \texttt{*} (asterisco) selecciona todos los elementos del documento. Los pseudo-elementos \texttt{*::before} y \texttt{*::after} se incluyen porque tambien son cajas que necesitan el mismo \texttt{box-sizing}.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 3 -- Reset minimo (el que usa la practica)}
+		\begin{lstlisting}[style=codecss]
+			/* Aplicar a TODOS los elementos */
+			*, *::before, *::after {
+				box-sizing: border-box;  /* padding y border incluidos en width */
+				margin: 0;               /* quitar margenes por defecto */
+				padding: 0;              /* quitar padding por defecto */
+			}
+			
+			/* Imagenes y videos: nunca desbordar su contenedor */
+			img, video {
+				max-width: 100%;
+				display: block;
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Concepto: box-sizing: border-box}
+		Sin \texttt{border-box}: un elemento con \texttt{width: 200px} y \texttt{padding: 20px} mide 240px (200 + 20 + 20). Con \texttt{border-box}: mide 200px (el padding se resta del width). Sin esto, los layouts se rompen constantemente.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{main.css -- primeras lineas}
+		Estas 3 reglas son las primeras lineas del archivo \texttt{main.css} de la practica. Sin ellas, todo el layout posterior se comporta de forma impredecible.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{2: Unidades de medida}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: px vs rem vs em vs \% vs vw}
+		CSS tiene unidades absolutas y relativas. Entender la diferencia es fundamental para crear sitios que se adapten a las preferencias del usuario:
+		
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{px} (pixel): unidad absoluta. 1px = 1 punto en la pantalla. NO escala si el usuario cambia el tamano de fuente en su navegador. Usar solo para bordes (\texttt{border: 1px}).
+			\item \textbf{rem} (root em): relativa al \texttt{font-size} del elemento \texttt{<html>} (por defecto 16px). \texttt{1rem = 16px}, \texttt{1.5rem = 24px}. SI escala con la preferencia del usuario. Es la unidad recomendada para tipografia, padding y margin.
+			\item \textbf{em}: relativa al \texttt{font-size} del elemento padre (no del root). Si un \texttt{<div>} tiene \texttt{font-size: 20px}, entonces \texttt{1em = 20px} dentro de ese div. Es util para componentes que deben escalar proporcionalmente, pero puede causar confusion cuando se anidan (``efecto cascada'').
+			\item \textbf{\%}: relativa al elemento padre. \texttt{width: 80\%} = 80\% del ancho del padre. Muy usada para layouts fluidos.
+			\item \textbf{vw / vh}: relativa al viewport (ventana del navegador). \texttt{1vw} = 1\% del ancho de la ventana, \texttt{1vh} = 1\% del alto. Usada en tipografia fluida con \texttt{clamp()}.
+		\end{itemize}
+		
+		\textbf{Regla practica}: usar \texttt{rem} para texto y espaciado, \texttt{\%} para anchos de contenedores, \texttt{px} solo para bordes, y \texttt{vw} dentro de \texttt{clamp()} para tipografia fluida.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 4 -- Comparacion de unidades}
+		\begin{lstlisting}[style=codecss]
+			/* px: absoluto. 1px = 1 pixel. NO escala si el usuario
+			cambia el tamano de fuente en su navegador. */
+			h1 { font-size: 32px; }
+			
+			/* rem: relativo al font-size del <html> (por defecto 16px).
+			1rem = 16px. SI escala con la preferencia del usuario.
+			SIEMPRE preferir rem sobre px para texto y espaciado. */
+			h1 { font-size: 2rem; }  /* 2 * 16px = 32px */
+			
+			/* %: relativo al elemento padre.
+			width: 80% = 80% del ancho del padre. */
+			.contenedor { width: 80%; }
+			
+			/* vw: relativo al ancho del viewport (ventana).
+			1vw = 1% del ancho de la ventana.
+			Util en tipografia fluida con clamp(). */
+			h1 { font-size: 4vw; }  /* 4% del ancho de la ventana */
+			
+			/* clamp(minimo, preferido, maximo):
+			Nunca menor de 1.75rem, idealmente 4vw,
+			nunca mayor de 2.5rem. */
+			h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{variables.css}
+		Todas las variables de tipografia en la practica usan \texttt{clamp()} para que el texto sea fluido sin media queries: \texttt{--tamano-base: clamp(1rem, 1.5vw + 0.5rem, 1.125rem);}
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{3: Variables CSS (Custom Properties)}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: Variables CSS (Custom Properties)}
+		Las variables CSS se declaran en \texttt{:root} con \texttt{--nombre: valor;} y se usan con \texttt{var(--nombre)}. Permiten cambiar toda la paleta de colores del sitio desde un solo lugar. Son la base del modo oscuro.
+		
+		\textbf{Por que usar variables en lugar de valores directos:}
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{Mantenibilidad}: si el cliente pide cambiar el azul corporativo, se modifica UNA linea en \texttt{:root} en lugar de buscar y reemplazar en 50 lugares.
+			\item \textbf{Consistencia}: todos los componentes usan exactamente el mismo azul, el mismo espaciado, el mismo radio de borde. No hay variaciones accidentales.
+			\item \textbf{Modo oscuro}: al cambiar las variables dentro de una media query o un selector como \texttt{[data-tema=``oscuro'']}, TODOS los elementos que usan esas variables cambian automaticamente sin escribir reglas adicionales.
+			\item \textbf{Lectura}: \texttt{color: var(--color-primario)} es mas descriptivo que \texttt{color: \#0066cc}. El nombre de la variable explica su proposito.
+		\end{itemize}
+		
+		El selector \texttt{:root} equivale al elemento \texttt{<html>} y garantiza que las variables esten disponibles en todo el documento. Se recomienda organizar las variables por categoria: colores, tipografia, espaciado, layout y transiciones.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{ambar}{Ejemplo 5 -- Declarar y usar variables}
+		\begin{lstlisting}[style=codecss]
+			/* Declarar en :root (accesibles en todo el documento) */
+			:root {
+				--color-primario: #0066cc;
+				--color-fondo:    #ffffff;
+				--color-texto:    #1a1a1a;
+				--esp-md:         1rem;
+				--radio-borde:    6px;
+			}
+			
+			/* Usar con var() */
+			body {
+				background-color: var(--color-fondo);
+				color: var(--color-texto);
+			}
+			
+			.btn {
+				background: var(--color-primario);
+				padding: var(--esp-md);
+				border-radius: var(--radio-borde);
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaresultado}{Resultado: poder de las variables CSS}
+		Si cambias \texttt{--color-primario: \#e74c3c;} en \texttt{:root}, TODOS los elementos que usan \texttt{var(--color-primario)} cambian automaticamente: el boton, el header, el focus de los inputs, el color de los enlaces.
+		
+		\textbf{Prueba practica}: abrir el archivo \texttt{variables.css}, cambiar el valor de \texttt{--color-primario} de \texttt{\#0066cc} (azul) a \texttt{\#e74c3c} (rojo), guardar, y observar cuantos elementos cambian en el navegador sin tocar ninguna otra linea de CSS.
+		
+		Esto demuestra el principio DRY (Don't Repeat Yourself): cada valor se define una sola vez en un solo lugar. Si el cliente pide cambiar el color corporativo, se modifica una linea en lugar de buscar y reemplazar en decenas de archivos. Las variables CSS tambien se pueden leer y modificar desde JavaScript con \texttt{document.documentElement.style.setProperty('--color-primario', '\#e74c3c')}, lo que permite al usuario personalizar los colores del sitio en tiempo real.
+	\end{cajaresultado}
+	
+	\begin{cajacodigo}{ambar}{Ejemplo 6 -- Escala de espaciado consistente}
+		\begin{lstlisting}[style=codecss]
+			:root {
+				/* Escala de 4px (cada valor es el doble del anterior) */
+				--esp-xs:  0.25rem;   /* 4px  */
+				--esp-sm:  0.5rem;    /* 8px  */
+				--esp-md:  1rem;      /* 16px */
+				--esp-lg:  1.5rem;    /* 24px */
+				--esp-xl:  2rem;      /* 32px */
+			}
+			
+			/* Usar consistentemente */
+			.campo-form { margin-bottom: var(--esp-md); }
+			.tarjeta    { padding: var(--esp-lg); }
+			header      { padding: var(--esp-md) var(--esp-lg); }
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{variables.css -- archivo completo}
+		El archivo \texttt{variables.css} de la practica declara 22 variables organizadas en 5 categorias: colores principales y de superficies (6 variables de color como \texttt{--color-primario}, \texttt{--color-fondo}, \texttt{--color-texto}), tipografia (4 variables con \texttt{clamp()} para tamanos fluidos y \texttt{--fuente-base} con la pila de fuentes del sistema), espaciado (6 variables en escala de 4px: \texttt{--esp-xs} hasta \texttt{--esp-2xl}), layout (4 variables como \texttt{--ancho-max} y \texttt{--sombra-sm}) y transiciones (2 variables para duraciones estandar). El archivo \texttt{main.css} las consume con \texttt{var()} en cada propiedad, de modo que ningun valor numerico aparece repetido fuera de \texttt{:root}.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{4: Box Model -- margin, padding, border}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: El modelo de caja}
+		Todo elemento HTML es una caja con 4 capas, de adentro hacia afuera:
+		
+		\begin{enumerate}[leftmargin=1.5em,itemsep=3pt]
+			\item \textbf{Content}: el contenido real del elemento (texto, imagen, video). Su tamano se controla con \texttt{width} y \texttt{height}.
+			\item \textbf{Padding}: espacio transparente entre el contenido y el borde. Empuja el contenido hacia adentro. Se define con \texttt{padding} (1-4 valores en orden del reloj: top, right, bottom, left).
+			\item \textbf{Border}: la linea visible alrededor del elemento. Se define con \texttt{border: ancho estilo color} (ej: \texttt{border: 2px solid \#dee2e6}). \texttt{border-radius} redondea las esquinas.
+			\item \textbf{Margin}: espacio transparente entre este elemento y los elementos vecinos. Empuja otros elementos hacia afuera. \texttt{margin: 0 auto} centra horizontalmente. Los margenes verticales entre elementos adyacentes colapsan: si un elemento tiene \texttt{margin-bottom: 20px} y el siguiente tiene \texttt{margin-top: 30px}, el espacio real entre ellos es 30px (el mayor), no 50px.
+		\end{enumerate}
+		
+		\textbf{Propiedad adicional}: \texttt{box-shadow} agrega una sombra visual que no afecta el flujo del documento (no ocupa espacio). Su sintaxis es: \texttt{box-shadow: desplazamiento-X desplazamiento-Y desenfoque color;}. Se puede agregar \texttt{inset} para sombras internas.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 7 -- Padding, margin y border}
+		\begin{lstlisting}[style=codecss]
+			.tarjeta {
+				/* Padding: espacio INTERIOR (entre el texto y el borde) */
+				padding: 1.5rem;
+				
+				/* Border: linea visible alrededor */
+				border: 1px solid #dee2e6;
+				
+				/* Border-radius: esquinas redondeadas */
+				border-radius: 12px;
+				
+				/* Margin: espacio EXTERIOR (entre esta caja y las demas) */
+				margin-bottom: 1rem;
+				
+				/* Box-shadow: sombra (no afecta el flujo del documento) */
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+				/* Desglose: desplazamiento-X  desplazamiento-Y  desenfoque  color */
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 8 -- Shorthand de margin y padding (orden del reloj)}
+		\begin{lstlisting}[style=codecss]
+			/* 4 valores: top  right  bottom  left  (sentido del reloj) */
+			padding: 10px 20px 10px 20px;
+			
+			/* 2 valores: vertical  horizontal */
+			padding: 10px 20px;   /* arriba/abajo=10px, lados=20px */
+			
+			/* 1 valor: los 4 iguales */
+			padding: 1rem;
+			
+			/* Centrar un bloque horizontalmente */
+			margin: 0 auto;  /* 0 arriba/abajo, auto a los lados */
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{main.css -- tarjetas y formulario}
+		Las tarjetas usan \texttt{padding: var(--esp-lg)}, \texttt{border: 1px solid var(--color-borde)}, \texttt{border-radius: var(--radio-borde-lg)} y \texttt{box-shadow: var(--sombra-sm)}.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{5: Flexbox -- distribuir en una dimension}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: Flexbox}
+		Flexbox distribuye elementos en \textbf{una dimension}: una fila O una columna. Se activa con \texttt{display: flex} en el contenedor padre. Los hijos se distribuyen automaticamente.
+		
+		Las propiedades mas importantes del contenedor flex son: \texttt{flex-direction} (fila o columna), \texttt{justify-content} (distribucion en el eje principal), \texttt{align-items} (alineacion en el eje secundario), \texttt{flex-wrap} (permitir que los hijos salten de linea) y \texttt{gap} (espacio entre hijos). Para los hijos, la propiedad \texttt{flex} combina tres valores: cuanto crece (\texttt{flex-grow}), cuanto se encoge (\texttt{flex-shrink}) y su tamano base (\texttt{flex-basis}).
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 9 -- Navbar horizontal con Flexbox}
+		{\color{codigotexto}\small El header necesita dos grupos de contenido en los extremos opuestos: el titulo a la izquierda y la navegacion a la derecha. \texttt{space-between} los separa automaticamente. La lista de enlaces dentro del nav tambien es flex para distribuirlos horizontalmente con espacio uniforme.}
+		\begin{lstlisting}[style=codecss]
+			/* Contenedor flex: distribuye hijos en fila */
+			header {
+				display: flex;
+				align-items: center;         /* centrar verticalmente */
+				justify-content: space-between; /* titulo a la izq, nav a la der */
+				gap: 1rem;                   /* espacio entre hijos */
+				padding: 1rem 1.5rem;
+			}
+			
+			/* La lista de navegacion tambien es flex */
+			nav ul {
+				display: flex;
+				gap: 1rem;        /* espacio entre cada enlace */
+				list-style: none; /* quitar los puntos de la lista */
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 10 -- Tarjetas con flex-wrap (se ajustan al espacio)}
+		{\color{codigotexto}\small Las tarjetas de datos del PFC deben adaptarse al espacio disponible: 3 por fila en desktop, 2 en tablet, 1 en mobile. Con \texttt{flex-wrap: wrap} y un \texttt{flex-basis} minimo, Flexbox lo resuelve sin media queries.}
+		\begin{lstlisting}[style=codecss]
+			.tarjetas-grid {
+				display: flex;
+				flex-wrap: wrap;  /* si no caben en una fila, saltan a la siguiente */
+				gap: 1rem;
+			}
+			
+			.tarjeta {
+				flex: 1 1 260px;
+				/* Desglose:
+				flex-grow: 1    = CRECE para llenar el espacio disponible
+				flex-shrink: 1  = SE ENCOGE si el espacio es insuficiente
+				flex-basis: 260px = tamano base minimo de 260px
+				Resultado: las tarjetas miden al menos 260px y crecen
+				para llenar la fila. Si no caben 2, se apilan. */
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 11 -- Formulario vertical con Flexbox}
+		{\color{codigotexto}\small Cada campo del formulario tiene 3 elementos apilados verticalmente: el label arriba, el input en el medio y el mensaje de error abajo. \texttt{flex-direction: column} los organiza de arriba a abajo con un \texttt{gap} pequeno entre ellos.}
+		\begin{lstlisting}[style=codecss]
+			.campo-form {
+				display: flex;
+				flex-direction: column;  /* apilar label, input y error vertical */
+				gap: 0.25rem;            /* pequeno espacio entre cada uno */
+				margin-bottom: 1rem;
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{main.css -- header, tarjetas y formulario}
+		La practica usa Flexbox en 3 lugares distintos, cada uno con una configuracion diferente:
+		
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{Header}: \texttt{display: flex} con \texttt{justify-content: space-between} para poner el titulo a la izquierda y la navegacion a la derecha. \texttt{align-items: center} centra verticalmente ambos. \texttt{flex-wrap: wrap} permite que se apilen en pantallas pequenas.
+			\item \textbf{Tarjetas}: \texttt{display: flex} con \texttt{flex-wrap: wrap} y \texttt{gap: 1rem}. Cada tarjeta tiene \texttt{flex: 1 1 260px}: crece para llenar el espacio, se encoge si falta, pero nunca mide menos de 260px. En pantalla ancha caben 3 tarjetas por fila; en mobile se apilan a 1.
+			\item \textbf{Formulario}: cada \texttt{.campo-form} usa \texttt{flex-direction: column} para apilar verticalmente el label, el input y el mensaje de error, con \texttt{gap: 0.25rem} entre cada uno.
+		\end{itemize}
+		
+		La diferencia clave con Grid es que Flexbox no controla las filas: si caben 3 tarjetas caben, si caben 2 se ajustan, si cabe 1 se apila. Grid forzaria exactamente 3 columnas.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{6: CSS Grid -- layout de pagina completo}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: CSS Grid}
+		Grid distribuye elementos en \textbf{dos dimensiones}: filas Y columnas al mismo tiempo. Se usa para el layout general de la pagina (header, main, aside, footer). Se activa con \texttt{display: grid} en el contenedor padre.
+		
+		La propiedad \texttt{grid-template-areas} permite dibujar el layout visualmente en el codigo usando nombres de area entre comillas. Cada fila es un string y cada columna es un nombre separado por espacios. Luego, cada elemento HTML se asigna a su area con \texttt{grid-area: nombre;}. Esta sintaxis es la mas legible y mantenible para layouts de pagina.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 12 -- Grid basico con areas nombradas}
+		{\color{codigotexto}\small Usa \texttt{grid-template-areas} para nombrar cada zona del layout. Al cambiar las media queries, se reorganiza el layout modificando solo las areas, sin tocar el HTML.}
+		\begin{lstlisting}[style=codecss]
+			.layout {
+				display: grid;
+				grid-template-areas:
+				"header header"     /* header ocupa las 2 columnas */
+				"main   aside"      /* main a la izquierda, aside a la derecha */
+				"footer footer";    /* footer ocupa las 2 columnas */
+				grid-template-columns: 1fr 280px;  /* main=flexible, aside=280px */
+				gap: 1rem;
+				min-height: 100vh;   /* minimo el alto de la ventana */
+			}
+			
+			/* Asignar cada elemento a su area */
+			header { grid-area: header; }
+			main   { grid-area: main; }
+			aside  { grid-area: aside; }
+			footer { grid-area: footer; }
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Concepto: fr (fraction unit)}
+		\texttt{1fr} significa ``una fraccion del espacio disponible''. En \texttt{grid-template-columns: 1fr 280px}, la primera columna toma todo el espacio que sobra despues de asignar 280px al aside. Si el contenedor mide 1000px: main = 1000 - 280 - gap = 704px.
+		
+		Se pueden combinar multiples \texttt{fr}: \texttt{grid-template-columns: 2fr 1fr} crea dos columnas donde la primera es el doble de ancha que la segunda. La funcion \texttt{repeat()} simplifica la repeticion: \texttt{repeat(3, 1fr)} equivale a \texttt{1fr 1fr 1fr} (3 columnas iguales).
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{main.css -- layout principal}
+		Este ejemplo es exactamente el layout de la practica en la version tablet/desktop.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{7: Responsive mobile-first con media queries}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: Mobile-first}
+		Se escribe primero el CSS para la pantalla mas pequena (mobile). Luego se agregan media queries con \texttt{min-width} para pantallas mas grandes. Esto es mas eficiente porque el CSS base es el mas simple y las media queries solo agregan complejidad cuando hay espacio.
+		
+		\textbf{Por que mobile-first y no desktop-first:}
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item En el enfoque \textbf{desktop-first}, el CSS base es complejo (2 columnas, margenes amplios) y las media queries con \texttt{max-width} van quitando cosas para pantallas pequenas. Esto genera mas codigo y es mas propenso a errores.
+			\item En el enfoque \textbf{mobile-first}, el CSS base es simple (1 columna, sin margenes laterales) y las media queries con \texttt{min-width} agregan complejidad solo cuando hay espacio para ello. Menos codigo, menos bugs.
+			\item Google indexa primero la version mobile del sitio (\textbf{mobile-first indexing}), asi que el CSS base debe ser el mobile.
+		\end{itemize}
+		
+		\textbf{Breakpoints mas usados}: 768px (tablet), 1024px (desktop), 1200px (pantalla ancha). En la practica usamos los primeros dos.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 13a -- Mobile (base, sin media query)}
+		\begin{lstlisting}[style=codecss]
+			/* MOBILE: 1 columna (CSS base, sin media query) */
+			.layout {
+				display: grid;
+				grid-template-areas:
+				"header"
+				"main"
+				"aside"
+				"footer";
+				gap: 1rem;
+				padding: 1rem;
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 13b -- Tablet y Desktop (media queries)}
+		\begin{lstlisting}[style=codecss]
+			/* TABLET (768px+): 2 columnas */
+			@media (min-width: 768px) {
+				.layout {
+					grid-template-areas:
+					"header header"
+					"main   aside"
+					"footer footer";
+					grid-template-columns: 1fr 280px;
+					padding: 1.5rem;
+				}
+			}
+			
+			/* DESKTOP (1024px+): centrado */
+			@media (min-width: 1024px) {
+				.layout {
+					grid-template-columns: 1fr 320px;
+					max-width: 1200px;
+					margin: 0 auto;
+					padding: 2rem;
+				}
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaresultado}{Como verificar el responsive}
+		F12 en Chrome $\to$ icono de dispositivo movil (Toggle device toolbar) $\to$ cambiar el ancho: 375px (mobile, 1 columna) $\to$ 768px (tablet, 2 columnas) $\to$ 1024px (desktop, centrado). El aside pasa de estar debajo del main a estar al lado.
+	\end{cajaresultado}
+	
+	\begin{cajapractica}{main.css -- el layout completo}
+		Este ejemplo es exactamente el layout responsive de la practica con las mismas 3 etapas y los mismos breakpoints.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{8: Estilos de formulario accesibles}
+	% =============================================================
+	
+	\begin{cajacodigo}{azul}{Ejemplo 14a -- Base de todos los inputs}
+		\begin{lstlisting}[style=codecss]
+			input, select, textarea {
+				padding: 0.5rem 1rem;
+				border: 2px solid #dee2e6;
+				border-radius: 6px;
+				font-size: 1rem;
+				font-family: inherit;  /* hereda la fuente del body */
+				background: var(--color-fondo);
+				color: var(--color-texto);
+				transition: border-color 150ms ease;
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 14b -- Focus, validacion y mensajes de error}
+		\begin{lstlisting}[style=codecss]
+			/* Focus: anillo azul al hacer clic o Tab */
+			input:focus, select:focus, textarea:focus {
+				outline: 3px solid #0066cc;
+				outline-offset: 2px;
+				border-color: #0066cc;
+			}
+			
+			/* Invalido SOLO si el usuario ya escribio algo */
+			input:invalid:not(:placeholder-shown) {
+				border-color: #dc3545;  /* borde rojo */
+			}
+			
+			/* Textos de ayuda y error */
+			.mensaje-error { color: #dc3545; font-size: 0.875rem; }
+			.texto-ayuda   { color: #555;    font-size: 0.875rem; }
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Concepto: :focus-visible vs :focus}
+		\texttt{:focus} se activa siempre que el elemento recibe foco (teclado O raton). \texttt{:focus-visible} se activa solo cuando el foco es por teclado (Tab). Los botones usan \texttt{:focus-visible} para no mostrar el outline cuando el usuario hace clic con el raton (que es molesto) pero si cuando navega con Tab (que es necesario para accesibilidad).
+		
+		Los inputs de formulario usan \texttt{:focus} (no \texttt{:focus-visible}) porque el outline debe aparecer tanto al hacer clic como al navegar con Tab, ya que el usuario necesita ver cual campo esta editando en ambos casos. Las mejores practicas de accesibilidad exigen que el \texttt{outline} sea de al menos 3px y tenga un \texttt{outline-offset} de 2-3px para que no se confunda con el borde del elemento.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{main.css -- formulario}
+		La practica usa exactamente estos estilos. El selector \texttt{:invalid:not(:placeholder-shown)} evita que el campo se muestre rojo antes de que el usuario escriba (porque un campo vacio es invalido si tiene \texttt{required}, pero no queremos asustarlo antes de que empiece).
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{9: Botones con transiciones y estados}
+	% =============================================================
+	
+	\begin{cajacodigo}{azul}{Ejemplo 15a -- Boton: estilo base}
+		\begin{lstlisting}[style=codecss]
+			.btn-primario {
+				background: var(--color-primario);
+				color: #fff;
+				padding: 0.5rem 2rem;
+				border: none;
+				border-radius: 6px;
+				font-size: 1rem;
+				font-family: inherit;
+				cursor: pointer;
+				transition: background 150ms ease, transform 150ms ease;
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 15b -- Boton: hover, active, focus-visible y disabled}
+		\begin{lstlisting}[style=codecss]
+			/* Hover: raton encima. Oscurecer el fondo. */
+			.btn-primario:hover {
+				background: var(--color-primario-hover);
+			}
+			
+			/* Active: mientras se mantiene presionado */
+			.btn-primario:active {
+				transform: scale(0.98); /* se encoge 2% */
+			}
+			
+			/* Focus-visible: solo con teclado (Tab) */
+			.btn-primario:focus-visible {
+				outline: 3px solid var(--color-primario);
+				outline-offset: 3px;
+			}
+			
+			/* Disabled: boton deshabilitado */
+			.btn-primario:disabled {
+				opacity: 0.5;           /* semitransparente */
+				cursor: not-allowed;    /* icono de prohibido */
+				pointer-events: none;   /* ignora clics */
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Concepto: transition}
+		La propiedad \texttt{transition} anima los cambios de valor de otras propiedades CSS. Su sintaxis es:
+		
+		\texttt{transition: propiedad duracion curva retardo;}
+		
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{propiedad}: cual propiedad animar (\texttt{background}, \texttt{color}, \texttt{transform}, \texttt{all}).
+			\item \textbf{duracion}: cuanto dura la animacion (\texttt{150ms}, \texttt{0.3s}). Regla: 100-300ms para hover de botones/enlaces, 300-500ms para cambios de layout o tema.
+			\item \textbf{curva}: la aceleracion de la animacion. \texttt{ease} (lento-rapido-lento, la mas natural), \texttt{linear} (velocidad constante), \texttt{ease-in} (empieza lento), \texttt{ease-out} (termina lento), \texttt{ease-in-out} (lento en ambos extremos).
+			\item \textbf{retardo} (opcional): esperar antes de iniciar (\texttt{50ms}, \texttt{0.1s}).
+		\end{itemize}
+		
+		Se pueden animar multiples propiedades separandolas con coma: \texttt{transition: background 150ms ease, transform 150ms ease;}. Usar \texttt{all} anima todas las propiedades que cambien, pero es menos eficiente porque el navegador debe vigilar todas.
+		
+		\textbf{Propiedades que se pueden animar}: las que tienen valores intermedios calculables: colores (\texttt{color}, \texttt{background}), tamanos (\texttt{width}, \texttt{height}, \texttt{padding}), posiciones (\texttt{top}, \texttt{left}), transformaciones (\texttt{transform}), opacidad (\texttt{opacity}). \textbf{No se pueden animar}: \texttt{display}, \texttt{font-family}, \texttt{position}.
+	\end{cajaconcepto}
+	
+	% =============================================================
+	\section{10: Modo oscuro automatico y manual}
+	% =============================================================
+	
+	\begin{cajacodigo}{morado}{Ejemplo 16 -- Modo oscuro con media query del sistema}
+		\begin{lstlisting}[style=codecss]
+			/* === MODO CLARO (base, siempre se carga primero) === */
+			:root {
+				--color-fondo:         #ffffff;  /* blanco */
+				--color-fondo-tarjeta: #f8f9fa;  /* gris muy claro */
+				--color-texto:         #1a1a1a;  /* casi negro */
+				--color-texto-suave:   #555555;  /* gris medio */
+				--color-borde:         #dee2e6;  /* gris claro */
+			}
+			
+			/* === MODO OSCURO AUTOMATICO ===
+			Esta media query detecta si el sistema operativo
+			del usuario tiene configurado el tema oscuro.
+			Solo redefine las variables de color; el resto
+			del CSS no cambia ni una linea. */
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--color-fondo:         #0f172a;  /* azul muy oscuro */
+					--color-fondo-tarjeta: #1e293b;  /* azul oscuro */
+					--color-texto:         #f1f5f9;  /* casi blanco */
+					--color-texto-suave:   #94a3b8;  /* gris azulado */
+					--color-borde:         #334155;  /* gris oscuro */
+				}
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{morado}{Ejemplo 17 -- Modo oscuro manual con boton (atributo data-tema)}
+		\begin{lstlisting}[style=codecss]
+			/* === MODO OSCURO MANUAL ===
+			Cuando el usuario presiona el boton de tema,
+			JavaScript ejecuta:
+			document.documentElement
+			.setAttribute('data-tema', 'oscuro');
+			Esto agrega data-tema="oscuro" al <html> */
+			[data-tema="oscuro"] {
+				--color-fondo:         #0f172a;
+				--color-fondo-tarjeta: #1e293b;
+				--color-texto:         #f1f5f9;
+				--color-texto-suave:   #94a3b8;
+				--color-borde:         #334155;
+			}
+			
+			/* === COMBINACION: auto + manual ===
+			Si el SO tiene modo oscuro, activar el tema
+			oscuro EXCEPTO cuando el usuario eligio
+			explicitamente el modo claro con el boton.
+			:not([data-tema="claro"]) excluye ese caso. */
+			@media (prefers-color-scheme: dark) {
+				:root:not([data-tema="claro"]) {
+					--color-fondo:         #0f172a;
+					--color-fondo-tarjeta: #1e293b;
+					--color-texto:         #f1f5f9;
+					--color-texto-suave:   #94a3b8;
+					--color-borde:         #334155;
+				}
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{morado}{Ejemplo 18 -- Transicion suave entre modos}
+		\begin{lstlisting}[style=codecss]
+			body {
+				background-color: var(--color-fondo);
+				color: var(--color-texto);
+				/* Transicion: el cambio de color es gradual, no brusco */
+				transition: background-color 300ms ease,
+				color 300ms ease;
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{variables.css -- modo oscuro completo}
+		La practica combina las tres tecnicas: variables en \texttt{:root} (claro), media query para auto-deteccion del SO, y selector \texttt{[data-tema=``oscuro'']} para el boton. La transicion en el body hace que el cambio sea suave.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{11: Animaciones y accesibilidad}
+	% =============================================================
+	
+	\begin{cajacodigo}{azul}{Ejemplo 19a -- Definir la animacion @keyframes}
+		\begin{lstlisting}[style=codecss]
+			@keyframes aparecer {
+				from {
+					opacity: 0;                  /* invisible */
+					transform: translateY(12px); /* 12px abajo */
+				}
+				to {
+					opacity: 1;                  /* visible */
+					transform: translateY(0);    /* posicion normal */
+				}
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 19b -- Aplicar y desactivar por accesibilidad}
+		\begin{lstlisting}[style=codecss]
+			.tarjeta {
+				animation: aparecer 0.4s ease both;
+				/* nombre  duracion  curva  fill-mode */
+			}
+			
+			/* OBLIGATORIO: desactivar para usuarios con sensibilidad */
+			@media (prefers-reduced-motion: reduce) {
+				.tarjeta { animation: none; }
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Concepto: prefers-reduced-motion}
+		Hay usuarios que experimentan mareo, nauseas o convulsiones con animaciones. Sus sistemas operativos tienen una opcion para ``Reducir movimiento''. La media query \texttt{prefers-reduced-motion: reduce} detecta esa preferencia. Es \textbf{obligatorio} desactivar todas las animaciones cuando esta activa. Lighthouse lo verifica.
+	\end{cajaconcepto}
+	
+	\subsection{Enlace de salto (skip link) accesible}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 20 -- Skip link oculto que aparece con Tab}
+		\begin{lstlisting}[style=codecss]
+			/* Oculto por defecto (fuera de la pantalla) */
+			.saltar-nav {
+				position: absolute;
+				top: -100%;            /* fuera de la vista */
+				left: 0;
+				padding: 0.5rem 1rem;
+				background: #0066cc;
+				color: #fff;
+				text-decoration: none;
+				z-index: 9999;         /* siempre encima de todo */
+				transition: top 150ms ease;
+			}
+			
+			/* Aparece cuando el usuario presiona Tab */
+			.saltar-nav:focus {
+				top: 0;  /* entra a la pantalla */
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{main.css -- accesibilidad}
+		El skip link es el primer elemento del \texttt{<body>} en el HTML: \texttt{<a href=``\#contenido-principal'' class=``saltar-nav''>Ir al contenido principal</a>}. Es invisible hasta que el usuario presiona Tab, momento en que aparece en la esquina superior izquierda.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{FINAL: Mapa completo del CSS de la practica}
+	% =============================================================
+	
+	\begin{cajatip}{rojo}{Verificacion}
+		Si entendiste los 20 ejemplos anteriores, puedes leer y escribir cada linea del Paso 3 de la practica. La Tabla~\ref{tab:mapa-css} mapea cada concepto a su ubicacion exacta en el codigo de la practica y al ejemplo correspondiente en este documento.
+	\end{cajatip}
+	
+	\small
+	\begin{longtable}{|C{0.5cm}|L{4cm}|L{4.5cm}|L{4.5cm}|}
+		\caption{Mapa completo: concepto CSS $\to$ ubicacion en la practica $\to$ ejemplo en este documento.}\label{tab:mapa-css}\\
+		\hline
+		\rowcolor{ambar}
+		\textcolor{white}{\textbf{\#}} &
+		\textcolor{white}{\textbf{Concepto CSS}} &
+		\textcolor{white}{\textbf{Donde se usa en la practica}} &
+		\textcolor{white}{\textbf{Ejemplo en este documento}} \\
+		\hline
+		\endfirsthead
+		\hline
+		\rowcolor{ambar}
+		\textcolor{white}{\textbf{\#}} &
+		\textcolor{white}{\textbf{Concepto CSS}} &
+		\textcolor{white}{\textbf{Donde se usa en la practica}} &
+		\textcolor{white}{\textbf{Ejemplo en este documento}} \\
+		\hline
+		\endhead
+		\hline
+		\endfoot
+		1 & Reset con box-sizing & Primeras lineas de main.css & Ejemplo 3 \\
+		\hline
+		\rowcolor{grisclaro}
+		2 & Unidades rem, em, \%, vw, clamp() & Variables de tipografia en variables.css & Ejemplo 4 \\
+		\hline
+		3 & Variables CSS en :root & Archivo variables.css completo & Ejemplos 5 y 6 \\
+		\hline
+		\rowcolor{grisclaro}
+		4 & Padding, border, border-radius, box-shadow & Tarjetas, formulario, header & Ejemplos 7 y 8 \\
+		\hline
+		5 & Flexbox horizontal & Header: titulo + nav con space-between & Ejemplo 9 \\
+		\hline
+		\rowcolor{grisclaro}
+		6 & Flexbox con flex-wrap & Tarjetas: flex: 1 1 260px & Ejemplo 10 \\
+		\hline
+		7 & Flexbox vertical & Campos del formulario: flex-direction: column & Ejemplo 11 \\
+		\hline
+		\rowcolor{grisclaro}
+		8 & CSS Grid con areas nombradas & Layout principal: header, main, aside, footer & Ejemplo 12 \\
+		\hline
+		9 & Media queries mobile-first & 3 breakpoints: base, 768px, 1024px & Ejemplo 13a y 13b \\
+		\hline
+		\rowcolor{grisclaro}
+		10 & Focus, :invalid, :focus-visible & Inputs con outline y validacion visual & Ejemplo 14a y 14b \\
+		\hline
+		11 & Boton con 5 estados & .btn-primario: normal, hover, active, focus, disabled & Ejemplo 15a y 15b \\
+		\hline
+		\rowcolor{grisclaro}
+		12 & Modo oscuro automatico & @media (prefers-color-scheme: dark) en variables.css & Ejemplo 16 \\
+		\hline
+		13 & Modo oscuro manual & [data-tema=``oscuro''] + :not() en variables.css & Ejemplo 17 \\
+		\hline
+		\rowcolor{grisclaro}
+		14 & Transicion suave de tema & body: transition background-color 300ms en main.css & Ejemplo 18 \\
+		\hline
+		15 & @keyframes y animation & Animacion de entrada de tarjetas en main.css & Ejemplo 19a \\
+		\hline
+		\rowcolor{grisclaro}
+		16 & prefers-reduced-motion & Desactivar animaciones para accesibilidad & Ejemplo 19b \\
+		\hline
+		17 & Skip link accesible & Enlace oculto que aparece con Tab en main.css & Ejemplo 20 \\
+		\hline
+	\end{longtable}
+	\normalsize
+	
+	\vspace{0.3cm}
+	
+	\begin{cajatip}{verde}{Estas listo}
+		Si puedes explicar cada fila de esta tabla, puedes implementar el Paso 3 completo de la practica. Abre la guia de la PE U1, ve al Paso 3, y veras que cada bloque de CSS corresponde a uno de estos 20 ejemplos.
+	\end{cajatip}
+	
+	
+	\newpage
+	
+	% =============================================================
+	% PARTE III: JAVASCRIPT ES6+
+	% =============================================================
+	\part{JavaScript ES6+ -- Comportamiento (Paso 4 de la practica)}
+	
+	\section{Como conectar JavaScript al HTML}
+	
+	\begin{cajaconcepto}{Concepto: script type=``module''}
+		JavaScript se conecta al HTML con la etiqueta \texttt{<script>} al final del \texttt{<body>}. El atributo \texttt{type=``module''} activa el sistema de modulos ES6 (\texttt{import}/\texttt{export}) y hace que el script se ejecute automaticamente despues de que el DOM esta listo (equivalente a \texttt{defer}).
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{JS-0 -- Conectar JavaScript al HTML}
+		{\color{codigotexto}\small El script se pone al final del body para que el HTML ya exista cuando JavaScript se ejecuta. Con \texttt{type=``module''}, cada archivo JS tiene su propio ambito: las variables no contaminan el espacio global.}
+		\begin{lstlisting}[style=codehtml]
+			<!-- En index.html, al final del <body>: -->
+			
+			<!-- SIN modulos (viejo, no usar): -->
+			<script src="js/app.js"></script>
+			
+			<!-- CON modulos (correcto para la practica): -->
+			<script type="module" src="js/app.js"></script>
+			
+			<!-- La diferencia:
+			- Sin module: no se puede usar import/export
+			- Con module: import/export funcionan,
+			el script es defer automaticamente,
+			cada archivo tiene su propio ambito -->
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{Como JavaScript accede a los elementos HTML}
+	
+	\begin{cajacodigo}{verde}{JS-0b -- JavaScript lee y modifica el HTML}
+		{\color{codigotexto}\small JavaScript usa los \texttt{id} y \texttt{class} del HTML para encontrar elementos. Luego puede leer su contenido, cambiar sus atributos, o escuchar eventos como clics.}
+		\begin{lstlisting}[style=codejs]
+			// Buscar un elemento por su id del HTML
+			const btn = document.getElementById('btn-tema');
+			// <button id="btn-tema"> en el HTML
+			
+			// Cambiar su texto
+			btn.textContent = 'Modo claro';
+			
+			// Cambiar un atributo ARIA
+			btn.setAttribute('aria-pressed', 'true');
+			
+			// Escuchar cuando el usuario hace clic
+			btn.addEventListener('click', () => {
+				console.log('Boton presionado!');
+			});
+			
+			// Buscar por selector CSS (como en CSS)
+			const nav = document.querySelector('nav');
+			const links = document.querySelectorAll('nav a');
+			
+			// Buscar el formulario y escuchar el envio
+			const form = document.getElementById('formulario-pfc');
+			form.addEventListener('submit', (e) => {
+				e.preventDefault(); // NO recargar la pagina
+				const datos = Object.fromEntries(new FormData(form));
+				console.log(datos); // {nombre:"Ana", email:"a@b.c"}
+			});
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{app.js -- punto de entrada}
+		Este ejemplo muestra exactamente como \texttt{app.js} accede a los elementos HTML creados en el Paso 2: el boton de tema por \texttt{id=``btn-tema''}, el formulario por \texttt{id=``formulario-pfc''}, y el contenedor de datos por \texttt{id=``contenedor-datos''}.
+	\end{cajapractica}
+	
+	\section{1: Variables y tipos de dato}
+	% =============================================================
+	
+	\subsection{const y let: declarar variables}
+	
+	\begin{cajaconcepto}{Concepto}
+		\texttt{const} declara una variable cuya referencia no se puede reasignar. \texttt{let} permite reasignar. \texttt{var} es obsoleto: no usarlo. Regla: usar siempre \texttt{const}; solo \texttt{let} si necesitas cambiar el valor despues.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 1 -- const vs let}
+		\begin{lstlisting}[style=codejs]
+			// const: no se puede reasignar
+			const nombre = "Maria";
+			const edad = 22;
+			const esEstudiante = true;
+			
+			// let: si se puede reasignar
+			let contador = 0;
+			contador = 1;  // OK
+			contador = 2;  // OK
+			
+			// Esto daria ERROR:
+			// nombre = "Juan";  // TypeError: Assignment to constant variable
+			
+			console.log(nombre, edad, esEstudiante, contador);
+			// Maria 22 true 2
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaresultado}{Resultado en consola}
+		\texttt{Maria 22 true 2}
+	\end{cajaresultado}
+	
+	\subsection{Template literals: texto con variables}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 2 -- Template literals con backticks}
+		\begin{lstlisting}[style=codejs]
+			const nombre = "Carlos";
+			const edad = 20;
+			
+			// ANTES (concatenacion fea):
+			const msgViejo = "Hola, " + nombre + ". Tienes " + edad + " anos.";
+			
+			// AHORA (template literal con backticks):
+			const msg = `Hola, ${nombre}. Tienes ${edad} anos.`;
+			
+			// Se puede poner cualquier expresion dentro de ${}:
+			const msg2 = `En 5 anos tendras ${edad + 5} anos.`;
+			
+			console.log(msg);    // Hola, Carlos. Tienes 20 anos.
+			console.log(msg2);   // En 5 anos tendras 25 anos.
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{app.js, ui.js}
+		Los template literals se usan en \texttt{renderizarTarjetas()} para construir el HTML de cada tarjeta, y en los mensajes de error.
+	\end{cajapractica}
+	
+	\subsection{Objetos y arrays}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 3 -- Objetos y arrays basicos}
+		\begin{lstlisting}[style=codejs]
+			// Objeto: coleccion de propiedades clave:valor
+			const usuario = {
+				nombre: "Ana",
+				email: "ana@uteq.edu.ec",
+				edad: 21
+			};
+			
+			// Acceder a propiedades
+			console.log(usuario.nombre);    // Ana
+			console.log(usuario.email);     // ana@uteq.edu.ec
+			
+			// Array: lista ordenada de elementos
+			const colores = ["rojo", "verde", "azul"];
+			console.log(colores[0]);        // rojo
+			console.log(colores.length);    // 3
+			
+			// Array de objetos (lo que devuelve una API):
+			const usuarios = [
+			{ id: 1, name: "Leanne", email: "l@mail.com" },
+			{ id: 2, name: "Ervin",  email: "e@mail.com" },
+			];
+			console.log(usuarios[0].name);  // Leanne
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{api.js}
+		La API devuelve un array de objetos exactamente como \texttt{usuarios} del ejemplo. Cada objeto tiene propiedades como \texttt{id}, \texttt{name}, \texttt{email}.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{2: Funciones y arrow functions}
+	% =============================================================
+	
+	\subsection{Funciones clasicas y arrow functions}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 4 -- Tres formas de escribir una funcion}
+		\begin{lstlisting}[style=codejs]
+			// Forma 1: funcion clasica (funciona, pero es verbosa)
+			function sumar(a, b) {
+				return a + b;
+			}
+			
+			// Forma 2: arrow function con cuerpo
+			const restar = (a, b) => {
+				return a - b;
+			};
+			
+			// Forma 3: arrow function corta (1 expresion = return implicito)
+			const multiplicar = (a, b) => a * b;
+			
+			console.log(sumar(3, 5));       // 8
+			console.log(restar(10, 4));     // 6
+			console.log(multiplicar(3, 7)); // 21
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{Funciones que reciben funciones (callbacks)}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 5 -- forEach, map y filter con arrow functions}
+		\begin{lstlisting}[style=codejs]
+			const numeros = [1, 2, 3, 4, 5];
+			
+			// forEach: ejecuta algo por cada elemento (no devuelve nada)
+			numeros.forEach(n => console.log(n * 2));
+			// 2, 4, 6, 8, 10
+			
+			// map: transforma cada elemento y devuelve un nuevo array
+			const dobles = numeros.map(n => n * 2);
+			console.log(dobles);  // [2, 4, 6, 8, 10]
+			
+			// filter: filtra y devuelve solo los que cumplen la condicion
+			const pares = numeros.filter(n => n % 2 === 0);
+			console.log(pares);   // [2, 4]
+			
+			// Encadenado: filtrar pares y multiplicar por 10
+			const resultado = numeros
+			.filter(n => n % 2 === 0)
+			.map(n => n * 10);
+			console.log(resultado);  // [20, 40]
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{ui.js}
+		En \texttt{renderizarTarjetas()} se usa \texttt{datos.map()} para transformar cada objeto en HTML, y \texttt{.join('')} para unir los fragmentos en un solo string.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{3: El DOM (Document Object Model)}
+	% =============================================================
+	
+	\subsection{Seleccionar elementos del HTML}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 6 -- getElementById y querySelector}
+		\begin{lstlisting}[style=codejs]
+			// getElementById: busca por id (el mas rapido)
+			const titulo = document.getElementById('titulo-datos');
+			console.log(titulo);           // <h2 id="titulo-datos">...</h2>
+			console.log(titulo.textContent); // el texto dentro del h2
+			
+			// querySelector: busca con selector CSS (mas flexible)
+			const nav = document.querySelector('nav');
+			const primerEnlace = document.querySelector('nav a');
+			const btnTema = document.querySelector('#btn-tema');
+			
+			// querySelectorAll: devuelve TODOS los que coinciden
+			const todosLosLinks = document.querySelectorAll('nav a');
+			console.log(todosLosLinks.length); // numero de enlaces
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{Modificar el contenido y atributos}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 7 -- Cambiar texto, HTML y atributos}
+		\begin{lstlisting}[style=codejs]
+			const el = document.getElementById('estado-carga');
+			
+			// textContent: cambia solo el texto (SEGURO contra XSS)
+			el.textContent = 'Cargando datos...';
+			
+			// innerHTML: cambia el HTML interno (PELIGROSO si viene del usuario)
+			el.innerHTML = '<strong>Cargando...</strong>';
+			
+			// setAttribute: cambia cualquier atributo
+			const btn = document.getElementById('btn-tema');
+			btn.setAttribute('aria-pressed', 'true');
+			btn.textContent = 'Modo claro';
+			
+			// Leer un atributo
+			const valor = btn.getAttribute('aria-pressed'); // "true"
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{ui.js}
+		\texttt{mostrarCarga()} usa \texttt{textContent} para mostrar el mensaje. \texttt{renderizarTarjetas()} usa \texttt{innerHTML} pero con \texttt{escapeHTML()} para prevenir XSS. \texttt{toggleTema()} usa \texttt{setAttribute} para cambiar \texttt{aria-pressed}.
+	\end{cajapractica}
+	
+	\subsection{Escuchar eventos}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 8 -- addEventListener}
+		\begin{lstlisting}[style=codejs]
+			// Escuchar clic en un boton
+			const btn = document.getElementById('btn-tema');
+			btn.addEventListener('click', () => {
+				console.log('Boton clickeado!');
+			});
+			
+			// Escuchar cuando el DOM esta listo (ANTES de acceder a elementos)
+			document.addEventListener('DOMContentLoaded', () => {
+				console.log('DOM listo. Ahora puedo buscar elementos.');
+				const titulo = document.getElementById('titulo-datos');
+				// Aqui titulo NUNCA es null
+			});
+			
+			// Escuchar envio de formulario
+			const form = document.getElementById('formulario-pfc');
+			form.addEventListener('submit', (e) => {
+				e.preventDefault(); // Evitar que la pagina se recargue
+				console.log('Formulario enviado sin recargar!');
+			});
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Por que DOMContentLoaded}
+		Si el \texttt{<script>} esta en el \texttt{<head>}, se ejecuta ANTES de que el HTML exista. \texttt{getElementById} devolveria \texttt{null} porque el elemento aun no existe. \texttt{DOMContentLoaded} espera a que todo el HTML este parseado. Alternativa: poner el \texttt{<script>} al final del \texttt{<body>} con \texttt{type=``module''} (que es \texttt{defer} automaticamente).
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{app.js}
+		Todo el codigo de \texttt{app.js} esta dentro de \texttt{document.addEventListener('DOMContentLoaded', async () => \{...\})}. El listener del formulario usa \texttt{e.preventDefault()} para evitar la recarga.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{4: Modulos ES6 (import / export)}
+	% =============================================================
+	
+	\subsection{export: exponer funciones de un modulo}
+	
+	\begin{cajacodigo}{morado}{Ejemplo 9 -- export en un modulo}
+		\begin{lstlisting}[style=codejs]
+			// archivo: js/modules/matematicas.js
+			
+			// Export individual (named export)
+			export function sumar(a, b) {
+				return a + b;
+			}
+			
+			export function restar(a, b) {
+				return a - b;
+			}
+			
+			// Variable exportada
+			export const PI = 3.14159;
+			
+			// Funcion privada (sin export = no se puede importar)
+			function logInterno(msg) {
+				console.log(`[mate] ${msg}`);
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{import: usar funciones de otro modulo}
+	
+	\begin{cajacodigo}{morado}{Ejemplo 10 -- import en el archivo principal}
+		\begin{lstlisting}[style=codejs]
+			// archivo: js/app.js
+			
+			// Importar funciones especificas
+			import { sumar, restar, PI } from './modules/matematicas.js';
+			
+			console.log(sumar(3, 5));  // 8
+			console.log(PI);           // 3.14159
+			
+			// NO se puede acceder a logInterno() porque no tiene export
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Requisito en el HTML}
+		Para que \texttt{import}/\texttt{export} funcionen, el script debe tener \texttt{type=``module''}:
+		
+		\texttt{<script type=``module'' src=``js/app.js''></script>}
+		
+		Sin \texttt{type=``module''} el navegador lanza: \texttt{SyntaxError: Cannot use import statement outside a module}.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{Toda la arquitectura del Paso 4}
+		El PFC tiene 3 modulos: \texttt{api.js} exporta \texttt{obtenerDatos()} y \texttt{enviarDatos()}. \texttt{ui.js} exporta \texttt{mostrarCarga()}, \texttt{renderizarTarjetas()}, \texttt{escapeHTML()}, \texttt{toggleTema()}. \texttt{app.js} importa todo y orquesta.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{5: Promesas y async/await}
+	% =============================================================
+	
+	\subsection{Que es una Promesa}
+	
+	\begin{cajaconcepto}{Concepto}
+		Una \textbf{Promesa} es un objeto que representa un valor que \textbf{todavia no existe} pero existira en el futuro (o fallara). Tiene 3 estados: \textbf{pending} (esperando), \textbf{fulfilled} (exito) y \textbf{rejected} (error). \texttt{fetch()} devuelve una Promesa.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 11 -- Promesa basica con .then()/.catch()}
+		\begin{lstlisting}[style=codejs]
+			// fetch() devuelve una Promesa
+			// .then() se ejecuta cuando la Promesa se resuelve (exito)
+			// .catch() se ejecuta cuando la Promesa se rechaza (error)
+			
+			fetch('https://jsonplaceholder.typicode.com/users/1')
+			.then(respuesta => respuesta.json())
+			.then(usuario => console.log(usuario.name))
+			.catch(error => console.error('Fallo:', error));
+			
+			// Resultado: "Leanne Graham"
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{async/await: Promesas legibles}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 12 -- Lo mismo pero con async/await}
+		\begin{lstlisting}[style=codejs]
+			// async hace que la funcion devuelva una Promesa
+			// await pausa la ejecucion hasta que la Promesa se resuelva
+			// SOLO se puede usar await dentro de una funcion async
+			
+			async function cargarUsuario() {
+				const respuesta = await fetch(
+				'https://jsonplaceholder.typicode.com/users/1'
+				);
+				const usuario = await respuesta.json();
+				console.log(usuario.name);  // "Leanne Graham"
+			}
+			
+			cargarUsuario();
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Por que async/await es mejor que .then()}
+		Comparar los ejemplos 11 y 12: hacen exactamente lo mismo, pero el ejemplo 12 se lee como codigo normal de arriba a abajo. Con \texttt{.then()} encadenado, el codigo se vuelve dificil de leer cuando hay 3 o 4 operaciones asincronas seguidas (``callback hell'').
+	\end{cajaconcepto}
+	
+	% =============================================================
+	\section{6: fetch -- hablar con el servidor}
+	% =============================================================
+	
+	\subsection{GET: obtener datos}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 13 -- fetch GET con verificacion de error}
+		\begin{lstlisting}[style=codejs]
+			async function obtenerUsuarios() {
+				const res = await fetch(
+				'https://jsonplaceholder.typicode.com/users'
+				);
+				
+				// IMPORTANTE: fetch NO lanza error con 404 o 500
+				// Solo lanza error si no hay internet o el dominio no existe
+				// Por eso verificamos manualmente:
+				if (!res.ok) {
+					throw new Error(`Error HTTP ${res.status}`);
+				}
+				
+				const datos = await res.json(); // Convertir respuesta a objeto JS
+				console.log(`Recibidos ${datos.length} usuarios`);
+				return datos;
+			}
+			
+			obtenerUsuarios();
+			// Recibidos 10 usuarios
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{api.js --- funcion obtenerDatos()}
+		Este es exactamente el patron de la funcion \texttt{obtenerDatos()} del modulo \texttt{api.js} de la practica.
+	\end{cajapractica}
+	
+	\subsection{POST: enviar datos}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 14 -- fetch POST con JSON}
+		\begin{lstlisting}[style=codejs]
+			async function crearUsuario(datos) {
+				const res = await fetch(
+				'https://jsonplaceholder.typicode.com/users',
+				{
+					method: 'POST',                          // Verbo HTTP
+					headers: { 'Content-Type': 'application/json' }, // Tipo
+					body: JSON.stringify(datos),              // Objeto -> texto JSON
+				}
+				);
+				
+				if (!res.ok) {
+					throw new Error(`Error al crear: ${res.status}`);
+				}
+				
+				return res.json();
+			}
+			
+			// Usar:
+			crearUsuario({ nombre: "Ana", email: "ana@uteq.edu.ec" })
+			.then(resp => console.log('Creado:', resp));
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{api.js --- funcion enviarDatos()}
+		Este es el patron de \texttt{enviarDatos()} que se usa cuando el formulario se envia.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{7: try/catch/finally -- manejar errores}
+	% =============================================================
+	
+	\begin{cajacodigo}{rojo}{Ejemplo 15 -- Los 4 estados que siempre hay que manejar}
+		\begin{lstlisting}[style=codejs]
+			async function cargarDatos() {
+				// ESTADO 1: Cargando
+				console.log('Cargando...');
+				
+				try {
+					const res = await fetch(
+					'https://jsonplaceholder.typicode.com/users?_limit=3'
+					);
+					if (!res.ok) throw new Error(`HTTP ${res.status}`);
+					const datos = await res.json();
+					
+					// ESTADO 2: Exito
+					if (datos.length === 0) {
+						// ESTADO 3: Vacio (exito pero sin datos)
+						console.log('No hay datos.');
+					} else {
+						console.log('Datos:', datos.map(u => u.name));
+					}
+					
+				} catch (error) {
+					// ESTADO 4: Error (red o HTTP)
+					console.error('Error:', error.message);
+					
+				} finally {
+					// SIEMPRE se ejecuta (exito O error)
+					console.log('Fin. Ocultar indicador de carga.');
+				}
+			}
+			
+			cargarDatos();
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaresultado}{Resultado esperado}
+		\texttt{Cargando...}\\
+		\texttt{Datos: [``Leanne Graham'', ``Ervin Howell'', ``Clementine Bauch'']}\\
+		\texttt{Fin. Ocultar indicador de carga.}
+	\end{cajaresultado}
+	
+	\begin{cajapractica}{app.js --- funcion cargarDatos()}
+		Este patron de 4 estados es exactamente la funcion \texttt{cargarDatos()} de \texttt{app.js}. La practica usa \texttt{mostrarCarga()} en lugar de \texttt{console.log} y \texttt{renderizarTarjetas()} en lugar de \texttt{console.log} del array.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{8: Manipular el DOM con datos de la API}
+	% =============================================================
+	
+	\subsection{Renderizar datos como HTML}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 16 -- Convertir un array de objetos en tarjetas HTML}
+		\begin{lstlisting}[style=codejs]
+			// Funcion anti-XSS: OBLIGATORIA antes de insertar texto en innerHTML
+			function escapeHTML(texto) {
+				return String(texto)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;');
+			}
+			
+			// Datos que vinieron de la API:
+			const usuarios = [
+			{ id: 1, name: "Leanne Graham", email: "l@mail.com" },
+			{ id: 2, name: "Ervin Howell",  email: "e@mail.com" },
+			];
+			
+			// Convertir cada objeto en HTML con .map() + template literal
+			const html = usuarios.map(u => `
+			<article class="tarjeta">
+			<h3>${escapeHTML(u.name)}</h3>
+			<p>${escapeHTML(u.email)}</p>
+			<p><small>ID: ${u.id}</small></p>
+			</article>
+			`).join('');  // .join('') une los fragmentos en 1 solo string
+			
+			// Insertar en el DOM
+			const contenedor = document.getElementById('contenedor-datos');
+			contenedor.innerHTML = html;
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Por que escapeHTML es obligatorio}
+		Si un usuario malicioso guardara como nombre \texttt{<script>alert('XSS')</script>}, sin \texttt{escapeHTML} ese script se ejecutaria en el navegador de todos los demas usuarios. Con \texttt{escapeHTML}, los \texttt{<} y \texttt{>} se convierten en \texttt{\&lt;} y \texttt{\&gt;}, y el navegador muestra el texto en lugar de ejecutarlo.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{ui.js --- funcion renderizarTarjetas()}
+		Este ejemplo es exactamente lo que hace \texttt{renderizarTarjetas()} en el Paso 4.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{9: localStorage y modo oscuro}
+	% =============================================================
+	
+	\begin{cajacodigo}{morado}{Ejemplo 17 -- localStorage: guardar y leer datos persistentes}
+		\begin{lstlisting}[style=codejs]
+			// Guardar un valor (persiste al cerrar el navegador)
+			localStorage.setItem('tema-pfc', 'oscuro');
+			
+			// Leer un valor (devuelve null si no existe)
+			const tema = localStorage.getItem('tema-pfc');
+			console.log(tema);  // "oscuro"
+			
+			// Eliminar un valor
+			localStorage.removeItem('tema-pfc');
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{morado}{Ejemplo 18 -- Toggle de modo oscuro completo}
+		\begin{lstlisting}[style=codejs]
+			function toggleTema() {
+				const html = document.documentElement; // = <html>
+				const actual = html.getAttribute('data-tema');
+				const nuevo = actual === 'oscuro' ? 'claro' : 'oscuro';
+				
+				// Cambiar el atributo data-tema en <html>
+				html.setAttribute('data-tema', nuevo);
+				
+				// Guardar la preferencia
+				localStorage.setItem('tema-pfc', nuevo);
+				
+				// Actualizar el texto del boton
+				const btn = document.getElementById('btn-tema');
+				btn.textContent = nuevo === 'oscuro' ? 'Modo claro' : 'Modo oscuro';
+				btn.setAttribute('aria-pressed', nuevo === 'oscuro');
+			}
+			
+			// Al cargar la pagina: restaurar la preferencia guardada
+			function cargarTema() {
+				const guardado = localStorage.getItem('tema-pfc');
+				if (guardado) {
+					document.documentElement.setAttribute('data-tema', guardado);
+				}
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{ui.js --- funciones toggleTema() y cargarTema()}
+		Estas dos funciones son exactamente las que van en \texttt{ui.js}. El CSS en \texttt{variables.css} tiene la regla \texttt{[data-tema=``oscuro'']} que cambia los colores automaticamente cuando el atributo cambia.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{10: Formularios con JavaScript}
+	% =============================================================
+	
+	\begin{cajacodigo}{verde}{Ejemplo 19 -- Validar y enviar un formulario sin recargar}
+		\begin{lstlisting}[style=codejs]
+			function configurarFormulario() {
+				const form = document.getElementById('formulario-pfc');
+				if (!form) return; // Proteccion si el formulario no existe
+				
+				form.addEventListener('submit', async (e) => {
+					// 1. Evitar que la pagina se recargue
+					e.preventDefault();
+					
+					// 2. Verificar validacion nativa del HTML
+					if (!form.checkValidity()) {
+						form.reportValidity(); // Muestra los mensajes del navegador
+						return; // No continuar si hay errores
+					}
+					
+					// 3. Extraer los datos del formulario como objeto
+					const datos = Object.fromEntries(new FormData(form));
+					console.log('Datos del formulario:', datos);
+					// { nombre: "Ana", email: "ana@...", carrera: "sw", ... }
+					
+					// 4. Enviar a la API
+					try {
+						const resp = await enviarDatos('users', datos);
+						console.log('Enviado:', resp);
+						form.reset(); // Limpiar el formulario
+						
+						// 5. Mostrar confirmacion accesible
+						const estado = document.getElementById('estado-carga');
+						estado.textContent = 'Registro exitoso.';
+						setTimeout(() => { estado.textContent = ''; }, 4000);
+					} catch (error) {
+						console.error('Error al enviar:', error);
+					}
+				});
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Object.fromEntries + FormData}
+		\texttt{new FormData(form)} captura todos los campos del formulario. \texttt{Object.fromEntries()} convierte esos pares clave-valor en un objeto JavaScript plano, listo para enviar como JSON con \texttt{JSON.stringify()}.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{app.js --- funcion configurarFormulario()}
+		Esta funcion es exactamente la que va en \texttt{app.js}. Conecta el formulario HTML con la API sin recargar la pagina.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{FINAL: Todo junto -- el codigo de la practica}
+	% =============================================================
+	
+	\begin{cajatip}{rojo}{Verificacion final}
+		Si entendiste los 19 ejemplos anteriores, puedes leer y escribir cada linea del Paso 4 de la practica. El codigo final es la \textbf{combinacion} de todos los conceptos anteriores:
+	\end{cajatip}
+	
+	\begin{center}
+		\small
+		\begin{tabular}{|C{0.5cm}|L{4cm}|L{5cm}|L{4.5cm}|}
+			\hline
+			\rowcolor{azul}
+			\textcolor{white}{\textbf{\#}} &
+			\textcolor{white}{\textbf{Concepto}} &
+			\textcolor{white}{\textbf{Donde se usa en la practica}} &
+			\textcolor{white}{\textbf{Ejemplo en este documento}} \\
+			\hline
+			1 & \texttt{const} / \texttt{let} & Todas las variables & Ejemplo 1 \\
+			\hline
+			\rowcolor{grisclaro}
+			2 & Template literals & HTML de tarjetas, mensajes de error & Ejemplo 2 \\
+			\hline
+			3 & Objetos y arrays & Datos de la API & Ejemplo 3 \\
+			\hline
+			\rowcolor{grisclaro}
+			4 & Arrow functions & Callbacks de \texttt{map}, \texttt{forEach}, listeners & Ejemplo 4 \\
+			\hline
+			5 & \texttt{.map()} y \texttt{.join()} & \texttt{renderizarTarjetas()} & Ejemplo 5 \\
+			\hline
+			\rowcolor{grisclaro}
+			6 & \texttt{getElementById} & Acceder a elementos del DOM & Ejemplo 6 \\
+			\hline
+			7 & \texttt{textContent} / \texttt{innerHTML} & \texttt{mostrarCarga()}, \texttt{renderizar()} & Ejemplo 7 \\
+			\hline
+			\rowcolor{grisclaro}
+			8 & \texttt{addEventListener} & Click del boton, submit del form & Ejemplo 8 \\
+			\hline
+			9 & \texttt{DOMContentLoaded} & Punto de entrada de \texttt{app.js} & Ejemplo 8 \\
+			\hline
+			\rowcolor{grisclaro}
+			10 & \texttt{export} / \texttt{import} & Arquitectura de 3 modulos & Ejemplos 9 y 10 \\
+			\hline
+			11 & \texttt{async} / \texttt{await} & \texttt{obtenerDatos()}, \texttt{cargarDatos()} & Ejemplo 12 \\
+			\hline
+			\rowcolor{grisclaro}
+			12 & \texttt{fetch()} GET & \texttt{obtenerDatos()} & Ejemplo 13 \\
+			\hline
+			13 & \texttt{fetch()} POST & \texttt{enviarDatos()} & Ejemplo 14 \\
+			\hline
+			\rowcolor{grisclaro}
+			14 & \texttt{try/catch/finally} & 4 estados de carga & Ejemplo 15 \\
+			\hline
+			15 & \texttt{escapeHTML()} & Prevencion XSS & Ejemplo 16 \\
+			\hline
+			\rowcolor{grisclaro}
+			16 & \texttt{.map().join()} + HTML & \texttt{renderizarTarjetas()} & Ejemplo 16 \\
+			\hline
+			17 & \texttt{localStorage} & Persistir el tema oscuro & Ejemplo 17 \\
+			\hline
+			\rowcolor{grisclaro}
+			18 & Toggle de tema & \texttt{toggleTema()} / \texttt{cargarTema()} & Ejemplo 18 \\
+			\hline
+			19 & \texttt{FormData} + \texttt{preventDefault} & \texttt{configurarFormulario()} & Ejemplo 19 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{0.3cm}
+	
+	\begin{cajatip}{verde}{Estas listo}
+		Si puedes explicar cada fila de esta tabla, puedes implementar el Paso 4 completo de la practica sin copiar y pegar. Abre la guia de la PE U1, ve al Paso 4, y veras que cada linea de codigo corresponde a uno de estos 19 ejemplos.
+	\end{cajatip}
+	
+	
+	\newpage
+	
+	% =============================================================
+	% PARTE IV: INTEGRACION
+	% =============================================================
+	\part{Integracion -- Como trabajan juntos HTML, CSS y JS}
+	
+	\section{Flujo completo: del HTML al resultado final}
+	
+	\begin{cajaconcepto}{Concepto: separacion de responsabilidades}
+		Las 3 tecnologias tienen roles distintos y se comunican a traves de \textbf{atributos del HTML}:
+		
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{HTML} define la estructura y el contenido. Usa \texttt{class} para conectar con CSS y \texttt{id} para conectar con JavaScript.
+			\item \textbf{CSS} define la apariencia. Lee las \texttt{class} del HTML y aplica estilos. Nunca modifica el contenido ni el comportamiento.
+			\item \textbf{JavaScript} define el comportamiento. Lee \texttt{id} del HTML para encontrar elementos, modifica su \texttt{textContent}, \texttt{innerHTML} y atributos, y escucha eventos como \texttt{click} y \texttt{submit}.
+		\end{itemize}
+		
+		Los 3 archivos estan separados: \texttt{index.html}, \texttt{css/main.css} y \texttt{js/app.js}. Se conectan con \texttt{<link>} y \texttt{<script>} en el HTML.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{morado}{INT-1 -- Mapa de conexiones entre los 3 archivos}
+		{\color{codigotexto}\small Este ejemplo muestra como un mismo elemento HTML es tocado por CSS (apariencia) y por JS (comportamiento) a traves de sus atributos \texttt{class} e \texttt{id}.}
+		\begin{lstlisting}[style=codehtml]
+			<!-- index.html -->
+			<!-- class="btn-primario" -> CSS le da el estilo -->
+			<!-- id="btn-tema"        -> JS le agrega el evento -->
+			<button id="btn-tema" class="btn-primario"
+			aria-pressed="false">
+			Modo oscuro
+			</button>
+			
+			<!-- class="tarjeta"      -> CSS le da forma y animacion -->
+			<!-- role="listitem"      -> ARIA para lectores de pantalla -->
+			<!-- JS genera este HTML dinamicamente con innerHTML -->
+			<article class="tarjeta" role="listitem">
+			<h3>Leanne Graham</h3>
+			<p>leanne@mail.com</p>
+			</article>
+			
+			<!-- class="campo-form"   -> CSS lo organiza vertical -->
+			<!-- id="formulario-pfc"  -> JS captura el submit -->
+			<form id="formulario-pfc">
+			<div class="campo-form">
+			<label for="nombre">Nombre</label>
+			<input type="text" id="nombre" class="input-field">
+			</div>
+			</form>
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\section{Arquitectura de archivos del PFC}
+	
+	\begin{cajacodigo}{morado}{INT-2 -- Estructura de archivos y quien usa que}
+		\begin{lstlisting}[style=codebash]
+			frontend/
+			index.html          <- Estructura (Paso 2)
+			css/
+			variables.css      <- Variables :root (Paso 3)
+			main.css           <- Estilos visuales (Paso 3)
+			js/
+			app.js             <- Orquestador (Paso 4)
+			modules/
+			api.js           <- fetch a la API (Paso 4)
+			ui.js            <- Manipular el DOM (Paso 4)
+			
+			Conexiones:
+			index.html --<link>--> css/main.css --@import--> css/variables.css
+			index.html --<script>--> js/app.js --import--> js/modules/api.js
+			--import--> js/modules/ui.js
+			
+			CSS lee del HTML:  class="tarjeta", class="btn-primario", [data-tema]
+			JS lee del HTML:   id="btn-tema", id="formulario-pfc", id="contenedor-datos"
+			JS modifica HTML:  textContent, innerHTML, setAttribute, classList
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\section{Ejemplo completo: boton de tema (HTML + CSS + JS)}
+	
+	\begin{cajacodigo}{azul}{INT-3a -- El HTML del boton}
+		\begin{lstlisting}[style=codehtml]
+			<!-- En index.html: -->
+			<button id="btn-tema" class="btn-primario"
+			aria-label="Cambiar tema"
+			aria-pressed="false">
+			Modo oscuro
+			</button>
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{ambar}{INT-3b -- El CSS del boton y del modo oscuro}
+		\begin{lstlisting}[style=codecss]
+			/* En main.css: estilo del boton */
+			.btn-primario {
+				background: var(--color-primario);
+				color: #fff;
+				border: none;
+				border-radius: 6px;
+				cursor: pointer;
+				transition: background 150ms ease;
+			}
+			.btn-primario:hover {
+				background: var(--color-primario-hover);
+			}
+			
+			/* En variables.css: modo oscuro */
+			[data-tema="oscuro"] {
+				--color-fondo: #0f172a;
+				--color-texto: #f1f5f9;
+			}
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{verde}{INT-3c -- El JavaScript que conecta todo}
+		\begin{lstlisting}[style=codejs]
+			// En ui.js:
+			export function toggleTema() {
+				const html = document.documentElement;
+				const actual = html.getAttribute('data-tema');
+				const nuevo = actual === 'oscuro' ? 'claro' : 'oscuro';
+				
+				// Cambia el atributo -> CSS reacciona automaticamente
+				html.setAttribute('data-tema', nuevo);
+				
+				// Guarda la preferencia para la proxima visita
+				localStorage.setItem('tema-pfc', nuevo);
+				
+				// Actualiza el boton (accesibilidad)
+				const btn = document.getElementById('btn-tema');
+				btn.textContent =
+				nuevo === 'oscuro' ? 'Modo claro' : 'Modo oscuro';
+				btn.setAttribute('aria-pressed', nuevo === 'oscuro');
+			}
+			
+			// En app.js:
+			import { toggleTema } from './modules/ui.js';
+			document.getElementById('btn-tema')
+			.addEventListener('click', toggleTema);
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaresultado}{Flujo completo del boton de tema}
+		\begin{enumerate}[leftmargin=1.5em,itemsep=3pt]
+			\item El usuario hace clic en el boton (\textbf{HTML}).
+			\item JavaScript captura el evento \texttt{click} y ejecuta \texttt{toggleTema()} (\textbf{JS}).
+			\item \texttt{toggleTema()} cambia \texttt{data-tema=``oscuro''} en el \texttt{<html>} (\textbf{JS modifica HTML}).
+			\item CSS detecta el selector \texttt{[data-tema=``oscuro'']} y cambia las variables de color (\textbf{CSS reacciona}).
+			\item El \texttt{body} tiene \texttt{transition: background-color 300ms} y el cambio se anima suavemente (\textbf{CSS}).
+			\item JavaScript guarda la preferencia en \texttt{localStorage} (\textbf{JS}).
+			\item Al recargar, JavaScript lee \texttt{localStorage} y restaura el tema (\textbf{JS}).
+		\end{enumerate}
+	\end{cajaresultado}
+	
+	\begin{cajatip}{verde}{Resumen: quien hace que}
+		\begin{center}
+			\small
+			\begin{tabular}{|L{2.5cm}|L{5cm}|L{6cm}|}
+				\hline
+				\rowcolor{azul}
+				\textcolor{white}{\textbf{Tecnologia}} &
+				\textcolor{white}{\textbf{Responsabilidad}} &
+				\textcolor{white}{\textbf{Ejemplo en la practica}} \\
+				\hline
+				\textbf{HTML} & Estructura y contenido & Etiquetas semanticas, formulario, atributos ARIA, \texttt{class} e \texttt{id} \\
+				\hline
+				\rowcolor{grisclaro}
+				\textbf{CSS} & Apariencia visual & Variables, Grid, Flexbox, modo oscuro, animaciones, accesibilidad visual \\
+				\hline
+				\textbf{JavaScript} & Comportamiento & Consumo de API, renderizado dinamico, validacion, tema, eventos \\
+				\hline
+			\end{tabular}
+		\end{center}
+	\end{cajatip}
+	
+\end{document}

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  EJERCICIO 2.2 — PORTAFOLIO PROFESIONAL (PLANTILLA BASE)
+  ============================================================
+  Archivo:  06_portafolio_template.html
+  Propósito: Plantilla DE PARTIDA para que el estudiante construya
+             su portafolio profesional cumpliendo el Ejercicio 2.2.
+  Referencia: Libro Aplicaciones Web - Sección 2.8 (Ejercicio 2.2)
+  ============================================================
+
+  ⚠ ATENCIÓN ESTUDIANTE:
+  Esta plantilla cumple SOLO los requisitos MÍNIMOS de estructura.
+  Para alcanzar nota 10 debes:
+   1) Completar todos los datos personales reales.
+   2) Añadir AL MENOS 3 proyectos en la sección correspondiente.
+   3) Subir al menos una imagen propia (con atributo alt descriptivo).
+   4) Validar la página en https://validator.w3.org/nu/ → 0 errores.
+   5) Pasar el audit con Lighthouse → Accessibility ≥ 90.
+   6) Auto-evaluar con la rúbrica antes de entregar.
+
+  ✅ ELEMENTOS SEMÁNTICOS USADOS:
+  header, nav, main, section, article, aside, footer, figure,
+  figcaption, time, address, blockquote, details, summary.
+
+  📋 REQUISITOS DE FORMULARIOS:
+  Al menos 5 tipos diferentes de input HTML5 + validación nativa.
+  ============================================================
+-->
+<html lang="es-EC">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portafolio profesional de [TU NOMBRE] — Estudiante de Ingeniería de Software UTEQ">
+    <meta name="author" content="[TU NOMBRE COMPLETO]">
+    <meta name="keywords" content="portafolio, [tu-nombre], desarrollo web, UTEQ, ingeniería de software">
+
+    <title>Portafolio | [TU NOMBRE COMPLETO]</title>
+
+    <!-- Open Graph para compartir en redes (opcional pero valorado) -->
+    <meta property="og:title" content="Portafolio de [TU NOMBRE]">
+    <meta property="og:description" content="Estudiante de Ingeniería de Software — UTEQ 2026">
+    <meta property="og:type" content="profile">
+
+    <style>
+        /* Estilos mínimos para que la plantilla sea presentable.
+           Te recomendamos personalizarlos en la semana 03 con CSS3. */
+        :root {
+            --verde: #2C5F2D;
+            --musgo: #97BC62;
+            --dorado: #D4A017;
+            --fondo: #FAFBF7;
+            --texto: #1B2A1C;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            color: var(--texto);
+            background: var(--fondo);
+            margin: 0;
+            line-height: 1.6;
+        }
+        header[role="banner"] {
+            background: linear-gradient(135deg, var(--verde), #1e4220);
+            color: white;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+        nav[aria-label="Principal"] {
+            background: white;
+            border-bottom: 3px solid var(--musgo);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        nav a {
+            display: block;
+            padding: 1rem .5rem;
+            color: var(--verde);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover, nav a:focus {
+            border-bottom: 3px solid var(--dorado);
+            margin-bottom: -3px;
+        }
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        section { margin-bottom: 3rem; }
+        h2 {
+            color: var(--verde);
+            border-bottom: 2px solid var(--musgo);
+            padding-bottom: .3rem;
+        }
+        .grid-proyectos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        article.proyecto {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,.05);
+        }
+        article.proyecto h3 { margin-top: 0; color: var(--verde); }
+        footer[role="contentinfo"] {
+            background: #1B2A1C;
+            color: #c5d4c4;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: .5rem;
+            margin-top: .25rem;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            font: inherit;
+        }
+        button[type="submit"] {
+            background: var(--verde);
+            color: white;
+            border: 0;
+            padding: .75rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================================== -->
+    <!-- CABECERA HERO                                               -->
+    <!-- ========================================================== -->
+    <header role="banner">
+        <h1>[TU NOMBRE COMPLETO]</h1>
+        <p>Estudiante de Ingeniería de Software | UTEQ 2026</p>
+        <p>
+            <a href="#contacto" style="color: var(--dorado);">Contáctame</a>
+            &nbsp;|&nbsp;
+            <a href="#proyectos" style="color: var(--dorado);">Ver mis proyectos</a>
+        </p>
+    </header>
+
+    <!-- ========================================================== -->
+    <!-- NAVEGACIÓN PRINCIPAL                                        -->
+    <!-- ========================================================== -->
+    <nav aria-label="Principal">
+        <ul>
+            <li><a href="#sobre-mi">Sobre mí</a></li>
+            <li><a href="#habilidades">Habilidades</a></li>
+            <li><a href="#proyectos">Proyectos</a></li>
+            <li><a href="#educacion">Educación</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- ========================================================== -->
+    <!-- CONTENIDO PRINCIPAL                                         -->
+    <!-- ========================================================== -->
+    <main>
+
+        <!-- SECCIÓN: SOBRE MÍ -->
+        <section id="sobre-mi">
+            <h2>Sobre mí</h2>
+            <figure>
+                <img src="ruta/tu-foto.jpg"
+                     alt="Foto de perfil de [TU NOMBRE]"
+                     width="200"
+                     style="border-radius: 50%;">
+                <figcaption>Foto profesional reciente</figcaption>
+            </figure>
+            <p>
+                [Escribe aquí 3-4 párrafos sobre quién eres. Incluye:
+                de dónde eres, qué estudias, qué te motiva, qué tipo
+                de desarrollo te interesa más, qué metas profesionales tienes.]
+            </p>
+            <blockquote>
+                <p>"[Una frase que te represente o te inspire profesionalmente.]"</p>
+                <footer>— <cite>Autor de la frase</cite></footer>
+            </blockquote>
+        </section>
+
+        <!-- SECCIÓN: HABILIDADES -->
+        <section id="habilidades">
+            <h2>Habilidades técnicas</h2>
+            <details open>
+                <summary><strong>Frontend</strong></summary>
+                <ul>
+                    <li>HTML5 semántico y accesible</li>
+                    <li>CSS3 (Grid, Flexbox, animaciones)</li>
+                    <li>JavaScript ES2026</li>
+                    <li>[Añade más según tu nivel]</li>
+                </ul>
+            </details>
+            <details>
+                <summary><strong>Backend</strong></summary>
+                <ul>
+                    <li>[Tecnologías de servidor que conoces]</li>
+                </ul>
+            </details>
+            <details>
+                <summary><strong>Bases de datos</strong></summary>
+                <ul>
+                    <li>[SQL, NoSQL, etc.]</li>
+                </ul>
+            </details>
+            <details>
+                <summary><strong>Herramientas</strong></summary>
+                <ul>
+                    <li>Git y GitHub</li>
+                    <li>Visual Studio Code</li>
+                    <li>[Otras herramientas]</li>
+                </ul>
+            </details>
+        </section>
+
+        <!-- SECCIÓN: PROYECTOS — DEBES AÑADIR AL MENOS 3 -->
+        <section id="proyectos">
+            <h2>Proyectos destacados</h2>
+            <div class="grid-proyectos">
+
+                <article class="proyecto">
+                    <h3>[Nombre del proyecto 1]</h3>
+                    <p><em>Tecnologías: HTML, CSS, JavaScript</em></p>
+                    <p>
+                        [Descripción breve: qué hace, qué problema resuelve,
+                        qué aprendiste construyéndolo.]
+                    </p>
+                    <p>
+                        <time datetime="2025-11-15">Noviembre 2025</time>
+                    </p>
+                    <p>
+                        <a href="https://github.com/tu-usuario/proyecto1">
+                            Ver en GitHub →
+                        </a>
+                    </p>
+                </article>
+
+                <article class="proyecto">
+                    <h3>[Nombre del proyecto 2]</h3>
+                    <p><em>Tecnologías: ...</em></p>
+                    <p>[Descripción breve.]</p>
+                    <p><time datetime="2026-02-20">Febrero 2026</time></p>
+                    <p><a href="#">Ver demo →</a></p>
+                </article>
+
+                <article class="proyecto">
+                    <h3>[Nombre del proyecto 3]</h3>
+                    <p><em>Tecnologías: ...</em></p>
+                    <p>[Descripción breve.]</p>
+                    <p><time datetime="2026-04-10">Abril 2026</time></p>
+                    <p><a href="#">Ver código →</a></p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN: EDUCACIÓN -->
+        <section id="educacion">
+            <h2>Educación y certificaciones</h2>
+            <article>
+                <h3>Universidad Técnica Estatal de Quevedo</h3>
+                <p>
+                    <strong>Ingeniería de Software</strong> —
+                    <time datetime="2023-09">Septiembre 2023</time> a la fecha.
+                </p>
+                <p>Período actual: 5°. Promedio: [tu promedio si lo deseas].</p>
+            </article>
+            <article>
+                <h3>[Certificación o curso adicional]</h3>
+                <p>[Institución] — <time datetime="2025-08">Agosto 2025</time></p>
+            </article>
+        </section>
+
+        <!-- ASIDE: extras como blog, intereses -->
+        <aside aria-label="Intereses adicionales">
+            <h2>Más allá del código</h2>
+            <p>
+                [Aquí puedes contar tus hobbies, deportes, lecturas,
+                voluntariados. Humaniza tu perfil.]
+            </p>
+        </aside>
+
+        <!-- SECCIÓN: CONTACTO con FORMULARIO -->
+        <section id="contacto">
+            <h2>Contáctame</h2>
+
+            <address>
+                <p>
+                    📧 <a href="mailto:tu.correo@uteq.edu.ec">tu.correo@uteq.edu.ec</a><br>
+                    💼 <a href="https://linkedin.com/in/tu-perfil">LinkedIn</a><br>
+                    💻 <a href="https://github.com/tu-usuario">GitHub</a><br>
+                    📍 Quevedo, Los Ríos, Ecuador
+                </p>
+            </address>
+
+            <!-- Formulario de contacto: DEBE incluir validación nativa -->
+            <form action="/api/contacto" method="post">
+                <label for="c-nombre">Tu nombre *</label>
+                <input type="text" id="c-nombre" name="nombre" required minlength="2" maxlength="80" autocomplete="name">
+
+                <label for="c-email">Tu correo electrónico *</label>
+                <input type="email" id="c-email" name="email" required autocomplete="email">
+
+                <label for="c-tel">Tu teléfono (opcional)</label>
+                <input type="tel" id="c-tel" name="telefono" pattern="0[0-9]{9}" title="Empieza con 0, 10 dígitos">
+
+                <label for="c-asunto">Asunto *</label>
+                <select id="c-asunto" name="asunto" required>
+                    <option value="">— Selecciona —</option>
+                    <option value="trabajo">Oportunidad de trabajo</option>
+                    <option value="proyecto">Colaboración en proyecto</option>
+                    <option value="otro">Otro</option>
+                </select>
+
+                <label for="c-fecha">Fecha sugerida de contacto</label>
+                <input type="date" id="c-fecha" name="fecha" min="2026-05-11">
+
+                <label for="c-mensaje">Mensaje *</label>
+                <textarea id="c-mensaje" name="mensaje" rows="5" required minlength="20" maxlength="1000"></textarea>
+
+                <p>
+                    <label>
+                        <input type="checkbox" name="acepto" required>
+                        Acepto que [TU NOMBRE] use estos datos para responderme.
+                    </label>
+                </p>
+
+                <button type="submit">Enviar mensaje</button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- ========================================================== -->
+    <!-- PIE DEL SITIO                                               -->
+    <!-- ========================================================== -->
+    <footer role="contentinfo">
+        <p>
+            &copy; <time datetime="2026">2026</time> [TU NOMBRE].
+            Construido con HTML5 semántico.
+        </p>
+        <p>
+            <small>
+                Validado en <a href="https://validator.w3.org/nu/" style="color: var(--dorado);">W3C</a>
+                — Auditado con Lighthouse — Accesible WCAG 2.1 AA
+            </small>
+        </p>
+    </footer>
+
+</body>
+</html>

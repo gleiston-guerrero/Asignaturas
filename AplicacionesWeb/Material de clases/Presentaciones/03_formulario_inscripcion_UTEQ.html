@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  EJERCICIO 2.1 RESUELTO — Formulario de Inscripción UTEQ
+  ============================================================
+  Archivo:  03_formulario_inscripcion_UTEQ.html
+  Propósito: Demostrar TODOS los tipos de input HTML5 y la
+             validación nativa del navegador sin JavaScript.
+  Referencia: Libro Aplicaciones Web - Sección 2.4 / Ej. 2.1
+  ============================================================
+
+  ELEMENTOS DEMOSTRADOS:
+  - 13 tipos nuevos de <input> (email, tel, url, number, range,
+    date, time, datetime-local, month, week, color, search,
+    además del clásico text/password)
+  - Atributos: required, pattern, min, max, step, autocomplete,
+    placeholder, list (datalist)
+  - Agrupación con <fieldset> y <legend>
+  - Asociación correcta <label for="..."> ↔ <input id="...">
+  - Mensajes de error personalizados con title
+  - Validación visual con :valid / :invalid (en CSS futuro)
+
+  ⚠ ADVERTENCIA CRÍTICA:
+  La validación HTML5 es para USABILIDAD, no SEGURIDAD.
+  Cualquier usuario puede deshabilitar JavaScript o saltarse el
+  formulario con Postman/curl. SIEMPRE valida de nuevo en el
+  servidor (lo veremos en la Semana 11 con Node.js).
+  ============================================================
+-->
+<html lang="es-EC">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción al evento académico | UTEQ 2026</title>
+
+    <!-- Estilos mínimos en línea para que el formulario sea legible
+         sin depender aún de CSS3 (lo veremos en la semana 03) -->
+    <style>
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            max-width: 720px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.5;
+            color: #1b2a1c;
+            background: #f6f8f4;
+        }
+        h1 { color: #2C5F2D; border-bottom: 3px solid #97BC62; padding-bottom: .4rem; }
+        fieldset {
+            border: 2px solid #97BC62;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: white;
+        }
+        legend {
+            font-weight: bold;
+            color: #2C5F2D;
+            padding: 0 .5rem;
+            font-size: 1.05rem;
+        }
+        label {
+            display: block;
+            margin-top: .75rem;
+            font-weight: 600;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: .5rem .6rem;
+            margin-top: .25rem;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        input:invalid:not(:placeholder-shown) { border-color: #B85042; }
+        input:valid:not(:placeholder-shown) { border-color: #2C5F2D; }
+        input[type="checkbox"], input[type="radio"] {
+            width: auto;
+            margin-right: .4rem;
+        }
+        small {
+            color: #555;
+            font-size: .85rem;
+            display: block;
+            margin-top: .15rem;
+        }
+        button {
+            background: #2C5F2D;
+            color: white;
+            border: 0;
+            padding: .75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background: #1e4220; }
+        .grupo-horizontal { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .grupo-horizontal > div { flex: 1 1 200px; }
+    </style>
+</head>
+<body>
+
+    <h1>Inscripción — Jornada de Aplicaciones Web 2026</h1>
+    <p>
+        Universidad Técnica Estatal de Quevedo —
+        Facultad de Ciencias de la Ingeniería —
+        20 de junio de 2026
+    </p>
+
+    <!-- ========================================================== -->
+    <!-- FORMULARIO PRINCIPAL                                        -->
+    <!-- action="..." → URL del servidor que procesará los datos     -->
+    <!-- method="post" → datos en el cuerpo, no en la URL            -->
+    <!-- novalidate (omitido)  → permitimos validación nativa        -->
+    <!-- ========================================================== -->
+    <form action="/api/inscripcion" method="post" autocomplete="on">
+
+        <!-- ====================================================== -->
+        <!-- BLOQUE 1: DATOS PERSONALES                              -->
+        <!-- ====================================================== -->
+        <fieldset>
+            <legend>1. Datos personales</legend>
+
+            <!-- Nombres: required + minlength = 2 -->
+            <label for="nombres">Nombres completos *</label>
+            <input
+                type="text"
+                id="nombres"
+                name="nombres"
+                placeholder="Ej.: María Fernanda"
+                required
+                minlength="2"
+                maxlength="80"
+                autocomplete="given-name">
+
+            <label for="apellidos">Apellidos *</label>
+            <input
+                type="text"
+                id="apellidos"
+                name="apellidos"
+                placeholder="Ej.: Cevallos Mendoza"
+                required
+                minlength="2"
+                maxlength="80"
+                autocomplete="family-name">
+
+            <!-- Cédula ecuatoriana: 10 dígitos exactos -->
+            <label for="cedula">Cédula de identidad *</label>
+            <input
+                type="text"
+                id="cedula"
+                name="cedula"
+                placeholder="0123456789"
+                required
+                pattern="[0-9]{10}"
+                title="Debe contener exactamente 10 dígitos numéricos"
+                inputmode="numeric"
+                maxlength="10">
+            <small>Diez dígitos sin guiones ni espacios.</small>
+
+            <!-- Email: validación de formato automática -->
+            <label for="email">Correo electrónico *</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="estudiante@uteq.edu.ec"
+                required
+                autocomplete="email">
+            <small>Te enviaremos la confirmación a esta dirección.</small>
+
+            <!-- Teléfono: type="tel" no valida formato (varían los países) -->
+            <label for="telefono">Teléfono celular *</label>
+            <input
+                type="tel"
+                id="telefono"
+                name="telefono"
+                placeholder="0999999999"
+                required
+                pattern="0[0-9]{9}"
+                title="Formato Ecuador: empieza con 0 seguido de 9 dígitos"
+                autocomplete="tel">
+
+            <!-- Fecha de nacimiento con rango -->
+            <label for="nacimiento">Fecha de nacimiento *</label>
+            <input
+                type="date"
+                id="nacimiento"
+                name="nacimiento"
+                required
+                min="1950-01-01"
+                max="2010-12-31">
+
+            <!-- Sexo / género: radio buttons -->
+            <fieldset style="margin-top:1rem; border-color:#ccc;">
+                <legend style="color:#555; font-size:.95rem;">Sexo</legend>
+                <label style="display:inline-block; margin-right:1rem;">
+                    <input type="radio" name="sexo" value="F" required> Femenino
+                </label>
+                <label style="display:inline-block; margin-right:1rem;">
+                    <input type="radio" name="sexo" value="M"> Masculino
+                </label>
+                <label style="display:inline-block;">
+                    <input type="radio" name="sexo" value="O"> Otro / Prefiero no decir
+                </label>
+            </fieldset>
+        </fieldset>
+
+        <!-- ====================================================== -->
+        <!-- BLOQUE 2: INFORMACIÓN ACADÉMICA                         -->
+        <!-- ====================================================== -->
+        <fieldset>
+            <legend>2. Información académica</legend>
+
+            <!-- Select de carrera -->
+            <label for="carrera">Carrera *</label>
+            <select id="carrera" name="carrera" required>
+                <option value="">— Selecciona una carrera —</option>
+                <option value="ing-software">Ingeniería de Software</option>
+                <option value="ing-telematica">Ingeniería en Telemática</option>
+                <option value="ing-electrica">Ingeniería Eléctrica</option>
+                <option value="ing-industrial">Ingeniería Industrial</option>
+                <option value="otra">Otra</option>
+            </select>
+
+            <!-- Número con rango -->
+            <label for="periodo">Período académico actual *</label>
+            <input
+                type="number"
+                id="periodo"
+                name="periodo"
+                min="1"
+                max="10"
+                step="1"
+                value="5"
+                required>
+            <small>Entre 1 y 10.</small>
+
+            <!-- Datalist: autocompletado sin select cerrado -->
+            <label for="universidad">Universidad de procedencia</label>
+            <input
+                type="text"
+                id="universidad"
+                name="universidad"
+                list="lista-universidades"
+                placeholder="Escribe o selecciona">
+            <datalist id="lista-universidades">
+                <option value="Universidad Técnica Estatal de Quevedo (UTEQ)">
+                <option value="Escuela Superior Politécnica del Litoral (ESPOL)">
+                <option value="Universidad de Guayaquil">
+                <option value="Universidad Central del Ecuador">
+                <option value="Pontificia Universidad Católica del Ecuador">
+                <option value="Universidad San Francisco de Quito">
+            </datalist>
+
+            <!-- URL del portafolio (opcional) -->
+            <label for="portafolio">Portafolio web (opcional)</label>
+            <input
+                type="url"
+                id="portafolio"
+                name="portafolio"
+                placeholder="https://github.com/tu-usuario"
+                autocomplete="url">
+        </fieldset>
+
+        <!-- ====================================================== -->
+        <!-- BLOQUE 3: PREFERENCIAS DEL EVENTO                       -->
+        <!-- ====================================================== -->
+        <fieldset>
+            <legend>3. Preferencias del evento</legend>
+
+            <!-- Range: deslizador para experiencia -->
+            <label for="experiencia">
+                Nivel de experiencia previa en desarrollo web:
+                <output id="salida-exp" for="experiencia">3</output> / 5
+            </label>
+            <input
+                type="range"
+                id="experiencia"
+                name="experiencia"
+                min="1"
+                max="5"
+                step="1"
+                value="3"
+                oninput="document.getElementById('salida-exp').value = this.value">
+
+            <!-- Talleres: checkboxes múltiples -->
+            <fieldset style="margin-top:1rem; border-color:#ccc;">
+                <legend style="color:#555; font-size:.95rem;">
+                    Talleres de interés (puedes elegir varios)
+                </legend>
+                <label><input type="checkbox" name="talleres" value="html-css"> HTML5 + CSS3 moderno</label>
+                <label><input type="checkbox" name="talleres" value="javascript"> JavaScript ES2026</label>
+                <label><input type="checkbox" name="talleres" value="react"> React + Server Components</label>
+                <label><input type="checkbox" name="talleres" value="node"> Node.js + Express</label>
+                <label><input type="checkbox" name="talleres" value="db"> Bases de datos para la web</label>
+                <label><input type="checkbox" name="talleres" value="seguridad"> Seguridad web (OWASP Top 10)</label>
+            </fieldset>
+
+            <!-- Time picker -->
+            <div class="grupo-horizontal" style="margin-top:1rem;">
+                <div>
+                    <label for="hora-llegada">Hora de llegada estimada</label>
+                    <input
+                        type="time"
+                        id="hora-llegada"
+                        name="hora_llegada"
+                        min="07:00"
+                        max="18:00"
+                        value="08:00">
+                </div>
+                <div>
+                    <label for="color-credencial">Color preferido para tu credencial</label>
+                    <input
+                        type="color"
+                        id="color-credencial"
+                        name="color_credencial"
+                        value="#2C5F2D">
+                </div>
+            </div>
+
+            <!-- Textarea: comentarios -->
+            <label for="comentarios">Comentarios o necesidades especiales</label>
+            <textarea
+                id="comentarios"
+                name="comentarios"
+                rows="4"
+                maxlength="500"
+                placeholder="Si necesitas accesibilidad (rampa, intérprete LSE, dieta especial), indícalo aquí."></textarea>
+        </fieldset>
+
+        <!-- ====================================================== -->
+        <!-- BLOQUE 4: CONSENTIMIENTOS                               -->
+        <!-- ====================================================== -->
+        <fieldset>
+            <legend>4. Consentimientos</legend>
+
+            <label>
+                <input type="checkbox" name="terminos" required>
+                Acepto los <a href="/terminos" target="_blank">términos y condiciones</a>
+                del evento. *
+            </label>
+
+            <label>
+                <input type="checkbox" name="datos" required>
+                Autorizo el tratamiento de mis datos personales según la
+                <a href="/privacidad" target="_blank">política de privacidad</a>. *
+            </label>
+
+            <label>
+                <input type="checkbox" name="newsletter">
+                Deseo recibir información futura sobre eventos académicos.
+            </label>
+        </fieldset>
+
+        <!-- ====================================================== -->
+        <!-- BOTONES DE ACCIÓN                                       -->
+        <!-- ====================================================== -->
+        <button type="submit">Enviar inscripción</button>
+        <button type="reset" style="background:#888; margin-left:.5rem;">
+            Limpiar formulario
+        </button>
+
+    </form>
+
+    <hr style="margin: 3rem 0;">
+    <p style="font-size:.85rem; color:#666;">
+        <strong>Nota técnica:</strong> Si intentas enviar este formulario sin
+        completar los campos obligatorios, el navegador mostrará mensajes en
+        español automáticamente. Si escribes un email mal formado, te lo dirá.
+        Si la cédula no tiene 10 dígitos, te lo dirá. <strong>Todo eso sin una
+        sola línea de JavaScript.</strong>
+    </p>
+
+</body>
+</html>

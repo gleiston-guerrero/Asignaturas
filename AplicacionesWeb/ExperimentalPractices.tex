@@ -1,0 +1,740 @@
+% ============================================================
+%  EJERCICIOS RAPIDOS — Preparacion para la PE Unidad I
+%  HTML5, CSS3, JavaScript ES6+, Git, Accesibilidad
+%  Aplicaciones Web · Ingenieria de Software · UTEQ
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fix-cm}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[left=2.2cm,right=2.2cm,top=2cm,bottom=2cm,headheight=14pt]{geometry}
+\usepackage{xcolor,colortbl,array,longtable,booktabs,multirow}
+\usepackage{ragged2e,setspace,parskip,titlesec,fancyhdr,hyperref}
+\usepackage{enumitem,needspace,tcolorbox,amssymb,float,pifont}
+\usepackage{listings}
+\usepackage[protrusion=true,expansion=false]{microtype}
+
+\tcbuselibrary{skins,breakable}
+\DeclareFontShape{T1}{cmtt}{bx}{n}{<->ssub * cmtt/m/n}{}
+
+% Colores
+\definecolor{verde}{RGB}{0,120,48}
+\definecolor{verdeclaro}{RGB}{232,245,238}
+\definecolor{azul}{RGB}{24,95,165}
+\definecolor{azulclaro}{RGB}{230,241,251}
+\definecolor{ambar}{RGB}{140,85,10}
+\definecolor{ambarclaro}{RGB}{250,238,218}
+\definecolor{rojo}{RGB}{163,45,45}
+\definecolor{rojoclaro}{RGB}{252,235,235}
+\definecolor{morado}{RGB}{83,74,183}
+\definecolor{moradoclaro}{RGB}{238,237,254}
+\definecolor{grisclaro}{RGB}{245,245,245}
+\definecolor{gris}{RGB}{80,80,80}
+\definecolor{naranja}{RGB}{200,100,0}
+\definecolor{dark}{RGB}{38,50,56}
+\definecolor{codigofondo}{RGB}{30,30,46}
+\definecolor{codigotexto}{RGB}{205,214,244}
+\definecolor{keycolor}{RGB}{137,180,250}
+\definecolor{strcolor}{RGB}{166,227,161}
+\definecolor{comcolor}{RGB}{140,148,172}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{J}[1]{>{\justifying\arraybackslash}p{#1}}
+
+% Listings
+\lstdefinestyle{codehtml}{
+	backgroundcolor=\color{codigofondo},basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor}\bfseries,stringstyle=\color{strcolor},
+	commentstyle=\color{comcolor}\itshape,numberstyle=\tiny\color{comcolor},
+	numbers=left,numbersep=8pt,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt,language=HTML}
+\lstdefinestyle{codecss}{
+	backgroundcolor=\color{codigofondo},basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor}\bfseries,stringstyle=\color{strcolor},
+	commentstyle=\color{comcolor}\itshape,numberstyle=\tiny\color{comcolor},
+	numbers=left,numbersep=8pt,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt}
+\lstdefinestyle{codejs}{
+	backgroundcolor=\color{codigofondo},basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor}\bfseries,stringstyle=\color{strcolor},
+	commentstyle=\color{comcolor}\itshape,numberstyle=\tiny\color{comcolor},
+	numbers=left,numbersep=8pt,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt,language=Java,
+	morekeywords={async,await,export,import,from,const,let,function,try,catch,
+		finally,throw,console,document,fetch,getElementById,addEventListener,
+		forEach,map,DOMContentLoaded,log,error,querySelector,textContent,
+		innerHTML,value,preventDefault,checkValidity,FormData,fromEntries,
+		stringify,parse,ok,json,status}}
+\lstdefinestyle{codebash}{
+	backgroundcolor=\color{codigofondo},basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor},commentstyle=\color{comcolor}\itshape,
+	numbers=none,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt}
+
+% tcolorbox
+\tcbset{base/.style={arc=4pt,boxrule=0.6pt,left=8pt,right=8pt,top=6pt,bottom=6pt,
+		breakable,before upper={\parindent0pt\setlength{\parskip}{5pt}},lines before break=4}}
+\newtcolorbox{cajatip}[2]{base,colback=#1!9,colframe=#1,
+	title={\bfseries\small #2},coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajabanda}{base,colback=azul,colframe=azul,
+	before upper={\parindent0pt\color{white}\setlength{\parskip}{5pt}}}
+\newtcolorbox{cajacodigo}[2]{enhanced,breakable,arc=4pt,colback=codigofondo,colframe=#1,
+	title={\bfseries\small\color{white}#2},left=0pt,right=0pt,top=0pt,bottom=0pt,boxrule=0.8pt,
+	skin first=enhancedfirst,skin middle=enhancedmiddle,skin last=enhancedlast,
+	before upper={\parindent0pt},lines before break=3}
+\newtcolorbox{ejercicio}[2]{base,colback=ambarclaro,colframe=ambar,
+	title={\bfseries\small\color{white} Ejercicio #1 \hfill \textit{#2}},
+	coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{respuesta}{base,colback=verdeclaro,colframe=verde,
+	title={\bfseries\small\color{white} Respuesta},coltitle=white,fonttitle=\color{white}}
+
+% Numerador de ejercicios
+\newcounter{nej}
+\setcounter{nej}{0}
+\newcommand{\ej}[2]{%
+	\stepcounter{nej}%
+	\begin{ejercicio}{\arabic{nej}}{#1}#2\end{ejercicio}\vspace{4pt}}
+% resp is now used as an environment directly
+
+% Encabezado
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{gris} UTEQ -- Aplicaciones Web}
+\fancyhead[R]{\small\color{gris} Ejercicios Rapidos -- PE Unidad I}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Secciones
+\titleformat{\section}{\large\bfseries\color{azul}}{}{0em}{}
+[{\vspace{-4pt}\color{azul}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\normalsize\bfseries\color{verde}}{}{0em}{\thesubsection\quad}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\setcounter{secnumdepth}{2}
+
+\setstretch{1.13}\setlength{\parindent}{0pt}
+\hyphenpenalty=1000\exhyphenpenalty=1000
+\hypersetup{colorlinks=true,linkcolor=azul,urlcolor=verde,
+	pdftitle={Ejercicios Rapidos PE U1 UTEQ}}
+
+% =============================================================
+\begin{document}
+	% =============================================================
+	
+	\begin{cajabanda}
+		\begin{center}
+			{\scriptsize\bfseries PREPARACION PARA LA PRACTICA EXPERIMENTAL UNIDAD I}\\[5pt]
+			{\LARGE\bfseries EJERCICIOS RAPIDOS}\\[3pt]
+			{\large\bfseries 50 ejercicios cortos organizados por tema y paso de la practica}\\[3pt]
+			{\normalsize Git $\cdot$ HTML5 $\cdot$ CSS3 $\cdot$ JavaScript ES6+ $\cdot$ Accesibilidad $\cdot$ Lighthouse}\\[5pt]
+			{\small Aplicaciones Web -- Ingenieria de Software -- UTEQ 2025-2026}
+		\end{center}
+	\end{cajabanda}
+	
+	\vspace{0.3cm}
+	
+	\begin{cajatip}{azul}{Como usar este documento}
+		Cada ejercicio toma entre \textbf{30 segundos y 3 minutos}. Estan organizados en el mismo orden que los 5 pasos de la practica. Resuelve cada uno antes de mirar la respuesta. Si no puedes resolverlo en el tiempo indicado, repasa la teoria de la diapositiva correspondiente.
+	\end{cajatip}
+	
+	\vspace{0.3cm}
+	\tableofcontents
+	\vspace{0.5cm}
+	
+	% =============================================================
+	\section{Tema A: Git y terminal (Paso 1 de la practica)}
+	% =============================================================
+	
+	\ej{30 seg}{Escribe el comando Git para clonar un repositorio con URL \texttt{https://github.com/equipo/pfc.git}}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codebash]
+			git clone https://github.com/equipo/pfc.git
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Escribe los 3 comandos Git para agregar todos los archivos, hacer commit con mensaje ``feat: formulario HTML5'' y subir a la rama main.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codebash]
+			git add .
+			git commit -m "feat: formulario HTML5"
+			git push origin main
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que hace el comando \texttt{mkdir -p frontend/js/modules}?}
+	
+	\begin{respuesta}
+		Crea la carpeta \texttt{modules} dentro de \texttt{js} dentro de \texttt{frontend}. La bandera \texttt{-p} crea todas las carpetas intermedias que no existan, sin dar error si ya existen.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe un archivo \texttt{.gitignore} que ignore: la carpeta \texttt{node\_modules/}, archivos \texttt{.env}, archivos \texttt{.DS\_Store} y todos los archivos \texttt{.log}.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codebash]
+			node_modules/
+			.env
+			.DS_Store
+			*.log
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Cual es la diferencia entre \texttt{git add .} y \texttt{git add frontend/index.html}?}
+	
+	\begin{respuesta}
+		\texttt{git add .} agrega TODOS los archivos modificados y nuevos del directorio actual y subdirectorios al area de staging. \texttt{git add frontend/index.html} agrega solo ese archivo especifico. En la practica, usar \texttt{git add .} es mas rapido pero menos controlado.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	% =============================================================
+	\section{Tema B: HTML5 semantico (Paso 2 de la practica)}
+	% =============================================================
+	
+	\ej{1 min}{Escribe la estructura minima de un documento HTML5 valido con: DOCTYPE, html con idioma espanol, charset UTF-8, viewport responsivo y titulo.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codehtml]
+			<!DOCTYPE html>
+			<html lang="es">
+			<head>
+			<meta charset="UTF-8">
+			<meta name="viewport"
+			content="width=device-width, initial-scale=1.0">
+			<title>Mi Pagina</title>
+			</head>
+			<body>
+			</body>
+			</html>
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que etiqueta semantica HTML5 reemplaza a \texttt{<div id="header">}?}
+	
+	\begin{respuesta}
+		\texttt{<header>}. La etiqueta semantica \texttt{<header>} indica al navegador, a Google y a los lectores de pantalla que ese bloque es el encabezado de la pagina.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\stepcounter{nej}
+	\begin{ejercicio}{\arabic{nej}}{1 min}
+		Reescribe este codigo con etiquetas semanticas correctas:
+		\begin{lstlisting}[style=codehtml]
+			<div id="nav"><a href="/">Inicio</a></div>
+			<div id="content">Hola mundo</div>
+			<div id="footer">2025</div>
+		\end{lstlisting}
+	\end{ejercicio}
+	\vspace{4pt}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codehtml]
+			<nav aria-label="Navegacion principal">
+			<a href="/">Inicio</a>
+			</nav>
+			<main>Hola mundo</main>
+			<footer>2025</footer>
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Cuantos \texttt{<h1>} debe tener una pagina HTML5? Y cuantos \texttt{<main>}?}
+	
+	\begin{respuesta}
+		Un solo \texttt{<h1>} por pagina (el titulo principal). Un solo \texttt{<main>} por pagina (el contenido principal). Tener mas de uno de cada uno es un error de accesibilidad que Lighthouse penaliza.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Cual es la diferencia entre \texttt{<section>} y \texttt{<article>}?}
+	
+	\begin{respuesta}
+		\texttt{<section>} agrupa contenido tematicamente relacionado (necesita un heading como \texttt{<h2>}). \texttt{<article>} es contenido autonomo que tiene sentido por si solo fuera de la pagina (un post de blog, una tarjeta de producto, un comentario). Un \texttt{<article>} puede tener \texttt{<section>} dentro y viceversa.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{2 min}{Escribe un campo de email accesible completo: label asociado, input con tipo email, validacion required, y span de error con role alert.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codehtml]
+			<div class="campo-form">
+			<label for="email">Correo electronico *</label>
+			<input type="email" id="email" name="email"
+			required
+			placeholder="usuario@dominio.com"
+			aria-describedby="email-error">
+			<span id="email-error"
+			class="mensaje-error"
+			role="alert"
+			aria-live="assertive"></span>
+			</div>
+		\end{lstlisting}
+		Puntos clave: el \texttt{for} del label coincide con el \texttt{id} del input. El \texttt{aria-describedby} del input apunta al \texttt{id} del span de error. El span tiene \texttt{role="alert"} para que el lector de pantalla lo anuncie cuando cambie.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Nombra 8 valores diferentes del atributo \texttt{type} de \texttt{<input>}.}
+	
+	\begin{respuesta}
+		\texttt{text}, \texttt{email}, \texttt{password}, \texttt{number}, \texttt{date}, \texttt{tel}, \texttt{range}, \texttt{file}. Otros validos: \texttt{url}, \texttt{search}, \texttt{color}, \texttt{time}, \texttt{hidden}, \texttt{checkbox}, \texttt{radio}.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que hace el atributo \texttt{required} en un input?}
+	
+	\begin{respuesta}
+		Impide que el formulario se envie si el campo esta vacio. El navegador muestra automaticamente un mensaje de error nativo sin necesidad de JavaScript.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe un \texttt{<select>} accesible con 3 opciones y una opcion vacia inicial que diga ``Seleccione''.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codehtml]
+			<label for="carrera">Carrera *</label>
+			<select id="carrera" name="carrera" required>
+			<option value="">-- Seleccione --</option>
+			<option value="sw">Ing. de Software</option>
+			<option value="si">Sistemas de Informacion</option>
+			<option value="cs">Ciencias de la Computacion</option>
+			</select>
+		\end{lstlisting}
+		La primera option con \texttt{value=""} combinada con \texttt{required} obliga al usuario a seleccionar una opcion real.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Para que sirve \texttt{<fieldset>} y \texttt{<legend>}?}
+	
+	\begin{respuesta}
+		Agrupan controles relacionados en un formulario. \texttt{<fieldset>} es el contenedor y \texttt{<legend>} es el titulo del grupo. Son obligatorios para grupos de checkboxes y radio buttons por accesibilidad: el lector de pantalla anuncia el legend antes de cada opcion del grupo.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	% =============================================================
+	\section{Tema C: CSS3 fundamentos (Paso 3 de la practica)}
+	% =============================================================
+	
+	\ej{30 seg}{Si dos reglas CSS apuntan al mismo elemento, cual gana: \texttt{.clase \{ color: red; \}} o \texttt{p \{ color: blue; \}}?}
+	
+	\begin{respuesta}
+		Gana \texttt{.clase} porque su especificidad es (0,1,0) que es mayor que (0,0,1) del selector de etiqueta \texttt{p}. La clase siempre gana sobre la etiqueta.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Convierte a shorthand: \texttt{margin-top: 1rem; margin-right: 2rem; margin-bottom: 1rem; margin-left: 2rem;}}
+	
+	\begin{respuesta}
+		\texttt{margin: 1rem 2rem;} (2 valores: vertical=1rem, horizontal=2rem). Como top=bottom y right=left, se reducen a 2 valores.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que es \texttt{box-sizing: border-box} y por que se usa en todo proyecto?}
+	
+	\begin{respuesta}
+		Hace que \texttt{width} y \texttt{height} incluyan el padding y el borde, no solo el contenido. Sin esto, un elemento con \texttt{width:100\%} y \texttt{padding:1rem} desbordaria su contenedor. Por eso el reset CSS incluye \texttt{*, *::before, *::after \{ box-sizing: border-box; \}}.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe una variable CSS llamada \texttt{--color-primario} con valor \texttt{\#0066cc} en \texttt{:root}, y usala en un boton.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codecss]
+			:root {
+				--color-primario: #0066cc;
+			}
+			.btn {
+				background: var(--color-primario);
+				color: #fff;
+			}
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que hace \texttt{clamp(1rem, 2vw, 1.5rem)}?}
+	
+	\begin{respuesta}
+		Crea un valor fluido: nunca menor de \textbf{1rem} (minimo), idealmente \textbf{2\% del ancho del viewport} (preferido), nunca mayor de \textbf{1.5rem} (maximo). Sirve para tipografia responsiva sin media queries.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe la media query para modo oscuro automatico que cambie \texttt{--color-fondo} a \texttt{\#0f172a}.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codecss]
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--color-fondo: #0f172a;
+					--color-texto: #f1f5f9;
+				}
+			}
+		\end{lstlisting}
+		Esta media query detecta si el sistema operativo del usuario tiene el modo oscuro activado y cambia las variables automaticamente.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Diferencia entre \texttt{rem} y \texttt{px}.}
+	
+	\begin{respuesta}
+		\texttt{px} es absoluto (1 pixel). \texttt{rem} es relativo al \texttt{font-size} del elemento \texttt{<html>} (por defecto 16px, entonces 1rem=16px). Usar \texttt{rem} permite que todo el sitio escale si el usuario cambia el tamano de fuente en su navegador. Siempre preferir \texttt{rem} sobre \texttt{px} para tipografia y espaciado.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	% =============================================================
+	\section{Tema D: CSS Grid y Flexbox (Paso 3 de la practica)}
+	% =============================================================
+	
+	\ej{30 seg}{Cuando se usa CSS Grid y cuando Flexbox?}
+	
+	\begin{respuesta}
+		\textbf{Grid}: cuando el \textbf{layout} importa mas que el contenido (filas Y columnas: layout de pagina, dashboards). \textbf{Flexbox}: cuando el \textbf{contenido} importa mas que el layout (distribuir elementos en UNA dimension: navbar, tarjetas, formulario vertical).
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{2 min}{Escribe el CSS para un layout mobile-first: 1 columna en mobile, 2 columnas (main + aside de 280px) en tablet (768px).}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codecss]
+			.layout {
+				display: grid;
+				grid-template-areas: "main" "aside";
+				gap: 1rem;
+			}
+			@media (min-width: 768px) {
+				.layout {
+					grid-template-areas: "main aside";
+					grid-template-columns: 1fr 280px;
+				}
+			}
+			main  { grid-area: main; }
+			aside { grid-area: aside; }
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe el CSS para que unas tarjetas se distribuyan en fila con wrap, minimo 260px cada una, con espacio de 1rem entre ellas.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codecss]
+			.tarjetas {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1rem;
+			}
+			.tarjeta {
+				flex: 1 1 260px;
+			}
+		\end{lstlisting}
+		\texttt{flex: 1 1 260px} significa: crece si hay espacio, se encoge si falta, pero nunca mide menos de 260px.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que hace \texttt{justify-content: space-between}?}
+	
+	\begin{respuesta}
+		Distribuye los hijos en el eje principal colocando el primero al inicio y el ultimo al final, con espacio igual entre ellos. No hay espacio antes del primero ni despues del ultimo.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Como centrar un div horizontalmente?}
+	
+	\begin{respuesta}
+		\texttt{margin: 0 auto;} (requiere que el elemento tenga un \texttt{width} o \texttt{max-width} definido). \texttt{auto} en los margenes laterales distribuye el espacio sobrante por igual.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe el CSS de un boton con: fondo azul, texto blanco, padding, sin borde, esquinas redondeadas, cursor de mano y transicion suave al hacer hover.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codecss]
+			.btn {
+				background: #0066cc;
+				color: #fff;
+				padding: 0.625rem 1.5rem;
+				border: none;
+				border-radius: 6px;
+				cursor: pointer;
+				transition: background 200ms ease;
+			}
+			.btn:hover {
+				background: #0055aa;
+			}
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que hace \texttt{transition: transform 0.3s ease}?}
+	
+	\begin{respuesta}
+		Anima cualquier cambio en la propiedad \texttt{transform} durante 0.3 segundos con una curva suave (\texttt{ease}). Si el elemento tiene \texttt{:hover \{ transform: translateY(-4px); \}}, la elevacion se animara suavemente en lugar de ser un salto brusco.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Que hace \texttt{@media (prefers-reduced-motion: reduce)} y por que es obligatorio?}
+	
+	\begin{respuesta}
+		Detecta si el usuario solicito reducir el movimiento en su sistema operativo (por epilepsia, mareo u otra condicion). Es obligatorio desactivar TODAS las animaciones CSS cuando esta activa:
+		\begin{lstlisting}[style=codecss]
+			@media (prefers-reduced-motion: reduce) {
+				*, *::before, *::after {
+					animation: none !important;
+					transition: none !important;
+				}
+			}
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	% =============================================================
+	\section{Tema E: JavaScript ES6+ (Paso 4 de la practica)}
+	% =============================================================
+	
+	\ej{30 seg}{Cual es la diferencia entre \texttt{var}, \texttt{let} y \texttt{const}?}
+	
+	\begin{respuesta}
+		\texttt{var}: alcance de funcion, hoisting, reasignable (obsoleto, no usar). \texttt{let}: alcance de bloque, reasignable. \texttt{const}: alcance de bloque, referencia NO reasignable (pero objetos/arrays SI son mutables). Regla: usar siempre \texttt{const}; solo \texttt{let} si necesitas reasignar.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Reescribe esta funcion con arrow function:
+		\texttt{function suma(a, b) \{ return a + b; \}}}
+	
+	\begin{respuesta}
+		\texttt{const suma = (a, b) => a + b;}
+		
+		Si el cuerpo tiene una sola expresion, se omiten las llaves y el \texttt{return} es implicito. Si tiene multiples lineas, se usan llaves y \texttt{return} explicito.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe un template literal que diga: ``Hola, Maria. Tu edad es 25 anos.'' usando variables \texttt{nombre} y \texttt{edad}.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codejs]
+			const nombre = "Maria";
+			const edad = 25;
+			const msg = `Hola, ${nombre}. Tu edad es ${edad} anos.`;
+		\end{lstlisting}
+		Usar backticks (\texttt{`}) en lugar de comillas. Las expresiones van dentro de \texttt{\$\{...\}}.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que hace \texttt{document.getElementById('titulo')}?}
+	
+	\begin{respuesta}
+		Busca en el DOM el elemento HTML que tiene \texttt{id="titulo"} y devuelve una referencia a ese elemento. Si no existe, devuelve \texttt{null}. Es la forma mas directa de seleccionar un elemento especifico.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe el codigo para escuchar el evento ``click'' en un boton con id ``btn-enviar'' y mostrar ``Hola'' en la consola.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codejs]
+			document.getElementById('btn-enviar')
+			.addEventListener('click', () => {
+				console.log('Hola');
+			});
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que hace \texttt{type="module"} en la etiqueta \texttt{<script>}?}
+	
+	\begin{respuesta}
+		Activa el sistema de modulos ES6 nativo del navegador. Permite usar \texttt{import} y \texttt{export}. Sin \texttt{type="module"}, el navegador lanza un error de sintaxis al encontrar \texttt{import}. Ademas, los scripts de tipo module se ejecutan automaticamente en modo \texttt{defer} (despues de que el DOM esta listo).
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe una funcion \texttt{obtenerDatos} que haga fetch a una URL, verifique que la respuesta sea exitosa, y devuelva el JSON.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codejs]
+			export async function obtenerDatos(url) {
+				const res = await fetch(url);
+				if (!res.ok) {
+					throw new Error(`HTTP ${res.status}`);
+				}
+				return res.json();
+			}
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Por que \texttt{fetch} NO lanza excepcion con un error HTTP 404?}
+	
+	\begin{respuesta}
+		Porque \texttt{fetch} solo lanza excepcion en errores de RED (sin internet, dominio no existe, CORS). Un 404 es una respuesta valida del servidor. Por eso hay que verificar manualmente \texttt{if (!res.ok)} y lanzar el error explicitamente.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{2 min}{Escribe el patron completo de consumo de API con los 4 estados: cargando, exito, error y finally.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codejs]
+			async function cargarDatos() {
+				mostrarCarga();          // Estado: cargando
+				try {
+					const datos = await obtenerDatos('users');
+					renderizar(datos);     // Estado: exito
+				} catch (error) {
+					mostrarError(error);   // Estado: error
+				} finally {
+					ocultarCarga();        // SIEMPRE se ejecuta
+				}
+			}
+		\end{lstlisting}
+		\texttt{finally} se ejecuta tanto con exito como con error: es el lugar correcto para ocultar el indicador de carga.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe un modulo \texttt{ui.js} que exporte una funcion \texttt{escapeHTML} que prevenga XSS.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codejs]
+			// ui.js
+			export function escapeHTML(texto) {
+				return String(texto)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;');
+			}
+		\end{lstlisting}
+		Convierte los caracteres peligrosos en entidades HTML. Sin esto, un atacante podria inyectar \texttt{<script>alert('XSS')</script>} en un campo de texto.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que hace \texttt{e.preventDefault()} en el listener de submit de un formulario?}
+	
+	\begin{respuesta}
+		Previene el comportamiento por defecto del formulario, que es recargar la pagina con un POST al servidor. Sin \texttt{preventDefault()}, la pagina se recarga y se pierde el estado de la SPA. En una SPA, el envio se maneja con JavaScript via \texttt{fetch}.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	% =============================================================
+	\section{Tema F: Accesibilidad WCAG y ARIA (Pasos 2 y 5)}
+	% =============================================================
+	
+	\ej{30 seg}{Que significan las siglas POUR?}
+	
+	\begin{respuesta}
+		\textbf{P}erceptible, \textbf{O}perable, \textbf{U}nderstandable (Comprensible), \textbf{R}obust (Robusto). Son los 4 principios de la WCAG 2.1 (Web Content Accessibility Guidelines).
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Por que toda imagen debe tener el atributo \texttt{alt}?}
+	
+	\begin{respuesta}
+		Porque los usuarios de lectores de pantalla no pueden ver la imagen. El \texttt{alt} describe el contenido para ellos. Si la imagen es decorativa (no aporta informacion), se usa \texttt{alt=""} para que el lector la ignore. Omitir \texttt{alt} es una violacion del principio P (Perceptible).
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que hace \texttt{aria-live="polite"}?}
+	
+	\begin{respuesta}
+		Le dice al lector de pantalla que anuncie el contenido de ese elemento cuando cambie, pero esperando a que termine de leer lo que esta leyendo actualmente (\texttt{polite}). Se usa en indicadores de carga y mensajes de estado. \texttt{aria-live="assertive"} interrumpe inmediatamente (para errores criticos).
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que es un ``skip link'' y por que es obligatorio?}
+	
+	\begin{respuesta}
+		Es un enlace invisible que aparece al presionar Tab, permitiendo saltar directamente al contenido principal:
+		\begin{lstlisting}[style=codehtml]
+			<a href="#main" class="saltar-nav">
+			Ir al contenido principal
+			</a>
+		\end{lstlisting}
+		Es obligatorio porque los usuarios de teclado tendrian que presionar Tab docenas de veces para pasar toda la navegacion antes de llegar al contenido.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Cual es el ratio minimo de contraste para texto normal segun WCAG AA?}
+	
+	\begin{respuesta}
+		\textbf{4.5:1} para texto normal. \textbf{3:1} para texto grande ($\geq$18pt o $\geq$14pt bold). Se verifica con la herramienta WebAIM Contrast Checker: \url{https://webaim.org/resources/contrastchecker/}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\stepcounter{nej}
+	\begin{ejercicio}{\arabic{nej}}{1 min}
+		Que tiene de malo este codigo?
+		
+		\texttt{<input type="text" placeholder="Nombre">}
+	\end{ejercicio}
+	\vspace{4pt}
+	
+	\begin{respuesta}
+		Le falta el \texttt{<label>} asociado. El \texttt{placeholder} NO reemplaza al label: desaparece cuando el usuario escribe y los lectores de pantalla no siempre lo anuncian. Correccion:
+		\begin{lstlisting}[style=codehtml]
+			<label for="nombre">Nombre</label>
+			<input type="text" id="nombre"
+			placeholder="Ej: Maria Garcia">
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	% =============================================================
+	\section{Tema G: Lighthouse y WAVE (Paso 5 de la practica)}
+	% =============================================================
+	
+	\ej{30 seg}{Como se abre Lighthouse en Chrome?}
+	
+	\begin{respuesta}
+		F12 (abre DevTools) $\to$ pestana \textbf{Lighthouse} $\to$ marcar las 4 categorias (Performance, Accessibility, Best Practices, SEO) $\to$ dispositivo Mobile $\to$ \textbf{Analyze page load}.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Cual es el score minimo de Accessibility que se pide en la practica?}
+	
+	\begin{respuesta}
+		\textbf{$\geq$ 90} en Lighthouse Accessibility. El score perfecto es 100 pero 90 es el minimo aceptable que garantiza cumplimiento basico de WCAG 2.1 AA.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Lighthouse reporta: ``Heading elements are not in sequentially-descending order.'' Que significa y como se corrige?}
+	
+	\begin{respuesta}
+		Significa que los encabezados saltan niveles: por ejemplo, hay un \texttt{<h1>} y luego un \texttt{<h3>} sin un \texttt{<h2>} intermedio. Correccion: respetar la jerarquia h1 $\to$ h2 $\to$ h3 sin saltar niveles. Solo un \texttt{<h1>} por pagina.
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{30 seg}{Que extension se instala para la auditoria visual de accesibilidad?}
+	
+	\begin{respuesta}
+		\textbf{WAVE} (Web Accessibility Evaluation Tool): \url{https://wave.webaim.org/extension/}. Se instala en Chrome, se abre con un clic en el icono, y superpone iconos de colores sobre la pagina: rojo = error (corregir), amarillo = alerta (revisar).
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Lighthouse reporta: ``Background and foreground colors do not have a sufficient contrast ratio.'' Como lo verificas y corriges?}
+	
+	\begin{respuesta}
+		Verificar: F12 $\to$ seleccionar el texto afectado $\to$ en el panel Styles, junto al color aparece el ratio actual. Si es menor de 4.5:1, oscurecer el texto o aclarar el fondo hasta cumplir. Herramienta online: \url{https://webaim.org/resources/contrastchecker/}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\ej{1 min}{Escribe los comandos Git para hacer el commit final y crear el tag de entrega de la practica.}
+	
+	\begin{respuesta}
+		\begin{lstlisting}[style=codebash]
+			git add .
+			git commit -m "feat: auditoria accesibilidad - Lighthouse 90+, WAVE 0 errores"
+			git push origin main
+			git tag -a v1.0-PE-U1 -m "Entrega PE Unidad I"
+			git push origin main --tags
+		\end{lstlisting}
+	\end{respuesta}
+	\vspace{6pt}
+	
+	\vspace{0.5cm}
+	
+	\begin{cajatip}{verde}{Autoevaluacion}
+		Si pudiste resolver al menos \textbf{40 de los 50 ejercicios} sin mirar la respuesta, estas listo para la practica. Si no, repasa las diapositivas de los temas donde fallaste antes de la sesion de laboratorio.
+	\end{cajatip}
+	
+\end{document}

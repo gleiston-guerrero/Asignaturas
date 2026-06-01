@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestión de Estudiantes - CRUD con Arreglos</title>
+  <link rel="stylesheet" href="/css/proyectofinal.css" />
+</head>
+<body>
+<header>
+  <h1>Gestión de Estudiantes</h1>
+  <p>CRUD avanzado con arreglos y funciones modernas de JavaScript</p>
+</header>
+
+<main>
+  <!-- Formulario para agregar / editar estudiantes -->
+  <section class="card" id="form-section">
+    <h2>Formulario de Estudiante</h2>
+    <form id="student-form">
+      <input type="hidden" id="student-id" />
+
+      <div class="form-group">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="age">Edad:</label>
+        <input type="number" id="age" min="1" required />
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Género:</label>
+        <select id="gender" required>
+          <option value="">Seleccione...</option>
+          <option value="F">Femenino</option>
+          <option value="M">Masculino</option>
+          <option value="O">Otro</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="courses">N.º de cursos:</label>
+        <input type="number" id="courses" min="0" required />
+      </div>
+
+      <div class="form-group">
+        <label for="payment">Valor de pago:</label>
+        <input type="number" id="payment" min="0" step="0.01" required />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" id="save-btn">Guardar</button>
+        <button type="button" id="reset-btn">Limpiar</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Controles de filtro y búsqueda -->
+  <section class="card" id="controls-section">
+    <h2>Filtros y Búsqueda</h2>
+
+    <div class="filters">
+      <span>Filtrar por género:</span>
+      <button type="button" data-filter="ALL" class="filter-btn">Todos</button>
+      <button type="button" data-filter="F" class="filter-btn">Femenino</button>
+      <button type="button" data-filter="M" class="filter-btn">Masculino</button>
+    </div>
+
+    <div class="search">
+      <label for="search-name">Buscar por nombre:</label>
+      <input type="text" id="search-name" placeholder="Buscar..." />
+      <button type="button" id="search-btn">Buscar</button>
+      <button type="button" id="clear-search-btn">Limpiar búsqueda</button>
+    </div>
+  </section>
+
+  <!-- Tabla dinámica de estudiantes -->
+  <section class="card" id="table-section">
+    <h2>Listado de Estudiantes</h2>
+    <table id="students-table">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Género</th>
+        <th>Cursos</th>
+        <th>Pago</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody id="students-tbody">
+      <!-- Filas dinámicas -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Panel de estadísticas -->
+  <section class="card" id="stats-section">
+    <h2>Estadísticas con Métodos de Arreglos</h2>
+    <pre id="stats-output">
+        No hay estudiantes registrados aún.
+      </pre>
+  </section>
+</main>
+
+<footer>
+  <small>Proyecto final - CRUD con arreglos y funciones avanzadas de JavaScript</small>
+</footer>
+
+<script src="/js/proyectofinal.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+WEBVTT
+Kind: subtitles
+Language: es
+
+NOTE
+Archivo de ejemplo de WebVTT para la cátedra Aplicaciones Web - UTEQ 2026.
+WebVTT (Web Video Text Tracks) es el formato estándar del W3C para
+subtítulos sincronizados con <video> y <audio> en HTML5.
+
+REGLAS BÁSICAS:
+- Primera línea: la palabra exacta WEBVTT
+- Cada bloque (cue) tiene: identificador opcional, tiempo, texto
+- Tiempo: HH:MM:SS.mmm --> HH:MM:SS.mmm  (con 3 milisegundos)
+- Líneas en blanco separan los cues
+- NOTE permite añadir comentarios al archivo
+- Soporta etiquetas: <b>, <i>, <u>, <c.clase>, <v Nombre>
+
+1
+00:00:00.000 --> 00:00:04.500
+Bienvenidos a la Jornada de Aplicaciones Web
+de la Universidad Técnica Estatal de Quevedo.
+
+2
+00:00:04.800 --> 00:00:09.200
+Hoy hablaremos sobre el desarrollo
+web moderno en el año 2026.
+
+3
+00:00:09.500 --> 00:00:14.000
+<v Dr. González>HTML no es solo un lenguaje de marcado;
+es un contrato semántico con la web.</v>
+
+4
+00:00:14.500 --> 00:00:19.000
+<i>HTML5 trajo consigo más de cien
+nuevas etiquetas y APIs nativas.</i>
+
+5
+00:00:19.500 --> 00:00:24.000
+Veremos cómo construir interfaces
+<b>accesibles, semánticas y validables</b>.
+
+6
+00:00:24.500 --> 00:00:28.000
+[Aplausos del público]
+Comencemos con la estructura básica.
+
+NOTE
+Los textos entre corchetes [Aplausos] son convenciones de captions
+para describir sonidos no verbales. Útiles para personas sordas.
+
+7
+00:00:28.500 --> 00:00:33.000
+Recordemos: la validación HTML5
+es para usabilidad, no para seguridad.
+
+8
+00:00:33.500 --> 00:00:38.000
+Siempre validemos también
+en el lado del servidor.

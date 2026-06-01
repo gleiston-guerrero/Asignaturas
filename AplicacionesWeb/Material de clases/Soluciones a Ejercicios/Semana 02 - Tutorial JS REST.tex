@@ -1,0 +1,1117 @@
+% ============================================================
+%  TUTORIAL COMPLETO: API REST con Node.js
+%  Gestión de Cultivos -- AgroAPI Ecuador
+%  Compilar con: pdflatex tutorial_api.tex
+% ============================================================
+\documentclass[12pt, a4paper]{article}
+
+% -- Codificación y fuentes -----------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}
+
+% -- Geometría de página --------------------------------------
+\usepackage[
+  top=2.5cm, bottom=2.5cm,
+  left=2.8cm, right=2.8cm
+]{geometry}
+
+% -- Color y gráficos -----------------------------------------
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+
+% -- Código fuente --------------------------------------------
+\usepackage{listings}
+\usepackage{inconsolata}   % fuente monoespaciada
+
+% -- Tablas ---------------------------------------------------
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{colortbl}
+
+% -- Otros ----------------------------------------------------
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{mdframed}
+\usepackage{fontawesome5}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings, skins, breakable}
+
+% ============================================================
+%  PALETA DE COLORES
+% ============================================================
+\definecolor{verdeAgro}   {HTML}{1D9E75}
+\definecolor{verdeCl}     {HTML}{E1F5EE}
+\definecolor{azulAPI}     {HTML}{185FA5}
+\definecolor{azulCl}      {HTML}{E6F1FB}
+\definecolor{ambarDB}     {HTML}{BA7517}
+\definecolor{ambarCl}     {HTML}{FAEEDA}
+\definecolor{rojoDel}     {HTML}{A32D2D}
+\definecolor{rojoCl}      {HTML}{FCEBEB}
+\definecolor{grisOscuro}  {HTML}{2C2C2A}
+\definecolor{grisMedio}   {HTML}{5F5E5A}
+\definecolor{grisCl}      {HTML}{F1EFE8}
+\definecolor{fondoCodigo} {HTML}{1A1A18}
+\definecolor{verdeCodigo} {HTML}{A0E8C0}
+\definecolor{azulCodigo}  {HTML}{85B7EB}
+\definecolor{naranjaKw}   {HTML}{EF9F27}
+
+% ============================================================
+%  ESTILO DE CÓDIGO -- JavaScript / JSON / Bash
+% ============================================================
+\lstdefinestyle{jsStyle}{
+  backgroundcolor = \color{fondoCodigo},
+  basicstyle      = \ttfamily\footnotesize\color{verdeCodigo},
+  keywordstyle    = \color{naranjaKw}\bfseries,
+  commentstyle    = \color{grisMedio}\itshape,
+  stringstyle     = \color{azulCodigo},
+  numberstyle     = \tiny\color{grisMedio},
+  numbers         = left,
+  numbersep       = 8pt,
+  stepnumber      = 1,
+  frame           = none,
+  breaklines      = true,
+  breakatwhitespace= false,
+  breakindent     = 10pt,
+  postbreak       = \mbox{\textcolor{grisMedio}{$\hookrightarrow$}\space},
+  tabsize         = 2,
+  showstringspaces= false,
+  columns         = flexible,
+  keepspaces      = true,
+  xleftmargin     = 14pt,
+  xrightmargin    = 4pt,
+  aboveskip       = 4pt,
+  belowskip       = 4pt,
+}
+\lstdefinestyle{jsonStyle}{
+  style           = jsStyle,
+  morestring      = [b]",
+  literate        = {:}{{\textcolor{naranjaKw}{:}}}{1}
+                    {,}{{\textcolor{grisMedio}{,}}}{1},
+}
+\lstdefinestyle{bashStyle}{
+  style           = jsStyle,
+  keywordstyle    = \color{verdeAgro}\bfseries,
+  morekeywords    = {curl, node, npm, mkdir, cd},
+}
+\lstdefinestyle{xmlStyle}{
+  style           = jsStyle,
+  keywordstyle    = \color{azulCodigo}\bfseries,
+  morestring      = [b]",
+  morecomment     = [s]{<!--}{-->},
+}
+
+% ============================================================
+%  CAJAS PERSONALIZADAS (tcolorbox)
+% ============================================================
+\tcbset{
+  notaStyle/.style = {
+    colback    = ambarCl,
+    colframe   = ambarDB,
+    fonttitle  = \bfseries\small,
+    title      = {\faInfoCircle\ Nota},
+    arc        = 4pt,
+    boxrule    = 0.6pt,
+    breakable,
+  },
+  codigoBox/.style = {
+    colback    = fondoCodigo,
+    colframe   = grisMedio,
+    arc        = 6pt,
+    boxrule    = 0.4pt,
+    top        = 4pt, bottom = 4pt,
+    left       = 6pt, right  = 6pt,
+    breakable,
+  },
+  pasoStyle/.style = {
+    colback    = verdeCl,
+    colframe   = verdeAgro,
+    fonttitle  = \bfseries\color{verdeAgro},
+    arc        = 6pt,
+    boxrule    = 0.8pt,
+    breakable,
+  },
+  peligroStyle/.style = {
+    colback    = rojoCl,
+    colframe   = rojoDel,
+    fonttitle  = \bfseries\small,
+    title      = {\faExclamationTriangle\ Importante},
+    arc        = 4pt,
+    boxrule    = 0.6pt,
+    breakable,
+  },
+}
+
+% ============================================================
+%  ENCABEZADO Y PIE DE PÁGINA
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{grisMedio}\textit{AgroAPI Ecuador -- Tutorial Node.js + REST}}
+\fancyhead[R]{\small\color{grisMedio}\textit{\nouppercase{\leftmark}}}
+\fancyfoot[C]{\small\color{grisMedio}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ============================================================
+%  FORMATO DE SECCIONES
+% ============================================================
+\titleformat{\section}
+  {\Large\bfseries\color{verdeAgro}}
+  {\thesection.}{0.6em}{}[\vspace{-4pt}\rule{\linewidth}{0.6pt}]
+\titleformat{\subsection}
+  {\large\bfseries\color{azulAPI}}
+  {\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{grisOscuro}}
+  {\thesubsubsection.}{0.4em}{}
+
+% ============================================================
+%  HIPERENLACES
+% ============================================================
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = azulAPI,
+  urlcolor   = verdeAgro,
+  citecolor  = grisMedio,
+  pdftitle   = {Tutorial API REST con Node.js -- Gestión de Cultivos},
+  pdfauthor  = {AgroAPI Ecuador},
+}
+
+% ============================================================
+%  COLORES MÉTODO HTTP
+% ============================================================
+\newcommand{\httpGET}  {\colorbox{azulCl}{\color{azulAPI}\textbf{\ttfamily GET}}}
+\newcommand{\httpPOST} {\colorbox{verdeCl}{\color{verdeAgro}\textbf{\ttfamily POST}}}
+\newcommand{\httpPUT}  {\colorbox{ambarCl}{\color{ambarDB}\textbf{\ttfamily PUT}}}
+\newcommand{\httpDEL}  {\colorbox{rojoCl}{\color{rojoDel}\textbf{\ttfamily DEL}}}
+
+% ============================================================
+%  DOCUMENTO
+% ============================================================
+\begin{document}
+
+% -- PORTADA -------------------------------------------------
+\begin{titlepage}
+  \pagecolor{verdeAgro}
+  \color{white}
+  \vspace*{3cm}
+  \begin{center}
+    {\fontsize{48}{52}\selectfont \bfseries \faLeaf}\\[1em]
+    {\fontsize{28}{32}\selectfont \bfseries AgroAPI Ecuador}\\[0.5em]
+    {\Large Tutorial Completo de API REST}\\[0.4em]
+    {\large con Node.js, Express y JavaScript}\\[3cm]
+    \begin{tikzpicture}
+      \draw[white, line width=1.5pt] (0,0) -- (10,0);
+    \end{tikzpicture}\\[1cm]
+    {\large \textbf{Gestión de Cultivos Agrícolas}}\\[0.5em]
+    {\normalsize Para principiantes absolutos en APIs web}\\[3cm]
+    {\small Guayaquil, Ecuador \textbullet\ 2025}
+  \end{center}
+  \vfill
+  \begin{center}
+    {\small \faCode\ JSON \textbullet\ XML \textbullet\ WebServices \textbullet\ fetch() \textbullet\ PostgreSQL}
+  \end{center}
+\end{titlepage}
+\pagecolor{white}\color{grisOscuro}
+
+% -- ÍNDICE --------------------------------------------------
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{¿Qué es una API y por qué la necesitamos?}
+% ============================================================
+
+Una \textbf{API} (Application Programming Interface, o Interfaz de Programación de Aplicaciones) es un conjunto de reglas y protocolos que permite que dos programas se comuniquen entre sí. En el contexto web, una \textbf{API REST} es un servidor que expone datos a través de URLs y responde con formato \texttt{JSON}.
+
+\begin{tcolorbox}[notaStyle]
+  Piensa en una API como un mesero en un restaurante: tú (el cliente) le dices qué quieres (petición HTTP), el mesero va a la cocina (servidor), y te trae la respuesta (datos JSON). No necesitas saber cómo funciona la cocina.
+\end{tcolorbox}
+
+\subsection{Arquitectura del sistema}
+
+El sistema completo tiene tres capas que se comunican entre sí:
+
+\bigskip
+
+% -- DIAGRAMA TikZ: Arquitectura de 3 capas ------------------
+\begin{center}
+\resizebox{0.96\linewidth}{!}{%
+\begin{tikzpicture}[
+  capa/.style  = {draw, rounded corners=6pt,
+                  minimum width=13.2cm, minimum height=2.6cm,
+                  inner sep=8pt},
+  nodo/.style  = {draw, rounded corners=4pt, fill=white,
+                  minimum width=3.0cm, minimum height=1.2cm,
+                  align=center, font=\small\strut},
+  arr/.style   = {-Stealth, line width=1pt},
+  lbl/.style   = {font=\footnotesize, align=center},
+]
+\pgfmathsetmacro{\W}{14.0}   % ancho total en cm (se ajusta con scalebox)
+
+% -- CAPA CLIENTE -----------------------------------------
+\node[capa, fill=azulCl, draw=azulAPI!60, text=azulAPI]
+      at (0,0) (CLIENTE) {};
+\node[font=\small\bfseries\color{azulAPI}]
+      at (0, 0.85) {\faDesktop\; Capa Cliente (Navegador)};
+\node[nodo, draw=azulAPI!40, fill=azulCl!40] at (-3.5,-0.1) {HTML + CSS\\{\tiny Interfaz}};
+\node[nodo, draw=azulAPI!40, fill=azulCl!40] at ( 0.0,-0.1) {JavaScript\\{\tiny Lógica}};
+\node[nodo, draw=azulAPI!40, fill=azulCl!40] at ( 3.5,-0.1) {\texttt{fetch()}\\{\tiny Peticiones HTTP}};
+
+% -- FLECHAS CLIENTE ↔ SERVIDOR ---------------------------
+\draw[arr, color=verdeAgro]
+  (-1.6,-1.35) -- (-1.6,-1.95)
+  node[midway, left=2pt, lbl, color=verdeAgro]
+       {\faArrowDown\; Request};
+\draw[arr, color=rojoDel]
+  (1.6,-1.95) -- (1.6,-1.35)
+  node[midway, right=2pt, lbl, color=rojoDel]
+       {\faArrowUp\; Response JSON};
+
+% -- CAPA SERVIDOR ----------------------------------------
+\node[capa, fill=verdeCl, draw=verdeAgro!60]
+      at (0,-3.3) (SERVIDOR) {};
+\node[font=\small\bfseries\color{verdeAgro}]
+      at (0,-2.45) {\faServer\; Servidor -- Node.js + Express (API REST)};
+\node[nodo, draw=verdeAgro!40, fill=verdeCl!40] at (-3.5,-3.4)
+      {Router\\{\tiny /api/cultivos}\\{\tiny /api/parcelas}};
+\node[nodo, draw=verdeAgro!40, fill=verdeCl!40] at ( 0.0,-3.4)
+      {Controladores\\{\tiny Lógica de negocio}\\{\tiny Validaciones}};
+\node[nodo, draw=verdeAgro!40, fill=verdeCl!40] at ( 3.5,-3.4)
+      {Middleware\\{\tiny cors(), json()}\\{\tiny Errores}};
+
+% -- FLECHAS SERVIDOR ↔ DATOS -----------------------------
+\draw[arr, color=verdeAgro]
+  (-1.6,-4.65) -- (-1.6,-5.25)
+  node[midway, left=2pt, lbl, color=verdeAgro]
+       {\faArrowDown\; Query};
+\draw[arr, color=ambarDB]
+  (1.6,-5.25) -- (1.6,-4.65)
+  node[midway, right=2pt, lbl, color=ambarDB]
+       {\faArrowUp\; Datos};
+
+% -- CAPA DATOS -------------------------------------------
+\node[capa, fill=ambarCl, draw=ambarDB!60]
+      at (0,-6.6) (DATOS) {};
+\node[font=\small\bfseries\color{ambarDB}]
+      at (0,-5.75) {\faDatabase\; Capa de Datos};
+\node[nodo, draw=ambarDB!40, fill=ambarCl!40] at (-3.5,-6.7)
+      {\texttt{cultivos.json}\\{\tiny Base de datos JSON}};
+\node[nodo, draw=ambarDB!40, fill=ambarCl!40] at ( 0.0,-6.7)
+      {\texttt{cultivos.xml}\\{\tiny Base de datos XML}};
+\node[nodo, draw=grisMedio!40, fill=grisCl]   at ( 3.5,-6.7)
+      {PostgreSQL\\{\tiny Producción}};
+
+\end{tikzpicture}%
+}
+\end{center}
+
+\bigskip
+
+\subsection{Verbos HTTP y su significado}
+
+Las operaciones CRUD se mapean directamente a verbos HTTP:
+
+\begin{center}
+\begin{tabular}{>{\bfseries}p{2.2cm} p{3cm} p{4cm} p{4cm}}
+  \toprule
+  \rowcolor{grisCl}
+  Verbo HTTP & Operación CRUD & Qué hace & Ejemplo \\
+  \midrule
+  \httpGET   & \textbf{Read}   (Leer)     & Obtener datos       & \texttt{GET /api/cultivos} \\
+  \httpPOST  & \textbf{Create} (Crear)    & Insertar nuevo dato & \texttt{POST /api/cultivos} \\
+  \httpPUT   & \textbf{Update} (Actualizar) & Modificar un dato & \texttt{PUT /api/cultivos/3} \\
+  \httpDEL   & \textbf{Delete} (Eliminar) & Borrar un dato      & \texttt{DELETE /api/cultivos/3} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================
+\section{Estructura del Proyecto}
+% ============================================================
+
+\begin{tcolorbox}[pasoStyle, title={\faFolderOpen\ Paso 1: Crear las carpetas}]
+Ejecuta estos comandos en tu terminal:
+\begin{lstlisting}[style=bashStyle]
+mkdir cultivos-api
+cd cultivos-api
+mkdir data routes cliente
+\end{lstlisting}
+\end{tcolorbox}
+
+La estructura final del proyecto es:
+
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  raiz/.style  = {draw, rounded corners=4pt, fill=ambarCl,  draw=ambarDB,
+                  font=\small\bfseries\ttfamily, minimum width=3.8cm,
+                  minimum height=0.7cm, align=center},
+  carpeta/.style={draw, rounded corners=4pt, fill=verdeCl, draw=verdeAgro,
+                  font=\small\ttfamily, minimum width=3.2cm,
+                  minimum height=0.65cm, align=center},
+  archivo/.style={draw, rounded corners=3pt, fill=azulCl,  draw=azulAPI!60,
+                  font=\footnotesize\ttfamily, minimum width=3.2cm,
+                  minimum height=0.6cm,  align=center},
+  raizarch/.style={draw, rounded corners=3pt, fill=grisCl, draw=grisMedio!60,
+                  font=\footnotesize\ttfamily, minimum width=3.2cm,
+                  minimum height=0.6cm,  align=center},
+  lin/.style   = {draw=grisMedio!60, line width=0.5pt},
+]
+
+% Raíz
+\node[raiz] (raiz) at (0,0) {cultivos-api/};
+
+% -- Nivel 1: carpetas y archivos raíz en una fila ---------
+% Columna data/
+\node[carpeta] (data)   at (-5.0, -1.5) {data/};
+% Columna routes/
+\node[carpeta] (routes) at (-1.5, -1.5) {routes/};
+% Columna cliente/
+\node[carpeta] (cli)    at ( 1.5, -1.5) {cliente/};
+% Archivos raíz
+\node[raizarch] (srv)   at ( 4.2, -1.5) {server.js};
+\node[raizarch] (pkg)   at ( 4.2, -2.4) {package.json};
+
+% -- Nivel 2: hijos de cada carpeta ------------------------
+\node[archivo] (json)  at (-5.8, -3.0) {cultivos.json};
+\node[archivo] (xml)   at (-4.2, -3.0) {cultivos.xml};
+
+\node[archivo] (cr)    at (-2.2, -3.0) {cultivosRoutes.js};
+\node[archivo] (pr)    at ( 0.0, -3.0) {parcelasRoutes.js};
+
+\node[archivo] (html)  at ( 0.8, -3.0) {index.html};
+\node[archivo] (appjs) at ( 2.4, -3.0) {app.js};
+
+% -- Líneas de conexión ------------------------------------
+% raíz a nivel 1
+\draw[lin] (raiz.south) -- ++(0,-0.4) -| (data.north);
+\draw[lin] (raiz.south) -- ++(0,-0.4) -| (routes.north);
+\draw[lin] (raiz.south) -- ++(0,-0.4) -| (cli.north);
+\draw[lin] (raiz.south) -- ++(0,-0.4) -| (srv.north);
+\draw[lin] (srv.south)  --             (pkg.north);
+
+% data a sus hijos
+\draw[lin] (data.south) -- ++(0,-0.3) -| (json.north);
+\draw[lin] (data.south) -- ++(0,-0.3) -| (xml.north);
+
+% routes a sus hijos
+\draw[lin] (routes.south) -- ++(0,-0.3) -| (cr.north);
+\draw[lin] (routes.south) -- ++(0,-0.3) -| (pr.north);
+
+% cliente a sus hijos
+\draw[lin] (cli.south) -- ++(0,-0.3) -| (html.north);
+\draw[lin] (cli.south) -- ++(0,-0.3) -| (appjs.north);
+
+\end{tikzpicture}%
+}
+\end{center}
+
+% ============================================================
+\section{Bases de Datos: JSON y XML}
+% ============================================================
+
+\subsection{¿Por qué JSON y XML?}
+
+Para aprender, usamos archivos en lugar de una base de datos real. Ambos formatos pueden ser leídos directamente por Node.js sin instalar nada extra:
+
+\begin{center}
+\begin{tabular}{p{3cm} p{5cm} p{5cm}}
+  \toprule
+  \rowcolor{grisCl}
+                & \textbf{JSON} & \textbf{XML} \\
+  \midrule
+  Sintaxis       & Llaves y corchetes \texttt{\{\}} & Etiquetas \texttt{<tag>} \\
+  Nativo en JS   & \faCheck\ Sí (\texttt{JSON.parse()}) & \faTimesCircle\ Necesita \texttt{xml2js} \\
+  Peso           & Más ligero & Más verboso \\
+  Uso actual     & APIs REST modernas & Legado, SOAP, configs \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Archivo \texttt{data/cultivos.json}}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=jsonStyle, language={}]
+{
+  "cultivos": [
+    {
+      "id": 1,
+      "nombre": "Maiz Amarillo",
+      "variedad": "Hibrido DK-7088",
+      "fecha_siembra": "2024-11-15",
+      "fecha_cosecha_estimada": "2025-04-20",
+      "estado": "en_crecimiento",
+      "parcela_id": 1,
+      "area_hectareas": 3.5,
+      "rendimiento_esperado_qq": 140,
+      "observaciones": "Buen desarrollo vegetativo"
+    },
+    {
+      "id": 2,
+      "nombre": "Arroz",
+      "variedad": "INIA Sequia",
+      "fecha_siembra": "2024-12-01",
+      "estado": "germinacion",
+      "parcela_id": 2,
+      "area_hectareas": 5.0
+    }
+  ],
+  "parcelas": [
+    {
+      "id": 1,
+      "nombre": "Parcela Norte A",
+      "ubicacion": "Km 24 via Daule",
+      "area_total_ha": 5.0,
+      "tipo_suelo": "Franco arcilloso"
+    }
+  ],
+  "insumos": [
+    {
+      "id": 1,
+      "nombre": "Urea 46%",
+      "tipo": "fertilizante",
+      "unidad": "kg",
+      "stock": 500,
+      "precio_unitario": 0.75
+    }
+  ]
+}
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Archivo \texttt{data/cultivos.xml}}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=xmlStyle, language={}]
+<?xml version="1.0" encoding="UTF-8"?>
+<agro_sistema>
+
+  <cultivos>
+    <cultivo id="1">
+      <nombre>Maiz Amarillo</nombre>
+      <variedad>Hibrido DK-7088</variedad>
+      <fecha_siembra>2024-11-15</fecha_siembra>
+      <estado>en_crecimiento</estado>
+      <parcela_id>1</parcela_id>
+      <area_hectareas>3.5</area_hectareas>
+    </cultivo>
+    <cultivo id="2">
+      <nombre>Arroz</nombre>
+      <variedad>INIA Sequia</variedad>
+      <fecha_siembra>2024-12-01</fecha_siembra>
+      <estado>germinacion</estado>
+      <parcela_id>2</parcela_id>
+      <area_hectareas>5.0</area_hectareas>
+    </cultivo>
+  </cultivos>
+
+  <parcelas>
+    <parcela id="1">
+      <nombre>Parcela Norte A</nombre>
+      <ubicacion>Km 24 via Daule</ubicacion>
+      <area_total_ha>5.0</area_total_ha>
+      <tipo_suelo>Franco arcilloso</tipo_suelo>
+    </parcela>
+  </parcelas>
+
+</agro_sistema>
+\end{lstlisting}
+\end{tcolorbox}
+
+% ============================================================
+\section{El Servidor: Node.js + Express}
+% ============================================================
+
+\begin{tcolorbox}[pasoStyle, title={\faNpm\ Paso 2: Instalar dependencias}]
+\begin{lstlisting}[style=bashStyle]
+# Crear el package.json
+npm init -y
+
+# Instalar Express (servidor web) y CORS (seguridad)
+npm install express cors xml2js
+
+# Instalar nodemon para desarrollo (recarga automatica)
+npm install --save-dev nodemon
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Flujo de una petición HTTP}
+
+\bigskip
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  paso/.style  = {draw, rounded corners=5pt, minimum width=3.6cm,
+                  minimum height=0.9cm, align=center, font=\small},
+  arr/.style   = {-Stealth, line width=1.2pt},
+  num/.style   = {circle, fill=verdeAgro, text=white,
+                  font=\bfseries\scriptsize, inner sep=2.5pt},
+]
+% -- Nodos izquierda (petición) --------------------------
+\node[paso, fill=azulCl,   draw=azulAPI!60]   (nav)  at (0,0)    {\faDesktop\\ Navegador};
+\node[paso, fill=verdeCl,  draw=verdeAgro!60] (mid)  at (3.5,0)  {\faCogs\\ Middleware};
+\node[paso, fill=verdeCl,  draw=verdeAgro!60] (rtr)  at (7.0,0)  {\faRoute\\ Router};
+\node[paso, fill=verdeCl,  draw=verdeAgro!60] (ctrl) at (10.5,0) {\faCode\\ Controlador};
+\node[paso, fill=ambarCl,  draw=ambarDB!60]   (db)   at (10.5,-2.2) {\faDatabase\\ cultivos.json};
+
+% -- Flechas petición (izq -> der) ---------------------
+\draw[arr, verdeAgro] (nav)  -- node[above,font=\tiny]{GET /api/cultivos} (mid);
+\draw[arr, verdeAgro] (mid)  -- (rtr);
+\draw[arr, verdeAgro] (rtr)  -- (ctrl);
+\draw[arr, verdeAgro] (ctrl) -- node[right,font=\tiny]{leer} (db);
+
+% -- Flecha respuesta (curva inferior) ----------------
+\draw[arr, rojoDel, bend right=20]
+  (db.west) to node[below,font=\tiny, color=rojoDel]{HTTP 200 + JSON} (nav.east |- db.west);
+
+% -- Numeración ---------------------------------------
+\node[num] at (1.75, 0.45) {1};
+\node[num] at (5.25, 0.45) {2};
+\node[num] at (8.75, 0.45) {3};
+\node[num] at (10.5,-1.1)  {4};
+\node[num] at (5.25,-1.7)  {5};
+
+\end{tikzpicture}%
+}
+\end{center}
+\bigskip
+
+\subsection{Archivo \texttt{server.js} -- Punto de entrada}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=jsStyle, language=JavaScript, morekeywords={require,const,let}]
+// server.js -- Punto de entrada del WebService
+const express = require('express');
+const cors    = require('cors');
+const path    = require('path');
+
+// -- PARA POSTGRESQL: descomenta estas lineas --------------
+// const { Pool } = require('pg');
+// const pool = new Pool({
+//   host: 'localhost', port: 5432,
+//   database: 'agro_db',
+//   user: 'postgres', password: 'tu_password'
+// });
+// module.exports = { pool };
+// ----------------------------------------------------
+
+const app  = express();
+const PORT = 3000;
+
+// -- MIDDLEWARE --------------------------------------------
+app.use(cors());           // Permite peticiones desde cualquier origen
+app.use(express.json());   // Parsea el body JSON de POST/PUT
+app.use(express.static(path.join(__dirname, 'cliente')));
+
+// -- RUTAS -------------------------------------------------
+app.use('/api/cultivos',  require('./routes/cultivosRoutes'));
+app.use('/api/parcelas',  require('./routes/parcelasRoutes'));
+app.use('/api/insumos',   require('./routes/insumosRoutes'));
+
+// -- INFORMACION DE LA API ---------------------------------
+app.get('/api', (req, res) => {
+  res.json({
+    mensaje: 'Bienvenido a AgroAPI Ecuador',
+    version: '1.0.0',
+    endpoints: {
+      cultivos: 'GET|POST /api/cultivos',
+      cultivo:  'GET|PUT|DELETE /api/cultivos/:id',
+      parcelas: 'GET|POST /api/parcelas',
+      insumos:  'GET|POST /api/insumos'
+    }
+  });
+});
+
+// -- MANEJO DE ERRORES -------------------------------------
+app.use((req, res) => {
+  res.status(404).json({ error: 'Ruta no encontrada' });
+});
+
+// -- INICIAR -----------------------------------------------
+app.listen(PORT, () => {
+  console.log(`Servidor en http://localhost:${PORT}`);
+});
+\end{lstlisting}
+\end{tcolorbox}
+
+% ============================================================
+\section{Rutas CRUD: \texttt{cultivosRoutes.js}}
+% ============================================================
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=jsStyle, language=JavaScript, morekeywords={require,const,let,async,await}]
+// routes/cultivosRoutes.js
+const express = require('express');
+const router  = express.Router();
+const fs      = require('fs');
+const path    = require('path');
+
+const DB_PATH = path.join(__dirname, '../data/cultivos.json');
+
+// Funciones auxiliares para leer y escribir el archivo JSON
+function leerDatos()     { return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8')); }
+function guardarDatos(d) { fs.writeFileSync(DB_PATH, JSON.stringify(d, null, 2)); }
+
+// -- GET /api/cultivos -------------------------------------
+// Devuelve todos los cultivos (con filtro opcional por estado)
+router.get('/', (req, res) => {
+  try {
+    const datos = leerDatos();
+    let cultivos = datos.cultivos;
+
+    if (req.query.estado)
+      cultivos = cultivos.filter(c => c.estado === req.query.estado);
+
+    res.json({ total: cultivos.length, cultivos });
+
+    // CON POSTGRESQL:
+    // const r = await pool.query('SELECT * FROM cultivos');
+    // res.json({ total: r.rowCount, cultivos: r.rows });
+
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// -- GET /api/cultivos/:id ---------------------------------
+router.get('/:id', (req, res) => {
+  try {
+    const id     = parseInt(req.params.id);
+    const datos  = leerDatos();
+    const cultivo = datos.cultivos.find(c => c.id === id);
+    if (!cultivo)
+      return res.status(404).json({ error: `Cultivo ${id} no encontrado` });
+    res.json(cultivo);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// -- POST /api/cultivos ------------------------------------
+router.post('/', (req, res) => {
+  try {
+    const { nombre, variedad, fecha_siembra, parcela_id } = req.body;
+    if (!nombre || !variedad || !fecha_siembra || !parcela_id)
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+
+    const datos    = leerDatos();
+    const nuevoId  = Math.max(...datos.cultivos.map(c => c.id)) + 1;
+    const nuevo    = { id: nuevoId, nombre, variedad, fecha_siembra,
+                       estado: req.body.estado || 'germinacion',
+                       parcela_id: parseInt(parcela_id),
+                       area_hectareas: parseFloat(req.body.area_hectareas) || 0 };
+    datos.cultivos.push(nuevo);
+    guardarDatos(datos);
+    res.status(201).json({ mensaje: 'Cultivo creado', cultivo: nuevo });
+
+    // CON POSTGRESQL:
+    // const r = await pool.query(
+    //   'INSERT INTO cultivos(nombre,variedad,fecha_siembra,...) VALUES($1,$2,$3,...) RETURNING *',
+    //   [nombre, variedad, fecha_siembra, ...]
+    // );
+    // res.status(201).json({ cultivo: r.rows[0] });
+
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// -- PUT /api/cultivos/:id ---------------------------------
+router.put('/:id', (req, res) => {
+  try {
+    const id    = parseInt(req.params.id);
+    const datos = leerDatos();
+    const idx   = datos.cultivos.findIndex(c => c.id === id);
+    if (idx === -1)
+      return res.status(404).json({ error: `Cultivo ${id} no encontrado` });
+
+    datos.cultivos[idx] = { ...datos.cultivos[idx], ...req.body, id };
+    guardarDatos(datos);
+    res.json({ mensaje: 'Actualizado', cultivo: datos.cultivos[idx] });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// -- DELETE /api/cultivos/:id ------------------------------
+router.delete('/:id', (req, res) => {
+  try {
+    const id    = parseInt(req.params.id);
+    const datos = leerDatos();
+    const idx   = datos.cultivos.findIndex(c => c.id === id);
+    if (idx === -1)
+      return res.status(404).json({ error: `Cultivo ${id} no encontrado` });
+
+    const eliminado = datos.cultivos.splice(idx, 1)[0];
+    guardarDatos(datos);
+    res.json({ mensaje: 'Eliminado', cultivo_eliminado: eliminado });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+module.exports = router;
+\end{lstlisting}
+\end{tcolorbox}
+
+% ============================================================
+\section{Tabla de Endpoints REST}
+% ============================================================
+
+\begin{center}
+\begin{tabular}{>{\centering\arraybackslash}p{1.8cm} p{5cm} p{4cm} p{3.5cm}}
+  \toprule
+  \rowcolor{grisCl}
+  \textbf{Método} & \textbf{URL} & \textbf{Descripción} & \textbf{Parámetros} \\
+  \midrule
+  \httpGET  & \texttt{/api}                    & Info de la API          & --- \\
+  \httpGET  & \texttt{/api/cultivos}            & Listar todos            & \texttt{?estado=...} \\
+  \httpGET  & \texttt{/api/cultivos/:id}        & Obtener uno             & \texttt{:id} número \\
+  \httpPOST & \texttt{/api/cultivos}            & Crear nuevo             & Body JSON \\
+  \httpPUT  & \texttt{/api/cultivos/:id}        & Actualizar              & \texttt{:id} + Body \\
+  \httpDEL  & \texttt{/api/cultivos/:id}        & Eliminar                & \texttt{:id} número \\
+  \midrule
+  \httpGET  & \texttt{/api/parcelas}            & Listar parcelas         & --- \\
+  \httpGET  & \texttt{/api/parcelas/:id}        & Obtener una             & \texttt{:id} número \\
+  \httpPOST & \texttt{/api/parcelas}            & Crear parcela           & Body JSON \\
+  \httpPUT  & \texttt{/api/parcelas/:id}        & Actualizar              & \texttt{:id} + Body \\
+  \httpDEL  & \texttt{/api/parcelas/:id}        & Eliminar                & \texttt{:id} número \\
+  \midrule
+  \httpGET  & \texttt{/api/insumos}             & Listar insumos          & \texttt{?tipo=...} \\
+  \httpPOST & \texttt{/api/insumos}             & Crear insumo            & Body JSON \\
+  \httpPUT  & \texttt{/api/insumos/:id}         & Actualizar              & \texttt{:id} + Body \\
+  \httpDEL  & \texttt{/api/insumos/:id}         & Eliminar                & \texttt{:id} número \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================
+\section{Cómo Probar los WebServices}
+% ============================================================
+
+\subsection{Opción A: con \texttt{curl} (terminal)}
+
+\begin{tcolorbox}[pasoStyle, title={\faTerminal\ Paso 3: Iniciar el servidor y probar}]
+\begin{lstlisting}[style=bashStyle]
+# Terminal 1: iniciar el servidor
+node server.js
+
+# Terminal 2: probar los endpoints
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsubsection{Peticiones GET}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=bashStyle]
+# Listar todos los cultivos
+curl http://localhost:3000/api/cultivos
+
+# Filtrar por estado
+curl "http://localhost:3000/api/cultivos?estado=en_crecimiento"
+
+# Obtener el cultivo con ID 1
+curl http://localhost:3000/api/cultivos/1
+
+# Ver todas las parcelas
+curl http://localhost:3000/api/parcelas
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsubsection{Petición POST -- Crear nuevo cultivo}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=bashStyle]
+curl -X POST http://localhost:3000/api/cultivos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Pimiento",
+    "variedad": "California Wonder",
+    "fecha_siembra": "2025-01-20",
+    "parcela_id": 5,
+    "area_hectareas": 0.5,
+    "estado": "germinacion"
+  }'
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsubsection{Petición PUT -- Actualizar estado}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=bashStyle]
+curl -X PUT http://localhost:3000/api/cultivos/2 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "estado": "en_crecimiento",
+    "observaciones": "Malezas controladas, buen desarrollo"
+  }'
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsubsection{Petición DELETE -- Eliminar}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=bashStyle]
+curl -X DELETE http://localhost:3000/api/cultivos/6
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Opción B: con Postman o Thunder Client}
+
+\begin{enumerate}[leftmargin=*, label=\textbf{\arabic*.}]
+  \item Instala \textbf{Thunder Client} como extensión de VS Code, o descarga \href{https://www.postman.com}{\textbf{Postman}}.
+  \item Crea una nueva petición.
+  \item Selecciona el método (\texttt{GET}, \texttt{POST}, etc.) y escribe la URL.
+  \item Para \texttt{POST} y \texttt{PUT}: ve a \textit{Body} -> \textit{JSON} y escribe el objeto.
+  \item Haz clic en \textit{Send} y observa la respuesta.
+\end{enumerate}
+
+\begin{tcolorbox}[notaStyle]
+  Los códigos de respuesta HTTP más importantes son: \textbf{200 OK} (éxito), \textbf{201 Created} (recurso creado), \textbf{400 Bad Request} (datos incorrectos), \textbf{404 Not Found} (no encontrado), \textbf{500 Server Error} (error del servidor).
+\end{tcolorbox}
+
+% ============================================================
+\section{Consumir la API desde JavaScript}
+% ============================================================
+
+\subsection{La función \texttt{fetch()}}
+
+\texttt{fetch()} es la función nativa de JavaScript en el navegador para hacer peticiones HTTP. Devuelve una \textbf{Promesa} (Promise), lo que significa que la respuesta llegará en el futuro.
+
+\bigskip
+
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  caja/.style  = {draw, rounded corners=5pt, minimum width=3.4cm,
+                  minimum height=0.9cm, align=center, font=\small},
+  arr/.style   = {-Stealth, line width=1pt, color=verdeAgro},
+  lbl/.style   = {font=\footnotesize\ttfamily, color=grisMedio},
+]
+% -- Nodos en fila horizontal --------------------------
+\node[caja, fill=azulCl, draw=azulAPI!60]    (A) at (0.0, 0) {\texttt{fetch(url)}\\{\tiny llama a la API}};
+\node[caja, fill=ambarCl,draw=ambarDB!60]    (B) at (4.0, 0) {Promise\\{\tiny respuesta futura}};
+\node[caja, fill=verdeCl, draw=verdeAgro!60] (C) at (8.0, 0) {\texttt{res.json()}\\{\tiny convierte texto}};
+\node[caja, fill=verdeCl, draw=verdeAgro!60] (D) at (8.0,-2.0) {Datos JS\\{\tiny objeto/array}};
+\node[caja, fill=azulCl,  draw=azulAPI!60]   (E) at (4.0,-2.0) {Actualizar DOM\\{\tiny mostrar HTML}};
+
+% -- Flechas -------------------------------------------
+\draw[arr] (A) -- node[above, lbl]{.then(res =>)} (B);
+\draw[arr] (B) -- node[above, lbl]{res =>}        (C);
+\draw[arr] (C) -- node[right, lbl]{.then(data =>)}(D);
+\draw[arr] (D) -- node[below, lbl]{data =>}       (E);
+
+\end{tikzpicture}%
+}
+\end{center}
+
+\bigskip
+
+\subsection{Función central de consumo de API}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=jsStyle, language=JavaScript, morekeywords={async,await,const,let}]
+// cliente/app.js
+// URL base de la API -- cambiar si el servidor esta en otro puerto
+const BASE_URL = 'http://localhost:3000/api';
+
+/**
+ * Funcion central para hacer peticiones a la API.
+ * url     : endpoint, ej: BASE_URL + '/cultivos'
+ * metodo  : 'GET', 'POST', 'PUT', 'DELETE'
+ * datos   : objeto JavaScript para POST/PUT (opcional)
+ */
+async function pedirAPI(url, metodo = 'GET', datos = null) {
+  // 1. Configurar la peticion
+  const opciones = {
+    method:  metodo,
+    headers: { 'Content-Type': 'application/json' }
+  };
+
+  // 2. Agregar body solo en POST y PUT
+  if (datos && (metodo === 'POST' || metodo === 'PUT')) {
+    opciones.body = JSON.stringify(datos);  // objeto JS -> texto JSON
+  }
+
+  // 3. Realizar la peticion HTTP
+  const respuesta = await fetch(url, opciones);
+
+  // 4. Convertir la respuesta de texto a objeto JavaScript
+  const json = await respuesta.json();
+
+  // 5. Si el servidor devolvio error (4xx, 5xx), lanzar excepcion
+  if (!respuesta.ok) {
+    throw new Error(json.error || `Error HTTP ${respuesta.status}`);
+  }
+
+  return json;  // devolver los datos listos para usar
+}
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Leer y mostrar cultivos}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=jsStyle, language=JavaScript, morekeywords={async,await,const,let}]
+// -- CARGAR todos los cultivos y mostrarlos en una tabla ---
+async function cargarCultivos() {
+  try {
+    // Llamar a la API
+    const data = await pedirAPI(`${BASE_URL}/cultivos`);
+
+    // data.cultivos es un array de objetos
+    const tbody = document.getElementById('tabla-cuerpo');
+
+    // Construir las filas de la tabla con los datos recibidos
+    tbody.innerHTML = data.cultivos.map(c => `
+      <tr>
+        <td>${c.id}</td>
+        <td>${c.nombre}</td>
+        <td>${c.variedad}</td>
+        <td>${c.fecha_siembra}</td>
+        <td>${c.area_hectareas} ha</td>
+        <td>${c.estado}</td>
+        <td>
+          <button onclick="editarCultivo(${c.id})">Editar</button>
+          <button onclick="eliminarCultivo(${c.id})">Eliminar</button>
+        </td>
+      </tr>
+    `).join('');
+
+  } catch (error) {
+    console.error('Error al cargar cultivos:', error.message);
+    alert('No se pudo conectar con la API');
+  }
+}
+
+// Ejecutar al cargar la pagina
+cargarCultivos();
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Crear, editar y eliminar}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=jsStyle, language=JavaScript, morekeywords={async,await,const,let}]
+// -- CREAR un nuevo cultivo (POST) -------------------------
+async function crearCultivo() {
+  const nuevoCultivo = {
+    nombre:        document.getElementById('campo-nombre').value,
+    variedad:      document.getElementById('campo-variedad').value,
+    fecha_siembra: document.getElementById('campo-siembra').value,
+    parcela_id:    parseInt(document.getElementById('campo-parcela').value),
+    area_hectareas:parseFloat(document.getElementById('campo-area').value),
+    estado:        'germinacion'
+  };
+
+  try {
+    const resultado = await pedirAPI(`${BASE_URL}/cultivos`, 'POST', nuevoCultivo);
+    alert('Cultivo creado con ID: ' + resultado.cultivo.id);
+    cargarCultivos();  // recargar la tabla
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+// -- ACTUALIZAR un cultivo existente (PUT) -----------------
+async function actualizarEstado(id, nuevoEstado) {
+  try {
+    await pedirAPI(`${BASE_URL}/cultivos/${id}`, 'PUT', { estado: nuevoEstado });
+    cargarCultivos();
+  } catch (e) {
+    alert('Error al actualizar: ' + e.message);
+  }
+}
+
+// -- ELIMINAR un cultivo (DELETE) --------------------------
+async function eliminarCultivo(id) {
+  if (!confirm(`Eliminar cultivo #${id}?`)) return;
+  try {
+    await pedirAPI(`${BASE_URL}/cultivos/${id}`, 'DELETE');
+    cargarCultivos();  // actualizar la tabla
+  } catch (e) {
+    alert('Error al eliminar: ' + e.message);
+  }
+}
+\end{lstlisting}
+\end{tcolorbox}
+
+% ============================================================
+\section{Migración a PostgreSQL}
+% ============================================================
+
+Cuando el proyecto crezca, puedes reemplazar los archivos JSON por una base de datos real. Los cambios necesarios son mínimos:
+
+\begin{center}
+\begin{tabular}{p{6cm} p{6.5cm}}
+  \toprule
+  \rowcolor{grisCl}
+  \textbf{Con JSON (ahora)} & \textbf{Con PostgreSQL (producción)} \\
+  \midrule
+  \texttt{fs.readFileSync(DB\_PATH)} & \texttt{await pool.query('SELECT * FROM...')} \\
+  \texttt{JSON.parse(contenido)}     & Resultados en \texttt{resultado.rows} \\
+  \texttt{fs.writeFileSync(...)}     & \texttt{await pool.query('INSERT INTO...')} \\
+  Autogenerar ID con \texttt{Math.max} & \texttt{SERIAL} o \texttt{GENERATED ALWAYS AS IDENTITY} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[codigoBox]
+\begin{lstlisting}[style=jsStyle, language=JavaScript, morekeywords={const,require,await}]
+// Ejemplo: GET /api/cultivos con PostgreSQL
+const { Pool } = require('pg');
+const pool = new Pool({
+  host: 'localhost', port: 5432,
+  database: 'agro_db',
+  user: 'postgres', password: 'mi_password'
+});
+
+router.get('/', async (req, res) => {
+  try {
+    const resultado = await pool.query(
+      'SELECT * FROM cultivos ORDER BY id'
+    );
+    res.json({ total: resultado.rowCount, cultivos: resultado.rows });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+\end{lstlisting}
+\end{tcolorbox}
+
+% ============================================================
+\section{Resumen y Próximos Pasos}
+% ============================================================
+
+\subsection{Lo que aprendiste en este tutorial}
+
+\begin{itemize}[leftmargin=*, label={\color{verdeAgro}\faCheckCircle}]
+  \item \textbf{Arquitectura REST}: separación en capas Cliente $\rightarrow$ API $\rightarrow$ Datos.
+  \item \textbf{Verbos HTTP}: GET (leer), POST (crear), PUT (actualizar), DELETE (eliminar).
+  \item \textbf{Bases de datos de archivo}: JSON y XML como almacenamiento simple.
+  \item \textbf{Node.js + Express}: crear un servidor HTTP con rutas parametrizadas.
+  \item \textbf{Middleware}: \texttt{cors()}, \texttt{express.json()}.
+  \item \textbf{fetch() en el cliente}: peticiones asíncronas con \texttt{async/await}.
+  \item \textbf{Manejo de errores}: códigos HTTP y bloques \texttt{try/catch}.
+  \item \textbf{Migración a PostgreSQL}: qué líneas cambiar cuando el proyecto crezca.
+\end{itemize}
+
+\subsection{Próximos pasos sugeridos}
+
+\begin{enumerate}[leftmargin=*, label=\textbf{\arabic*.}]
+  \item \textbf{Autenticación}: agrega JWT (\texttt{jsonwebtoken}) para proteger los endpoints.
+  \item \textbf{Validación}: usa \texttt{joi} o \texttt{express-validator} para validar los datos del body.
+  \item \textbf{Base de datos real}: migra a PostgreSQL con \texttt{pg} o usa un ORM como \texttt{Sequelize} o \texttt{Prisma}.
+  \item \textbf{Variables de entorno}: mueve las credenciales a un archivo \texttt{.env} con \texttt{dotenv}.
+  \item \textbf{Despliegue}: publica tu API en \textbf{Railway}, \textbf{Render} o \textbf{Heroku}.
+\end{enumerate}
+
+\begin{tcolorbox}[peligroStyle]
+  Nunca subas contraseñas, claves API o credenciales de base de datos a GitHub. Siempre usa archivos \texttt{.env} y agrégalos al \texttt{.gitignore}.
+\end{tcolorbox}
+
+\vfill
+\begin{center}
+  \color{grisMedio}
+  \rule{10cm}{0.4pt}\\[0.5em]
+  {\small \faLeaf\ AgroAPI Ecuador $\cdot$ Tutorial Node.js + REST $\cdot$ 2025}\\
+  {\small Compilado con \LaTeX\ $\cdot$ \texttt{pdflatex tutorial\_api.tex}}
+\end{center}
+
+\end{document}

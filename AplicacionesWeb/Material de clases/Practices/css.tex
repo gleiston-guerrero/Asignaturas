@@ -1,0 +1,886 @@
+% ============================================================
+%  CSS3 — De cero a la practica
+%  Teoria y ejemplos progresivos para la PE Unidad I
+%  Aplicaciones Web · Ingenieria de Software · UTEQ
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fix-cm}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[left=2.2cm,right=2.2cm,top=2cm,bottom=2cm,headheight=14pt]{geometry}
+\usepackage{xcolor,colortbl,array,longtable,booktabs}
+\usepackage{ragged2e,setspace,parskip,titlesec,fancyhdr,hyperref}
+\usepackage{enumitem,needspace,tcolorbox,amssymb,float,pifont}
+\usepackage{listings}
+\usepackage[protrusion=true,expansion=false]{microtype}
+
+\tcbuselibrary{skins,breakable}
+\DeclareFontShape{T1}{cmtt}{bx}{n}{<->ssub * cmtt/m/n}{}
+
+\definecolor{verde}{RGB}{0,120,48}
+\definecolor{verdeclaro}{RGB}{232,245,238}
+\definecolor{azul}{RGB}{24,95,165}
+\definecolor{ambar}{RGB}{140,85,10}
+\definecolor{ambarclaro}{RGB}{250,238,218}
+\definecolor{rojo}{RGB}{163,45,45}
+\definecolor{morado}{RGB}{83,74,183}
+\definecolor{grisclaro}{RGB}{245,245,245}
+\definecolor{gris}{RGB}{80,80,80}
+\definecolor{dark}{RGB}{38,50,56}
+\definecolor{codigofondo}{RGB}{30,30,46}
+\definecolor{codigotexto}{RGB}{205,214,244}
+\definecolor{keycolor}{RGB}{137,180,250}
+\definecolor{strcolor}{RGB}{166,227,161}
+\definecolor{comcolor}{RGB}{140,148,172}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\lstdefinestyle{codecss}{
+	basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor}\bfseries,stringstyle=\color{strcolor},
+	commentstyle=\color{comcolor}\itshape,numberstyle=\tiny\color{comcolor},
+	numbers=left,numbersep=8pt,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt}
+\lstdefinestyle{codehtml}{
+	basicstyle=\color{codigotexto}\ttfamily\small,
+	keywordstyle=\color{keycolor}\bfseries,stringstyle=\color{strcolor},
+	commentstyle=\color{comcolor}\itshape,numberstyle=\tiny\color{comcolor},
+	numbers=left,numbersep=8pt,frame=none,breaklines=true,showstringspaces=false,
+	tabsize=2,xleftmargin=10pt,language=HTML}
+
+\tcbset{base/.style={arc=4pt,boxrule=0.6pt,left=8pt,right=8pt,top=6pt,bottom=6pt,
+		breakable,before upper={\parindent0pt\setlength{\parskip}{5pt}},lines before break=4}}
+\newtcolorbox{cajatip}[2]{base,colback=#1!9,colframe=#1,
+	title={\bfseries\small #2},coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajabanda}{base,colback=ambar,colframe=ambar,
+	before upper={\parindent0pt\color{white}\setlength{\parskip}{5pt}}}
+\newtcolorbox{cajacodigo}[2]{enhanced,arc=4pt,colback=codigofondo,colframe=#1,
+	title={\bfseries\small\color{white}#2},left=0pt,right=0pt,top=0pt,bottom=0pt,boxrule=0.8pt,
+	before upper={\parindent0pt}}
+\newtcolorbox{cajaconcepto}[1]{base,colback=ambarclaro,colframe=ambar,
+	borderline west={4pt}{0pt}{ambar},
+	title={\bfseries\small\color{white} #1},coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajapractica}[1]{base,colback=morado!8,colframe=morado,
+	title={\bfseries\small\color{white} Donde se usa en la practica: #1},
+	coltitle=white,fonttitle=\color{white}}
+\newtcolorbox{cajaresultado}[1]{base,colback=verdeclaro,colframe=verde,
+	title={\bfseries\small\color{white} #1},coltitle=white,fonttitle=\color{white}}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{gris} UTEQ -- Aplicaciones Web}
+\fancyhead[R]{\small\color{gris} CSS3 -- De cero a la practica}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\titleformat{\section}{\large\bfseries\color{ambar}}{}{0em}{}
+[{\vspace{-4pt}\color{ambar}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\normalsize\bfseries\color{azul}}{}{0em}{\thesubsection\quad}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\setcounter{secnumdepth}{2}
+
+\setstretch{1.13}\setlength{\parindent}{0pt}
+\hyphenpenalty=1000\exhyphenpenalty=1000
+\hypersetup{colorlinks=true,linkcolor=ambar,urlcolor=verde,
+	pdftitle={CSS3 De cero a la practica UTEQ}}
+
+\begin{document}
+	
+	\begin{cajabanda}
+		\begin{center}
+			{\scriptsize\bfseries PREPARACION PARA LA PRACTICA EXPERIMENTAL UNIDAD I -- PASO 3}\\[5pt]
+			{\LARGE\bfseries CSS3: DE CERO A LA PRACTICA}\\[3pt]
+			{\large\bfseries Teoria y ejemplos progresivos para el Paso 3 de la PE U1}\\[3pt]
+			{\normalsize Reset $\to$ Unidades $\to$ Variables $\to$ Box Model $\to$ Flexbox $\to$ Grid $\to$ Responsive $\to$ Modo Oscuro $\to$ Animaciones}\\[5pt]
+			{\small Aplicaciones Web -- Ingenieria de Software -- UTEQ 2025-2026}
+		\end{center}
+	\end{cajabanda}
+	
+	\vspace{0.3cm}
+	
+	\begin{cajatip}{ambar}{Como usar este documento}
+		Los ejemplos estan en el mismo orden que el CSS del Paso 3 de la practica. Cada concepto se explica con teoria minima y un ejemplo que se puede probar creando un archivo \texttt{.html} con un \texttt{<style>} interno. Al final, el estudiante habra entendido cada linea del CSS que debe escribir en la practica.
+	\end{cajatip}
+	
+	\vspace{0.3cm}
+	\tableofcontents
+	\vspace{0.5cm}
+	
+	% =============================================================
+	\section{Nivel 1: Como funciona CSS y el reset minimo}
+	% =============================================================
+	
+	\subsection{Que es CSS y como se conecta al HTML}
+	
+	\begin{cajaconcepto}{Concepto: CSS}
+		CSS (Cascading Style Sheets) define la \textbf{apariencia visual} del HTML: colores, tamanos, posiciones, espaciado, animaciones. Se conecta al HTML de 3 formas: (1) archivo externo con \texttt{<link>} (la mejor), (2) etiqueta \texttt{<style>} en el \texttt{<head>}, (3) atributo \texttt{style=``''} inline (la peor, no usar).
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 1 -- Conectar CSS externo al HTML}
+		\begin{lstlisting}[style=codehtml]
+	<!-- En el <head> del HTML: -->
+	<link rel="stylesheet" href="css/main.css">
+		\end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{El selector, la propiedad y el valor}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 2 -- Anatomia de una regla CSS}
+		\begin{lstlisting}[style=codecss]
+	/* selector { propiedad: valor; } */
+	
+	h1 {
+		color: #0066cc;         /* color del texto */
+		font-size: 2rem;        /* tamano de la fuente */
+		margin-bottom: 1rem;    /* espacio debajo */
+	}
+	
+	/* Selector de clase: aplica a todo elemento con class="tarjeta" */
+	.tarjeta {
+		background: #f8f9fa;
+		padding: 1.5rem;
+	}
+	
+	/* Selector de ID: aplica a UN solo elemento con id="header" */
+	#header {
+		background: #0066cc;
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\subsection{El reset: por que es obligatorio}
+	
+	\begin{cajaconcepto}{Concepto: Reset CSS}
+		Cada navegador tiene estilos por defecto diferentes. Chrome pone un margen de 8px al body, Firefox pone 8px pero con reglas distintas para listas y tablas, Safari tiene otra variante. Estas diferencias causan que un sitio se vea diferente en cada navegador.
+		
+		El reset elimina esas diferencias estableciendo una base comun. Existen dos enfoques principales: (1) el \textbf{reset completo} (como el de Eric Meyer) que elimina absolutamente todos los estilos por defecto, y (2) el \textbf{reset minimo} (como Normalize.css) que solo corrige las inconsistencias. En la practica usamos un reset minimo de 3 reglas porque es suficiente para proyectos modernos.
+		
+		El selector \texttt{*} (asterisco) selecciona todos los elementos del documento. Los pseudo-elementos \texttt{*::before} y \texttt{*::after} se incluyen porque tambien son cajas que necesitan el mismo \texttt{box-sizing}.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 3 -- Reset minimo (el que usa la practica)}
+		\begin{lstlisting}[style=codecss]
+	/* Aplicar a TODOS los elementos */
+	*, *::before, *::after {
+		box-sizing: border-box;  /* padding y border incluidos en width */
+		margin: 0;               /* quitar margenes por defecto */
+		padding: 0;              /* quitar padding por defecto */
+	}
+	
+	/* Imagenes y videos: nunca desbordar su contenedor */
+	img, video {
+		max-width: 100%;
+		display: block;
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Concepto: box-sizing: border-box}
+		Sin \texttt{border-box}: un elemento con \texttt{width: 200px} y \texttt{padding: 20px} mide 240px (200 + 20 + 20). Con \texttt{border-box}: mide 200px (el padding se resta del width). Sin esto, los layouts se rompen constantemente.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{main.css -- primeras lineas}
+		Estas 3 reglas son las primeras lineas del archivo \texttt{main.css} de la practica. Sin ellas, todo el layout posterior se comporta de forma impredecible.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 2: Unidades de medida}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: px vs rem vs em vs \% vs vw}
+		CSS tiene unidades absolutas y relativas. Entender la diferencia es fundamental para crear sitios que se adapten a las preferencias del usuario:
+		
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{px} (pixel): unidad absoluta. 1px = 1 punto en la pantalla. NO escala si el usuario cambia el tamano de fuente en su navegador. Usar solo para bordes (\texttt{border: 1px}).
+			\item \textbf{rem} (root em): relativa al \texttt{font-size} del elemento \texttt{<html>} (por defecto 16px). \texttt{1rem = 16px}, \texttt{1.5rem = 24px}. SI escala con la preferencia del usuario. Es la unidad recomendada para tipografia, padding y margin.
+			\item \textbf{em}: relativa al \texttt{font-size} del elemento padre (no del root). Si un \texttt{<div>} tiene \texttt{font-size: 20px}, entonces \texttt{1em = 20px} dentro de ese div. Es util para componentes que deben escalar proporcionalmente, pero puede causar confusion cuando se anidan (``efecto cascada'').
+			\item \textbf{\%}: relativa al elemento padre. \texttt{width: 80\%} = 80\% del ancho del padre. Muy usada para layouts fluidos.
+			\item \textbf{vw / vh}: relativa al viewport (ventana del navegador). \texttt{1vw} = 1\% del ancho de la ventana, \texttt{1vh} = 1\% del alto. Usada en tipografia fluida con \texttt{clamp()}.
+		\end{itemize}
+		
+		\textbf{Regla practica}: usar \texttt{rem} para texto y espaciado, \texttt{\%} para anchos de contenedores, \texttt{px} solo para bordes, y \texttt{vw} dentro de \texttt{clamp()} para tipografia fluida.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 4 -- Comparacion de unidades}
+		\begin{lstlisting}[style=codecss]
+	/* px: absoluto. 1px = 1 pixel. NO escala si el usuario
+	cambia el tamano de fuente en su navegador. */
+	h1 { font-size: 32px; }
+	
+	/* rem: relativo al font-size del <html> (por defecto 16px).
+	1rem = 16px. SI escala con la preferencia del usuario.
+	SIEMPRE preferir rem sobre px para texto y espaciado. */
+	h1 { font-size: 2rem; }  /* 2 * 16px = 32px */
+	
+	/* %: relativo al elemento padre.
+	width: 80% = 80% del ancho del padre. */
+	.contenedor { width: 80%; }
+	
+	/* vw: relativo al ancho del viewport (ventana).
+	1vw = 1% del ancho de la ventana.
+	Util en tipografia fluida con clamp(). */
+	h1 { font-size: 4vw; }  /* 4% del ancho de la ventana */
+	
+	/* clamp(minimo, preferido, maximo):
+	Nunca menor de 1.75rem, idealmente 4vw,
+	nunca mayor de 2.5rem. */
+	h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); } \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{variables.css}
+		Todas las variables de tipografia en la practica usan \texttt{clamp()} para que el texto sea fluido sin media queries: \texttt{--tamano-base: clamp(1rem, 1.5vw + 0.5rem, 1.125rem);}
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 3: Variables CSS (Custom Properties)}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: Variables CSS (Custom Properties)}
+		Las variables CSS se declaran en \texttt{:root} con \texttt{--nombre: valor;} y se usan con \texttt{var(--nombre)}. Permiten cambiar toda la paleta de colores del sitio desde un solo lugar. Son la base del modo oscuro.
+		
+		\textbf{Por que usar variables en lugar de valores directos:}
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{Mantenibilidad}: si el cliente pide cambiar el azul corporativo, se modifica UNA linea en \texttt{:root} en lugar de buscar y reemplazar en 50 lugares.
+			\item \textbf{Consistencia}: todos los componentes usan exactamente el mismo azul, el mismo espaciado, el mismo radio de borde. No hay variaciones accidentales.
+			\item \textbf{Modo oscuro}: al cambiar las variables dentro de una media query o un selector como \texttt{[data-tema="oscuro"]}, TODOS los elementos que usan esas variables cambian automaticamente sin escribir reglas adicionales.
+			\item \textbf{Lectura}: \texttt{color: var(---color-primario)} es mas descriptivo que \texttt{color: \#0066cc}. El nombre de la variable explica su proposito.
+		\end{itemize}
+		
+		El selector \texttt{:root} equivale al elemento \texttt{<html>} y garantiza que las variables esten disponibles en todo el documento. Se recomienda organizar las variables por categoria: colores, tipografia, espaciado, layout y transiciones.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{ambar}{Ejemplo 5 -- Declarar y usar variables}
+		\begin{lstlisting}[style=codecss]
+	/* Declarar en :root (accesibles en todo el documento) */
+	:root {
+		--color-primario: #0066cc;
+		--color-fondo:    #ffffff;
+		--color-texto:    #1a1a1a;
+		--esp-md:         1rem;
+		--radio-borde:    6px;
+	}
+	/* Usar con var() */
+	body {
+		background-color: var(--color-fondo);
+		color: var(--color-texto);
+	}
+	
+	.btn {
+		background: var(--color-primario);
+		padding: var(--esp-md);
+		border-radius: var(--radio-borde);
+	}\end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaresultado}{Resultado: poder de las variables CSS}
+		Si cambias \texttt{---color-primario: \#e74c3c;} en \texttt{:root}, TODOS los elementos que usan \texttt{var(---color-primario)} cambian automaticamente: el boton, el header, el focus de los inputs, el color de los enlaces.
+		
+		\textbf{Prueba practica}: abrir el archivo \texttt{variables.css}, cambiar el valor de \texttt{---color-primario} de \texttt{\#0066cc} (azul) a \texttt{\#e74c3c} (rojo), guardar, y observar cuantos elementos cambian en el navegador sin tocar ninguna otra linea de CSS.
+		
+		Esto demuestra el principio DRY (Don't Repeat Yourself): cada valor se define una sola vez en un solo lugar. Si el cliente pide cambiar el color corporativo, se modifica una linea en lugar de buscar y reemplazar en decenas de archivos.
+		
+		Las variables CSS tambien se pueden leer y modificar desde JavaScript con \texttt{document.documentElement.style.setProperty('---color-primario', '\#e74c3c')}, lo que permite al usuario personalizar los colores del sitio en tiempo real.
+	\end{cajaresultado}
+	
+	\begin{cajacodigo}{ambar}{Ejemplo 6 -- Escala de espaciado consistente}
+		\begin{lstlisting}[style=codecss]
+	:root {
+		/* Escala de 4px (cada valor es el doble del anterior) */
+		--esp-xs:  0.25rem;   /* 4px  */
+		--esp-sm:  0.5rem;    /* 8px  */
+		--esp-md:  1rem;      /* 16px */
+		--esp-lg:  1.5rem;    /* 24px */
+		--esp-xl:  2rem;      /* 32px */
+	}
+	
+	/* Usar consistentemente */
+	.campo-form { margin-bottom: var(--esp-md); }
+	.tarjeta    { padding: var(--esp-lg); }
+	header      { padding: var(--esp-md) var(--esp-lg); } \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{variables.css -- archivo completo}
+		El archivo \texttt{variables.css} de la practica declara 22 variables organizadas en 5 categorias: colores principales y de superficies (6 variables de color como \texttt{--color-primario}, \texttt{--color-fondo}, \texttt{--color-texto}), tipografia (4 variables con \texttt{clamp()} para tamanos fluidos y \texttt{--fuente-base} con la pila de fuentes del sistema), espaciado (6 variables en escala de 4px: \texttt{--esp-xs} hasta \texttt{--esp-2xl}), layout (4 variables como \texttt{--ancho-max} y \texttt{--sombra-sm}) y transiciones (2 variables para duraciones estandar). El archivo \texttt{main.css} las consume con \texttt{var()} en cada propiedad, de modo que ningun valor numerico aparece repetido fuera de \texttt{:root}.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 4: Box Model -- margin, padding, border}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: El modelo de caja}
+		Todo elemento HTML es una caja con 4 capas, de adentro hacia afuera:
+		
+		\begin{enumerate}[leftmargin=1.5em,itemsep=3pt]
+			\item \textbf{Content}: el contenido real del elemento (texto, imagen, video). Su tamano se controla con \texttt{width} y \texttt{height}.
+			\item \textbf{Padding}: espacio transparente entre el contenido y el borde. Empuja el contenido hacia adentro. Se define con \texttt{padding} (1-4 valores en orden del reloj: top, right, bottom, left).
+			\item \textbf{Border}: la linea visible alrededor del elemento. Se define con \texttt{border: ancho estilo color} (ej: \texttt{border: 2px solid \#dee2e6}). \texttt{border-radius} redondea las esquinas.
+			\item \textbf{Margin}: espacio transparente entre este elemento y los elementos vecinos. Empuja otros elementos hacia afuera. \texttt{margin: 0 auto} centra horizontalmente. Los margenes verticales entre elementos adyacentes colapsan: si un elemento tiene \texttt{margin-bottom: 20px} y el siguiente tiene \texttt{margin-top: 30px}, el espacio real entre ellos es 30px (el mayor), no 50px.
+		\end{enumerate}
+		
+		\textbf{Propiedad adicional}: \texttt{box-shadow} agrega una sombra visual que no afecta el flujo del documento (no ocupa espacio). Su sintaxis es: \texttt{box-shadow: desplazamiento-X desplazamiento-Y desenfoque color;}. Se puede agregar \texttt{inset} para sombras internas.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 7 -- Padding, margin y border}
+		\begin{lstlisting}[style=codecss]
+	.tarjeta {
+		/* Padding: espacio INTERIOR (entre el texto y el borde) */
+		padding: 1.5rem;
+		/* Border: linea visible alrededor */
+		border: 1px solid #dee2e6;
+		/* Border-radius: esquinas redondeadas */
+		border-radius: 12px;
+		/* Margin: espacio EXTERIOR (entre esta caja y las demas) */
+		margin-bottom: 1rem;
+		/* Box-shadow: sombra (no afecta el flujo del documento) */
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+		/* Desglose: desplazamiento-X  desplazamiento-Y  desenfoque  color */
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 8 -- Shorthand de margin y padding (orden del reloj)}
+		\begin{lstlisting}[style=codecss]
+	/* 4 valores: top  right  bottom  left  (sentido del reloj) */
+	padding: 10px 20px 10px 20px;
+	
+	/* 2 valores: vertical  horizontal */
+	/* arriba/abajo=10px, lados=20px */
+	padding: 10px 20px;   
+	
+	/* 1 valor: los 4 iguales */
+	padding: 1rem;
+	
+	/* Centrar un bloque horizontalmente */
+	/* 0 arriba/abajo, auto a los lados */ 
+	margin: 0 auto;  \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{main.css -- tarjetas y formulario}
+		Las tarjetas usan \texttt{padding: var(--esp-lg)}, \texttt{border: 1px solid var(--color-borde)}, \texttt{border-radius: var(--radio-borde-lg)} y \texttt{box-shadow: var(--sombra-sm)}.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 5: Flexbox -- distribuir en una dimension}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: Flexbox}
+		Flexbox distribuye elementos en \textbf{una dimension}: una fila O una columna. Se activa con \texttt{display: flex} en el contenedor padre. Los hijos se distribuyen automaticamente.
+		
+		Las propiedades mas importantes del contenedor flex son: \texttt{flex-direction} (fila o columna), \texttt{justify-content} (distribucion en el eje principal), \texttt{align-items} (alineacion en el eje secundario), \texttt{flex-wrap} (permitir que los hijos salten de linea) y \texttt{gap} (espacio entre hijos). Para los hijos, la propiedad \texttt{flex} combina tres valores: cuanto crece (\texttt{flex-grow}), cuanto se encoge (\texttt{flex-shrink}) y su tamano base (\texttt{flex-basis}).
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 9 -- Navbar horizontal con Flexbox}
+		{\color{codigotexto}\small El header necesita dos grupos de contenido en los extremos opuestos: el titulo a la izquierda y la navegacion a la derecha. \texttt{space-between} los separa automaticamente. La lista de enlaces dentro del nav tambien es flex para distribuirlos horizontalmente con espacio uniforme.}
+		
+		\begin{lstlisting}[style=codecss]
+	header { /* Contenedor flex: distribuye hijos en fila */
+		display: flex;
+		align-items: center;         /* centrar verticalmente */
+		justify-content: space-between; /* titulo a la izq, nav a la der */
+		gap: 1rem;                   /* espacio entre hijos */
+		padding: 1rem 1.5rem;
+	}
+	
+	nav ul {/* La lista de navegacion tambien es flex */
+		display: flex;
+		gap: 1rem;        /* espacio entre cada enlace */
+		list-style: none; /* quitar los puntos de la lista */
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 10 -- Tarjetas con flex-wrap (se ajustan al espacio)}
+		{\color{codigotexto}\small Las tarjetas de datos del PFC deben adaptarse al espacio disponible: 3 por fila en desktop, 2 en tablet, 1 en mobile. Con \texttt{flex-wrap: wrap} y un \texttt{flex-basis} minimo, Flexbox lo resuelve sin media queries.}
+		\begin{lstlisting}[style=codecss]
+	.tarjetas-grid {
+		display: flex;
+		flex-wrap: wrap;  /* si no caben en una fila, saltan a la siguiente */
+		gap: 1rem;
+	}
+	
+	.tarjeta {
+		flex: 1 1 260px;
+		/* Desglose:
+		flex-grow: 1    = CRECE para llenar el espacio disponible
+		flex-shrink: 1  = SE ENCOGE si el espacio es insuficiente
+		flex-basis: 260px = tamano base minimo de 260px
+		Resultado: las tarjetas miden al menos 260px y crecen
+		para llenar la fila. Si no caben 2, se apilan. */
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 11 -- Formulario vertical con Flexbox}
+		{\color{codigotexto}\small Cada campo del formulario tiene 3 elementos apilados verticalmente: el label arriba, el input en el medio y el mensaje de error abajo. \texttt{flex-direction: column} los organiza de arriba a abajo con un \texttt{gap} pequeno entre ellos.}
+		\begin{lstlisting}[style=codecss]
+	.campo-form {
+		display: flex;
+		flex-direction: column;  /* apilar label, input y error vertical */
+		gap: 0.25rem;            /* pequeno espacio entre cada uno */
+		margin-bottom: 1rem;
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{main.css -- header, tarjetas y formulario}
+		La practica usa Flexbox en 3 lugares distintos, cada uno con una configuracion diferente:
+		
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{Header}: \texttt{display: flex} con \texttt{justify-content: space-between} para poner el titulo a la izquierda y la navegacion a la derecha. \texttt{align-items: center} centra verticalmente ambos. \texttt{flex-wrap: wrap} permite que se apilen en pantallas pequenas.
+			\item \textbf{Tarjetas}: \texttt{display: flex} con \texttt{flex-wrap: wrap} y \texttt{gap: 1rem}. Cada tarjeta tiene \texttt{flex: 1 1 260px}: crece para llenar el espacio, se encoge si falta, pero nunca mide menos de 260px. En pantalla ancha caben 3 tarjetas por fila; en mobile se apilan a 1.
+			\item \textbf{Formulario}: cada \texttt{.campo-form} usa \texttt{flex-direction: column} para apilar verticalmente el label, el input y el mensaje de error, con \texttt{gap: 0.25rem} entre cada uno.
+		\end{itemize}
+		
+		La diferencia clave con Grid es que Flexbox no controla las filas: si caben 3 tarjetas caben, si caben 2 se ajustan, si cabe 1 se apila. Grid forzaria exactamente 3 columnas.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 6: CSS Grid -- layout de pagina completo}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: CSS Grid}
+		Grid distribuye elementos en \textbf{dos dimensiones}: filas Y columnas al mismo tiempo. Se usa para el layout general de la pagina (header, main, aside, footer). Se activa con \texttt{display: grid} en el contenedor padre.
+		
+		La propiedad \texttt{grid-template-areas} permite dibujar el layout visualmente en el codigo usando nombres de area entre comillas. Cada fila es un string y cada columna es un nombre separado por espacios. Luego, cada elemento HTML se asigna a su area con \texttt{grid-area: nombre;}. Esta sintaxis es la mas legible y mantenible para layouts de pagina.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 12 -- Grid basico con areas nombradas}
+		{\color{codigotexto}\small Usa \texttt{grid-template-areas} para nombrar cada zona del layout. Al cambiar las media queries, se reorganiza el layout modificando solo las areas, sin tocar el HTML.}
+		\begin{lstlisting}[style=codecss]
+	.layout {
+		display: grid;
+		grid-template-areas:
+		"header header"     /* header ocupa las 2 columnas */
+		"main   aside"      /* main a la izquierda, aside a la derecha */
+		"footer footer";    /* footer ocupa las 2 columnas */
+		grid-template-columns: 1fr 280px;  /* main=flexible, aside=280px */
+		gap: 1rem;
+		min-height: 100vh;   /* minimo el alto de la ventana */
+	}
+	
+	/* Asignar cada elemento a su area */
+	header { grid-area: header; }
+	main   { grid-area: main; }
+	aside  { grid-area: aside; }
+	footer { grid-area: footer; } \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Concepto: fr (fraction unit)}
+		\texttt{1fr} significa ``una fraccion del espacio disponible''. En \texttt{grid-template-columns: 1fr 280px}, la primera columna toma todo el espacio que sobra despues de asignar 280px al aside. Si el contenedor mide 1000px: main = 1000 - 280 - gap = 704px.
+		
+		Se pueden combinar multiples \texttt{fr}: \texttt{grid-template-columns: 2fr 1fr} crea dos columnas donde la primera es el doble de ancha que la segunda. La funcion \texttt{repeat()} simplifica la repeticion: \texttt{repeat(3, 1fr)} equivale a \texttt{1fr 1fr 1fr} (3 columnas iguales).
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{main.css -- layout principal}
+		Este ejemplo es exactamente el layout de la practica en la version tablet/desktop.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 7: Responsive mobile-first con media queries}
+	% =============================================================
+	
+	\begin{cajaconcepto}{Concepto: Mobile-first}
+		Se escribe primero el CSS para la pantalla mas pequena (mobile). Luego se agregan media queries con \texttt{min-width} para pantallas mas grandes. Esto es mas eficiente porque el CSS base es el mas simple y las media queries solo agregan complejidad cuando hay espacio.
+		
+		\textbf{Por que mobile-first y no desktop-first:}
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item En el enfoque \textbf{desktop-first}, el CSS base es complejo (2 columnas, margenes amplios) y las media queries con \texttt{max-width} van quitando cosas para pantallas pequenas. Esto genera mas codigo y es mas propenso a errores.
+			\item En el enfoque \textbf{mobile-first}, el CSS base es simple (1 columna, sin margenes laterales) y las media queries con \texttt{min-width} agregan complejidad solo cuando hay espacio para ello. Menos codigo, menos bugs.
+			\item Google indexa primero la version mobile del sitio (\textbf{mobile-first indexing}), asi que el CSS base debe ser el mobile.
+		\end{itemize}
+		
+		\textbf{Breakpoints mas usados}: 768px (tablet), 1024px (desktop), 1200px (pantalla ancha). En la practica usamos los primeros dos.
+	\end{cajaconcepto}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 13a -- Mobile (base, sin media query)}
+		\begin{lstlisting}[style=codecss]
+	/* MOBILE: 1 columna (CSS base, sin media query) */
+	.layout {
+		display: grid;
+		grid-template-areas:
+		"header"
+		"main"
+		"aside"
+		"footer";
+		gap: 1rem;
+		padding: 1rem;
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{verde}{Ejemplo 13b -- Tablet y Desktop (media queries)}
+		\begin{lstlisting}[style=codecss]
+	/* TABLET (768px+): 2 columnas */
+	@media (min-width: 768px) {
+		.layout {
+			grid-template-areas:
+			"header header"
+			"main   aside"
+			"footer footer";
+			grid-template-columns: 1fr 280px;
+			padding: 1.5rem;
+		}
+	}
+	
+	/* DESKTOP (1024px+): centrado */
+	@media (min-width: 1024px) {
+		.layout {
+			grid-template-columns: 1fr 320px;
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 2rem;
+		}
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaresultado}{Como verificar el responsive}
+		F12 en Chrome $\to$ icono de dispositivo movil (Toggle device toolbar) $\to$ cambiar el ancho: 375px (mobile, 1 columna) $\to$ 768px (tablet, 2 columnas) $\to$ 1024px (desktop, centrado). El aside pasa de estar debajo del main a estar al lado.
+	\end{cajaresultado}
+	
+	\begin{cajapractica}{main.css -- el layout completo}
+		Este ejemplo es exactamente el layout responsive de la practica con las mismas 3 etapas y los mismos breakpoints.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 8: Estilos de formulario accesibles}
+	% =============================================================
+	
+	\begin{cajacodigo}{azul}{Ejemplo 14a -- Base de todos los inputs}
+		\begin{lstlisting}[style=codecss]
+	input, select, textarea {
+		padding: 0.5rem 1rem;
+		border: 2px solid #dee2e6;
+		border-radius: 6px;
+		font-size: 1rem;
+		font-family: inherit;  /* hereda la fuente del body */
+		background: var(--color-fondo);
+		color: var(--color-texto);
+		transition: border-color 150ms ease;
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 14b -- Focus, validacion y mensajes de error}
+		\begin{lstlisting}[style=codecss]
+	/* Focus: anillo azul al hacer clic o Tab */
+	input:focus, select:focus, textarea:focus {
+		outline: 3px solid #0066cc;
+		outline-offset: 2px;
+		border-color: #0066cc;
+	}
+	/* Invalido SOLO si el usuario ya escribio algo */
+	input:invalid:not(:placeholder-shown) {
+		border-color: #dc3545;  /* borde rojo */
+	}
+	/* Textos de ayuda y error */
+	.mensaje-error { color: #dc3545; font-size: 0.875rem; }
+	.texto-ayuda   { color: #555;    font-size: 0.875rem; } \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Concepto: :focus-visible vs :focus}
+		\texttt{:focus} se activa siempre que el elemento recibe foco (teclado O raton). \texttt{:focus-visible} se activa solo cuando el foco es por teclado (Tab). Los botones usan \texttt{:focus-visible} para no mostrar el outline cuando el usuario hace clic con el raton (que es molesto) pero si cuando navega con Tab (que es necesario para accesibilidad).
+		
+		Los inputs de formulario usan \texttt{:focus} (no \texttt{:focus-visible}) porque el outline debe aparecer tanto al hacer clic como al navegar con Tab, ya que el usuario necesita ver cual campo esta editando en ambos casos. Las mejores practicas de accesibilidad exigen que el \texttt{outline} sea de al menos 3px y tenga un \texttt{outline-offset} de 2-3px para que no se confunda con el borde del elemento.
+	\end{cajaconcepto}
+	
+	\begin{cajapractica}{main.css -- formulario}
+		La practica usa exactamente estos estilos. El selector \texttt{:invalid:not(:placeholder-shown)} evita que el campo se muestre rojo antes de que el usuario escriba (porque un campo vacio es invalido si tiene \texttt{required}, pero no queremos asustarlo antes de que empiece).
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 9: Botones con transiciones y estados}
+	% =============================================================
+	
+	\begin{cajacodigo}{azul}{Ejemplo 15a -- Boton: estilo base}
+		\begin{lstlisting}[style=codecss]
+	.btn-primario {
+		background: var(--color-primario);
+		color: #fff;
+		padding: 0.5rem 2rem;
+		border: none;
+		border-radius: 6px;
+		font: 1rem inherit;
+		cursor: pointer;
+		transition: background 150ms ease, transform 150ms ease;
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 15b -- Boton: hover, active, focus-visible y disabled}
+		\begin{lstlisting}[style=codecss]
+	/* Hover: cuando el ratón pasa por encima del botón. Se oscurece el
+	   fondo para dar feedback visual al usuario acerca del boton.*/
+	.btn-primario:hover {
+		background: var(--color-primario-hover);
+	}	
+	/* Active: Al mantener presionado el botón con el clic. scale(0.98)
+	lo encoge un 2% simulando que se "hunde", como un boton fisico. */
+	.btn-primario:active {
+		transform: scale(0.98);
+	}	
+	/* Focus-visible: aparece SOLO cuando llega al boton con la tecla Tab,
+	NO con clic. El outline de 3px + offset de 3px crea un anillo visible
+	separado del borde del boton. Es obligatorio para accesibilidad
+	(WCAG 2.1). */
+	.btn-primario:focus-visible {
+		outline: 3px solid var(--color-primario);
+		outline-offset: 3px;
+	}
+	/* Disabled: botón deshabilitado (ej: formulario incompleto o esperando respuesta del servidor). opacity 0.5 lo hace semitransparente. cursor not-allowed muestra icono de prohibido. pointer-events none ignora todos los clics. */
+	.btn-primario:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		pointer-events: none;
+		} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajaconcepto}{Concepto: transition}
+		La propiedad \texttt{transition} anima los cambios de valor de otras atributos CSS. Su sintaxis es:
+		
+		\texttt{transition: propiedad duracion curva retardo;}
+		
+		\begin{itemize}[leftmargin=1.2em,itemsep=3pt]
+			\item \textbf{propiedad}: cual propiedad animar (\texttt{background}, \texttt{color}, \texttt{transform}, \texttt{all}).
+			\item \textbf{duracion}: cuanto dura la animacion (\texttt{150ms}, \texttt{0.3s}). Regla: 100-300ms para hover de botones/enlaces, 300-500ms para cambios de layout o tema.
+			\item \textbf{curva}: la aceleracion de la animacion. \texttt{ease} (lento-rapido-lento, la mas natural), \texttt{linear} (velocidad constante), \texttt{ease-in} (empieza lento), \texttt{ease-out} (termina lento), \texttt{ease-in-out} (lento en ambos extremos).
+			\item \textbf{retardo} (opcional): esperar antes de iniciar (\texttt{50ms}, \texttt{0.1s}).
+		\end{itemize}
+		
+		Se pueden animar multiples propiedades separandolas con coma: \texttt{transition: background 150ms ease, transform 150ms ease;}. Usar \texttt{all} anima todas las propiedades que cambien, pero es menos eficiente porque el navegador debe vigilar todas.
+		
+		\textbf{Propiedades que se pueden animar}: las que tienen valores intermedios calculables: colores (\texttt{color}, \texttt{background}), tamanos (\texttt{width}, \texttt{height}, \texttt{padding}), posiciones (\texttt{top}, \texttt{left}), transformaciones (\texttt{transform}), opacidad (\texttt{opacity}). \textbf{No se pueden animar}: \texttt{display}, \texttt{font-family}, \texttt{position}.
+	\end{cajaconcepto}
+	
+	% =============================================================
+	\section{Nivel 10: Modo oscuro automatico y manual}
+	% =============================================================
+	\textbf{Tip:} el modo oscuro automatico no requiere JavaScript. CSS detecta la preferencia del sistema operativo con la media query \texttt{prefers-color-scheme: dark}. Solo se redefinen las variables de color en \texttt{:root}; el resto del CSS no cambia ni una linea porque todo usa \texttt{var()}. Esta es la ventaja principal de haber definido variables en el Nivel 3: un solo punto de cambio controla toda la apariencia del sitio.
+	
+	\begin{cajacodigo}{morado}{Ejemplo 16 -- Modo oscuro con media query del sistema}
+		\begin{lstlisting}[style=codecss]
+	/* === MODO CLARO (base, siempre se carga primero) === */
+	:root {
+		--color-fondo:         #ffffff;  /* blanco */
+		--color-fondo-tarjeta: #f8f9fa;  /* gris muy claro */
+		--color-texto:         #1a1a1a;  /* casi negro */
+		--color-texto-suave:   #555555;  /* gris medio */
+		--color-borde:         #dee2e6;  /* gris claro */
+	}
+	/* === MODO OSCURO AUTOMATICO ===
+	Esta media query detecta si el sistema operativo del usuario
+	tiene configurado el tema oscuro. Solo redefine las variables
+	de color; el resto del CSS no cambia ni una linea. */
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--color-fondo:         #0f172a;  /* azul muy oscuro */
+			--color-fondo-tarjeta: #1e293b;  /* azul oscuro */
+			--color-texto:         #f1f5f9;  /* casi blanco */
+			--color-texto-suave:   #94a3b8;  /* gris azulado */
+			--color-borde:         #334155;  /* gris oscuro */
+		}
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajatip}{morado}{Como probar el modo oscuro automatico sin cambiar tu SO}
+		En Chrome: F12 $\to$ Ctrl+Shift+P $\to$ escribir ``rendering'' $\to$ Show Rendering $\to$ buscar ``Emulate CSS media feature prefers-color-scheme'' $\to$ seleccionar \textbf{dark}. El sitio cambia al instante. Para volver: seleccionar \textbf{light} o \textbf{No emulation}.
+		
+		En Firefox: F12 $\to$ Inspector $\to$ en la barra superior hay un icono de sol/luna que alterna entre claro y oscuro.
+		
+		\textbf{Errores frecuentes si no funciona}: (1) el \texttt{body} usa un color fijo como \texttt{background: \#fff} en lugar de \texttt{var(--color-fondo)}; (2) la media query tiene un error de sintaxis (verificar que diga exactamente \texttt{prefers-color-scheme: dark} sin mayusculas); (3) hay un \texttt{!important} en otro lugar que sobrescribe la variable.
+	\end{cajatip}
+	
+	\textbf{Tip:} el modo manual complementa al automatico. Si el usuario quiere modo claro aunque su SO este en oscuro (o viceversa), el boton de tema agrega el atributo \texttt{data-tema} al \texttt{<html>} via JavaScript, y el selector CSS \texttt{[data-tema="oscuro"]} tiene prioridad sobre la media query. La preferencia se guarda en \texttt{localStorage} para que persista al recargar la pagina o cerrar el navegador. Sin \texttt{localStorage}, el usuario tendria que presionar el boton cada vez que entra al sitio.
+	
+	\begin{cajacodigo}{morado}{Ejemplo 17 -- Modo oscuro manual con boton (atributo data-tema)}
+		\begin{lstlisting}[style=codecss]
+	/* === MODO OSCURO MANUAL ===
+	Cuando el usuario presiona el boton de tema, JavaScript ejecuta:
+	document.documentElement.setAttribute('data-tema', 'oscuro');
+	Esto agrega data-tema="oscuro" al <html> */
+	[data-tema="oscuro"] {
+		--color-fondo:         #0f172a;
+		--color-fondo-tarjeta: #1e293b;
+		--color-texto:         #f1f5f9;
+		--color-texto-suave:   #94a3b8;
+		--color-borde:         #334155;
+	}
+	/* === COMBINACION: auto + manual ===
+	Si el SO tiene modo oscuro, activar el tema oscuro EXCEPTO cuando
+	el usuario eligio explicitamente el modo claro con el boton.
+	:not([data-tema="claro"]) excluye ese caso. */
+	@media (prefers-color-scheme: dark) {
+		:root:not([data-tema="claro"]) {
+			--color-fondo:         #0f172a;
+			--color-fondo-tarjeta: #1e293b;
+			--color-texto:         #f1f5f9;
+			--color-texto-suave:   #94a3b8;
+			--color-borde:         #334155;
+		}
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajatip}{morado}{Prioridad: manual gana sobre automatico}
+		El truco esta en el selector \texttt{:root:not([data-tema="claro"])}. Si el SO tiene modo oscuro activo pero el usuario presiono el boton para elegir modo claro, JavaScript pone \texttt{data-tema="claro"} en el \texttt{<html>}. El \texttt{:not()} excluye ese caso y el modo claro prevalece. Sin el \texttt{:not()}, el modo oscuro del SO siempre ganaria sobre la eleccion del usuario.
+		
+		\textbf{Flujo completo de la logica}:
+		\begin{enumerate}[leftmargin=1.5em,itemsep=2pt]
+			\item El usuario entra por primera vez $\to$ no hay \texttt{data-tema} $\to$ se aplica la preferencia del SO via media query.
+			\item El usuario presiona el boton de tema $\to$ JavaScript agrega \texttt{data-tema="oscuro"} o \texttt{"claro"} al \texttt{<html>} y lo guarda en \texttt{localStorage}.
+			\item El usuario vuelve al sitio $\to$ JavaScript lee \texttt{localStorage} y restaura el \texttt{data-tema} guardado, ignorando la preferencia del SO.
+			\item Si el usuario nunca toco el boton, siempre respeta su SO automaticamente.
+		\end{enumerate}
+	\end{cajatip}
+	
+	\begin{cajacodigo}{morado}{Ejemplo 18 -- Transicion suave entre modos}
+		\begin{lstlisting}[style=codecss]
+	body {
+		background-color: var(--color-fondo);
+		color: var(--color-texto);
+		transition: background-color 300ms ease, color 300ms ease;
+	}/* Transicion: el cambio de color es gradual, no brusco */ \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{variables.css -- modo oscuro completo}
+		La practica combina las tres tecnicas: variables en \texttt{:root} (claro), media query para auto-deteccion del SO, y selector \texttt{[data-tema="oscuro"]} para el boton. La transicion en el body hace que el cambio sea suave.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel 11: Animaciones y accesibilidad}
+	% =============================================================
+	\textbf{Tip:} las animaciones CSS se definen en dos partes: primero el \texttt{@keyframes} que describe los estados inicial (\texttt{from}) y final (\texttt{to}) de la animacion, y luego la propiedad \texttt{animation} que conecta el keyframe con el elemento y define duracion, curva y comportamiento. El valor \texttt{both} en \texttt{animation-fill-mode} hace que el elemento mantenga el estado final al terminar y aplique el estado inicial antes de empezar.
+	
+	\begin{cajacodigo}{azul}{Ejemplo 19a -- Definir la animacion @keyframes}
+		\begin{lstlisting}[style=codecss]
+	@keyframes aparecer {
+		from { opacity: 0;                  /* invisible */
+			transform: translateY(12px); /* 12px abajo */
+		}
+		to { 
+			opacity: 1;                  /* visible */
+			transform: translateY(0);    /* posicion normal */
+		}
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\textbf{Tip:} en la practica, cada tarjeta tiene un \texttt{animation-delay} diferente calculado con JavaScript: \texttt{style=``animation-delay: \$\{i * 60\}ms''}, donde \texttt{i} es el indice de la tarjeta. Esto crea un efecto escalonado donde las tarjetas aparecen una tras otra en lugar de todas al mismo tiempo.
+	
+	\begin{cajacodigo}{azul}{Ejemplo 19b -- Aplicar y desactivar por accesibilidad}
+		\begin{lstlisting}[style=codecss]
+	.tarjeta {/* nombre  duracion  curva  fill-mode */
+		animation: aparecer 0.4s ease both;
+	}
+	/* OBLIGATORIO: desactivar para usuarios con sensibilidad */
+	@media (prefers-reduced-motion: reduce) {
+		.tarjeta { animation: none; }
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\textbf{Tip:} Lighthouse verifica automaticamente si el sitio respeta \texttt{prefers-reduced-motion}. Si hay animaciones activas sin esta media query, el score de Accessibility baja. La regla es simple: toda propiedad \texttt{animation} o \texttt{transition} debe tener su contraparte \texttt{@media (prefers-reduced-motion: reduce)} que la desactive con \texttt{animation: none} o \texttt{transition: none}.
+	
+	\begin{cajaconcepto}{Concepto: prefers-reduced-motion}
+		Hay usuarios que experimentan mareo, nauseas o convulsiones con animaciones. Sus sistemas operativos tienen una opcion para ``Reducir movimiento''. La media query \texttt{prefers-reduced-motion: reduce} detecta esa preferencia. Es \textbf{obligatorio} desactivar todas las animaciones cuando esta activa. Lighthouse lo verifica.
+	\end{cajaconcepto}
+	
+	\subsection{Enlace de salto (skip link) accesible}
+	
+	\begin{cajacodigo}{azul}{Ejemplo 20 -- Skip link oculto que aparece con Tab}
+		\begin{lstlisting}[style=codecss]
+	/* Oculto por defecto (fuera de la pantalla) */
+	.saltar-nav {
+		position: absolute;
+		top: -100%;            /* fuera de la vista */
+		left: 0;
+		padding: 0.5rem 1rem;
+		background: #0066cc;
+		color: #fff;
+		text-decoration: none;
+		z-index: 9999;         /* siempre encima de todo */
+		transition: top 150ms ease;
+	}
+	
+	/* Aparece cuando el usuario presiona Tab */
+	.saltar-nav:focus {
+		top: 0;  /* entra a la pantalla */
+	} \end{lstlisting}
+	\end{cajacodigo}
+	
+	\begin{cajapractica}{main.css -- accesibilidad}
+		El skip link es el primer elemento del \texttt{<body>} en el HTML: \texttt{<a href=``\#contenido-principal'' class=``saltar-nav''>Ir al contenido principal</a>}. Es invisible hasta que el usuario presiona Tab, momento en que aparece en la esquina superior izquierda.
+	\end{cajapractica}
+	
+	% =============================================================
+	\section{Nivel FINAL: Mapa completo del CSS de la practica}
+	% =============================================================
+	
+	\begin{cajatip}{rojo}{Verificacion}
+		Si entendiste los 20 ejemplos anteriores, puedes leer y escribir cada linea del Paso 3 de la practica. La Tabla~\ref{tab:mapa-css} mapea cada concepto a su ubicacion exacta en el codigo de la practica y al ejemplo correspondiente en este documento.
+	\end{cajatip}
+	
+	\small
+	\begin{longtable}{|C{0.5cm}|L{4cm}|L{4.5cm}|L{4.5cm}|}
+		\caption{Mapa completo: concepto CSS $\to$ ubicacion en la practica $\to$ ejemplo en este documento.}\label{tab:mapa-css}\\
+		\hline
+		\rowcolor{ambar}
+		\textcolor{white}{\textbf{\#}} &
+		\textcolor{white}{\textbf{Concepto CSS}} &
+		\textcolor{white}{\textbf{Donde se usa en la practica}} &
+		\textcolor{white}{\textbf{Ejemplo en este documento}} \\
+		\hline
+		\endfirsthead
+		\hline
+		\rowcolor{ambar}
+		\textcolor{white}{\textbf{\#}} &
+		\textcolor{white}{\textbf{Concepto CSS}} &
+		\textcolor{white}{\textbf{Donde se usa en la practica}} &
+		\textcolor{white}{\textbf{Ejemplo en este documento}} \\
+		\hline
+		\endhead
+		\hline
+		\endfoot
+		1 & Reset con box-sizing & Primeras lineas de main.css & Ejemplo 3 \\
+		\hline
+		\rowcolor{grisclaro}
+		2 & Unidades rem, em, \%, vw, clamp() & Variables de tipografia en variables.css & Ejemplo 4 \\
+		\hline
+		3 & Variables CSS en :root & Archivo variables.css completo & Ejemplos 5 y 6 \\
+		\hline
+		\rowcolor{grisclaro}
+		4 & Padding, border, border-radius, box-shadow & Tarjetas, formulario, header & Ejemplos 7 y 8 \\
+		\hline
+		5 & Flexbox horizontal & Header: titulo + nav con space-between & Ejemplo 9 \\
+		\hline
+		\rowcolor{grisclaro}
+		6 & Flexbox con flex-wrap & Tarjetas: flex: 1 1 260px & Ejemplo 10 \\
+		\hline
+		7 & Flexbox vertical & Campos del formulario: flex-direction: column & Ejemplo 11 \\
+		\hline
+		\rowcolor{grisclaro}
+		8 & CSS Grid con areas nombradas & Layout principal: header, main, aside, footer & Ejemplo 12 \\
+		\hline
+		9 & Media queries mobile-first & 3 breakpoints: base, 768px, 1024px & Ejemplo 13a y 13b \\
+		\hline
+		\rowcolor{grisclaro}
+		10 & Focus, :invalid, :focus-visible & Inputs con outline y validacion visual & Ejemplo 14a y 14b \\
+		\hline
+		11 & Boton con 5 estados & .btn-primario: normal, hover, active, focus, disabled & Ejemplo 15a y 15b \\
+		\hline
+		\rowcolor{grisclaro}
+		12 & Modo oscuro automatico & @media (prefers-color-scheme: dark) en variables.css & Ejemplo 16 \\
+		\hline
+		13 & Modo oscuro manual & [data-tema=``oscuro''] + :not() en variables.css & Ejemplo 17 \\
+		\hline
+		\rowcolor{grisclaro}
+		14 & Transicion suave de tema & body: transition background-color 300ms en main.css & Ejemplo 18 \\
+		\hline
+		15 & @keyframes y animation & Animacion de entrada de tarjetas en main.css & Ejemplo 19a \\
+		\hline
+		\rowcolor{grisclaro}
+		16 & prefers-reduced-motion & Desactivar animaciones para accesibilidad & Ejemplo 19b \\
+		\hline
+		17 & Skip link accesible & Enlace oculto que aparece con Tab en main.css & Ejemplo 20 \\
+		\hline
+	\end{longtable}
+	\normalsize
+	
+	\vspace{0.3cm}
+	
+	\begin{cajatip}{verde}{Estas listo}
+		Si puedes explicar cada fila de esta tabla, puedes implementar el Paso 3 completo de la practica. Abre la guia de la PE U1, ve al Paso 3, y veras que cada bloque de CSS corresponde a uno de estos 20 ejemplos.
+	\end{cajatip}
+	
+\end{document}

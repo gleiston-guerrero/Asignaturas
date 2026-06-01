@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  VIDEO ACCESIBLE — Demostración de la API multimedia HTML5
+  ============================================================
+  Archivo:  04_video_accesible.html
+  Propósito: Mostrar el patrón completo de un <video> accesible
+             con múltiples formatos, subtítulos y fallback.
+  Referencia: Libro Aplicaciones Web - Sección 2.5.2
+  ============================================================
+
+  ATRIBUTOS CLAVE DE <video>:
+
+  controls    → Muestra los controles del navegador (play, volumen…)
+                NUNCA lo omitas a menos que crees controles propios
+                con JavaScript Y los hagas accesibles por teclado.
+
+  preload     → "none" | "metadata" | "auto"
+                "metadata" es el mejor compromiso: carga sólo el
+                tamaño y duración del video, no los bytes completos.
+
+  poster      → Imagen que se muestra antes de pulsar play.
+                Es como la "portada" del video.
+
+  width/height → Defínelos siempre para evitar saltos de layout
+                  (CLS — Cumulative Layout Shift, un Core Web Vital).
+
+  autoplay    → Reproduce automáticamente.
+                ⚠ Los navegadores SÓLO permiten autoplay si el
+                video va MUTED. Y los usuarios lo odian. Úsalo
+                sólo en contexto editorial muy justificado.
+
+  muted       → Inicia sin sonido (requisito para autoplay).
+
+  loop        → Reproduce en bucle (útil para fondos, no para
+                contenido narrativo).
+
+  playsinline → En iOS, evita que el video tome toda la pantalla
+                al pulsar play (importante para hero videos).
+
+  TIPOS DE <track>:
+
+  subtitles     → Traducciones para hablantes de OTRO idioma.
+                  Asumen que el espectador OYE el audio original.
+
+  captions      → Transcripción para personas SORDAS.
+                  Incluyen efectos sonoros, música, identificación
+                  de quién habla. NO es lo mismo que subtitles.
+
+  descriptions  → Audio-descripción de lo que pasa visualmente,
+                  para personas CIEGAS. Suele ser una pista de audio
+                  separada en producciones profesionales.
+
+  chapters      → Marcadores de capítulos navegables.
+
+  metadata      → Datos auxiliares no visibles al usuario, usados
+                  por scripts (cue points, sincronización con UI).
+
+  WCAG 2.1 LEVEL AA — pautas relevantes:
+  - 1.2.1 Audio-only and Video-only (Prerecorded)
+  - 1.2.2 Captions (Prerecorded)
+  - 1.2.3 Audio Description or Media Alternative
+  - 1.2.5 Audio Description (Prerecorded) — nivel AA
+  ============================================================
+-->
+<html lang="es-EC">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video accesible — Demo HTML5 UTEQ</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 820px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.5;
+        }
+        h1 { color: #2C5F2D; }
+        video {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            background: #000;
+        }
+        figcaption {
+            font-size: .9rem;
+            color: #555;
+            margin-top: .5rem;
+        }
+        .checklist {
+            background: #f4f6f0;
+            border-left: 4px solid #2C5F2D;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Demostración: video accesible WCAG 2.1</h1>
+
+    <p>
+        Este video utiliza los <strong>tres niveles de accesibilidad</strong>
+        recomendados por las pautas WCAG 2.1: subtítulos para hablantes de
+        otros idiomas, captions para personas sordas y descripciones para
+        personas ciegas.
+    </p>
+
+    <!-- ========================================================== -->
+    <!-- ELEMENTO <video> ACCESIBLE                                  -->
+    <!-- ========================================================== -->
+    <figure>
+        <video
+            controls
+            preload="metadata"
+            poster="recursos/portada.jpg"
+            width="800"
+            height="450"
+            playsinline>
+
+            <!-- FUENTES ALTERNATIVAS (orden importante: el navegador
+                 elige la PRIMERA que sabe reproducir).
+                 WebM AV1 → más eficiente, navegadores modernos
+                 MP4 H.264 → universal, fallback seguro -->
+            <source src="recursos/conferencia.webm" type="video/webm; codecs=av01.0.05M.08">
+            <source src="recursos/conferencia.mp4" type="video/mp4; codecs=avc1.42E01E">
+
+            <!-- ========================================== -->
+            <!-- PISTAS DE TEXTO (track)                     -->
+            <!-- ========================================== -->
+
+            <!-- Subtítulos en español (para hispanohablantes que oyen el audio) -->
+            <track
+                kind="subtitles"
+                src="recursos/subtitulos-es.vtt"
+                srclang="es"
+                label="Español"
+                default>
+
+            <!-- Subtítulos en inglés -->
+            <track
+                kind="subtitles"
+                src="recursos/subtitulos-en.vtt"
+                srclang="en"
+                label="English">
+
+            <!-- Captions para personas sordas (incluyen efectos sonoros) -->
+            <track
+                kind="captions"
+                src="recursos/captions-es.vtt"
+                srclang="es"
+                label="Captions (Sordos)">
+
+            <!-- Audio-descripciones para personas ciegas -->
+            <track
+                kind="descriptions"
+                src="recursos/descripciones-es.vtt"
+                srclang="es"
+                label="Audio-descripción">
+
+            <!-- Capítulos navegables -->
+            <track
+                kind="chapters"
+                src="recursos/capitulos.vtt"
+                srclang="es"
+                label="Capítulos">
+
+            <!-- Fallback: si el navegador no soporta <video> -->
+            <p>
+                Tu navegador no soporta video HTML5.
+                Puedes <a href="recursos/conferencia.mp4">descargar el video</a>
+                o leer la <a href="recursos/transcripcion.html">transcripción
+                textual completa</a>.
+            </p>
+        </video>
+
+        <figcaption>
+            Conferencia inaugural — Jornada de Aplicaciones Web UTEQ 2026.
+            <a href="recursos/transcripcion.html">Ver transcripción completa</a>.
+        </figcaption>
+    </figure>
+
+    <h2>Lista de verificación de accesibilidad</h2>
+    <div class="checklist">
+        <p><strong>Antes de publicar un video, verifica:</strong></p>
+        <ul>
+            <li>✅ Tiene atributo <code>controls</code> (controles visibles).</li>
+            <li>✅ Tiene al menos una pista <code>kind="captions"</code> o <code>kind="subtitles"</code>.</li>
+            <li>✅ Tiene un <code>poster</code> descriptivo (no negro).</li>
+            <li>✅ NO tiene <code>autoplay</code> con audio (solo si está muted).</li>
+            <li>✅ Tiene fallback textual (transcripción enlazada).</li>
+            <li>✅ Define <code>width</code> y <code>height</code> para evitar CLS.</li>
+            <li>✅ Ofrece al menos dos formatos (WebM + MP4).</li>
+            <li>✅ Funciona con teclado: ESPACIO = play/pausa, ← → = saltar 5s.</li>
+        </ul>
+    </div>
+
+    <h2>Demo de <code>&lt;audio&gt;</code> (estructura idéntica)</h2>
+    <audio controls preload="metadata">
+        <source src="recursos/podcast.mp3" type="audio/mpeg">
+        <source src="recursos/podcast.ogg" type="audio/ogg">
+        <track
+            kind="captions"
+            src="recursos/podcast-transcripcion.vtt"
+            srclang="es"
+            label="Transcripción"
+            default>
+        <p>
+            Tu navegador no soporta audio HTML5.
+            <a href="recursos/podcast.mp3">Descarga el podcast en MP3</a>.
+        </p>
+    </audio>
+
+</body>
+</html>
