@@ -1,0 +1,456 @@
+% =====================================================================
+%  GUIA DE PRACTICA EXPERIMENTAL -- UNIDAD II (PE2)
+%  Elicitacion y Analisis de Requisitos
+%  Formato institucional FCC-UTEQ. Anclada al PFC. Apunta a la Entrega 2.
+%  Ingenieria de Requerimientos [20303] -- UTEQ -- 2026-2027 PPA
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[a4paper, top=3.1cm, bottom=2.4cm, left=2cm, right=2cm, headheight=62pt, headsep=10pt]{geometry}
+\usepackage[table]{xcolor}
+\definecolor{secdark}{HTML}{1A3A6B}   % azul cuadro de numero / titulos
+\definecolor{secblue}{HTML}{2D85C1}   % azul banda de seccion
+\definecolor{rowgray}{HTML}{F0F0F0}
+\definecolor{notagreen}{HTML}{1D6B36}
+\definecolor{goldb}{HTML}{D4A017}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\usepackage{microtype}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false, pdftitle={Guia PE2 Elicitacion y Analisis de Requisitos ISR-401 UTEQ}}
+
+\setlist{leftmargin=1.5em, topsep=2pt, itemsep=1pt}
+
+% ---- Encabezado / pie con imagenes institucionales ------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[C]{\includegraphics[width=\textwidth]{logoband.png}}
+\fancyfoot[L]{\raisebox{-2pt}{\includegraphics[width=0.86\textwidth]{footband.png}}}
+\fancyfoot[R]{\footnotesize Página \thepage\ / \pageref{LastPage}}
+
+% ---- Banda de seccion -----------------------------------------------
+\newcommand{\secband}[2]{%
+  \par\vspace{9pt}\noindent
+  {\setlength{\fboxsep}{0pt}%
+   \colorbox{secdark}{\parbox[c][20pt][c]{0.05\textwidth}{\centering\textbf{\color{white}\small #1}}}%
+   \colorbox{secblue}{\parbox[c][20pt][c]{0.95\textwidth}{\hspace{8pt}\textbf{\color{white}\small #2}}}%
+  }\par\vspace{5pt}}
+
+% ---- Marca de subseccion (barra azul) -------------------------------
+\newcommand{\submark}[1]{\par\vspace{4pt}\noindent
+  {\color{secblue}\rule[-1pt]{3.5pt}{12pt}}\hspace{6pt}\textbf{\color{secdark}#1}\par\vspace{2pt}}
+
+% ---- Cajas tipo nota ------------------------------------------------
+\newtcolorbox{notabox}[1][]{colback=notagreen!6,colframe=notagreen,boxrule=0.8pt,
+  arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,fonttitle=\bfseries\color{white},
+  coltitle=white,colbacktitle=notagreen,#1}
+\newtcolorbox{goldbox}[1][]{colback=goldb!10,colframe=goldb,boxrule=0.8pt,
+  arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,#1}
+
+\newcommand{\fld}[1]{\textbf{\color{secdark}#1}}
+
+\begin{document}
+
+% =====================================================================
+%  TITULO DEL DOCUMENTO (solo pagina 1)
+% =====================================================================
+\begin{center}
+  {\large\bfseries\color{secdark}FACULTAD DE CIENCIAS DE LA COMPUTACIÓN}\\[2pt]
+  {\small\color{secdark}GUÍA DE PRÁCTICA EXPERIMENTAL}\\[2pt]
+  \textcolor{secdark}{\rule{0.55\textwidth}{1pt}}
+\end{center}
+\vspace{2pt}
+
+% =====================================================================
+%  1 DATOS GENERALES
+% =====================================================================
+\secband{1}{DATOS GENERALES}
+\renewcommand{\arraystretch}{1.35}
+\noindent\begin{tabular}{|p{3.2cm}|p{4.6cm}|p{3.7cm}|p{3.6cm}|}
+\hline
+\multicolumn{4}{|l|}{\fld{CARRERA:} SOFTWARE (REDISEÑO)}\\
+\hline
+\multicolumn{4}{|l|}{\fld{ASIGNATURA:} INGENIERÍA DE REQUERIMIENTOS [20303]}\\
+\hline
+\multicolumn{2}{|l|}{\fld{NIVEL / PARALELO:} 4TO NIVEL – A} & \multicolumn{2}{l|}{\fld{N.\textsuperscript{o} DE ESTUDIANTES:}}\\
+\hline
+\multicolumn{4}{|l|}{\fld{PROFESOR:} GUERRERO ULLOA GLEISTON CICERON}\\
+\hline
+\multicolumn{2}{|l|}{\fld{PERIODO ACADÉMICO:} 2026-2027 PPA} & \multicolumn{2}{l|}{\fld{FECHA:} 06-05-2026}\\
+\hline
+\multicolumn{2}{|l|}{\fld{TIPO DE GUÍA:} PRÁCTICA EXPERIMENTAL} & \multicolumn{2}{l|}{\fld{TIPO DE UBICACIÓN:} INTERNA}\\
+\hline
+\multicolumn{2}{|l|}{\fld{TIPO AULA/LAB.:} LABORATORIOS} & \multicolumn{2}{l|}{\fld{AULA/LAB.:} FCCDD-LAB-TIC-101}\\
+\hline
+\multicolumn{4}{|l|}{\fld{UBICACIÓN:} CAMPUS CENTRAL}\\
+\hline
+\multicolumn{2}{|l|}{\fld{TIPO DE APRENDIZAJE:} Resol. de problemas prácticos} & \multicolumn{2}{l|}{\fld{N. HORAS:} 6}\\
+\hline
+\end{tabular}
+
+% =====================================================================
+%  2 DATOS ACADEMICOS
+% =====================================================================
+\secband{2}{DATOS ACADÉMICOS}
+\submark{Resultado de aprendizaje}
+Aplica técnicas de elicitación y análisis de requisitos para identificar, clasificar y modelar requisitos.
+\submark{Tema de la práctica}
+Elicitación y Análisis de Requisitos.
+
+% =====================================================================
+%  3 OBJETIVO
+% =====================================================================
+\secband{3}{OBJETIVO}
+Aplicar las técnicas de elicitación de requisitos, los métodos de análisis, priorización y negociación, y los lenguajes de metas y escenarios \textbf{al sistema del Proyecto Fin de Curso (PFC)}, produciendo un conjunto de requisitos bien formados, priorizados y representados mediante metas \textbf{i* 2.0}, casos de uso UML e historias de usuario BDD. Los artefactos resultantes constituyen el \textbf{insumo central de la Entrega 2 del PFC} (segundo entregable: ERS/SRS parcial con evidencias de elicitación, requisitos clasificados y priorizados, y modelos de la solución).
+
+\begin{notabox}[title={Vínculo con el Proyecto Fin de Curso — Entrega 2}]
+\small Esta práctica no usa casos ficticios: el equipo trabaja sobre \textbf{su propio sistema del PFC}. Cada artefacto producido en los Pasos 1–5 se incorpora directamente a la \textbf{Entrega 2 del PFC}, que acumula y amplía la Entrega 1 (planificación y primeras evidencias de elicitación). La trazabilidad práctica$\rightarrow$entregable se detalla al final de la Sección 6.
+\end{notabox}
+
+% =====================================================================
+%  4 FUNDAMENTO TEORICO
+% =====================================================================
+\secband{4}{FUNDAMENTO TEÓRICO}
+\textbf{Instrucción general.} El equipo debe desarrollar todo el contenido de este fundamento teórico con calidad investigativa bibliográfica académica. Cada afirmación debe citar al menos una fuente primaria en formato IEEE comprimido [1–9]. Las fuentes primarias obligatorias para toda la asignatura son: IEEE/ISO/IEC 29148:2018 [1] (norma principal), IEEE/ISO/IEC 15288:2023 [2], IEEE/ISO/IEC 12207:2017 [3], ISO/IEC 25010:2023 [4], Pohl (2025) [5], SWEBOK v4.0 [6], PMBoK 7.\textsuperscript{a} ed. [7] e IREB CPRE FL v3.1 [8]. No se acepta como fuente única ningún sitio web, Wikipedia ni contenido generado íntegramente por IA sin validación crítica y declaración explícita. Complementar con: Yu (2011) para i* 2.0 [10], Cohn (2004) para user stories [11], Robertson \& Robertson (2012) para técnicas de elicitación [12].
+
+\submark{2.1 Marco normativo aplicado a la elicitación y análisis}
+Las técnicas de elicitación y análisis de esta práctica se enmarcan en los procesos de IR definidos en IEEE/ISO/IEC 29148:2018 [1], sección 6.2 (\textit{Stakeholder Requirements Definition Process}) y los procesos de adquisición de necesidades de IEEE/ISO/IEC 15288:2023 [2]. El IREB CPRE FL v3.1 [8] proporciona el catálogo de técnicas de elicitación y sus criterios de selección. El SWEBOK v4.0 [6], capítulo 1, secciones 1.2 y 1.3, describe las actividades de elicitación, análisis y negociación como actividades \textit{core} de la IR. Pohl (2025) [5], Partes III y IV, aporta el marco de métodos y el tratamiento de conflictos entre stakeholders. La integración con el plan del proyecto se regula según PMBoK 7.\textsuperscript{a} ed. [7], dominio de rendimiento de Planificación.
+
+\submark{2.2 Fuentes de requisitos y stakeholders}
+\begin{itemize}
+\item \textbf{Tipos de fuentes de requisitos:} stakeholders humanos, documentos existentes, sistemas existentes (legacy, competidores) y estándares. Jerarquía según IEEE 29148 [1].
+\item \textbf{Análisis de stakeholders:} identificación, clasificación por poder/interés (PMBoK [7]), mapa de stakeholders, técnicas (\textit{onion diagram}, \textit{persona}).
+\item \textbf{Conflictos entre stakeholders:} tipos según Pohl (2025) [5] (datos, comportamiento, control, metas, alcance), causas y estrategias de gestión.
+\end{itemize}
+
+\submark{2.3 Técnicas de elicitación de requisitos}
+\begin{itemize}
+\item \textbf{Entrevista} [5, 8]: tipos (estructurada, semiestructurada, abierta), planificación (guía de entrevista), conducción, registro de resultados, ventajas y limitaciones.
+\item \textbf{Taller (Workshop)} [5, 8]: organización, roles (facilitador, escribano), dinámicas, documentación de acuerdos.
+\item \textbf{Focus group} [8]: diferencias con el taller, tamaño óptimo, rol del moderador, análisis de resultados.
+\item \textbf{Observación y etnografía} [5, 8]: observación directa vs.\ participante, \textit{shadowing}, registro y análisis de tareas.
+\item \textbf{Cuestionario} [8]: diseño de preguntas (abiertas, cerradas, Likert), validación, plataformas digitales.
+\item \textbf{Lectura basada en perspectivas (PBR)} [8]: perspectivas de usuario, arquitecto y evaluador; aplicación a documentos existentes.
+\item \textbf{Design Thinking} [8]: fases (empatizar, definir, idear, prototipar, testear); cómo genera requisitos innovadores.
+\item \textbf{Técnicas de apoyo} [5, 8]: \textit{brainstorming} (reglas, variantes), prototipado (baja/alta fidelidad), método KJ (afinidad), mapas mentales, \textit{checklists}.
+\end{itemize}
+
+\submark{2.4 Análisis de requisitos}
+\begin{itemize}
+\item \textbf{Clasificación de requisitos:} funcionales por subsistema/actor/CU; no funcionales por característica ISO/IEC 25010:2023 [4].
+\item \textbf{Priorización:} MoSCoW (Must/Should/Could/Won't) [9], modelo de Kano [9] (básicos, rendimiento, deleite), votación ponderada. Cómo combinar técnicas.
+\item \textbf{Modelamiento conceptual} [5]: completitud, consistencia, sin ambigüedad. Semántica, sintaxis y pragmática.
+\item \textbf{Diseño arquitectónico inicial:} cómo los requisitos moldean decisiones arquitectónicas tempranas; trazabilidad arquitectura–requisito [2].
+\item \textbf{Análisis formal:} introducción a OCL, Z, B. Cuándo aplicarlos [5].
+\item \textbf{Negociación} [5]: causas de conflicto, tipos (datos, comportamiento, control, metas, alcance), estrategias \textit{win-win}, acta de acuerdos.
+\end{itemize}
+
+\submark{2.5 Metas, escenarios y requisitos orientados a solución}
+\begin{itemize}
+\item \textbf{Metas (goals)} [5]: definición, descomposición AND/OR, dependencias. Las 7 reglas para documentación textual (Pohl, 2025).
+\item \textbf{Lenguajes de metas:} i* 2.0 [10] (actores, intenciones, modelos SD y SR), KAOS (refinamiento, obstáculos, agentes). Criterios de selección.
+\item \textbf{Escenarios} [5]: tipos (estado actual vs.\ deseado, positivo/negativo, narrativo, \textit{misuse}, instancia vs.\ tipo, principal/alternativo/excepción). Once reglas de documentación textual.
+\item \textbf{User stories} [11]: formato ``Como [rol], quiero [acción], para [beneficio]'', INVEST, criterios de aceptación BDD.
+\item \textbf{Casos de uso} [1, 5]: actores, relaciones (\textit{include}, \textit{extend}, generalización), flujo principal y alternativos, precondiciones/postcondiciones.
+\item \textbf{Message Sequence Charts (MSC)} [5]: notación, instancias, mensajes; complemento con UML.
+\item \textbf{Acoplamiento metas–escenarios:} trazabilidad metas $\rightarrow$ escenarios $\rightarrow$ requisitos [5].
+\end{itemize}
+
+% =====================================================================
+%  5 MATERIALES, EQUIPOS, INSUMOS Y REACTIVOS
+% =====================================================================
+\secband{5}{MATERIALES, EQUIPOS, INSUMOS Y REACTIVOS}
+\noindent\begin{tabularx}{\linewidth}{@{}p{0.33\linewidth} p{0.27\linewidth} X@{}}
+\submark{Materiales} & \submark{Equipos} & \submark{Insumos y reactivos}\\[2pt]
+\begin{minipage}[t]{\linewidth}\vspace{-6pt}
+\begin{itemize}
+\item Post-its y pizarra
+\item Formulario de consentimiento
+\item Rúbrica PE2 (SGA)
+\item Guía de práctica
+\end{itemize}\end{minipage}
+&
+\begin{minipage}[t]{\linewidth}\vspace{-6pt}
+\begin{itemize}
+\item Micrófono / cámara
+\item Computadora / laptop
+\end{itemize}\end{minipage}
+&
+\begin{minipage}[t]{\linewidth}\vspace{-6pt}
+\begin{itemize}
+\item Zotero o Mendeley
+\item Google Docs / Drive
+\item draw.io o StarUML
+\item Zoom o Google Meet
+\item Google Forms
+\item Conexión a internet
+\end{itemize}\end{minipage}\\
+\end{tabularx}
+
+% =====================================================================
+%  6 PROCEDIMIENTOS
+% =====================================================================
+\secband{6}{PROCEDIMIENTOS}
+\textbf{Sistema de referencia.} El equipo utiliza el \textbf{sistema del PFC}. Las citas van en formato IEEE comprimido. Producir todos los artefactos indicados y entregarlos en el documento final como evidencia del procedimiento ejecutado; \textbf{todos se integran a la Entrega 2 del PFC}.
+
+\begin{notabox}[title={Conformación del equipo de práctica y revisión cruzada entre proyectos}]
+\small El equipo que desarrolla esta práctica experimental \textbf{no necesariamente coincide} con el equipo del Proyecto Fin de Curso (PFC). Cada equipo de práctica debe acordar, de entre sus integrantes, trabajar sobre el \textbf{tema del PFC de uno de ellos}, aplicando sobre ese sistema todas las técnicas de la práctica. El integrante ``propietario'' del tema actúa como principal \textbf{fuente de información del dominio}, mientras que los demás intervienen como \textbf{analistas externos}. Con esta dinámica, cada PFC recibe una \textbf{revisión cruzada} (\textit{peer review}) realizada por compañeros de otros equipos, de modo que \textbf{todos los equipos del PFC se retroalimentan mutuamente} y enriquecen sus requisitos antes de consolidar la Entrega 2.
+\end{notabox}
+
+\vspace{2pt}\noindent\textbf{\color{secdark}\small Equipo de práctica y tema del PFC seleccionado} \footnotesize(marque con una X el tema elegido)\par\vspace{3pt}
+\renewcommand{\arraystretch}{1.3}
+\noindent\begin{tabularx}{\linewidth}{|C{0.06\linewidth}|X|L{0.26\linewidth}|C{0.16\linewidth}|}
+\hline
+\rowcolor{rowgray}\textbf{\#} & \textbf{Integrante del equipo de práctica} & \textbf{Equipo PFC de origen} & \textbf{Tema PFC elegido}\\
+\hline
+1 & & & \\\hline
+2 & & & \\\hline
+3 & & & \\\hline
+4 & & & \\\hline
+\end{tabularx}
+\vspace{3pt}
+
+\submark{Paso 1 — Planificación de la sesión de elicitación (30 min)}
+\begin{enumerate}[label=\alph*)]
+\item Seleccionar dos técnicas de elicitación apropiadas para el sistema del PFC, justificando la selección con criterios teóricos: tipo de sistema, disponibilidad de stakeholders, fase del proyecto [8].
+\item Elaborar una guía de entrevista estructurada: mín.\ 10 preguntas abiertas organizadas por temas (contexto actual, necesidades, restricciones, expectativas, prioridades) [5].
+\item Elaborar un cuestionario digital (Google Forms): mín.\ 12 preguntas (Likert + abiertas) para al menos 3 usuarios potenciales.
+\item Documentar criterios de selección de participantes para las sesiones.
+\end{enumerate}
+
+\submark{Paso 2 — Ejecución de la elicitación (2 horas)}
+\begin{enumerate}[label=\alph*)]
+\item Realizar al menos una entrevista a un usuario real o simulado. Elaborar el acta de entrevista: fecha, duración, participantes, temas tratados, requisitos identificados y acuerdos [5].
+\item Aplicar el cuestionario digital a mín.\ 3 personas. Exportar y analizar resultados (porcentajes, tendencias, respuestas frecuentes).
+\item Realizar una sesión de \textit{brainstorming} grupal (mín.\ 20 min): registrar ideas en orden, consolidar y agrupar [5].
+\item Consolidar requisitos crudos: mín.\ 30 de diversas fuentes.
+\end{enumerate}
+
+\submark{Paso 3 — Análisis, clasificación y priorización (1.5 horas)}
+\begin{enumerate}[label=\alph*)]
+\item Clasificar cada requisito crudo (RF/RNF con subcategoría ISO 25010 [4]). Eliminar duplicados. Resultado: mín.\ 20 requisitos únicos.
+\item Aplicar MoSCoW [9]: clasificar y documentar la razón de cada clasificación (al menos Must y Won't).
+\item Aplicar el modelo de Kano [9]: construir tabla de clasificación doble.
+\item Identificar mín.\ un conflicto entre requisitos: requisitos en conflicto, stakeholders, tipo según Pohl [5], estrategia de resolución.
+\item Redactar el acta de negociación: acuerdo, compromisos, requisito resultante.
+\end{enumerate}
+
+\submark{Paso 4 — Modelado de metas con i* 2.0 (1.5 horas)}
+\begin{enumerate}[label=\alph*)]
+\item Identificar mín.\ 4 actores del sistema del PFC. Listar intenciones de cada uno: metas, tareas, recursos y vulnerabilidades [10].
+\item Construir el \textit{Strategic Dependency Model} (SD): dependencias entre actores (goal, task, resource, quality dependency) [10].
+\item Construir el \textit{Strategic Rationale Model} (SR) del actor principal: descomposición AND/OR, \textit{links} de contribución (help, hurt, make, break) [10].
+\item Dibujar ambos modelos en draw.io o StarUML. Exportar como figuras.
+\item Para cada meta principal, redactar su especificación textual aplicando las 7 reglas de documentación (Pohl, 2025) [5].
+\end{enumerate}
+
+\submark{Paso 5 — Casos de uso y user stories (1 hora)}
+\begin{enumerate}[label=\alph*)]
+\item Elaborar el diagrama de casos de uso UML: todos los actores, mín.\ 8 CU, relaciones \textit{include}, \textit{extend} y generalización, límite del sistema [1].
+\item Especificar textualmente tres casos de uso completos: flujo principal, flujos alternativos, precondiciones, postcondiciones, excepciones [5].
+\item Redactar cinco user stories en formato estándar con criterios de aceptación BDD (Given-When-Then). Verificar INVEST [11].
+\item Especificar un \textit{misuse scenario} para identificar un requisito de seguridad del sistema [5].
+\end{enumerate}
+
+\submark{Paso 6 — Conclusiones y entrega (30 min)}
+\begin{enumerate}[label=\alph*)]
+\item Redactar cinco conclusiones críticas: técnicas aplicadas, resultados obtenidos e implicación para el desarrollo de software en el contexto local.
+\item Compilar: portada $|$ índice $|$ secc.\ 2 (fundamento) $|$ secc.\ 3 (artefactos de los pasos 1–5) $|$ conclusiones $|$ referencias IEEE $|$ anexos.
+\item Exportar \texttt{PE2\_U2\_APELLIDO1\_APELLIDO2.pdf}; subir al SGA en la Semana 6 e \textbf{incorporar los artefactos a la Entrega 2 del PFC}.
+\end{enumerate}
+
+\begin{notabox}[title={Trazabilidad práctica PE2 $\rightarrow$ Entrega 2 del PFC}]
+\renewcommand{\arraystretch}{1.2}
+\small
+\noindent\begin{tabularx}{\linewidth}{@{}p{0.40\linewidth} X@{}}
+\textbf{Artefacto de la PE2} & \textbf{Ubicación en la Entrega 2 del PFC (ERS/SRS parcial)}\\
+\hline
+Guía de entrevista, cuestionario, actas (Pasos 1–2) & Apéndice de evidencias de elicitación\\
+Catálogo de requisitos clasificados (RF/RNF · ISO 25010) (Paso 3a) & Sección 3: requisitos del software\\
+Priorización MoSCoW + Kano y acta de negociación (Paso 3b–e) & Apéndice de clasificación y priorización\\
+Modelos i* 2.0 (SD y SR) + metas textuales (Paso 4) & Modelado de metas / contexto del sistema\\
+Diagrama y especificación de casos de uso (Paso 5a–b) & Sección 4: modelado UML (casos de uso)\\
+User stories BDD y \textit{misuse scenario} (Paso 5c–d) & Apéndice ágil / requisitos de seguridad\\
+\end{tabularx}
+\end{notabox}
+
+% =====================================================================
+%  7 RUBRICA DE EVALUACION
+% =====================================================================
+\clearpage
+\secband{7}{RÚBRICA DE EVALUACIÓN DE LA PRÁCTICA EXPERIMENTAL (PE2)}
+
+\begin{goldbox}
+\small\textbf{\color{notagreen}Requisito previo de admisión (gatekeeper).} Si \emph{cualquiera} de estas condiciones no se cumple, el trabajo recibe la calificación mínima de \textbf{1,0} y no se revisa con la rúbrica:
+\begin{itemize}[itemsep=0pt,topsep=2pt]
+\item Entrega en plazo (SGA, Semana 6) con el nombre de archivo correcto \texttt{PE2\_U2\_APELLIDO1\_APELLIDO2.pdf}.
+\item Documento completo: todas las secciones y los anexos A–E.
+\item Trabajo sobre el \textbf{sistema del PFC seleccionado} por el equipo (no caso ficticio ni genérico).
+\item Evidencias \textbf{reales} de elicitación: al menos un acta de entrevista y los resultados del cuestionario.
+\item Mínimos cuantificados verificables: $\ge$30 requisitos crudos, $\ge$20 requisitos únicos, $\ge$8 casos de uso y $\ge$4 actores i*.
+\item Declaración de uso de IA (Anexo E) firmada por el equipo.
+\item Fuentes primarias citadas en formato IEEE comprimido.
+\end{itemize}
+\end{goldbox}
+
+\small
+\textbf{Escala por criterio:} Excelente = N4 (9–10) · Satisfactorio = N3 (7–8) · En desarrollo = N2 (5–6) · Insuficiente = N1 ($\le$4).\quad
+\textbf{Fórmula de calificación:} $\text{Nota} = \left(\dfrac{\sum_i (\text{Nivel}_i \times \text{Peso}_i)}{4}\right)\times 10$, con los pesos como fracción (suman 1,00).\\
+\textbf{Criterios transversales} (descuentan en cualquier criterio): uso del sistema del PFC seleccionado (no genérico), coherencia entre artefactos, terminología técnica precisa de IR, citas IEEE correctas, y evidencia de trabajo en equipo y revisión cruzada entre PFC.
+
+\begin{landscape}
+\renewcommand{\arraystretch}{1.22}
+\setlength{\tabcolsep}{3pt}
+\newcommand{\rh}[1]{\cellcolor{secblue}\textbf{\color{white}\small #1}}
+\newcommand{\rc}[1]{\cellcolor{rowgray}\textbf{\color{secdark}\small #1}}
+\begin{longtable}{|L{0.165\linewidth}|L{0.195\linewidth}|L{0.195\linewidth}|L{0.195\linewidth}|L{0.195\linewidth}|}
+\hline
+\rh{Criterio · Bloom · Peso} & \rh{Excelente (N4)} & \rh{Satisfactorio (N3)} & \rh{En desarrollo (N2)} & \rh{Insuficiente (N1)}\\
+\hline
+\endhead
+\rc{C1 · Planificación de la elicitación (Paso 1) · Aplicar · 15\%}
+& \footnotesize Selecciona y justifica 2 técnicas con criterios teóricos (tipo de sistema, disponibilidad, fase); guía de entrevista $\ge$10 preguntas bien organizadas y cuestionario $\ge$12 ítems (Likert + abiertas) válidos.
+& \footnotesize Técnicas justificadas e instrumentos completos con imprecisiones menores.
+& \footnotesize Selección o instrumentos parciales; preguntas ambiguas o inductivas; faltan mínimos.
+& \footnotesize Sin planificación o instrumentos inservibles/ausentes.\\
+\hline
+\rc{C2 · Ejecución y consolidación (Paso 2) · Aplicar · 15\%}
+& \footnotesize $\ge$1 entrevista con acta completa; cuestionario aplicado a $\ge$3 personas con análisis (porcentajes/tendencias); \textit{brainstorming} documentado; $\ge$30 requisitos crudos de diversas fuentes.
+& \footnotesize Evidencias completas con omisiones menores.
+& \footnotesize Evidencias parciales; análisis superficial; menos de 30 requisitos crudos.
+& \footnotesize Sin evidencias reales de elicitación.\\
+\hline
+\rc{C3 · Análisis, clasificación y priorización (Paso 3) · Analizar · 20\%}
+& \footnotesize $\ge$20 requisitos únicos clasificados RF/RNF con subcategoría ISO 25010; MoSCoW y Kano correctos y justificados; conflicto con acta de negociación (tipo Pohl + estrategia).
+& \footnotesize Clasificación y priorización correctas con 1–2 imprecisiones.
+& \footnotesize Clasificación parcial; priorización sin justificar; conflicto sin resolución clara.
+& \footnotesize Clasificación mayormente incorrecta o ausente.\\
+\hline
+\rc{C4 · Modelado de metas i* 2.0 (Paso 4) · Analizar · 15\%}
+& \footnotesize $\ge$4 actores con intenciones; modelos SD y SR correctos (dependencias y \textit{links} de contribución); metas textuales con las 7 reglas; figuras claras.
+& \footnotesize Modelos correctos con omisiones menores.
+& \footnotesize Modelos incompletos o notación i* imprecisa.
+& \footnotesize Sin modelos i* o incorrectos.\\
+\hline
+\rc{C5 · Casos de uso y user stories (Paso 5) · Crear · 15\%}
+& \footnotesize Diagrama UML con $\ge$8 CU y relaciones correctas; 3 CU detallados completos; 5 user stories BDD/INVEST; \textit{misuse scenario} con requisito de seguridad.
+& \footnotesize Artefactos completos con fallas menores.
+& \footnotesize Menos de 8 CU, CU incompletos, user stories sin BDD/INVEST o sin \textit{misuse}.
+& \footnotesize Modelado de solución ausente o incorrecto.\\
+\hline
+\rc{C6 · Fundamentación teórica y fuentes (Secc. 4) · Comprender · 10\%}
+& \footnotesize Fundamento con calidad investigativa; cada afirmación citada en IEEE [1–12]; uso pertinente de fuentes primarias.
+& \footnotesize Buen fundamento con citas mayormente correctas.
+& \footnotesize Fundamento parcial; citas escasas o mal formateadas.
+& \footnotesize Sin fundamento o sin fuentes válidas.\\
+\hline
+\rc{C7 · Calidad documental, conclusiones e integridad (Paso 6) · Transversal · 10\%}
+& \footnotesize Documento completo y coherente (portada$\rightarrow$anexos); 5 conclusiones críticas; anexos A–E; declaración de IA pertinente; trabajo en equipo y revisión cruzada evidentes.
+& \footnotesize Documento ordenado con fallas menores.
+& \footnotesize Documento incompleto/desordenado; conclusiones débiles; falta algún anexo.
+& \footnotesize Documento deficiente o sin declaración de IA.\\
+\hline
+\end{longtable}
+\end{landscape}
+
+\vspace{2pt}
+\submark{Hoja de calificación}
+\renewcommand{\arraystretch}{1.35}
+\noindent\begin{tabularx}{\linewidth}{|X|C{0.12\linewidth}|C{0.16\linewidth}|C{0.18\linewidth}|}
+\hline
+\rowcolor{secblue}\textbf{\color{white}Criterio} & \textbf{\color{white}Peso} & \textbf{\color{white}Nivel (1–4)} & \textbf{\color{white}Aporte (Nivel×Peso)}\\
+\hline
+C1 Planificación de la elicitación & 0,15 & & \\\hline
+C2 Ejecución y consolidación & 0,15 & & \\\hline
+C3 Análisis, clasificación y priorización & 0,20 & & \\\hline
+C4 Modelado de metas i* 2.0 & 0,15 & & \\\hline
+C5 Casos de uso y user stories & 0,15 & & \\\hline
+C6 Fundamentación teórica y fuentes & 0,10 & & \\\hline
+C7 Calidad documental, conclusiones e integridad & 0,10 & & \\\hline
+\multicolumn{2}{|r|}{\textbf{\color{secdark}Suma de aportes ($\sum$ Nivel×Peso):}} & \multicolumn{2}{c|}{}\\\hline
+\multicolumn{2}{|r|}{\textbf{\color{secdark}NOTA GRUPAL = ($\sum$ / 4) × 10:}} & \multicolumn{2}{c|}{}\\\hline
+\end{tabularx}
+
+\vspace{4pt}
+\begin{notabox}[title={Ajuste individual por participación}]
+\small La nota grupal se multiplica por un \textbf{factor individual} ($0{,}7$–$1{,}0$) según la contribución demostrada de cada integrante (rol cumplido, evidencias de su aporte y defensa técnica). \textbf{Nota individual = Nota grupal $\times$ factor}. La participación nula o no evidenciada puede llevar el factor por debajo de $0{,}7$.
+\end{notabox}
+
+\vspace{2pt}
+\noindent\textbf{Observaciones / retroalimentación:}\quad\rule[-2pt]{0.6\linewidth}{0.5pt}\\[10pt]
+\noindent\textbf{Firma del docente:} \underline{\hspace{5cm}}\qquad \textbf{Fecha:} \underline{\hspace{4cm}}
+
+% =====================================================================
+%  8 BIBLIOGRAFIA
+% =====================================================================
+\secband{8}{BIBLIOGRAFÍA}
+\small
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2.6em]
+\item IEEE/ISO/IEC 29148:2018 — \textit{Systems and software engineering — Requirements engineering}. IEEE, 2018. doi: 10.1109/IEEESTD.2018.8559686.
+\item IEEE/ISO/IEC 15288:2023 — \textit{System Life Cycle Processes}. IEEE, 2023.
+\item IEEE/ISO/IEC 12207:2017 — \textit{Software Life Cycle Processes}. IEEE, 2017.
+\item ISO/IEC 25010:2023 — \textit{Systems and Software Quality (SQuaRE)}. ISO, 2023.
+\item K. Pohl, \textit{Requirements Engineering: Fundamentals, Principles and Techniques}. Springer, 2025.
+\item H. Washizaki (Ed.), \textit{SWEBOK Guide v4.0}. IEEE Computer Society, 2024.
+\item PMI, \textit{PMBOK Guide}, 7.\textsuperscript{a} ed. PMI, 2021.
+\item IREB, \textit{CPRE Foundation Level Syllabus v3.1}. IREB, 2023.
+\item K. E. Wiegers and J. Beatty, \textit{Software Requirements}, 3.\textsuperscript{a} ed. Microsoft Press, 2013.
+\item E. Yu et al., \textit{Social Modeling for Requirements Engineering} (i* 2.0). MIT Press, 2011.
+\item M. Cohn, \textit{User Stories Applied: For Agile Software Development}. Addison-Wesley, 2004.
+\item S. Robertson and J. Robertson, \textit{Mastering the Requirements Process}, 3.\textsuperscript{a} ed. Addison-Wesley, 2012.
+\end{enumerate}
+
+% =====================================================================
+%  8 ANEXOS
+% =====================================================================
+\secband{9}{ANEXOS}
+\begin{itemize}
+\item \textbf{Anexo A} — Actas de entrevistas (formato completo: fecha, participantes, requisitos).
+\item \textbf{Anexo B} — Resultados exportados del cuestionario digital.
+\item \textbf{Anexo C} — Lista completa de requisitos crudos (sin depurar).
+\item \textbf{Anexo D} — Referencias bibliográficas (Zotero/Mendeley, formato IEEE).
+\item \textbf{Anexo E} — Declaración de uso de herramientas de IA.
+\end{itemize}
+
+% =====================================================================
+%  9 RESULTADOS DE ESTUDIANTES
+% =====================================================================
+\secband{10}{RESULTADOS DE ESTUDIANTES}
+\vspace{2pt}\noindent\begin{tabular}{|p{\dimexpr\linewidth-2\tabcolsep\relax}|}
+\hline
+\rule{0pt}{16pt}\\[60pt]\hline
+\end{tabular}
+
+% =====================================================================
+%  10 RESPONSABLES
+% =====================================================================
+\secband{11}{RESPONSABLES}
+\vspace{18pt}
+\noindent\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}X >{\centering\arraybackslash}X@{}}
+\rule{6.5cm}{0.6pt} & \rule{6.5cm}{0.6pt}\\[2pt]
+\textbf{GUERRERO ULLOA GLEISTON CICERON} & \textbf{PONCE ORDOÑEZ JESSICA ALEXANDRA}\\
+\textbf{CI:} 0913531752 & \textbf{CI:} 1205316456\\
+\textbf{DOCENTE RESPONSABLE} & \textbf{COORDINADOR DE CARRERA}\\
+\end{tabularx}
+
+\end{document}

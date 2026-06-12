@@ -1,0 +1,227 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% RÚBRICA PC1 — Comparación entre modelos de proceso de
+% requisitos en escenarios reales (GA-PRAC-01)
+% Ingeniería de Requisitos (ISR-401) · UTEQ · 2026-2027 PPA
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[a4paper,top=2cm,bottom=2.2cm,left=1.6cm,right=1.6cm]{geometry}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lvlexc}{HTML}{DCEFE3}
+\definecolor{lvlsat}{HTML}{EAF1F7}
+\definecolor{lvldev}{HTML}{FBF3E2}
+\definecolor{lvlins}{HTML}{F7E6E6}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ---------- Encabezado / pie ----------
+\setlength{\headheight}{30pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textbf{Ingeniería de Requisitos (ISR-401)}}
+\rhead{\footnotesize UTEQ \,\textcolor{gold}{$\bullet$}\, 2026--2027 PPA}
+\lfoot{\footnotesize Rúbrica PC1 --- GA-PRAC-01}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\bhdr}[1]{\cellcolor{midblue}\textcolor{white}{\textbf{#1}}}
+
+\renewcommand{\arraystretch}{1.25}
+
+\begin{document}
+
+% ============================================================
+% PORTADA / TÍTULO
+% ============================================================
+\begin{center}
+{\large\textbf{\textcolor{utegreendk}{UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}}}\\[2pt]
+{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software}\\[8pt]
+{\LARGE\textbf{\textcolor{utegreendk}{Rúbrica de Evaluación --- PC1}}}\\[4pt]
+{\large Práctica en clase: \textit{Comparación entre modelos de proceso de requisitos en escenarios reales}}\\[2pt]
+{\small Código de actividad: GA-PRAC-01}
+\end{center}
+
+\vspace{4pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+% ============================================================
+% 1. DATOS GENERALES
+% ============================================================
+\section*{\textcolor{utegreendk}{1. Datos generales de la actividad}}
+
+\noindent\begin{tabular}{|L{0.24\linewidth}|L{0.70\linewidth}|}
+\hline
+\thdr{Asignatura} & Ingeniería de Requisitos (ISR-401) --- 4.º nivel, Carrera de Software\\
+\hline
+\rowcolor{rowgray}\thdr{Semana / Unidad} & Semana 2 --- Unidad 1, Tema 3: Proceso de Requisitos\\
+\hline
+\thdr{Resultado de aprendizaje} & RA1: Aplica los fundamentos teóricos de la IR identificando tipos, propiedades y el proceso de requisitos para analizar su aplicabilidad en proyectos de software reales.\\
+\hline
+\rowcolor{rowgray}\thdr{Objeto de evaluación} & Matriz comparativa de los modelos cascada, iterativo y ágil aplicada a uno o más escenarios reales, con recomendación fundamentada e identificación de actores y del framework de IR.\\
+\hline
+\thdr{Niveles de Bloom} & Comprender $\rightarrow$ Analizar $\rightarrow$ Evaluar\\
+\hline
+\rowcolor{rowgray}\thdr{Modalidad / tiempo} & Grupal en clase \,$\cdot$\, 90--100 min\\
+\hline
+\thdr{Referentes} & ISO/IEC/IEEE 29148:2018; Pohl (2025); SWEBOK v4.0 (KA Software Requirements); IREB CPRE FL v3.1.\\
+\hline
+\end{tabular}
+
+% ============================================================
+% 2. GATEKEEPERS
+% ============================================================
+\vspace{8pt}
+\begin{tcolorbox}[colback=lightred,colframe=red!60!black,
+  title=\textbf{2. Requisitos previos de admisión (gatekeepers) --- verificación previa a la revisión},
+  fonttitle=\bfseries,boxrule=0.8pt,arc=2mm]
+El incumplimiento de \textbf{cualquiera} de los siguientes criterios suspende la revisión detallada y asigna la \textbf{calificación mínima de 1,0}, sin evaluación de los criterios. La decisión final de aplicación de la penalización corresponde al docente.
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item Se entrega la \textbf{matriz comparativa completa} (los tres modelos $\times$ todos los criterios solicitados).
+  \item El análisis usa el \textbf{escenario provisto} (no modelos genéricos ni teoría suelta).
+  \item Se evidencia la \textbf{participación de todos los integrantes} del equipo.
+\end{enumerate}
+\end{tcolorbox}
+
+% ============================================================
+% 3. ESCALA Y FÓRMULA
+% ============================================================
+\section*{\textcolor{utegreendk}{3. Escala de niveles y fórmula de calificación}}
+
+\noindent\colorbox{boxgray}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small
+\textbf{Escala de niveles.} Cada criterio tiene un \emph{peso} en puntos. El nivel alcanzado determina la fracción del peso obtenida:\\[2pt]
+\colorbox{lvlexc}{\textbf{Excelente} = 100\,\%}\quad
+\colorbox{lvlsat}{\textbf{Satisfactorio} = 75\,\%}\quad
+\colorbox{lvldev}{\textbf{En desarrollo} = 50\,\%}\quad
+\colorbox{lvlins}{\textbf{Insuficiente} = 25\,\%}\quad
+\textbf{No entregado} = 0\,\%.\\[4pt]
+\textbf{Total.} La suma de los pesos es \textbf{10,0 puntos}. Fórmula: $\text{Nota} = \dfrac{\sum (\text{Nivel}_i \times \text{Peso}_i)}{4} \times \text{escala}$, donde Nivel toma valores 4 (Excelente), 3 (Satisfactorio), 2 (En desarrollo), 1 (Insuficiente), 0 (No entregado).\\[4pt]
+\textbf{Criterios transversales de calidad} (descuentan en cualquier criterio): uso del caso/escenario provisto (no ejemplos genéricos); coherencia interna; terminología técnica precisa de IR; evidencia de trabajo en equipo equilibrado.
+}}
+
+% ============================================================
+% 4. TABLA DE CRITERIOS (APAISADA)
+% ============================================================
+\begin{landscape}
+\section*{\textcolor{utegreendk}{4. Criterios de evaluación y descriptores de desempeño}}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|L{0.165\linewidth}|L{0.19\linewidth}|L{0.19\linewidth}|L{0.19\linewidth}|L{0.165\linewidth}|}
+\hline
+\bhdr{Criterio (Bloom $\cdot$ peso)} &
+\cellcolor{lvlexc}\textbf{Excelente (100\,\%)} &
+\cellcolor{lvlsat}\textbf{Satisfactorio (75\,\%)} &
+\cellcolor{lvldev}\textbf{En desarrollo (50\,\%)} &
+\cellcolor{lvlins}\textbf{Insuficiente (25\,\%)}\\
+\hline
+\endfirsthead
+\hline
+\bhdr{Criterio (Bloom $\cdot$ peso)} &
+\cellcolor{lvlexc}\textbf{Excelente (100\,\%)} &
+\cellcolor{lvlsat}\textbf{Satisfactorio (75\,\%)} &
+\cellcolor{lvldev}\textbf{En desarrollo (50\,\%)} &
+\cellcolor{lvlins}\textbf{Insuficiente (25\,\%)}\\
+\hline
+\endhead
+
+\textbf{C1. Caracterización de los tres modelos (cascada, iterativo, ágil)}\newline\cellcolor{lightgold}Comprender $\cdot$ \textbf{1,5 pts} &
+Describe con precisión los tres modelos: fases, supuestos y cuándo aplican, sin errores conceptuales. &
+Describe los tres modelos correctamente, con imprecisiones menores. &
+Describe los modelos de forma incompleta o confunde rasgos entre ellos. &
+Caracterización errónea o ausente en uno o más modelos.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C2. Matriz comparativa contextualizada al escenario}\newline\cellcolor{lightgold}Analizar $\cdot$ \textbf{2,5 pts} &
+Evalúa todos los criterios (gestión de cambios, stakeholders, tipo de sistema, riesgo, documentación) con juicios específicos del escenario. &
+Matriz completa, criterios mayormente bien evaluados; alguna celda genérica. &
+Matriz parcial o con varias celdas genéricas no ancladas al escenario. &
+Matriz incompleta o desconectada del escenario.\\
+\hline
+
+\textbf{C3. Actores del proceso y framework de IR en el escenario}\newline\cellcolor{lightgold}Aplicar $\cdot$ \textbf{1,5 pts} &
+Identifica los actores del proceso y ubica con acierto actividades core, transversales y artefactos del framework. &
+Identifica actores y framework con omisiones menores. &
+Identifica parcialmente actores o confunde core / transversal / artefactos. &
+No identifica actores ni framework, o lo hace incorrectamente.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C4. Recomendación fundamentada del modelo}\newline\cellcolor{lightgold}Evaluar $\cdot$ \textbf{2,5 pts} &
+Recomienda el modelo más adecuado con $\geq 3$ razones válidas derivadas del escenario; descarta alternativas. &
+Recomienda con 2--3 razones válidas ligadas al caso. &
+Recomienda con 1 razón o razones débiles / genéricas. &
+Recomendación sin sustento o incoherente con el análisis.\\
+\hline
+
+\textbf{C5. Análisis de riesgos del modelo elegido}\newline\cellcolor{lightgold}Analizar $\cdot$ \textbf{1,0 pt} &
+Identifica riesgos concretos del modelo en el escenario y propone mitigación. &
+Identifica riesgos pertinentes sin mitigación clara. &
+Riesgos vagos o poco pertinentes. &
+No analiza riesgos.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C6. Rigor terminológico, comunicación y trabajo en equipo}\newline\cellcolor{lightgold}Transversal $\cdot$ \textbf{1,0 pt} &
+Terminología de IR precisa; presentación clara; participación equilibrada evidente. &
+Terminología mayormente correcta; presentación ordenada. &
+Errores terminológicos o presentación desordenada. &
+Terminología incorrecta; sin evidencia de trabajo en equipo.\\
+\hline
+\end{longtable}
+
+\noindent\textbf{Suma de pesos:} C1 (1,5) + C2 (2,5) + C3 (1,5) + C4 (2,5) + C5 (1,0) + C6 (1,0) = \textbf{10,0 puntos}.
+\end{landscape}
+
+% ============================================================
+% 5. INTERPRETACIÓN
+% ============================================================
+\section*{\textcolor{utegreendk}{5. Bandas de interpretación del resultado}}
+
+\noindent\begin{tabular}{|C{0.22\linewidth}|L{0.72\linewidth}|}
+\hline
+\thdr{Nota final (/10)} & \thdr{Interpretación}\\
+\hline
+\cellcolor{lvlexc}9,0 -- 10,0 & Dominio sobresaliente: análisis contextualizado, recomendación sólida y manejo correcto del framework de IR.\\
+\hline
+\cellcolor{lvlsat}7,0 -- 8,9 & Logro satisfactorio: comparación correcta con debilidades puntuales de contextualización o fundamentación.\\
+\hline
+\cellcolor{lvldev}5,0 -- 6,9 & En desarrollo: comprensión parcial; matriz genérica o framework de IR omitido; requiere refuerzo del Tema 3.\\
+\hline
+\cellcolor{lvlins}1,0 -- 4,9 & Insuficiente: trabajo desconectado del escenario o con errores conceptuales graves; retroalimentación obligatoria.\\
+\hline
+\end{tabular}
+
+\vspace{10pt}
+\noindent{\footnotesize\itshape Documento de uso académico --- ISR-401 $\cdot$ UTEQ $\cdot$ 2026--2027 PPA. Elaborado conforme al esquema institucional de rúbricas analíticas de la asignatura (cuatro niveles de logro, gatekeepers de admisión y alineación con la taxonomía de Bloom).}
+
+\end{document}

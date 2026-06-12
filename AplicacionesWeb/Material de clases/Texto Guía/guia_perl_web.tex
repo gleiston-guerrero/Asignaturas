@@ -1,0 +1,1291 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+% ----- Nombres en espanol (sin babel) -----
+\renewcommand{\contentsname}{Contenido}
+\renewcommand{\tablename}{Tabla}
+
+% ----- Colores institucionales y tema de codigo (claro) -----
+\definecolor{uteqverde}{HTML}{006633}
+\definecolor{uteqverdeo}{HTML}{0B3D24}
+\definecolor{uteqoro}{HTML}{B8860B}
+\definecolor{tinta}{HTML}{1F2933}
+\definecolor{codbg}{HTML}{F5F6F5}
+\definecolor{numlin}{HTML}{AAAAAA}
+\definecolor{kw}{HTML}{0057AE}
+\definecolor{str}{HTML}{C41A16}
+\definecolor{com}{HTML}{717171}
+\definecolor{tipbg}{HTML}{EAF2EC}
+\definecolor{warnbg}{HTML}{FBF0D8}
+\definecolor{dangerbg}{HTML}{FBE9E7}
+
+% ----- Estilos de codigo SIN backgroundcolor (clave anti-bug) -----
+\lstset{
+  basicstyle=\footnotesize\ttfamily\color{tinta},
+  keywordstyle=\color{kw}\bfseries,
+  stringstyle=\color{str},
+  commentstyle=\color{com}\itshape,
+  numberstyle=\tiny\color{numlin},
+  numbers=left, numbersep=7pt,
+  showstringspaces=false,
+  breaklines=true, breakatwhitespace=false, breakindent=14pt,
+  columns=fullflexible, keepspaces=true, upquote=true,
+  tabsize=2, frame=none,
+}
+\lstdefinestyle{perl}{language=Perl}
+\lstdefinestyle{sql}{language=SQL, morekeywords={SERIAL,VARCHAR,TIMESTAMP,DEFAULT,NOW}}
+\lstdefinestyle{markup}{}
+
+% ----- Caja de codigo NO divisible -----
+\newtcolorbox{cajacodigo}[1][]{
+  enhanced, breakable=false,
+  colback=codbg, colframe=uteqverde!55, boxrule=0.4pt, arc=2pt,
+  left=4pt, right=6pt, top=3pt, bottom=3pt, boxsep=2pt,
+  title=#1, colbacktitle=uteqverde, coltitle=white,
+  fonttitle=\bfseries\small, attach boxed title to top left={xshift=6pt,yshift=-2pt},
+  boxed title style={colback=uteqverde, arc=1pt},
+}
+
+% ----- Cajas de aviso (cortas, no divisibles) -----
+\newtcolorbox{cajatip}[1]{enhanced,breakable=false,colback=tipbg,colframe=tipbg,
+  borderline west={3pt}{0pt}{uteqverde}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{uteqverde}, title=#1, coltitle=uteqverde}
+\newtcolorbox{cajawarn}[1]{enhanced,breakable=false,colback=warnbg,colframe=warnbg,
+  borderline west={3pt}{0pt}{uteqoro}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{uteqoro}, title=#1, coltitle=uteqoro}
+\newtcolorbox{cajadanger}[1]{enhanced,breakable=false,colback=dangerbg,colframe=dangerbg,
+  borderline west={3pt}{0pt}{red!60!black}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{red!60!black}, title=#1, coltitle=red!60!black}
+
+% ----- Titulos de seccion en color -----
+\titleformat{\section}{\color{uteqverde}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\color{uteqverdeo}\large\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\color{tinta}\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+
+% ----- Encabezado y pie -----
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\color{gray}Desarrollo de Aplicaciones Web con PERL --- UTEQ}
+\fancyfoot[C]{\footnotesize\color{gray}P\'agina \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parskip}{6pt}\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{1.2cm}
+{\color{uteqverde}\bfseries\large UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}\\[2pt]
+{\color{gray} Facultad de Ciencias de la Computaci\'on $\cdot$ Ingenier\'ia de Software}\\[2.2cm]
+{\color{tinta}\bfseries\fontsize{30}{34}\selectfont Desarrollo de Aplicaciones Web}\\[6pt]
+{\color{uteqverde}\bfseries\fontsize{30}{34}\selectfont con PERL}\\[10pt]
+{\color{uteqoro}\rule{\linewidth}{2.2pt}}\\[10pt]
+{\itshape\large Gu\'ia del estudiante --- Unidad II: Programaci\'on del lado del servidor}\\[4pt]
+{\color{gray} De la instalaci\'on al despliegue de una aplicaci\'on CRUD con PostgreSQL}\\[3cm]
+\begin{flushleft}
+\textbf{Asignatura:} Aplicaciones Web (5.\textsuperscript{o} semestre)\\[3pt]
+\textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[3pt]
+\textbf{Per\'iodo:} PPA 2026--2027
+\end{flushleft}
+\vfill
+\end{titlepage}
+\tableofcontents
+\clearpage
+\section{Introducción}
+\subsection{¿Qué es PERL y dónde encaja en la web?}
+PERL (Practical Extraction and Report Language) es un lenguaje creado por Larry Wall en 1987. Es maduro, pragmático y especialmente potente para el manejo de texto y las expresiones regulares. Durante los años 90 fue el lenguaje que hizo dinámica a la web: combinado con CGI (Common Gateway Interface), permitió por primera vez procesar formularios y generar páginas en el servidor.
+
+Hoy PERL convive con PHP, Java y .NET. Se usa menos para aplicaciones nuevas de gran escala, pero sigue vigente en administración de sistemas, automatización e integración de datos. Estudiarlo te da una perspectiva valiosa: comprenderás el modelo cliente-servidor desde sus cimientos, sin la «magia» que ocultan los frameworks.
+
+Su mayor activo es \textbf{CPAN} (Comprehensive Perl Archive Network): un enorme repositorio con un módulo para casi cualquier necesidad, incluido el acceso a bases de datos y a servidores web.
+
+\subsection{De CGI a los frameworks modernos}
+Existen varias formas de servir una aplicación web escrita en PERL:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \textbf{CGI clásico:} el servidor web (Apache) ejecuta un script por cada petición. Es la forma histórica; hoy se considera legado, útil para aprender el modelo.
+\item \textbf{Servidor propio:} con el módulo del núcleo \texttt{IO::Socket::INET} se levanta un mini servidor HTTP sin instalar Apache. Ideal para ejercicios y prototipos.
+\item \textbf{PSGI/Plack:} el estándar moderno que desacopla la aplicación del servidor (equivale al WSGI de Python). Se ejecuta con \texttt{plackup}.
+\item \textbf{Frameworks:} para proyectos serios existen Mojolicious, Dancer2 y Catalyst, que aportan enrutamiento, plantillas y utilidades sobre PSGI/Plack.
+\end{itemize}
+En esta guía usaremos un servidor propio con \texttt{IO::Socket::INET} porque funciona de inmediato en cualquier máquina y deja ver con claridad el ciclo petición → respuesta.
+
+\subsection{Qué aprenderás}
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item Preparar el entorno (Strawberry Perl e IntelliJ IDEA) para programar en PERL.
+\item Comprender la sintaxis esencial de PERL aplicada a la web.
+\item Construir una aplicación web que reciba datos del usuario y genere HTML5 semántico.
+\item Acceder a una base de datos PostgreSQL con DBI y sentencias preparadas.
+\item Desarrollar una aplicación CRUD completa (alta, consulta/reporte y eliminación).
+\item Aplicar las prácticas de seguridad fundamentales del desarrollo web.
+\end{itemize}
+\section{Preparación del entorno de desarrollo}
+\subsection{Strawberry Perl}
+En Windows, la distribución recomendada es Strawberry Perl (versión actual: \textbf{5.42.2.1}, que incluye Perl 5.42). Incluye el intérprete, un compilador (gcc) y un amplio conjunto de módulos preinstalados. Descárgalo de strawberryperl.com y acepta la ruta por defecto \texttt{C:\textbackslash{}Strawberry}.
+
+Tras instalar, verifica en una terminal (cmd):
+
+\begin{cajacodigo}[Terminal]
+\begin{lstlisting}[style=markup]
+C:\> perl -v
+
+This is perl 5, version 42, subversion 1 (v5.42.1) ...
+built for MSWin32-x64
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Importante}
+Strawberry incluye el módulo \texttt{DBI}, pero NO el driver de PostgreSQL \texttt{DBD::Pg}: ese se instala aparte (sección 2.5).\par
+\end{cajatip}
+\subsection{IntelliJ IDEA y el plugin Perl}
+IntelliJ IDEA es el entorno de desarrollo (IDE). Para que entienda PERL hay que instalar el plugin \textbf{«Perl»} (conocido técnicamente como Camelcade), que añade resaltado de sintaxis, autocompletado, ejecución y depuración. Se instala desde Settings → Plugins → Marketplace.
+
+\subsection{Configurar el intérprete (perl.exe)}
+Al crear un proyecto, IntelliJ pide el \textbf{Perl5 Interpreter}. Debes apuntarlo al archivo \texttt{perl.exe}, que con la instalación por defecto está en:
+
+\begin{cajacodigo}[Ruta del intérprete]
+\begin{lstlisting}[style=markup]
+C:\Strawberry\perl\bin\perl.exe
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajawarn}{Cuidado}
+No apuntes a \texttt{wperl.exe} (variante sin consola, no sirve para ejecutar/depurar) ni a la carpeta \texttt{c\textbackslash{}bin} (ahí está el compilador gcc, no el intérprete).\par
+\end{cajawarn}
+\subsection{Estructura del proyecto}
+Un proyecto Perl en IntelliJ crea dos carpetas: \texttt{lib} (para módulos reutilizables, archivos \texttt{.pm}) y \texttt{t} (para pruebas). El script ejecutable principal puede ir en la raíz del proyecto.
+
+\subsection{Instalar módulos con CPAN}
+Los módulos que no vienen incluidos se instalan desde la terminal con \texttt{cpan} o \texttt{cpanm}. Por ejemplo, el driver de PostgreSQL:
+
+\begin{cajacodigo}[Instalar el driver]
+\begin{lstlisting}[style=markup]
+C:\> cpan DBD::Pg
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Nota sobre redes institucionales (inspección SSL)}
+En la red de la UTEQ, al conectar con servicios externos puede aparecer un aviso de «Untrusted Server's Certificate» firmado por un firewall (Hillstone). No es un error tuyo: es la inspección SSL/TLS de la red institucional. En esa red puedes pulsar «Save as Trusted» para continuar; alternativamente, descarga el plugin (.zip) e instálalo con Settings → Plugins → Install Plugin from Disk.
+
+\subsection{Versiones de referencia (verificadas a junio de 2026)}
+Estas son las versiones vigentes de las herramientas usadas en esta guía. Los módulos de Perl se instalan con \texttt{cpan}, que siempre descarga la última versión disponible, así que no es necesario fijarlas a mano.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{11.8cm}}
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Componente}} & \textcolor{white}{\textbf{Versión vigente (jun. 2026)}} \\
+\endfirsthead
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Componente}} & \textcolor{white}{\textbf{Versión vigente (jun. 2026)}} \\
+\endhead
+\ttfamily\color{uteqverde}Perl & 5.42.1 (rama estable; las 5.43.x son de desarrollo). \\ \hline
+\ttfamily\color{uteqverde}Strawberry Perl & 5.42.2.1 (incluye Perl 5.42, gcc y módulos). \\ \hline
+\ttfamily\color{uteqverde}PostgreSQL & 18.4 (serie 18; la 19 está en beta para finales de 2026). \\ \hline
+\ttfamily\color{uteqverde}DBI & Incluido en Strawberry; última disponible en CPAN. \\ \hline
+\ttfamily\color{uteqverde}DBD::Pg & 3.20.2 (última en CPAN). \\ \hline
+\ttfamily\color{uteqverde}DBIx::Class & Última disponible en CPAN (serie 0.0828x). \\ \hline
+\ttfamily\color{uteqverde}IntelliJ IDEA & 2026.1.3 (Community o Ultimate). \\ \hline
+\ttfamily\color{uteqverde}Plugin Perl & Camelcade, última compatible con tu IntelliJ. \\ \hline
+\end{longtable}}
+\section{Fundamentos de PERL para la web}
+Esta sección resume la sintaxis mínima que necesitarás para entender los programas de la guía.
+
+\subsubsection{Anatomía de un script}
+Todo script Perl profesional empieza con la línea «shebang» y dos directivas de disciplina:
+
+\begin{cajacodigo}[Cabecera de un script]
+\begin{lstlisting}[style=perl]
+#!/usr/bin/perl        # interprete (Linux/Mac); en Windows se ignora
+use strict;            # obliga a declarar variables con 'my'
+use warnings;          # avisa de practicas peligrosas
+use utf8;              # el archivo fuente esta en UTF-8
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El símbolo \texttt{\#} inicia un comentario: Perl ignora todo lo que sigue hasta el fin de la línea.
+
+\subsubsection{Variables y sigilos}
+PERL marca el tipo de variable con un símbolo inicial llamado «sigilo»:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \texttt{\$}  escalar: un solo valor (número o texto). Ej.: \texttt{my \$nombre = 'Ana';}
+\item \texttt{@}  arreglo: una lista ordenada. Ej.: \texttt{my @datos = (1, 2, 3);}
+\item \texttt{\%}  hash: pares clave =\textgreater{} valor. Ej.: \texttt{my \%f = (nombre =\textgreater{} 'Ana');}
+\end{itemize}
+\subsubsection{Comillas simples vs dobles (interpolación)}
+Es una de las distinciones más importantes y fuente de errores frecuentes:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \textbf{Comillas dobles} interpolan: las variables se sustituyen por su valor y se procesan secuencias como salto de línea.
+\item \textbf{Comillas simples} son literales: el texto se toma tal cual.
+\end{itemize}
+\begin{cajawarn}{Caso real: la contraseña de la base de datos}
+La clave \texttt{P@\$7Gr3\$QL} contiene \texttt{\$} y \texttt{@}. Debe escribirse en comillas SIMPLES:\par
+\texttt{my \$clave = 'P@\$7Gr3\$QL';}\par
+En comillas dobles, Perl tomaría \texttt{\$7} y \texttt{\$QL} como variables y la clave llegaría incompleta.\par
+\end{cajawarn}
+\subsubsection{Operadores y símbolos esenciales}
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{13cm}}
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Símbolo}} & \textcolor{white}{\textbf{Significado}} \\
+\endfirsthead
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Símbolo}} & \textcolor{white}{\textbf{Significado}} \\
+\endhead
+\ttfamily\color{uteqverde}= ; & Asignación de valor; fin de toda instrucción. \\ \hline
+\ttfamily\color{uteqverde}-\textgreater{} & Operador flecha: llama a un método de un objeto (p. ej. \$dbh-\textgreater{}prepare). \\ \hline
+\ttfamily\color{uteqverde}=\textgreater{} & «Coma gorda»: une una opción con su valor y entrecomilla el nombre de la izquierda. \\ \hline
+\ttfamily\color{uteqverde}=\textasciitilde{} & Enlaza un texto con una expresión regular. \\ \hline
+\ttfamily\color{uteqverde}. & Concatena (une) cadenas de texto. \\ \hline
+\ttfamily\color{uteqverde}//= & Asigna un valor por defecto solo si la variable está indefinida. \\ \hline
+\ttfamily\color{uteqverde}or die & O lógico de baja prioridad; «die» aborta el programa con un mensaje. \\ \hline
+\end{longtable}}
+\subsubsection{Expresiones regulares}
+Permiten buscar y transformar texto. Se usan con \texttt{=\textasciitilde{}} y estos operadores:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \texttt{m\{...\}}  coincidencia (match). Lo que capturan los paréntesis queda en \texttt{\$1}.
+\item \texttt{s/buscar/reemplazo/g}  sustitución. El modificador \texttt{g} aplica a todas; \texttt{e} evalúa el reemplazo como código.
+\item \texttt{tr/a/b/}  transliteración: cambia caracteres uno a uno.
+\end{itemize}
+En los patrones: \texttt{()} captura, \texttt{[...]} clase de caracteres, \texttt{[\textasciicircum{}...]} clase negada, \texttt{\textbackslash{}s} espacio, \texttt{\textbackslash{}d} dígito, \texttt{*} cero o más, \texttt{\{2\}} exactamente dos.
+
+\subsubsection{Heredocs}
+Un «heredoc» guarda un bloque largo de texto (por ejemplo, una página HTML) en una variable. Con comillas dobles en el marcador, interpola variables:
+
+\begin{cajacodigo}[Heredoc]
+\begin{lstlisting}[style=perl]
+my $html = <<"HTML";
+<h1>Hola, $nombre</h1>
+HTML
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Truco importante del heredoc}
+Como interpola, una \texttt{@} o \texttt{\$} literal dentro del texto debe escaparse con barra invertida: \texttt{\textbackslash{}@media} en CSS, o \texttt{correo\textbackslash{}@uteq.edu.ec}. Si no, Perl las interpreta como variables.\par
+\end{cajatip}
+\subsubsection{Subrutinas}
+Una función se define con \texttt{sub}. Los argumentos llegan en el arreglo \texttt{@\_} y se devuelve un valor con \texttt{return}:
+
+\begin{cajacodigo}[Subrutina]
+\begin{lstlisting}[style=perl]
+sub saludar {
+    my ($nombre) = @_;     # primer argumento
+    return "Hola, $nombre";
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsubsection{Tabla de referencia rápida}
+Funciones y palabras clave que aparecen en los programas de esta guía:
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.8cm} >{\raggedright\arraybackslash}p{12.6cm}}
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Función}} & \textcolor{white}{\textbf{Para qué sirve}} \\
+\endfirsthead
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Función}} & \textcolor{white}{\textbf{Para qué sirve}} \\
+\endhead
+\ttfamily\color{uteqverde}use & Carga un módulo o una directiva (pragma). \\ \hline
+\ttfamily\color{uteqverde}my & Declara una variable local. \\ \hline
+\ttfamily\color{uteqverde}if / unless & Ejecuta si la condición es verdadera / falsa. \\ \hline
+\ttfamily\color{uteqverde}while & Repite mientras la condición sea verdadera. \\ \hline
+\ttfamily\color{uteqverde}defined & Indica si una variable tiene valor. \\ \hline
+\ttfamily\color{uteqverde}print & Escribe texto (en consola o en un socket). \\ \hline
+\ttfamily\color{uteqverde}length & Número de caracteres de una cadena. \\ \hline
+\ttfamily\color{uteqverde}chr / hex & Carácter de un código / hexadecimal a número. \\ \hline
+\ttfamily\color{uteqverde}sub / return & Define una función / devuelve su resultado. \\ \hline
+\ttfamily\color{uteqverde}die & Aborta el programa con un mensaje de error. \\ \hline
+\ttfamily\color{uteqverde}close & Cierra una conexión, socket o archivo. \\ \hline
+\end{longtable}}
+\section{El modelo de la web del lado del servidor}
+\subsection{Request-response y HTTP sin estado}
+La web funciona con un modelo petición–respuesta (request–response): el navegador (cliente) envía una petición HTTP y el servidor devuelve una respuesta. El servidor de aplicaciones ejecuta código (PERL) que genera dinámicamente esa respuesta según la petición, la sesión y la base de datos.
+
+Un punto clave: HTTP es \textbf{sin estado} (stateless). El servidor no recuerda al usuario entre una petición y la siguiente; por eso, para «recordarlo», se usan cookies y sesiones (tema de la Unidad III).
+
+\subsection{La respuesta HTTP}
+Una respuesta HTTP tiene un orden estricto: una línea de estado, las cabeceras, una línea en blanco y el cuerpo:
+
+\begin{cajacodigo}[Respuesta HTTP]
+\begin{lstlisting}[style=markup]
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 123
+
+<!DOCTYPE html> ... </html>
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El código \texttt{200} significa «todo correcto»; \texttt{302} es una redirección; \texttt{404} no encontrado. La cabecera \texttt{Content-Type} declara que es HTML en UTF-8, esencial para que las tildes se vean bien.
+
+\section{Primera aplicación web: «Hola Mundo + nombre»}
+Esta primera aplicación es un mini servidor web que saluda al usuario con el nombre que escriba en un formulario. No necesita Apache: usa solo módulos del núcleo de Perl.
+
+\subsection{Código completo (hola\_web.pl)}
+\begin{cajacodigo}[hola\_web.pl --- parte 1/4]
+\begin{lstlisting}[style=perl]
+#!/usr/bin/perl
+# =============================================================================
+#  hola_web.pl  -  MiHolaMundo
+#  UTEQ - Aplicaciones Web - Unidad II, Semana 5
+#
+#  Aplicacion web "Hola Mundo + nombre". Es un mini servidor web que NO necesita
+#  Apache ni modulos de CPAN: usa solo modulos del nucleo de Perl, asi que
+#  funciona tal cual en Strawberry Perl.
+#
+#  COMO EJECUTARLO EN INTELLIJ IDEA
+#  --------------------------------
+#  1) Clic derecho sobre el proyecto MiHolaMundo > New > File  ->  hola_web.pl
+#  2) Pega este contenido.
+#  3) Pulsa el boton verde Run (o Shift+F10).
+#  4) En la consola aparece:  Servidor escuchando en http://localhost:8080
+#  5) Abre esa direccion en el navegador, escribe un nombre y pulsa "Saludar".
+#  6) Para detenerlo: boton rojo Stop en IntelliJ.
+# =============================================================================
+
+use strict;                 # obliga a declarar variables (evita errores tontos)
+use warnings;               # avisa de practicas peligrosas
+use IO::Socket::INET;       # modulo del NUCLEO de Perl: sockets de red
+
+my $puerto = 8080;
+
+# Crea el socket servidor que se queda escuchando conexiones entrantes.
+my $servidor = IO::Socket::INET->new(
+    LocalAddr => '127.0.0.1',   # solo este equipo (localhost)
+    LocalPort => $puerto,
+    Proto     => 'tcp',
+    Listen    => 5,
+    ReuseAddr => 1,
+) or die "No se pudo abrir el puerto $puerto: $!\n";
+
+print "Servidor escuchando en http://localhost:$puerto\n";
+print "(pulsa el boton rojo Stop en IntelliJ para detenerlo)\n";
+
+# Bucle principal: atiende una conexion del navegador tras otra.
+while (my $cliente = $servidor->accept) {
+
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[hola\_web.pl --- parte 2/4]
+\begin{lstlisting}[style=perl]
+    # Lee la primera linea de la peticion HTTP. Ejemplo:
+    #   GET /?nombre=Ana HTTP/1.1
+    my $peticion = <$cliente>;
+    $peticion = '' unless defined $peticion;
+
+    # --- LECTURA SEGURA DE LA ENTRADA ---------------------------------------
+    # Regla de oro del backend: nunca confiar en lo que envia el usuario.
+    my $nombre = 'Mundo';                          # valor por defecto
+    if ($peticion =~ m{[?&]nombre=([^\s&]*)}) {     # busca ?nombre=...
+        $nombre = url_decode($1);
+    }
+    $nombre = escape_html($nombre);                # escapa la salida -> anti-XSS
+
+    # --- CUERPO HTML5 -------------------------------------------------------
+    # Heredoc con comillas dobles: Perl interpola $nombre dentro del texto.
+    my $html = <<"HTML";
+<!DOCTYPE html>
+<html lang="es-EC">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hola Mundo en PERL - UTEQ</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 36rem;
+           margin: 3rem auto; padding: 0 1rem; color: #1f2933; line-height: 1.6; }
+    h1 { color: #006633; }
+    form { margin-top: 1.5rem; display: flex; gap: .6rem; }
+    input[type=text] { flex: 1; padding: .6rem; font-size: 1rem;
+                       border: 1px solid #bbb; border-radius: .4rem; }
+    button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; border: 0;
+             background: #006633; color: #fff; border-radius: .4rem; }
+    small { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <h1>&iexcl;Hola Mundo, $nombre!</h1>
+  <p>Esta p&aacute;gina la genera un programa <strong>PERL</strong> en el servidor,
+     no es un archivo HTML estatico.</p>
+
+  <!-- Formulario GET: al enviar recarga la pagina con  ?nombre=loquescribas -->
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[hola\_web.pl --- parte 3/4]
+\begin{lstlisting}[style=perl]
+  <form method="get" action="/">
+    <input type="text" name="nombre" placeholder="Escribe tu nombre" autofocus>
+    <button type="submit">Saludar</button>
+  </form>
+
+  <p><small>Servido por PERL en http://localhost:$puerto</small></p>
+</body>
+</html>
+HTML
+
+    # --- RESPUESTA HTTP -----------------------------------------------------
+    # Siempre: linea de estado + cabeceras + linea en blanco + cuerpo.
+    my $bytes = length $html;
+    print $cliente "HTTP/1.1 200 OK\r\n";
+    print $cliente "Content-Type: text/html; charset=utf-8\r\n";
+    print $cliente "Content-Length: $bytes\r\n";
+    print $cliente "Connection: close\r\n";
+    print $cliente "\r\n";
+    print $cliente $html;
+
+    close $cliente;
+}
+
+# === Funciones auxiliares ====================================================
+
+# Decodifica una query string:  '+' -> espacio,  '%XX' -> su caracter.
+sub url_decode {
+    my ($s) = @_;
+    $s =~ tr/+/ /;
+    $s =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/ge;
+    return $s;
+}
+
+# Escapa los caracteres peligrosos para evitar ataques XSS al imprimir en HTML.
+sub escape_html {
+    my ($s) = @_;
+    $s =~ s/&/&amp;/g;
+    $s =~ s/</&lt;/g;
+    $s =~ s/>/&gt;/g;
+    $s =~ s/"/&quot;/g;
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[hola\_web.pl --- parte 4/4]
+\begin{lstlisting}[style=perl]
+    return $s;
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Cómo funciona, en breve}
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+\item Abre un socket servidor en el puerto 8080 con \texttt{IO::Socket::INET}.
+\item Por cada visita, lee la primera línea de la petición y extrae el parámetro \texttt{nombre} de la URL con una expresión regular.
+\item Valida y \textbf{escapa} ese valor (defensa anti-XSS) antes de mostrarlo.
+\item Construye una página HTML5 con un heredoc y la envía con las cabeceras HTTP correctas.
+\end{enumerate}
+\subsection{Ejecutar y probar}
+Pulsa el botón verde Run en IntelliJ. En la consola aparece \texttt{Servidor escuchando en} \texttt{http://localhost:8080}. El programa queda «escuchando» (es lo normal; se detiene con el botón Stop). Abre esa dirección en el navegador, escribe un nombre y pulsa «Saludar».
+
+\subsection{Las dos reglas de oro}
+\begin{cajatip}{Seguridad del lado del servidor}
+\textbf{1) Validar TODA entrada en el servidor:} el cliente es manipulable (las DevTools del navegador permiten saltar cualquier validación de HTML/JS).\par
+\textbf{2) Escapar TODA salida:} convertir \textless{} \textgreater{} \& comillas en entidades evita que un \texttt{\textless{}script\textgreater{}} malicioso se ejecute (ataque XSS).\par
+\end{cajatip}
+\section{Generar HTML5 semántico desde PERL}
+El HTML que genera el servidor debe ser semántico: usar etiquetas que describan el significado de cada parte, no solo su apariencia. Esto mejora la accesibilidad, el posicionamiento en buscadores (SEO) y el mantenimiento.
+
+\subsection{Elementos semánticos de estructura}
+Úsalos para organizar la página: \texttt{\textless{}header\textgreater{}}, \texttt{\textless{}nav\textgreater{}}, \texttt{\textless{}main\textgreater{}}, \texttt{\textless{}article\textgreater{}}, \texttt{\textless{}section\textgreater{}}, \texttt{\textless{}aside\textgreater{}}, \texttt{\textless{}footer\textgreater{}} y \texttt{\textless{}address\textgreater{}}.
+
+\subsection{Características modernas de HTML5}
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \texttt{\textless{}time datetime=\char34{}...\char34{}\textgreater{}}  fechas legibles por máquinas; \texttt{\textless{}mark\textgreater{}}  resaltado.
+\item \texttt{\textless{}details\textgreater{}/\textless{}summary\textgreater{}}  paneles desplegables nativos (sin JavaScript).
+\item \texttt{\textless{}meter\textgreater{}} y \texttt{\textless{}output\textgreater{}}  indicadores y resultados.
+\item Validación nativa de formularios: \texttt{required}, \texttt{minlength}, \texttt{type=email}, \texttt{type=search}.
+\end{itemize}
+\subsection{Separar lógica de presentación}
+Aunque aquí generamos el HTML con heredocs por simplicidad, en proyectos serios conviene separar la lógica (PERL) de la presentación usando plantillas (por ejemplo, Template Toolkit). Así el código no se mezcla con el diseño y es más fácil de mantener.
+
+\section{Acceso a datos con PostgreSQL}
+\subsection{DBI y el driver DBD::Pg}
+PERL accede a bases de datos a través de \textbf{DBI} (Database Interface), una API común para cualquier base. El driver concreto para PostgreSQL es \texttt{DBD::Pg}, que se instala con \texttt{cpan DBD::Pg} y requiere PostgreSQL instalado.
+
+\subsection{Datos de conexión y DSN}
+El DSN (Data Source Name) describe la conexión:
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3cm} >{\raggedright\arraybackslash}p{12.4cm}}
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Dato}} & \textcolor{white}{\textbf{Valor}} \\
+\endfirsthead
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Dato}} & \textcolor{white}{\textbf{Valor}} \\
+\endhead
+\ttfamily\color{uteqverde}Base & appweb2026ppa \\ \hline
+\ttfamily\color{uteqverde}Host & 127.0.0.1 (localhost) \\ \hline
+\ttfamily\color{uteqverde}Puerto & 5432 \\ \hline
+\ttfamily\color{uteqverde}Usuario & postgres \\ \hline
+\ttfamily\color{uteqverde}Clave & P@\textbackslash{}\$7Gr3\textbackslash{}\$QL (en comillas simples) \\ \hline
+\end{longtable}}
+\begin{cajacodigo}[Construcción del DSN]
+\begin{lstlisting}[style=perl]
+my $dsn = "dbi:Pg:dbname=appweb2026ppa;host=127.0.0.1;port=5432";
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Crear las tablas (schema.sql)}
+El esquema de la base se define con SQL. Puedes ejecutarlo en psql o pgAdmin; además, la aplicación lo crea automáticamente si no existe:
+
+\begin{cajacodigo}[schema.sql]
+\begin{lstlisting}[style=sql]
+-- ============================================================================
+--  schema.sql  -  UTEQ - Aplicaciones Web - Unidad II
+--  Crea la tabla que usa la aplicacion web de registro de estudiantes.
+--
+--  Como ejecutarlo:
+--    psql  -U postgres -d appweb2026ppa -f schema.sql
+--  o pegarlo en el editor de consultas de pgAdmin (conectado a appweb2026ppa).
+--
+--  Nota: la aplicacion crud_estudiantes.pl tambien ejecuta este CREATE TABLE
+--  IF NOT EXISTS al arrancar, asi que correr este archivo es opcional pero
+--  recomendable para tener el esquema versionado.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS estudiantes (
+    id      SERIAL       PRIMARY KEY,          -- identificador autoincremental
+    nombre  VARCHAR(100) NOT NULL,             -- nombre completo
+    correo  VARCHAR(120) NOT NULL,             -- correo electronico
+    carrera VARCHAR(80)  NOT NULL,             -- carrera a la que pertenece
+    creado  TIMESTAMP    NOT NULL DEFAULT NOW()-- fecha/hora de registro
+);
+
+-- Indice opcional para acelerar reportes por carrera:
+CREATE INDEX IF NOT EXISTS idx_estudiantes_carrera ON estudiantes (carrera);
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{El ciclo de DBI}
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{12cm}}
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Método}} & \textcolor{white}{\textbf{Qué hace}} \\
+\endfirsthead
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Método}} & \textcolor{white}{\textbf{Qué hace}} \\
+\endhead
+\ttfamily\color{uteqverde}DBI-\textgreater{}connect & Abre la conexión; devuelve el database handle (\$dbh). \\ \hline
+\ttfamily\color{uteqverde}\$dbh-\textgreater{}do & Ejecuta SQL que no devuelve filas (CREATE, INSERT...). \\ \hline
+\ttfamily\color{uteqverde}\$dbh-\textgreater{}prepare & Prepara una sentencia y devuelve un statement handle (\$sth). \\ \hline
+\ttfamily\color{uteqverde}\$sth-\textgreater{}execute & Ejecuta la sentencia (con o sin valores para los ?). \\ \hline
+\ttfamily\color{uteqverde}fetchrow\_hashref & Lee la siguiente fila como hash \{columna =\textgreater{} valor\}. \\ \hline
+\ttfamily\color{uteqverde}finish/disconnect & Cierra la sentencia / la conexión. \\ \hline
+\end{longtable}}
+\begin{cajatip}{Regla de oro de datos: sentencias preparadas}
+Usa siempre marcadores \texttt{?} y \texttt{execute(valores)}. Nunca concatenes datos del usuario dentro del SQL: es la defensa contra la inyección SQL (SQL Injection).\par
+\end{cajatip}
+\subsection{Programa de ejemplo (bd\_postgres.pl)}
+Conecta, crea la tabla, inserta filas con sentencias preparadas y consulta los datos:
+
+\begin{cajacodigo}[bd\_postgres.pl --- parte 1/2]
+\begin{lstlisting}[style=perl]
+#!/usr/bin/perl
+# ============================================================================
+#  bd_postgres.pl  -  UTEQ - Aplicaciones Web - Unidad II
+#  Acceso a una base de datos PostgreSQL desde PERL con DBI + DBD::Pg.
+#  Conecta, crea una tabla, inserta filas con sentencias preparadas,
+#  consulta los datos y los muestra. Al final cierra la conexion.
+#
+#  REQUISITOS (una sola vez, en la terminal):
+#     cpan DBI        # interfaz de bases de datos (Strawberry suele traerlo)
+#     cpan DBD::Pg    # driver de PostgreSQL (NO viene por defecto)
+#  Ademas: PostgreSQL en ejecucion y la base 'appweb2026ppa' creada.
+# ============================================================================
+
+use strict;
+use warnings;
+use utf8;
+use DBI;                          # interfaz estandar de bases de datos en Perl
+
+binmode(STDOUT, ':encoding(UTF-8)');
+
+# --- Datos de conexion -------------------------------------------------------
+my $bd      = 'appweb2026ppa';    # nombre de la base de datos
+my $host    = '127.0.0.1';        # servidor (este equipo)
+my $puerto  = 5432;               # puerto de PostgreSQL
+my $usuario = 'postgres';         # usuario
+
+# OJO: la clave lleva $ y @, por eso va en COMILLAS SIMPLES (no interpola).
+my $clave   = 'P@$7Gr3$QL';
+
+# DSN (Data Source Name): cadena que describe la conexion.
+my $dsn = "dbi:Pg:dbname=$bd;host=$host;port=$puerto";
+
+# --- Conectar ----------------------------------------------------------------
+my $dbh = DBI->connect($dsn, $usuario, $clave, {
+    RaiseError     => 1,   # si algo falla, lanza error y aborta
+    AutoCommit     => 1,   # confirma cada sentencia automaticamente
+    pg_enable_utf8 => 1,   # maneja el texto como UTF-8
+}) or die "No se pudo conectar: $DBI::errstr";
+
+print "Conexion exitosa a la base '$bd'.\n";
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[bd\_postgres.pl --- parte 2/2]
+\begin{lstlisting}[style=perl]
+
+# --- Crear la tabla (si no existe) -------------------------------------------
+$dbh->do(q{
+    CREATE TABLE IF NOT EXISTS estudiantes (
+        id     SERIAL PRIMARY KEY,
+        nombre VARCHAR(100) NOT NULL,
+        correo VARCHAR(120)
+    )
+});
+
+# --- Insertar con SENTENCIA PREPARADA (anti SQL Injection) -------------------
+my $insertar = $dbh->prepare(
+    'INSERT INTO estudiantes (nombre, correo) VALUES (?, ?)'
+);
+$insertar->execute('Ana Perez', 'ana@uteq.edu.ec');
+$insertar->execute('Luis Mora', 'luis@uteq.edu.ec');
+
+# --- Consultar ---------------------------------------------------------------
+my $consulta = $dbh->prepare(
+    'SELECT id, nombre, correo FROM estudiantes ORDER BY id'
+);
+$consulta->execute;
+
+print "\nEstudiantes registrados:\n";
+while (my $fila = $consulta->fetchrow_hashref) {
+    print "  [$fila->{id}] $fila->{nombre} - $fila->{correo}\n";
+}
+
+# --- Cerrar ------------------------------------------------------------------
+$consulta->finish;
+$dbh->disconnect;
+print "\nConexion cerrada.\n";
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{¿Y un ORM?}
+PERL sí tiene ORM (mapeo objeto-relacional): el más completo es \textbf{DBIx::Class}, que incluso puede crear las tablas desde el modelo. Sin embargo, es pesado y requiere definir clases de esquema; suele introducirse en proyectos grandes. Para aprender y para aplicaciones pequeñas, DBI con sentencias preparadas es más directo y transparente. (En el Proyecto Fin de Curso usarás un ORM, JPA, pero en Java.) Lo desarrollamos paso a paso en la sección dedicada al ORM.
+
+\section{Aplicación web completa con base de datos (CRUD)}
+\subsection{Qué hace}
+Reúne todo lo anterior en una aplicación interactiva de registro de estudiantes:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \textbf{Alta:} un formulario inserta estudiantes (nombre, correo, carrera).
+\item \textbf{Reporte:} una tabla con todos los registros y un resumen por carrera (GROUP BY).
+\item \textbf{Eliminar:} un enlace por fila borra el registro.
+\item \textbf{Patrón Post-Redirect-Get:} tras un envío POST, redirige (302) para que recargar no reenvíe el formulario.
+\end{itemize}
+\subsection{Código (crud\_estudiantes.pl)}
+Para mantener el listado legible se ha colapsado el bloque de estilos CSS; el archivo completo se entrega aparte.
+
+\begin{cajacodigo}[crud\_estudiantes.pl --- parte 1/7]
+\begin{lstlisting}[style=perl]
+#!/usr/bin/perl
+# ============================================================================
+#  crud_estudiantes.pl  -  UTEQ - Aplicaciones Web - Unidad II
+#  Aplicacion WEB que interactua con el usuario y usa PostgreSQL:
+#     - Formulario para REGISTRAR estudiantes (alta de datos).
+#     - REPORTE: tabla con todos los estudiantes + resumen por carrera.
+#     - Accion para ELIMINAR un estudiante.
+#  Es un mini servidor web en Perl puro (sin Apache) que accede a la base
+#  con DBI + sentencias preparadas (seguras contra SQL Injection).
+#
+#  REQUISITOS (una sola vez):
+#     cpan DBD::Pg            # driver de PostgreSQL (DBI ya viene con Strawberry)
+#     PostgreSQL en marcha y la base 'appweb2026ppa' creada.
+#
+#  EJECUTAR: boton verde Run en IntelliJ; luego abrir http://localhost:8080
+# ============================================================================
+
+use strict;
+use warnings;
+use utf8;
+use IO::Socket::INET;     # mini servidor web (modulo del nucleo)
+use DBI;                  # acceso a la base de datos
+
+binmode(STDOUT, ':encoding(UTF-8)');
+
+# ---------------------------------------------------------------------------
+# 1) CONEXION A POSTGRESQL
+# ---------------------------------------------------------------------------
+my $bd        = 'appweb2026ppa';
+my $host      = '127.0.0.1';
+my $puerto_bd = 5432;
+my $usuario   = 'postgres';
+my $clave     = 'P@$7Gr3$QL';   # comillas SIMPLES por el $ y la @
+my $dsn = "dbi:Pg:dbname=$bd;host=$host;port=$puerto_bd";
+
+my $dbh = DBI->connect($dsn, $usuario, $clave, {
+    RaiseError     => 1,
+    AutoCommit     => 1,
+    pg_enable_utf8 => 1,
+}) or die "No se pudo conectar a la base: $DBI::errstr";
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[crud\_estudiantes.pl --- parte 2/7]
+\begin{lstlisting}[style=perl]
+
+# ---------------------------------------------------------------------------
+# 2) CREAR LA TABLA SI NO EXISTE (mismo esquema que schema.sql)
+# ---------------------------------------------------------------------------
+$dbh->do(q{
+    CREATE TABLE IF NOT EXISTS estudiantes (
+        id      SERIAL       PRIMARY KEY,
+        nombre  VARCHAR(100) NOT NULL,
+        correo  VARCHAR(120) NOT NULL,
+        carrera VARCHAR(80)  NOT NULL,
+        creado  TIMESTAMP    NOT NULL DEFAULT NOW()
+    )
+});
+
+# ---------------------------------------------------------------------------
+# 3) SERVIDOR WEB
+# ---------------------------------------------------------------------------
+my $puerto_web = 8080;
+my $servidor = IO::Socket::INET->new(
+    LocalAddr => '127.0.0.1',
+    LocalPort => $puerto_web,
+    Proto     => 'tcp',
+    Listen    => 5,
+    ReuseAddr => 1,
+) or die "No se pudo abrir el puerto $puerto_web: $!\n";
+
+print "Servidor en http://localhost:$puerto_web  (pulsa Stop para detener)\n";
+
+while (my $cli = $servidor->accept) {
+
+    # --- Leer la linea de peticion: p.ej.  POST /agregar HTTP/1.1 ---
+    my $inicial = <$cli>;
+    unless (defined $inicial) { close $cli; next; }
+    my ($metodo, $ruta) = $inicial =~ m{^(\S+)\s+(\S+)};
+    $metodo //= 'GET';
+    $ruta   //= '/';
+
+    # --- Leer cabeceras hasta la linea en blanco; tomar Content-Length ---
+    my $largo = 0;
+    while (my $h = <$cli>) {
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[crud\_estudiantes.pl --- parte 3/7]
+\begin{lstlisting}[style=perl]
+        $h =~ s/\r?\n\z//;
+        last if $h eq '';
+        $largo = $1 if $h =~ /^Content-Length:\s*(\d+)/i;
+    }
+
+    # --- Leer el cuerpo (datos del formulario en POST) ---
+    my $cuerpo = '';
+    read($cli, $cuerpo, $largo) if $largo > 0;
+
+    # --- Enrutamiento ---
+    if ($metodo eq 'POST' && $ruta =~ m{^/agregar}) {
+        my %f = parse_form($cuerpo);
+        # Validacion minima en el servidor (nunca confiar en el cliente)
+        if (length($f{nombre} // '') && length($f{correo} // '') && length($f{carrera} // '')) {
+            my $ins = $dbh->prepare(
+                'INSERT INTO estudiantes (nombre, correo, carrera) VALUES (?, ?, ?)');
+            $ins->execute($f{nombre}, $f{correo}, $f{carrera});
+        }
+        redirigir($cli, '/');            # Patron PRG (Post-Redirect-Get)
+    }
+    elsif ($metodo eq 'GET' && $ruta =~ m{^/eliminar\?id=(\d+)}) {
+        my $id = $1;
+        my $del = $dbh->prepare('DELETE FROM estudiantes WHERE id = ?');
+        $del->execute($id);
+        redirigir($cli, '/');
+    }
+    else {
+        responder($cli, pagina());       # GET / : formulario + reporte
+    }
+
+    close $cli;
+}
+
+$dbh->disconnect;
+
+# ===========================================================================
+#  SUBRUTINAS
+# ===========================================================================
+
+# Convierte el cuerpo "a=1&b=2" de un formulario en un hash de Perl.
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[crud\_estudiantes.pl --- parte 4/7]
+\begin{lstlisting}[style=perl]
+sub parse_form {
+    my ($cuerpo) = @_;
+    my %datos;
+    for my $par (split /&/, $cuerpo) {
+        my ($k, $v) = split /=/, $par, 2;
+        next unless defined $k;
+        $datos{ url_decode($k) } = url_decode($v // '');
+    }
+    return %datos;
+}
+
+# Construye la pagina HTML5 con el formulario y los reportes.
+sub pagina {
+    # --- Reporte 1: todos los estudiantes ---
+    my $sth = $dbh->prepare(
+        'SELECT id, nombre, correo, carrera FROM estudiantes ORDER BY id');
+    $sth->execute;
+
+    my $filas = '';
+    my $total = 0;
+    while (my $e = $sth->fetchrow_hashref) {
+        $total++;
+        $filas .=
+              "<tr>"
+            . "<td>" . escape_html($e->{id})      . "</td>"
+            . "<td>" . escape_html($e->{nombre})  . "</td>"
+            . "<td>" . escape_html($e->{correo})  . "</td>"
+            . "<td>" . escape_html($e->{carrera}) . "</td>"
+            . "<td><a class=\"del\" href=\"/eliminar?id=" . escape_html($e->{id})
+            . "\">Eliminar</a></td>"
+            . "</tr>\n";
+    }
+    $filas = "<tr><td colspan=\"5\" class=\"vacio\">Aun no hay estudiantes registrados.</td></tr>"
+        if $total == 0;
+
+    # --- Reporte 2: resumen por carrera (GROUP BY) ---
+    my $res = $dbh->prepare(
+        'SELECT carrera, COUNT(*) AS n FROM estudiantes GROUP BY carrera ORDER BY carrera');
+    $res->execute;
+    my $resumen = '';
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[crud\_estudiantes.pl --- parte 5/7]
+\begin{lstlisting}[style=perl]
+    while (my $r = $res->fetchrow_hashref) {
+        $resumen .= "<li>" . escape_html($r->{carrera})
+                  . " <strong>" . escape_html($r->{n}) . "</strong></li>\n";
+    }
+    $resumen = "<li class=\"vacio\">Sin datos todavia.</li>" if $resumen eq '';
+
+    # --- HTML5 semantico ---
+    return <<"HTML";
+<!DOCTYPE html>
+<html lang="es-EC">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro de estudiantes - UTEQ</title>
+  <style>
+    /* ... reglas CSS (ver el archivo crud_estudiantes.pl) ... */
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <h1>Registro de estudiantes &middot; UTEQ</h1>
+    <p>Aplicaci&oacute;n web en PERL conectada a PostgreSQL (appweb2026ppa)</p>
+  </header>
+
+  <main>
+    <!-- ALTA DE DATOS: formulario -->
+    <section class="alta">
+      <h2>Registrar estudiante</h2>
+      <form method="post" action="/agregar">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" name="nombre" type="text" required minlength="3"
+               placeholder="Ej. Ana Perez" autofocus>
+
+        <label for="correo">Correo</label>
+        <input id="correo" name="correo" type="email" required
+               placeholder="ej. ana\@uteq.edu.ec">
+
+        <label for="carrera">Carrera</label>
+        <select id="carrera" name="carrera" required>
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[crud\_estudiantes.pl --- parte 6/7]
+\begin{lstlisting}[style=perl]
+          <option value="">-- selecciona --</option>
+          <option>Ingenieria de Software</option>
+          <option>Ingenieria en Computacion</option>
+          <option>Telematica</option>
+        </select>
+
+        <button type="submit">Guardar</button>
+      </form>
+    </section>
+
+    <!-- REPORTE: tabla de estudiantes + resumen por carrera -->
+    <section class="reporte">
+      <h2>Reporte de estudiantes ($total)</h2>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Carrera</th><th></th></tr>
+        </thead>
+        <tbody>
+$filas
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:1.2rem">Resumen por carrera</h2>
+      <ul class="resumen">
+$resumen
+      </ul>
+    </section>
+  </main>
+
+  <footer style="text-align:center;color:#6b7280;font-size:.8rem;padding:1rem">
+    UTEQ &middot; Aplicaciones Web &middot; Unidad II
+  </footer>
+</body>
+</html>
+HTML
+}
+
+# Envia una respuesta 200 con el HTML.
+sub responder {
+    my ($cli, $html) = @_;
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[crud\_estudiantes.pl --- parte 7/7]
+\begin{lstlisting}[style=perl]
+    my $bytes = length $html;
+    print $cli "HTTP/1.1 200 OK\r\n";
+    print $cli "Content-Type: text/html; charset=utf-8\r\n";
+    print $cli "Content-Length: $bytes\r\n";
+    print $cli "Connection: close\r\n";
+    print $cli "\r\n";
+    print $cli $html;
+}
+
+# Envia una redireccion 302 (patron Post-Redirect-Get).
+sub redirigir {
+    my ($cli, $destino) = @_;
+    print $cli "HTTP/1.1 302 Found\r\n";
+    print $cli "Location: $destino\r\n";
+    print $cli "Content-Length: 0\r\n";
+    print $cli "Connection: close\r\n";
+    print $cli "\r\n";
+}
+
+# Decodifica texto de URL: '+' -> espacio, '%XX' -> caracter.
+sub url_decode {
+    my ($s) = @_;
+    $s =~ tr/+/ /;
+    $s =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/ge;
+    return $s;
+}
+
+# Escapa < > & " para evitar XSS al mostrar datos del usuario.
+sub escape_html {
+    my ($s) = @_;
+    $s = '' unless defined $s;
+    $s =~ s/&/&amp;/g;
+    $s =~ s/</&lt;/g;
+    $s =~ s/>/&gt;/g;
+    $s =~ s/"/&quot;/g;
+    return $s;
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Estructura y flujo}
+El programa se organiza en: (1) conexión a la base, (2) creación de la tabla, (3) bucle del servidor que lee la petición y enruta según método y ruta, y (4) subrutinas auxiliares (parse\_form, pagina, responder, redirigir, url\_decode, escape\_html). Cada dato que escribe el usuario se inserta con sentencias preparadas y se escapa al mostrarse.
+
+\subsection{Datos de prueba}
+Para poblar la tabla rápidamente desde psql o pgAdmin:
+
+\begin{cajacodigo}[Datos de prueba]
+\begin{lstlisting}[style=sql]
+INSERT INTO estudiantes (nombre, correo, carrera) VALUES
+  ('Ana Perez',   'ana.perez@uteq.edu.ec',   'Ingenieria de Software'),
+  ('Luis Mora',   'luis.mora@uteq.edu.ec',   'Telematica'),
+  ('Carlos Vera', 'carlos.vera@uteq.edu.ec', 'Ingenieria en Computacion');
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\section{Aplicación con ORM: DBIx::Class (paso a paso)}
+Hasta aquí accedimos a la base con DBI y SQL escrito a mano. Un \textbf{ORM} (Object-Relational Mapping) da un paso más: representa cada tabla como una \textbf{clase} y cada fila como un \textbf{objeto}, de modo que trabajas con métodos de Perl en lugar de sentencias SQL. El ORM estándar de Perl es \textbf{DBIx::Class}, y puede incluso \textbf{crear las tablas a partir del modelo} con \texttt{deploy}.
+
+\subsection{¿Cuándo usar un ORM?}
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \textbf{A favor:} menos SQL repetitivo, manejo natural de relaciones (sin JOIN a mano) y portabilidad entre motores de base de datos.
+\item \textbf{En contra:} más dependencias y mayor curva de aprendizaje; para scripts pequeños, DBI suele ser más directo.
+\item \textbf{Regla práctica:} DBI para lo simple y puntual; ORM para aplicaciones con muchas entidades y relaciones.
+\end{itemize}
+\subsection{Paso 1: Instalar los módulos}
+Además de \texttt{DBD::Pg}, el ORM necesita \texttt{DBIx::Class} y, para crear las tablas desde el modelo, \texttt{SQL::Translator}:
+
+\begin{cajacodigo}[Instalar el ORM]
+\begin{lstlisting}[style=markup]
+C:\> cpan DBIx::Class SQL::Translator DBD::Pg
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Paso 2: La estructura de archivos}
+El ORM organiza el modelo en una clase \textbf{Schema} y una clase \textbf{Result} por cada tabla. Crea esta estructura dentro del proyecto:
+
+\begin{cajacodigo}[Estructura del proyecto]
+\begin{lstlisting}[style=markup]
+MiAppORM/
+|- app_orm.pl                       # programa principal
+|- lib/
+   |- Escuela/
+      |- Schema.pm                  # la clase Schema
+      |- Result/
+         |- Carrera.pm              # tabla 'carreras'
+         |- Estudiante.pm           # tabla 'estudiantes'
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Paso 3: La clase Schema}
+Es el punto central del ORM: carga automáticamente todas las clases Result de la carpeta \texttt{Result/}.
+
+\begin{cajacodigo}[lib/Escuela/Schema.pm]
+\begin{lstlisting}[style=perl]
+package Escuela::Schema;
+use strict;
+use warnings;
+use base 'DBIx::Class::Schema';
+
+# Carga automaticamente las clases de lib/Escuela/Result/:
+__PACKAGE__->load_namespaces;
+
+1;   # todo modulo Perl termina devolviendo un valor verdadero
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Paso 4: Las clases Result (el modelo)}
+Cada Result describe una tabla: sus columnas, la clave primaria y sus \textbf{relaciones}. Aquí una carrera tiene muchos estudiantes (\texttt{has\_many}) y cada estudiante pertenece a una carrera (\texttt{belongs\_to}). Definir la relación es lo que permite navegar entre objetos sin escribir JOIN.
+
+\begin{cajacodigo}[lib/Escuela/Result/Carrera.pm]
+\begin{lstlisting}[style=perl]
+package Escuela::Result::Carrera;
+use strict;
+use warnings;
+use base 'DBIx::Class::Core';
+
+__PACKAGE__->table('carreras');          # nombre de la tabla
+__PACKAGE__->add_columns(
+    id     => { data_type => 'integer', is_auto_increment => 1 },
+    nombre => { data_type => 'varchar', size => 80, is_nullable => 0 },
+);
+__PACKAGE__->set_primary_key('id');
+__PACKAGE__->add_unique_constraint(['nombre']);
+
+# Una carrera tiene muchos estudiantes:
+__PACKAGE__->has_many(
+    estudiantes => 'Escuela::Result::Estudiante', 'carrera_id'
+);
+
+1;
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[lib/Escuela/Result/Estudiante.pm]
+\begin{lstlisting}[style=perl]
+package Escuela::Result::Estudiante;
+use strict;
+use warnings;
+use base 'DBIx::Class::Core';
+
+__PACKAGE__->table('estudiantes');
+__PACKAGE__->add_columns(
+    id         => { data_type => 'integer', is_auto_increment => 1 },
+    nombre     => { data_type => 'varchar', size => 100, is_nullable => 0 },
+    correo     => { data_type => 'varchar', size => 120, is_nullable => 0 },
+    carrera_id => { data_type => 'integer', is_nullable => 0 },
+);
+__PACKAGE__->set_primary_key('id');
+
+# Cada estudiante pertenece a una carrera:
+__PACKAGE__->belongs_to(
+    carrera => 'Escuela::Result::Carrera', 'carrera_id'
+);
+
+1;
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Paso 5: Conectar y crear las tablas con el ORM}
+El método \texttt{connect} abre la conexión y \texttt{deploy} genera y ejecuta el SQL \texttt{CREATE TABLE} \textbf{a partir del modelo}: no escribimos SQL.
+
+\begin{cajacodigo}[app\_orm.pl --- conexión y deploy]
+\begin{lstlisting}[style=perl]
+#!/usr/bin/perl
+use strict;
+use warnings;
+use utf8;
+use lib 'lib';                 # para encontrar Escuela::Schema
+use Escuela::Schema;
+
+binmode(STDOUT, ':encoding(UTF-8)');
+
+# Conexion (mismos datos; clave en comillas simples por el $ y la @):
+my $dsn = "dbi:Pg:dbname=appweb2026ppa;host=127.0.0.1;port=5432";
+my $schema = Escuela::Schema->connect(
+    $dsn, 'postgres', 'P@$7Gr3$QL', { pg_enable_utf8 => 1 }
+);
+
+# Crear las tablas DESDE EL MODELO (el ORM genera el CREATE TABLE):
+$schema->deploy;
+print "Tablas creadas desde el modelo.\n";
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajawarn}{Sobre deploy()}
+\texttt{deploy} crea las tablas la primera vez. Si ya existen, dará error; para recrearlas durante el desarrollo usa \texttt{deploy(\{ add\_drop\_table =\textgreater{} 1 \})}, que las elimina y vuelve a crear.\par
+\end{cajawarn}
+\subsection{Paso 6: Operaciones CRUD con el ORM}
+Todas las operaciones se hacen con objetos y métodos, sin SQL. Observa cómo se navega la relación con \texttt{\$e-\textgreater{}carrera-\textgreater{}nombre}:
+
+\begin{cajacodigo}[app\_orm.pl --- CRUD]
+\begin{lstlisting}[style=perl]
+# CREATE: crear una carrera y un estudiante (sin escribir SQL)
+my $soft = $schema->resultset('Carrera')
+                  ->create({ nombre => 'Ingenieria de Software' });
+
+$schema->resultset('Estudiante')->create({
+    nombre     => 'Ana Perez',
+    correo     => 'ana@uteq.edu.ec',
+    carrera_id => $soft->id,
+});
+
+# READ: listar estudiantes y su carrera (relacion, sin JOIN manual)
+my $rs = $schema->resultset('Estudiante')
+                ->search({}, { order_by => 'me.id' });
+print "Estudiantes:\n";
+while (my $e = $rs->next) {
+    printf "  [%d] %s - %s (%s)\n",
+        $e->id, $e->nombre, $e->correo, $e->carrera->nombre;
+}
+
+# UPDATE: cambiar el correo del estudiante con id 1
+my $uno = $schema->resultset('Estudiante')->find(1);
+$uno->update({ correo => 'ana.perez@uteq.edu.ec' }) if $uno;
+
+# DELETE: borrar por condicion
+$schema->resultset('Estudiante')
+       ->search({ nombre => 'Ana Perez' })->delete;
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Paso 7: Integrarlo en la aplicación web}
+Para convertirlo en aplicación web, reutiliza el mini servidor de la sección anterior y reemplaza las llamadas DBI por las del ORM dentro del enrutamiento:
+
+\begin{cajacodigo}[Integración en el servidor]
+\begin{lstlisting}[style=perl]
+# --- Alta (POST /agregar): crear con el ORM ---
+$schema->resultset('Estudiante')->create({
+    nombre     => $f{nombre},
+    correo     => $f{correo},
+    carrera_id => $f{carrera_id},
+});
+
+# --- Reporte (GET /): recorrer OBJETOS, no filas ---
+my @todos = $schema->resultset('Estudiante')
+                   ->search({}, { order_by => 'me.id' })->all;
+for my $e (@todos) {
+    # usar $e->nombre, $e->correo, $e->carrera->nombre ...
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Paso 8: Ejecutar y resultado}
+Ejecuta \texttt{app\_orm.pl} con el botón Run (con PostgreSQL en marcha). La salida esperada en la consola:
+
+\begin{cajacodigo}[Salida en la consola]
+\begin{lstlisting}[style=markup]
+Tablas creadas desde el modelo.
+Estudiantes:
+  [1] Ana Perez - ana@uteq.edu.ec (Ingenieria de Software)
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{DBI vs ORM --- en una frase}
+Con \textbf{DBI} controlas el SQL al detalle; con \textbf{DBIx::Class} ganas productividad y relaciones a cambio de más abstracción. Conocer ambos te hace un mejor desarrollador.\par
+\end{cajatip}
+\section{Seguridad en aplicaciones web}
+La seguridad no se «añade al final»: se diseña desde la primera línea. Estas consideraciones son transversales y reaparecerán en PHP, Java y .NET.
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \textbf{Validar la entrada en el servidor:} el cliente es manipulable; revalida siempre.
+\item \textbf{Escapar la salida:} neutraliza etiquetas como \texttt{\textless{}script\textgreater{}} (anti-XSS).
+\item \textbf{Sentencias preparadas:} marcadores \texttt{?} en toda consulta (anti-SQL Injection).
+\item \textbf{Credenciales:} claves con caracteres especiales en comillas simples; en producción, fuera del código (variables de entorno).
+\item \textbf{UTF-8 de extremo a extremo:} archivo, salida, base de datos y cabecera HTTP.
+\end{itemize}
+Estas prácticas cubren varias categorías del \textbf{OWASP Top 10} (en especial A03: Injection), el marco de referencia mundial de seguridad web.
+
+\section{Buenas prácticas y mantenimiento}
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \texttt{use strict;} y \texttt{use warnings;} en todo script.
+\item Funciones pequeñas, cada una con una sola responsabilidad.
+\item Manejo de errores claro (\texttt{RaiseError}, \texttt{or die} con mensajes útiles).
+\item Separar la lógica de la presentación (plantillas en lugar de HTML incrustado, en proyectos grandes).
+\item Reutilizar con módulos (\texttt{.pm} en \texttt{lib/}) y probar (carpeta \texttt{t/}).
+\item Versionar con Git; nunca subir secretos al repositorio.
+\item Cerrar siempre lo que se abre: conexiones, sentencias y sockets.
+\end{itemize}
+\section{Solución de problemas comunes}
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{11.1cm}}
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Síntoma}} & \textcolor{white}{\textbf{Causa y solución}} \\
+\endfirsthead
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Síntoma}} & \textcolor{white}{\textbf{Causa y solución}} \\
+\endhead
+\ttfamily\color{uteqverde}Can't locate DBD/Pg.pm & Falta el módulo. Instálalo con cpan (p. ej. cpan DBD::Pg). El mini servidor no necesita CGI.pm. \\ \hline
+\ttfamily\color{uteqverde}El programa no hace nada & Es normal: un servidor se queda escuchando. Abre http://localhost:8080 en el navegador. \\ \hline
+\ttfamily\color{uteqverde}Address already in use & El puerto 8080 está ocupado. Pulsa Stop, o cambia \$puerto a 8090. \\ \hline
+\ttfamily\color{uteqverde}No reconoce perl.exe & Revisa la sección 2.3: el intérprete debe apuntar a C:\textbackslash{}Strawberry\textbackslash{}perl\textbackslash{}bin\textbackslash{}perl.exe. \\ \hline
+\ttfamily\color{uteqverde}connection refused & PostgreSQL no está en ejecución, o el host/puerto son incorrectos. \\ \hline
+\ttfamily\color{uteqverde}password authentication failed & Clave incorrecta. Revisa que esté en comillas simples y bien escrita. \\ \hline
+\ttfamily\color{uteqverde}database does not exist & Crea la base: CREATE DATABASE appweb2026ppa; (psql o pgAdmin). \\ \hline
+\ttfamily\color{uteqverde}Tildes que salen mal & Activa UTF-8 en los cuatro puntos: archivo, salida, base de datos y cabecera HTTP. \\ \hline
+\end{longtable}}
+\section{Glosario de siglas y acrónimos}
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3cm} >{\raggedright\arraybackslash}p{12.4cm}}
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Sigla}} & \textcolor{white}{\textbf{Significado}} \\
+\endfirsthead
+\rowcolor{uteqverde}\textcolor{white}{\textbf{Sigla}} & \textcolor{white}{\textbf{Significado}} \\
+\endhead
+\ttfamily\color{uteqverde}PERL & Practical Extraction and Report Language. \\ \hline
+\ttfamily\color{uteqverde}CGI & Common Gateway Interface. \\ \hline
+\ttfamily\color{uteqverde}CPAN & Comprehensive Perl Archive Network. \\ \hline
+\ttfamily\color{uteqverde}IDE & Integrated Development Environment. \\ \hline
+\ttfamily\color{uteqverde}HTTP/HTTPS & HyperText Transfer Protocol / Secure. \\ \hline
+\ttfamily\color{uteqverde}HTML & HyperText Markup Language. \\ \hline
+\ttfamily\color{uteqverde}CSS & Cascading Style Sheets. \\ \hline
+\ttfamily\color{uteqverde}URL & Uniform Resource Locator. \\ \hline
+\ttfamily\color{uteqverde}DBI & Database Interface (API de Perl para bases de datos). \\ \hline
+\ttfamily\color{uteqverde}DBD::Pg & Database Driver para PostgreSQL. \\ \hline
+\ttfamily\color{uteqverde}DSN & Data Source Name. \\ \hline
+\ttfamily\color{uteqverde}SQL & Structured Query Language. \\ \hline
+\ttfamily\color{uteqverde}CRUD & Create, Read, Update, Delete. \\ \hline
+\ttfamily\color{uteqverde}ORM & Object-Relational Mapping. \\ \hline
+\ttfamily\color{uteqverde}PSGI & Perl Web Server Gateway Interface. \\ \hline
+\ttfamily\color{uteqverde}XSS & Cross-Site Scripting. \\ \hline
+\ttfamily\color{uteqverde}PRG & Post-Redirect-Get. \\ \hline
+\ttfamily\color{uteqverde}UTF-8 & Codificación de caracteres Unicode. \\ \hline
+\ttfamily\color{uteqverde}OWASP & Open Web Application Security Project. \\ \hline
+\end{longtable}}
+\section{Ejercicios propuestos}
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+\item Añade a la aplicación «Hola Mundo» un segundo campo (por ejemplo, la edad) y muéstralo en el saludo.
+\item Completa el CRUD agregando la operación \textbf{Actualizar}: un formulario para editar un estudiante existente.
+\item Agrega validación adicional en el servidor: rechaza correos que no terminen en @uteq.edu.ec.
+\item Crea una nueva tabla «materias» y un reporte que muestre las materias por carrera.
+\item Reescribe la consulta del reporte para ordenar por nombre en vez de por id.
+\item Investiga e implementa una versión mínima con el framework \textbf{Mojolicious} o \textbf{Dancer2} y compara la cantidad de código.
+\end{enumerate}
+\section{Recursos y referencias}
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item Documentación oficial de Perl: \textbf{perldoc.perl.org}
+\item CPAN (módulos): \textbf{metacpan.org}
+\item DBI: \textbf{metacpan.org/pod/DBI}  ·  DBD::Pg: \textbf{metacpan.org/pod/DBD::Pg}
+\item PostgreSQL: \textbf{postgresql.org/docs}
+\item Strawberry Perl: \textbf{strawberryperl.com}
+\item OWASP Top 10: \textbf{owasp.org/Top10}
+\end{itemize}
+\end{document}

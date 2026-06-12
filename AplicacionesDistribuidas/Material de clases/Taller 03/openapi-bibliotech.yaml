@@ -1,0 +1,396 @@
+openapi: 3.0.3
+info:
+  title: BiblioTech API
+  version: 1.0.0
+  description: >
+    API REST del microservicio de gestion de libros y prestamos
+    de la Biblioteca Universitaria BiblioTech. Permite consultar
+    el catalogo, registrar libros, crear prestamos y registrar
+    devoluciones. Todos los endpoints (excepto /auth/login)
+    requieren autenticacion Bearer JWT.
+  contact:
+    name: Equipo BiblioTech
+    email: bibliotech@uteq.edu.ec
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Servidor de desarrollo local
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Autenticacion
+    description: Emision de tokens JWT
+  - name: Libros
+    description: Gestion del catalogo de libros
+  - name: Prestamos
+    description: Gestion de prestamos y devoluciones
+
+paths:
+  /auth/login:
+    post:
+      tags: [Autenticacion]
+      summary: Autenticar usuario y obtener token JWT
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredencialesInput'
+      responses:
+        '200':
+          description: Autenticacion exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          description: Credenciales invalidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /libros:
+    get:
+      tags: [Libros]
+      summary: Listar libros del catalogo (con paginacion y filtro)
+      operationId: listarLibros
+      parameters:
+        - name: page
+          in: query
+          description: Numero de pagina (inicia en 0)
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: size
+          in: query
+          description: Cantidad de elementos por pagina
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: categoria
+          in: query
+          description: Filtrar por categoria del libro
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista paginada de libros
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibroPaginado'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      tags: [Libros]
+      summary: Registrar un nuevo libro en el catalogo
+      operationId: crearLibro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibroInput'
+      responses:
+        '201':
+          description: Libro creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Libro'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /libros/{libroId}:
+    get:
+      tags: [Libros]
+      summary: Obtener un libro por su identificador
+      operationId: obtenerLibro
+      parameters:
+        - $ref: '#/components/parameters/LibroId'
+      responses:
+        '200':
+          description: Libro encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Libro'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags: [Libros]
+      summary: Eliminar un libro del catalogo
+      operationId: eliminarLibro
+      parameters:
+        - $ref: '#/components/parameters/LibroId'
+      responses:
+        '204':
+          description: Libro eliminado (sin contenido)
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /prestamos:
+    post:
+      tags: [Prestamos]
+      summary: Crear un prestamo de libro a un socio
+      operationId: crearPrestamo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrestamoInput'
+      responses:
+        '201':
+          description: Prestamo registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prestamo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /prestamos/{prestamoId}/devolucion:
+    patch:
+      tags: [Prestamos]
+      summary: Registrar la devolucion de un prestamo
+      operationId: registrarDevolucion
+      parameters:
+        - name: prestamoId
+          in: path
+          required: true
+          description: Identificador del prestamo
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Devolucion registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prestamo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Token JWT emitido por POST /auth/login
+
+  parameters:
+    LibroId:
+      name: libroId
+      in: path
+      required: true
+      description: Identificador unico del libro
+      schema:
+        type: integer
+        format: int64
+
+  responses:
+    BadRequest:
+      description: Solicitud invalida (validacion fallida)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ServerError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    CredencialesInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: maria.perez@uteq.edu.ec
+        password:
+          type: string
+          format: password
+          minLength: 8
+          example: Secreto123!
+
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token JWT con expiracion de 1 hora
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        tipo:
+          type: string
+          example: Bearer
+        expiraEn:
+          type: integer
+          description: Segundos hasta la expiracion
+          example: 3600
+
+    Libro:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 101
+        titulo:
+          type: string
+          example: Building Microservices
+        autor:
+          type: string
+          example: Sam Newman
+        isbn:
+          type: string
+          pattern: '^[0-9-]{10,17}$'
+          example: 978-1-4920-3402-5
+        categoria:
+          type: string
+          example: Ingenieria de Software
+        ejemplaresDisponibles:
+          type: integer
+          minimum: 0
+          example: 4
+
+    LibroInput:
+      type: object
+      required: [titulo, autor, isbn, categoria, ejemplaresDisponibles]
+      properties:
+        titulo:
+          type: string
+          minLength: 1
+        autor:
+          type: string
+          minLength: 1
+        isbn:
+          type: string
+          pattern: '^[0-9-]{10,17}$'
+        categoria:
+          type: string
+        ejemplaresDisponibles:
+          type: integer
+          minimum: 0
+
+    LibroPaginado:
+      type: object
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Libro'
+        pagina:
+          type: integer
+          example: 0
+        totalPaginas:
+          type: integer
+          example: 5
+        totalElementos:
+          type: integer
+          example: 93
+
+    PrestamoInput:
+      type: object
+      required: [libroId, socioId, fechaLimite]
+      properties:
+        libroId:
+          type: integer
+          format: int64
+          example: 101
+        socioId:
+          type: integer
+          format: int64
+          example: 2045
+        fechaLimite:
+          type: string
+          format: date
+          example: '2026-06-30'
+
+    Prestamo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 7001
+        libroId:
+          type: integer
+          format: int64
+          example: 101
+        socioId:
+          type: integer
+          format: int64
+          example: 2045
+        fechaPrestamo:
+          type: string
+          format: date
+          example: '2026-06-16'
+        fechaLimite:
+          type: string
+          format: date
+          example: '2026-06-30'
+        estado:
+          type: string
+          enum: [ACTIVO, DEVUELTO, VENCIDO]
+          example: ACTIVO
+
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: Not Found
+        message:
+          type: string
+          example: El libro con id 999 no existe
+        timestamp:
+          type: string
+          format: date-time
+          example: '2026-06-16T10:30:00Z'
+        path:
+          type: string
+          example: /api/v1/libros/999

@@ -1,0 +1,451 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% GUÍA Y RÚBRICA — Práctica fuera de clases (PFCl)
+% Modelado de casos de uso en herramienta CASE y documentación
+% de user stories con criterios de aceptación
+% Ingeniería de Requisitos (ISR-401) · UTEQ · 2026-2027 PPA
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[a4paper,top=2cm,bottom=2.2cm,left=1.6cm,right=1.6cm]{geometry}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+\definecolor{lvlexc}{HTML}{DCEFE3}
+\definecolor{lvlsat}{HTML}{EAF1F7}
+\definecolor{lvldev}{HTML}{FBF3E2}
+\definecolor{lvlins}{HTML}{F7E6E6}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ---------- Encabezado / pie ----------
+\setlength{\headheight}{30pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textbf{Ingeniería de Requisitos (ISR-401)}}
+\rhead{\footnotesize UTEQ \,\textcolor{gold}{$\bullet$}\, 2026--2027 PPA}
+\lfoot{\footnotesize Guía y Rúbrica --- Práctica fuera de clases: Casos de uso y user stories}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\bhdr}[1]{\cellcolor{midblue}\textcolor{white}{\textbf{#1}}}
+
+\renewcommand{\arraystretch}{1.25}
+
+\begin{document}
+
+% ============================================================
+% PORTADA / TÍTULO
+% ============================================================
+\begin{center}
+{\large\textbf{\textcolor{utegreendk}{UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}}}\\[2pt]
+{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software}\\[8pt]
+{\LARGE\textbf{\textcolor{utegreendk}{Guía y Rúbrica de Evaluación}}}\\[4pt]
+{\large Práctica fuera de clases: \textit{Modelado de casos de uso en herramienta CASE y documentación de user stories con criterios de aceptación}}\\[2pt]
+{\small Actividad vinculada al Proyecto Fin de Curso (PFC)}
+\end{center}
+
+\vspace{4pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+% ============================================================
+% 1. DATOS GENERALES
+% ============================================================
+\section*{\textcolor{utegreendk}{1. DATOS GENERALES DE LA ACTIVIDAD}}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.28\linewidth}|X|}
+\hline
+\multicolumn{2}{|l|}{\cellcolor{utegreen}\textcolor{white}{\textbf{DATOS GENERALES DE LA ACTIVIDAD}}}\\
+\hline
+\textbf{Asignatura} & Ingeniería de Requisitos (ISR-401) -- 4.º nivel, Carrera de Software\\
+\hline
+\rowcolor{rowgray}\textbf{Unidad / temas} & Unidad 2 (Tema 7: metas, escenarios y casos de uso) con proyección a la Unidad 3 (modelos de especificación UML) y al Tema 14 (user stories y criterios de aceptación)\\
+\hline
+\textbf{Resultado de aprendizaje} & Analiza y modela conceptualmente los requisitos mediante diagramas UML (casos de uso) y escenarios ágiles (user stories), asegurando coherencia, trazabilidad y verificabilidad.\\
+\hline
+\rowcolor{rowgray}\textbf{Actividad evaluada} & Construcción del \textbf{modelo de casos de uso del sistema del PFC} en una herramienta CASE (\textbf{Enterprise Architect} o \textbf{StarUML}) y documentación de \textbf{tres (3) user stories} con sus \textbf{criterios de aceptación} verificables.\\
+\hline
+\textbf{Modalidad} & Trabajo en equipo (equipos del PFC). Práctica fuera de clases (trabajo autónomo).\\
+\hline
+\rowcolor{rowgray}\textbf{Producto entregable} & Informe en PDF subido al repositorio GitHub del equipo, acompañado del \textbf{archivo fuente nativo} del proyecto CASE (\texttt{.qea}/\texttt{.eap}/\texttt{.eapx} para Enterprise Architect; \texttt{.mdj} para StarUML).\\
+\hline
+\textbf{Referentes} & ISO/IEC/IEEE 29148:2018 (caracterís\-ticas de calidad de requisitos, §5.2); Pohl (2010), escenarios y casos de uso; Cohn (2004), user stories y criterios de aceptación; SWEBOK v4.0 (KA Software Requirements); IREB CPRE FL v3.1 (UD~4, trabajo con requisitos en lenguaje natural y modelos).\\
+\hline
+\end{tabularx}
+
+% ============================================================
+% 2. OBJETIVOS
+% ============================================================
+\section*{\textcolor{utegreendk}{2. OBJETIVOS DE LA PRÁCTICA}}
+
+\begin{tcolorbox}[colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm]
+\textbf{Objetivo general.} Modelar la funcionalidad del sistema del Proyecto Fin de Curso mediante un diagrama de casos de uso construido en una herramienta CASE profesional, y complementarlo con user stories documentadas con criterios de aceptación verificables, estableciendo la trazabilidad entre ambos artefactos y los requisitos elicitados.
+
+\medskip
+\textbf{Objetivos específicos.}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item Identificar los actores del sistema del PFC y delimitar la frontera del sistema (\textit{system boundary}).
+  \item Construir un diagrama de casos de uso UML sintácticamente correcto, aplicando adecuadamente las relaciones \texttt{<<include>>}, \texttt{<<extend>>} y generalización.
+  \item Especificar textualmente los casos de uso principales mediante una plantilla estructurada (flujo principal, flujos alternativos y excepciones).
+  \item Redactar tres user stories conforme a la plantilla Connextra y a los criterios INVEST.
+  \item Formular criterios de aceptación verificables para cada user story, en formato de lista de verificación o Dado--Cuando--Entonces (Gherkin).
+  \item Trazar los casos de uso y las user stories hacia los requisitos elicitados del PFC, garantizando consistencia entre artefactos.
+  \item Manejar una herramienta CASE (Enterprise Architect o StarUML) como entorno profesional de modelado y gestión de artefactos de requisitos.
+\end{enumerate}
+\end{tcolorbox}
+
+% ============================================================
+% 3. FUNDAMENTOS MÍNIMOS REQUERIDOS
+% ============================================================
+\section*{\textcolor{utegreendk}{3. FUNDAMENTOS MÍNIMOS REQUERIDOS}}
+
+Antes de iniciar la práctica, el equipo debe dominar los siguientes conceptos, revisados en clase y disponibles en la bibliografía del curso:
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|X|}
+\hline
+\thdr{Concepto} & \thdr{Síntesis operativa}\\
+\hline
+\textbf{Actor} & Rol externo (persona, sistema u organización) que interactúa con el sistema. Los actores no forman parte del sistema: se ubican fuera de la frontera. Se distinguen actores primarios (inician el caso de uso) y secundarios (participan o reciben resultados).\\
+\hline
+\rowcolor{rowgray}\textbf{Caso de uso} & Secuencia de interacciones entre uno o más actores y el sistema que produce un resultado observable de valor para un actor. Se nombra con \textit{verbo en infinitivo + objeto} (p.~ej., \textit{Registrar pedido}).\\
+\hline
+\textbf{Relaciones UML} & \texttt{<<include>>}: comportamiento obligatorio reutilizado por el caso base. \texttt{<<extend>>}: comportamiento opcional o condicional que amplía el caso base en un punto de extensión. \textbf{Generalización}: especialización de un actor o caso de uso más general.\\
+\hline
+\rowcolor{rowgray}\textbf{Especificación textual} & Plantilla estructurada que documenta cada caso de uso: identificador, nombre, actores, precondiciones, flujo principal numerado, flujos alternativos, excepciones y postcondiciones.\\
+\hline
+\textbf{User story} & Escenario ágil breve en formato Connextra: \textit{Como} \textless rol\textgreater, \textit{quiero} \textless funcionalidad\textgreater\ \textit{para} \textless beneficio\textgreater. Debe cumplir los criterios INVEST: Independiente, Negociable, Valiosa, Estimable, Pequeña (\textit{Small}) y Testeable.\\
+\hline
+\rowcolor{rowgray}\textbf{Criterio de aceptación} & Condición verificable que determina cuándo la user story se considera satisfecha. Formatos admitidos: lista de verificación con condiciones medibles, o escenarios Gherkin (\textit{Dado--Cuando--Entonces}). Debe ser objetivo: no admite términos vagos sin cuantificar.\\
+\hline
+\end{tabularx}
+
+% ============================================================
+% 4. HERRAMIENTAS Y MATERIALES
+% ============================================================
+\section*{\textcolor{utegreendk}{4. HERRAMIENTAS Y MATERIALES}}
+
+\begin{itemize}[leftmargin=18pt,itemsep=2pt]
+  \item \textbf{Herramienta CASE (elegir una):}
+    \begin{itemize}[leftmargin=14pt,itemsep=1pt]
+      \item \textbf{Enterprise Architect} (Sparx Systems): versión de prueba o licencia académica disponible. Archivo de proyecto: \texttt{.qea}, \texttt{.eap} o \texttt{.eapx}.
+      \item \textbf{StarUML} (MKLabs): versión de evaluación funcional. Archivo de proyecto: \texttt{.mdj}.
+    \end{itemize}
+  \item Documentos del PFC ya producidos: Entrega 1A (contexto, visión, alcance) e informe de elicitación (lista consolidada de requisitos con identificadores).
+  \item Plantilla de especificación textual de casos de uso (sección 5, Fase 4 de esta guía).
+  \item Repositorio GitHub del equipo, con la estructura de carpetas convenida para el PFC.
+  \item Procesador de texto para el informe (exportación final en PDF).
+\end{itemize}
+
+\begin{tcolorbox}[colback=lightgold,colframe=gold,boxrule=0.8pt,arc=2mm,
+  title=\textbf{Nota sobre herramientas},fonttitle=\bfseries]
+No se admiten diagramas elaborados en herramientas de dibujo genérico (draw.io, Lucidchart, Canva, PowerPoint) ni imágenes generadas por terceros: el propósito de la práctica es el dominio de una herramienta CASE con repositorio de modelo. El archivo fuente nativo es evidencia obligatoria de autoría (ver criterios de admisión).
+\end{tcolorbox}
+
+% ============================================================
+% 5. DESARROLLO DE LA PRÁCTICA
+% ============================================================
+\section*{\textcolor{utegreendk}{5. DESARROLLO DE LA PRÁCTICA (PROCEDIMIENTO DETALLADO)}}
+
+\subsection*{\textcolor{midblue}{Fase 1 --- Preparación del entorno (estimado: 1 hora)}}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item Instalar la herramienta CASE seleccionada y verificar su correcto funcionamiento.
+  \item Crear un proyecto nuevo con el nombre del sistema del PFC (p.~ej., \texttt{PFC\_NombreSistema\_EquipoX}).
+  \item Crear dentro del proyecto un paquete (\textit{package}) denominado \texttt{Modelo de Casos de Uso} y, dentro de él, un diagrama de casos de uso vacío.
+  \item Registrar capturas de pantalla del entorno configurado (estas capturas forman parte de las evidencias de autoría).
+\end{enumerate}
+
+\subsection*{\textcolor{midblue}{Fase 2 --- Identificación de actores y frontera del sistema (estimado: 1--2 horas)}}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item Revisar la lista consolidada de requisitos y la tabla de stakeholders del PFC.
+  \item Derivar los \textbf{actores} del sistema: para cada stakeholder que interactúa directamente con el sistema, definir el rol que desempeña. Incluir, cuando corresponda, sistemas externos (pasarelas de pago, servicios de notificación, sistemas heredados).
+  \item Elaborar una \textbf{tabla de actores} con tres columnas: nombre del actor, tipo (primario / secundario / sistema externo) y descripción de su interés u objetivo frente al sistema.
+  \item Definir la \textbf{frontera del sistema}: qué funcionalidad queda dentro y qué queda fuera, en coherencia con el alcance declarado en la Entrega 1A.
+\end{enumerate}
+
+\subsection*{\textcolor{midblue}{Fase 3 --- Identificación y diagramación de casos de uso (estimado: 3--4 horas)}}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item A partir de los requisitos funcionales elicitados, identificar los casos de uso del sistema. Regla práctica: cada caso de uso debe producir un \textbf{resultado observable de valor} para un actor; las operaciones internas (p.~ej., \textit{validar contraseña}) no son casos de uso autónomos, sino pasos o inclusiones.
+  \item Nombrar cada caso de uso con \textbf{verbo en infinitivo + objeto}, evitando nombres vagos (\textit{Gestionar sistema}) o tecnicismos de implementación (\textit{Insertar registro en BD}).
+  \item Construir el diagrama en la herramienta CASE:
+    \begin{itemize}[leftmargin=14pt,itemsep=1pt]
+      \item Dibujar la frontera del sistema (rectángulo con el nombre del sistema).
+      \item Ubicar los actores fuera de la frontera y los casos de uso dentro.
+      \item Conectar actores y casos de uso mediante asociaciones.
+      \item Aplicar \texttt{<<include>>} solo para comportamiento obligatorio compartido; \texttt{<<extend>>} solo para comportamiento condicional u opcional (con la dirección de la flecha correcta en cada relación); generalización solo cuando exista una verdadera relación de especialización.
+    \end{itemize}
+  \item Alcance mínimo del diagrama: \textbf{al menos 8 casos de uso}, \textbf{al menos 3 actores} y \textbf{al menos una relación de cada tipo} (\texttt{include}, \texttt{extend}) debidamente justificada. La generalización se incluye solo si el dominio la amerita; no debe forzarse.
+  \item Asignar a cada caso de uso un \textbf{identificador único} (convención sugerida: \texttt{CU-01}, \texttt{CU-02}, \ldots) registrado como propiedad del elemento en la herramienta.
+\end{enumerate}
+
+\subsection*{\textcolor{midblue}{Fase 4 --- Especificación textual de casos de uso (estimado: 2--3 horas)}}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item Seleccionar los \textbf{tres casos de uso de mayor relevancia} para el sistema (los que concentran el valor central del PFC).
+  \item Especificar cada uno con la siguiente plantilla:
+\end{enumerate}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.28\linewidth}|X|}
+\hline
+\bhdr{Campo} & \bhdr{Contenido}\\
+\hline
+Identificador & \texttt{CU-XX} (coincidente con el diagrama)\\
+\hline
+\rowcolor{rowgray}Nombre & Verbo en infinitivo + objeto\\
+\hline
+Actores & Primarios y secundarios involucrados\\
+\hline
+\rowcolor{rowgray}Precondiciones & Estado del sistema requerido antes de iniciar\\
+\hline
+Flujo principal & Secuencia numerada de pasos actor--sistema (escenario de éxito)\\
+\hline
+\rowcolor{rowgray}Flujos alternativos & Variaciones válidas del flujo principal, referenciadas al paso donde se bifurcan\\
+\hline
+Excepciones & Condiciones de error y respuesta del sistema\\
+\hline
+\rowcolor{rowgray}Postcondiciones & Estado del sistema tras la ejecución exitosa\\
+\hline
+Requisitos asociados & Identificadores de los requisitos del PFC que el caso de uso realiza\\
+\hline
+\end{tabularx}
+
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt,resume]
+  \item Redactar los pasos del flujo principal alternando actor y sistema (\textit{1. El actor solicita\ldots\ 2. El sistema valida\ldots}), sin decisiones de diseño ni de interfaz prematuras.
+  \item Verificar que cada especificación cumple las características de calidad de ISO/IEC/IEEE 29148: no ambigua, completa, singular, verificable y factible.
+\end{enumerate}
+
+\subsection*{\textcolor{midblue}{Fase 5 --- Documentación de tres user stories con criterios de aceptación (estimado: 2 horas)}}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item Seleccionar tres funcionalidades del sistema del PFC, asociadas a casos de uso del diagrama (puede tratarse de los mismos tres casos especificados en la Fase 4 o de otros, siempre que la trazabilidad quede explícita).
+  \item Redactar cada user story con la plantilla Connextra completa:
+  \begin{tcolorbox}[colback=lightblue,colframe=midblue,boxrule=0.6pt,arc=2mm]
+    \textbf{US-XX.} \textit{Como} \textless rol concreto del sistema\textgreater, \textit{quiero} \textless funcionalidad específica\textgreater\ \textit{para} \textless beneficio o valor verificable\textgreater.
+  \end{tcolorbox}
+  \item Validar cada user story contra los criterios \textbf{INVEST}, dejando constancia escrita de la verificación (tabla o lista de chequeo por historia).
+  \item Formular para cada user story \textbf{al menos tres criterios de aceptación} en uno de los dos formatos:
+    \begin{itemize}[leftmargin=14pt,itemsep=1pt]
+      \item \textbf{Gherkin}: \textit{Dado} \textless contexto\textgreater, \textit{cuando} \textless acción\textgreater, \textit{entonces} \textless resultado observable\textgreater.
+      \item \textbf{Lista de verificación}: condiciones medibles y objetivas (incluyendo, donde aplique, valores límite, mensajes esperados y casos negativos).
+    \end{itemize}
+  \item Los criterios deben cubrir el \textbf{escenario de éxito}, al menos un \textbf{escenario alternativo o de borde} y al menos un \textbf{escenario de error}. Términos vagos sin métrica («rápido», «fácil», «seguro») invalidan el criterio.
+  \item Registrar las user stories también dentro de la herramienta CASE (como elementos de requisito o notas vinculadas a los casos de uso), evidenciando la gestión de artefactos en el repositorio del modelo.
+\end{enumerate}
+
+\subsection*{\textcolor{midblue}{Fase 6 --- Trazabilidad y consistencia (estimado: 1 hora)}}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item Construir la \textbf{matriz de trazabilidad} con las columnas: requisito del PFC (\texttt{RF-XX}) $\rightarrow$ caso de uso (\texttt{CU-XX}) $\rightarrow$ user story (\texttt{US-XX}, cuando exista).
+  \item Verificar consistencia: ningún caso de uso sin requisito de origen; ningún requisito funcional central sin caso de uso que lo realice (o con descarte justificado); las tres user stories trazadas a casos de uso del diagrama.
+  \item Revisar la coherencia terminológica entre artefactos (mismos nombres de actores, roles y conceptos del dominio).
+\end{enumerate}
+
+\subsection*{\textcolor{midblue}{Fase 7 --- Elaboración del informe y entrega (estimado: 1--2 horas)}}
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item Estructurar el informe en PDF con las siguientes secciones:
+    \begin{enumerate}[leftmargin=16pt,itemsep=1pt,label=\alph*)]
+      \item Portada (asignatura, equipo, integrantes, paralelo, fecha, sistema del PFC).
+      \item Introducción breve: propósito del modelo y alcance cubierto.
+      \item Tabla de actores y definición de la frontera del sistema.
+      \item Diagrama de casos de uso exportado desde la herramienta CASE (imagen de alta resolución, legible).
+      \item Justificación de cada relación \texttt{include}/\texttt{extend}/generalización empleada.
+      \item Especificaciones textuales de los tres casos de uso seleccionados.
+      \item Las tres user stories con su verificación INVEST y sus criterios de aceptación.
+      \item Matriz de trazabilidad requisito $\rightarrow$ caso de uso $\rightarrow$ user story.
+      \item Evidencias de uso de la herramienta (capturas del entorno con el proyecto abierto, estructura del repositorio del modelo).
+      \item Conclusiones del equipo y distribución del trabajo entre integrantes.
+    \end{enumerate}
+  \item Subir al repositorio GitHub del equipo, en la carpeta convenida para esta práctica: (i) el informe PDF y (ii) el \textbf{archivo fuente nativo} del proyecto CASE. Verificar que el \textit{commit} se realice dentro del plazo.
+\end{enumerate}
+
+% ============================================================
+% 6. CRITERIOS DE ADMISIÓN (GATEKEEPER)
+% ============================================================
+\section*{\textcolor{utegreendk}{6. CRITERIOS DE ADMISIÓN (GATEKEEPER)}}
+
+\begin{tcolorbox}[colback=lightred,colframe=red!60!black,
+  title=\textbf{CRITERIOS DE ADMISIÓN --- verificación previa a la revisión},
+  fonttitle=\bfseries,boxrule=0.8pt,arc=2mm]
+El incumplimiento de \textbf{cualquiera} de los siguientes criterios suspende la revisión detallada del trabajo y asigna la \textbf{nota mínima (25\,\% del puntaje, equivalente a nivel Insuficiente en todos los criterios)}. La decisión final de aplicación de la penalización corresponde al docente.
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item \textbf{Archivo fuente nativo:} el repositorio contiene el archivo de proyecto de la herramienta CASE (\texttt{.qea}/\texttt{.eap}/\texttt{.eapx} o \texttt{.mdj}) y este abre correctamente, conteniendo el modelo presentado en el informe. No se admiten únicamente imágenes del diagrama.
+  \item \textbf{Correspondencia con el PFC:} el modelo corresponde al sistema del Proyecto Fin de Curso del equipo (no a un caso genérico, de tutorial o de otro equipo) y es coherente con el alcance de la Entrega 1A y con los requisitos elicitados.
+  \item \textbf{Evidencias de autoría:} el informe incluye capturas del entorno de la herramienta con el proyecto del equipo abierto, conforme a las disposiciones de autenticidad y antifraude del PFC.
+  \item \textbf{Entrega en plazo y formato:} informe en PDF y archivo fuente subidos al repositorio GitHub del equipo en la carpeta y con la convención de nombres establecidas, dentro del plazo definido.
+\end{enumerate}
+\end{tcolorbox}
+
+% ============================================================
+% 7. ESCALA Y FÓRMULA DE CALIFICACIÓN
+% ============================================================
+\section*{\textcolor{utegreendk}{7. ESCALA Y FÓRMULA DE CALIFICACIÓN}}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.22\linewidth}|C{0.16\linewidth}|X|}
+\hline
+\thdr{Nivel} & \thdr{Valor} & \thdr{Descripción general}\\
+\hline
+\cellcolor{lvlexc}\textbf{Excelente} & 4 (100\,\%) & Cumplimiento pleno del criterio, con calidad profesional y sin errores relevantes.\\
+\hline
+\cellcolor{lvlsat}\textbf{Satisfactorio} & 3 (75\,\%) & Cumplimiento sustancial con errores menores que no comprometen la validez del artefacto.\\
+\hline
+\cellcolor{lvldev}\textbf{En desarrollo} & 2 (50\,\%) & Cumplimiento parcial con errores conceptuales o de completitud que requieren corrección.\\
+\hline
+\cellcolor{lvlins}\textbf{Insuficiente} & 1 (25\,\%) & Cumplimiento mínimo, ausente o con errores graves que invalidan el artefacto.\\
+\hline
+\end{tabularx}
+
+\begin{tcolorbox}[colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm]
+\textbf{Fórmula de calificación:}
+\[
+\text{Nota} \;=\; \left( \frac{\sum_{i=1}^{6} \text{Nivel}_i \times \text{Peso}_i}{4} \right) \times \text{Escala}
+\]
+donde \(\text{Nivel}_i \in \{1,2,3,4\}\) es el nivel alcanzado en el criterio \(i\), \(\text{Peso}_i\) su ponderación (la suma de pesos es 1) y \(\text{Escala}\) el puntaje máximo de la actividad definido en el plan de evaluación del curso (p.~ej., 10 puntos).
+\end{tcolorbox}
+
+% ============================================================
+% 8. RÚBRICA ANALÍTICA (APAISADA)
+% ============================================================
+\begin{landscape}
+
+\section*{\textcolor{utegreendk}{8. RÚBRICA ANALÍTICA DE EVALUACIÓN}}
+
+{\small
+\begin{longtable}{|L{3.4cm}|L{4.7cm}|L{4.7cm}|L{4.7cm}|L{4.7cm}|}
+\hline
+\thdr{Criterio (peso)} &
+\cellcolor{lvlexc}\textbf{Excelente (4)} &
+\cellcolor{lvlsat}\textbf{Satisfactorio (3)} &
+\cellcolor{lvldev}\textbf{En desarrollo (2)} &
+\cellcolor{lvlins}\textbf{Insuficiente (1)}\\
+\hline
+\endfirsthead
+\hline
+\thdr{Criterio (peso)} &
+\cellcolor{lvlexc}\textbf{Excelente (4)} &
+\cellcolor{lvlsat}\textbf{Satisfactorio (3)} &
+\cellcolor{lvldev}\textbf{En desarrollo (2)} &
+\cellcolor{lvlins}\textbf{Insuficiente (1)}\\
+\hline
+\endhead
+\hline
+\multicolumn{5}{r}{\footnotesize\textit{Continúa en la página siguiente\ldots}}\\
+\endfoot
+\hline
+\endlastfoot
+
+\textbf{C1. Actores y frontera del sistema}\newline\cellcolor{lightgold}(10\,\%) &
+Tabla de actores completa (primarios, secundarios y sistemas externos cuando existen), con descripción del interés de cada uno; frontera del sistema explícita y coherente con el alcance de la Entrega 1A; ningún actor interno al sistema ni stakeholder sin interacción directa modelado como actor. &
+Actores principales correctamente identificados con descripciones breves; frontera definida con desajustes menores frente al alcance del PFC; a lo sumo un actor cuestionable (rol redundante o secundario mal clasificado). &
+Lista de actores incompleta (falta algún actor evidente del dominio) o con errores de concepto (componentes internos o stakeholders sin interacción modelados como actores); frontera implícita o inconsistente. &
+Actores genéricos no derivados del PFC, ausentes o conceptualmente erróneos en su mayoría; sin frontera del sistema; tabla de actores ausente.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C2. Diagrama de casos de uso y relaciones UML}\newline\cellcolor{lightgold}(25\,\%) &
+Diagrama con 8 o más casos de uso correctamente nombrados (verbo en infinitivo + objeto), identificadores únicos, asociaciones actor--caso correctas; relaciones \texttt{include} y \texttt{extend} aplicadas con semántica y dirección correctas y justificadas por escrito; sin casos de uso «funcionales internos» ni descomposición funcional tipo DFD; notación UML impecable. &
+Diagrama con el alcance mínimo cumplido; nombres mayormente correctos; a lo sumo un error de semántica o dirección en \texttt{include}/\texttt{extend}, o una justificación débil; notación con detalles menores (estereotipos mal escritos, alguna asociación con flecha innecesaria). &
+Diagrama por debajo del alcance mínimo (6--7 casos de uso) o con errores repetidos: relaciones \texttt{include}/\texttt{extend} confundidas entre sí o usadas como secuencia de pasos; nombres vagos o de implementación; varios casos de uso sin asociación a actor. &
+Diagrama ausente, ilegible o con menos de 6 casos de uso; relaciones UML usadas sin semántica reconocible; descomposición funcional en lugar de casos de uso; diagrama no elaborado en la herramienta CASE.\\
+\hline
+
+\textbf{C3. Especificación textual de casos de uso}\newline\cellcolor{lightgold}(20\,\%) &
+Tres especificaciones completas con todos los campos de la plantilla; flujos principales numerados alternando actor--sistema; flujos alternativos y excepciones referenciados al paso de bifurcación; pre/postcondiciones verificables; requisitos asociados identificados; redacción conforme a las características de calidad de ISO/IEC/IEEE 29148. &
+Tres especificaciones con la plantilla completa y flujos principales correctos; flujos alternativos o excepciones presentes pero incompletos en una de las especificaciones; ambigüedades puntuales de redacción que no impiden la comprensión. &
+Solo dos especificaciones completas, o tres con campos relevantes vacíos (excepciones, postcondiciones); flujos que mezclan decisiones de diseño o de interfaz; pasos sin alternancia actor--sistema; trazabilidad a requisitos omitida. &
+Una o ninguna especificación utilizable; plantilla ignorada o reducida a una descripción narrativa libre; flujos inexistentes o incoherentes con el diagrama.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C4. User stories (formato y calidad INVEST)}\newline\cellcolor{lightgold}(20\,\%) &
+Tres user stories en plantilla Connextra completa con rol concreto, funcionalidad específica y beneficio verificable; verificación INVEST documentada por historia con juicio argumentado; historias independientes entre sí, de tamaño implementable y claramente derivadas del PFC. &
+Tres user stories en formato correcto; verificación INVEST presente aunque superficial en alguna historia; un beneficio genérico («para mejorar la experiencia») o un rol amplio en una de las historias. &
+Tres historias con errores de formato (cláusula \textit{para} ausente, rol genérico tipo «usuario» en todas) o solo dos historias completas; verificación INVEST ausente o meramente declarativa (sin análisis); historias que son tareas técnicas y no escenarios de usuario. &
+Menos de dos user stories utilizables; formato Connextra ignorado; historias copiadas de plantillas ajenas al PFC o indistinguibles de requisitos tradicionales sin rol ni beneficio.\\
+\hline
+
+\textbf{C5. Criterios de aceptación}\newline\cellcolor{lightgold}(15\,\%) &
+Al menos tres criterios por historia, en Gherkin o lista de verificación, todos objetivos y medibles; cobertura del escenario de éxito, de al menos un caso alternativo o de borde y de al menos un caso de error por historia; valores límite o métricas explícitas donde corresponde; consistencia plena con la user story. &
+Tres criterios por historia mayormente verificables; cobertura de éxito y error presente, con casos de borde débiles o ausentes en una historia; a lo sumo un criterio con redacción mejorable pero comprobable. &
+Menos de tres criterios en alguna historia, o criterios redactados como descripción de la funcionalidad y no como condiciones verificables; términos vagos sin cuantificar («rápido», «intuitivo») en varios criterios; sin escenarios de error. &
+Criterios de aceptación ausentes en una o más historias, o todos subjetivos e inverificables; criterios contradictorios con la user story; copia evidente de ejemplos genéricos.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C6. Trazabilidad, consistencia y manejo de la herramienta CASE}\newline\cellcolor{lightgold}(10\,\%) &
+Matriz requisito~$\rightarrow$~caso de uso~$\rightarrow$~user story completa y sin elementos huérfanos (o con descartes justificados); terminología consistente entre artefactos; user stories registradas dentro del modelo CASE; identificadores gestionados como propiedades de los elementos; repositorio del modelo organizado en paquetes; evidencias de uso del entorno claras. &
+Matriz de trazabilidad que cubre la mayoría de los elementos; consistencia terminológica general con discrepancias menores; modelo organizado en la herramienta, aunque las user stories consten solo en el informe; evidencias de uso suficientes. &
+Trazabilidad parcial (varios casos de uso sin requisito de origen o user stories sin vínculo al diagrama); inconsistencias de nombres entre artefactos; modelo desorganizado en la herramienta (todo en un único paquete sin identificadores). &
+Sin matriz de trazabilidad; artefactos desconectados entre sí; sin evidencia de gestión del modelo en la herramienta más allá del dibujo del diagrama.\\
+\hline
+
+\end{longtable}
+}
+
+\end{landscape}
+
+% ============================================================
+% 9. INTERPRETACIÓN DE RESULTADOS
+% ============================================================
+\section*{\textcolor{utegreendk}{9. INTERPRETACIÓN DE RESULTADOS}}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.25\linewidth}|X|}
+\hline
+\thdr{Banda (\% del puntaje)} & \thdr{Interpretación}\\
+\hline
+\cellcolor{lvlexc}90--100\,\% & Dominio sobresaliente del modelado de casos de uso y de la documentación ágil; los artefactos pueden integrarse directamente a la Entrega 1B del PFC.\\
+\hline
+\cellcolor{lvlsat}75--89\,\% & Dominio satisfactorio; los artefactos requieren ajustes menores antes de su integración al PFC.\\
+\hline
+\cellcolor{lvldev}50--74\,\% & Dominio parcial; existen errores conceptuales (semántica de relaciones UML, verificabilidad de criterios) que deben corregirse con retroalimentación del docente.\\
+\hline
+\cellcolor{lvlins}$<$50\,\% & Dominio insuficiente; el equipo debe rehacer los artefactos centrales y se recomienda tutoría antes de la siguiente entrega del PFC.\\
+\hline
+\end{tabularx}
+
+% ============================================================
+% 10. REFERENCIAS
+% ============================================================
+\section*{\textcolor{utegreendk}{10. REFERENCIAS}}
+
+\begin{itemize}[leftmargin=18pt,itemsep=2pt]
+  \item ISO/IEC/IEEE. (2018). \textit{ISO/IEC/IEEE 29148:2018 --- Systems and software engineering --- Life cycle processes --- Requirements engineering}. ISO/IEC/IEEE.
+  \item Pohl, K. (2010). \textit{Requirements Engineering: Fundamentals, Principles, and Techniques}. Springer.
+  \item Cohn, M. (2004). \textit{User Stories Applied: For Agile Software Development}. Addison-Wesley.
+  \item Bourque, P., \& Fairley, R. E. (Eds.). (2024). \textit{Guide to the Software Engineering Body of Knowledge (SWEBOK Guide), Version 4.0}. IEEE Computer Society.
+  \item IREB. (2024). \textit{CPRE Foundation Level Syllabus, v3.1}. International Requirements Engineering Board.
+  \item Object Management Group. (2017). \textit{OMG Unified Modeling Language (OMG UML), Version 2.5.1}. OMG.
+\end{itemize}
+
+\vspace{10pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+\begin{center}
+\footnotesize Documento de uso académico --- Ingeniería de Requisitos (ISR-401) --- UTEQ, 2026--2027 PPA.
+\end{center}
+
+\end{document}

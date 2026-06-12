@@ -1,0 +1,1635 @@
+\documentclass[11pt,a4paper]{article}
+
+% ====== PREÁMBULO — Estilo UTEQ ======
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds}
+\usepackage{hyperref}
+
+% Paleta UTEQ
+\definecolor{azuloscuro}{RGB}{15,40,80}
+\definecolor{azulmedio}{RGB}{30,80,150}
+\definecolor{teal}{RGB}{0,128,128}
+\definecolor{grisclaro}{RGB}{245,246,248}
+\definecolor{griscodigo}{RGB}{250,250,252}
+
+\hypersetup{colorlinks=true, linkcolor=azulmedio, urlcolor=teal, citecolor=azulmedio}
+
+% Encabezado y pie
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{azuloscuro}\textbf{UTEQ --- Aplicaciones Distribuidas (ISR-701)}}
+\fancyhead[R]{\small\color{azuloscuro}FORM-TL-03 --- Taller OpenAPI 3.0}
+\fancyfoot[C]{\small Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\headrule}{\color{teal}\hrule height 0.8pt width\headwidth}
+
+% Listings
+\lstdefinelanguage{yaml}{
+  keywords={true,false,null},
+  sensitive=false,
+  comment=[l]{\#},
+  morestring=[b]',
+  morestring=[b]"
+}
+\lstdefinestyle{codigo}{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{griscodigo},
+  frame=single, rulecolor=\color{azulmedio!40},
+  framesep=4pt, breaklines=true, breakatwhitespace=false,
+  showstringspaces=false, tabsize=2,
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=6pt,
+  commentstyle=\color{teal!80!black}\itshape,
+  keywordstyle=\color{azulmedio}\bfseries,
+  stringstyle=\color{azuloscuro}
+}
+\lstset{style=codigo}
+
+% Cajas UTEQ
+\newtcolorbox{cajaobjetivo}[1][]{breakable,enhanced,colback=azuloscuro!4,colframe=azuloscuro,
+  title={#1},fonttitle=\bfseries,boxrule=0.9pt,arc=2mm}
+\newtcolorbox{cajapaso}[1][]{breakable,enhanced,colback=teal!5,colframe=teal,
+  title={#1},fonttitle=\bfseries,boxrule=0.9pt,arc=2mm}
+\newtcolorbox{cajaalerta}[1][]{breakable,enhanced,colback=red!4,colframe=red!70!black,
+  title={#1},fonttitle=\bfseries,boxrule=0.9pt,arc=2mm}
+\newtcolorbox{cajanota}[1][]{breakable,enhanced,colback=azulmedio!5,colframe=azulmedio,
+  title={#1},fonttitle=\bfseries,boxrule=0.9pt,arc=2mm}
+
+\setlist{nosep,leftmargin=*}
+
+\begin{document}
+
+% ====== PORTADA / DATOS ======
+\begin{center}
+  {\large\bfseries\color{azuloscuro} UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[2pt]
+  Facultad de Ciencias de la Computación y Diseño Digital --- Carrera de Ingeniería de Software\\[8pt]
+  {\color{teal}\rule{\textwidth}{1.2pt}}\\[10pt]
+  {\LARGE\bfseries\color{azuloscuro} FORM-TL-03 --- Taller}\\[4pt]
+  {\Large\bfseries Diseño y Documentación de API REST con OpenAPI 3.0}\\[6pt]
+  {\large Desarrollo paso a paso resuelto --- Caso de ejemplo \textbf{BiblioTech}}\\[10pt]
+  {\color{teal}\rule{\textwidth}{1.2pt}}
+\end{center}
+
+\vspace{4pt}
+\begin{center}
+\begin{tabular}{>{\bfseries}p{4.5cm} p{10.5cm}}
+\toprule
+Asignatura: & Aplicaciones Distribuidas (ISR-701) --- Séptimo semestre \\
+Período académico: & Regular 2025--2026 SPA \\
+Modalidad: & Grupal (equipos de 3--4 estudiantes) \\
+Carácter: & Formativa (preparatoria para PE-U3 y PFC Entrega 2) \\
+Herramientas: & Swagger Editor (\texttt{editor.swagger.io}), Postman 10.x, Git/GitHub \\
+Entregables: & \texttt{/docs/api/openapi.yaml} + \texttt{/docs/api/coleccion-postman.json} en el repositorio GitHub del equipo \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\tableofcontents
+
+% =====================================================
+\section{Propósito del taller y resultado esperado}
+% =====================================================
+
+\begin{cajaobjetivo}[Objetivo del taller]
+Diseñar y documentar el contrato de una \textbf{API REST} (Interfaz de Programación de Aplicaciones bajo el estilo arquitectónico \textit{Representational State Transfer}) usando la especificación \textbf{OpenAPI 3.0}, validarlo en Swagger Editor, versionarlo en GitHub y construir su colección de pruebas en Postman, como preparación directa para la Entrega~2 del Proyecto Fin de Curso (PFC).
+\end{cajaobjetivo}
+
+Este documento resuelve el taller \textbf{completo, paso a paso}, sobre un dominio \textbf{distinto al de los cuatro PFC del curso} (comercio electrónico con asistente de inteligencia artificial; sistema de gestión académica escolar; control y administración de laboratorios informáticos; soporte técnico de un proveedor de Internet). El dominio elegido es la \textbf{gestión de una biblioteca universitaria (BiblioTech)}: catálogo de libros, préstamos y devoluciones. El estudiante debe \textbf{replicar exactamente la misma secuencia de pasos sustituyendo los recursos de BiblioTech por los recursos de su propio PFC} (la Sección~\ref{sec:replica} indica el mapeo sugerido por equipo).
+
+% =====================================================
+\section{Caso de ejemplo: BiblioTech}
+% =====================================================
+
+\textbf{Contexto.} La biblioteca de una universidad necesita exponer un microservicio que permita: (a)~consultar el catálogo de libros con paginación y filtros, (b)~registrar nuevos libros, (c)~eliminar libros, (d)~crear préstamos a socios y (e)~registrar devoluciones. Toda operación, salvo el inicio de sesión, exige un token \textbf{JWT} (\textit{JSON Web Token}) enviado en el encabezado \texttt{Authorization: Bearer <token>}.
+
+\begin{cajanota}[Regla de oro antes de escribir YAML]
+El contrato OpenAPI se diseña \textbf{antes} de programar (enfoque \textit{contract-first} o ``primero el contrato''). El contrato es el acuerdo entre el equipo de \textit{backend}, el de \textit{frontend} y el docente evaluador: si el contrato está bien definido, ambos lados pueden trabajar en paralelo.
+\end{cajanota}
+
+% =====================================================
+\section{Paso 0 --- Infraestructura desde cero: base de datos, backend Java y emisión del JWT}\label{sec:paso0}
+% =====================================================
+
+\begin{cajanota}[Aclaración metodológica importante]
+El diseño del contrato OpenAPI (Pasos 1 a 5) es \textbf{contract-first}: se puede completar \textbf{sin ninguna línea de código}, porque el contrato es un documento de diseño. Sin embargo, para que la colección Postman del Paso~6 contenga \textbf{respuestas reales} (token JWT auténtico, datos extraídos de una base de datos, códigos de estado verdaderos) y para responder con evidencia la pregunta \textit{¿de dónde se extraen y a dónde se guardan los datos?}, este Paso~0 construye desde cero la \textbf{infraestructura mínima ejecutable}: una base de datos \textbf{PostgreSQL 18} en Docker y un \textbf{backend Java 25 (LTS) + Spring Boot 4.0.x} que implementa los endpoints y emite el token JWT. Esta misma infraestructura es la semilla del \texttt{resource-service} que el equipo ampliará en GA-SUM-02 / PFC Entrega 2.
+\end{cajanota}
+
+\subsection{Arquitectura y flujo de los datos}
+
+La respuesta a ``¿de dónde salen los datos?'' es: \textbf{los datos persisten en tablas de PostgreSQL}; ni Postman ni Swagger Editor almacenan nada (solo envían y muestran peticiones). El recorrido completo de una petición es:
+
+\begin{center}
+\begin{tikzpicture}[
+  font=\small,
+  caja/.style={draw=azuloscuro, fill=azuloscuro!5, rounded corners=2pt, minimum height=1.05cm, minimum width=2.0cm, align=center, thick},
+  interna/.style={draw=teal, fill=teal!6, rounded corners=2pt, minimum height=1.05cm, align=center, thick},
+  fl/.style={-{Stealth[length=2.6mm]}, thick, color=azulmedio}
+]
+\node[caja] (postman) {Postman\\(cliente)};
+\node[interna, right=1.1cm of postman] (filtro) {Filtro\\JWT};
+\node[interna, right=0.55cm of filtro] (ctrl) {Contro-\\lador};
+\node[interna, right=0.55cm of ctrl] (repo) {Reposi-\\torio JPA};
+\node[caja, right=1.15cm of repo, fill=teal!10, draw=teal] (pg) {PostgreSQL\\(tablas)};
+\begin{scope}[on background layer]
+\node[draw=azulmedio, dashed, rounded corners=3pt, fit=(filtro)(ctrl)(repo), inner sep=7pt, label={[color=azulmedio]above:{Spring Boot (puerto 8080)}}] {};
+\end{scope}
+\draw[fl] (postman) -- node[above,sloped,font=\scriptsize]{HTTP +} node[below,sloped,font=\scriptsize]{Bearer JWT} (filtro);
+\draw[fl] (filtro) -- (ctrl);
+\draw[fl] (ctrl) -- (repo);
+\draw[fl] (repo) -- node[above,sloped,font=\scriptsize]{JDBC} node[below,sloped,font=\scriptsize]{SQL} (pg);
+\end{tikzpicture}
+\end{center}
+
+\begin{enumerate}
+  \item \textbf{Postman} envía la petición HTTP con el encabezado \texttt{Authorization: Bearer <token>}.
+  \item El \textbf{filtro JWT} valida la firma y la expiración del token; si es inválido, responde 401 sin tocar la base de datos.
+  \item El \textbf{controlador} valida la entrada (anotaciones \texttt{jakarta.validation}) y delega en el repositorio.
+  \item El \textbf{repositorio JPA} (Hibernate) traduce las operaciones a SQL y las ejecuta por \textbf{JDBC} contra PostgreSQL: un \texttt{POST /libros} termina en un \texttt{INSERT INTO libros...}; un \texttt{GET /libros} en un \texttt{SELECT ... LIMIT/OFFSET}.
+  \item La fila resultante regresa convertida a JSON: esa es la respuesta que Postman guarda como ejemplo.
+\end{enumerate}
+
+\subsection{Estructura final del proyecto y matriz de versiones}
+
+Antes de construir nada conviene tener a la vista \textbf{cómo debe quedar el proyecto al terminar el Paso 0}. Esta es la estructura completa de carpetas y archivos (la carpeta \texttt{docs/api/} se llena en los Pasos 5 y 6):
+
+\begin{lstlisting}[numbers=none,caption={Estructura final del proyecto \texttt{bibliotech}}]
+bibliotech/
+|-- docker-compose.yml                  <- contenedor PostgreSQL 18
+|-- init.sql                            <- esquema y datos semilla
+|-- pom.xml                             <- dependencias Maven
+|-- .gitignore                          <- excluye target/, .env, .idea/
+|-- docs/
+|   `-- api/
+|       |-- openapi.yaml                <- contrato OpenAPI 3.0 (Paso 5)
+|       `-- coleccion-postman.json      <- coleccion Postman (Paso 6)
+`-- src/
+    `-- main/
+        |-- java/
+        |   `-- com/
+        |       `-- uteq/
+        |           `-- bibliotech/
+        |               |-- BibliotechApplication.java
+        |               |-- controller/
+        |               |   |-- AuthController.java
+        |               |   |-- GlobalExceptionHandler.java
+        |               |   |-- LibroController.java
+        |               |   |-- PrestamoController.java
+        |               |   |-- RecursoNoEncontradoException.java
+        |               |   `-- ReglaNegocioException.java
+        |               |-- dto/
+        |               |   |-- ApiError.java
+        |               |   |-- LibroInput.java
+        |               |   |-- LoginRequest.java
+        |               |   |-- PaginaResponse.java
+        |               |   |-- PrestamoInput.java
+        |               |   `-- TokenResponse.java
+        |               |-- model/
+        |               |   |-- EstadoPrestamo.java
+        |               |   |-- Libro.java
+        |               |   |-- Prestamo.java
+        |               |   |-- Socio.java
+        |               |   `-- Usuario.java
+        |               |-- repository/
+        |               |   |-- LibroRepository.java
+        |               |   |-- PrestamoRepository.java
+        |               |   |-- SocioRepository.java
+        |               |   `-- UsuarioRepository.java
+        |               `-- security/
+        |                   |-- JwtAuthFilter.java
+        |                   |-- JwtService.java
+        |                   `-- SecurityConfig.java
+        `-- resources/
+            `-- application.yml         <- conexion a BD y parametros JWT
+\end{lstlisting}
+
+Las versiones empleadas son las \textbf{últimas estables y verificadas como compatibles entre sí} a la fecha de este documento:
+
+\begin{table}[h!]
+\centering
+\caption{Matriz de versiones compatibles del proyecto}
+\small
+\begin{tabular}{l l p{7.6cm}}
+\toprule
+\textbf{Tecnología} & \textbf{Versión} & \textbf{Nota de compatibilidad} \\
+\midrule
+Java (JDK) & 25 (LTS) & Soporte a largo plazo; requiere las versiones indicadas abajo \\
+Spring Boot & 4.0.x & Soporte de primera clase para Java 25; basado en Spring Framework 7 \\
+Spring Security & 7.x & Incluido y gestionado por Spring Boot 4.0.x \\
+Lombok & $\geq$ 1.18.42 & Primera versión estable con soporte de JDK 25 \\
+JJWT & 0.13.0 & Última versión en Maven Central; misma API fluida de la línea 0.12 \\
+PostgreSQL & 18 & Imagen Docker \texttt{postgres:18-alpine} \\
+Maven & 3.9+ & Requerido por Spring Boot 4.0.x \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{cajaalerta}[Cambio de nombre de starter en Spring Boot 4]
+Spring Boot 4 modularizó sus starters: el clásico \texttt{spring-boot-starter-web} se renombró a \texttt{spring-boot-starter-webmvc}. Si el equipo copia un \texttt{pom.xml} antiguo de Boot 3.x con el nombre viejo, el proyecto seguirá funcionando temporalmente (los starters clásicos quedaron como puente \textbf{obsoleto}), pero debe usarse el nombre nuevo.
+\end{cajaalerta}
+
+\subsection{Docker desde cero y base de datos PostgreSQL}
+
+\subsubsection{¿Qué es Docker y por qué se usa aquí?}
+
+\textbf{Docker} es una plataforma de \textbf{contenerización}: permite ejecutar una aplicación (en este caso, el servidor PostgreSQL 18) dentro de un \textbf{contenedor}, que es un proceso \textbf{aislado} que empaqueta el programa junto con todas sus dependencias, bibliotecas y configuración. A diferencia de una máquina virtual, el contenedor \textbf{no incluye un sistema operativo completo}: comparte el núcleo (kernel) del sistema operativo anfitrión, por lo que arranca en segundos y consume pocos recursos.
+
+La distinción central es entre \textbf{imagen} y \textbf{contenedor}, análoga a la de \textit{clase} y \textit{objeto} en programación orientada a objetos: la \textbf{imagen} es la plantilla inmutable, de solo lectura, que contiene PostgreSQL ya instalado y configurado (se descarga del registro público \textbf{Docker Hub}); el \textbf{contenedor} es una instancia viva creada a partir de esa imagen. De una misma imagen pueden crearse tantos contenedores como se desee.
+
+¿Por qué usar Docker aquí en lugar de instalar PostgreSQL directamente en Windows o Linux?
+
+\begin{enumerate}
+  \item \textbf{Entorno idéntico para los 3--4 integrantes del equipo:} todos ejecutan exactamente la misma versión de PostgreSQL con la misma configuración, sin importar su sistema operativo. Desaparece el clásico ``en mi máquina sí funciona''.
+  \item \textbf{Sin instalación ni contaminación del sistema:} no se toca el registro de Windows ni los servicios del sistema; eliminar el contenedor deja la computadora exactamente como estaba.
+  \item \textbf{Arranque y reinicio reproducibles:} el archivo \texttt{docker-compose.yml} versionado en Git \textbf{es} la documentación ejecutable del entorno; cualquier integrante clona el repositorio y levanta la base con un solo comando.
+  \item \textbf{Continuidad con el PFC:} en la Entrega 2 (GA-SUM-02) el equipo contenerizará también los microservicios con Dockerfile y los orquestará con este mismo Docker Compose; lo aprendido aquí se reutiliza íntegro.
+\end{enumerate}
+
+\begin{table}[h!]
+\centering
+\caption{Conceptos fundamentales de Docker y su materialización en este proyecto}
+\small
+\begin{tabular}{l p{6.4cm} p{5.2cm}}
+\toprule
+\textbf{Concepto} & \textbf{Definición} & \textbf{En este proyecto} \\
+\midrule
+Imagen & Plantilla inmutable con la aplicación y sus dependencias & \texttt{postgres:18-alpine} \\
+Contenedor & Instancia en ejecución de una imagen, aislada del anfitrión & \texttt{bibliotech-db} \\
+Registro & Repositorio remoto de imágenes & Docker Hub (descarga automática) \\
+Puerto publicado & Túnel que conecta un puerto de la PC con uno del contenedor & \texttt{5432:5432} \\
+Bind mount & Monta un archivo/carpeta de la PC dentro del contenedor & \texttt{./init.sql} \\
+Volumen nombrado & Almacenamiento persistente administrado por Docker & \texttt{datos-pg} \\
+Docker Compose & Herramienta que define y levanta servicios desde un YAML & \texttt{docker-compose.yml} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Requisito previo:} tener instalado Docker Desktop 4.x (Windows/macOS) o Docker Engine con el plugin Compose (Linux). Verificar la instalación:
+
+\begin{lstlisting}[language=bash,numbers=none]
+docker --version          # muestra la version del motor Docker instalado
+docker compose version    # confirma que el plugin Compose esta disponible
+docker run hello-world    # descarga y ejecuta una imagen de prueba minima:
+                          # si imprime un saludo, Docker funciona correctamente
+\end{lstlisting}
+
+\subsubsection{El archivo \texttt{docker-compose.yml} explicado línea por línea}
+
+Docker Compose lee este archivo YAML (sangría de 2 espacios, obligatoria) y a partir de él descarga la imagen, crea el contenedor, publica el puerto y monta los volúmenes. Crear el archivo en la \textbf{raíz del proyecto} con este contenido; cada línea está comentada:
+
+\begin{lstlisting}[language=yaml,caption={\texttt{docker-compose.yml} --- comentado línea por línea}]
+services:                       # Seccion raiz: lista de contenedores (servicios)
+                                # que componen el sistema; aqui solo uno.
+
+  db:                           # Nombre logico del servicio dentro de Compose.
+                                # Otros contenedores de la misma red lo
+                                # alcanzarian usando "db" como nombre de host.
+
+    image: postgres:18-alpine   # Imagen a usar: repositorio "postgres",
+                                # etiqueta "18-alpine" = PostgreSQL version 18
+                                # sobre Alpine Linux (variante minima, ~90 MB).
+                                # Si no existe en la PC, Docker la descarga
+                                # automaticamente desde Docker Hub.
+
+    container_name: bibliotech-db   # Nombre fijo del contenedor, usado en
+                                    # comandos como "docker exec bibliotech-db".
+                                    # Sin esta linea, Compose generaria un
+                                    # nombre automatico (p. ej. tl03-db-1).
+
+    environment:                # Variables de entorno que la imagen oficial
+                                # de PostgreSQL lee en su PRIMER arranque
+                                # para autoconfigurarse:
+      POSTGRES_DB: bibliotech   # crea automaticamente la base "bibliotech"
+      POSTGRES_USER: biblio     # crea el usuario administrador "biblio"
+      POSTGRES_PASSWORD: biblio123  # contrasena de ese usuario (obligatoria;
+                                    # sin ella el contenedor se niega a arrancar)
+
+    ports:                      # Publicacion de puertos, formato "PC:contenedor"
+      - "5432:5432"             # Conecta el puerto 5432 de la computadora con
+                                # el 5432 interno donde escucha PostgreSQL.
+                                # Gracias a esto, Spring Boot (que corre FUERA
+                                # del contenedor) se conecta via
+                                # jdbc:postgresql://localhost:5432/bibliotech
+
+    volumes:                    # Montajes de almacenamiento del contenedor:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+                                # BIND MOUNT: monta el archivo local ./init.sql
+                                # dentro del contenedor, en la carpeta especial
+                                # /docker-entrypoint-initdb.d/. Todo script .sql
+                                # colocado alli se ejecuta automaticamente en el
+                                # primer arranque (ver mecanismo mas abajo).
+      - datos-pg:/var/lib/postgresql/data
+                                # VOLUMEN NOMBRADO: /var/lib/postgresql/data es
+                                # el directorio donde PostgreSQL escribe los
+                                # datos reales (tablas, indices, WAL). Al
+                                # montarlo en el volumen "datos-pg", los datos
+                                # SOBREVIVEN aunque el contenedor se detenga,
+                                # se elimine o se recree.
+
+volumes:                        # Declaracion de los volumenes nombrados
+  datos-pg:                     # Docker crea y administra este volumen en su
+                                # area interna; se borra solo con "down -v".
+\end{lstlisting}
+
+\subsubsection{El mecanismo \texttt{docker-entrypoint-initdb.d}: cómo entran los datos iniciales}
+
+La imagen oficial de PostgreSQL incluye un guion de arranque (\textit{entrypoint}) que, \textbf{solo cuando el volumen de datos está vacío} (es decir, en el primer arranque del servicio), ejecuta en orden alfabético todos los archivos \texttt{.sql} y \texttt{.sh} que encuentre en la carpeta \texttt{/docker-entrypoint-initdb.d/}. Como el bind mount colocó allí nuestro \texttt{init.sql}, ese script crea el esquema (tablas \texttt{usuarios}, \texttt{socios}, \texttt{libros}, \texttt{prestamos}) e inserta los datos semilla \textbf{sin intervención manual}. En arranques posteriores, el volumen ya contiene datos y el script \textbf{se ignora por completo}: por eso editar \texttt{init.sql} no surte efecto hasta destruir el volumen (ver ciclo de vida más abajo).
+
+El contenido de \texttt{init.sql} es el siguiente:
+
+\begin{lstlisting}[language=sql,caption={\texttt{init.sql} --- esquema y datos semilla (aqui se guardan los datos)}]
+-- ============ ESQUEMA ============
+CREATE TABLE usuarios (
+  id            BIGSERIAL PRIMARY KEY,
+  email         VARCHAR(120) NOT NULL UNIQUE,
+  password_hash VARCHAR(72)  NOT NULL,        -- hash BCrypt, nunca texto plano
+  nombre        VARCHAR(120) NOT NULL
+);
+
+CREATE TABLE socios (
+  id     BIGSERIAL PRIMARY KEY,
+  nombre VARCHAR(120) NOT NULL,
+  email  VARCHAR(120) NOT NULL UNIQUE
+);
+
+CREATE TABLE libros (
+  id                     BIGSERIAL PRIMARY KEY,
+  titulo                 VARCHAR(200) NOT NULL,
+  autor                  VARCHAR(120) NOT NULL,
+  isbn                   VARCHAR(17)  NOT NULL UNIQUE,
+  categoria              VARCHAR(80)  NOT NULL,
+  ejemplares_disponibles INTEGER      NOT NULL CHECK (ejemplares_disponibles >= 0)
+);
+
+CREATE TABLE prestamos (
+  id             BIGSERIAL PRIMARY KEY,
+  libro_id       BIGINT NOT NULL REFERENCES libros(id),
+  socio_id       BIGINT NOT NULL REFERENCES socios(id),
+  fecha_prestamo DATE   NOT NULL DEFAULT CURRENT_DATE,
+  fecha_limite   DATE   NOT NULL,
+  estado         VARCHAR(10) NOT NULL DEFAULT 'ACTIVO'
+                 CHECK (estado IN ('ACTIVO','DEVUELTO','VENCIDO'))
+);
+
+-- ============ DATOS SEMILLA ============
+-- Password del usuario demo: Secreto123!  (hash BCrypt real, costo 10)
+INSERT INTO usuarios (email, password_hash, nombre) VALUES
+('maria.perez@uteq.edu.ec',
+ '$2b$10$v3o52i/.9U8c9MPgcyRyMOFmTEjR43AeoWzbvgOvLAIdMO6Z5oTWq',
+ 'Maria Perez');
+
+INSERT INTO socios (nombre, email) VALUES
+('Carlos Vera',  'carlos.vera@uteq.edu.ec'),
+('Ana Sanchez',  'ana.sanchez@uteq.edu.ec');
+
+INSERT INTO libros (titulo, autor, isbn, categoria, ejemplares_disponibles) VALUES
+('Building Microservices',          'Sam Newman',     '978-1-4920-3402-5', 'Ingenieria de Software', 4),
+('Patterns of Distributed Systems', 'Unmesh Joshi',   '978-0-13-822198-0', 'Sistemas Distribuidos',  2),
+('Designing Data-Intensive Applications', 'Martin Kleppmann', '978-1-449-37332-0', 'Bases de Datos', 3);
+\end{lstlisting}
+
+\subsubsection{Comandos Docker: arrancar, inspeccionar, entrar y destruir}
+
+Con los dos archivos creados, el ciclo completo de operación de la base de datos se maneja con los siguientes comandos, ejecutados desde la raíz del proyecto (donde está \texttt{docker-compose.yml}); cada línea está comentada:
+
+\begin{lstlisting}[language=bash,numbers=none,caption={Comandos de operación del contenedor, comentados}]
+docker compose up -d db
+   # "up": descarga la imagen si falta, crea el contenedor, monta
+   #       volumenes, publica puertos y lo inicia.
+   # "-d": modo "detached" (segundo plano); la terminal queda libre.
+   # "db": nombre del servicio definido en docker-compose.yml.
+
+docker compose ps
+   # Lista los servicios de ESTE compose con su estado.
+   # Debe mostrar bibliotech-db con STATUS "Up" y el puerto 5432->5432.
+
+docker compose logs -f db
+   # Muestra la salida interna del contenedor (consola de PostgreSQL).
+   # "-f" (follow) la transmite en vivo; se sale con Ctrl+C (el
+   # contenedor NO se detiene, solo se deja de mirar).
+   # En el primer arranque debe verse la ejecucion de init.sql y al
+   # final: "database system is ready to accept connections".
+
+docker exec -it bibliotech-db psql -U biblio -d bibliotech
+   # "exec": ejecuta un comando ADENTRO de un contenedor ya corriendo.
+   # "-i" mantiene la entrada abierta y "-t" asigna una terminal:
+   #      juntas permiten una sesion interactiva.
+   # "bibliotech-db": nombre del contenedor (container_name).
+   # "psql -U biblio -d bibliotech": cliente de PostgreSQL, conectado
+   #      como usuario "biblio" a la base "bibliotech".
+   # Adentro, probar:  \dt              (listar tablas)
+   #                   SELECT * FROM libros;
+   #                   \q               (salir)
+
+docker compose stop db
+   # Detiene el contenedor SIN eliminarlo (como apagar el servidor).
+   # Se reanuda con "docker compose start db".
+
+docker compose down
+   # Detiene Y ELIMINA el contenedor y la red creada por Compose.
+   # El volumen "datos-pg" se conserva: los datos NO se pierden;
+   # el proximo "up -d" recrea el contenedor sobre los mismos datos.
+
+docker compose down -v
+   # Igual que down, pero ademas BORRA los volumenes ("-v").
+   # Es el "reinicio de fabrica": la proxima vez que se levante el
+   # servicio, el volumen estara vacio y init.sql se ejecutara de nuevo.
+\end{lstlisting}
+
+\begin{cajanota}[Ciclo de vida de los datos: la duda más frecuente]
+Los datos viven en el \textbf{volumen} \texttt{datos-pg}, no en el contenedor. Por eso: (a)~detener o eliminar el contenedor (\texttt{stop}, \texttt{down}) \textbf{no} borra los datos; (b)~\texttt{init.sql} se ejecuta \textbf{una sola vez en la vida del volumen}, así que si el equipo modifica ese script (por ejemplo, para añadir más libros semilla) debe ejecutar \texttt{docker compose down -v} y luego \texttt{docker compose up -d db} para que el cambio se aplique; y (c)~los registros creados después por la API (\texttt{INSERT} vía \texttt{POST /libros}) persisten en el volumen entre reinicios, que es exactamente el comportamiento esperado de una base de datos real.
+\end{cajanota}
+
+\begin{cajaalerta}[Seguridad de credenciales]
+Las contraseñas de los usuarios \textbf{jamás se guardan en texto plano}: la columna \texttt{password\_hash} almacena un hash \textbf{BCrypt} (irreversible, con sal aleatoria). En el repositorio del PFC, las credenciales de la base de datos deben ir en un \texttt{.env} excluido por \texttt{.gitignore}, publicando solo un \texttt{.env.example} sin valores reales.
+\end{cajaalerta}
+
+\subsection{Creación del proyecto Spring Boot}
+
+\begin{cajapaso}[Generación del esqueleto]
+\begin{enumerate}
+  \item Abrir \url{https://start.spring.io} y configurar: \textbf{Maven}, \textbf{Java 25}, Spring Boot \textbf{4.0.x} (última estable), Group \texttt{com.uteq}, Artifact \texttt{bibliotech}, empaquetado \textbf{Jar}.
+  \item Dependencias: \textbf{Spring Web} (en Boot 4 genera el starter \texttt{spring-boot-starter-webmvc}), \textbf{Spring Data JPA}, \textbf{PostgreSQL Driver}, \textbf{Spring Security}, \textbf{Validation} y \textbf{Lombok}.
+  \item Generar, descomprimir y abrir en IntelliJ IDEA 2025.x. Verificar que \textbf{Annotation Processing} esté habilitado (Settings $\rightarrow$ Build $\rightarrow$ Compiler $\rightarrow$ Annotation Processors $\rightarrow$ Enable), requisito para que Lombok genere el código en la compilación.
+  \item Añadir manualmente al \texttt{pom.xml} la biblioteca \textbf{JJWT} (creación y validación de JWT), que no está en el Initializr.
+\end{enumerate}
+\end{cajapaso}
+
+\begin{lstlisting}[language=xml,caption={\texttt{pom.xml} --- propiedades, dependencias y compilador (Java 25 + Boot 4.0.x)}]
+<parent>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-parent</artifactId>
+  <version>4.0.6</version>
+  <relativePath/>
+</parent>
+
+<properties>
+  <java.version>25</java.version>
+</properties>
+
+<dependencies>
+  <!-- En Spring Boot 4, el starter web MVC se llama webmvc -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webmvc</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <scope>runtime</scope>
+  </dependency>
+  <!-- Lombok: version gestionada por el parent (>= 1.18.42 para JDK 25) -->
+  <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <optional>true</optional>
+  </dependency>
+  <!-- JJWT: emision y verificacion de tokens JWT -->
+  <dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-api</artifactId>
+    <version>0.13.0</version>
+  </dependency>
+  <dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-impl</artifactId>
+    <version>0.13.0</version>
+    <scope>runtime</scope>
+  </dependency>
+  <dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-jackson</artifactId>
+    <version>0.13.0</version>
+    <scope>runtime</scope>
+  </dependency>
+</dependencies>
+
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-maven-plugin</artifactId>
+      <configuration>
+        <excludes>
+          <exclude>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+          </exclude>
+        </excludes>
+      </configuration>
+    </plugin>
+    <!-- Desde JDK 23 el compilador desactiva por defecto los procesadores
+         de anotaciones (-proc:none); hay que declarar Lombok explicitamente -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <configuration>
+        <annotationProcessorPaths>
+          <path>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+          </path>
+        </annotationProcessorPaths>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+\end{lstlisting}
+
+\subsection{Configuración de la aplicación}
+
+\begin{lstlisting}[language=yaml,caption={\texttt{src/main/resources/application.yml} --- conexion a PostgreSQL y parametros JWT}]
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bibliotech
+    username: biblio
+    password: biblio123
+  jpa:
+    hibernate:
+      ddl-auto: validate   # el esquema lo creo init.sql; Hibernate solo valida
+    open-in-view: false
+
+bibliotech:
+  jwt:
+    # HS256 exige una clave de al menos 32 bytes. En produccion: variable de entorno.
+    secreto: CambiarEsteSecretoEnProduccion-UTEQ-AD-2026-Minimo32Bytes!!
+    expiracion-segundos: 3600
+\end{lstlisting}
+
+\subsection{Lombok: eliminación del código repetitivo}
+
+Antes de escribir las clases Java conviene entender \textbf{Lombok}, biblioteca que se usará en todo el código siguiente. Lombok es un \textbf{procesador de anotaciones}: actúa durante la compilación, leyendo anotaciones como \texttt{@Getter} y \textbf{generando dentro del bytecode} el código repetitivo (\textit{boilerplate}) que de otro modo habría que escribir a mano. Sus ventajas principales:
+
+\begin{enumerate}
+  \item \textbf{Menos código repetitivo.} Getters, setters, constructores, \texttt{equals()}, \texttt{hashCode()} y \texttt{toString()} se generan automáticamente; la entidad \texttt{Libro}, por ejemplo, pasa de unas 45 líneas a unas 25 sin perder ninguna funcionalidad.
+  \item \textbf{Cero costo en tiempo de ejecución.} Todo ocurre al compilar: el \texttt{.class} resultante es idéntico al que se obtendría escribiendo el código a mano; no hay reflexión ni proxies en producción.
+  \item \textbf{Mayor legibilidad y mantenibilidad.} La clase muestra solo lo esencial (campos y lógica de negocio); al agregar un campo nuevo no hay que recordar crear su getter ni actualizar constructores.
+  \item \textbf{Menos errores.} Elimina los descuidos típicos del código manual: getters que devuelven el campo equivocado, constructores desactualizados o \texttt{equals()} inconsistentes con \texttt{hashCode()}.
+  \item \textbf{Inyección de dependencias limpia.} \texttt{@RequiredArgsConstructor} genera el constructor con todos los campos \texttt{final}, que es exactamente lo que Spring necesita para la inyección por constructor (la forma recomendada); los controladores quedan sin constructores escritos a mano.
+\end{enumerate}
+
+Las anotaciones que se usarán y su efecto:
+
+\begin{table}[h!]
+\centering
+\caption{Anotaciones Lombok empleadas en el proyecto}
+\small
+\begin{tabular}{l p{9.6cm}}
+\toprule
+\textbf{Anotación} & \textbf{Código que genera} \\
+\midrule
+\texttt{@Getter} & Un getter por campo (a nivel de clase) o para un campo concreto \\
+\texttt{@Setter} & Un setter; aquí se aplica \textbf{solo a campos específicos} que deben mutar \\
+\texttt{@NoArgsConstructor} & Constructor sin argumentos; con \texttt{access = AccessLevel.PROTECTED} satisface el requisito de JPA sin exponerlo públicamente \\
+\texttt{@RequiredArgsConstructor} & Constructor con todos los campos \texttt{final} (inyección por constructor en Spring) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{cajaalerta}[Dos precauciones de uso profesional]
+(1) \textbf{No usar \texttt{@Data} en entidades JPA}: genera \texttt{equals()}, \texttt{hashCode()} y \texttt{toString()} sobre todos los campos, lo que provoca problemas con identidades de entidad, colecciones y relaciones de carga perezosa; en entidades se prefieren \texttt{@Getter}/\texttt{@Setter} granulares, como se hace aquí. (2) Los \textbf{\texttt{record} de Java no necesitan Lombok}: el propio lenguaje ya genera constructor, accesores, \texttt{equals()}, \texttt{hashCode()} y \texttt{toString()}; por eso los DTO de este proyecto siguen siendo records sin anotaciones Lombok.
+\end{cajaalerta}
+
+\subsection{Capa de persistencia: entidades y repositorios JPA}
+
+Cada tabla de \texttt{init.sql} se refleja en una \textbf{entidad} Java; los \textbf{repositorios} heredan de \texttt{JpaRepository} y obtienen gratis las operaciones CRUD (crear, leer, actualizar, eliminar) y la paginación.
+
+\begin{lstlisting}[language=java,caption={\texttt{model/Libro.java} --- entidad mapeada a la tabla \texttt{libros} (con Lombok)}]
+package com.uteq.bibliotech.model;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "libros")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)   // constructor vacio para JPA
+public class Libro {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 200)
+    private String titulo;
+
+    @Column(nullable = false, length = 120)
+    private String autor;
+
+    @Column(nullable = false, unique = true, length = 17)
+    private String isbn;
+
+    @Column(nullable = false, length = 80)
+    private String categoria;
+
+    @Setter   // unico campo que muta tras la creacion (prestamos/devoluciones)
+    @Column(name = "ejemplares_disponibles", nullable = false)
+    private Integer ejemplaresDisponibles;
+
+    public Libro(String titulo, String autor, String isbn,
+                 String categoria, Integer ejemplaresDisponibles) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.categoria = categoria;
+        this.ejemplaresDisponibles = ejemplaresDisponibles;
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=java,caption={\texttt{model/Prestamo.java}, \texttt{model/Socio.java} y \texttt{model/Usuario.java} (con Lombok)}]
+// ===== archivo: model/EstadoPrestamo.java =====
+package com.uteq.bibliotech.model;
+
+public enum EstadoPrestamo { ACTIVO, DEVUELTO, VENCIDO }
+
+// ===== archivo: model/Prestamo.java =====
+package com.uteq.bibliotech.model;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "prestamos")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Prestamo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "libro_id", nullable = false)
+    private Long libroId;
+
+    @Column(name = "socio_id", nullable = false)
+    private Long socioId;
+
+    @Column(name = "fecha_prestamo", nullable = false)
+    private LocalDate fechaPrestamo;
+
+    @Column(name = "fecha_limite", nullable = false)
+    private LocalDate fechaLimite;
+
+    @Setter   // unico campo mutable: ACTIVO -> DEVUELTO
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private EstadoPrestamo estado;
+
+    public Prestamo(Long libroId, Long socioId, LocalDate fechaLimite) {
+        this.libroId = libroId;
+        this.socioId = socioId;
+        this.fechaPrestamo = LocalDate.now();
+        this.fechaLimite = fechaLimite;
+        this.estado = EstadoPrestamo.ACTIVO;
+    }
+}
+
+// ===== archivo: model/Socio.java =====
+package com.uteq.bibliotech.model;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "socios")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Socio {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 120)
+    private String nombre;
+
+    @Column(nullable = false, unique = true, length = 120)
+    private String email;
+}
+
+// ===== archivo: model/Usuario.java =====
+package com.uteq.bibliotech.model;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "usuarios")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true, length = 120)
+    private String email;
+
+    @Column(name = "password_hash", nullable = false, length = 72)
+    private String passwordHash;
+
+    @Column(nullable = false, length = 120)
+    private String nombre;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=java,caption={\texttt{repository/} --- repositorios JPA (de aqui ``se extraen'' los datos)}]
+// ===== archivo: repository/LibroRepository.java =====
+package com.uteq.bibliotech.repository;
+
+import com.uteq.bibliotech.model.Libro;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LibroRepository extends JpaRepository<Libro, Long> {
+    Page<Libro> findByCategoriaIgnoreCase(String categoria, Pageable pageable);
+}
+
+// ===== archivo: repository/PrestamoRepository.java =====
+package com.uteq.bibliotech.repository;
+
+import com.uteq.bibliotech.model.Prestamo;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PrestamoRepository extends JpaRepository<Prestamo, Long> { }
+
+// ===== archivo: repository/SocioRepository.java =====
+package com.uteq.bibliotech.repository;
+
+import com.uteq.bibliotech.model.Socio;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SocioRepository extends JpaRepository<Socio, Long> { }
+
+// ===== archivo: repository/UsuarioRepository.java =====
+package com.uteq.bibliotech.repository;
+
+import com.uteq.bibliotech.model.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
+
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+    Optional<Usuario> findByEmail(String email);
+}
+\end{lstlisting}
+
+\subsection{Emisión y validación del token JWT}
+
+Un JWT tiene tres partes codificadas en Base64URL y separadas por puntos: \texttt{header.payload.signature}. El \textit{header} declara el algoritmo (HS256); el \textit{payload} lleva los \textit{claims} (\texttt{sub} = email del usuario, \texttt{iat} = emisión, \texttt{exp} = expiración); la \textit{firma} es un HMAC-SHA256 del header y el payload con la clave secreta del servidor: si alguien altera el contenido, la firma deja de coincidir y el token se rechaza. Esto hace posible la restricción \textbf{stateless}: el servidor no guarda sesiones porque toda la identidad viaja firmada en cada petición.
+
+\begin{lstlisting}[language=java,caption={\texttt{security/JwtService.java} --- crea y valida el token (aqui ``nace'' el JWT)}]
+package com.uteq.bibliotech.security;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+
+@Service
+public class JwtService {
+
+    private final SecretKey clave;
+
+    @Getter   // lo consultara AuthController para armar la respuesta
+    private final long expiracionSegundos;
+
+    public JwtService(
+            @Value("${bibliotech.jwt.secreto}") String secreto,
+            @Value("${bibliotech.jwt.expiracion-segundos}") long expiracionSegundos) {
+        this.clave = Keys.hmacShaKeyFor(secreto.getBytes(StandardCharsets.UTF_8));
+        this.expiracionSegundos = expiracionSegundos;
+    }
+
+    /** Emite un JWT firmado HS256 con expiracion configurada. */
+    public String generarToken(String email) {
+        Date ahora = new Date();
+        Date expira = new Date(ahora.getTime() + expiracionSegundos * 1000);
+        return Jwts.builder()
+                .subject(email)      // claim "sub"
+                .issuedAt(ahora)     // claim "iat"
+                .expiration(expira)  // claim "exp"
+                .signWith(clave)     // firma HMAC-SHA256
+                .compact();
+    }
+
+    /** Verifica firma y expiracion; retorna el email (claim sub).
+        Lanza io.jsonwebtoken.JwtException si el token es invalido. */
+    public String validarYExtraerEmail(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(clave)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.getSubject();
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=java,caption={\texttt{security/JwtAuthFilter.java} y \texttt{security/SecurityConfig.java}}]
+// ===== archivo: security/JwtAuthFilter.java =====
+package com.uteq.bibliotech.security;
+
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.List;
+
+@Component
+@RequiredArgsConstructor   // genera el constructor con el campo final (inyeccion)
+public class JwtAuthFilter extends OncePerRequestFilter {
+
+    private final JwtService jwtService;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain)
+            throws ServletException, IOException {
+        String header = request.getHeader("Authorization");
+        if (header != null && header.startsWith("Bearer ")) {
+            try {
+                String email = jwtService.validarYExtraerEmail(header.substring(7));
+                var auth = new UsernamePasswordAuthenticationToken(email, null, List.of());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            } catch (JwtException e) {
+                SecurityContextHolder.clearContext(); // token invalido -> respondera 401
+            }
+        }
+        chain.doFilter(request, response);
+    }
+}
+
+// ===== archivo: security/SecurityConfig.java =====
+package com.uteq.bibliotech.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtFilter)
+            throws Exception {
+        return http
+            .csrf(csrf -> csrf.disable())                       // API stateless: sin CSRF
+            .sessionManagement(s ->
+                s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/v1/auth/**").permitAll() // login es publico
+                .anyRequest().authenticated())                  // todo lo demas exige JWT
+            .exceptionHandling(e -> e.authenticationEntryPoint(
+                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))  // 401 sin token
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+\end{lstlisting}
+
+\subsection{DTO, controladores REST y manejo uniforme de errores}
+
+Los \textbf{DTO} (objetos de transferencia de datos, aquí \texttt{record} de Java 25) definen exactamente lo que entra y sale por la API --- son la contraparte en código de los \texttt{components/schemas} del contrato OpenAPI. Nótese que los records \textbf{no llevan anotaciones Lombok}: el lenguaje ya les genera constructor, accesores, \texttt{equals()}, \texttt{hashCode()} y \texttt{toString()}.
+
+\begin{lstlisting}[language=java,caption={\texttt{dto/} --- records de entrada/salida (espejo de components/schemas)}]
+// ===== archivo: dto/LoginRequest.java =====
+package com.uteq.bibliotech.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public record LoginRequest(
+        @NotBlank @Email String email,
+        @NotBlank @Size(min = 8) String password) { }
+
+// ===== archivo: dto/TokenResponse.java =====
+package com.uteq.bibliotech.dto;
+
+public record TokenResponse(String token, String tipo, long expiraEn) { }
+
+// ===== archivo: dto/LibroInput.java =====
+package com.uteq.bibliotech.dto;
+
+import jakarta.validation.constraints.*;
+
+public record LibroInput(
+        @NotBlank String titulo,
+        @NotBlank String autor,
+        @NotBlank @Pattern(regexp = "^[0-9-]{10,17}$") String isbn,
+        @NotBlank String categoria,
+        @NotNull @Min(0) Integer ejemplaresDisponibles) { }
+
+// ===== archivo: dto/PrestamoInput.java =====
+package com.uteq.bibliotech.dto;
+
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
+
+public record PrestamoInput(
+        @NotNull Long libroId,
+        @NotNull Long socioId,
+        @NotNull @Future LocalDate fechaLimite) { }
+
+// ===== archivo: dto/PaginaResponse.java =====
+package com.uteq.bibliotech.dto;
+
+import java.util.List;
+
+public record PaginaResponse<T>(
+        List<T> contenido, int pagina, int totalPaginas, long totalElementos) { }
+
+// ===== archivo: dto/ApiError.java =====
+package com.uteq.bibliotech.dto;
+
+public record ApiError(
+        int status, String error, String message,
+        String timestamp, String path) { }
+\end{lstlisting}
+
+\begin{lstlisting}[language=java,caption={\texttt{controller/AuthController.java} --- POST /auth/login emite el JWT (con Lombok)}]
+package com.uteq.bibliotech.controller;
+
+import com.uteq.bibliotech.dto.LoginRequest;
+import com.uteq.bibliotech.dto.TokenResponse;
+import com.uteq.bibliotech.model.Usuario;
+import com.uteq.bibliotech.repository.UsuarioRepository;
+import com.uteq.bibliotech.security.JwtService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor   // constructor con los tres campos final
+public class AuthController {
+
+    private final UsuarioRepository usuarios;
+    private final PasswordEncoder encoder;
+    private final JwtService jwtService;
+
+    @PostMapping("/login")
+    public TokenResponse login(@Valid @RequestBody LoginRequest req) {
+        Usuario u = usuarios.findByEmail(req.email())
+                .orElseThrow(() -> new BadCredentialsException("Credenciales invalidas"));
+        if (!encoder.matches(req.password(), u.getPasswordHash())) {
+            throw new BadCredentialsException("Credenciales invalidas");
+        }
+        return new TokenResponse(jwtService.generarToken(u.getEmail()),
+                                 "Bearer", jwtService.getExpiracionSegundos());
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=java,caption={\texttt{controller/LibroController.java} y \texttt{controller/PrestamoController.java}}]
+// ===== archivo: controller/RecursoNoEncontradoException.java =====
+package com.uteq.bibliotech.controller;
+
+public class RecursoNoEncontradoException extends RuntimeException {
+    public RecursoNoEncontradoException(String mensaje) { super(mensaje); }
+}
+
+// ===== archivo: controller/ReglaNegocioException.java =====
+package com.uteq.bibliotech.controller;
+
+public class ReglaNegocioException extends RuntimeException {
+    public ReglaNegocioException(String mensaje) { super(mensaje); }
+}
+
+// ===== archivo: controller/LibroController.java =====
+package com.uteq.bibliotech.controller;
+
+import com.uteq.bibliotech.dto.LibroInput;
+import com.uteq.bibliotech.dto.PaginaResponse;
+import com.uteq.bibliotech.model.Libro;
+import com.uteq.bibliotech.repository.LibroRepository;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.net.URI;
+
+@RestController
+@RequestMapping("/api/v1/libros")
+@RequiredArgsConstructor
+public class LibroController {
+
+    private final LibroRepository libros;
+
+    @GetMapping
+    public PaginaResponse<Libro> listar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String categoria) {
+        Page<Libro> pagina = (categoria == null)
+                ? libros.findAll(PageRequest.of(page, size))
+                : libros.findByCategoriaIgnoreCase(categoria, PageRequest.of(page, size));
+        return new PaginaResponse<>(pagina.getContent(), pagina.getNumber(),
+                pagina.getTotalPages(), pagina.getTotalElements());
+    }
+
+    @GetMapping("/{libroId}")
+    public Libro obtener(@PathVariable Long libroId) {
+        return libros.findById(libroId).orElseThrow(() ->
+            new RecursoNoEncontradoException("El libro con id " + libroId + " no existe"));
+    }
+
+    @PostMapping
+    public ResponseEntity<Libro> crear(@Valid @RequestBody LibroInput in) {
+        Libro guardado = libros.save(new Libro(in.titulo(), in.autor(),
+                in.isbn(), in.categoria(), in.ejemplaresDisponibles()));
+        return ResponseEntity
+                .created(URI.create("/api/v1/libros/" + guardado.getId()))  // 201 + Location
+                .body(guardado);
+    }
+
+    @DeleteMapping("/{libroId}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long libroId) {
+        if (!libros.existsById(libroId)) {
+            throw new RecursoNoEncontradoException("El libro con id " + libroId + " no existe");
+        }
+        libros.deleteById(libroId);
+        return ResponseEntity.noContent().build();   // 204
+    }
+}
+
+// ===== archivo: controller/PrestamoController.java =====
+package com.uteq.bibliotech.controller;
+
+import com.uteq.bibliotech.dto.PrestamoInput;
+import com.uteq.bibliotech.model.*;
+import com.uteq.bibliotech.repository.*;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import java.net.URI;
+
+@RestController
+@RequestMapping("/api/v1/prestamos")
+@RequiredArgsConstructor
+public class PrestamoController {
+
+    private final PrestamoRepository prestamos;
+    private final LibroRepository libros;
+    private final SocioRepository socios;
+
+    @PostMapping
+    @Transactional
+    public ResponseEntity<Prestamo> crear(@Valid @RequestBody PrestamoInput in) {
+        Libro libro = libros.findById(in.libroId()).orElseThrow(() ->
+            new RecursoNoEncontradoException("El libro con id " + in.libroId() + " no existe"));
+        if (!socios.existsById(in.socioId())) {
+            throw new RecursoNoEncontradoException("El socio con id " + in.socioId() + " no existe");
+        }
+        if (libro.getEjemplaresDisponibles() <= 0) {
+            throw new ReglaNegocioException("No hay ejemplares disponibles del libro " + libro.getId());
+        }
+        libro.setEjemplaresDisponibles(libro.getEjemplaresDisponibles() - 1);
+        libros.save(libro);                                  // UPDATE libros ...
+        Prestamo p = prestamos.save(new Prestamo(in.libroId(), in.socioId(), in.fechaLimite()));
+        return ResponseEntity.created(URI.create("/api/v1/prestamos/" + p.getId())).body(p);
+    }
+
+    @PatchMapping("/{prestamoId}/devolucion")
+    @Transactional
+    public Prestamo devolver(@PathVariable Long prestamoId) {
+        Prestamo p = prestamos.findById(prestamoId).orElseThrow(() ->
+            new RecursoNoEncontradoException("El prestamo con id " + prestamoId + " no existe"));
+        if (p.getEstado() == EstadoPrestamo.DEVUELTO) {
+            throw new ReglaNegocioException("El prestamo " + prestamoId + " ya fue devuelto");
+        }
+        p.setEstado(EstadoPrestamo.DEVUELTO);
+        libros.findById(p.getLibroId()).ifPresent(l -> {
+            l.setEjemplaresDisponibles(l.getEjemplaresDisponibles() + 1);
+            libros.save(l);
+        });
+        return prestamos.save(p);                            // UPDATE prestamos SET estado...
+    }
+}
+\end{lstlisting}
+
+El manejador global garantiza que \textbf{todos} los errores salgan con el mismo esquema \texttt{Error} declarado en el contrato OpenAPI:
+
+\begin{lstlisting}[language=java,caption={\texttt{controller/GlobalExceptionHandler.java} --- errores con el esquema uniforme del contrato}]
+package com.uteq.bibliotech.controller;
+
+import com.uteq.bibliotech.dto.ApiError;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import java.time.Instant;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    private ResponseEntity<ApiError> construir(HttpStatus status, String mensaje,
+                                               HttpServletRequest req) {
+        return ResponseEntity.status(status).body(new ApiError(
+                status.value(), status.getReasonPhrase(), mensaje,
+                Instant.now().toString(), req.getRequestURI()));
+    }
+
+    @ExceptionHandler(RecursoNoEncontradoException.class)        // 404
+    public ResponseEntity<ApiError> noEncontrado(RecursoNoEncontradoException e,
+                                                 HttpServletRequest req) {
+        return construir(HttpStatus.NOT_FOUND, e.getMessage(), req);
+    }
+
+    @ExceptionHandler({ReglaNegocioException.class,
+                       MethodArgumentNotValidException.class})   // 400
+    public ResponseEntity<ApiError> solicitudInvalida(Exception e,
+                                                      HttpServletRequest req) {
+        return construir(HttpStatus.BAD_REQUEST, e.getMessage(), req);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)             // 401
+    public ResponseEntity<ApiError> credenciales(BadCredentialsException e,
+                                                 HttpServletRequest req) {
+        return construir(HttpStatus.UNAUTHORIZED, e.getMessage(), req);
+    }
+
+    @ExceptionHandler(Exception.class)                           // 500
+    public ResponseEntity<ApiError> interno(Exception e, HttpServletRequest req) {
+        return construir(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Error interno del servidor", req);
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=java,caption={\texttt{BibliotechApplication.java} --- clase principal con main() completo}]
+package com.uteq.bibliotech;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BibliotechApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(BibliotechApplication.class, args);
+    }
+}
+\end{lstlisting}
+
+\subsection{Tabla de clases por paquete}
+
+\begin{table}[h!]
+\centering
+\caption{Atribución de clases a paquetes del proyecto \texttt{com.uteq.bibliotech}}
+\small
+\begin{tabular}{l l p{7.0cm}}
+\toprule
+\textbf{Paquete} & \textbf{Clase / Interfaz} & \textbf{Responsabilidad} \\
+\midrule
+\texttt{(raíz)} & \texttt{BibliotechApplication} & Punto de entrada (\texttt{main}) \\
+\texttt{model} & \texttt{Libro}, \texttt{Prestamo}, \texttt{Socio}, \texttt{Usuario}, \texttt{EstadoPrestamo} & Entidades JPA mapeadas a las tablas de PostgreSQL \\
+\texttt{repository} & \texttt{LibroRepository}, \texttt{PrestamoRepository}, \texttt{SocioRepository}, \texttt{UsuarioRepository} & Acceso a datos (CRUD y paginación vía Spring Data JPA) \\
+\texttt{security} & \texttt{JwtService}, \texttt{JwtAuthFilter}, \texttt{SecurityConfig} & Emisión/validación del JWT, filtro por petición y política stateless \\
+\texttt{dto} & \texttt{LoginRequest}, \texttt{TokenResponse}, \texttt{LibroInput}, \texttt{PrestamoInput}, \texttt{PaginaResponse}, \texttt{ApiError} & Contratos de entrada/salida (espejo de \texttt{components/schemas}) \\
+\texttt{controller} & \texttt{AuthController}, \texttt{LibroController}, \texttt{PrestamoController}, \texttt{GlobalExceptionHandler}, excepciones propias & Endpoints REST y manejo uniforme de errores \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Compilar, ejecutar y verificar de extremo a extremo}
+
+\begin{cajapaso}[Secuencia de arranque y prueba]
+\begin{lstlisting}[language=bash,numbers=none]
+# 1) Base de datos (crea/arranca el contenedor en segundo plano)
+docker compose up -d db
+
+# 2) Backend (descarga dependencias, compila y arranca en :8080)
+mvn spring-boot:run
+
+# 3) Obtener el JWT (el token "nace" aqui)
+curl -s -X POST http://localhost:8080/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"maria.perez@uteq.edu.ec","password":"Secreto123!"}'
+
+# 4) Consumir un endpoint protegido con el token recibido
+curl -s http://localhost:8080/api/v1/libros \
+  -H "Authorization: Bearer <pegar-token-aqui>"
+
+# 5) Verificar en la base de datos que un POST realmente persiste:
+#    "exec" entra al contenedor en ejecucion; "-c" ejecuta una unica
+#    consulta SQL en psql y devuelve el resultado sin abrir sesion.
+docker exec -it bibliotech-db psql -U biblio -d bibliotech \
+  -c "SELECT id, estado FROM prestamos;"
+\end{lstlisting}
+Con esta infraestructura funcionando, las respuestas que se guardan como ejemplos en la colección Postman del Paso~6 son \textbf{evidencia real} extraída de PostgreSQL, no datos inventados.
+\end{cajapaso}
+
+% =====================================================
+\section{Paso 1 --- Identificar recursos y diseñar las URI}
+% =====================================================
+
+\begin{cajapaso}[Paso 1 --- Del dominio a los recursos]
+\begin{enumerate}
+  \item Listar los \textbf{sustantivos} del dominio: \textit{libro}, \textit{préstamo}, \textit{socio}, \textit{credencial}.
+  \item Convertir cada sustantivo relevante en un \textbf{recurso} identificado por una URI (Identificador Uniforme de Recursos) en \textbf{plural y minúsculas}: \texttt{/libros}, \texttt{/prestamos}.
+  \item Las \textbf{acciones} no van en la URI: las expresa el \textbf{verbo HTTP} (Protocolo de Transferencia de Hipertexto). Está prohibido \texttt{/obtenerLibros} o \texttt{/crearPrestamo}.
+  \item Las relaciones se expresan con \textbf{jerarquía o sub-recursos}: la devolución es un estado del préstamo, por eso se modela como \texttt{PATCH /prestamos/\{prestamoId\}/devolucion}.
+  \item Definir el \textbf{prefijo de versión} del API: \texttt{/api/v1}. Así, un cambio incompatible futuro se publica como \texttt{/api/v2} sin romper clientes existentes.
+\end{enumerate}
+\end{cajapaso}
+
+\begin{table}[h!]
+\centering
+\caption{Decisiones de diseño de URI en BiblioTech (correcto vs. incorrecto)}
+\begin{tabular}{p{5.2cm} p{5.2cm} p{4.2cm}}
+\toprule
+\textbf{Incorrecto (estilo RPC)} & \textbf{Correcto (estilo REST)} & \textbf{Justificación} \\
+\midrule
+\texttt{GET /obtenerLibros} & \texttt{GET /libros} & Sustantivo, no verbo \\
+\texttt{POST /libro/crear} & \texttt{POST /libros} & El verbo lo da HTTP \\
+\texttt{GET /libros?id=101} & \texttt{GET /libros/101} & Identidad en la ruta \\
+\texttt{POST /devolverPrestamo} & \texttt{PATCH /prestamos/7001/devolucion} & Cambio parcial de estado \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =====================================================
+\section{Paso 2 --- Tabla de endpoints (mínimo 5)}
+% =====================================================
+
+Antes de abrir Swagger Editor, el equipo completa esta tabla de planificación. Es el insumo directo del YAML y de la colección Postman.
+
+\begin{table}[h!]
+\centering
+\caption{Endpoints del microservicio BiblioTech (7 operaciones sobre 5 rutas)}
+\small
+\begin{tabular}{l l p{4.0cm} p{5.0cm}}
+\toprule
+\textbf{Método} & \textbf{Ruta} & \textbf{Entrada} & \textbf{Respuestas} \\
+\midrule
+POST & \texttt{/auth/login} & Body: email, password & 200 token JWT, 400, 401, 500 \\
+GET & \texttt{/libros} & Query: page, size, categoria & 200 lista paginada, 400, 500 \\
+POST & \texttt{/libros} & Body: LibroInput & 201 Libro, 400, 500 \\
+GET & \texttt{/libros/\{libroId\}} & Path: libroId & 200 Libro, 404, 500 \\
+DELETE & \texttt{/libros/\{libroId\}} & Path: libroId & 204 sin contenido, 404, 500 \\
+POST & \texttt{/prestamos} & Body: PrestamoInput & 201 Prestamo, 400, 404, 500 \\
+PATCH & \texttt{/prestamos/\{id\}/devolucion} & Path: prestamoId & 200 Prestamo, 400, 404, 500 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{cajanota}[Por qué estos códigos]
+\texttt{200} lectura/actualización exitosa; \texttt{201} recurso creado; \texttt{204} eliminado sin cuerpo; \texttt{400} validación fallida; \texttt{401} sin token o token inválido; \texttt{404} el recurso no existe; \texttt{500} fallo interno. La rúbrica exige como mínimo 200, 400, 404 y 500 en cada endpoint; los demás suman precisión semántica.
+\end{cajanota}
+
+% =====================================================
+\section{Paso 3 --- Escribir el contrato OpenAPI 3.0 en Swagger Editor}
+% =====================================================
+
+\begin{cajapaso}[Procedimiento en Swagger Editor]
+\begin{enumerate}
+  \item Abrir \url{https://editor.swagger.io} en el navegador. Borrar el ejemplo \textit{Petstore} precargado (Ctrl+A, Supr).
+  \item Escribir el contrato \textbf{en este orden}: bloque \texttt{info} $\rightarrow$ \texttt{servers} $\rightarrow$ \texttt{security} global $\rightarrow$ \texttt{paths} $\rightarrow$ \texttt{components} (esquemas, respuestas reutilizables y \texttt{securitySchemes}).
+  \item El panel derecho renderiza la documentación en tiempo real; el panel izquierdo marca en rojo cualquier error de sintaxis YAML o de la especificación.
+  \item Definir primero los \textbf{esquemas de datos} en \texttt{components/schemas} y referenciarlos con \texttt{\$ref} (nunca duplicar estructuras en cada endpoint).
+  \item Declarar la autenticación \textbf{Bearer JWT} una sola vez en \texttt{components/securitySchemes} y aplicarla globalmente con el bloque \texttt{security} raíz; el endpoint \texttt{/auth/login} la desactiva localmente con \texttt{security: []}.
+\end{enumerate}
+\end{cajapaso}
+
+El contrato completo y validado del caso BiblioTech es el siguiente (archivo \texttt{openapi.yaml}, adjunto también como archivo independiente):
+
+\lstinputlisting[language=yaml,caption={Contrato OpenAPI 3.0 completo --- BiblioTech API (validado con \texttt{yaml.safe\_load} y Swagger Editor)}]{openapi-bibliotech.yaml}
+
+\begin{cajaalerta}[Errores que más se penalizan en este paso]
+\begin{itemize}
+  \item Sangría YAML inconsistente (mezclar 2 y 4 espacios, o usar tabuladores): el archivo no parsea.
+  \item Tipos incorrectos en los esquemas (por ejemplo, \texttt{id} como \texttt{string} cuando la base de datos usa enteros).
+  \item Omitir las respuestas de error (400, 404, 500) o declararlas sin esquema \texttt{Error}.
+  \item Definir \texttt{bearerAuth} pero no aplicarlo (falta el bloque \texttt{security} raíz).
+  \item Copiar el contrato de otro equipo cambiando solo los nombres: se detecta por estructura idéntica y constituye falta de integridad académica.
+\end{itemize}
+\end{cajaalerta}
+
+% =====================================================
+\section{Paso 4 --- Validar el contrato}
+% =====================================================
+
+\begin{cajapaso}[Lista de validación obligatoria]
+\begin{enumerate}
+  \item En Swagger Editor: el panel izquierdo debe mostrar \textbf{cero errores} (sin marcas rojas) y el derecho debe renderizar las tres etiquetas (\textit{Autenticacion}, \textit{Libros}, \textit{Prestamos}) con el candado de seguridad visible en cada operación protegida.
+  \item Probar el botón \textbf{Try it out} de \texttt{GET /libros}: el editor genera el \texttt{curl} equivalente; verificar que incluye el encabezado \texttt{Authorization}.
+  \item Validación local por línea de comandos (opcional pero recomendada):
+\begin{lstlisting}[language=bash,numbers=none]
+# Validacion sintactica YAML
+python3 -c "import yaml; yaml.safe_load(open('openapi.yaml')); print('YAML valido')"
+
+# Validacion completa contra la especificacion OpenAPI (Node.js)
+npx @redocly/cli lint openapi.yaml
+\end{lstlisting}
+\end{enumerate}
+\end{cajapaso}
+
+% =====================================================
+\section{Paso 5 --- Exportar y subir al repositorio GitHub}
+% =====================================================
+
+\begin{cajapaso}[Exportación y versionado]
+\begin{enumerate}
+  \item En Swagger Editor: menú \textbf{File} $\rightarrow$ \textbf{Save as YAML}. Renombrar el archivo descargado a \texttt{openapi.yaml}.
+  \item Dentro del repositorio del equipo, crear la carpeta exacta \texttt{/docs/api/} y confirmar los cambios:
+\begin{lstlisting}[language=bash,numbers=none]
+cd proyecto-pfc
+mkdir -p docs/api
+mv ~/Descargas/openapi.yaml docs/api/openapi.yaml
+git add docs/api/openapi.yaml
+git commit -m "docs(api): contrato OpenAPI 3.0 del microservicio principal"
+git push origin main
+\end{lstlisting}
+  \item Verificar en el navegador que el archivo es visible en GitHub y que el repositorio es \textbf{público o con acceso concedido al docente}.
+\end{enumerate}
+\end{cajapaso}
+
+\begin{cajaalerta}[Advertencia de evaluación]
+Un repositorio privado o inexistente (error 404) impide verificar la evidencia y se penaliza de forma severa según las reglas del curso. Comprobar el acceso \textbf{desde una ventana de incógnito} antes de la entrega.
+\end{cajaalerta}
+
+% =====================================================
+\section{Paso 6 --- Colección Postman con ejemplos}
+% =====================================================
+
+\begin{cajapaso}[Construcción de la colección]
+\begin{enumerate}
+  \item Abrir Postman $\rightarrow$ \textbf{Import} $\rightarrow$ pestaña \textbf{File} $\rightarrow$ seleccionar \texttt{openapi.yaml}. Postman genera automáticamente una colección con las 7 operaciones organizadas por etiqueta. (Alternativa manual: \textbf{New Collection} y crear cada petición.)
+  \item Crear un \textbf{Environment} llamado \texttt{BiblioTech-Local} con dos variables: \texttt{baseUrl} = \texttt{http://localhost:8080/api/v1} y \texttt{token} (vacía). Todas las URL de la colección deben usar \texttt{\{\{baseUrl\}\}}.
+  \item En la pestaña \textbf{Authorization} de la colección (nivel raíz), seleccionar tipo \textbf{Bearer Token} con valor \texttt{\{\{token\}\}}; cada petición hereda la autenticación (\textit{Inherit auth from parent}). En \texttt{POST /auth/login}, fijar tipo \textbf{No Auth}.
+  \item Automatizar la captura del token con un \textit{script} en la pestaña \textbf{Scripts (Post-response)} de la petición de login:
+\begin{lstlisting}[numbers=none]
+const data = pm.response.json();
+pm.environment.set("token", data.token);
+\end{lstlisting}
+  \item Para cada una de las 7 peticiones, ejecutarla (o simular el cuerpo) y guardar un \textbf{ejemplo}: botón \textbf{Save Response} $\rightarrow$ \textbf{Save as example}. Cada petición debe tener al menos un ejemplo de \textbf{request} con cuerpo JSON realista y un ejemplo de \textbf{response} exitosa; se recomienda añadir además un ejemplo de error (404 o 400).
+\end{enumerate}
+\end{cajapaso}
+
+Ejemplo de cuerpo de petición y de respuesta que deben quedar guardados para \texttt{POST /prestamos}:
+
+\begin{lstlisting}[numbers=none,caption={Ejemplo request (izquierda conceptual) y response 201 (derecha conceptual) de POST /prestamos}]
+// Request body                          // Response 201 Created
+{                                        {
+  "libroId": 101,                          "id": 7001,
+  "socioId": 2045,                         "libroId": 101,
+  "fechaLimite": "2026-06-30"              "socioId": 2045,
+}                                          "fechaPrestamo": "2026-06-16",
+                                           "fechaLimite": "2026-06-30",
+                                           "estado": "ACTIVO"
+                                         }
+\end{lstlisting}
+
+\begin{cajapaso}[Exportar y subir la colección]
+\begin{enumerate}
+  \item Clic derecho sobre la colección $\rightarrow$ \textbf{Export} $\rightarrow$ formato \textbf{Collection v2.1} $\rightarrow$ guardar como \texttt{coleccion-postman.json}.
+  \item Subirla a la misma carpeta del repositorio:
+\begin{lstlisting}[language=bash,numbers=none]
+mv ~/Descargas/coleccion-postman.json docs/api/
+git add docs/api/coleccion-postman.json
+git commit -m "docs(api): coleccion Postman con ejemplos de request/response"
+git push origin main
+\end{lstlisting}
+\end{enumerate}
+\end{cajapaso}
+
+% =====================================================
+\section{Lista de verificación de entrega}
+% =====================================================
+
+\begin{table}[h!]
+\centering
+\caption{Lista de verificación antes de cerrar el taller}
+\small
+\begin{tabular}{p{12.5cm} c}
+\toprule
+\textbf{Requisito verificable} & \textbf{Cumple} \\
+\midrule
+\texttt{info} con título, versión y descripción del API & $\square$ \\
+Mínimo 5 endpoints con método, ruta, parámetros, request body y responses & $\square$ \\
+Respuestas 200, 400, 404 y 500 declaradas con esquema \texttt{Error} & $\square$ \\
+Esquemas en \texttt{components/schemas} con tipos, formatos y \texttt{required} correctos & $\square$ \\
+Esquema de autenticación \texttt{bearerAuth} (HTTP Bearer, formato JWT) aplicado globalmente & $\square$ \\
+Contrato sin errores en Swagger Editor & $\square$ \\
+\texttt{/docs/api/openapi.yaml} visible en GitHub (repositorio accesible) & $\square$ \\
+Colección Postman v2.1 con las operaciones y ejemplos de request/response & $\square$ \\
+\texttt{/docs/api/coleccion-postman.json} visible en GitHub & $\square$ \\
+Declaración de uso de inteligencia artificial generativa incluida en la entrega & $\square$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =====================================================
+\section{Adicional --- De una API REST a una API RESTful, paso a paso}
+% =====================================================
+
+El término \textbf{RESTful} designa una API que \textbf{cumple plenamente} las restricciones del estilo arquitectónico REST definido por Fielding~\cite{fielding2000}, y no solo ``usa HTTP con JSON''. La referencia práctica para medir ese cumplimiento es el \textbf{Modelo de Madurez de Richardson}~\cite{fowler2010}, con cuatro niveles:
+
+\begin{table}[h!]
+\centering
+\caption{Modelo de Madurez de Richardson aplicado a BiblioTech}
+\small
+\begin{tabular}{c p{4.6cm} p{8.2cm}}
+\toprule
+\textbf{Nivel} & \textbf{Nombre} & \textbf{Qué significa en la práctica} \\
+\midrule
+0 & El pantano de POX & Un solo endpoint (p.~ej. \texttt{POST /api}) que recibe ``órdenes'' en el cuerpo. Es RPC sobre HTTP. \\
+1 & Recursos & URI distintas por recurso (\texttt{/libros}, \texttt{/prestamos}), pero todo con POST. \\
+2 & Verbos HTTP + códigos de estado & GET/POST/PUT/PATCH/DELETE con semántica correcta y códigos 2xx/4xx/5xx precisos. \textbf{La mayoría de las API ``REST'' se quedan aquí.} \\
+3 & HATEOAS & Las respuestas incluyen \textbf{hipervínculos} que indican al cliente qué acciones puede hacer a continuación. Solo aquí la API es plenamente RESTful. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A continuación, la \textbf{secuencia de transformación} que el equipo debe aplicar a su API:
+
+\begin{cajapaso}[Transformación 1 --- Recursos con sustantivos (Nivel 0 $\rightarrow$ 1)]
+Eliminar verbos de las URI y modelar cada entidad como recurso plural. Antes: \texttt{POST /api \{accion: "buscarLibro"\}}. Después: \texttt{GET /libros/101}. Verificación: ninguna URI del contrato contiene un verbo.
+\end{cajapaso}
+
+\begin{cajapaso}[Transformación 2 --- Semántica de los verbos HTTP (Nivel 1 $\rightarrow$ 2)]
+Asignar cada operación al verbo correcto respetando dos propiedades formales definidas en la semántica de HTTP~\cite{rfc9110}:
+\begin{itemize}
+  \item \textbf{Seguro} (\textit{safe}): no modifica estado del servidor.
+  \item \textbf{Idempotente}: repetir la misma petición $n$ veces produce el mismo estado que ejecutarla una vez.
+\end{itemize}
+
+\begin{center}
+\small
+\begin{tabular}{l c c p{6.8cm}}
+\toprule
+\textbf{Verbo} & \textbf{Seguro} & \textbf{Idempotente} & \textbf{Uso en BiblioTech} \\
+\midrule
+GET & Sí & Sí & Leer libros y préstamos \\
+POST & No & No & Crear libro, crear préstamo, login \\
+PUT & No & Sí & Reemplazo completo de un libro \\
+PATCH & No & No\textsuperscript{*} & Registrar devolución (cambio parcial) \\
+DELETE & No & Sí & Eliminar libro \\
+\bottomrule
+\end{tabular}
+
+{\scriptsize\textsuperscript{*}PATCH no es idempotente por definición, aunque una implementación concreta puede serlo.}
+\end{center}
+\end{cajapaso}
+
+\begin{cajapaso}[Transformación 3 --- Códigos de estado precisos (consolida el Nivel 2)]
+Prohibido responder \texttt{200 OK} con un mensaje de error en el cuerpo. Cada situación tiene su código: creación $\rightarrow$ 201 con encabezado \texttt{Location: /libros/102}; eliminación $\rightarrow$ 204; validación fallida $\rightarrow$ 400; sin token $\rightarrow$ 401; token válido sin permisos $\rightarrow$ 403; inexistente $\rightarrow$ 404; conflicto de negocio (libro sin ejemplares disponibles) $\rightarrow$ 409; fallo interno $\rightarrow$ 500.
+\end{cajapaso}
+
+\begin{cajapaso}[Transformación 4 --- Comunicación sin estado (restricción \textit{stateless})]
+El servidor \textbf{no guarda sesiones}: cada petición lleva toda la información necesaria para autenticarla y procesarla. En BiblioTech esto se cumple porque el JWT~\cite{rfc7519} viaja en cada petición (\texttt{Authorization: Bearer <token>}) y contiene la identidad y la expiración firmadas; cualquier réplica del microservicio puede atender cualquier petición, lo que habilita el escalado horizontal. Verificación: la API no usa cookies de sesión ni almacenamiento de sesión en el servidor.
+\end{cajapaso}
+
+\begin{cajapaso}[Transformación 5 --- Representaciones y negociación de contenido]
+El recurso es un concepto; lo que viaja es una \textbf{representación} (JSON por defecto). El cliente la negocia con encabezados: \texttt{Accept: application/json} en la petición y \texttt{Content-Type: application/json} en la respuesta. En OpenAPI esto ya quedó declarado en cada bloque \texttt{content}.
+\end{cajapaso}
+
+\begin{cajapaso}[Transformación 6 --- HATEOAS (Nivel 2 $\rightarrow$ 3, plenamente RESTful)]
+HATEOAS (\textit{Hypermedia As The Engine Of Application State}, hipermedios como motor del estado de la aplicación) significa que cada respuesta incluye los \textbf{enlaces} a las acciones válidas según el estado actual del recurso. El cliente ya no necesita conocer las rutas de memoria: las descubre. Respuesta de un préstamo ACTIVO con HATEOAS:
+\begin{lstlisting}[numbers=none]
+{
+  "id": 7001,
+  "libroId": 101,
+  "socioId": 2045,
+  "estado": "ACTIVO",
+  "fechaLimite": "2026-06-30",
+  "_links": {
+    "self":       { "href": "/api/v1/prestamos/7001" },
+    "devolucion": { "href": "/api/v1/prestamos/7001/devolucion", "method": "PATCH" },
+    "libro":      { "href": "/api/v1/libros/101" }
+  }
+}
+\end{lstlisting}
+Si el préstamo ya estuviera \texttt{DEVUELTO}, el enlace \texttt{devolucion} \textbf{desaparece}: los enlaces representan las transiciones de estado permitidas. En Spring Boot 3.x esto se implementa con el módulo \texttt{spring-boot-starter-hateoas} (clases \texttt{EntityModel} y \texttt{WebMvcLinkBuilder}).
+\end{cajapaso}
+
+\begin{cajapaso}[Transformación 7 --- Buenas prácticas complementarias del nivel profesional]
+\begin{itemize}
+  \item \textbf{Versionado} en la URI (\texttt{/api/v1}) para evolucionar sin romper clientes.
+  \item \textbf{Paginación, filtrado y ordenamiento} en colecciones: \texttt{GET /libros?page=0\&size=20\&categoria=redes} (ya incluido en el contrato).
+  \item \textbf{Cacheo} de lecturas: encabezados \texttt{ETag} y \texttt{Cache-Control} en GET, aprovechando la restricción \textit{cacheable} de REST.
+  \item \textbf{Errores uniformes}: un único esquema \texttt{Error} (status, error, message, timestamp, path) en toda la API.
+  \item \textbf{Nombres consistentes}: rutas en minúsculas y plural; propiedades JSON en \textit{camelCase}~\cite{masse2011}.
+\end{itemize}
+\end{cajapaso}
+
+\begin{cajanota}[Criterio de autoevaluación final]
+La API del equipo es \textbf{RESTful} cuando: (1) toda URI es un sustantivo, (2) los verbos HTTP respetan su semántica de seguridad e idempotencia, (3) los códigos de estado son precisos, (4) la comunicación es sin estado vía JWT, (5) las representaciones se negocian por encabezados y (6) las respuestas exponen enlaces HATEOAS. Los puntos (1)--(5) son obligatorios para PE-U3/PFC E2; el punto (6) es el diferenciador de excelencia.
+\end{cajanota}
+
+% =====================================================
+\section{Cómo replicar este taller con el PFC propio}\label{sec:replica}
+% =====================================================
+
+Cada equipo repite los pasos 1 a 6 sustituyendo los recursos de BiblioTech por los del microservicio principal de su PFC. Mapeo sugerido (el equipo puede ajustarlo con justificación):
+
+\begin{table}[h!]
+\centering
+\caption{Mapeo del ejemplo BiblioTech a los recursos de cada PFC}
+\small
+\begin{tabular}{p{3.6cm} p{3.2cm} p{3.4cm} p{4.4cm}}
+\toprule
+\textbf{Equipo / PFC} & \textbf{Recurso $\approx$ /libros} & \textbf{Recurso $\approx$ /prestamos} & \textbf{Sub-recurso de estado $\approx$ /devolucion} \\
+\midrule
+TiendaTech (e-commerce) & \texttt{/productos} & \texttt{/pedidos} & \texttt{/pedidos/\{id\}/pago} \\
+SGA Escuela Provincias Unidas & \texttt{/estudiantes} & \texttt{/matriculas} & \texttt{/matriculas/\{id\}/retiro} \\
+Laboratorios Informáticos & \texttt{/laboratorios} & \texttt{/reservas} & \texttt{/reservas/\{id\}/cierre} \\
+Soporte Técnico ISP & \texttt{/clientes} & \texttt{/tickets} & \texttt{/tickets/\{id\}/resolucion} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+En todos los casos se conservan sin cambios: el endpoint \texttt{POST /auth/login}, el esquema \texttt{Error}, el esquema de paginación, la seguridad \texttt{bearerAuth} global y la estructura de carpetas \texttt{/docs/api/} del repositorio.
+
+% =====================================================
+\section*{Referencias}
+\begin{thebibliography}{9}
+\bibitem{fielding2000} R.~T. Fielding, ``Architectural styles and the design of network-based software architectures,'' Ph.D. dissertation, Univ. California, Irvine, CA, USA, 2000.
+\bibitem{fowler2010} M.~Fowler, ``Richardson Maturity Model: steps toward the glory of REST,'' martinfowler.com, Mar. 2010. [En línea]. Disponible: \url{https://martinfowler.com/articles/richardsonMaturityModel.html}
+\bibitem{rfc9110} R.~Fielding, M.~Nottingham, and J.~Reschke, ``HTTP Semantics,'' Internet Engineering Task Force, RFC 9110, Jun. 2022. doi: 10.17487/RFC9110.
+\bibitem{rfc7519} M.~Jones, J.~Bradley, and N.~Sakimura, ``JSON Web Token (JWT),'' Internet Engineering Task Force, RFC 7519, May 2015. doi: 10.17487/RFC7519.
+\bibitem{openapi303} OpenAPI Initiative, ``OpenAPI Specification v3.0.3,'' Feb. 2020. [En línea]. Disponible: \url{https://spec.openapis.org/oas/v3.0.3}
+\bibitem{masse2011} M.~Masse, \textit{REST API Design Rulebook}. Sebastopol, CA, USA: O'Reilly Media, 2011. ISBN: 978-1-449-31050-9.
+\end{thebibliography}
+
+\end{document}

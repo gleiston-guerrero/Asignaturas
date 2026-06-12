@@ -1,0 +1,1485 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{graphicx}\usepackage{listings}\usepackage[most]{tcolorbox}
+\usepackage{longtable}\usepackage{array}\usepackage{enumitem}
+\usepackage{fancyhdr}\usepackage{titlesec}\usepackage[hidelinks]{hyperref}
+\renewcommand{\contentsname}{Contenido}\renewcommand{\tablename}{Tabla}
+\definecolor{javaazul}{HTML}{31618E}\definecolor{javaazulo}{HTML}{22425F}
+\definecolor{javaoro}{HTML}{C8651B}\definecolor{tinta}{HTML}{1F2933}
+\definecolor{codbg}{HTML}{F4F6F8}\definecolor{numlin}{HTML}{AAAAAA}
+\definecolor{kw}{HTML}{0057AE}\definecolor{str}{HTML}{C41A16}\definecolor{com}{HTML}{717171}
+\definecolor{tipbg}{HTML}{E9EFF4}\definecolor{warnbg}{HTML}{FBF0D8}\definecolor{dangerbg}{HTML}{FBE9E7}
+\lstset{basicstyle=\footnotesize\ttfamily\color{tinta},keywordstyle=\color{kw}\bfseries,
+  stringstyle=\color{str},commentstyle=\color{com}\itshape,numberstyle=\tiny\color{numlin},
+  numbers=left,numbersep=7pt,showstringspaces=false,breaklines=true,breakatwhitespace=false,
+  breakindent=14pt,columns=fullflexible,keepspaces=true,upquote=true,tabsize=4,frame=none}
+\lstdefinestyle{java}{language=Java, morekeywords={var,record,sealed,permits,yield}}
+\lstdefinestyle{sql}{language=SQL, morekeywords={SERIAL,VARCHAR,TIMESTAMP,DEFAULT,NOW}}
+\lstdefinestyle{xml}{language=XML}\lstdefinestyle{markup}{}
+\newtcolorbox{cajacodigo}[1][]{enhanced, breakable=false, colback=codbg, colframe=javaazul!55,
+  boxrule=0.4pt, arc=2pt, left=4pt, right=6pt, top=3pt, bottom=3pt, boxsep=2pt,
+  title=#1, colbacktitle=javaazul, coltitle=white, fonttitle=\bfseries\small,
+  attach boxed title to top left={xshift=6pt,yshift=-2pt}, boxed title style={colback=javaazul, arc=1pt}}
+\newtcolorbox{cajatip}[1]{enhanced,breakable=false,colback=tipbg,colframe=tipbg,
+  borderline west={3pt}{0pt}{javaazul}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{javaazul}, title=#1, coltitle=javaazul}
+\newtcolorbox{cajawarn}[1]{enhanced,breakable=false,colback=warnbg,colframe=warnbg,
+  borderline west={3pt}{0pt}{javaoro}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{javaoro}, title=#1, coltitle=javaoro}
+\newtcolorbox{cajadanger}[1]{enhanced,breakable=false,colback=dangerbg,colframe=dangerbg,
+  borderline west={3pt}{0pt}{red!60!black}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{red!60!black}, title=#1, coltitle=red!60!black}
+\titleformat{\section}{\color{javaazul}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\color{javaazulo}\large\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\color{tinta}\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\color{gray}Gu\'ia de Programaci\'on en Java --- UTEQ}
+\fancyfoot[C]{\footnotesize\color{gray}P\'agina \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\parskip}{6pt}\setlength{\parindent}{0pt}\setlength{\emergencystretch}{3em}
+\begin{document}
+\begin{titlepage}
+\vspace*{1.2cm}
+{\color{javaazul}\bfseries\large UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}\\[2pt]
+{\color{gray} Facultad de Ciencias de la Computaci\'on $\cdot$ Ingenier\'ia de Software}\\[2.2cm]
+{\color{tinta}\bfseries\fontsize{32}{36}\selectfont Programaci\'on en Java}\\[8pt]
+{\color{javaoro}\rule{\linewidth}{2.2pt}}\\[10pt]
+{\itshape\large Gu\'ia del estudiante --- fundamentos del lenguaje y la orientaci\'on a objetos}\\[4pt]
+{\color{gray} Cada listado es un archivo completo que puedes transcribir y ejecutar}\\[3cm]
+\begin{flushleft}
+\textbf{Asignatura:} Programaci\'on (Ingenier\'ia de Software)\\[3pt]
+\textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[3pt]
+\textbf{Per\'iodo:} PPA 2026--2027
+\end{flushleft}
+\vfill
+{\color{gray}\small Versiones de referencia (Java 25 LTS, Maven, JUnit 5) en la secci\'on 2.}
+\end{titlepage}
+\tableofcontents
+\clearpage
+\section{Introducción}
+Aprender a programar bien en Java te da una de las bases más sólidas y demandadas de la ingeniería de software. Java es un lenguaje maduro, robusto y orientado a objetos, con el que se construyen desde pequeñas utilidades hasta sistemas de gran tamaño. Esta guía te lleva paso a paso, desde tu primer programa hasta un proyecto completo, con explicaciones detalladas y ejercicios de todos los niveles.
+
+El recorrido es progresivo: primero el lenguaje y su sintaxis, luego la orientación a objetos —el corazón de Java—, después las colecciones, las excepciones, la programación funcional moderna, la organización del código, el trabajo con datos y, por último, un proyecto integrador. Dominar estos fundamentos es el requisito imprescindible para, más adelante, abordar proyectos de mayor envergadura con Java.
+
+\begin{cajatip}{Cada listado es un archivo completo}
+Todos los ejemplos en Java de esta guía son programas completos. El título de cada cuadro es el nombre del archivo (por ejemplo, \texttt{Hola.\allowbreak{}java}): crea un archivo con ese nombre exacto, transcribe el contenido tal cual y ejecútalo. La clase pública debe llamarse igual que el archivo.\par
+\end{cajatip}
+\subsection{¿Qué es Java y por qué aprenderlo?}
+Java es un lenguaje de programación de propósito general, fuertemente tipado y orientado a objetos, creado por James Gosling en Sun Microsystems y publicado en 1996. Hoy lo mantiene Oracle junto a una enorme comunidad, y es uno de los lenguajes más utilizados del mundo, especialmente en sistemas grandes y de larga vida.
+
+Aprenderlo te aporta tres ventajas duraderas. Primera, su filosofía «escribe una vez, ejecuta en cualquier parte»: el mismo programa corre en Windows, Linux o macOS sin cambios. Segunda, su rigor: el tipado estático y la orientación a objetos te enseñan a diseñar software ordenado y mantenible. Tercera, su ecosistema: una biblioteca estándar inmensa y herramientas maduras que usarás durante toda tu carrera.
+
+\subsection{Cómo funciona Java: la JVM, el JDK y el bytecode}
+Java no se compila directamente a instrucciones del procesador, sino a un formato intermedio llamado bytecode. Ese bytecode lo ejecuta la JVM (Java Virtual Machine), una «máquina» que existe para cada sistema operativo. Por eso un mismo programa funciona en todas partes: cada JVM traduce el bytecode al hardware concreto.
+
+Para programar necesitas el JDK (Java Development Kit), que incluye el compilador (\texttt{javac}), la máquina virtual (\texttt{java}) y la biblioteca estándar. El compilador transforma tu código fuente (\texttt{.\allowbreak{}java}) en bytecode (\texttt{.\allowbreak{}class}), y la JVM lo ejecuta. Entender esta cadena —fuente, compilación, bytecode, ejecución— te ayudará a interpretar los errores y a configurar bien tus proyectos.
+
+\subsection{Versiones de Java}
+Java publica una versión nueva cada seis meses y, cada dos años, una versión de soporte prolongado (LTS, Long-Term Support) pensada para proyectos serios. Conviene trabajar siempre sobre una versión LTS por estabilidad y soporte.
+
+A mediados de 2026, la LTS vigente es Java 25 (septiembre de 2025) y la anterior es Java 21; la versión más reciente por funcionalidad es Java 26 (marzo de 2026, no LTS). El código de esta guía usa características disponibles desde Java 21 —como los \texttt{record}, las expresiones \texttt{switch} y los bloques de texto— y funciona igual en Java 25.
+
+\subsection{Cómo usar esta guía y los niveles de los ejercicios}
+Lee cada sección, reproduce los ejemplos en tu propio entorno y resuelve los ejercicios: programar se aprende programando. Teclea el código en lugar de copiarlo; así descubres detalles que de otro modo pasan inadvertidos y aprendes a leer los mensajes del compilador.
+
+Los ejercicios están etiquetados por nivel para que dosifiques tu práctica:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \textbf{[Básico]} afianzan la sintaxis y los conceptos esenciales; deberías resolverlos justo tras leer la sección.
+\item \textbf{[Intermedio]} combinan varios conceptos y se acercan a problemas reales (objetos, colecciones, excepciones).
+\item \textbf{[Avanzado]} exigen diseño, genéricos, programación funcional y trabajo con datos; son los más cercanos a un proyecto real.
+\end{itemize}
+Al final encontrarás un banco de ejercicios por nivel y un conjunto de soluciones comentadas para comparar tu enfoque con uno posible.
+
+\section{Preparación del entorno de desarrollo}
+Antes de escribir código necesitas instalar el JDK y un entorno cómodo para editar, compilar y ejecutar. Esta sección te guía en la instalación y te muestra cómo organizar un proyecto desde el principio con buenas prácticas.
+
+\subsection{Instalar el JDK}
+El JDK es lo único imprescindible para empezar. Puedes usar la distribución de Oracle o una abierta como Eclipse Temurin (OpenJDK); ambas son equivalentes para aprender. Instala una versión LTS (21 o 25) y, al terminar, comprueba en una terminal que quedó disponible.
+
+\begin{cajacodigo}[Verificar el JDK]
+\begin{lstlisting}[style=markup]
+C:\> java -version
+openjdk version "25" 2025-09-16
+OpenJDK Runtime Environment (build 25+...)
+
+C:\> javac -version
+javac 25
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{La variable JAVA\_HOME}
+Muchas herramientas (como Maven) necesitan la variable de entorno \texttt{JAVA\_HOME} apuntando a la carpeta del JDK. Si una herramienta no encuentra Java, revisa que esté bien definida.\par
+\end{cajatip}
+\subsection{El entorno de desarrollo (IntelliJ IDEA)}
+Aunque puedes programar con un editor simple, un IDE te ahorra muchísimo tiempo. IntelliJ IDEA es el más usado para Java: ofrece autocompletado, análisis de errores en vivo, refactorización y un depurador potente. Al crear un proyecto, seleccionas el JDK instalado y eliges si gestionarlo con Maven.
+
+Familiarízate pronto con dos acciones clave del IDE: ejecutar (el botón con forma de triángulo verde) y depurar (ejecutar paso a paso para inspeccionar el valor de las variables). Saber depurar es una de las habilidades que más te distinguirá como programador.
+
+\subsection{Compilar y ejecutar}
+Conviene entender qué hace el IDE por debajo. Un programa Java se compila con \texttt{javac} y se ejecuta con \texttt{java}. El compilador genera un archivo \texttt{.\allowbreak{}class} con el bytecode, que la máquina virtual ejecuta. Desde Java 11 también puedes ejecutar un archivo fuente directamente con \texttt{java Archivo.\allowbreak{}java}, muy cómodo para los ejemplos de esta guía.
+
+\begin{cajacodigo}[Compilar y ejecutar]
+\begin{lstlisting}[style=markup]
+C:\> javac Hola.java        # genera Hola.class
+C:\> java Hola              # ejecuta el programa
+Hola, mundo
+
+C:\> java Hola.java         # alternativa: compila y ejecuta de una vez
+Hola, mundo
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+En el IDE no harás esto manualmente, pero saber que ocurre te ayudará a entender los errores de compilación (los detecta \texttt{javac}) frente a los errores en ejecución (los lanza la JVM mientras corre el programa).
+
+\subsection{Maven: gestión de dependencias y construcción}
+Casi ningún proyecto vive aislado: usa bibliotecas de terceros. Maven es la herramienta estándar para gestionar esas dependencias y para construir el proyecto de forma reproducible. Se configura con un archivo \texttt{pom.\allowbreak{}xml} que declara qué bibliotecas necesitas; Maven las descarga y las pone a disposición de tu código.
+
+\begin{cajacodigo}[pom.xml]
+\begin{lstlisting}[style=xml]
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.uteq</groupId>
+  <artifactId>practica</artifactId>
+  <version>1.0.0</version>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+</project>
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Más adelante añadirás dependencias dentro de \texttt{\textless{}dependencies\textgreater{}}. Con Maven, compartir un proyecto es trivial: quien lo reciba ejecuta un comando y obtiene exactamente las mismas bibliotecas.
+
+\subsection{Estructura de un proyecto y paquetes}
+Un proyecto Maven sigue una estructura de carpetas convenida que todo el mundo reconoce. El código fuente va en \texttt{src/\allowbreak{}main/\allowbreak{}java}, organizado en paquetes (carpetas con un nombre jerárquico, como \texttt{com.\allowbreak{}uteq.\allowbreak{}modelo}). Los paquetes evitan choques de nombres y ordenan el código por responsabilidades.
+
+\begin{cajacodigo}[Estructura típica]
+\begin{lstlisting}[style=markup]
+practica/
+|- pom.xml
+|- src/
+   |- main/java/com/uteq/
+   |  |- Main.java
+   |  |- modelo/Estudiante.java
+   |  |- repositorio/EstudianteRepositorio.java
+   |  |- servicio/EstudianteServicio.java
+   |- test/java/com/uteq/    # pruebas
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Versiones de referencia (verificadas a junio de 2026)}
+Estas son las versiones vigentes de las herramientas usadas en la guía. Las dependencias se gestionan con Maven, que descarga la versión que declares; no es necesario fijarlas a mano fuera del \texttt{pom.\allowbreak{}xml}.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{12cm}}
+\rowcolor{javaazul}\textcolor{white}{\textbf{Componente}} & \textcolor{white}{\textbf{Versión vigente (jun. 2026)}} \\
+\endfirsthead
+\rowcolor{javaazul}\textcolor{white}{\textbf{Componente}} & \textcolor{white}{\textbf{Versión vigente (jun. 2026)}} \\
+\endhead
+\ttfamily\color{javaazul}Java (LTS) & 25 (actual) y 21 (anterior); recomendadas para proyectos. \\ \hline
+\ttfamily\color{javaazul}Java (última) & 26 (marzo de 2026, no LTS). \\ \hline
+\ttfamily\color{javaazul}Maven & 3.9+ (gestor de dependencias y construcción). \\ \hline
+\ttfamily\color{javaazul}IntelliJ IDEA & 2026.1.x (Community o Ultimate). \\ \hline
+\ttfamily\color{javaazul}JUnit & 5 (Jupiter), para pruebas. \\ \hline
+\ttfamily\color{javaazul}PostgreSQL & 18.4 (para la sección de persistencia). \\ \hline
+\end{longtable}}
+\section{Fundamentos del lenguaje}
+En esta sección recorrerás la base de Java: cómo se escribe un programa, cómo se declaran datos, cómo se controla el flujo y cómo se agrupan instrucciones en métodos. Son los cimientos sobre los que se apoya todo lo demás, así que dedícales tiempo y resuelve los ejercicios del final.
+
+\subsection{Estructura de una clase y el método main}
+En Java, todo el código vive dentro de clases. Un programa ejecutable necesita un método especial llamado \texttt{main}, que es por donde empieza la ejecución. El siguiente archivo es el clásico primer programa: muestra un texto por la consola. Recuerda: la clase pública debe llamarse igual que el archivo.
+
+\begin{cajacodigo}[Hola.java]
+\begin{lstlisting}[style=java]
+public class Hola {
+    public static void main(String[] args) {
+        // System.out.println imprime y salta de linea
+        System.out.println("Hola, mundo");
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El método \texttt{main} es siempre \texttt{public static void main(String[] args)}: la JVM lo busca con esa firma exacta para arrancar. Los comentarios se escriben con \texttt{/\allowbreak{}/\allowbreak{}} (una línea) o \texttt{/\allowbreak{}* .\allowbreak{}.\allowbreak{}.\allowbreak{} */\allowbreak{}} (varias).
+
+\subsection{Variables, tipos primitivos y referencias}
+Java es de tipado estático: cada variable tiene un tipo fijo que declaras y que no cambia. Hay dos familias de tipos. Los primitivos guardan valores simples (números, caracteres, booleanos) directamente. Los tipos de referencia (como \texttt{String} y los objetos) guardan una referencia al dato.
+
+\begin{cajacodigo}[Variables.java]
+\begin{lstlisting}[style=java]
+public class Variables {
+    public static void main(String[] args) {
+        int edad = 21;             // entero
+        double nota = 8.5;         // decimal
+        char inicial = 'A';        // un caracter
+        boolean activo = true;     // verdadero o falso
+        long grande = 9000000000L;
+        String nombre = "Ana";   // tipo de referencia
+        final double IVA = 0.15;   // 'final' = constante
+
+        System.out.println(nombre + " tiene " + edad);
+        System.out.println("Nota: " + nota + " IVA: " + IVA);
+        System.out.println(inicial + " " + activo + " " + grande);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Usa \texttt{final} para los valores que no deben cambiar: el compilador te protegerá si intentas reasignarlos, y el código se vuelve más claro. Como norma, declara las variables lo más cerca posible de donde se usan.
+
+\subsection{Cadenas de texto}
+La clase \texttt{String} representa texto y es inmutable: cada operación que «modifica» una cadena en realidad crea una nueva. Para construir texto en bucles conviene usar \texttt{String\allowbreak{}Builder}, que sí es mutable. Desde Java 15 existen además los bloques de texto para escribir varias líneas con comodidad.
+
+\begin{cajacodigo}[Cadenas.java]
+\begin{lstlisting}[style=java]
+public class Cadenas {
+    public static void main(String[] args) {
+        String nombre = "Ana";
+        String saludo = "Hola, " + nombre;   // concatenacion con +
+        System.out.println(saludo);
+        System.out.println(saludo.length());   // longitud
+        System.out.println(saludo.toUpperCase());
+
+        // En Java las cadenas NO interpolan variables:
+        String clave = "P@$7Gr3$QL";          // literal, sin precaucion
+        System.out.println(clave);
+
+        String bloque = """
+                Primera linea
+                Segunda linea""";              // bloque de texto (Java 15+)
+        System.out.println(bloque);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajawarn}{Comparar cadenas}
+Para comparar el contenido de dos \texttt{String} usa \texttt{a.\allowbreak{}equals(b)}, NUNCA \texttt{a =\allowbreak{}=\allowbreak{} b}. El operador \texttt{=\allowbreak{}=\allowbreak{}} compara referencias (si son el mismo objeto), no el texto: es una de las confusiones más frecuentes al empezar.\par
+\end{cajawarn}
+\subsection{Operadores}
+Los operadores combinan valores. Además de los aritméticos y lógicos habituales, conviene conocer los de comparación y el operador ternario, que resume un \texttt{if}/\texttt{else} sencillo en una sola expresión.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{12.8cm}}
+\rowcolor{javaazul}\textcolor{white}{\textbf{Operador}} & \textcolor{white}{\textbf{Significado y ejemplo}} \\
+\endfirsthead
+\rowcolor{javaazul}\textcolor{white}{\textbf{Operador}} & \textcolor{white}{\textbf{Significado y ejemplo}} \\
+\endhead
+\ttfamily\color{javaazul}+ - * / \% & Aritméticos; \% es el resto de la división. \\ \hline
+\ttfamily\color{javaazul}== != & Igualdad y desigualdad (en primitivos). \\ \hline
+\ttfamily\color{javaazul}\textless{} \textgreater{} \textless{}= \textgreater{}= & Comparaciones de orden. \\ \hline
+\ttfamily\color{javaazul}\&\& || ! & Y, O, NO logicos (con cortocircuito). \\ \hline
+\ttfamily\color{javaazul}? : & Ternario: condicion ? valorSi : valorNo. \\ \hline
+\ttfamily\color{javaazul}+= -= ++ -- & Asignacion compuesta e incremento/decremento. \\ \hline
+\end{longtable}}
+Recuerda la distinción de la sección anterior: con objetos (incluido \texttt{String}), \texttt{=\allowbreak{}=\allowbreak{}} compara referencias; para comparar contenido se usa \texttt{equals}.
+
+\subsection{Estructuras de control}
+Las estructuras de control deciden qué se ejecuta y cuántas veces. Java ofrece las clásicas (\texttt{if}, \texttt{for}, \texttt{while}) y, en versiones modernas, la expresión \texttt{switch}, que devuelve un valor y es más segura y concisa que el \texttt{switch} tradicional. El siguiente archivo combina un condicional con una expresión \texttt{switch}.
+
+\begin{cajacodigo}[Control.java]
+\begin{lstlisting}[style=java]
+public class Control {
+    public static void main(String[] args) {
+        int nota = 8;
+        if (nota >= 7) {
+            System.out.println("Aprobado");
+        } else {
+            System.out.println("Reprobado");
+        }
+        String letra = switch (nota) {   // expresion switch (Java 14+)
+            case 9, 10 -> "A";
+            case 7, 8  -> "B";
+            default    -> "C";
+        };
+        System.out.println(letra);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El siguiente archivo muestra los dos bucles que más usarás: el \texttt{for} clásico (cuando necesitas un índice) y el \texttt{for-each} (para recorrer arreglos y colecciones de forma idiomática).
+
+\begin{cajacodigo}[Bucles.java]
+\begin{lstlisting}[style=java]
+public class Bucles {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 3; i++) {
+            System.out.print(i);          // 123
+        }
+        System.out.println();
+        String[] colores = {"rojo", "verde", "azul"};
+        for (String c : colores) {        // for-each
+            System.out.print(c + " ");
+        }
+        System.out.println();
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Arreglos}
+Un arreglo guarda un número fijo de elementos del mismo tipo, accesibles por un índice que empieza en cero. Es la estructura más básica para agrupar datos; más adelante verás las colecciones, que son más flexibles.
+
+\begin{cajacodigo}[Arreglos.java]
+\begin{lstlisting}[style=java]
+public class Arreglos {
+    public static void main(String[] args) {
+        int[] numeros = {10, 20, 30};
+        System.out.println(numeros[0]);     // 10
+        System.out.println(numeros.length); // 3
+        numeros[1] = 99;                    // modificar
+        int suma = 0;
+        for (int n : numeros) suma += n;
+        System.out.println("Suma: " + suma);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Métodos}
+Un método agrupa instrucciones reutilizables; recibe parámetros (con su tipo) y puede devolver un valor (o \texttt{void} si no devuelve nada). Java permite la sobrecarga: varios métodos con el mismo nombre pero distinta lista de parámetros. El siguiente archivo define y prueba tres métodos.
+
+\begin{cajacodigo}[Metodos.java]
+\begin{lstlisting}[style=java]
+public class Metodos {
+    static int sumar(int a, int b) { return a + b; }
+    static double sumar(double a, double b) { return a + b; }   // sobrecarga
+    static int sumarTodos(int... valores) {                     // varargs
+        int total = 0;
+        for (int v : valores) total += v;
+        return total;
+    }
+    public static void main(String[] args) {
+        System.out.println(sumar(2, 3));            // 5
+        System.out.println(sumar(2.5, 3.5));        // 6.0
+        System.out.println(sumarTodos(1, 2, 3, 4)); // 10
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Un buen método hace una sola cosa y la hace bien. Si crece demasiado o necesita muchos comentarios para entenderse, suele convenir dividirlo en métodos más pequeños.
+
+\subsection{Inferencia de tipos con var}
+Desde Java 10, dentro de un método puedes declarar variables locales con \texttt{var}: el compilador deduce el tipo a partir del valor asignado. No es tipado dinámico —el tipo sigue siendo fijo—, solo te ahorra escribirlo cuando es evidente. Úsalo con criterio, sin sacrificar la claridad.
+
+\begin{cajacodigo}[VarDemo.java]
+\begin{lstlisting}[style=java]
+public class VarDemo {
+    public static void main(String[] args) {
+        var nombre = "Ana";        // el compilador deduce: String
+        var edad   = 21;            // deduce: int
+        var notas  = new int[]{7, 8, 9};
+        System.out.println(nombre + " " + edad + " " + notas.length);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Ejercicios — nivel básico}
+Estos ejercicios consolidan la sintaxis que acabas de ver. Resuélvelos en archivos con su clase y su método \texttt{main}, y ejecútalos para comprobar el resultado. Intenta no mirar los ejemplos mientras los resuelves.
+
+Pon en práctica los fundamentos:
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Básico]} Escribe un programa que muestre tu nombre y tu edad en dos líneas.
+\item \textbf{[Básico]} Declara dos números y muestra su suma, resta, producto y resto (\texttt{\%}).
+\item \textbf{[Básico]} Pide (con valores fijos por ahora) una nota y muestra «Aprobado» o «Reprobado» según sea mayor o igual a 7.
+\item \textbf{[Básico]} Usa una expresión \texttt{switch} para convertir un número del 1 al 7 en el día de la semana.
+\item \textbf{[Básico]} Dado un arreglo de cinco notas, calcula y muestra el promedio.
+\item \textbf{[Básico]} Escribe un método \texttt{es\allowbreak{}Par(int n)} que devuelva \texttt{boolean} y pruébalo.
+\item \textbf{[Básico]} Muestra la tabla de multiplicar de un número con un bucle \texttt{for}.
+\item \textbf{[Básico]} Invierte el contenido de un arreglo mostrándolo del último al primer elemento.
+\end{enumerate}
+Como referencia, este archivo resuelve el ejercicio del promedio y es ejecutable tal cual:
+
+\begin{cajacodigo}[Promedio.java]
+\begin{lstlisting}[style=java]
+public class Promedio {
+    public static void main(String[] args) {
+        double[] notas = {7, 8.5, 6, 9, 10};
+        double suma = 0;
+        for (double n : notas) suma += n;
+        System.out.println("Promedio: " + (suma / notas.length));
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\section{Programación orientada a objetos}
+La orientación a objetos es el corazón de Java y la forma en que se diseñan los programas grandes. Consiste en modelar el problema con «objetos» que combinan datos (atributos) y comportamiento (métodos). Esta es la sección más importante de la guía: tómate tu tiempo y practica cada concepto.
+
+\subsection{Clases y objetos}
+Una clase es un molde que define qué atributos y qué métodos tendrán sus objetos. Un objeto es una instancia concreta de una clase, creada con \texttt{new}. Dentro de los métodos, la palabra \texttt{this} se refiere al objeto actual. En un mismo archivo puede haber una clase pública (con el \texttt{main}) y otras clases de apoyo.
+
+\begin{cajacodigo}[CuentaDemo.java]
+\begin{lstlisting}[style=java]
+public class CuentaDemo {
+    public static void main(String[] args) {
+        Cuenta c = new Cuenta();
+        c.depositar(100);
+        System.out.println(c.saldo);   // 100.0
+    }
+}
+
+class Cuenta {
+    double saldo;                      // atributo
+    void depositar(double monto) {     // metodo
+        this.saldo += monto;
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Encapsulación}
+La encapsulación consiste en ocultar los detalles internos de un objeto y exponer solo lo necesario. En la práctica, los atributos se declaran \texttt{private} y se accede a ellos mediante métodos \texttt{public} (los «getters» y «setters»). Así controlas cómo se leen y modifican los datos.
+
+\begin{cajacodigo}[EncapsulacionDemo.java]
+\begin{lstlisting}[style=java]
+public class EncapsulacionDemo {
+    public static void main(String[] args) {
+        Cuenta c = new Cuenta();
+        c.depositar(100);
+        c.depositar(-50);              // ignorado por la validacion
+        System.out.println(c.getSaldo());  // 100.0
+    }
+}
+
+class Cuenta {
+    private double saldo;              // oculto al exterior
+    public void depositar(double monto) {
+        if (monto > 0) this.saldo += monto;   // validacion
+    }
+    public double getSaldo() { return this.saldo; }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+La ventaja es el control: como nadie puede tocar \texttt{saldo} directamente, el método \texttt{depositar} puede validar (aquí, rechazar montos negativos). La encapsulación es la primera línea de defensa de la integridad de tus datos.
+
+\subsection{Constructores}
+El constructor es un método especial que se ejecuta al crear el objeto con \texttt{new} y sirve para inicializarlo. Tiene el mismo nombre que la clase y no declara tipo de retorno. Si no escribes ninguno, Java provee uno vacío por defecto.
+
+\begin{cajacodigo}[ConstructorDemo.java]
+\begin{lstlisting}[style=java]
+public class ConstructorDemo {
+    public static void main(String[] args) {
+        Estudiante e = new Estudiante("Ana", "ana@uteq.edu.ec");
+        System.out.println(e.getNombre());
+    }
+}
+
+class Estudiante {
+    private String nombre;
+    private String correo;
+    public Estudiante(String nombre, String correo) {
+        this.nombre = nombre;
+        this.correo = correo;
+    }
+    public String getNombre() { return nombre; }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Herencia}
+La herencia permite crear una clase a partir de otra, reutilizando y extendiendo su comportamiento. La subclase usa \texttt{extends} y hereda los atributos y métodos de la superclase; con \texttt{super} puede invocar al constructor o a métodos de la clase padre.
+
+\begin{cajacodigo}[HerenciaDemo.java]
+\begin{lstlisting}[style=java]
+public class HerenciaDemo {
+    public static void main(String[] args) {
+        Perro p = new Perro("Fido");
+        System.out.println(p.nombre + ": " + p.sonido());
+    }
+}
+
+class Animal {
+    protected String nombre;
+    public Animal(String nombre) { this.nombre = nombre; }
+    public String sonido() { return "..."; }
+}
+
+class Perro extends Animal {
+    public Perro(String nombre) { super(nombre); }
+    @Override public String sonido() { return "Guau"; }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Polimorfismo y sobreescritura}
+El polimorfismo permite tratar objetos de distintas subclases a través de su superclase común, y que cada uno responda a su manera. La sobreescritura (anotada con \texttt{@Override}) es redefinir en la subclase un método del padre. Es uno de los mecanismos más potentes de la orientación a objetos.
+
+\begin{cajacodigo}[PolimorfismoDemo.java]
+\begin{lstlisting}[style=java]
+public class PolimorfismoDemo {
+    public static void main(String[] args) {
+        Animal[] animales = { new Perro("Fido"), new Animal("X") };
+        for (Animal a : animales) {
+            System.out.println(a.sonido());   // cada uno responde distinto
+        }
+    }
+}
+
+class Animal {
+    protected String nombre;
+    public Animal(String nombre) { this.nombre = nombre; }
+    public String sonido() { return "..."; }
+}
+
+class Perro extends Animal {
+    public Perro(String nombre) { super(nombre); }
+    @Override public String sonido() { return "Guau"; }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+La anotación \texttt{@Override} no es obligatoria, pero úsala siempre: le pide al compilador que verifique que realmente estás sobreescribiendo un método, y te avisa si te equivocas en la firma.
+
+\subsection{Clases abstractas e interfaces}
+A veces quieres definir un concepto general sin implementarlo del todo. Una clase abstracta (\texttt{abstract}) puede tener métodos sin cuerpo que las subclases deben completar. Una interfaz (\texttt{interface}) va más allá: define un contrato de métodos que cualquier clase puede implementar con \texttt{implements}. Las interfaces son clave para escribir código flexible.
+
+\begin{cajacodigo}[FigurasDemo.java]
+\begin{lstlisting}[style=java]
+public class FigurasDemo {
+    public static void main(String[] args) {
+        Figura[] figuras = { new Circulo(2), new Cuadrado(3) };
+        for (Figura f : figuras) {
+            System.out.println(f.area());     // polimorfismo
+        }
+    }
+}
+
+interface Figura { double area(); }
+
+class Circulo implements Figura {
+    private double radio;
+    public Circulo(double radio) { this.radio = radio; }
+    @Override public double area() { return Math.PI * radio * radio; }
+}
+
+class Cuadrado implements Figura {
+    private double lado;
+    public Cuadrado(double lado) { this.lado = lado; }
+    @Override public double area() { return lado * lado; }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Programar contra interfaces, y no contra clases concretas, es una de las claves del software mantenible: puedes cambiar la implementación sin tocar el código que la usa. Lo verás en acción en la sección de organización del código.
+
+\subsection{Records: modelar datos de forma inmutable}
+Desde Java 16, un \texttt{record} es una forma muy concisa de crear clases cuyo único propósito es transportar datos. Con una sola línea obtienes los atributos, el constructor, los métodos de acceso y las comparaciones, todo inmutable. Son ideales para representar entidades simples.
+
+\begin{cajacodigo}[RecordDemo.java]
+\begin{lstlisting}[style=java]
+public class RecordDemo {
+    // Un record equivale a una clase con constructor, getters, equals y toString:
+    record Estudiante(int id, String nombre, String correo) {}
+
+    public static void main(String[] args) {
+        var e = new Estudiante(1, "Ana", "ana@uteq.edu.ec");
+        System.out.println(e.nombre());     // metodo de acceso: Ana
+        System.out.println(e);              // toString automatico
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Enumeraciones (enum)}
+Una enumeración representa un conjunto fijo de valores posibles, como los estados de una cuenta o los roles de una persona. Usar un \texttt{enum} en lugar de constantes sueltas hace que el compilador garantice que solo se usen valores válidos.
+
+\begin{cajacodigo}[EnumDemo.java]
+\begin{lstlisting}[style=java]
+public class EnumDemo {
+    enum Estado { ACTIVO, INACTIVO, SUSPENDIDO }
+
+    public static void main(String[] args) {
+        Estado e = Estado.ACTIVO;
+        String mensaje = switch (e) {
+            case ACTIVO     -> "La cuenta esta activa";
+            case INACTIVO   -> "La cuenta esta inactiva";
+            case SUSPENDIDO -> "La cuenta esta suspendida";
+        };
+        System.out.println(mensaje);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Ejercicios — nivel intermedio}
+Estos ejercicios te hacen diseñar con objetos, no solo escribir instrucciones sueltas. Es el salto mental más importante del curso. Recuerda que cada solución es un archivo completo con su \texttt{main}.
+
+Modela con clases:
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Intermedio]} Crea una clase \texttt{Producto} con nombre y precio encapsulados, constructor y un método que devuelva el precio con IVA.
+\item \textbf{[Intermedio]} Define una interfaz \texttt{Notificable} con \texttt{enviar(String mensaje)} e impleméntala en dos clases distintas.
+\item \textbf{[Intermedio]} Modela una jerarquía \texttt{Figura} (interfaz) con \texttt{Circulo}, \texttt{Rectangulo} y \texttt{Triangulo}; guarda varias en un arreglo y recórrelas mostrando su área (polimorfismo).
+\item \textbf{[Intermedio]} Crea un \texttt{record Punto(int x, int y)} y un método que calcule la distancia entre dos puntos.
+\item \textbf{[Intermedio]} Define un \texttt{enum Rol} (ADMIN, DOCENTE, ESTUDIANTE) y un método que devuelva los permisos de cada rol con \texttt{switch}.
+\item \textbf{[Avanzado]} Diseña una clase \texttt{Cuenta} con depósito, retiro (que no permita saldo negativo) y un historial de operaciones.
+\end{enumerate}
+\section{Colecciones y genéricos}
+Los arreglos tienen un tamaño fijo; en la práctica necesitas estructuras que crezcan y que ofrezcan operaciones listas para usar. Para eso está el marco de colecciones de Java, que se apoya en los genéricos para garantizar la seguridad de tipos. Esta sección es esencial para casi cualquier programa real.
+
+\subsection{Genéricos: seguridad de tipos}
+Los genéricos permiten escribir clases y métodos que funcionan con cualquier tipo, indicándolo entre ángulos \texttt{\textless{}\textgreater{}}. Su gran ventaja es que el compilador verifica los tipos: una lista de \texttt{String} no aceptará un número por error. Verás los genéricos sobre todo al usar colecciones.
+
+\begin{cajacodigo}[GenericosDemo.java]
+\begin{lstlisting}[style=java]
+import java.util.*;
+
+public class GenericosDemo {
+    public static void main(String[] args) {
+        List<String> nombres = new ArrayList<>();   // solo String
+        nombres.add("Ana");
+        // nombres.add(42);   // ERROR en compilacion: no es String
+        String primero = nombres.get(0);            // sin conversiones
+        System.out.println(primero);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Las colecciones principales: List, Set y Map}
+El marco de colecciones ofrece tres familias fundamentales. \texttt{List} es una secuencia ordenada que admite duplicados; \texttt{Set} es un conjunto sin duplicados; y \texttt{Map} asocia claves con valores (como un diccionario). Elige según lo que necesites representar.
+
+\begin{cajacodigo}[ColeccionesDemo.java]
+\begin{lstlisting}[style=java]
+import java.util.*;
+
+public class ColeccionesDemo {
+    public static void main(String[] args) {
+        List<String> lista = new ArrayList<>(List.of("a", "b", "a"));
+        System.out.println(lista.size());     // 3 (admite duplicados)
+
+        Set<String> conjunto = new HashSet<>(lista);
+        System.out.println(conjunto.size());  // 2 (sin duplicados)
+
+        Map<String, Integer> edades = new HashMap<>();
+        edades.put("Ana", 21);
+        edades.put("Luis", 23);
+        System.out.println(edades.get("Ana")); // 21
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Recorrer colecciones}
+La forma habitual de recorrer una colección es el bucle \texttt{for-each}. Para los mapas, se recorren sus entradas (pares clave-valor). Conocer estas formas te permite mostrar y procesar datos con soltura.
+
+\begin{cajacodigo}[IteracionDemo.java]
+\begin{lstlisting}[style=java]
+import java.util.*;
+
+public class IteracionDemo {
+    public static void main(String[] args) {
+        List<String> lista = List.of("a", "b", "c");
+        for (String s : lista) {
+            System.out.println(s);
+        }
+        Map<String, Integer> edades = Map.of("Ana", 21, "Luis", 23);
+        for (Map.Entry<String, Integer> e : edades.entrySet()) {
+            System.out.println(e.getKey() + " -> " + e.getValue());
+        }
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Ordenar y comparar}
+Para ordenar objetos, Java necesita saber cómo compararlos. La interfaz \texttt{Comparable} define el orden «natural» de una clase, y \texttt{Comparator} permite definir órdenes alternativos sin tocar la clase. Ambas son muy útiles al presentar datos ordenados.
+
+\begin{cajacodigo}[OrdenarDemo.java]
+\begin{lstlisting}[style=java]
+import java.util.*;
+
+public class OrdenarDemo {
+    public static void main(String[] args) {
+        List<String> nombres = new ArrayList<>(List.of("Luis", "Ana", "Eva"));
+        Collections.sort(nombres);                       // alfabetico
+        System.out.println(nombres);
+        nombres.sort(Comparator.reverseOrder());         // inverso
+        System.out.println(nombres);
+        nombres.sort(Comparator.comparingInt(String::length)); // por longitud
+        System.out.println(nombres);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Ejercicios — colecciones}
+Estos ejercicios te hacen elegir la estructura adecuada y operar con ella.
+
+Trabaja con colecciones:
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Intermedio]} Guarda una lista de nombres, elimina los duplicados pasándola a un \texttt{Set} y muéstrala ordenada.
+\item \textbf{[Intermedio]} Usa un \texttt{Map} para contar cuántas veces aparece cada palabra en una frase.
+\item \textbf{[Intermedio]} Dada una lista de objetos \texttt{Estudiante}, ordénala por nombre con un \texttt{Comparator}.
+\item \textbf{[Avanzado]} Implementa una agenda (\texttt{Map} de nombre a teléfono) con alta, baja y búsqueda.
+\item \textbf{[Avanzado]} Escribe un método genérico \texttt{\textless{}T\textgreater{} T primero(List\textless{}T\textgreater{} lista)} que devuelva el primer elemento o lance una excepción si está vacía.
+\end{enumerate}
+\section{Manejo de excepciones}
+Los programas fallan: un dato es inválido, un archivo no existe, una conversión no es posible. Java gestiona estos casos con excepciones, un mecanismo que separa el flujo normal del manejo de errores y evita que el programa termine de forma abrupta. Manejarlas bien es señal de código profesional.
+
+\subsection{Qué son y por qué importan}
+Una excepción es un objeto que representa un error ocurrido durante la ejecución. Cuando algo va mal, se «lanza» una excepción que interrumpe el flujo normal; si no se captura, el programa termina mostrando un rastro del error. Capturarlas te permite reaccionar de forma controlada.
+
+\subsection{try, catch y finally}
+El bloque \texttt{try} contiene el código que podría fallar; el \texttt{catch} captura la excepción y reacciona; el \texttt{finally} (opcional) se ejecuta siempre, haya error o no. El siguiente archivo provoca y captura una división por cero.
+
+\begin{cajacodigo}[ExcepcionesDemo.java]
+\begin{lstlisting}[style=java]
+public class ExcepcionesDemo {
+    public static void main(String[] args) {
+        try {
+            int resultado = 10 / 0;          // lanza ArithmeticException
+            System.out.println(resultado);
+        } catch (ArithmeticException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            System.out.println("Esto se ejecuta siempre");
+        }
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Excepciones comprobadas y no comprobadas}
+Java distingue dos tipos. Las no comprobadas (subclases de \texttt{Runtime\allowbreak{}Exception}, como dividir por cero) suelen indicar errores de programación. Las comprobadas obligan a declararlas con \texttt{throws} o a capturarlas: el compilador te fuerza a tenerlas en cuenta. El siguiente archivo lanza y captura una excepción al validar.
+
+\begin{cajacodigo}[ThrowsDemo.java]
+\begin{lstlisting}[style=java]
+public class ThrowsDemo {
+    static int dividir(int a, int b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("No se divide por cero");
+        }
+        return a / b;
+    }
+    public static void main(String[] args) {
+        System.out.println(dividir(10, 2));     // 5
+        try {
+            dividir(10, 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Capturado: " + e.getMessage());
+        }
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Crear tus propias excepciones}
+Cuando los errores de tu programa tienen un significado propio, conviene crear excepciones específicas extendiendo \texttt{Exception} (comprobada) o \texttt{Runtime\allowbreak{}Exception} (no comprobada). Un nombre descriptivo hace el código mucho más legible y el manejo más preciso.
+
+\begin{cajacodigo}[ExcepcionPropiaDemo.java]
+\begin{lstlisting}[style=java]
+public class ExcepcionPropiaDemo {
+    public static void main(String[] args) {
+        double saldo = 100, monto = 150;
+        try {
+            if (monto > saldo) {
+                throw new SaldoInsuficienteException("Fondos insuficientes");
+            }
+        } catch (SaldoInsuficienteException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+class SaldoInsuficienteException extends RuntimeException {
+    public SaldoInsuficienteException(String mensaje) { super(mensaje); }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Ejercicios — excepciones}
+Estos ejercicios te hacen anticipar y manejar los fallos con elegancia.
+
+Maneja los errores:
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Intermedio]} Escribe un método que convierta un texto a número y capture la excepción si el texto no es válido, devolviendo 0.
+\item \textbf{[Intermedio]} Crea una excepción \texttt{Edad\allowbreak{}Invalida\allowbreak{}Exception} y lánzala si una edad es negativa.
+\item \textbf{[Avanzado]} Implementa un método de retiro en una \texttt{Cuenta} que lance \texttt{Saldo\allowbreak{}Insuficiente\allowbreak{}Exception} y captúrala donde lo llamas.
+\item \textbf{[Avanzado]} Usa \texttt{try-with-resources} para leer un recurso y garantizar que se cierra siempre.
+\end{enumerate}
+\section{Programación funcional moderna}
+Desde Java 8, el lenguaje incorpora ideas de la programación funcional que hacen el código más expresivo y conciso, sobre todo al procesar colecciones. No reemplazan a la orientación a objetos: la complementan. Verás lambdas, flujos (streams) y el manejo seguro de valores ausentes.
+
+\subsection{Interfaces funcionales y lambdas}
+Una interfaz funcional es una interfaz con un único método. Una expresión lambda es una forma breve de implementarla sin escribir una clase entera: es, en esencia, una función anónima. Las lambdas son la base de todo el estilo funcional de Java.
+
+\begin{cajacodigo}[LambdasDemo.java]
+\begin{lstlisting}[style=java]
+import java.util.function.*;
+
+public class LambdasDemo {
+    public static void main(String[] args) {
+        Function<Integer, Integer> doble = x -> x * 2;
+        System.out.println(doble.apply(5));        // 10
+        Predicate<Integer> esPar = n -> n % 2 == 0;
+        System.out.println(esPar.test(4));         // true
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Streams: procesar colecciones declarativamente}
+Un stream (flujo) permite procesar una colección describiendo QUÉ quieres hacer (filtrar, transformar, agrupar) en lugar de CÓMO recorrerla. Encadenas operaciones como \texttt{filter}, \texttt{map} y \texttt{collect}, y el resultado es un código corto y muy legible.
+
+\begin{cajacodigo}[StreamsDemo.java]
+\begin{lstlisting}[style=java]
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamsDemo {
+    public static void main(String[] args) {
+        List<Integer> numeros = List.of(1, 2, 3, 4, 5, 6);
+        List<Integer> paresAlCuadrado = numeros.stream()
+            .filter(n -> n % 2 == 0)      // quedarse con los pares
+            .map(n -> n * n)              // elevar al cuadrado
+            .collect(Collectors.toList());
+        System.out.println(paresAlCuadrado);   // [4, 16, 36]
+
+        int suma = numeros.stream().mapToInt(Integer::intValue).sum();
+        System.out.println(suma);              // 21
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Optional: el adiós al null}
+Muchos errores nacen de valores \texttt{null} inesperados. \texttt{Optional} es un envoltorio que representa explícitamente «puede haber un valor o no», obligándote a considerar el caso vacío. Es la forma moderna de devolver resultados que podrían faltar.
+
+\begin{cajacodigo}[OptionalDemo.java]
+\begin{lstlisting}[style=java]
+import java.util.*;
+
+public class OptionalDemo {
+    public static void main(String[] args) {
+        Optional<String> resultado = Optional.of("Ana");
+        System.out.println(resultado.orElse("desconocido"));   // Ana
+        Optional<String> vacio = Optional.empty();
+        System.out.println(vacio.orElse("desconocido"));       // desconocido
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Ejercicios — programación funcional}
+Estos ejercicios te hacen pensar en términos de transformaciones de datos.
+
+Piensa en flujos:
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Intermedio]} Dada una lista de nombres, usa un stream para quedarte con los que empiezan por «A» y mostrarlos en mayúsculas.
+\item \textbf{[Intermedio]} Calcula el promedio de una lista de notas con streams.
+\item \textbf{[Avanzado]} A partir de una lista de \texttt{Estudiante}, agrúpalos por carrera usando \texttt{Collectors.\allowbreak{}grouping\allowbreak{}By}.
+\item \textbf{[Avanzado]} Escribe un método que devuelva un \texttt{Optional} al buscar por id en una lista.
+\end{enumerate}
+\section{Organización del código y dependencias}
+A medida que un programa crece, su estructura importa tanto como su funcionamiento. En esta sección verás cómo organizar el código en paquetes, controlar la visibilidad, gestionar dependencias con Maven y aplicar una técnica de diseño —la inyección de dependencias— que prepara el terreno para proyectos grandes.
+
+\subsection{Paquetes}
+Un paquete agrupa clases relacionadas bajo un nombre jerárquico (por convención, en minúsculas y con tu dominio invertido, como \texttt{com.\allowbreak{}uteq.\allowbreak{}modelo}). La primera línea de cada archivo declara su paquete, y \texttt{import} trae clases de otros paquetes. Estos dos archivos, colocados en sus carpetas, forman un proyecto que se ejecuta con Maven.
+
+\begin{cajacodigo}[src/main/java/com/uteq/modelo/Estudiante.java]
+\begin{lstlisting}[style=java]
+package com.uteq.modelo;
+
+public record Estudiante(int id, String nombre) {}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[src/main/java/com/uteq/Main.java]
+\begin{lstlisting}[style=java]
+package com.uteq;
+
+import com.uteq.modelo.Estudiante;
+
+public class Main {
+    public static void main(String[] args) {
+        var e = new Estudiante(1, "Ana");
+        System.out.println(e);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Modificadores de acceso y visibilidad}
+Java controla quién puede ver cada clase, atributo o método con cuatro niveles de visibilidad. Usarlos bien refuerza la encapsulación y hace explícito qué forma parte de la interfaz pública y qué es detalle interno.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{12cm}}
+\rowcolor{javaazul}\textcolor{white}{\textbf{Modificador}} & \textcolor{white}{\textbf{Quién puede acceder}} \\
+\endfirsthead
+\rowcolor{javaazul}\textcolor{white}{\textbf{Modificador}} & \textcolor{white}{\textbf{Quién puede acceder}} \\
+\endhead
+\ttfamily\color{javaazul}public & Cualquier clase, desde cualquier paquete. \\ \hline
+\ttfamily\color{javaazul}protected & La misma clase, su paquete y las subclases. \\ \hline
+\ttfamily\color{javaazul}(sin modificador) & Solo dentro del mismo paquete (acceso de paquete). \\ \hline
+\ttfamily\color{javaazul}private & Solo dentro de la misma clase. \\ \hline
+\end{longtable}}
+\subsection{Maven a fondo: dependencias y ciclo de vida}
+Ya conoces el \texttt{pom.\allowbreak{}xml}; ahora le añadirás dependencias. Cada una se identifica por tres datos: grupo, artefacto y versión. Maven las descarga de un repositorio central y las pone en tu proyecto. Además define un ciclo de vida con fases como compilar, probar y empaquetar.
+
+\begin{cajacodigo}[Añadir una dependencia (en el pom.xml)]
+\begin{lstlisting}[style=xml]
+<dependencies>
+  <dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.7.4</version>
+  </dependency>
+</dependencies>
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[Comandos habituales de Maven]
+\begin{lstlisting}[style=markup]
+mvn compile     # compila el codigo fuente
+mvn test        # ejecuta las pruebas
+mvn package     # genera el .jar en target/
+mvn clean       # borra lo generado
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Inyección de dependencias}
+Cuando una clase necesita de otra para trabajar, hay dos formas de obtenerla: crearla dentro (acoplamiento rígido) o recibirla desde fuera, normalmente por el constructor. Esta segunda técnica se llama inyección de dependencias y hace el código más flexible y fácil de probar. El siguiente archivo la muestra completa y ejecutable, sin base de datos.
+
+\begin{cajacodigo}[InyeccionDemo.java]
+\begin{lstlisting}[style=java]
+import java.util.*;
+
+public class InyeccionDemo {
+    public static void main(String[] args) {
+        var repo = new EstudianteRepositorio();
+        var servicio = new EstudianteServicio(repo);   // se inyecta el repo
+        servicio.listar().forEach(System.out::println);
+    }
+}
+
+record Estudiante(int id, String nombre) {}
+
+class EstudianteRepositorio {
+    public List<Estudiante> listarTodos() {
+        return List.of(new Estudiante(1, "Ana"), new Estudiante(2, "Luis"));
+    }
+}
+
+class EstudianteServicio {
+    private final EstudianteRepositorio repositorio;
+    public EstudianteServicio(EstudianteRepositorio repositorio) {
+        this.repositorio = repositorio;             // recibido, no creado
+    }
+    public List<Estudiante> listar() { return repositorio.listarTodos(); }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Como el servicio no decide qué repositorio usa, puedes darle uno real o uno de prueba sin cambiar su código. Programar contra interfaces (sección 4.6) potencia aún más esta idea.
+
+\subsection{Ejercicios — organización}
+Estos ejercicios te hacen estructurar el código como en un proyecto real.
+
+Organiza y desacopla:
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Intermedio]} Reparte una pequeña aplicación en paquetes \texttt{modelo}, \texttt{servicio} y \texttt{Main}, con sus \texttt{import}.
+\item \textbf{[Intermedio]} Configura un \texttt{pom.\allowbreak{}xml} con la dependencia del conector de PostgreSQL y compílalo con \texttt{mvn compile}.
+\item \textbf{[Avanzado]} Define una interfaz \texttt{Repositorio} y dos implementaciones; inyéctala en un servicio por el constructor.
+\item \textbf{[Avanzado]} Ajusta la visibilidad de una clase para que su estado solo sea accesible mediante métodos públicos.
+\end{enumerate}
+\section{Trabajar con una base de datos (JDBC)}
+La mayoría de los programas necesitan guardar y recuperar información de forma permanente. Java accede a las bases de datos mediante JDBC (Java Database Connectivity), un conjunto de clases estándar del paquete \texttt{java.\allowbreak{}sql}. En esta sección conectarás con PostgreSQL y harás las operaciones básicas de forma segura.
+
+\begin{cajawarn}{Para ejecutar los ejemplos de esta sección}
+Necesitas PostgreSQL en ejecución, la base \texttt{appweb2026ppa} con la tabla \texttt{estudiantes}, y el conector \texttt{org.\allowbreak{}postgresql:\allowbreak{}postgresql} (añadido como dependencia de Maven). Los archivos compilan con solo el JDK, pero al ejecutarlos requieren ese conector.\par
+\end{cajawarn}
+\subsection{¿Qué es JDBC?}
+JDBC es la interfaz estándar de Java para comunicarse con bases de datos relacionales. Funciona con cualquier motor (PostgreSQL, MySQL, etc.) cambiando solo el conector y la cadena de conexión. Necesitas añadir el conector del motor como dependencia de Maven; para PostgreSQL es \texttt{org.\allowbreak{}postgresql:\allowbreak{}postgresql}.
+
+\subsection{La conexión}
+Para conectar necesitas una cadena de conexión (que indica el motor, la dirección, el puerto y la base), el usuario y la contraseña. La conexión se obtiene con \texttt{Driver\allowbreak{}Manager} y conviene abrirla dentro de un \texttt{try-with-resources} para que se cierre automáticamente al terminar.
+
+\begin{cajacodigo}[ConexionDemo.java]
+\begin{lstlisting}[style=java]
+import java.sql.*;
+
+public class ConexionDemo {
+    public static void main(String[] args) {
+        String cadena = "jdbc:postgresql://127.0.0.1:5432/appweb2026ppa";
+        String usuario = "postgres";
+        String clave   = "P@$7Gr3$QL";   // en Java las cadenas no interpolan
+        try (Connection con =
+                 DriverManager.getConnection(cadena, usuario, clave)) {
+            System.out.println("Conexion exitosa");
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Sentencias preparadas}
+Nunca incrustes datos en una consulta concatenando texto: es la puerta a la inyección SQL. En su lugar, usa \texttt{Prepared\allowbreak{}Statement} con marcadores \texttt{?\allowbreak{}} y asigna los valores aparte; el motor los trata como datos, nunca como código. Es una defensa de seguridad imprescindible.
+
+\begin{cajacodigo}[InsertarDemo.java]
+\begin{lstlisting}[style=java]
+import java.sql.*;
+
+public class InsertarDemo {
+    public static void main(String[] args) throws SQLException {
+        String cadena = "jdbc:postgresql://127.0.0.1:5432/appweb2026ppa";
+        try (Connection con =
+                 DriverManager.getConnection(cadena, "postgres", "P@$7Gr3$QL")) {
+            String sql = "INSERT INTO estudiantes (nombre, correo, carrera) "
+                       + "VALUES (?, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, "Ana Perez");
+                ps.setString(2, "ana@uteq.edu.ec");
+                ps.setString(3, "Software");
+                ps.executeUpdate();
+                System.out.println("Insertado");
+            }
+        }
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Consultar y recorrer resultados}
+Para leer datos se ejecuta una consulta y se recorre el \texttt{Result\allowbreak{}Set} que devuelve, fila por fila, con el método \texttt{next()}. De cada fila se obtienen las columnas por nombre. Conviene también aquí el \texttt{try-with-resources} para cerrar la sentencia y el resultado.
+
+\begin{cajacodigo}[ListarDemo.java]
+\begin{lstlisting}[style=java]
+import java.sql.*;
+
+public class ListarDemo {
+    public static void main(String[] args) throws SQLException {
+        String cadena = "jdbc:postgresql://127.0.0.1:5432/appweb2026ppa";
+        String sql = "SELECT id, nombre, correo FROM estudiantes ORDER BY id";
+        try (Connection con =
+                 DriverManager.getConnection(cadena, "postgres", "P@$7Gr3$QL");
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                System.out.println(rs.getInt("id") + " - " + rs.getString("nombre"));
+            }
+        }
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Transacciones}
+Cuando varias operaciones deben tener éxito o fracasar como un bloque, se agrupan en una transacción. Se desactiva la confirmación automática, se ejecutan las operaciones y se confirma con \texttt{commit}; si algo falla, se deshace todo con \texttt{rollback}.
+
+\begin{cajacodigo}[TransaccionDemo.java]
+\begin{lstlisting}[style=java]
+import java.sql.*;
+
+public class TransaccionDemo {
+    public static void main(String[] args) throws SQLException {
+        String cadena = "jdbc:postgresql://127.0.0.1:5432/appweb2026ppa";
+        try (Connection con =
+                 DriverManager.getConnection(cadena, "postgres", "P@$7Gr3$QL")) {
+            try {
+                con.setAutoCommit(false);
+                // ... varias operaciones con PreparedStatement ...
+                con.commit();                 // todo correcto
+            } catch (SQLException e) {
+                con.rollback();               // deshacer todo
+                System.out.println("Transaccion cancelada");
+            }
+        }
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Ejercicios — base de datos}
+Estos ejercicios requieren PostgreSQL en ejecución y la tabla \texttt{estudiantes}. Aplica siempre \texttt{Prepared\allowbreak{}Statement}.
+
+Trabaja con datos persistentes:
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Intermedio]} Conéctate y muestra todos los estudiantes recorriendo el \texttt{Result\allowbreak{}Set}.
+\item \textbf{[Intermedio]} Inserta un estudiante con \texttt{Prepared\allowbreak{}Statement} y comprueba cuántas filas se afectaron.
+\item \textbf{[Avanzado]} Implementa una búsqueda por nombre con \texttt{LIKE} y un marcador.
+\item \textbf{[Avanzado]} Escribe una transacción que inserte varios estudiantes y que, si uno falla, no deje ninguno.
+\end{enumerate}
+\section{Buenas prácticas y herramientas}
+Escribir Java profesional implica seguir convenciones y apoyarse en herramientas que elevan la calidad. Esta sección reúne hábitos y utilidades que conviene adoptar desde el principio, porque marcan la diferencia entre un código que solo funciona y uno que se puede mantener.
+
+\subsection{Convenciones de código}
+La comunidad Java sigue convenciones de nombres muy establecidas: las clases en \texttt{Pascal\allowbreak{}Case} (como \texttt{Estudiante\allowbreak{}Servicio}), los métodos y variables en \texttt{camel\allowbreak{}Case} (como \texttt{calcular\allowbreak{}Total}), y las constantes en \texttt{MAYUSCULAS}. Respetarlas hace tu código inmediatamente legible para cualquier otro programador.
+
+\subsection{Pruebas con JUnit}
+Las pruebas automatizadas verifican que tu código hace lo que debe y que sigue funcionando tras los cambios. JUnit es el estándar en Java. El siguiente archivo es una prueba completa; acompaña a una clase \texttt{Calculadora} del proyecto y se ejecuta con \texttt{mvn test} (necesita la dependencia de JUnit 5).
+
+\begin{cajacodigo}[CalculadoraTest.java]
+\begin{lstlisting}[style=java]
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class CalculadoraTest {
+    @Test
+    void suma() {
+        var c = new Calculadora();
+        assertEquals(5, c.sumar(2, 3));
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Registro de eventos (logging)}
+En lugar de llenar el código de \texttt{System.\allowbreak{}out.\allowbreak{}println}, los programas serios registran sus eventos con un sistema de logging, que permite clasificar los mensajes por importancia (información, advertencia, error) y controlarlos sin tocar el código. Es la forma adecuada de dejar rastro de lo que ocurre.
+
+\subsection{Empaquetado en un .jar}
+Cuando tu programa está listo, se distribuye empaquetado en un archivo \texttt{.\allowbreak{}jar}, que reúne todas tus clases compiladas. Con Maven, \texttt{mvn package} lo genera en la carpeta \texttt{target}. Ese \texttt{.\allowbreak{}jar} se ejecuta con \texttt{java -jar}, y es la forma estándar de entregar un programa Java.
+
+\subsection{Control de versiones}
+Usar un control de versiones como Git desde el primer día te permite guardar el historial de tu trabajo, volver atrás y colaborar. Recuerda no incluir en el repositorio lo generado (la carpeta \texttt{target}) ni datos sensibles; para eso sirve el archivo \texttt{.\allowbreak{}gitignore}.
+
+\section{Proyecto integrador: gestor de estudiantes en consola}
+Es hora de unir todo en un programa completo que funciona en la consola: un gestor de estudiantes con un menú que permite listar, agregar y eliminar, guardando los datos en la base. El proyecto aplica records, colecciones, excepciones, JDBC y una arquitectura por capas con inyección de dependencias.
+
+\subsection{Estructura del proyecto}
+Separaremos las responsabilidades en capas, una práctica que escala muy bien: el modelo (los datos), el repositorio (el acceso a la base), el servicio (la lógica) y el \texttt{Main} (la interacción con la persona por consola). Cada archivo es completo y va en la carpeta de su paquete.
+
+\begin{cajacodigo}[Capas del proyecto]
+\begin{lstlisting}[style=markup]
+src/main/java/com/uteq/
+|- Main.java                    # menu de consola
+|- modelo/Estudiante.java       # record con los datos
+|- repositorio/EstudianteRepositorio.java   # acceso JDBC
+|- servicio/EstudianteServicio.java          # logica y validacion
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{El modelo}
+El modelo es un \texttt{record} que representa a un estudiante. Al ser inmutable y conciso, es perfecto para transportar datos entre capas sin código repetitivo. Va en su paquete \texttt{modelo}.
+
+\begin{cajacodigo}[modelo/Estudiante.java]
+\begin{lstlisting}[style=java]
+package com.uteq.modelo;
+
+public record Estudiante(int id, String nombre,
+                         String correo, String carrera) {}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{El repositorio (acceso a datos)}
+El repositorio encapsula todo el JDBC: recibe la conexión por el constructor (inyección de dependencias) y ofrece métodos para listar, guardar y eliminar. El resto del programa no sabe nada de SQL: solo llama a estos métodos.
+
+\begin{cajacodigo}[repositorio/EstudianteRepositorio.java]
+\begin{lstlisting}[style=java]
+package com.uteq.repositorio;
+
+import com.uteq.modelo.Estudiante;
+import java.sql.*;
+import java.util.*;
+
+public class EstudianteRepositorio {
+    private final Connection con;
+    public EstudianteRepositorio(Connection con) { this.con = con; }
+
+    public List<Estudiante> listarTodos() throws SQLException {
+        var lista = new ArrayList<Estudiante>();
+        String sql = "SELECT id, nombre, correo, carrera "
+                   + "FROM estudiantes ORDER BY id";
+        try (var st = con.createStatement();
+             var rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                lista.add(new Estudiante(
+                    rs.getInt("id"), rs.getString("nombre"),
+                    rs.getString("correo"), rs.getString("carrera")));
+            }
+        }
+        return lista;
+    }
+
+    public void guardar(Estudiante e) throws SQLException {
+        String sql = "INSERT INTO estudiantes (nombre, correo, carrera) "
+                   + "VALUES (?, ?, ?)";
+        try (var ps = con.prepareStatement(sql)) {
+            ps.setString(1, e.nombre());
+            ps.setString(2, e.correo());
+            ps.setString(3, e.carrera());
+            ps.executeUpdate();
+        }
+    }
+
+    public void eliminar(int id) throws SQLException {
+        try (var ps = con.prepareStatement(
+                "DELETE FROM estudiantes WHERE id = ?")) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{El servicio (lógica y validación)}
+El servicio añade la lógica de negocio: valida los datos antes de guardarlos y coordina al repositorio. Recibe el repositorio por el constructor, de modo que no depende de cómo se accede a la base.
+
+\begin{cajacodigo}[servicio/EstudianteServicio.java]
+\begin{lstlisting}[style=java]
+package com.uteq.servicio;
+
+import com.uteq.modelo.Estudiante;
+import com.uteq.repositorio.EstudianteRepositorio;
+import java.sql.SQLException;
+import java.util.List;
+
+public class EstudianteServicio {
+    private final EstudianteRepositorio repo;
+    public EstudianteServicio(EstudianteRepositorio repo) {
+        this.repo = repo;
+    }
+
+    public List<Estudiante> listar() throws SQLException {
+        return repo.listarTodos();
+    }
+
+    public void registrar(String nombre, String correo, String carrera)
+            throws SQLException {
+        if (nombre.isBlank() || correo.isBlank() || carrera.isBlank()) {
+            throw new IllegalArgumentException("Todos los campos son obligatorios");
+        }
+        repo.guardar(new Estudiante(0, nombre, correo, carrera));
+    }
+
+    public void eliminar(int id) throws SQLException { repo.eliminar(id); }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{El programa principal (menú de consola)}
+Finalmente, el \texttt{Main} arma las piezas (crea la conexión, el repositorio y el servicio) y presenta un menú por consola con \texttt{Scanner}. Observa cómo la inyección de dependencias conecta las capas en un solo lugar.
+
+\begin{cajacodigo}[Main.java]
+\begin{lstlisting}[style=java]
+package com.uteq;
+
+import com.uteq.repositorio.EstudianteRepositorio;
+import com.uteq.servicio.EstudianteServicio;
+import java.sql.*;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) throws SQLException {
+        String cadena = "jdbc:postgresql://127.0.0.1:5432/appweb2026ppa";
+        try (Connection con = DriverManager.getConnection(
+                 cadena, "postgres", "P@$7Gr3$QL")) {
+
+            var repo = new EstudianteRepositorio(con);
+            var servicio = new EstudianteServicio(repo);   // inyeccion
+            var sc = new Scanner(System.in);
+
+            int op;
+            do {
+                System.out.println("\n1) Listar 2) Agregar 3) Eliminar 0) Salir");
+                op = Integer.parseInt(sc.nextLine());
+                switch (op) {
+                    case 1 -> servicio.listar().forEach(System.out::println);
+                    case 2 -> {
+                        System.out.print("Nombre: ");  var n = sc.nextLine();
+                        System.out.print("Correo: ");  var c = sc.nextLine();
+                        System.out.print("Carrera: "); var ca = sc.nextLine();
+                        servicio.registrar(n, c, ca);
+                    }
+                    case 3 -> {
+                        System.out.print("Id a eliminar: ");
+                        servicio.eliminar(Integer.parseInt(sc.nextLine()));
+                    }
+                }
+            } while (op != 0);
+        }
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Con estas cuatro clases tienes un programa completo y bien estructurado: el modelo transporta datos, el repositorio habla con la base, el servicio valida y el \texttt{Main} interactúa con la persona. Cada pieza se entiende y se prueba por separado.
+
+\subsection{Ejercicio integrador}
+Amplía el proyecto para consolidar todo lo aprendido.
+
+Lleva el proyecto más lejos:
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Avanzado]} Añade la operación \textbf{actualizar} (modificar el correo de un estudiante por su id).
+\item \textbf{[Avanzado]} Añade una búsqueda por carrera que muestre solo los estudiantes de esa carrera.
+\item \textbf{[Avanzado]} Extrae una interfaz \texttt{Repositorio} e implementa una versión en memoria para probar el servicio sin base de datos.
+\item \textbf{[Avanzado]} Escribe pruebas con JUnit para la validación del servicio usando esa versión en memoria.
+\item \textbf{[Avanzado]} Reemplaza los \texttt{System.\allowbreak{}out.\allowbreak{}println} por un sistema de logging.
+\end{enumerate}
+\section{Banco de ejercicios por nivel}
+Este banco reúne ejercicios adicionales para practicar de forma intensiva, agrupados por nivel. Resuélvelos en tu entorno y, cuando puedas, escribe pruebas que comprueben tu solución.
+
+\subsection{Nivel básico}
+Refuerzan la sintaxis, los tipos, los arreglos y los métodos.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item Determina si un número es primo.
+\item Cuenta cuántas vocales tiene una cadena.
+\item Calcula el factorial de un número con un método recursivo.
+\item Encuentra el mayor y el menor de un arreglo.
+\item Convierte una temperatura de Celsius a Fahrenheit en un método.
+\item Comprueba si una palabra es un palíndromo.
+\item Muestra los números del 1 al 100 múltiplos de 3 o de 5.
+\end{enumerate}
+\subsection{Nivel intermedio}
+Combinan orientación a objetos, colecciones y excepciones.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item Clase \texttt{Libro} y una lista de libros con alta, baja y listado.
+\item Cuenta la frecuencia de cada palabra de un texto con un \texttt{Map}.
+\item Jerarquía de figuras con una interfaz y cálculo de áreas (polimorfismo).
+\item Conversor de unidades con un \texttt{enum} de unidades y \texttt{switch}.
+\item Método genérico que devuelva el máximo de una lista de elementos comparables.
+\item Validador que lance excepciones propias para datos inválidos.
+\end{enumerate}
+\subsection{Nivel avanzado}
+Exigen diseño, programación funcional y trabajo con datos.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item Procesa una lista de \texttt{Estudiante} con streams: agrupa por carrera y cuenta.
+\item Repositorio con interfaz y dos implementaciones (memoria y JDBC).
+\item Gestor de tareas en consola con prioridades, ordenado con \texttt{Comparator}.
+\item Lee un archivo de texto con \texttt{try-with-resources} y resume su contenido.
+\item Suite de pruebas JUnit para la lógica de un servicio.
+\item Transacción JDBC que mueva un estudiante de una carrera a otra de forma atómica.
+\end{enumerate}
+\subsection{Proyectos propuestos}
+Para integrar todo en algo mayor, elige un proyecto y desarróllalo por etapas, con su arquitectura por capas y sus pruebas.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item Agenda de contactos en consola con persistencia en base de datos.
+\item Gestor de calificaciones con reportes por estudiante y por asignatura.
+\item Inventario de productos con altas, bajas, búsquedas y control de stock.
+\item Biblioteca con préstamos y devoluciones, validando disponibilidad en transacciones.
+\end{enumerate}
+\section{Soluciones seleccionadas}
+Aquí tienes soluciones comentadas de algunos ejercicios del banco para contrastar tu enfoque. Cada una es un archivo completo y ejecutable. Casi siempre hay más de una solución válida; lo importante es que sea correcta, clara y bien estructurada.
+
+\subsection{Número primo (básico 12.1.1)}
+Un número es primo si solo es divisible por 1 y por sí mismo. Basta con probar divisores hasta su raíz cuadrada para ser eficientes.
+
+\begin{cajacodigo}[Primo.java]
+\begin{lstlisting}[style=java]
+public class Primo {
+    static boolean esPrimo(int n) {
+        if (n < 2) return false;
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+    public static void main(String[] args) {
+        System.out.println(esPrimo(7));   // true
+        System.out.println(esPrimo(8));   // false
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Frecuencia de palabras (intermedio 12.2.2)}
+Usamos un \texttt{Map} para contar. Por cada palabra, \texttt{get\allowbreak{}Or\allowbreak{}Default} devuelve el conteo actual (o 0) y le sumamos uno.
+
+\begin{cajacodigo}[ContarPalabras.java]
+\begin{lstlisting}[style=java]
+import java.util.*;
+
+public class ContarPalabras {
+    public static void main(String[] args) {
+        String texto = "ana luis ana eva luis ana";
+        Map<String, Integer> conteo = new HashMap<>();
+        for (String palabra : texto.split(" ")) {
+            conteo.put(palabra, conteo.getOrDefault(palabra, 0) + 1);
+        }
+        System.out.println(conteo);   // {ana=3, luis=2, eva=1}
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\subsection{Agrupar con streams (avanzado 12.3.1)}
+Con \texttt{Collectors.\allowbreak{}grouping\allowbreak{}By} agrupamos los estudiantes por carrera en un mapa, y con \texttt{counting()} obtenemos cuántos hay en cada una, todo en una expresión.
+
+\begin{cajacodigo}[AgruparPorCarrera.java]
+\begin{lstlisting}[style=java]
+import java.util.*;
+import java.util.stream.*;
+
+public class AgruparPorCarrera {
+    record Estudiante(int id, String nombre, String carrera) {}
+
+    public static void main(String[] args) {
+        List<Estudiante> estudiantes = List.of(
+            new Estudiante(1, "Ana", "Software"),
+            new Estudiante(2, "Luis", "Telematica"),
+            new Estudiante(3, "Sara", "Software"));
+        Map<String, Long> porCarrera = estudiantes.stream()
+            .collect(Collectors.groupingBy(
+                Estudiante::carrera, Collectors.counting()));
+        System.out.println(porCarrera);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\section{Glosario de términos}
+Este glosario reúne los términos y siglas que aparecen en la guía, para consulta rápida durante el estudio.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3cm} >{\raggedright\arraybackslash}p{12.4cm}}
+\rowcolor{javaazul}\textcolor{white}{\textbf{Término}} & \textcolor{white}{\textbf{Significado}} \\
+\endfirsthead
+\rowcolor{javaazul}\textcolor{white}{\textbf{Término}} & \textcolor{white}{\textbf{Significado}} \\
+\endhead
+\ttfamily\color{javaazul}JDK & Java Development Kit (compilador, máquina virtual y bibliotecas). \\ \hline
+\ttfamily\color{javaazul}JVM & Java Virtual Machine (ejecuta el bytecode). \\ \hline
+\ttfamily\color{javaazul}Bytecode & Formato intermedio al que se compila Java. \\ \hline
+\ttfamily\color{javaazul}LTS & Long-Term Support (versión con soporte prolongado). \\ \hline
+\ttfamily\color{javaazul}POO & Programación Orientada a Objetos. \\ \hline
+\ttfamily\color{javaazul}Clase / Objeto & Molde / instancia concreta creada con new. \\ \hline
+\ttfamily\color{javaazul}Interfaz & Contrato de métodos que una clase implementa. \\ \hline
+\ttfamily\color{javaazul}record & Clase concisa e inmutable para transportar datos. \\ \hline
+\ttfamily\color{javaazul}enum & Conjunto fijo de valores posibles. \\ \hline
+\ttfamily\color{javaazul}Genéricos & Tipos parametrizados con \textless{}\textgreater{} para seguridad de tipos. \\ \hline
+\ttfamily\color{javaazul}Colección & Estructura de datos (List, Set, Map). \\ \hline
+\ttfamily\color{javaazul}Excepción & Objeto que representa un error en ejecución. \\ \hline
+\ttfamily\color{javaazul}Lambda & Función anónima breve. \\ \hline
+\ttfamily\color{javaazul}Stream & Flujo para procesar colecciones declarativamente. \\ \hline
+\ttfamily\color{javaazul}Optional & Envoltorio para un valor que puede faltar. \\ \hline
+\ttfamily\color{javaazul}Maven & Gestor de dependencias y construcción. \\ \hline
+\ttfamily\color{javaazul}JDBC & Java Database Connectivity (acceso a bases de datos). \\ \hline
+\ttfamily\color{javaazul}JUnit & Marco de pruebas automatizadas de Java. \\ \hline
+\end{longtable}}
+\section{Recursos y referencias}
+Para seguir aprendiendo y consultar dudas, estos son los recursos de referencia más fiables del ecosistema Java.
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item Documentación oficial de Java: \textbf{docs.oracle.com/en/java}
+\item Tutoriales oficiales (The Java Tutorials): \textbf{dev.java/learn}
+\item Distribución abierta del JDK (Temurin): \textbf{adoptium.net}
+\item Maven: \textbf{maven.apache.org}
+\item JUnit 5: \textbf{junit.org/junit5}
+\item PostgreSQL: \textbf{postgresql.org/docs}
+\end{itemize}
+Con esta guía y la práctica constante de los ejercicios, tendrás una base de Java sólida y bien estructurada, lista para abordar con confianza proyectos cada vez más ambiciosos.
+
+\end{document}
