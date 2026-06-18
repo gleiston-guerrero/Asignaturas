@@ -1,0 +1,253 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,landscape,margin=1.3cm,top=0.9cm,bottom=0.9cm]{geometry}
+\usepackage{fontspec}
+\setmainfont{Carlito}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\definecolor{azulOscuro}{RGB}{14,47,90}
+\definecolor{azulMedio}{RGB}{31,92,153}
+\definecolor{tealUteq}{RGB}{14,140,127}
+\definecolor{grisFila}{RGB}{242,246,250}
+\definecolor{grisCab}{RGB}{223,233,243}
+\definecolor{rojoElim}{RGB}{150,30,30}
+\definecolor{naranjaPen}{RGB}{176,96,16}
+\definecolor{verdeOk}{RGB}{20,110,70}
+
+\setlength{\parindent}{0pt}
+\setlength{\extrarowheight}{2pt}
+\renewcommand{\arraystretch}{1.12}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{azulMedio}UTEQ -- Facultad de Ciencias de la Computacion y Diseno Digital}
+\fancyfoot[C]{\footnotesize\color{azulMedio}Aplicaciones Distribuidas (ISR-701) -- 2026-2027 PPA}
+\fancyfoot[R]{\footnotesize\color{azulMedio}Pagina \thepage\ de \pageref{LastPage}}
+
+% Estilo de cabecera de tabla
+\newcommand{\cab}[1]{\textcolor{white}{\textbf{#1}}}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash\footnotesize}X}
+\newcolumntype{C}{>{\RaggedRight\arraybackslash\footnotesize}p{3.5cm}}
+
+\newcommand{\titulobanner}[1]{%
+\begin{tcolorbox}[colback=azulOscuro,colframe=azulOscuro,boxrule=0pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt]
+\textcolor{white}{\large\textbf{#1}}
+\end{tcolorbox}}
+
+\newcommand{\dimtitulo}[1]{%
+\vspace{4pt}\begin{tcolorbox}[colback=azulMedio,colframe=azulMedio,boxrule=0pt,arc=1pt,left=6pt,right=6pt,top=3pt,bottom=3pt]
+\textcolor{white}{\textbf{#1}}\end{tcolorbox}\vspace{-2pt}}
+
+\begin{document}
+
+% ================= PORTADA / ENCABEZADO =================
+\begin{center}
+{\LARGE\textbf{\textcolor{azulOscuro}{UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}}}\\[2pt]
+{\large\textcolor{tealUteq}{Facultad de Ciencias de la Computacion y Diseno Digital}}\\[2pt]
+{\normalsize\textcolor{azulMedio}{Carrera de Software (Redisenio) -- Aplicaciones Distribuidas [20701] -- 7mo Nivel A}}
+\end{center}
+\vspace{2pt}
+
+\titulobanner{RUBRICA DE EVALUACION -- GA-SUM-03: PE-U2 -- Arquitectura, API y Contenerizacion del Sistema}
+
+\vspace{2pt}
+\noindent
+\begin{tabularx}{\textwidth}{>{\bfseries\color{azulOscuro}}p{3.2cm}X>{\bfseries\color{azulOscuro}}p{3.2cm}X}
+\arrayrulecolor{azulMedio}
+Actividad: & GA-SUM-03 / PE-U2 (Practica Experimental Unidad 2) & Modalidad: & Grupal (equipos de 3--4) \\
+Caracter: & Sumativa -- UNICA actividad sumativa de la semana & Horas: & 9 \\
+Tema: & Diseno, implementacion y despliegue de microservicios REST con JWT, API Gateway (Nginx) y Docker Compose & Integracion: & Constituye la Entrega 2 del PFC \\
+Docente: & Guerrero Ulloa Gleiston Ciceron & Escala: & Niveles 0--4 por criterio \\
+\end{tabularx}
+
+\vspace{2pt}
+\begin{tcolorbox}[colback=grisFila,colframe=azulMedio,boxrule=0.6pt,arc=2pt,left=7pt,right=7pt,top=3pt,bottom=3pt]
+\footnotesize\textbf{\textcolor{azulOscuro}{Nota de alcance.}} El codigo administrativo del SGA (GA-SUM-03) rotula esta actividad como ``PE-U2''; su contenido tecnico corresponde a la Guia de Practica Experimental sobre microservicios, API REST y contenerizacion (Unidad 3). La rubrica evalua el sistema funcional descrito en la guia (tres microservicios, API Gateway, Docker Compose) y exige, conforme a la descripcion de la actividad, que el docker-compose levante al menos tres servicios e incluya un servicio de monitoreo (Portainer), con demostracion en vivo.
+\end{tcolorbox}
+
+\vspace{2pt}
+% ================= ESCALA Y FORMULA =================
+\noindent
+\begin{minipage}[t]{0.62\textwidth}
+\dimtitulo{Escala de valoracion por criterio (nivel)}
+\footnotesize
+\begin{tabularx}{\linewidth}{>{\centering\arraybackslash\bfseries}p{1.1cm}>{\bfseries}p{3.0cm}Y}
+\arrayrulecolor{azulMedio}\toprule
+\rowcolor{grisCab} Nivel & Categoria & Descripcion general \\ \midrule
+0 & Ausente & No se presenta evidencia del criterio. \\
+1 & Insuficiente & Evidencia minima, incorrecta o no funcional. \\
+2 & En desarrollo & Cumple parcialmente; faltan elementos clave. \\
+3 & Satisfactorio & Cumple lo requerido con detalles menores pendientes. \\
+4 & Sobresaliente & Cumple por completo, correcto y bien justificado. \\ \bottomrule
+\end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.35\textwidth}
+\dimtitulo{Calculo de la nota}
+\begin{tcolorbox}[colback=white,colframe=tealUteq,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=5pt,bottom=5pt]
+\footnotesize
+\[ \text{Puntos}_{i} = \text{peso}_{i}\times \frac{\text{nivel}_{i}}{4} \]
+\[ \text{Nota}_{/10} = \frac{1}{10}\sum_{i} \text{peso}_{i}\times \frac{\text{nivel}_{i}}{4} \]
+con $\text{peso}_i$ en \% ($\sum \text{peso}_i = 100$) y $\text{nivel}_i \in \{0,1,2,3,4\}$. El total sobre 100 equivale a la nota sobre 10.
+\end{tcolorbox}
+\end{minipage}
+
+\vspace{3pt}
+% ================= CONDICIONES ELIMINATORIAS =================
+\begin{tcolorbox}[colback=rojoElim!6,colframe=rojoElim,boxrule=1pt,arc=2pt,left=7pt,right=7pt,top=4pt,bottom=4pt]
+\footnotesize
+\textbf{\textcolor{rojoElim}{CONDICIONES ELIMINATORIAS -- la nota global de la practica es 0 si se cumple cualquiera de estas:}}
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+\item El documento \textbf{no contiene la URL del repositorio GitHub}.
+\item El \textbf{ultimo commit no corresponde a la fecha y hora de entrega} de la tarea, o el repositorio es inexistente/privado/inaccesible.
+\item Existe \textbf{una o mas referencias inventadas, fabricadas o no verificables} (DOI/ISBN inexistente o que no corresponde al titulo): se interpreta como uso de IA no declarado y se penaliza drasticamente.
+\item El sistema \textbf{no es demostrable en vivo}: \texttt{docker-compose up -{}-build} falla o los endpoints no responden.
+\item \textbf{Ausencia total de un componente obligatorio} del sistema: los tres microservicios, el API Gateway (Nginx), el archivo \texttt{docker-compose.yml} o el documento LaTeX.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{2pt}
+\begin{tcolorbox}[colback=naranjaPen!7,colframe=naranjaPen,boxrule=0.8pt,arc=2pt,left=7pt,right=7pt,top=3pt,bottom=3pt]
+\footnotesize
+\textbf{\textcolor{naranjaPen}{PENALIZACIONES (sobre 100, no eliminatorias):}} \;
+$-3$ por \textbf{ausencia de declaracion de uso de IA} (C6.4 $=0$). \quad
+$-5$ por cada \textbf{DOI invalido} cuando la fuente si existe y es verificable por otro identificador. \quad
+Las ausencias que no figuran como eliminatorias puntuan \textbf{nivel 0} en su criterio.
+\end{tcolorbox}
+
+\clearpage
+% ================= RUBRICA POR DIMENSIONES =================
+\titulobanner{Matriz de evaluacion por dimensiones y criterios (100 puntos)}
+\vspace{3pt}
+
+% ---- D1 ----
+\dimtitulo{D1. Diseno de la arquitectura (15\%)}
+\noindent\begin{tabularx}{\textwidth}{C *{5}{Y}}
+\arrayrulecolor{azulMedio}\toprule
+\rowcolor{azulMedio} \cab{Criterio (peso)} & \cab{Nivel 0 -- Ausente} & \cab{Nivel 1} & \cab{Nivel 2} & \cab{Nivel 3} & \cab{Nivel 4} \\ \midrule
+\textbf{C1.1} Definicion de los 3 microservicios y diagramas C4 nivel 2 y 3 (8\%) & Sin diagramas ni definicion. & Define servicios pero sin C4 o C4 erroneo. & C4 nivel 2 incompleto (faltan BD propias, Gateway o cliente); sin nivel 3. & C4 nivel 2 completo; nivel 3 parcial. & C4 nivel 2 y 3 completos y coherentes; auth/resource/notification bien delimitados. \\
+\rowcolor{grisFila}\textbf{C1.2} Contratos OpenAPI 3.0 (YAML) en /docs/api/ (7\%) & Sin contratos OpenAPI. & Contrato de 1 servicio o YAML invalido. & Contratos de 2 servicios o no exportados en /docs/api/. & OpenAPI 3.0 de los 3 servicios, validos, en /docs/api/. & Contratos completos (paths, esquemas, codigos, seguridad JWT), validados en Swagger Editor. \\
+\bottomrule
+\end{tabularx}
+
+% ---- D2 ----
+\dimtitulo{D2. Microservicios REST, API Gateway y autenticacion JWT (30\%)}
+\noindent\begin{tabularx}{\textwidth}{C *{5}{Y}}
+\arrayrulecolor{azulMedio}\toprule
+\rowcolor{azulMedio} \cab{Criterio (peso)} & \cab{Nivel 0 -- Ausente} & \cab{Nivel 1} & \cab{Nivel 2} & \cab{Nivel 3} & \cab{Nivel 4} \\ \midrule
+\textbf{C2.1} Tres microservicios REST funcionales (16\%) & Sin microservicios funcionales. & Solo 1 responde; sin BD propia; respuesta no estandar. & 2 funcionales; JSON \{status,data,message,timestamp\} parcial; BD compartida. & Los 3 responden; BD propia por servicio; JSON estandar en su mayoria. & auth (login$\to$JWT 1h, /validate), resource (CRUD con JWT Bearer), notification (POST /notifications); BD propia; JSON consistente. \\
+\rowcolor{grisFila}\textbf{C2.2} API Gateway Nginx (8\%) & Sin Gateway. & Nginx presente pero no enruta. & Enruta a los 3 servicios; sin rate limiting ni logging. & Enrutamiento correcto + rate limiting o logging (no ambos). & Enruta /api/auth,/resources,/notifications; rate limit 100 req/min/IP; logging completo; escucha :8080. \\
+\textbf{C2.3} Autenticacion JWT (6\%) & Sin JWT. & Mencionado pero no funcional. & Genera JWT pero no se verifica en endpoints. & Genera y verifica JWT (Bearer); expiracion configurada. & Flujo completo: emision (exp 1h), verificacion Bearer en endpoints protegidos, manejo de 401. \\
+\bottomrule
+\end{tabularx}
+
+\clearpage
+\titulobanner{Matriz de evaluacion (continuacion)}
+\vspace{3pt}
+% ---- D3 ----
+\dimtitulo{D3. Contenerizacion con Docker (20\%)}
+\noindent\begin{tabularx}{\textwidth}{C *{5}{Y}}
+\arrayrulecolor{azulMedio}\toprule
+\rowcolor{azulMedio} \cab{Criterio (peso)} & \cab{Nivel 0 -- Ausente} & \cab{Nivel 1} & \cab{Nivel 2} & \cab{Nivel 3} & \cab{Nivel 4} \\ \midrule
+\textbf{C3.1} Dockerfile multi-stage por microservicio (6\%) & Sin Dockerfile. & Un solo stage o no construye. & Funcional pero sin multi-stage en todos. & Multi-stage (builder+runtime) en la mayoria. & Multi-stage optimizado en los 3; imagenes ligeras. \\
+\rowcolor{grisFila}\textbf{C3.2} docker-compose, monitoreo, .env y demo en vivo (14\%) & Sin compose o el sistema no levanta. & Levanta parcial; faltan servicios; up -{}-build con errores. & Levanta microservicios y BD; sin Nginx o sin monitoreo; sin red bridge. & Compose completo (servicios+BD+Nginx+red) + .env.example sin secretos; up -{}-build sin errores. & + monitoreo (Portainer) operativo; demo en vivo fluida; $\geq$3 endpoints via Postman durante la demostracion. \\
+\bottomrule
+\end{tabularx}
+
+% ---- D4 ----
+\dimtitulo{D4. Pruebas y resultados (10\%)}
+\noindent\begin{tabularx}{\textwidth}{C *{5}{Y}}
+\arrayrulecolor{azulMedio}\toprule
+\rowcolor{azulMedio} \cab{Criterio (peso)} & \cab{Nivel 0 -- Ausente} & \cab{Nivel 1} & \cab{Nivel 2} & \cab{Nivel 3} & \cab{Nivel 4} \\ \midrule
+\textbf{C4.1} Flujos Postman + tabla de resultados (10\%) & Sin pruebas documentadas. & Capturas sueltas sin flujos. & 1--2 flujos; sin tabla de resultados. & Los 3 flujos (register$\to$login$\to$JWT; CRUD con/sin token; recurso$\to$notificacion) con capturas; tabla parcial. & Los 3 flujos end-to-end con capturas + tabla booktabs (endpoint$|$metodo$|$codigo esperado$|$obtenido$|$latencia ms) completa. \\
+\bottomrule
+\end{tabularx}
+
+\clearpage
+% ---- D5 ----
+\titulobanner{Matriz de evaluacion (continuacion)}
+\vspace{3pt}
+\dimtitulo{D5. Fundamento teorico Unidad 3 y analisis (10\%)}
+\noindent\begin{tabularx}{\textwidth}{C *{5}{Y}}
+\arrayrulecolor{azulMedio}\toprule
+\rowcolor{azulMedio} \cab{Criterio (peso)} & \cab{Nivel 0 -- Ausente} & \cab{Nivel 1} & \cab{Nivel 2} & \cab{Nivel 3} & \cab{Nivel 4} \\ \midrule
+\textbf{C5.1} Cuatro subtemas U3 (6\%) & Ausente. & Un subtema; sin referencias ni diagramas. & 2--3 subtemas; $<$300 palabras; pocas referencias. & Los 4 subtemas; $\geq$300 palabras; $\geq$2 refs IEEE con DOI; diagramas/codigo en su mayoria. & Los 4 completos ($\geq$300 pal., $\geq$2 refs IEEE con DOI verificado, diagrama propio y codigo lstlisting); tabla comparativa booktabs en 2.1. \\
+\rowcolor{grisFila}\textbf{C5.2} Cuatro preguntas de analisis (4\%) & Sin respuestas. & 1 pregunta superficial. & 2 preguntas respondidas. & 3--4 con argumentacion basica. & Las 4 (Database per Service, Circuit Breaker, cuello de botella del Gateway, escalado a 3 replicas) con rigor y justificacion. \\
+\bottomrule
+\end{tabularx}
+
+% ---- D6 ----
+\dimtitulo{D6. Documento LaTeX, repositorio e integridad (15\%)}
+\noindent\begin{tabularx}{\textwidth}{C *{5}{Y}}
+\arrayrulecolor{azulMedio}\toprule
+\rowcolor{azulMedio} \cab{Criterio (peso)} & \cab{Nivel 0 -- Ausente} & \cab{Nivel 1} & \cab{Nivel 2} & \cab{Nivel 3} & \cab{Nivel 4} \\ \midrule
+\textbf{C6.1} Documento LaTeX (5\%) & No compila o no es LaTeX. & Compila con errores; $<$12 pag.; sin lstlisting/booktabs. & Compila; $\sim$12 pag.; figuras sin caption/label; listados parciales. & $\geq$12 pag.; compila sin errores; figuras con caption/label; lstlisting (OpenAPI, Dockerfile, nginx.conf) y booktabs. & Impecable: $\geq$12 pag., sin warnings relevantes, figuras y listados etiquetados, booktabs, estructura IEEE. \\
+\rowcolor{grisFila}\textbf{C6.2} Referencias verificables (4\%) & Sin referencias o \textbf{fabricadas} (eliminatoria). & $<$4 refs; varias sin DOI/ISBN. & $\geq$4 refs; algunas no verificables. & $\geq$6 refs IEEE con DOI/ISBN verificables. & $\geq$8 refs IEEE (incluye las de la guia), \textbf{todas} verificadas y correspondientes al titulo. \\
+\textbf{C6.3} Repositorio GitHub y commit (4\%) & Sin URL en el documento (eliminatoria) o repo inexistente/privado. & URL presente pero repo vacio o sin estructura. & Publico con codigo; estructura incompleta (sin /docs/api). & Publico, estructura correcta; ultimo commit cercano a la entrega. & Publico, estructura completa (/docs/api, microservicios, compose, .env.example); \textbf{ultimo commit con fecha y hora $=$ entrega}. \\
+\rowcolor{grisFila}\textbf{C6.4} Declaracion de uso de IA (2\%) & Sin declaracion ($-3$ sobre 100). & Menciona IA sin detalle. & Declara herramienta pero no el uso. & Declara herramienta y para que se uso. & Declaracion completa: herramienta(s), como y para que (texto/codigo), con responsabilidad sobre el resultado. \\
+\bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+\clearpage
+% ================= HOJA DE PUNTUACION =================
+\titulobanner{Hoja de puntuacion del evaluador}
+\vspace{2pt}
+\noindent
+\begin{minipage}[t]{0.66\textwidth}
+\footnotesize
+\begin{tabularx}{\linewidth}{>{\bfseries}p{1.1cm}>{\RaggedRight\arraybackslash}X>{\centering\arraybackslash}p{1.2cm}>{\centering\arraybackslash}p{1.6cm}>{\centering\arraybackslash}p{1.7cm}}
+\arrayrulecolor{azulMedio}\toprule
+\rowcolor{grisCab} Crit. & Descripcion & Peso \% & Nivel (0--4) & Puntos \\ \midrule
+C1.1 & Microservicios + C4 N2/N3 & 8 & & \\
+C1.2 & Contratos OpenAPI 3.0 & 7 & & \\
+C2.1 & 3 microservicios REST & 16 & & \\
+C2.2 & API Gateway Nginx & 8 & & \\
+C2.3 & Autenticacion JWT & 6 & & \\
+C3.1 & Dockerfile multi-stage & 6 & & \\
+C3.2 & Compose + monitoreo + demo & 14 & & \\
+C4.1 & Pruebas Postman + tabla & 10 & & \\
+C5.1 & Fundamento teorico U3 & 6 & & \\
+C5.2 & Preguntas de analisis & 4 & & \\
+C6.1 & Documento LaTeX & 5 & & \\
+C6.2 & Referencias verificables & 4 & & \\
+C6.3 & Repositorio + commit & 4 & & \\
+C6.4 & Declaracion de IA & 2 & & \\ \midrule
+\rowcolor{grisFila}\multicolumn{2}{r}{\textbf{Subtotal (sobre 100)}} & \textbf{100} & & \\
+\multicolumn{2}{r}{\textbf{Penalizaciones}} & & & \\
+\rowcolor{grisFila}\multicolumn{2}{r}{\textbf{Total / 100}} & & & \\
+\multicolumn{2}{r}{\textbf{\textcolor{azulOscuro}{NOTA / 10}}} & & & \\
+\bottomrule
+\end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\textwidth}
+\dimtitulo{Preguntas para la defensa / demo}
+\footnotesize
+\begin{enumerate}[leftmargin=1.3em,itemsep=2pt,topsep=2pt]
+\item Ejecute \texttt{docker-compose up -{}-build} y muestre los servicios y el monitoreo (Portainer) activos.
+\item Demuestre con Postman el flujo login $\to$ JWT $\to$ acceso a un endpoint protegido (401 sin token, 200 con token).
+\item ?Por que cada microservicio tiene su propia base de datos? Explique el patron Database per Service.
+\item Si \texttt{resource-service} cae, ?como aplicaria un Circuit Breaker? ?Como escalaria a 3 replicas en Compose y que cambiaria en Nginx?
+\end{enumerate}
+\vspace{2pt}
+\begin{tcolorbox}[colback=verdeOk!6,colframe=verdeOk,boxrule=0.7pt,arc=1pt,left=5pt,right=5pt,top=3pt,bottom=3pt]
+\footnotesize Verificar el ultimo commit: \texttt{git log -1 -{}-format=\%cd} debe coincidir con la fecha y hora de entrega.
+\end{tcolorbox}
+\end{minipage}
+
+\vspace{10pt}
+\noindent
+\begin{tabularx}{\textwidth}{XX}
+\centering \rule{6cm}{0.4pt}\par GUERRERO ULLOA GLEISTON CICERON\par CI: 0913531752 -- Docente responsable &
+\centering \rule{6cm}{0.4pt}\par PONCE ORDONEZ JESSICA ALEXANDRA\par CI: 1205316456 -- Coordinador de carrera \tabularnewline
+\end{tabularx}
+
+\end{document}

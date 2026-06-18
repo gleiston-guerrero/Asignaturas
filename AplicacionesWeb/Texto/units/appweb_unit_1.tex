@@ -1,0 +1,3713 @@
+\part{Fundamentos y Diseño Web}
+\label{parte:unidad1}
+
+% =====================================================================
+%   CAPITULO 1: ENCUADRE Y FUNDAMENTOS — VERSIÓN MEJORADA v3
+% =====================================================================
+\chapter{Encuadre académico y fundamentos de las aplicaciones web}
+\label{cap:semana1}
+
+\epigraph{«La web no es un medio: es un ecosistema. Comprender sus
+fundamentos es comprender la infraestructura digital de la civilización
+contemporánea.»}{--- \textit{Tim Berners-Lee, inventor de la World Wide Web}}
+
+\section*{Resultado de aprendizaje del capítulo}
+Al concluir el capítulo 1, el estudiante construye interfaces web
+semánticas, accesibles y responsivas \textbf{en su nivel introductorio},
+integrando HTML5, CSS3 y JavaScript para crear aplicaciones del lado
+del cliente que cumplan con los estándares del W3C y los principios del
+diseño web inclusivo (WCAG 2.1) \cite{w3c2018wcag}.
+
+\section{Encuadre académico de la asignatura}
+
+Antes de adentrarnos en los aspectos técnicos del desarrollo web,
+conviene situar la asignatura dentro del plan de estudios y aclarar
+los acuerdos que regirán el trabajo durante las dieciocho capítulos.
+Esta sección presenta tres aspectos institucionales fundamentales: la
+ubicación curricular de la materia y los conocimientos previos que se
+asumen; las modalidades formales de evaluación según la norma
+académica de la UTEQ; y las políticas profesionales que se aplicarán
+en clase (asistencia, entregas, integridad académica). La claridad
+sobre estos acuerdos al inicio del curso evita malentendidos
+posteriores y permite al estudiante planificar su esfuerzo con
+realismo.
+
+\subsection{Ubicación curricular y prerrequisitos}
+
+La asignatura Aplicaciones Web pertenece al campo de estudio de
+\emph{Diseño de Software (DES.dd)} en la Carrera de Ingeniería de
+Software, ubicada en el quinto período académico de la malla curricular
+vigente dentro de la Unidad de Organización Curricular Profesional.
+Posee tres créditos académicos distribuidos en 144 horas totales, de
+las cuales 48 corresponden a clases presenciales teóricas y prácticas,
+48 al aprendizaje autónomo y 48 al contacto directo con el docente.
+
+Sus prerrequisitos formales son \emph{Base de Datos} y \emph{Estructura
+de Datos}, ambos de tercer nivel. El primero garantiza que el
+estudiante maneje el modelo relacional y el lenguaje SQL como insumo
+indispensable para el acceso a datos del bloque servidor; el segundo
+asegura el dominio de listas, árboles, mapas hash y la complejidad
+algorítmica $O(n\log n)$ y $O(n^2)$, elementos sin los cuales no es
+posible diseñar APIs eficientes ni razonar sobre escalabilidad. La
+ausencia de cualquiera de estos prerrequisitos compromete severamente
+el aprovechamiento del curso.
+
+\subsection{Articulación con el SWEBOK Guide v4.0}
+
+El \emph{Software Engineering Body of Knowledge} en su cuarta versión
+\cite{washizaki2024swebok} reconoce explícitamente al desarrollo web
+como una de las áreas transversales de la práctica profesional. La
+asignatura articula los siguientes núcleos del SWEBOK: requisitos de
+software (KA02), diseño de software (KA03), construcción de software
+(KA04), calidad del software (KA10) y seguridad de software (KA15). El
+estudiante no construye únicamente código que «funciona»; construye
+software que satisface estándares internacionales de calidad,
+seguridad y accesibilidad.
+
+\subsection{Competencias por desarrollar}
+
+Esta asignatura forma al estudiante en cuatro frentes complementarios:
+la \textbf{capacidad técnica} de implementar interfaces y servicios
+web modernos; el \textbf{razonamiento arquitectónico} para tomar
+decisiones de diseño justificadas; la \textbf{conciencia de calidad}
+(seguridad, rendimiento, accesibilidad); y la \textbf{disciplina
+profesional} (versionado, pruebas, documentación). La caja siguiente
+recoge la formulación oficial de la competencia general.
+
+
+\begin{cajadefinicion}{Competencia general de la asignatura}
+Analizar, diseñar, implementar y evaluar aplicaciones web mediante
+tecnologías de diseño, lenguajes de programación cliente y servidor,
+patrones de arquitectura y servicios web, aplicando estándares de
+calidad, accesibilidad e inclusión, con el fin de construir
+\emph{soluciones informáticas robustas, escalables y pertinentes} que
+respondan a las necesidades productivas, sociales y tecnológicas del
+Ecuador, de la región y del mundo.
+\end{cajadefinicion}
+
+Esta competencia general se descompone en cuatro resultados de
+aprendizaje unitarios (RAU):
+
+\begin{description}[leftmargin=1.5cm]
+\item[RAU 1.] Construir interfaces web semánticas, accesibles y
+responsivas con HTML5, CSS3 y JavaScript siguiendo W3C y WCAG 2.1.
+\item[RAU 2.] Desarrollar aplicaciones web dinámicas del lado del
+servidor con PERL, PHP, ASP.NET y Java/JSP, implementando lógica de
+negocio, procesamiento de formularios y mecanismos de seguridad.
+\item[RAU 3.] Diseñar e implementar soluciones web que integren gestión
+de estado, acceso a datos relacionales mediante SQL parametrizado y
+ORM, y patrones arquitectónicos escalables (multicapa, SOA, EDA, P2P).
+\item[RAU 4.] Construir una aplicación web completa bajo el patrón MVC
+con un \emph{framework} moderno, exponiendo e integrando servicios web
+REST y SOAP, y aplicando criterios de calidad, seguridad e
+interoperabilidad.
+\end{description}
+
+\subsection{Sistema de evaluación}
+
+La calificación final se construye a partir de tres tipos de  actividades ponderadas según la Norma Académica de la UTEQ:
+\emph{Gestión del Aprendizaje (GA)}, \emph{Tareas y Proyectos Autónomos (TA)} y \emph{Evaluaciones (EV)}. El curso tiene una duración de 20 semanas, de las cuáles 18 son de clases y dos semanas de exámenes (19 y 20). El programa de la asignatura se desarrolla en 16 semanas, organizado en dos cortes evaluativos (semana 9 y 17) y un Proyecto Fin de Curso entregado en tres hitos parciales (semanas 5, 9 y 12) y uno final o completo en la semana 16.
+
+\section{Historia de las aplicaciones web}
+
+Comprender la web actual exige conocer su origen: las decisiones arquitectónicas tomadas en los años noventa (HTTP sin estado, URLs opacas, hipertexto distribuido) condicionan todavía hoy la forma en que diseñamos aplicaciones. La siguiente caja presenta los hitos
+fundacionales que conviene tener presente como contexto histórico permanente.
+
+
+\begin{cajahistoria}{Los orígenes --- del hipertexto a la World Wide Web} La idea del hipertexto precede a la web por décadas. Vannevar Bush
+concibió en 1945 el sistema \emph{Memex} en el artículo \emph{«As We
+May Think»} publicado en \emph{The Atlantic Monthly}, una máquina
+capaz de almacenar libros y vincularlos mediante asociaciones
+siguiendo el modo en que opera la mente humana \cite{bush1945memex}.
+Ted Nelson acuñó el término \emph{hipertexto} en 1965 dentro de su
+proyecto Xanadu, que aspiraba a crear un repositorio universal de
+documentos enlazados \cite{nelson1965xanadu}.
+
+El paso decisivo lo dio Tim Berners-Lee en marzo de 1989 cuando, en el
+laboratorio del CERN en Ginebra, presentó el documento titulado
+\emph{«Information Management: A Proposal»} \cite{bernerslee1989}. Su
+intención era resolver un problema interno: la fuga de información
+cuando los investigadores abandonaban el centro. La propuesta combinó
+tres ingredientes existentes (el hipertexto, los protocolos de internet
+y el sistema de nombres de dominio) en un sistema nuevo: la World Wide
+Web.
+
+A finales de 1990, Berners-Lee había desarrollado en una computadora
+NeXT los tres pilares fundacionales de la web: el primer servidor
+(\texttt{CERN httpd}), el primer navegador (\texttt{WorldWideWeb},
+luego renombrado \texttt{Nexus} para evitar confusión con la red) y el
+primer documento HTML. El 6 de agosto de 1991 se publicó el primer
+sitio web público, alojado en \texttt{info.cern.ch}, que aún puede
+visitarse en su versión preservada en
+\url{http://info.cern.ch/hypertext/WWW/TheProject.html}
+\cite{cern1991firstsite}.
+\end{cajahistoria}
+
+\subsection{Las tres eras de la web}
+
+La World Wide Web no es un fenómeno monolítico: ha atravesado tres
+grandes eras evolutivas que reflejan tanto cambios tecnológicos como
+transformaciones sociales profundas en cómo las personas interactúan
+con la información digital. Comprender estas eras es indispensable
+para situar el desarrollo web contemporáneo dentro de una trayectoria
+histórica significativa, y para anticipar hacia dónde se dirige.
+
+Cada era se caracteriza por una combinación distintiva de:
+\emph{(i)} el modelo de participación dominante (quién produce y quién
+consume el contenido), \emph{(ii)} las tecnologías facilitadoras que
+hicieron posible esa participación, \emph{(iii)} los modelos de
+negocio que emergieron y \emph{(iv)} las consecuencias sociales y
+políticas observables. Berners-Lee, en su revisión retrospectiva de
+2019, describió esta evolución como un «doloroso aprendizaje»
+porque ninguna era ha estado exenta de patologías propias: la Web 1.0
+fue limitada en participación, la Web 2.0 concentró poder en
+plataformas, y la Web 3.0 enfrenta el desafío de la
+descentralización genuina \cite{bernerslee2019contract}.
+
+\subsubsection{Web 1.0 --- la web de los documentos (1989--2004)}
+
+Esta primera era se caracterizó por el modelo \emph{de solo lectura}
+(\emph{read-only web}): una minoría de autores con conocimientos
+técnicos publicaba contenido, y la mayoría lo consumía pasivamente.
+Las páginas eran fundamentalmente estáticas, escritas a mano en HTML
+sin interactividad significativa. O'Reilly y Battelle
+\cite{oreilly2009web2} caracterizaron esta era como la del «sitio web
+folleto»: una transposición digital del medio impreso.
+
+Los navegadores dominantes evolucionaron desde el pionero Mosaic
+(1993), liderado por Marc Andreessen y Eric Bina en el NCSA, que fue
+el primero en mostrar imágenes \emph{inline} junto al texto, hasta
+Netscape Navigator (1994), que popularizó la web entre el público
+general. La respuesta de Microsoft fue Internet Explorer (1995),
+desencadenando la \emph{primera guerra de los navegadores} que duró
+hasta aproximadamente 2003 con la victoria temporal de IE6 (alcanzó
+95\% de cuota de mercado en 2003) y la consiguiente década de
+estancamiento en estándares web \cite{zeldman2010designing}.
+
+\subsubsection{Web 2.0 --- la web social (2004--2014)}
+
+El término \emph{Web 2.0} lo popularizó Tim O'Reilly durante una
+conferencia homónima en octubre de 2004 \cite{oreilly2005what}. Su
+característica distintiva: la \emph{participación}. Los usuarios
+pasaron de consumidores a productores de contenido mediante blogs,
+wikis, redes sociales y plataformas de video. O'Reilly resumió la
+filosofía como «la web como plataforma», donde el valor reside en los
+datos generados por usuarios y los efectos de red.
+
+Tecnológicamente esta era se sostuvo en cuatro pilares:
+
+\begin{itemize}
+\item \textbf{AJAX} (Asynchronous JavaScript And XML), formalizado por
+Jesse James Garrett en su artículo seminal de febrero de 2005
+\cite{garrett2005ajax}, que permitió actualizar partes de una página
+sin recargarla. Google Maps (lanzado ese mismo mes) fue la
+demostración pública más espectacular del paradigma.
+\item \textbf{Frameworks JavaScript de primera generación}: Prototype
+(2005), MooTools (2006) y especialmente jQuery (2006), creado por
+John Resig, que para 2013 estaba presente en más del 60\% de los
+sitios web del mundo.
+\item \textbf{Plataformas sociales}: Facebook (2004), YouTube (2005),
+Twitter (2006), GitHub (2008), Instagram (2010), Pinterest (2010).
+\item \textbf{APIs públicas}: Google Maps API (2005), Twitter API
+(2006), Flickr API, abriendo el camino a los \emph{mashups} y al
+ecosistema de aplicaciones de terceros.
+\end{itemize}
+
+Esta era también vio surgir las críticas: van Dijck
+\cite{vandijck2013culture} analizó cómo las «plataformas sociales»
+construyeron una nueva forma de capitalismo informacional basada en
+la captura y monetización de datos personales, fenómeno que Zuboff
+\cite{zuboff2019capitalismo} bautizó como \emph{capitalismo de
+vigilancia}.
+
+\subsubsection{Web 3.0 --- la web semántica, descentralizada e inteligente (2014--presente)}
+
+La tercera era convive con tres significados parcialmente solapados:
+
+\begin{enumerate}
+\item La \emph{Semantic Web} originalmente propuesta por Berners-Lee,
+Hendler y Lassila en \emph{Scientific American} en 2001
+\cite{bernerslee2001semantic}, basada en RDF, OWL y SPARQL, que busca
+representar el significado de la información para que las máquinas
+razonen sobre ella. Su realización plena ha sido más lenta de lo
+previsto, pero subyace en proyectos como \emph{schema.org} (consorcio
+de Google, Microsoft, Yahoo y Yandex desde 2011), Wikidata y los
+\emph{Knowledge Graphs} de los buscadores modernos.
+
+\item La \emph{web descentralizada} (Web3 en sentido estricto),
+emergente desde 2017, que reposa sobre blockchain, IPFS y contratos
+inteligentes. Wood \cite{wood2014ethereum} acuñó el término con la
+publicación del whitepaper de Ethereum. Sus aplicaciones (dApps)
+incluyen finanzas descentralizadas (DeFi), tokens no fungibles (NFT)
+y identidad soberana.
+
+\item La \emph{web inteligente} potenciada por IA generativa,
+emergente desde 2023 con ChatGPT, Claude y GitHub Copilot. Sus
+implicaciones en el desarrollo web son tan profundas que algunos
+autores hablan ya de una \emph{cuarta era} en gestación
+\cite{kreutzer2024ai}.
+\end{enumerate}
+
+En paralelo, las aplicaciones SPA (Single Page Applications) y PWA
+(Progressive Web Applications) desplazan progresivamente al modelo
+\emph{server-rendered} clásico, y la integración de IA generativa
+(2023+) está redefiniendo nuevamente el panorama del desarrollo
+profesional.
+
+\subsection{Evolución temporal de los hitos web}
+
+La tabla \ref{tab:hitos-web} sintetiza los hitos cronológicos más
+relevantes de la trayectoria de la web. No se trata de una lista
+exhaustiva sino de los eventos que cualquier profesional del
+desarrollo web debe conocer porque cada uno de ellos transformó la
+manera de construir software para la web. Los hitos están organizados
+en cinco grandes movimientos: \emph{(a)} la fundación
+(1989--1995), \emph{(b)} la estandarización (1995--2004), \emph{(c)}
+la era social (2004--2014), \emph{(d)} la madurez técnica
+(2014--2022) y \emph{(e)} la era de la inteligencia generativa
+(2023--presente).
+
+\begin{table}[!htb]
+\centering
+\caption{Hitos seleccionados de la historia de las aplicaciones web.}
+\label{tab:hitos-web}
+\footnotesize
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Año} & \textbf{Hito}\\
+\midrule
+\multicolumn{2}{l}{\emph{(a) Fundación}}\\
+1989 & Tim Berners-Lee propone la WWW en el CERN.\\
+1990 & Primer servidor (\texttt{CERN httpd}) y navegador (\texttt{WorldWideWeb}).\\
+1991 & Publicación del primer sitio web (\texttt{info.cern.ch}).\\
+1993 & Mosaic populariza la navegación con imágenes inline.\\
+1993 & Especificación CGI 1.0 para programación del servidor.\\
+1994 & Fundación del W3C en MIT; nace Netscape Navigator.\\
+\midrule
+\multicolumn{2}{l}{\emph{(b) Estandarización}}\\
+1995 & Brendan Eich crea JavaScript en 10 días para Netscape.\\
+1995 & PHP/FI (Personal Home Page Tools) de Rasmus Lerdorf.\\
+1996 & CSS1 publicado como recomendación W3C.\\
+1996 & Macromedia Flash y los \emph{cookies} de Netscape.\\
+1998 & XML 1.0 estandarizado; nace Google.\\
+1999 & ECMAScript 3, base estable de JavaScript por más de una década.\\
+2003 & WordPress y MediaWiki marcan la era de los CMS.\\
+\midrule
+\multicolumn{2}{l}{\emph{(c) Era social}}\\
+2004 & Web 2.0 (O'Reilly); nace Facebook.\\
+2005 & AJAX formalizado; lanzamiento de YouTube; Google Maps.\\
+2006 & jQuery; Twitter; Amazon Web Services (S3, EC2).\\
+2008 & Google Chrome con motor V8; Android SDK 1.0.\\
+2009 & HTML5 borrador funcional WHATWG; Node.js (Ryan Dahl).\\
+2010 & Responsive Web Design (Ethan Marcotte).\\
+2011 & Laravel (Taylor Otwell); React (Jordan Walke, 2013).\\
+\midrule
+\multicolumn{2}{l}{\emph{(d) Madurez técnica}}\\
+2014 & HTML5 oficial W3C; ECMAScript 6 anunciado (publicado en 2015).\\
+2015 & ES6 (ES2015); Angular 2 reescrito desde AngularJS.\\
+2018 & GDPR; Web Components estables; PWA en producción.\\
+2019 & WebAssembly 1.0 estandarizado.\\
+2020 & .NET 5 unifica .NET Framework y .NET Core.\\
+2021 & OWASP Top 10:2021; HTTP/3 (RFC 9114).\\
+2022 & ECMAScript 2022 (ES13); Angular 14 con standalone components.\\
+\midrule
+\multicolumn{2}{l}{\emph{(e) Era de la IA generativa}}\\
+2023 & GitHub Copilot, ChatGPT, Claude transforman el desarrollo.\\
+2024 & SWEBOK Guide v4.0; PHP 8.3; Spring Boot 3.2; .NET 8 LTS.\\
+2026 & ECMAScript 2025; HTML Living Standard al día; IA agentic en IDEs.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Fundamentos de las aplicaciones web}
+
+Los fundamentos de las aplicaciones web no son meros tecnicismos
+introductorios: constituyen el marco conceptual sobre el que se
+edifica todo el resto del curso. Sin una comprensión sólida de qué
+es exactamente una aplicación web, cómo se distingue de otros tipos
+de software, qué arquitecturas la sostienen y cuáles son sus ventajas
+y limitaciones, el aprendizaje posterior se vuelve mecánico y
+superficial. Como observa Shklar y Rosen \cite{shklar2009web}, las
+aplicaciones web son hoy «el género dominante del software»: la
+mayoría de las personas interactúa más horas al día con aplicaciones
+web (Gmail, redes sociales, banca en línea, sistemas educativos) que
+con cualquier otro tipo de software.
+
+Esta sección establece las definiciones operativas, la tipología y
+los modelos arquitectónicos esenciales que el estudiante usará como
+referencia durante las 18 capítulos del curso.
+
+\subsection{Definición y clasificación de aplicaciones web}
+
+Una \textbf{aplicación web} es un programa de software cuya lógica se
+ejecuta en uno o varios servidores remotos y cuya interfaz de usuario
+se distribuye al cliente a través del Hypertext Transfer Protocol
+(HTTP) y se renderiza en un navegador o agente de usuario. A diferencia
+de una aplicación de escritorio, no requiere instalación local; a
+diferencia de una página web estática, su contenido se genera
+dinámicamente en respuesta a las acciones del usuario y al estado del
+servidor \cite{shklar2009web}.
+
+Siguiendo la clasificación de Ganzábal García
+\cite{deitel2017java} y la actualización de Nixon
+\cite{nixon2021learning}, las aplicaciones web modernas se agrupan en
+seis tipologías principales que conviene distinguir:
+
+\begin{enumerate}
+\item \textbf{Aplicaciones web estáticas.} Sirven HTML, CSS y
+JavaScript pre-compilado sin procesamiento de servidor más allá del
+envío de archivos. Su contenido cambia solo cuando el desarrollador
+publica una nueva versión. Ejemplo canónico: un currículum vitae
+publicado en GitHub Pages, o un blog personal generado con Jekyll o
+Hugo. \textbf{Ventaja:} rendimiento extremo (respuesta en
+milisegundos desde un CDN). \textbf{Limitación:} incapacidad de
+personalización por usuario.
+
+\item \textbf{Aplicaciones web dinámicas.} Generan el HTML en el
+servidor en cada petición. La lógica reside en lenguajes como PHP,
+Java, Python, Ruby o C\#. Cada usuario ve una versión personalizada
+del contenido según su sesión, sus permisos, los datos almacenados en
+bases de datos. \textbf{Ejemplo:} el portal de matrícula de la UTEQ;
+un panel de administración construido con Laravel; cualquier sitio
+WordPress.
+
+\item \textbf{Aplicaciones de página única (SPA).} Cargan un único
+HTML inicial y a partir de ahí toda la interacción ocurre vía
+JavaScript que consume APIs REST o GraphQL. La navegación entre
+«páginas» ocurre sin recargar el navegador, gracias a la History API.
+\textbf{Ejemplos:} Gmail, Trello, Notion. Frameworks habituales en
+2026: React 19, Angular 19, Vue 3.5, Svelte 5.
+
+\item \textbf{Aplicaciones web progresivas (PWA).} Combinan SPA con
+capacidades nativas: instalación en pantalla de inicio,
+notificaciones push, funcionamiento offline, acceso a sensores del
+dispositivo. \textbf{Tecnologías:} Service Workers, Web App Manifest,
+IndexedDB. Twitter Lite fue uno de los primeros casos de éxito; en
+Latinoamérica, Pinterest PWA y MercadoLibre han demostrado mejoras
+del 60\% en retención de usuarios \cite{richards2020fundamentals}.
+
+\item \textbf{Aplicaciones de comercio electrónico.} Subgénero
+especializado con flujos transaccionales: catálogo, carrito, pasarela
+de pago (PayPal, Stripe, Datafast en Ecuador), gestión de pedidos,
+post-venta. Plataformas dominantes: Shopify, WooCommerce,
+Magento/Adobe Commerce.
+
+\item \textbf{Portales corporativos y \emph{e-government}.}
+Aplicaciones con altos requisitos de seguridad, trazabilidad e
+integración con sistemas heredados. Ejemplos nacionales: el portal
+del SRI, el sistema de compras públicas SOCE, la Ventanilla Única
+Electrónica del SENAE. Suelen requerir autenticación con certificado
+digital y firma electrónica.
+\end{enumerate}
+
+\subsection{Características de las aplicaciones web modernas}
+
+Antes de profundizar en arquitectura y ventajas comparativas, conviene
+sintetizar las características esenciales que distinguen a una
+aplicación web de cualquier otro tipo de software. Estas
+características no son meras curiosidades técnicas: cada una tiene
+implicaciones directas en cómo se desarrollan, despliegan, usan,
+escalan y aseguran las aplicaciones web. Newman \cite{newman2021building}
+y Kleppmann \cite{kleppmann2017designing} dedican capítulos enteros a
+discutir las consecuencias arquitectónicas de cada característica.
+
+\begin{table}[htbp]
+\centering
+\caption{Características esenciales de las aplicaciones web modernas y sus implicaciones.}
+\label{tab:caracteristicas-web}
+\footnotesize
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Dimensión} & \textbf{Característica}\\
+\midrule
+\multicolumn{2}{l}{\emph{Desarrollo}}\\
+Lenguajes & Múltiples coexistentes: HTML+CSS+JS en cliente; PHP/Java/C\#/Node en servidor.\\
+Herramientas & IDE (IntelliJ IDEA Ultimate, VS Code), Git, Docker, gestores de paquetes.\\
+Metodología & Predominantemente ágil (Scrum, Kanban) con CI/CD.\\
+\midrule
+\multicolumn{2}{l}{\emph{Despliegue}}\\
+Empaquetado & Contenedores Docker, archivos JAR/WAR, paquetes \texttt{npm}.\\
+Hosting & Cloud (AWS, Azure, GCP), VPS, on-premise; orquestación con Kubernetes.\\
+Actualización & \emph{Rolling updates} sin interrumpir el servicio; \emph{blue-green deployment}.\\
+\midrule
+\multicolumn{2}{l}{\emph{Uso}}\\
+Acceso & Universal vía URL, sin instalación local.\\
+Multiplataforma & Mismo código accesible desde Windows, macOS, Linux, iOS, Android.\\
+Conectividad & Requiere red; PWAs ofrecen modo offline limitado.\\
+\midrule
+\multicolumn{2}{l}{\emph{Operación}}\\
+Monitoreo & Métricas (Prometheus), logs (ELK), traces (OpenTelemetry, Tempo).\\
+Escalabilidad & Horizontal preferida sobre vertical en arquitecturas modernas.\\
+Disponibilidad & Objetivo común 99.9\% (8.7 h/año de downtime aceptable).\\
+\midrule
+\multicolumn{2}{l}{\emph{Seguridad}}\\
+Superficie de ataque & Pública en internet: requiere defensas multinivel.\\
+Estándares & OWASP Top 10:2021, ISO 27001, GDPR, LOPDP (Ecuador).\\
+Identidad & OAuth 2.0, OpenID Connect, SAML, JWT.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Las implicaciones prácticas de estas características son enormes. Por
+ejemplo, la naturaleza multiplataforma elimina el costo histórico de
+mantener versiones separadas para Windows, macOS y Linux, pero
+introduce el reto de la consistencia entre navegadores. La actualización
+\emph{rolling} elimina la fricción del «día de instalación» del
+software clásico, pero exige diseñar el código para que dos versiones
+coexistan durante el despliegue. La superficie pública de ataque obliga
+a integrar la seguridad desde el día uno; no se puede «agregar
+seguridad» al final como en un sistema interno.
+
+\subsection{Arquitectura cliente-servidor en aplicaciones web}
+
+La arquitectura cliente-servidor es el modelo de comunicación
+distribuida que organiza prácticamente la totalidad del tráfico web
+actual. Comprenderla a profundidad es indispensable porque cada
+decisión técnica posterior (desde qué lenguaje usar en el navegador
+hasta cómo escalar el servidor) se apoya en sus principios. En esta
+sección revisaremos primero su concepto fundamental, después la
+diferencia frecuentemente confundida entre \emph{capas} y
+\emph{niveles}, y finalmente las arquitecturas de 2, 3 y N niveles
+con ejemplos concretos y diagramas.
+
+\subsubsection{Concepto fundamental}
+
+La arquitectura cliente-servidor es el paradigma fundamental sobre el
+que se erige la World Wide Web. En este modelo, un proceso
+\emph{cliente} emite una solicitud (\emph{request}) a un proceso
+\emph{servidor}, el cual procesa la solicitud y devuelve una respuesta
+(\emph{response}). El protocolo que estandariza este intercambio es
+HTTP/1.1 (RFC 7230--7235), HTTP/2 (RFC 7540) o HTTP/3 (RFC 9114), este
+último ya dominante en 2026 gracias a su desempeño superior en redes
+móviles.
+
+\begin{cajadefinicion}{Anatomía de una petición HTTP}
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:1.1]
+GET /productos?categoria=cafe HTTP/1.1
+Host: tienda.uteq.edu.ec
+Accept: text/html
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) ...
+Accept-Language: es-EC,es;q=0.9,en;q=0.8
+Cookie: SESSID=ab39e1ff7e1c4
+\end{lstlisting}
+La primera línea es la \emph{línea de petición}, compuesta por método,
+ruta y versión del protocolo. Las líneas siguientes son
+\emph{cabeceras}; tras una línea en blanco puede ir el cuerpo (en
+métodos POST, PUT y PATCH).
+\end{cajadefinicion}
+
+\subsubsection{Niveles vs capas: una distinción frecuentemente confundida}
+
+Uno de los conceptos más confusos para el estudiante principiante es
+la distinción entre \emph{capas} y \emph{niveles}. Aunque a menudo se
+usan como sinónimos, en arquitectura de software profesional
+\textbf{tienen significados diferentes} que conviene precisar desde el
+inicio \cite{fowler2002patterns,richards2020fundamentals}:
+
+\begin{cajadefinicion}{Capa (\emph{layer}) vs Nivel (\emph{tier})}
+\textbf{Capa (\emph{layer}):} agrupación \emph{lógica} de
+responsabilidades dentro del software. Es una abstracción
+conceptual; varias capas pueden ejecutarse en el mismo proceso físico.
+Ejemplo: en una aplicación monolítica, las capas «Presentación»,
+«Negocio» y «Datos» pueden coexistir en el mismo \texttt{.jar}.
+
+\textbf{Nivel (\emph{tier}):} unidad \emph{física} de despliegue. Cada
+nivel corre típicamente en su propio servidor o contenedor, y los
+niveles se comunican por red. Ejemplo: «servidor de aplicación» y
+«servidor de BD» son dos niveles distintos aunque la app sea un
+monolito de varias capas internas.
+
+Un sistema puede tener \textbf{3 capas pero 2 niveles} (capas
+presentación, negocio y datos en un mismo proceso que se conecta a una
+BD en otro servidor), o \textbf{3 capas y 3 niveles} (cada capa en su
+propio servidor).
+\end{cajadefinicion}
+
+\subsubsection{Arquitecturas N-niveles: panorama visual}
+
+Las arquitecturas web se clasifican por la cantidad de
+\emph{niveles físicos} (máquinas o procesos separados) en que se
+despliega el sistema. Comprender visualmente esta diferencia entre
+1, 2, 3 y N niveles es esencial antes de hablar de patrones más
+complejos como microservicios o serverless. La siguiente figura
+contrasta los cuatro casos canónicos.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center},
+  nivel/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!10,
+                rounded corners=2pt,minimum width=3.4cm,
+                minimum height=1cm},
+  flecha/.style={<->,>=stealth,thick,uteqverde!70!black}]
+
+  % Arquitectura 1-nivel
+  \node[font=\bfseries] at (1.2,3.5) {1-nivel};
+  \node[nivel] (a1) at (1.2,2.5) {Todo\\(monolito -> local)};
+  \node[font=\tiny,align=center] at (1.2,1.3) {Ejemplo:\\app desktop\\con BD local};
+
+  % Arquitectura 2-niveles
+  \node[font=\bfseries] at (5,3.5) {2-niveles};
+  \node[nivel] (b1) at (5,2.5) {Cliente\\(con UI y lógica)};
+  \node[nivel,fill=uteqdorado!15,draw=uteqdorado] (b2) at (5,1)
+       {Servidor\\BD};
+  \draw[flecha] (b1) -- (b2);
+  \node[font=\tiny,align=center] at (5,-0.2) {Ejemplo:\\cliente Excel || Widows Form\\con SQL Server};
+
+  % Arquitectura 3-niveles
+  \node[font=\bfseries] at (9,3.5) {3-niveles};
+  \node[nivel] (c1) at (9,2.5) {Navegador\\(presentación)};
+  \node[nivel,fill=uteqverde!25] (c2) at (9,1.0)
+       {App Server\\(negocio)};
+  \node[nivel,fill=uteqdorado!15,draw=uteqdorado] (c3) at (9,-0.5)
+       {BD};
+  \draw[flecha] (c1) -- (c2);
+  \draw[flecha] (c2) -- (c3);
+  \node[font=\tiny,align=center] at (9,-1.7)
+       {Ejemplo:\\Chrome $\to$ Tomcat\\$\to$ PostgreSQL};
+
+  % Arquitectura N-niveles
+  \node[font=\bfseries] at (13,3.5) {N-niveles};
+  \node[nivel] (d1) at (13,2.5) {Navegador};
+  \node[nivel,fill=uteqverde!18] (d2) at (13,1.0) {CDN};
+  \node[nivel,fill=uteqverde!25] (d3) at (13,-0.5) {LB / Gateway};
+  \node[nivel,fill=uteqverde!30] (d4) at (13,-2.0) {App Server};
+  \node[nivel,fill=uteqdorado!10,draw=uteqdorado] (d5) at (13,-3.5) {Cache};
+  \node[nivel,fill=uteqdorado!15,draw=uteqdorado] (d6) at (13,-5.0) {BD};
+  \draw[flecha] (d1) -- (d2);
+  \draw[flecha] (d2) -- (d3);
+  \draw[flecha] (d3) -- (d4);
+  \draw[flecha] (d4) -- (d5);
+  \draw[flecha] (d4.east) to[bend left=40] (d6.east);
+
+\end{tikzpicture}
+\caption{Las cuatro variantes principales de arquitectura
+cliente-servidor por número de niveles físicos. La elección depende
+del tamaño, presupuesto, requisitos de escalabilidad y disponibilidad.
+La mayoría de aplicaciones web modernas usan 3 o más niveles.}
+\label{fig:arq-niveles}
+\end{figure}
+
+A continuación se describe cada variante:
+
+\textbf{Arquitectura 1-nivel (monolito local).} Todo el software (UI,
+lógica, datos) reside en una sola máquina sin red. No aplica a la
+web. Ejemplos: una aplicación de escritorio con SQLite embebido,
+Microsoft Access en modo monousuario.
+
+\textbf{Arquitectura 2-niveles (cliente-servidor tradicional).} El
+cliente contiene la UI y parte de la lógica de negocio; el servidor
+expone solo la BD. Modelo dominante en los 90 con clientes
+\emph{fat-client} (Visual Basic + Oracle, Delphi + Sybase). Para la
+web no es óptimo: la lógica de negocio expuesta al cliente compromete
+la seguridad. Ejemplos vigentes: algunas aplicaciones legadas de
+contabilidad con cliente Windows + SQL Server.
+
+\textbf{Arquitectura 3-niveles (la clásica web).} Separa
+explícitamente presentación (navegador), lógica de negocio (servidor
+de aplicación: Tomcat, IIS, Apache+PHP) y datos (SGBD). Es el modelo
+canónico de la web desde 1998 y sigue siendo el más común. Ejemplo:
+Chrome $\to$ Spring Boot $\to$ PostgreSQL.
+
+\textbf{Arquitectura N-niveles.} Introduce niveles adicionales para
+abordar requisitos no funcionales: CDN para contenido estático,
+balanceador de carga para distribución, gateway API para
+autenticación cruzada, caché distribuida (Redis), sistemas de
+mensajería (Kafka). Es el modelo dominante en sistemas a gran escala
+\cite{bass2021software,kleppmann2017designing}. Ejemplo: Netflix
+opera con decenas de niveles distintos.
+
+\subsubsection{Anatomía del flujo de una petición web}
+	Comprender qué ocurre, paso a paso, desde que la persona usuaria escribe una dirección hasta que ve la página renderizada es la base de toda la ingeniería de rendimiento y del diagnóstico en producción. La latencia total percibida no la produce un único componente, sino que se \emph{acumula} a lo largo de una cadena de eslabones; mejorar un sistema real exige medir cada eslabón por separado y atacar el que domina el tiempo de respuesta, no el que resulta más cómodo de modificar \cite{grigorik2013hpbn,kleppmann2017designing}. Una aplicación web de producción involucra al menos cinco actores físicos o lógicos cuya función conviene precisar:
+
+\begin{enumerate}
+	\item \textbf{Navegador del usuario} (Chrome, Firefox, Safari, Edge). Es un entorno de ejecución completo, no un simple visor: descarga el documento, construye el árbol DOM a partir del HTML y el árbol CSSOM a partir de las hojas de estilo, ejecuta el JavaScript y, finalmente, calcula el diseño (\emph{layout}) y pinta los píxeles en pantalla. Además gestiona las conexiones de red ---reutilizándolas mediante \emph{keep-alive} en HTTP/1.1, multiplexando varias peticiones sobre una sola conexión en HTTP/2 o sobre QUIC en HTTP/3--- y administra el estado del lado del cliente: cookies, caché de recursos, \texttt{localStorage} y \textit{Service Workers} \cite{grigorik2013hpbn,rfc9110}. Cada una de estas etapas puede convertirse en un cuello de botella perceptible por la persona usuaria.
+	\item \textbf{Servidor DNS}. Traduce el nombre de dominio (\texttt{uteq.edu.ec}) a una o varias direcciones IP. La resolución no la realiza un único servidor: un \emph{resolver} recursivo consulta, en cascada, a los servidores raíz, a los del dominio de primer nivel y a los autoritativos del dominio, y conserva el resultado en caché durante el tiempo indicado por el campo TTL \cite{rfc1034,rfc1035}. Por ello, una resolución que ya está en caché es prácticamente instantánea, mientras que una resolución \emph{en frío} ---sin entrada previa--- añade típicamente desde unas pocas decenas hasta algunos cientos de milisegundos a la primera petición, según la distancia a los servidores y el número de saltos necesarios \cite{grigorik2013hpbn,kurose2021networking}. Mecanismos como DNSSEC, DNS sobre TLS (DoT) y DNS sobre HTTPS (DoH) añaden integridad y privacidad a este intercambio \cite{tanenbaum2021networks}.
+	\item \textbf{Balanceador de carga o proxy inverso} (Nginx, HAProxy, AWS ELB). Es la puerta de entrada del centro de datos. Distribuye las peticiones entrantes entre varios servidores de aplicación según políticas como \emph{round-robin}, \emph{least-connections} o reparto por peso, y retira de la rotación los nodos que no superan sus chequeos de salud (\emph{health checks}). Suele terminar también el cifrado TLS ---descifra la conexión segura una sola vez para liberar de ese costo a los servidores internos--- y sirve directamente el contenido estático \cite{rfc8446,kleppmann2017designing}. Distinguir un balanceo de nivel de transporte (L4) de uno de nivel de aplicación (L7) es clave: solo el segundo puede enrutar según la ruta de la URL o las cabeceras HTTP \cite{tanenbaum2021networks}.
+	\item \textbf{Servidor de aplicación} (Apache HTTPD, Apache Tomcat, IIS, Node.js, PHP-FPM). Ejecuta el código de la aplicación: recibe la petición HTTP, invoca la lógica de negocio y construye la respuesta. Lo que diferencia a estos entornos es su \emph{modelo de concurrencia}: Tomcat asigna un hilo de un \emph{pool} a cada petición; PHP-FPM mantiene un conjunto de procesos trabajadores; y Node.js emplea un único bucle de eventos no bloqueante. Ese modelo determina cómo se comporta el servidor bajo carga y qué clase de operaciones (de CPU o de E/S) lo saturan primero \cite{kleppmann2017designing,grigorik2013hpbn}.
+	\item \textbf{Sistema gestor de bases de datos} (PostgreSQL, MySQL, MariaDB, SQL Server, Oracle). Persiste el estado de la aplicación y, con frecuencia, es el eslabón que domina la latencia de cola (los percentiles más altos del tiempo de respuesta). Su rendimiento depende de factores como el uso de un \emph{pool} de conexiones reutilizables, la presencia de índices adecuados, la planificación de consultas y las garantías transaccionales (ACID) que ofrece \cite{kleppmann2017designing,postgresql18docs}. Una consulta sin índice sobre una tabla grande puede, por sí sola, multiplicar el tiempo total de la petición.
+\end{enumerate}
+
+La Tabla~\ref{tab:actores-web} resume, para cada actor, su función principal, un fallo característico en producción y una herramienta de diagnóstico habitual.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Actores del flujo de una petición web --- función, fallo típico y diagnóstico.}
+	\label{tab:actores-web}
+	\footnotesize
+	\begin{tabularx}{\textwidth}{l X X l}
+		\toprule
+		\textbf{Actor} & \textbf{Función principal} & \textbf{Fallo típico} & \textbf{Diagnóstico}\\
+		\midrule
+		Navegador & Renderiza HTML/CSS/JS y gestiona la red del cliente & JavaScript que bloquea el renderizado & DevTools / Lighthouse\\
+		DNS & Traduce el dominio a dirección IP & Resolución en frío o TTL mal configurado & \texttt{dig}, \texttt{nslookup}\\
+		Proxy / LB & Reparte carga y termina TLS & Nodo caído no retirado de la rotación & Logs de acceso, métricas L7\\
+		App Server & Ejecuta la lógica de negocio & Agotamiento del \emph{pool} de hilos o procesos & APM, perfilado del runtime\\
+		SGBD & Persiste el estado & Consulta lenta sin índice & \texttt{EXPLAIN}, registro de consultas lentas\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Este recorrido de forma simplificada está representado en la Figura~\ref{fig:flujo-web}. Conviene leerla recordando que cada flecha es una posible fuente de retardo y que la optimización web consiste, esencialmente, en medir cada salto antes de intentar mejorarlo.
+
+\begin{cajaadvertencia}{No optimizar a ciegas}
+	La intuición es una mala guía para el rendimiento. Antes de reescribir código, instrumente la aplicación y mida el tiempo de cada eslabón ---resolución DNS, establecimiento de TLS, tiempo en el servidor de aplicación y tiempo en la base de datos--- preferiblemente con percentiles (p50, p95, p99) y no solo con promedios, que ocultan los casos peores que sí percibe la persona usuaria \cite{grigorik2013hpbn,kleppmann2017designing}.
+\end{cajaadvertencia}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=1.8cm and 1.8cm,
+  every node/.style={font=\footnotesize},
+  caja/.style={rectangle,draw=uteqverde,thick,minimum width=2.4cm,
+               minimum height=1cm,rounded corners=2pt,fill=uteqverde!10},
+  flecha/.style={->,>=stealth,thick,uteqverde!70!black}]
+  \node[caja] (cli) {Navegador};
+  \node[caja,right=of cli] (dns) {DNS};
+  \node[caja,right=of dns] (lb)  {Proxy/LB};
+  \node[caja,below=of lb] (app)  {App Server};
+  \node[caja,below=of app] (db)  {BD};
+  \draw[flecha] (cli) -- node[above]{1. resolver} (dns);
+  \draw[flecha] (cli.east) to[bend right=20] node[below]{2. HTTPS} (lb.west);
+  \draw[flecha] (lb)  -- node[right]{3. enrutar} (app);
+  \draw[flecha] (app) -- node[right]{4. SQL} (db);
+  \draw[flecha] (db.west) to[bend left=40] node[left]{5. rows} (app.west);
+  \draw[flecha] (app.north west) to[bend left=15] node[above]{6. HTML/JSON} (cli.south east);
+\end{tikzpicture}
+\caption{Flujo simplificado de una petición web. Cada uno de estos seis pasos puede convertirse en cuello de botella; la disciplina de optimización web consiste en medir cada eslabón.}
+\label{fig:flujo-web}
+\end{figure}
+
+Una petición web se puede resumir en seis pasos como se muestra en la Figura~\ref{fig:flujo-web}, desde que el usuario pulsa Enter hasta que ve la página. En el paso~1 (\emph{resolver}), el navegador todavía no sabe a qué máquina conectarse: entrega el nombre de dominio ---por ejemplo, \texttt{uteq.edu.ec}--- a un servidor DNS, que lo traduce a una dirección IP. Con esa IP, en el paso~2 (\emph{HTTPS}) el navegador abre una conexión cifrada y envía la petición HTTP al punto de entrada del sitio, que rara vez es el servidor de aplicación directamente, sino un proxy inverso o balanceador de carga. En el paso~3 (\emph{enrutar}), ese proxy termina el cifrado TLS y decide a cuál de los servidores de aplicación entrega la petición, repartiendo así la carga entre varios. El servidor de aplicación ejecuta entonces la lógica del programa y, cuando necesita datos persistentes, realiza el paso~4 (\emph{SQL}): envía una consulta al sistema gestor de base de datos. En el paso~5 (\emph{rows}), la base de datos responde con las filas solicitadas, que el servidor convierte en objetos para construir la respuesta. Por último, en el paso~6
+(\emph{HTML/JSON}), el servidor devuelve esa respuesta al navegador ---HTML si es una página, JSON si es una API--- y el navegador la presenta al usuario. Cada uno de estos eslabones puede convertirse en un cuello de botella, de modo que optimizar una aplicación web consiste, ante todo, en medir el tiempo que consume cada paso.
+
+\subsection{Ventajas y desventajas de las aplicaciones web}
+
+Toda decisión arquitectónica implica trade-offs: las aplicaciones
+web ofrecen ventajas operativas significativas frente a las nativas,
+pero también limitaciones que debemos conocer antes de comprometernos
+con la plataforma. La tabla siguiente resume el balance.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Comparativa entre aplicaciones web, escritorio y móviles nativas.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXXX}
+\toprule
+\textbf{Criterio} & \textbf{Web} & \textbf{Escritorio} & \textbf{Móvil nativa}\\
+\midrule
+Despliegue & Inmediato sin instalación & Empaquetado e instalador & Tienda de apps (revisión)\\
+Compatibilidad & Multiplataforma & Sistema-dependiente & iOS y Android (separadas)\\
+Acceso a hardware & Limitado vía Web APIs & Total & Total\\
+Costo de desarrollo & Bajo (un \emph{stack}) & Medio & Alto (dos \emph{stacks})\\
+Costo de mantenimiento & Muy bajo (deploy único) & Medio & Alto (dos versiones)\\
+Rendimiento bruto & Medio & Alto & Alto\\
+Modo \emph{offline} & Limitado (PWA) & Total & Total\\
+Distribución & Instantánea (URL) & Descarga manual & Tienda de apps\\
+Actualizaciones & Automáticas & Manuales o semi & Aceptación del usuario\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Diseño web inclusivo y accesibilidad}
+
+La web nació con vocación universal: cualquier persona, desde
+cualquier dispositivo, en cualquier lugar del mundo, debería poder
+acceder a la información que contiene. Sin embargo, la realidad
+muestra que millones de personas con discapacidad encuentran
+barreras infranqueables cada día al navegar sitios que ignoraron sus
+necesidades. La accesibilidad web no es un tema marginal ni un
+añadido decorativo: es una responsabilidad profesional, una
+obligación legal en cada vez más países (incluido Ecuador) y un
+factor de competitividad comercial cuantificable. Esta sección
+introduce el concepto, presenta las cuatro categorías de
+discapacidad que afectan la experiencia web, expone las pautas WCAG
+2.1 del W3C con sus principios POUR, y termina con los criterios de
+éxito que todo desarrollador debe dominar.
+
+\subsection{¿Qué es la accesibilidad web?}
+
+La accesibilidad web es la práctica de diseñar y construir sitios y
+aplicaciones que puedan ser percibidos, comprendidos, navegados y
+utilizados por \emph{todas las personas}, independientemente de sus
+capacidades físicas, sensoriales o cognitivas. La definición canónica
+del W3C \cite{w3c2018wcag} la formula así: «accesibilidad significa
+que personas con discapacidades pueden percibir, comprender, navegar
+e interactuar con la Web, y que pueden contribuir a la Web».
+
+Sin embargo, la accesibilidad web no es solo una buena causa moral:
+es un imperativo legal, comercial y técnico. García-Holgado et al.\
+\cite{henry2018accessibility} demuestran en un estudio sistemático sobre
+instituciones de educación superior que solo el 23\% de los sitios
+analizados cumplen el nivel mínimo de WCAG 2.1, lo que constituye un
+incumplimiento normativo en la mayoría de jurisdicciones.
+
+\subsubsection{Marco legal de la accesibilidad}
+
+La accesibilidad no es solo una buena práctica: en muchas
+jurisdicciones es una obligación legal con sanciones concretas. La
+siguiente enumeración recopila los marcos normativos vigentes que un
+desarrollador web debe conocer antes de publicar un sitio.
+
+
+\begin{itemize}
+\item \textbf{Ecuador.} La Ley Orgánica de Discapacidades (Registro
+Oficial 2012) exige conformidad mínima AA en sitios públicos a partir
+de su Reglamento de 2017. CONADIS supervisa el cumplimiento.
+\item \textbf{Estados Unidos.} Section 508 del Rehabilitation Act
+(enmienda de 1998, refundición de 2017) obliga a las agencias
+federales a la accesibilidad. Casos como \emph{Robles v.\ Domino's
+Pizza} (2019) extendieron la jurisprudencia al sector privado bajo el
+ADA.
+\item \textbf{Unión Europea.} Directiva 2016/2102 sobre accesibilidad
+de los sitios y aplicaciones móviles de los organismos del sector
+público. EN 301 549 V3.2.1 (2021) define los requisitos técnicos.
+\item \textbf{España, México, Argentina, Brasil, Colombia, Chile.}
+Todos cuentan con normativa específica derivada de los lineamientos
+internacionales.
+\end{itemize}
+
+\subsubsection{Impacto comercial cuantificable}
+
+Más allá del cumplimiento legal, la accesibilidad genera retorno
+medible:
+
+\begin{itemize}
+\item \textbf{15\% de la población mundial} vive con alguna forma de
+discapacidad según la OMS (2024).
+\item Mejorar la accesibilidad mejora el SEO: Google penaliza sitios
+con baja accesibilidad mediante Core Web Vitals.
+\item Microsoft estimó que sus inversiones en accesibilidad
+generaron un retorno de inversión del 1.000\% al ampliar mercados
+\cite{microsoft2020inclusive}.
+\end{itemize}
+
+\subsection{Las cuatro categorías de discapacidad relevantes para la web}
+
+Antes de profundizar en los criterios técnicos, es indispensable
+comprender qué tipos de barreras enfrentan los usuarios con
+discapacidad y qué tecnologías de asistencia emplean. Esta
+comprensión es la base ética y empática de la accesibilidad: no se
+trata de cumplir una norma abstracta sino de habilitar a personas
+reales con necesidades específicas.
+
+Las categorías que se presentan a continuación siguen la taxonomía
+clásica de Henry \cite{henry2018accessibility} y el W3C WAI.
+Importante: una misma persona puede tener \emph{múltiples}
+discapacidades simultáneas (por ejemplo, baja visión y artritis), o
+\emph{discapacidades temporales} (un brazo enyesado, una lesión
+ocular) o \emph{situacionales} (usar el móvil bajo luz solar
+intensa, manejar con manos ocupadas). El diseño accesible beneficia
+a todos estos casos.
+
+\begin{enumerate}
+\item \textbf{Discapacidad visual.} Incluye ceguera total (1.5\% de
+la población mundial), baja visión y daltonismo (8\% de hombres,
+0.5\% de mujeres). Los usuarios con ceguera utilizan lectores de
+pantalla (NVDA gratuito en Windows, JAWS comercial, VoiceOver en
+Apple, TalkBack en Android) que recorren el árbol de accesibilidad
+del DOM y convierten la información a voz. Los daltónicos requieren
+que la información no se transmita exclusivamente por color (el rojo
+y verde son indistinguibles para la mayoría).
+
+\item \textbf{Discapacidad auditiva.} Sordera total o parcial (5\% de
+la población mundial). Requiere subtítulos en contenido multimedia
+(WCAG 1.2.2), transcripciones de podcasts, lengua de señas
+intérprete en videos institucionales críticos, y notificaciones
+visuales además de sonoras.
+
+\item \textbf{Discapacidad motora.} Imposibilidad de usar mouse o
+teclado de forma estándar. Causas incluyen parálisis, temblores,
+artritis reumatoide, distrofia muscular, amputaciones. Requiere
+navegación completa por teclado (sin depender del mouse), áreas de
+clic amplias (mínimo 44$\times$44 px según WCAG 2.5.5), ausencia de
+tiempos límite estrictos, soporte para entrada por voz, switches
+adaptados.
+
+\item \textbf{Discapacidad cognitiva.} La categoría más amplia y
+diversa: incluye dislexia (10\% de la población), TDAH (5\%),
+trastornos del espectro autista (1--2\%), discapacidad intelectual,
+demencia. Requiere lenguaje claro y conciso, estructura predecible,
+ausencia de elementos parpadeantes (riesgo de crisis epilépticas
+fotosensibles entre 3--65 Hz), feedback claro de errores, opciones
+para ajustar tipografía y espaciado.
+\end{enumerate}
+
+\subsection{Las Web Content Accessibility Guidelines 2.1 (WCAG 2.1)}
+
+WCAG 2.1 \cite{w3c2018wcag} es la norma internacional de referencia,
+publicada por el W3C en junio de 2018 y vigente. Está organizada en
+torno a cuatro principios fundamentales conocidos por el acrónimo
+\textbf{POUR} (Perceivable, Operable, Understandable, Robust). Cada
+principio define directrices, cada directriz se materializa en
+\emph{criterios de éxito} comprobables, y cada criterio se clasifica
+en uno de tres niveles de conformidad: A (mínimo), AA (recomendado),
+AAA (excepcional).
+
+Esta sección no se limita a enunciar los principios: para cada uno
+explica \emph{qué tecnologías} permiten implementarlo y \emph{cómo}
+medir el cumplimiento de forma objetiva.
+
+\subsubsection{Principio 1 --- Perceptible}
+
+\textbf{Enunciado:} La información y los componentes de la interfaz
+deben presentarse de modo que los usuarios puedan percibirlos.
+
+\textbf{Cómo lograrlo en HTML:}
+\begin{itemize}
+\item Atributo \texttt{alt} descriptivo en toda \texttt{<img>}.
+\item Subtítulos \texttt{<track kind=\char34 captions\char34 >} en \texttt{<video>}.
+\item Transcripciones para podcasts publicadas junto al audio.
+\item \texttt{aria-label} para iconos clicables sin texto.
+\end{itemize}
+
+\textbf{Cómo lograrlo en CSS:}
+\begin{itemize}
+\item Contraste mínimo 4.5:1 (texto normal) y 3:1 (texto grande).
+\item No usar solo color para transmitir información crítica.
+\item Diseño responsive que soporte zoom hasta 200\% sin pérdida
+funcional.
+\end{itemize}
+
+\textbf{Cómo medir cumplimiento:}
+\begin{itemize}
+\item \textbf{WebAIM Contrast Checker} (\url{https://webaim.org/resources/contrastchecker/}):
+ingresa colores hex y devuelve la ratio exacta.
+\item \textbf{axe DevTools} (extensión Chrome/Firefox): detecta
+imágenes sin \texttt{alt}, contraste insuficiente, audio sin
+transcripción.
+\item \textbf{Pa11y CLI} (\url{https://pa11y.org}): herramienta de
+línea de comandos para integrar auditoría en CI/CD.
+\item \textbf{Lighthouse Accessibility} (incluido en Chrome
+DevTools): score 0--100 con recomendaciones priorizadas.
+\end{itemize}
+
+\subsubsection{Principio 2 --- Operable}
+
+\textbf{Enunciado:} Los componentes y la navegación deben ser
+operables por todos los usuarios.
+
+\textbf{Cómo lograrlo en HTML:}
+\begin{itemize}
+\item Elementos interactivos nativos (\texttt{<button>},
+\texttt{<a>}) en lugar de \texttt{<div onclick>}.
+\item Atributo \texttt{tabindex} solo cuando estrictamente necesario;
+nunca \texttt{tabindex=\char34 2\char34 } u otros valores positivos.
+\item \texttt{skip-link} al inicio de cada página para saltar a
+contenido principal.
+\end{itemize}
+
+\textbf{Cómo lograrlo en CSS:}
+\begin{itemize}
+\item \texttt{:focus-visible} con outline claramente visible.
+\item \texttt{prefers-reduced-motion} respetado en animaciones.
+\item Áreas de clic mínimo 44$\times$44 px.
+\end{itemize}
+
+\textbf{Cómo lograrlo en JavaScript:}
+\begin{itemize}
+\item Sin tiempo límite ajustable o que pueda extenderse.
+\item Manejo de teclado en componentes custom: \texttt{Enter},
+\texttt{Space}, \texttt{Escape}, flechas direccionales.
+\item Sin contenido parpadeante en rango 3--55 Hz.
+\end{itemize}
+
+\textbf{Cómo medir cumplimiento:}
+\begin{itemize}
+\item Navegación completa solo con \texttt{Tab} y \texttt{Enter} sin
+mouse.
+\item Recorrido visual del foco siguiendo orden lógico.
+\item Lighthouse y axe DevTools detectan tabbing roto.
+\end{itemize}
+
+\subsubsection{Principio 3 --- Comprensible}
+
+\textbf{Enunciado:} La información y el manejo de la interfaz deben
+ser comprensibles.
+
+\textbf{Cómo lograrlo en HTML:}
+\begin{itemize}
+\item Atributo \texttt{lang=\char34 es-EC\char34 } en \texttt{<html>}; cambiar con
+\texttt{<span lang=\char34 en\char34 >} en fragmentos en otros idiomas.
+\item \texttt{<label for=\char34 id\char34 >} asociado a cada \texttt{<input>}.
+\item Atributo \texttt{autocomplete} con valores estándares.
+\item \texttt{aria-describedby} para descripción extendida.
+\end{itemize}
+
+\textbf{Cómo lograrlo en lenguaje natural:}
+\begin{itemize}
+\item Nivel de lectura grado 8--9 según escala Flesch-Kincaid.
+\item Frases cortas (máx.\ 25 palabras).
+\item Voz activa preferida a pasiva.
+\item Glosario de términos técnicos accesible desde cada uso.
+\end{itemize}
+
+\textbf{Cómo medir cumplimiento:}
+\begin{itemize}
+\item \textbf{Hemingway Editor} (\url{https://hemingwayapp.com}):
+evalúa legibilidad.
+\item Pruebas de usabilidad con usuarios reales de baja
+alfabetización digital.
+\end{itemize}
+
+\subsubsection{Principio 4 --- Robusto}
+
+\textbf{Enunciado:} El contenido debe ser robusto suficiente para que
+pueda ser interpretado por una amplia variedad de agentes de usuario,
+incluyendo tecnologías asistivas.
+
+\textbf{Cómo lograrlo en HTML:}
+\begin{itemize}
+\item HTML válido sin errores (verificar en
+\url{https://validator.w3.org/nu/}).
+\item Roles ARIA solo cuando los elementos semánticos nativos no
+basten.
+\item IDs únicos en todo el documento.
+\item Nombres accesibles para todos los controles
+(\texttt{aria-label} o texto visible asociado).
+\end{itemize}
+
+\textbf{Cómo medir cumplimiento:}
+\begin{itemize}
+\item W3C Markup Validator: 0 errores.
+\item NVDA o VoiceOver: recorrido auditivo manual.
+\item axe DevTools: 0 violaciones serias o críticas.
+\end{itemize}
+
+\subsubsection{Niveles de conformidad y herramientas integradas de auditoría}
+
+WCAG 2.1 establece tres niveles de conformidad: \textbf{A} (mínimo
+imprescindible), \textbf{AA} (recomendado para sector público y
+privado serio) y \textbf{AAA} (excepcional, raro de alcanzar
+íntegramente). En 2023 se publicó WCAG 2.2 que añadió nueve criterios
+de éxito adicionales y previsiblemente WCAG 3.0 (\emph{Silver},
+borrador desde 2021) será la próxima revolución mayor, reemplazando
+el sistema de niveles A/AA/AAA por un puntaje continuo.
+
+\subsection{Criterios de éxito clave de WCAG 2.1}
+
+Esta subsección presenta los diez criterios de éxito más importantes
+que todo desarrollador web debe interiorizar. Para cada criterio se
+explica: \emph{(a)} qué exige exactamente la norma, \emph{(b)} cómo
+implementarlo en código real, y \emph{(c)} un ejemplo concreto.
+
+\begin{cajabuenas}{Diez criterios WCAG imprescindibles --- detallados}
+\textbf{1.1.1 Contenido no textual (Nivel A).}\\
+\emph{Qué exige:} todo contenido no textual tiene una alternativa
+textual equivalente.\\
+\emph{Cómo lograrlo:} \texttt{alt} en \texttt{<img>};
+\texttt{aria-label} en iconos clicables; \texttt{<title>} en SVGs
+significativas; \texttt{alt=\char34 \char34 } (vacío) si la imagen es decorativa.\\
+\emph{Ejemplo:} \texttt{<img src=\char34 grafico.png\char34  alt=\char34 Ventas
+trimestrales 2026: Q1 \$45k, Q2 \$52k, Q3 \$48k, Q4 \$61k\char34 >}.
+
+\textbf{1.3.1 Información y relaciones (Nivel A).}\\
+\emph{Qué exige:} la estructura semántica del HTML refleja la
+jerarquía visual y las relaciones de la información.\\
+\emph{Cómo lograrlo:} usar encabezados correctos
+\texttt{<h1>}-\texttt{<h6>}, listas \texttt{<ul>}/\texttt{<ol>} para
+listas, \texttt{<table>} con \texttt{<th scope>} para datos
+tabulares, \texttt{<fieldset>+<legend>} para agrupar campos
+relacionados.\\
+\emph{Anti-ejemplo:} simular tabla con \texttt{<div>} y CSS Grid sin
+roles ARIA, rompe lectores de pantalla.
+
+\textbf{1.4.3 Contraste mínimo (Nivel AA).}\\
+\emph{Qué exige:} ratio de contraste $\geq$ 4.5:1 para texto normal;
+$\geq$ 3:1 para texto grande (18pt+ o 14pt+ negrita).\\
+\emph{Cómo lograrlo:} verificar con WebAIM Contrast Checker; usar
+paletas pre-validadas.\\
+\emph{Ejemplo de combinaciones AA conformes sobre fondo blanco:}
+\texttt{\#006633} (verde UTEQ) ratio 6.27:1; negro
+\texttt{\#000000} ratio 21:1.
+
+\textbf{1.4.10 Reflujo (Nivel AA).}\\
+\emph{Qué exige:} el contenido reflowea sin pérdida de información ni
+funcionalidad y sin scroll horizontal en 320 px de ancho.\\
+\emph{Cómo lograrlo:} CSS responsive mobile-first;
+\texttt{viewport meta}; unidades relativas (rem, em, \%).
+
+\textbf{1.4.11 Contraste no textual (Nivel AA).}\\
+\emph{Qué exige:} componentes UI (botones, iconos de estado, bordes
+de campos) con contraste $\geq$ 3:1 con sus alrededores.\\
+\emph{Cómo lograrlo:} bordes visibles en inputs; iconos de estado
+con fondo o borde definido.
+
+\textbf{2.1.1 Teclado (Nivel A).}\\
+\emph{Qué exige:} toda funcionalidad disponible solo desde teclado.\\
+\emph{Cómo lograrlo:} usar elementos interactivos nativos; manejar
+\texttt{Enter} y \texttt{Space} en componentes custom; no atrapar el
+foco.\\
+\emph{Anti-ejemplo:} dropdown que solo abre con hover de mouse.
+
+\textbf{2.4.7 Foco visible (Nivel AA).}\\
+\emph{Qué exige:} indicador visible cuando un elemento recibe foco.\\
+\emph{Cómo lograrlo:} no quitar el outline por defecto, o
+reemplazarlo con \texttt{:focus-visible} de mayor visibilidad
+($\geq$ 2 px, contraste $\geq$ 3:1).
+
+\textbf{3.1.1 Idioma de la página (Nivel A).}\\
+\emph{Qué exige:} elemento \texttt{<html>} tiene atributo
+\texttt{lang} correcto.\\
+\emph{Cómo lograrlo:} \texttt{<html lang=\char34 es-EC\char34 >}.
+
+\textbf{3.3.1 Identificación de errores (Nivel A).}\\
+\emph{Qué exige:} si el sistema detecta error en entrada del usuario,
+lo identifica y describe en texto.\\
+\emph{Cómo lograrlo:} \texttt{<input aria-invalid=\char34 true\char34 
+aria-describedby=\char34 err-email\char34 >} y mensaje en
+\texttt{<span id=\char34 err-email\char34 >Email inválido</span>}.
+
+\textbf{4.1.2 Nombre, función, valor (Nivel A).}\\
+\emph{Qué exige:} para todos los componentes de interfaz, nombre,
+función y valor son determinables programáticamente.\\
+\emph{Cómo lograrlo:} usar elementos nativos siempre que sea posible;
+si se construye un componente custom, declarar
+\texttt{role}, \texttt{aria-label}, \texttt{aria-checked} etc.
+\end{cajabuenas}
+
+\section{Configuración del entorno con IntelliJ IDEA Ultimate}
+
+Antes de continuar con el resto de la asignatura, el estudiante
+debe disponer de un entorno IDE funcional. El siguiente ejercicio
+resuelto guía paso a paso la instalación y verificación de IntelliJ
+IDEA Ultimate con la licencia educativa UTEQ.
+
+
+\begin{cajaejercicio}{Ejercicio 1.1 (RESUELTO) --- Instalación y verificación de IntelliJ IDEA Ultimate}
+\textbf{Objetivo:} configurar el entorno integrado de desarrollo que
+se utilizará durante todo el semestre y verificar que los plugins
+necesarios para HTML, CSS y JavaScript están operativos.
+
+\textbf{Paso 1 --- Obtener la licencia educativa.} Ingresar a
+\url{https://www.jetbrains.com/community/education} y crear una
+cuenta con el correo institucional \texttt{<usuario>@uteq.edu.ec}. Al
+verificar el dominio, JetBrains envía un correo de confirmación con
+una clave educativa renovable anualmente. Sin esta clave, IntelliJ
+IDEA Ultimate funciona únicamente 30 días en modo evaluación.
+
+\textbf{Paso 2 --- Descargar e instalar.} Descargar IntelliJ IDEA
+Ultimate desde \url{https://www.jetbrains.com/idea/download}. El
+instalador pesa aproximadamente 850 MB.
+
+\textbf{Paso 3 --- Activar la licencia.} En la primera ejecución
+elegir «Activate License $\rightarrow$ JB Account». Verificar en
+\texttt{Help $\rightarrow$ Register} que la licencia es de tipo
+\emph{Educational License}.
+
+\textbf{Paso 4 --- Crear el primer proyecto.} En la pantalla
+\emph{Welcome} pulsar \texttt{New Project}. Seleccionar la plantilla
+\texttt{HTML}, establecer \textbf{Name}: \texttt{appweb-cap01},
+y pulsar \texttt{Create}.
+
+\textbf{Paso 5 --- Verificar plugins esenciales} en
+\texttt{File $\rightarrow$ Settings $\rightarrow$ Plugins}: HTML
+Tools, CSS, JavaScript and TypeScript, Markdown, Live Edit.
+
+\textbf{Paso 6 --- Probar.} Abrir el archivo \texttt{index.html} que
+el IDE generó automáticamente. Posicionar el cursor sobre el código
+y pulsar \texttt{Alt+F2}; elegir Chrome.
+
+\textbf{Resultado esperado (verificación):}
+
+\begin{center}
+\fbox{\begin{minipage}{0.85\textwidth}
+\footnotesize\ttfamily
+\textbf{[ Ventana del navegador Chrome ]}\\
+\textbf{URL:} \texttt{http://localhost:63342/appweb-cap01/index.html}\\[0.3em]
+\textbf{[ Pestaña: index.html ]}\\[0.3em]
+Hello, World!\\[0.3em]
+\rmfamily\textit{(Página HTML mínima generada por IntelliJ con el texto
+por defecto, servida desde el servidor de desarrollo embebido del IDE
+en el puerto 63342.)}
+\end{minipage}}
+\end{center}
+
+\textbf{Indicadores de éxito verificables:}
+\begin{itemize}
+\item La barra de URL muestra una dirección \texttt{localhost:63342/\dots}
+\item El título de la pestaña coincide con \texttt{index.html}.
+\item En IntelliJ, el panel \emph{Run} (parte inferior) muestra el
+servidor en estado «Running».
+\end{itemize}
+\end{cajaejercicio}
+
+\begin{cajaejercicio}{Ejercicio 1.2 (RESUELTO) --- Primera página HTML5 semántica y accesible}
+\textbf{Objetivo:} crear una página HTML5 estructuralmente correcta,
+semánticamente significativa y accesible. Verificar su validez en el
+W3C Validator y la ausencia de violaciones críticas en axe DevTools.
+
+\textbf{Código completo (Listado~\ref{lst:1.2}):}
+
+\begin{lstlisting}[style=html,caption={index.html (Ejercicio 1.2)},label=lst:1.2]
+<!DOCTYPE html>
+<html lang="es-EC">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi primera pagina semantica - UTEQ</title>
+  <meta name="description" content="Pagina de practica
+        para Aplicaciones Web - UTEQ 2026">
+</head>
+<body>
+  <header role="banner">
+    <h1>Universidad Tecnica Estatal de Quevedo</h1>
+    <p>La primera universidad agropecuaria del Ecuador</p>
+    <nav role="navigation" aria-label="Menu principal">
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#carreras">Carreras</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main role="main">
+    <article>
+      <h2 id="inicio">Bienvenido al curso de Aplicaciones Web</h2>
+      <p>Este es el primer ejercicio del semestre. La fecha de hoy es
+      <time datetime="2026-05-04">4 de mayo de 2026</time>.</p>
+      <figure>
+        <img src="https://placehold.co/240x240/006633/ffffff?text=UTEQ"
+             alt="Escudo de la UTEQ"
+             width="240" height="240">
+        <figcaption>Escudo institucional UTEQ</figcaption>
+      </figure>
+    </article>
+    <aside aria-label="Informacion adicional">
+      <h2>Datos de contacto</h2>
+      <address>
+        Av. Quito km. 1.5 via a Santo Domingo<br>
+        Quevedo, Los Rios, Ecuador<br>
+        Telefono: <a href="tel:+59353702220">(+593) 5 3702-220</a>
+      </address>
+    </aside>
+  </main>
+  <footer role="contentinfo">
+    <small>&copy; 2026 UTEQ. Todos los derechos reservados.</small>
+  </footer>
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Explicación condensada:}
+\texttt{<!DOCTYPE html>} declara HTML5; \texttt{lang=\char34 es-EC\char34 } permite
+al lector de pantalla elegir voz española; \texttt{<meta charset>}
+evita corrupción de tildes; \texttt{<meta viewport>} habilita
+responsive en móvil. Los roles ARIA (\texttt{banner},
+\texttt{navigation}, \texttt{main}, \texttt{contentinfo}) refuerzan
+la semántica para tecnologías asistivas antiguas. \texttt{<time
+datetime>} hace la fecha legible por máquinas. \texttt{alt} en la
+imagen cumple WCAG 1.1.1.
+
+\textbf{Resultado esperado en el navegador:}
+
+\begin{center}
+\fbox{\begin{minipage}{0.88\textwidth}
+\footnotesize
+\textbf{[ Vista renderizada en Chrome - sin estilos CSS ]}\\[0.3em]
+\rule{\textwidth}{0.4pt}\\
+\textbf{\Large Universidad Tecnica Estatal de Quevedo}\\
+La primera universidad agropecuaria del Ecuador\\[0.3em]
+$\bullet$ Inicio\quad $\bullet$ Carreras\quad $\bullet$ Contacto\\
+\rule{\textwidth}{0.4pt}\\[0.5em]
+\textbf{\large Bienvenido al curso de Aplicaciones Web}\\
+Este es el primer ejercicio del semestre. La fecha de hoy es 4 de
+mayo de 2026.\\[0.3em]
+\fbox{\begin{minipage}{2cm}\centering
+\colorbox{uteqverde}{\textcolor{white}{\rule{0pt}{1.8cm}\hspace{1.8cm}}}\\
+\textit{UTEQ}\end{minipage}}\\
+\textit{Escudo institucional UTEQ}\\[0.5em]
+\textbf{\large Datos de contacto}\\
+Av. Quito km. 1.5 via a Santo Domingo\\
+Quevedo, Los Rios, Ecuador\\
+Telefono: \underline{(+593) 5 3702-220}\\
+\rule{\textwidth}{0.4pt}\\
+\textit{\textcopyright{} 2026 UTEQ. Todos los derechos reservados.}
+\end{minipage}}
+\end{center}
+
+\textbf{Verificación obligatoria del éxito:}
+\begin{enumerate}
+\item \emph{W3C Validator} (\url{https://validator.w3.org/nu/}):
+copiar el código completo, pegar en «Validate by direct input»,
+pulsar Check. Debe aparecer en verde: «Document checking completed.
+No errors or warnings to show.»
+\item \emph{axe DevTools}: instalar la extensión desde Chrome Web
+Store. F12 $\to$ pestaña axe DevTools $\to$ «Scan ALL of my page».
+Resultado esperado: 0 violaciones críticas.
+\item \emph{Navegación con teclado}: pulsar Tab repetidamente desde
+la barra de URL. El foco debe recorrer en orden los tres enlaces del
+menú y el enlace del teléfono.
+\end{enumerate}
+\end{cajaejercicio}
+
+\begin{cajaejercicio}{Ejercicio 1.3 (PROPUESTO) --- Página de presentación personal accesible}
+\textbf{Objetivo:} construir una página de presentación personal que
+integre todos los conceptos vistos: estructura semántica,
+accesibilidad, metadatos correctos, navegación con teclado.
+
+\textbf{Especificaciones obligatorias:}
+\begin{enumerate}
+\item Crear un nuevo proyecto en IntelliJ:
+\texttt{appweb-presentacion-<TuApellido>}.
+\item El archivo \texttt{index.html} debe contener:
+   \begin{itemize}
+   \item DOCTYPE HTML5 y \texttt{lang=\char34 es-EC\char34 }.
+   \item Metadatos: charset, viewport, description (máx.\ 160
+   caracteres), author, keywords (5--7 términos).
+   \item \texttt{<header>} con nombre completo (h1), foto con
+   \texttt{alt} descriptivo, y un \texttt{<nav>} con cinco enlaces
+   internos.
+   \item Cinco \texttt{<section>} (cada una con su \texttt{<h2>}):
+   «Sobre mí», «Estudios», «Habilidades técnicas», «Proyectos» y
+   «Contacto».
+   \item En «Habilidades técnicas», una tabla \texttt{<table>}
+   con cuatro filas (HTML, CSS, JavaScript, otra de elección) y
+   tres columnas (tecnología, nivel 1--5, años de experiencia).
+   \item En «Proyectos», tres \texttt{<article>} con
+   \texttt{<figure>+<figcaption>} cada uno.
+   \item \texttt{<footer>} con copyright y fecha
+   \texttt{<time datetime=\char34 2026\char34 >}.
+   \end{itemize}
+\item La página debe ser \emph{válida} en
+\url{https://validator.w3.org/nu/} sin errores ni advertencias.
+\item axe DevTools debe arrojar cero violaciones de cualquier
+severidad.
+\item La navegación por teclado debe permitir alcanzar todos los
+enlaces y secciones.
+\end{enumerate}
+
+\textbf{Entrega:} \texttt{index.html} + captura del W3C Validator
+mostrando «No errors» + captura de axe DevTools mostrando «No issues
+found».
+
+\textbf{Esta práctica forma parte de la \emph{Sumativa GA-Taller:
+Encuadre académico}.}
+\end{cajaejercicio}
+
+\section{Buenas prácticas profesionales para HTML semántico}
+
+Las buenas prácticas profesionales no son convenciones arbitrarias:
+cada una tiene una justificación técnica, de mantenibilidad, de
+accesibilidad o de SEO documentada en la literatura especializada
+\cite{robbins2018learning,duckett2011html}. La adherencia disciplinada
+a estas prácticas es lo que separa al código profesional del código
+amateur.
+
+\begin{cajabuenas}{Doce reglas de oro del HTML semántico profesional}
+\begin{enumerate}
+\item \textbf{Un solo \texttt{<h1>} por página}, que coincide con el
+título principal y suele ser similar al del \texttt{<title>}.
+\item \textbf{Jerarquía de encabezados sin saltos}:
+\texttt{h1 $\rightarrow$ h2 $\rightarrow$ h3}, nunca
+\texttt{h1 $\rightarrow$ h3} saltando \texttt{h2}.
+\item \textbf{Ningún encabezado vacío y ningún encabezado meramente
+decorativo}: si un texto necesita estilo de título pero no es título,
+usar \texttt{<p>} con clase CSS.
+\item \textbf{Listas para listas}: cualquier serie de elementos
+similares debe ir en \texttt{<ul>}, \texttt{<ol>} o \texttt{<dl>},
+nunca en una serie de \texttt{<div>}.
+\item \textbf{Tablas \emph{solo} para datos tabulares}, nunca para
+maquetación.
+\item \textbf{Botones para acciones, enlaces para navegación}.
+\item \textbf{Imágenes con \texttt{alt} descriptivo}; si la imagen
+es puramente decorativa, \texttt{alt=\char34 \char34 } (vacío).
+\item \textbf{Formularios con \texttt{<label>} asociado a cada
+\texttt{<input>}}.
+\item \textbf{Validar siempre} con \url{https://validator.w3.org/nu/}
+antes de cada commit.
+\item \textbf{Atributo \texttt{lang} obligatorio} en \texttt{<html>}.
+\item \textbf{Evitar \texttt{<br>} para crear espacios}: usar CSS.
+\item \textbf{Mantener IDs únicos}: dos elementos con el mismo
+\texttt{id} son HTML inválido y rompen tecnologías asistivas.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Tabla de referencia rápida: tags HTML5 más usados, atributos y valores}
+
+La tabla \ref{tab:tags-html} compendia los tags HTML5 más frecuentes
+en el desarrollo profesional, sus atributos principales, los valores
+admitidos y el efecto esperado. Algunos atributos
+(\texttt{id}, \texttt{class}, \texttt{lang}, \texttt{title},
+\texttt{hidden}, \texttt{tabindex}, eventos \texttt{onclick} etc.)
+son \textbf{globales}: aplican a casi todos los elementos. Estos
+se listan una sola vez al inicio para evitar repetición.
+\scriptsize
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{0pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{2.4cm}
+		>{\raggedright\arraybackslash}p{2.3cm}
+		>{\raggedright\arraybackslash}p{6.2cm}
+		>{\raggedright\arraybackslash}p{3.5cm}@{}}
+	\caption{Tags HTML5 más usados: estructura, contenido y formularios.}
+	\label{tab:tags-html}\\
+	\toprule
+	\textbf{Tag} & \textbf{Atributo} & \textbf{Valores / efecto} & \textbf{Ejemplo}\\
+	\midrule
+	\endfirsthead
+	
+	\multicolumn{4}{l}{\emph{(Continuación de la Tabla \ref{tab:tags-html})}}\\
+	\toprule
+	\textbf{Tag} & \textbf{Atributo} & \textbf{Valores / efecto} & \textbf{Ejemplo}\\
+	\midrule
+	\endhead
+	
+	\midrule
+	\multicolumn{4}{r}{\emph{Continúa en la siguiente página\ldots}}\\
+	\endfoot
+	
+	\bottomrule
+	\endlastfoot
+	
+	\multicolumn{4}{l}{\emph{Estructura semántica (HTML5)}}\\
+	\texttt{<header>}    & --- & Cabecera de página o sección & \texttt{<header>\dots</header>}\\
+	\texttt{<nav>}       & --- & Bloque de navegación & \texttt{<nav>\dots</nav>}\\
+	\texttt{<main>}      & --- & Contenido principal (único por página) & \texttt{<main>\dots</main>}\\
+	\texttt{<article>}   & --- & Contenido autónomo reutilizable & \texttt{<article>\dots</article>}\\
+	\texttt{<section>}   & --- & Sección temática con encabezado & \texttt{<section>\dots</section>}\\
+	\texttt{<aside>}     & --- & Contenido relacionado pero secundario & \texttt{<aside>\dots</aside>}\\
+	\texttt{<footer>}    & --- & Pie de página o sección & \texttt{<footer>\dots</footer>}\\
+	\midrule
+	\multicolumn{4}{l}{\emph{Contenido textual}}\\
+	\texttt{<h1>}--\texttt{<h6>} & --- & Encabezados de niveles 1 a 6 & \texttt{<h1>Titulo</h1>}\\
+	\texttt{<p>}         & --- & Párrafo & \texttt{<p>Texto.</p>}\\
+	\texttt{<strong>}    & --- & Énfasis fuerte (importancia) & \texttt{<strong>Atencion</strong>}\\
+	\texttt{<em>}        & --- & Énfasis (entonación) & \texttt{<em>realmente</em>}\\
+	\texttt{<mark>}      & --- & Texto destacado contextualmente & \texttt{<mark>resaltado</mark>}\\
+	\texttt{<time>}      & \texttt{datetime} & Fecha/hora ISO 8601 legible máquina & \texttt{<time datetime=\char34 2026-05-04\char34 >}\\
+	\texttt{<code>}      & --- & Fragmento de código & \texttt{<code>let x=1</code>}\\
+	\texttt{<blockquote>} & \texttt{cite} & URL fuente de la cita & \texttt{<blockquote cite=\char34 ...\char34 >}\\
+	\midrule
+	\multicolumn{4}{l}{\emph{Hipervínculos y enlaces}}\\
+	\texttt{<a>} & \texttt{href} & URL destino & \texttt{href=\char34 pagina.html\char34 }\\
+	& \texttt{target} & \texttt{\_blank}, \texttt{\_self}, \texttt{\_parent} & \texttt{target=\char34 \_blank\char34 }\\
+	& \texttt{rel}  & \texttt{noopener}, \texttt{noreferrer}, \texttt{me} & \texttt{rel=\char34 noopener\char34 }\\
+	& \texttt{download} & Fuerza descarga & \texttt{download=\char34 archivo.pdf\char34 }\\
+	\midrule
+	\multicolumn{4}{l}{\emph{Imágenes y multimedia}}\\
+	\texttt{<img>} & \texttt{src} & URL de la imagen & \texttt{src=\char34 logo.png\char34 }\\
+	& \texttt{alt} & Texto alternativo (obligatorio) & \texttt{alt=\char34 Logo UTEQ\char34 }\\
+	& \texttt{width}, \texttt{height} & Dimensiones (px o \%) & \texttt{width=\char34 200\char34 }\\
+	& \texttt{loading} & \texttt{lazy}, \texttt{eager} & \texttt{loading=\char34 lazy\char34 }\\
+	& \texttt{srcset} & Múltiples resoluciones & \texttt{srcset=\char34 img-2x.png 2x\char34 }\\
+	\texttt{<video>} & \texttt{src} & URL del video & \texttt{src=\char34 video.mp4\char34 }\\
+	& \texttt{controls} & Booleano: controles nativos & \texttt{controls}\\
+	& \texttt{poster} & Imagen previa & \texttt{poster=\char34 prev.jpg\char34 }\\
+	& \texttt{preload} & \texttt{none}, \texttt{metadata}, \texttt{auto} & \texttt{preload=\char34 metadata\char34 }\\
+	\midrule
+	\multicolumn{4}{l}{\emph{Listas}}\\
+	\texttt{<ul>}, \texttt{<ol>} & --- & Lista no/ordenada & \texttt{<ul><li>\dots</li></ul>}\\
+	\texttt{<li>}       & --- & Ítem de lista & \texttt{<li>texto</li>}\\
+	\texttt{<dl>}, \texttt{<dt>}, \texttt{<dd>} & --- & Lista de definiciones & ---\\
+	\midrule
+	\multicolumn{4}{l}{\emph{Tablas}}\\
+	\texttt{<table>}    & --- & Datos tabulares & \texttt{<table>\dots</table>}\\
+	\texttt{<thead>}, \texttt{<tbody>}, \texttt{<tfoot>} & --- & Secciones & ---\\
+	\texttt{<tr>}       & --- & Fila & \texttt{<tr>\dots</tr>}\\
+	\texttt{<th>}       & \texttt{scope} & \texttt{col}, \texttt{row}, \texttt{colgroup} & \texttt{<th scope=\char34 col\char34 >}\\
+	\texttt{<td>}       & \texttt{colspan}, \texttt{rowspan} & N de celdas a abarcar & \texttt{colspan=\char34 2\char34 }\\
+	\midrule
+	\multicolumn{4}{l}{\emph{Formularios}}\\
+	\texttt{<form>}     & \texttt{action} & URL del handler & \texttt{action=\char34 /api/users\char34 }\\
+	& \texttt{method} & \texttt{GET}, \texttt{POST} & \texttt{method=\char34 POST\char34 }\\
+	& \texttt{enctype} & MIME para uploads & \texttt{multipart/form-\allowbreak data}\\
+	\texttt{<input>}    & \texttt{type} & \texttt{text}, \texttt{email}, \texttt{password}, \texttt{number}, \texttt{date}, \texttt{tel}, \texttt{url}, \texttt{checkbox}, \texttt{radio}, \texttt{file}, \texttt{hidden}, \texttt{range}, \texttt{color} & \texttt{type=\char34 email\char34 }\\
+	& \texttt{name} & Nombre del campo & \texttt{name=\char34 email\char34 }\\
+	& \texttt{value} & Valor inicial & \texttt{value=\char34 default\char34 }\\
+	& \texttt{required} & Booleano: obligatorio & \texttt{required}\\
+	& \texttt{pattern} & Regex de validación & \texttt{pattern=\char34{}[0-9]\{10\}\char34{}}\\
+	& \texttt{min}/\texttt{max}/\allowbreak\texttt{step} & Rango numérico/fecha & \texttt{min=\char34 0\char34 }\\
+	& \texttt{minlength}/\allowbreak\texttt{maxlength} & Longitud texto & \texttt{maxlength=\char34 80\char34 }\\
+	& \texttt{autocomplete} & \texttt{on}, \texttt{off}, \texttt{name}, \texttt{email}\dots & \texttt{autocomplete=\char34 email\char34 }\\
+	\texttt{<label>}    & \texttt{for}  & ID del input asociado & \texttt{<label for=\char34 em\char34 >}\\
+	\texttt{<select>}   & \texttt{multiple} & Booleano: múltiple selección & \texttt{multiple}\\
+	\texttt{<option>}   & \texttt{value}, \texttt{selected} & Valor; preselección & \texttt{<option value=\char34 EC\char34  selected>}\\
+	\texttt{<textarea>} & \texttt{rows}, \texttt{cols} & Tamaño visible & \texttt{rows=\char34 5\char34 }\\
+	\texttt{<button>}   & \texttt{type} & \texttt{submit}, \texttt{button}, \texttt{reset} & \texttt{type=\char34 submit\char34 }\\
+\end{longtable}
+
+Esta tabla está organizada para servir como \emph{referencia rápida}
+durante la práctica. Para profundizar en los atributos específicos de
+formularios (tipos de input, validación nativa, accesibilidad de
+controles) el capítulo 2 dedica una sección completa al tema.
+
+\subsection{Atributos globales (aplican a casi todos los tags)}
+
+Los atributos globales son aquellos que pueden aplicarse a
+\emph{cualquier} elemento HTML5, no solo a unos pocos. Comprenderlos
+en profundidad evita reaprenderlos para cada nuevo tag. La tabla
+\ref{tab:atributos_globales} cataloga los más importantes con su efecto y un ejemplo
+breve.
+
+
+\begin{table}[htbp]
+	\centering
+	\caption{Atributos HTML5 globales. \label{tab:atributos_globales}}
+	\footnotesize
+	\begin{tabularx}{\textwidth}{lXl}
+		\toprule
+		\textbf{Atributo} & \textbf{Efecto / valores} & \textbf{Ejemplo}\\
+		\midrule
+		\texttt{id}    & Identificador único en el documento & \texttt{id=\char34 hero\char34 }\\
+		\texttt{class} & Una o varias clases CSS separadas por espacio & \texttt{class=\char34 btn primario\char34 }\\
+		\texttt{style} & CSS inline (uso desaconsejado) & \texttt{style=\char34 color:red\char34 }\\
+		\texttt{title} & Tooltip flotante al pasar el mouse & \texttt{title=\char34 Cerrar\char34 }\\
+		\texttt{lang}  & Idioma del contenido (ISO 639-1 y 3166-1) & \texttt{lang=\char34 es-EC\char34 }\\
+		\texttt{dir}   & Dirección texto: \texttt{ltr}, \texttt{rtl}, \texttt{auto} & \texttt{dir=\char34 rtl\char34 }\\
+		\texttt{hidden} & Booleano: oculta el elemento & \texttt{hidden}\\
+		\texttt{tabindex} & Orden de tabulación; 0 (natural), -1 (programático) & \texttt{tabindex=\char34 0\char34 }\\
+		\texttt{role}  & Rol ARIA explícito & \texttt{role=\char34 navigation\char34 }\\
+		\texttt{aria-label} & Etiqueta accesible cuando no hay texto visible & \texttt{aria-label=\char34 Cerrar\char34 }\\
+		\texttt{aria-hidden} & \texttt{true}/\texttt{false}: oculta para lectores & \texttt{aria-hidden=\char34 true\char34 }\\
+		\texttt{data-*} & Datos custom para JavaScript & \texttt{data-id=\char34 42\char34 }\\
+		\texttt{contenteditable} & \texttt{true}/\texttt{false} & \texttt{contenteditable=\char34 true\char34 }\\
+		\texttt{draggable} & Booleano: arrastrable & \texttt{draggable=\char34 true\char34 }\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\textbf{Ejemplo corto comentado (atributos globales en acción) (Listado~\ref{lst:1.3}):}
+\begin{lstlisting}[language=HTML5,numbers=none,caption={Ejemplo de HTML},label=lst:1.3]
+<!-- 'id' identifica univocamente al elemento (uno por documento) -->
+<!-- 'class' agrupa elementos para aplicar el mismo estilo CSS    -->
+<!-- 'title' muestra un tooltip al pasar el cursor               -->
+<!-- 'lang' especifica el idioma del contenido (importante a11y)  -->
+<!-- 'data-*' guarda datos personalizados accesibles desde JS     -->
+<article id="post-42" class="card destacado"
+         title="Noticia destacada" lang="es"
+         data-autor="ana" data-categoria="tecnologia">
+  Contenido del articulo
+</article>
+\end{lstlisting}
+
+\subsection{Tags estructurales y de contenido}
+
+HTML5 introduce un conjunto de tags semánticos pensados para
+describir el \emph{significado} del contenido, no solo su apariencia.
+La tabla \ref{tab:tags-html} cataloga los tags estructurales y de contenido más usados, con sus atributos específicos y un ejemplo de uso para cada uno.
+
+\textbf{Ejemplo corto comentado (estructura semántica completa) (Listado~\ref{lst:1.4}):}
+
+\begin{lstlisting}[language=HTML5,numbers=none,caption={Ejemplo de HTML},label=lst:1.4]
+<!-- <header> contiene la cabecera del sitio o de una seccion       -->
+<header>
+  <!-- <nav> agrupa enlaces de navegacion principal                  -->
+  <nav>
+    <a href="/inicio">Inicio</a>
+    <a href="/contacto">Contacto</a>
+  </nav>
+</header>
+<!-- <main> envuelve el contenido unico de la pagina (uno por doc)   -->
+<main>
+  <!-- <article> es contenido autonomo (post, noticia, comentario)   -->
+  <article>
+    <!-- <h1>...<h6> jerarquia de encabezados (h1 = mas importante)  -->
+    <h1>Titulo del articulo</h1>
+    <!-- <section> agrupa contenido tematicamente relacionado         -->
+    <section>
+      <p>Parrafo de texto en la seccion.</p>
+    </section>
+  </article>
+</main>
+<!-- <footer> contiene pie de pagina (copyright, contacto, sitemap)  -->
+<footer><p>(c) 2026 UTEQ</p></footer>
+\end{lstlisting}
+
+%%% ==== CAPITULO 2 v3 ====
+% =====================================================================
+%   CAPITULO 2: HTML5 AMPLIADA — VERSIÓN MEJORADA v3
+% =====================================================================
+\chapter{HTML y HTML5 para el desarrollo web}
+\label{cap:semana2}
+
+\epigraph{«HTML no es código fuente: es un contrato semántico entre el
+autor del documento y el ecosistema de agentes que lo interpretan.»}
+{--- \textit{Ian Hickson, editor de la especificación HTML5}}
+
+\section*{Resultado de aprendizaje del capítulo}
+Al concluir el capítulo 2, el estudiante construye documentos HTML5
+estructuralmente correctos, semánticamente significativos y validables
+ante el W3C, integrando formularios con validación nativa, contenido
+multimedia accesible, APIs nativas del lenguaje y entendiendo el lugar
+de XML en el ecosistema de marcado.
+
+\section{Historia y evolución de HTML}
+
+El lenguaje HTML ha evolucionado durante tres décadas
+adaptándose a las demandas cambiantes de la web: del documento
+estático al \emph{single-page application} interactivo. Conocer las
+etapas de esta evolución ayuda a entender por qué algunos tags
+existen, por qué otros se deprecaron y por qué HTML5 adoptó las
+formas actuales. La siguiente caja narra esa historia.
+
+
+\begin{cajahistoria}{De SGML a HTML Living Standard}
+La historia de HTML no comienza con HTML sino con SGML (Standard
+Generalized Markup Language), estándar ISO 8879 publicado en 1986.
+SGML era un meta-lenguaje complejo que permitía definir lenguajes de
+marcado específicos para documentos de gobierno, ejército y empresa.
+Tim Berners-Lee, al inventar la web en 1989, tomó SGML como punto de
+partida pero buscó una versión radicalmente simplificada: HTML.
+
+La primera descripción pública de HTML data de 1991 en una nota
+informal titulada \emph{«HTML Tags»} que listaba apenas 18 etiquetas
+\cite{bernerslee1991htmltags}. HTML 2.0 (1995, RFC 1866) fue el
+primer estándar formal, manteniendo la simplicidad pero añadiendo
+formularios. HTML 3.2 (W3C, 1997) incorporó tablas, applets y
+\emph{scripting}. HTML 4.01 (1999) trajo la separación entre
+estructura y presentación al recomendar el uso de hojas de estilo
+CSS \cite{raggett1999html401}.
+
+A finales de los noventa el W3C decidió reemplazar HTML por XHTML,
+una versión XML-estricta del lenguaje. Esta decisión, aunque
+técnicamente elegante, ignoró que la mayoría del HTML real en la web
+era \emph{tag soup}: marcado mal formado pero que funcionaba en los
+navegadores. La presión por estandarizar las prácticas reales llevó a
+la formación, en 2004, del \emph{Web Hypertext Application Technology
+Working Group} (WHATWG) por parte de Apple, Mozilla y Opera
+\cite{hickson2004whatwg}. El WHATWG se desvinculó del proceso XHTML
+2.0 y comenzó a desarrollar HTML5.
+
+En 2014 el W3C publicó HTML5 como Recomendación oficial. En 2019
+W3C y WHATWG firmaron un memorando reconociendo que el WHATWG sería
+el único editor del HTML Living Standard
+\cite{whatwgw3c2019memorandum}, abandonando la idea de versiones
+numeradas. Desde entonces, HTML evoluciona como \emph{Living
+Standard}: cambios incrementales continuos sin números de versión
+formales. Por convención y comodidad, seguimos hablando de «HTML5»
+para referirnos al HTML moderno.
+\end{cajahistoria}
+
+La evolución de HTML refleja la transformación de la web misma: lo
+que comenzó como un sistema simple para compartir documentos
+científicos hipertextuales en el CERN se convirtió en la plataforma
+de software más ubicua del planeta. Cada versión documenta no solo
+adiciones técnicas sino también cambios profundos en cómo se entendía
+la naturaleza del documento web.
+
+La tabla \ref{tab:evolucion-html} resume los hitos. Conviene
+contextualizarla: las versiones \emph{numeradas} de HTML
+(\texttt{HTML 2.0}, \texttt{3.2}, \texttt{4.01}) corresponden a una
+etapa en la que el lenguaje se actualizaba mediante \emph{snapshots}
+formales del W3C. A partir de HTML5, y especialmente desde el
+memorando de 2019 entre WHATWG y W3C
+\cite{whatwgw3c2019memorandum}, el modelo cambió a \emph{Living
+Standard}: la especificación se actualiza continuamente sin saltos
+de versión. Esto refleja la madurez del lenguaje: no necesita grandes
+revisiones disruptivas, solo evoluciones incrementales.
+
+\begin{table}[!htb]
+\centering
+\caption{Hitos de la evolución de HTML.}
+\label{tab:evolucion-html}
+\footnotesize
+\begin{tabularx}{\textwidth}{lll}
+\toprule
+\textbf{Versión} & \textbf{Año} & \textbf{Aportes principales}\\
+\midrule
+HTML «Tags» & 1991 & 18 etiquetas iniciales (\texttt{<a>}, \texttt{<p>}, \texttt{<h1>}\dots).\\
+HTML 2.0 & 1995 & Primera estandarización formal (RFC 1866); formularios.\\
+HTML 3.2 & 1997 & Tablas, applets, fuentes, alineación.\\
+HTML 4.01 & 1999 & Marcos, scripts, separación de presentación (CSS).\\
+XHTML 1.0 & 2000 & Reformulación XML de HTML 4.01.\\
+XHTML 1.1 & 2001 & Modularización; estricta sintaxis XML.\\
+HTML5 borrador & 2008 & WHATWG inicia HTML5; nuevos elementos semánticos.\\
+HTML5 W3C Rec. & 2014 & Recomendación oficial; \texttt{<video>}, \texttt{<canvas>}, APIs.\\
+HTML 5.1 & 2016 & Mejoras menores (\texttt{<picture>}, \texttt{<details>}).\\
+HTML 5.2 & 2017 & \texttt{<dialog>}, modal nativo.\\
+HTML 5.3 & --- & Cancelado en favor del Living Standard.\\
+HTML Living Standard & desde 2019 & Estado actual; cambios continuos por WHATWG.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La trayectoria muestra tres etapas claramente diferenciadas:
+\emph{(a)} la etapa fundacional (1991--1999) donde HTML pasa de
+prototipo a estándar formal; \emph{(b)} el periodo de transición
+XML (2000--2008) en el que el W3C intentó migrar HTML al ecosistema
+XML con XHTML 1.0 y 2.0, esfuerzo que finalmente fracasó porque la
+web real era demasiado tolerante a errores
+\cite{hickson2014html5}; y \emph{(c)} la era moderna de HTML5 (desde
+2008) en la que el lenguaje recupera su pragmatismo original mientras
+incorpora capacidades multimedia, APIs avanzadas y semántica rica.
+
+\section{Fundamentos de HTML}
+
+HTML (\emph{HyperText Markup Language}) es un lenguaje de marcado
+declarativo cuyo propósito es describir la estructura semántica de
+un documento hipertextual. A diferencia de los lenguajes
+procedurales o imperativos, HTML no «hace» nada: describe
+\emph{qué es} cada parte del contenido y deja al navegador la
+responsabilidad de renderizarlo. Como argumentan Duckett
+\cite{duckett2011html} y Robbins \cite{robbins2018learning}, esta
+naturaleza declarativa es lo que ha permitido que HTML sobreviva 35
+años casi sin cambios sintácticos: agentes muy diversos
+(navegadores, lectores de pantalla, motores de búsqueda, crawlers,
+extractores de datos, asistentes de IA) pueden interpretar el mismo
+documento de maneras distintas pero coherentes.
+
+Sus tres pilares son:
+
+\begin{itemize}
+\item \textbf{Etiquetas (tags).} Construyen la estructura. Vienen
+en pares de apertura y cierre: \texttt{<p>texto</p>}. Algunas son
+\emph{void} (no contienen contenido): \texttt{<img>}, \texttt{<br>},
+\texttt{<input>}.
+\item \textbf{Atributos.} Aportan información adicional sobre los
+elementos: \texttt{class}, \texttt{id}, \texttt{lang},
+\texttt{aria-*}. Se escriben dentro de la etiqueta de apertura como
+pares \texttt{nombre=\char34 valor\char34 }.
+\item \textbf{Contenido.} El texto y los elementos hijos que se
+anidan dentro de las etiquetas.
+\end{itemize}
+
+\subsection{Estructura mínima de un documento HTML5 válido}
+
+Todo documento HTML5 válido debe contener cinco elementos
+imprescindibles: \emph{(i)} la declaración \texttt{<!DOCTYPE html>}
+en la primera línea; \emph{(ii)} un elemento raíz \texttt{<html>} con
+atributo \texttt{lang}; \emph{(iii)} una sección \texttt{<head>} con
+metadatos (al menos \texttt{<meta charset>} y \texttt{<title>});
+\emph{(iv)} una sección \texttt{<body>} con el contenido visible; y
+\emph{(v)} idealmente, una estructura semántica que separe cabecera,
+navegación, contenido principal y pie.
+
+El siguiente código presenta una página HTML5 completa que ilustra
+el uso de \textbf{todos} los tags principales: tanto los nuevos tags
+semánticos de HTML5 (\texttt{<header>}, \texttt{<nav>},
+\texttt{<main>}, \texttt{<section>}, \texttt{<article>},
+\texttt{<aside>}, \texttt{<footer>}, \texttt{<figure>},
+\texttt{<time>}) como los tags clásicos que siguen siendo
+fundamentales (\texttt{<div>}, \texttt{<table>}, \texttt{<form>},
+\texttt{<ul>}, \texttt{<a>}, \texttt{<img>}). Este código sirve como
+\textbf{patrón canónico} de referencia para construir cualquier
+página web.
+
+\begin{cajaejemplo}{Ejemplo 2.1 --- Documento HTML5 completo con tags clásicos y semánticos}
+
+\textbf{Enunciado.} Construir un documento HTML5 mínimo pero completo que incluya todos los tags semánticos esenciales (\texttt{<header>}, \texttt{<nav>}, \texttt{<main>}, \texttt{<article>}, \texttt{<section>}, \texttt{<aside>}, \texttt{<footer>}) y los tags clásicos de organización (\texttt{<div>}, \texttt{<table>}). Servirá como página de referencia para el resto de los ejercicios.
+
+\begin{lstlisting}[style=html,caption={pagina-completa.html},label=lst:2.1]
+<!DOCTYPE html>
+<html lang="es-EC">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pagina demo con todos los tags clave">
+  <meta name="author" content="UTEQ - Aplicaciones Web">
+  <title>Pagina completa con tags clave - UTEQ</title>
+</head>
+<body>
+
+  <!-- Tags HTML5 semanticos: estructura -->
+  <header>
+    <h1>Universidad Tecnica Estatal de Quevedo</h1>
+    <p>La primera universidad agropecuaria del Ecuador</p>
+    <nav aria-label="Menu principal">
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#carreras">Carreras</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <article id="inicio">
+      <h2>Bienvenidos al sitio web</h2>
+      <p>Publicado el <time datetime="2026-05-04">4 de mayo
+      de 2026</time>.</p>
+      <figure>
+        <img src="campus.jpg"
+             alt="Vista panoramica del campus UTEQ"
+             width="600" height="400">
+        <figcaption>Campus central UTEQ - Quevedo</figcaption>
+      </figure>
+    </article>
+
+    <section id="carreras">
+      <h2>Carreras de la Facultad</h2>
+
+      <!-- Tag clasico: tabla para datos tabulares -->
+      <table>
+        <caption>Carreras de Ciencias de la Computacion</caption>
+        <thead>
+          <tr><th scope="col">Carrera</th>
+              <th scope="col">Duracion</th>
+              <th scope="col">Titulo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ingenieria de Software</td>
+              <td>9 semestres</td>
+              <td>Ing. de Software</td></tr>
+          <tr><td>Ingenieria en Sistemas</td>
+              <td>9 semestres</td>
+              <td>Ing. de Sistemas</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="contacto">
+      <h2>Contactenos</h2>
+
+      <!-- Tag clasico: formulario -->
+      <form action="/api/contacto" method="POST">
+        <!-- Tag clasico: div como contenedor generico -->
+        <div>
+          <label for="nombre">Nombre:</label>
+          <input id="nombre" name="nombre" type="text" required>
+        </div>
+        <div>
+          <label for="email">Correo:</label>
+          <input id="email" name="email" type="email" required>
+        </div>
+        <div>
+          <label for="msg">Mensaje:</label>
+          <textarea id="msg" name="msg" rows="4"></textarea>
+        </div>
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+
+    <aside aria-label="Datos adicionales">
+      <h2>Datos rapidos</h2>
+      <ul>
+        <li>Fundacion: <strong>1984</strong></li>
+        <li>Estudiantes: <strong>13.000+</strong></li>
+        <li>Programas: <strong>22</strong></li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer>
+    <small>&copy; 2026 UTEQ. Todos los derechos reservados.</small>
+    <address>
+      Av. Quito km 1.5 via a Santo Domingo<br>
+      Telefono: <a href="tel:+59353702220">(+593) 5 3702-220</a>
+    </address>
+  </footer>
+
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Explicación de las decisiones tomadas:}
+\begin{itemize}
+\item \texttt{<header>}, \texttt{<nav>}, \texttt{<main>},
+\texttt{<article>}, \texttt{<section>}, \texttt{<aside>},
+\texttt{<footer>}: la estructura semántica de HTML5 reemplaza el uso
+clásico de \texttt{<div class=\char34 header\char34 >}, \texttt{<div id=\char34 content\char34 >}.
+\item \texttt{<table>}: usada \emph{solo} para datos tabulares, con
+\texttt{<caption>}, \texttt{<thead>}, \texttt{<tbody>} y atributo
+\texttt{scope} en los \texttt{<th>}, conforme a las prácticas
+accesibles \cite{robbins2018learning}.
+\item \texttt{<form>}, \texttt{<input>}, \texttt{<label>}: cada
+\texttt{<input>} tiene su \texttt{<label for>} asociado (criterio
+WCAG 1.3.1).
+\item \texttt{<div>}: usado solo cuando no hay un elemento semántico
+apropiado, como contenedor neutro para cada grupo \texttt{<label>+<input>}.
+\item \texttt{<time datetime>}: fecha en formato ISO 8601 legible
+por máquinas.
+\end{itemize}
+\end{cajaejemplo}
+
+\subsection{Las cinco categorías de contenido en HTML5}
+
+HTML5 abandona la dicotomía clásica \emph{block-level / inline}
+(propia de HTML 4) y la sustituye por las \textbf{categorías de
+contenido}, que se solapan y permiten razonar con mayor precisión
+sobre qué puede contener qué \cite{hickson2014html5}. Este cambio
+conceptual es significativo: antes, los desarrolladores aprendían
+reglas mecánicas («un \texttt{<p>} no puede ir dentro de un
+\texttt{<a>}»); ahora aprenden categorías («un elemento de
+\emph{phrasing content} no admite \emph{flow content}»), lo que
+generaliza mucho mejor.
+
+A continuación se presentan las cinco categorías principales con
+ejemplos de uso en una página web real:
+
+\begin{enumerate}
+\item \textbf{Flow content} (la mayoría del contenido del cuerpo):
+texto, párrafos, listas, encabezados, imágenes, formularios,
+secciones. Casi todo lo que puede ir en \texttt{<body>} es flow
+content. \emph{Ejemplo de uso:} dentro de un \texttt{<section>}
+podemos poner \texttt{<h2>}, \texttt{<p>}, \texttt{<ul>},
+\texttt{<table>}, \texttt{<form>}: todos son flow content.
+
+\item \textbf{Phrasing content} (texto y sus marcas en línea):
+\texttt{<em>}, \texttt{<strong>}, \texttt{<a>}, \texttt{<span>},
+\texttt{<code>}, \texttt{<time>}, \texttt{<mark>}. Es un subconjunto
+de \emph{flow}. \emph{Ejemplo de uso:} dentro de un párrafo podemos
+escribir \texttt{<p>El libro <em>1984</em> fue publicado en
+<time datetime=\char34 1949\char34 >1949</time>.</p>}.
+
+\item \textbf{Embedded content} (contenido externo o interactivo
+incrustado): \texttt{<img>}, \texttt{<video>}, \texttt{<audio>},
+\texttt{<canvas>}, \texttt{<iframe>}, \texttt{<object>},
+\texttt{<svg>}. \emph{Ejemplo de uso:} dentro de un \texttt{<figure>}
+incrustamos \texttt{<img>} y agregamos \texttt{<figcaption>}.
+
+\item \textbf{Interactive content} (elementos con los que el usuario
+interactúa): \texttt{<a>} con \texttt{href}, \texttt{<button>},
+\texttt{<input>} (excepto \texttt{type=\char34 hidden\char34 }), \texttt{<select>},
+\texttt{<textarea>}, \texttt{<details>}, \texttt{<label>}.
+\emph{Ejemplo de uso:} dentro de un \texttt{<form>} ponemos
+varios \texttt{<input>} interactivos.
+
+\item \textbf{Sectioning content} (secciones del documento):
+\texttt{<article>}, \texttt{<section>}, \texttt{<nav>},
+\texttt{<aside>}. Cada uno define un nuevo «contexto de outline» que
+afecta la jerarquía de encabezados. \emph{Ejemplo de uso:} la
+página de la sección anterior tiene un \texttt{<article>} (sectioning
+content) que contiene un \texttt{<h2>} de bienvenida.
+\end{enumerate}
+
+Existen además categorías menos comunes: \emph{metadata content}
+(\texttt{<meta>}, \texttt{<link>}, \texttt{<style>}, \texttt{<title>}),
+\emph{heading content} (\texttt{<h1>}-\texttt{<h6>}), \emph{form-associated
+content} (\texttt{<input>}, \texttt{<button>}, etc.). Un mismo
+elemento puede pertenecer a varias categorías simultáneamente: por
+ejemplo, \texttt{<a>} es flow, phrasing e interactive.
+
+\subsection{Modelo de contenido y reglas de anidamiento}
+
+Cada elemento HTML define qué puede contener y qué no, mediante un
+\textbf{modelo de contenido} declarado en la especificación. Estas
+reglas no son arbitrarias: derivan de la semántica del elemento y de
+limitaciones técnicas históricas. Comprenderlas evita errores
+sutiles que pasan desapercibidos a primera vista pero rompen la
+accesibilidad o el SEO.
+
+\textbf{Reglas fundamentales con ejemplos:}
+
+\begin{enumerate}
+\item \textbf{\texttt{<p>} solo admite phrasing content.} Por eso un
+párrafo no puede contener un \texttt{<div>} o un \texttt{<table>}.
+\textbf{Anti-ejemplo (inválido) (Listado~\ref{lst:2.2}):}
+\begin{lstlisting}[style=html,numbers=none,caption={Ejemplo de HTML},label=lst:2.2]
+<p>Aqui hay una tabla:
+  <table><tr><td>X</td></tr></table>
+</p>
+\end{lstlisting}
+\textbf{Correcto:} cerrar el \texttt{<p>} antes de la tabla.
+
+\item \textbf{\texttt{<a>} acepta cualquier contenido excepto
+interactive content.} Por eso un enlace no puede contener otro
+enlace, ni un \texttt{<button>}, ni un \texttt{<input>}.
+\textbf{Anti-ejemplo (inválido) (Listado~\ref{lst:2.3}):}
+\begin{lstlisting}[style=html,numbers=none,caption={Ejemplo de HTML},label=lst:2.3]
+<a href="/x"><button>Click</button></a>
+\end{lstlisting}
+\textbf{Correcto:} usar solo \texttt{<a>} con texto y CSS para
+darle apariencia de botón, o solo \texttt{<button>} con
+\texttt{onclick} que redirija.
+
+\item \textbf{\texttt{<button>} no admite interactive content.} Por
+eso no se puede tener un \texttt{<a>} dentro de un \texttt{<button>}.
+
+\item \textbf{\texttt{<ul>} y \texttt{<ol>} solo aceptan
+\texttt{<li>}} (y opcionalmente \texttt{<script>}/\texttt{<template>}).
+\textbf{Anti-ejemplo (inválido) (Listado~\ref{lst:2.4}):}
+\begin{lstlisting}[style=html,numbers=none,caption={Ejemplo de HTML},label=lst:2.4]
+<ul>
+  <h2>Items</h2>
+  <li>Uno</li>
+  <li>Dos</li>
+</ul>
+\end{lstlisting}
+\textbf{Correcto:} el encabezado va \emph{antes} de la \texttt{<ul>}.
+
+\item \textbf{\texttt{<table>} requiere estructura específica:}
+solo admite \texttt{<caption>}, \texttt{<colgroup>}, \texttt{<thead>},
+\texttt{<tbody>}, \texttt{<tfoot>}, \texttt{<tr>} (este último solo
+sin \texttt{<thead>}/\texttt{<tbody>}). Las filas \texttt{<tr>} solo
+admiten \texttt{<td>} y \texttt{<th>}.
+
+\item \textbf{\texttt{<form>} no puede contener otro \texttt{<form>}.}
+Pero sí puede tener \texttt{<input form=\char34 otroForm\char34 >} que asocia un
+input con un form externo (técnica avanzada).
+\end{enumerate}
+
+\textbf{¿Por qué el navegador es indulgente?} Los navegadores
+intentan recuperarse de HTML inválido por compatibilidad histórica.
+Sin embargo:
+\begin{itemize}
+\item Los \emph{validadores} (W3C) reportan errores.
+\item Los \emph{lectores de pantalla} pueden anunciar contenido
+incoherente.
+\item Los \emph{motores de SEO} penalizan estructuras inválidas.
+\item Las \emph{herramientas automatizadas} (extracción de datos,
+asistentes de IA) producen resultados impredecibles.
+\end{itemize}
+
+Por estas razones, todo HTML profesional debe pasar el W3C Markup
+Validator \cite{w3cvalidator} sin errores antes de ir a producción.
+
+\section{Elementos semánticos de HTML5 en profundidad}
+
+Antes de HTML5 la mayoría de la maquetación se hacía con \texttt{<div>}
+genéricos diferenciados por clases CSS. Este enfoque
+\emph{semánticamente ciego} tenía varios problemas documentados
+\cite{lawson2011html5}: los motores de búsqueda no entendían la
+estructura del contenido, los lectores de pantalla no podían
+ofrecer navegación rápida entre regiones, y el código se volvía
+ilegible para humanos. HTML5 introdujo un vocabulario semántico
+explícito que mejora la accesibilidad, el SEO, la mantenibilidad y
+la interoperabilidad con herramientas de \emph{reader mode},
+extracción automatizada y asistentes de IA.
+
+\subsection{Catálogo de elementos semánticos}
+
+La tabla \ref{tab:semanticos} sintetiza los elementos semánticos
+esenciales de HTML5 con su uso correcto e incorrecto. La razón
+para incluir ambas columnas es pedagógica: en los entregables del
+curso, los errores más frecuentes consisten en usar elementos
+semánticos para fines genéricos (por ejemplo, \texttt{<section>}
+como contenedor visual sin encabezado), lo que invalida su
+semántica.
+
+\begin{table}[htbp]
+\centering
+\caption{Elementos semánticos esenciales de HTML5 con su uso correcto e incorrecto.}
+\label{tab:semanticos}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Elemento} & \textbf{Uso correcto} & \textbf{Uso incorrecto}\\
+\midrule
+\texttt{<header>}  & Cabecera de página o sección & Como contenedor genérico\\
+\texttt{<nav>}     & Bloque de navegación principal & Para listas de enlaces secundarios\\
+\texttt{<main>}    & Contenido principal único & En múltiples instancias\\
+\texttt{<article>} & Contenido autónomo y reutilizable & Para cualquier párrafo\\
+\texttt{<section>} & Agrupación temática con encabezado & Sin \texttt{<h2>}/\texttt{<h3>} dentro\\
+\texttt{<aside>}   & Contenido relacionado pero secundario & Para barras laterales decorativas\\
+\texttt{<footer>}  & Pie de página o sección & Para contenido principal\\
+\texttt{<figure>}  & Imagen, código o tabla autocontenida & Para cualquier imagen\\
+\texttt{<figcaption>} & Pie de figura & Fuera de \texttt{<figure>}\\
+\texttt{<time>}    & Fecha u hora marcada para máquinas & Sin atributo \texttt{datetime}\\
+\texttt{<mark>}    & Texto destacado contextualmente & Como sinónimo de \texttt{<strong>}\\
+\texttt{<details>}+\texttt{<summary>} & Bloque colapsable & Para acordeones complejos\\
+\texttt{<dialog>}  & Modal nativo & Para tooltips simples\\
+\texttt{<address>} & Datos de contacto & Para direcciones postales arbitrarias\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Para cada elemento, la regla mnemotécnica es: \emph{«si puedo
+explicar en una frase qué significa este bloque, debo poder elegir
+el elemento semántico apropiado; si solo puedo describirlo por su
+apariencia visual, probablemente debo usar un \texttt{<div>}»}.
+
+\subsection{¿\texttt{<article>} o \texttt{<section>}? Guía decisional con ejemplo real}
+
+La confusión más común es cuándo usar \texttt{<article>} y cuándo
+\texttt{<section>}. Ambos son \emph{sectioning content}, ambos
+crean un nuevo contexto de outline, pero tienen semánticas distintas
+\cite{lawson2011html5,robbins2018learning}.
+
+\textbf{Regla heurística canónica:}
+
+\begin{itemize}
+\item \texttt{<article>}: si el bloque de contenido podría
+\emph{publicarse de manera independiente} en otro contexto y seguir
+teniendo sentido, es un artículo. La «prueba RSS»: ¿tendría sentido
+incluir este bloque en un feed RSS aislado de su contexto?
+
+Ejemplos canónicos: una entrada de blog, una noticia, un comentario
+en un foro, una tarjeta de producto, un \emph{tweet}, una reseña.
+
+\item \texttt{<section>}: si el bloque es una agrupación temática
+que solo tiene sentido como parte del documento mayor.
+
+Ejemplos: la sección «Estudios» de un currículum, el capítulo de un
+libro, la sección «Características» de una landing page.
+\end{itemize}
+
+\textbf{Ejemplo real con código completo:} blog con múltiples entradas.
+
+\begin{cajaejemplo}{Ejemplo 2.2 --- Uso correcto de \texttt{<article>} y \texttt{<section>}}
+\begin{lstlisting}[style=html,caption={blog.html (extracto significativo)},label=lst:2.5]
+<main>
+  <h1>Blog de Aplicaciones Web - UTEQ</h1>
+
+  <!-- ARTICLE: entrada que puede publicarse en RSS independiente -->
+  <article>
+    <header>
+      <h2>Por que HTML5 cambio el desarrollo web</h2>
+      <p>Por <a href="/autor/jdoe" rel="author">Juan Doe</a>
+         el <time datetime="2026-05-04">4 mayo 2026</time></p>
+    </header>
+
+    <p>Introduccion al articulo...</p>
+
+    <!-- SECTION dentro de article: agrupacion tematica interna -->
+    <section>
+      <h3>Elementos semanticos nuevos</h3>
+      <p>HTML5 introdujo header, nav, main...</p>
+    </section>
+
+    <section>
+      <h3>APIs multimedia nativas</h3>
+      <p>Las etiquetas video y audio reemplazaron Flash...</p>
+    </section>
+
+    <footer>
+      <p>Etiquetas:
+        <a href="/tag/html5">HTML5</a>,
+        <a href="/tag/web">Web</a>
+      </p>
+    </footer>
+  </article>
+
+  <!-- Otro ARTICLE independiente -->
+  <article>
+    <header>
+      <h2>CSS Grid: el sistema de maquetacion definitivo</h2>
+      <p>Por <a href="/autor/asmith">Ana Smith</a>
+         el <time datetime="2026-04-28">28 abril 2026</time></p>
+    </header>
+    <p>CSS Grid revoluciono la maquetacion web...</p>
+  </article>
+
+  <!-- SECTION: agrupacion que NO tendria sentido fuera del blog -->
+  <section aria-label="Articulos relacionados">
+    <h2>Tambien te puede interesar</h2>
+    <ul>
+      <li><a href="/post/1">Una guia rapida de Flexbox</a></li>
+      <li><a href="/post/2">JavaScript moderno en 2026</a></li>
+    </ul>
+  </section>
+</main>
+\end{lstlisting}
+
+\textbf{Razonamiento de las decisiones:}
+\begin{itemize}
+\item Cada entrada del blog es \texttt{<article>}: si se extrae y
+publica en otro sitio o en un feed, tiene sentido por sí misma.
+\item Dentro de cada artículo, las \texttt{<section>} agrupan
+subtemas pero \emph{no} podrían publicarse independientemente: «APIs
+multimedia nativas» sin el contexto del artículo carece de
+significado.
+\item «Artículos relacionados» es una \texttt{<section>} porque es
+una agrupación temática (lista de enlaces) que pertenece a la página
+del blog pero no es \emph{contenido} autónomo.
+\end{itemize}
+\end{cajaejemplo}
+
+\section{Formularios HTML5 y validación nativa}
+
+Los formularios constituyen el principal mecanismo de entrada de
+datos del usuario hacia el servidor. HTML5 amplió drásticamente las
+capacidades de validación nativa, reduciendo la dependencia de
+JavaScript para tareas básicas y mejorando significativamente la
+experiencia del usuario en dispositivos móviles
+\cite{nixon2021learning}. Con HTML5 podemos confiar en el navegador
+para verificar formato de email, rangos numéricos, longitudes
+mínimas y máximas, y patrones complejos mediante expresiones
+regulares.
+
+Es importante destacar: \textbf{la validación HTML5 es para
+usabilidad, no para seguridad}. Un atacante puede saltarse fácilmente
+las validaciones del cliente; por eso la validación robusta debe
+duplicarse en el servidor (capítulos 5--9). Sin embargo, la
+validación HTML5 mejora la experiencia ofreciendo retroalimentación
+inmediata al usuario \emph{antes} de enviar el formulario.
+
+\subsection{Tipos de input modernos}
+
+A los tipos clásicos de input que existían desde HTML 2.0
+(\texttt{text}, \texttt{password}, \texttt{checkbox}, \texttt{radio},
+\texttt{submit}, \texttt{hidden}, \texttt{file}), HTML5 añadió
+\textbf{trece tipos modernos} que tres ventajas operacionales
+fundamentales: \emph{(i)} validación automática del formato (correo,
+URL, número), \emph{(ii)} interfaces de entrada especializadas
+(calendarios, selectores de color, sliders) y \emph{(iii)} en
+móviles, invocan automáticamente el teclado virtual más apropiado
+para el tipo de dato (numérico para \texttt{tel}, con \texttt{@}
+para \texttt{email}, etc.).
+
+La tabla \ref{tab:input-types} cataloga estos tipos modernos junto
+con su uso recomendado y la validación nativa que cada uno
+implementa. Conviene memorizar esta tabla: usar el tipo correcto de
+input es una de las maneras más simples y efectivas de mejorar la
+usabilidad de un formulario.
+
+\begin{table}[htbp]
+\centering
+\caption{Tipos de \texttt{<input>} de HTML5 y su validación nativa.}
+\label{tab:input-types}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Tipo} & \textbf{Uso} & \textbf{Validación nativa}\\
+\midrule
+\texttt{email} & Correo electrónico & Formato \texttt{x@y.z}\\
+\texttt{tel} & Teléfono & No valida formato (varía por país); usar \texttt{pattern}\\
+\texttt{url} & URL & Formato URL absoluto\\
+\texttt{number} & Número & Solo dígitos; \texttt{min}/\texttt{max}/\allowbreak\texttt{step}\\
+\texttt{range} & Rango (slider) & Numérico; sin teclado de entrada\\
+\texttt{date} & Fecha & Calendario nativo\\
+\texttt{time} & Hora & Selector horario\\
+\texttt{datetime-local} & Fecha y hora local & Calendario + reloj\\
+\texttt{month} & Año-mes & Selector de mes\\
+\texttt{week} & Semana del año & Selector de semana\\
+\texttt{color} & Color & Selector de color\\
+\texttt{search} & Búsqueda & Cosmética: borrar con X\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+En móviles, además, cada tipo de input invoca el teclado virtual
+adecuado: \texttt{email} muestra el carácter \texttt{@};
+\texttt{number} y \texttt{tel} muestran el teclado numérico;
+\texttt{url} muestra \texttt{.com} y \texttt{/}. Esto reduce
+drásticamente los errores de tipeo en pantallas pequeñas.
+
+\subsection{Atributos de validación}
+
+Los siguientes atributos permiten especificar restricciones que el
+navegador valida automáticamente antes de enviar el formulario:
+
+\begin{itemize}
+\item \texttt{required}: el campo no puede enviarse vacío.
+\item \texttt{minlength} / \texttt{maxlength}: rango de longitud de
+texto.
+\item \texttt{min} / \texttt{max}: rango numérico o temporal.
+\item \texttt{pattern}: expresión regular (sintaxis JavaScript) que
+debe cumplir el valor.
+\item \texttt{step}: incremento permitido en numéricos y fechas
+(\texttt{step=\char34 0.01\char34 } para dinero, \texttt{step=\char34 60\char34 } para minutos).
+\item \texttt{autocomplete}: directrices al navegador (\texttt{on},
+\texttt{off}, \texttt{name}, \texttt{email}, \texttt{tel},
+\texttt{cc-number}, \texttt{street-address}, \texttt{country},
+\texttt{bday}\dots).
+\item \texttt{novalidate} (en \texttt{<form>}): deshabilita la
+validación nativa.
+\item \texttt{multiple}: permite múltiples valores
+(\texttt{<input type=\char34 email\char34  multiple>}).
+\item \texttt{accept}: tipos MIME permitidos en \texttt{<input
+type=\char34 file\char34 >}.
+\end{itemize}
+
+\textbf{Ejemplo de formulario completo con validación nativa:}
+
+\begin{cajaejemplo}{Ejemplo 2.3 --- Formulario de inscripción a curso con validación HTML5 completa}
+
+\textbf{Enunciado.} Construir un formulario de inscripción a curso con validación HTML5 nativa (\texttt{required}, \texttt{type}, \texttt{pattern}, \texttt{min}/\texttt{max}) que rechace datos inválidos antes de enviarlos al servidor.
+
+\begin{lstlisting}[style=html,caption={inscripcion.html (formulario funcional)},label=lst:2.6]
+<form action="/api/inscripcion" method="POST">
+  <fieldset>
+    <legend>Datos personales</legend>
+
+    <label for="cedula">Cedula (10 digitos):</label>
+    <input id="cedula" name="cedula" type="text"
+           pattern="[0-9]{10}" required
+           autocomplete="off"
+           aria-describedby="ayuda-cedula">
+    <small id="ayuda-cedula">Sin guiones ni espacios</small>
+
+    <label for="nombre">Nombre completo:</label>
+    <input id="nombre" name="nombre" type="text"
+           minlength="3" maxlength="80" required
+           autocomplete="name">
+
+    <label for="email">Correo institucional:</label>
+    <input id="email" name="email" type="email"
+           pattern=".+@uteq\.edu\.ec" required
+           autocomplete="email">
+
+    <label for="tel">Telefono celular:</label>
+    <input id="tel" name="tel" type="tel"
+           pattern="09[0-9]{8}" required
+           autocomplete="tel">
+
+    <label for="fnac">Fecha de nacimiento:</label>
+    <input id="fnac" name="fnac" type="date"
+           min="1980-01-01" max="2010-12-31" required
+           autocomplete="bday">
+  </fieldset>
+
+  <fieldset>
+    <legend>Curso</legend>
+
+    <label for="nivel">Nivel academico (1-10):</label>
+    <input id="nivel" name="nivel" type="number"
+           min="1" max="10" step="1" required>
+
+    <label for="prom">Promedio acumulado:</label>
+    <input id="prom" name="prom" type="number"
+           min="6.0" max="10.0" step="0.01" required>
+
+    <label for="hrs">Horas semanales de estudio:</label>
+    <input id="hrs" name="hrs" type="range"
+           min="0" max="40" step="1" value="20">
+
+    <label for="carrera">Carrera:</label>
+    <select id="carrera" name="carrera" required>
+      <option value="">-- Seleccione --</option>
+      <option value="SW">Ingenieria de Software</option>
+      <option value="SE">Ingenieria de Sistemas</option>
+    </select>
+  </fieldset>
+
+  <button type="submit">Inscribirme</button>
+  <button type="reset">Limpiar</button>
+</form>
+\end{lstlisting}
+
+\textbf{Validaciones automáticas que aplica el navegador:}
+\begin{itemize}
+\item Si la cédula no tiene exactamente 10 dígitos: error nativo.
+\item Si el email no termina en \texttt{@uteq.edu.ec}: error nativo.
+\item Si el teléfono no comienza con \texttt{09}: error nativo.
+\item Si el promedio está fuera de rango 6.0--10.0: error nativo.
+\item Si el campo carrera no se selecciona: error nativo.
+\end{itemize}
+Todo esto sin escribir una sola línea de JavaScript.
+\end{cajaejemplo}
+
+\textbf{Nota didáctica:} las pseudo-clases CSS para dar
+retroalimentación visual al estado de validación (\texttt{:valid},
+\texttt{:invalid}, \texttt{:required}, \texttt{:user-invalid}) se
+estudiarán en detalle en el capítulo 3, cuando dispongamos del marco
+conceptual completo de CSS. Por ahora, basta con saber que existen y
+que podemos darles estilo al campo según esté correctamente lleno o
+no.
+
+\section{Multimedia y APIs de HTML5}
+
+HTML5 incorporó al estándar nativo cinco APIs de gran importancia
+práctica que reemplazaron tecnologías propietarias como Flash y
+Silverlight \cite{macdonald2018css}. Su importancia no es solo
+técnica: políticamente representó la victoria de los estándares
+abiertos sobre los plugins propietarios. Apple inició la batalla en
+2010 cuando Steve Jobs publicó la carta abierta «Thoughts on
+Flash» \cite{jobs2010flash} declarando que iOS nunca soportaría
+Flash. La transición a HTML5 nativo se completó alrededor de 2020,
+cuando Adobe descontinuó oficialmente Flash Player.
+
+Las cinco APIs nativas son:
+
+\begin{enumerate}
+\item \texttt{<video>} y \texttt{<audio>}: reproducción multimedia
+nativa.
+\item \texttt{<canvas>}: gráficos 2D y 3D (con WebGL).
+\item \textbf{Geolocation API}: posición geográfica del usuario con
+consentimiento.
+\item \textbf{Web Storage}: \texttt{localStorage} y
+\texttt{sessionStorage}.
+\item \textbf{Drag-and-Drop API}: arrastrar y soltar entre
+componentes.
+\end{enumerate}
+
+\subsection{La etiqueta \texttt{<video>} con accesibilidad completa}
+
+La etiqueta \texttt{<video>} es uno de los elementos más complejos
+de HTML5 porque integra múltiples preocupaciones: formato del video,
+controles de reproducción, accesibilidad para usuarios sordos
+(subtítulos), accesibilidad para usuarios ciegos (audiodescripciones),
+optimización de carga (preload, poster) y compatibilidad con navegadores
+distintos (múltiples \texttt{<source>}).
+
+Para construir un video accesible profesional necesitamos conocer
+los siguientes atributos y elementos asociados:
+
+\begin{itemize}
+\item \texttt{controls}: muestra los controles nativos del navegador
+(reproducir, pausa, volumen, pantalla completa).
+\item \texttt{preload}: indica al navegador cuánto descargar antes de
+reproducir. Valores: \texttt{none} (nada), \texttt{metadata}
+(solo cabeceras: duración y dimensiones), \texttt{auto} (todo).
+\item \texttt{poster}: imagen que se muestra antes de iniciar la
+reproducción (mejora la percepción de carga).
+\item \texttt{autoplay}: reproducción automática (la mayoría de
+navegadores la bloquean si el video tiene audio, por buenas
+razones).
+\item \texttt{loop}: reproducción en bucle.
+\item \texttt{muted}: silenciado por defecto (necesario para
+autoplay).
+\item Múltiples \texttt{<source>}: el navegador usa el primer formato
+que reconoce. Buena práctica: WebM primero (Chrome/Firefox), MP4
+después (Safari/Edge).
+\item \texttt{<track>}: pistas de subtítulos, descripciones,
+metadatos. Sus tipos (\texttt{kind}):
+   \begin{itemize}
+   \item \texttt{captions}: subtítulos para usuarios sordos en el
+   idioma del video (criterio WCAG 1.2.2).
+   \item \texttt{subtitles}: subtítulos traducidos a otro idioma.
+   \item \texttt{descriptions}: descripciones de audio para usuarios
+   ciegos (criterio WCAG 1.2.5).
+   \item \texttt{chapters}: marcadores de capítulos.
+   \item \texttt{metadata}: datos para scripts.
+   \end{itemize}
+\end{itemize}
+
+\begin{cajaejemplo}{Ejemplo 2.4 --- Video accesible profesional}
+
+\textbf{Enunciado.} Mostrar la etiqueta \texttt{<video>} con todos los atributos de accesibilidad necesarios en producción: \texttt{controls}, \texttt{preload}, \texttt{poster}, pistas de subtítulos con \texttt{<track>} y fuentes alternativas con \texttt{<source>}.
+
+\begin{lstlisting}[style=html,caption={Ejemplo de HTML},label=lst:2.7]
+<figure>
+  <video controls width="640"
+         preload="metadata"
+         poster="poster-uteq.jpg"
+         crossorigin="anonymous">
+    <source src="bienvenida.webm" type="video/webm">
+    <source src="bienvenida.mp4"  type="video/mp4">
+    <track kind="captions" src="bienvenida.es.vtt"
+           srclang="es" label="Espanol" default>
+    <track kind="captions" src="bienvenida.en.vtt"
+           srclang="en" label="English">
+    <track kind="descriptions" src="bienvenida.desc.vtt"
+           srclang="es" label="Audiodescripcion">
+    <p>Su navegador no soporta video HTML5.
+       <a href="bienvenida.mp4">Descargar el video</a>.</p>
+  </video>
+  <figcaption>Mensaje de bienvenida del Rector --- Mayo 2026</figcaption>
+</figure>
+\end{lstlisting}
+
+\textbf{Aspectos clave de este código:}
+\begin{itemize}
+\item Múltiples \texttt{<source>}: el navegador elige el primero
+soportado.
+\item Subtítulos en español y en inglés (\texttt{default} marca el
+predeterminado).
+\item \texttt{<track kind=\char34 descriptions\char34 >}: audiodescripciones para
+usuarios ciegos.
+\item Texto fallback dentro de \texttt{<video>}: navegadores muy
+antiguos.
+\item Envuelto en \texttt{<figure>+<figcaption>} para semántica
+correcta.
+\end{itemize}
+
+\textbf{Formato del archivo \texttt{.vtt}} (WebVTT) para subtítulos (Listado~\ref{lst:2.8}):
+\begin{lstlisting}[style=shell,caption={bienvenida.es.vtt},label=lst:2.8]
+WEBVTT
+
+00:00:00.000 --> 00:00:04.000
+Bienvenidos a la Universidad Tecnica Estatal de Quevedo.
+
+00:00:04.500 --> 00:00:08.000
+Soy el Rector y les hablo desde nuestro campus central.
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsection{El elemento \texttt{<picture>} para imágenes responsivas}
+
+El elemento \texttt{<picture>} resuelve un problema concreto: servir
+\emph{la imagen correcta para cada dispositivo}. Antes de
+\texttt{<picture>}, la web servía la misma imagen a todos los
+dispositivos, lo que penalizaba a usuarios móviles con redes lentas:
+una imagen optimizada para desktop (1200 px de ancho) cargaba
+también en un teléfono que solo necesitaba 400 px, gastando datos
+innecesarios y prolongando tiempos de carga.
+
+\texttt{<picture>} permite al navegador elegir la imagen óptima
+según: \emph{(i)} el tamaño del viewport (media queries), \emph{(ii)}
+la densidad de pixels (Retina, etc.) y \emph{(iii)} el formato
+soportado (WebP es 25--35\% más pequeño que JPEG, AVIF es 50\% más
+pequeño aún, pero no todos los navegadores los soportan).
+
+\begin{cajaejemplo}{Ejemplo 2.5 --- Imagen optimizada para múltiples dispositivos}
+
+\textbf{Enunciado.} Implementar una imagen responsive con \texttt{<picture>} y \texttt{<source>} para servir el formato y tamaño más apropiados según el dispositivo y soporte del navegador.
+
+\begin{lstlisting}[style=html,caption={Ejemplo de HTML},label=lst:2.9]
+<picture>
+  <!-- Para pantallas grandes con AVIF soportado -->
+  <source media="(min-width: 1200px)"
+          srcset="banner-grande.avif"
+          type="image/avif">
+  <source media="(min-width: 1200px)"
+          srcset="banner-grande.webp"
+          type="image/webp">
+  <source media="(min-width: 1200px)"
+          srcset="banner-grande.jpg"
+          type="image/jpeg">
+
+  <!-- Para tablets -->
+  <source media="(min-width: 600px)"
+          srcset="banner-medio.webp"
+          type="image/webp">
+
+  <!-- Fallback para todos -->
+  <img src="banner-pequeno.jpg"
+       alt="Vista panoramica del campus UTEQ"
+       width="1200" height="600"
+       loading="lazy">
+</picture>
+\end{lstlisting}
+\textbf{Beneficios:}
+\begin{itemize}
+\item El navegador descarga \emph{solo} la versión adecuada al
+viewport y al formato soportado.
+\item AVIF/WebP reducen el peso 25--50\% respecto a JPEG con calidad
+equivalente.
+\item \texttt{loading=\char34 lazy\char34 } difiere la descarga hasta que la
+imagen está cerca del viewport.
+\item Las dimensiones explícitas (\texttt{width}, \texttt{height})
+evitan el \emph{layout shift} durante la carga.
+\end{itemize}
+\end{cajaejemplo}
+
+\section{XML y familias de lenguajes de marcado}
+
+HTML pertenece a una familia mayor de lenguajes de marcado que
+descienden de SGML. XML (\emph{eXtensible Markup Language}) es el
+otro gran descendiente de SGML, estandarizado por el W3C en 1998
+\cite{w3c1998xml}. La diferencia fundamental: HTML tiene un
+vocabulario fijo (los tags están predefinidos); XML es
+\emph{extensible}, el autor define su propio vocabulario.
+
+Esta extensibilidad permitió que XML se convirtiera en el formato
+de intercambio dominante en sistemas empresariales durante los
+2000s. Aunque desde 2015 ha sido desplazado parcialmente por JSON
+en APIs REST modernas, XML sigue siendo esencial en muchos
+contextos: configuración de aplicaciones Java (Maven, Spring),
+servicios web SOAP, sindicación de contenidos, formatos de
+documentos (DOCX, ODT, EPUB son ZIP de archivos XML).
+
+\subsection{Subdialectos de XML relevantes en aplicaciones web}
+
+XML como tecnología generó múltiples subdialectos
+especializados que siguen vigentes en distintas áreas. Conocer cuáles
+están en uso en aplicaciones web reales permite reconocerlos cuando
+aparecen en bibliotecas, configuraciones o servicios externos. La
+lista siguiente enumera los más relevantes en 2026.
+
+
+\begin{itemize}
+\item \textbf{XHTML}: HTML reformulado como XML estricto. Hoy
+relegado pero existe en casos específicos (correos electrónicos,
+algunos sistemas legados).
+\item \textbf{SVG} (Scalable Vector Graphics): gráficos vectoriales,
+nativos en HTML5. Iconos, gráficos, diagramas que escalan sin
+pérdida de calidad.
+\item \textbf{MathML}: notación matemática. Usada en sitios
+académicos y educativos.
+\item \textbf{RSS} y \textbf{Atom}: sindicación de contenido.
+\item \textbf{SOAP}: servicios web XML (capítulo 15).
+\item \textbf{XSLT}: transformaciones XML a otros formatos.
+\item \textbf{DocBook}: documentación técnica.
+\item \textbf{XAML}: interfaces de WPF y WinUI.
+\end{itemize}
+
+\subsection{Formatos de intercambio de datos: XML, JSON, YAML, TOML y otros}
+
+XML y JSON no son los únicos formatos de intercambio de datos
+relevantes en 2026. Para que el desarrollador profesional pueda
+elegir bien, conviene conocer el panorama completo. Cada formato
+tiene fortalezas y casos de uso óptimos.
+
+\begin{table}[htbp]
+\centering
+\caption{Formatos de intercambio de datos modernos.}
+\label{tab:formatos-datos}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Formato} & \textbf{Características} & \textbf{Casos de uso 2026}\\
+\midrule
+XML & Verboso; etiquetas anidadas con atributos; validación con XSD; comentarios soportados. & Maven \texttt{pom.xml}, SOAP, SVG, configuración legada (Spring XML).\\
+JSON & Sintaxis tipo objeto JS; tipos básicos; sin comentarios; soporte nativo en JavaScript. & APIs REST, \texttt{package.json}, NoSQL (MongoDB).\\
+YAML & Indentación significativa; muy legible; tipos inferidos; soporta comentarios. & Docker Compose, Kubernetes, GitHub Actions, Spring Boot \texttt{application.yml}.\\
+TOML & Sintaxis INI mejorada; tipado explícito; secciones; pensado para configuración. & Rust (\texttt{Cargo.toml}), Python (\texttt{pyproject.toml}).\\
+INI & Formato \texttt{clave=valor} con secciones; muy simple. & Configuración legada en Windows, PHP \texttt{php.ini}.\\
+CSV & Tabular plano; valores separados por comas. & Exportación a Excel, ETL básico.\\
+Protobuf & Binario; eficiente; requiere esquema \texttt{.proto}; soporte multi-lenguaje. & gRPC, comunicación servicio-servicio de alto rendimiento.\\
+MessagePack & Binario tipo JSON; más compacto. & Comunicación IoT, caches binarias.\\
+Avro & Binario; esquema JSON embebido. & Apache Kafka, big data, streaming.\\
+Parquet & Columnar binario; comprimido. & Análisis de datos a escala (Spark, BigQuery).\\
+GraphQL & Lenguaje de consulta; respuesta JSON. & APIs con clientes que necesitan flexibilidad.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Comparativa XML vs JSON (la elección más frecuente en
+desarrollo web):}
+
+\begin{table}[htbp]
+\centering
+\caption{XML vs JSON --- comparación detallada.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Criterio} & \textbf{XML} & \textbf{JSON}\\
+\midrule
+Verbosidad & Alta (etiquetas de apertura y cierre) & Baja (sintaxis tipo objeto)\\
+Tipos de datos & Solo strings, requiere XSD para tipado & Strings, números, booleanos, null, arrays, objetos\\
+Validación & XSD, DTD, RelaxNG & JSON Schema\\
+Soporte JavaScript & Requiere parsing manual & \texttt{JSON.parse()} nativo\\
+Atributos & Sí (atributos en elementos) & No (todo son propiedades)\\
+Comentarios & Sí (\texttt{<!-- -->}) & No (JSON5 permite)\\
+Tamaño típico & 100\% (referencia) & 60--70\% del XML equivalente\\
+Casos de uso 2026 & Sistemas legados, configuración (Maven, Spring XML) & APIs REST, configuración (\texttt{package.json})\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Ejemplo comparativo: la misma información en cuatro formatos.}
+
+\textbf{XML (Listado~\ref{lst:2.10}):}
+\begin{lstlisting}[style=xml,numbers=none,caption={Ejemplo de XML},label=lst:2.10]
+<usuario id="42">
+  <nombre>Maria Lopez</nombre>
+  <edad>23</edad>
+  <activo>true</activo>
+  <roles>
+    <rol>USER</rol>
+    <rol>EDITOR</rol>
+  </roles>
+</usuario>
+\end{lstlisting}
+
+\textbf{JSON (Listado~\ref{lst:2.11}):}
+\begin{lstlisting}[style=js,numbers=none,caption={Ejemplo de JavaScript},label=lst:2.11]
+{
+  "id": 42,
+  "nombre": "Maria Lopez",
+  "edad": 23,
+  "activo": true,
+  "roles": ["USER", "EDITOR"]
+}
+\end{lstlisting}
+
+\textbf{YAML (Listado~\ref{lst:2.12}):}
+\begin{lstlisting}[numbers=none,basicstyle=\ttfamily\footnotesize,frame=single,caption={Ejemplo de Código},label=lst:2.12]
+id: 42
+nombre: Maria Lopez
+edad: 23
+activo: true
+roles:
+  - USER
+  - EDITOR
+\end{lstlisting}
+
+\textbf{TOML (Listado~\ref{lst:2.13}):}
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:2.13]
+id = 42
+nombre = "Maria Lopez"
+edad = 23
+activo = true
+roles = ["USER", "EDITOR"]
+\end{lstlisting}
+
+\section{Buenas prácticas profesionales en HTML5}
+
+Conocer la sintaxis no basta para escribir HTML profesional:
+hay convenciones, criterios de mantenibilidad y restricciones de
+accesibilidad que distinguen el código de producción del código
+estudiantil. La caja siguiente compila quince reglas que el
+estudiante debe respetar al entregar HTML5 en cualquier proyecto.
+
+
+\begin{cajabuenas}{Quince reglas profesionales de HTML5}
+\begin{enumerate}
+\item \textbf{Usa el doctype HTML5 simple} \texttt{<!DOCTYPE html>}.
+\item \textbf{Define el charset al inicio del \texttt{<head>}}, en
+los primeros 1024 bytes del archivo.
+\item \textbf{Define el viewport} en toda página que pretenda ser
+mobile-friendly.
+\item \textbf{Cierra todas las etiquetas} (incluso las que HTML5
+permite no cerrar).
+\item \textbf{Usa comillas dobles} en valores de atributos por
+consistencia.
+\item \textbf{No abuses de \texttt{<div>}}: si existe un elemento
+semántico, úsalo.
+\item \textbf{Atributos booleanos sin valor}.
+\item \textbf{Imágenes con \texttt{alt}} siempre.
+\item \textbf{Imágenes con \texttt{width} y \texttt{height}} para
+evitar \emph{layout shift}.
+\item \textbf{Lazy loading} en imágenes \emph{below the fold}.
+\item \textbf{Formularios con \texttt{<label>}} asociados.
+\item \textbf{Atributo \texttt{autocomplete}} con valores estándares.
+\item \textbf{Headings sin saltos jerárquicos}.
+\item \textbf{Validar} en \url{https://validator.w3.org/nu/} antes
+de cada commit.
+\item \textbf{No uses CSS inline} excepto en correos electrónicos.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Ejercicios}
+
+Los siguientes ejercicios consolidan los temas del capítulo 2.
+El primero está completamente resuelto con código y captura de
+pantalla del resultado; el segundo es propuesto para que el
+estudiante lo desarrolle.
+
+
+\begin{cajaejercicio}{Ejercicio 2.1 (RESUELTO) --- Formulario de registro completo y accesible}
+\textbf{Objetivo:} construir un formulario completo con ocho tipos
+diferentes de \texttt{<input>}, validación HTML5, accesibilidad y
+feedback visual.
+
+\textbf{Paso 1 --- Crear proyecto en IntelliJ.}
+\texttt{New Project $\rightarrow$ HTML $\rightarrow$ Name:
+appweb-formularios}. Crear \texttt{registro.html}.
+
+\textbf{Paso 2 --- Código completo.}
+
+\begin{lstlisting}[style=html,caption={registro.html},label=lst:2.14]
+<!DOCTYPE html>
+<html lang="es-EC">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro completo - UTEQ</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px;
+           margin: 2rem auto; padding: 0 1rem; }
+    fieldset { margin-bottom: 1rem; padding: 1rem;
+               border: 1px solid #aaa; border-radius: 6px; }
+    legend { font-weight: bold; color: #006633; }
+    label { display: block; margin-top: .8rem; font-weight: 600; }
+    input, select, textarea {
+      width: 100%; padding: .5rem; box-sizing: border-box;
+      border: 1px solid #aaa; border-radius: 4px;
+      font-size: 1rem; margin-top: .25rem;
+    }
+    input:user-invalid { border-color: #b00020; }
+    input:user-valid { border-color: #2e7d32; }
+    small { display: block; color: #555; font-size: .85rem; }
+    button { margin-top: 1rem; padding: .7rem 1.2rem;
+             background: #006633; color: white; border: 0;
+             border-radius: 4px; font-size: 1rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Registro de estudiantes UTEQ</h1>
+  <form action="/api/registro" method="POST">
+    <fieldset>
+      <legend>Datos personales</legend>
+
+      <label for="cedula">Cedula ecuatoriana:</label>
+      <input id="cedula" name="cedula" type="text"
+             pattern="[0-9]{10}" required>
+      <small>10 digitos sin guiones</small>
+
+      <label for="email">Correo institucional:</label>
+      <input id="email" name="email" type="email"
+             pattern=".+@uteq\.edu\.ec" required>
+
+      <label for="tel">Telefono celular:</label>
+      <input id="tel" name="tel" type="tel"
+             pattern="09[0-9]{8}" required>
+
+      <label for="fnac">Fecha de nacimiento:</label>
+      <input id="fnac" name="fnac" type="date"
+             min="1980-01-01" max="2010-12-31" required>
+
+      <label for="url">Sitio web (opcional):</label>
+      <input id="url" name="url" type="url">
+    </fieldset>
+
+    <fieldset>
+      <legend>Datos academicos</legend>
+
+      <label for="prom">Promedio (6.0-10.0):</label>
+      <input id="prom" name="prom" type="number"
+             min="6.0" max="10.0" step="0.01" required>
+
+      <label for="color">Color institucional preferido:</label>
+      <input id="color" name="color" type="color" value="#006633">
+
+      <label for="carrera">Carrera:</label>
+      <select id="carrera" name="carrera" required>
+        <option value="">-- Seleccione --</option>
+        <option value="SW">Ingenieria de Software</option>
+        <option value="SE">Ingenieria de Sistemas</option>
+      </select>
+    </fieldset>
+
+    <button type="submit">Registrarme</button>
+  </form>
+</main>
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Resultado esperado en el navegador:}
+
+\begin{center}
+\fbox{\begin{minipage}{0.85\textwidth}
+\footnotesize
+\textbf{[ Vista renderizada en Chrome ]}\\[0.3em]
+\textbf{\large Registro de estudiantes UTEQ}\\[0.4em]
+\rule{\textwidth}{0.4pt}\\
+\textit{Datos personales}\\[0.3em]
+Cedula ecuatoriana:\\
+\fbox{\rule{0pt}{1em}\hspace{12cm}}\\
+\textit{\scriptsize 10 dígitos sin guiones}\\[0.3em]
+Correo institucional:\\
+\fbox{\rule{0pt}{1em}\hspace{12cm}}\\[0.3em]
+Teléfono celular:\\
+\fbox{\rule{0pt}{1em}\hspace{12cm}}\\[0.3em]
+Fecha de nacimiento:\\
+\fbox{\rule{0pt}{1em}\hspace{12cm}} \textit{(calendario nativo)}\\[0.3em]
+\rule{\textwidth}{0.4pt}\\
+\textit{Datos académicos}\\[0.3em]
+Promedio (6.0-10.0):\\
+\fbox{\rule{0pt}{1em}\hspace{12cm}} \textit{(controles arriba/abajo)}\\[0.3em]
+Color preferido: \colorbox{uteqverde}{\hspace{1cm}} \textit{(selector)}\\[0.3em]
+Carrera: \fbox{-- Seleccione -- \quad\quad $\vee$}\\[0.5em]
+\colorbox{uteqverde}{\textcolor{white}{\hspace{0.5em}\textbf{Registrarme}\hspace{0.5em}}}
+\end{minipage}}
+\end{center}
+
+\textbf{Verificación de validaciones nativas:}
+\begin{enumerate}
+\item Pulsar «Registrarme» con campos vacíos: el navegador detiene el
+envío y enfoca el primer campo inválido mostrando tooltip.
+\item Escribir email con dominio diferente a \texttt{uteq.edu.ec}:
+el borde se vuelve rojo (gracias a \texttt{:user-invalid}).
+\item En móvil (F12 $\to$ Toggle device toolbar): hacer clic en
+campo teléfono $\to$ aparece teclado numérico; en email $\to$ aparece
+tecla \texttt{@}; en fecha $\to$ aparece selector calendario.
+\end{enumerate}
+\end{cajaejercicio}
+
+\begin{cajaejercicio}{Ejercicio 2.2 (PROPUESTO) --- Página de portafolio profesional}
+Construir una página \texttt{portafolio.html} que demuestre dominio
+integral de HTML5 semántico. Requisitos:
+
+\begin{itemize}
+\item Estructura semántica completa: \texttt{<header>}, \texttt{<nav>},
+\texttt{<main>}, \texttt{<article>} (al menos 3), \texttt{<aside>},
+\texttt{<footer>}.
+\item Al menos un \texttt{<figure>+<figcaption>} con
+\texttt{<picture>} sirviendo múltiples resoluciones.
+\item Un \texttt{<video>} con al menos un \texttt{<track>} de
+subtítulos (crear archivo \texttt{.vtt} con 3--4 líneas).
+\item Un formulario de contacto con al menos 6 tipos diferentes de
+\texttt{<input>} HTML5: \texttt{text}, \texttt{email}, \texttt{tel},
+\texttt{date}, \texttt{number}, \texttt{url}.
+\item Un elemento \texttt{<details>+<summary>} para una sección de
+preguntas frecuentes.
+\item Una tabla \texttt{<table>} con \texttt{<caption>},
+\texttt{<thead>}, \texttt{<tbody>}, \texttt{<th scope>}.
+\end{itemize}
+
+\textbf{Validar:} cero errores en W3C, cero violaciones críticas en
+axe DevTools, navegación completa por teclado, y todos los tipos de
+input invocando teclado virtual correcto en móvil.
+
+\textbf{Entrega:} archivo HTML + screenshots de validadores.
+\end{cajaejercicio}
+
+%%% ==== CAPITULO 3 v3 ====
+% =====================================================================
+%   CAPITULO 3 - VERSIÓN V3 MEJORADA
+%   CSS para el diseño y la presentación web
+%   Aplica directrices: historia CSS ampliada, referencias contrastadas,
+%   ejercicios resueltos con imagen + propuestos, tablas
+% =====================================================================
+
+\chapter{CSS para el diseño y la presentación web}
+\label{cap:semana3}
+
+\epigraph{«El diseño no es lo que se ve, es lo que funciona. CSS es
+el puente entre la intención del diseñador y la experiencia del
+usuario.»}{--- \textit{Adaptado de Steve Jobs}}
+
+\section*{Resultado de aprendizaje}
+Al concluir el capítulo 3, el estudiante diseña hojas de estilo CSS3
+modernas aplicando metodologías de organización (BEM, mobile-first),
+sistemas de \emph{layout} (Flexbox, Grid), preprocesadores (Sass) y
+buenas prácticas profesionales \cite{macdonald2018css,frain2020responsive}.
+
+\section{Historia y evolución de CSS}
+
+CSS pasó en 30 años de un lenguaje minimalista para colores y
+fuentes a un sistema robusto de diseño y \emph{layout} con soporte
+nativo para grids, container queries y propiedades personalizadas
+(\texttt{--variables}). Conocer las etapas de su evolución revela
+por qué hoy podemos prescindir de frameworks pesados como Bootstrap
+en muchos proyectos. La caja siguiente narra esa historia.
+
+
+\begin{cajahistoria}{De CSS1 al motor de los \emph{design systems} modernos}
+En 1994, \textbf{Håkon Wium Lie}, trabajando junto a Tim Berners-Lee
+en el CERN, propuso un mecanismo para separar la presentación del
+contenido. La idea era radical en su simplicidad: que los autores y
+los usuarios pudieran proponer estilos en \emph{cascada}, donde el
+navegador combinara las reglas según prioridades. La propuesta se
+convertiría en \textbf{CSS Level 1} (1996), el primer estándar W3C de
+hojas de estilo.
+
+Durante quince años CSS evolucionó lentamente. CSS2 (1998) añadió
+posicionamiento absoluto y \emph{media types}. La explosión llegó con
+\textbf{CSS3} (modular, desde 2011 en adelante), que introdujo
+gradientes, transiciones, animaciones, transformaciones,
+\texttt{border-radius}, \texttt{box-shadow} y dos sistemas
+revolucionarios: \textbf{Flexbox} (2012) y \textbf{Grid} (2017). Hoy
+CSS es el motor de los \emph{design systems} modernos: Material
+Design (Google), Fluent (Microsoft), Tailwind CSS, Bootstrap.
+\end{cajahistoria}
+
+\subsection{Tabla evolutiva de CSS}
+
+La especificación de CSS ha avanzado en módulos
+independientes desde 2011, lo que significa que distintas partes del
+estándar maduran a velocidades distintas. La tabla siguiente resume
+los hitos más relevantes para el desarrollador web 2026.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Hitos en la evolución de CSS.}
+\footnotesize
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Año} & \textbf{Versión} & \textbf{Aporte}\\
+\midrule
+1996 & CSS 1     & Selectores básicos, colores, fuentes, márgenes.\\
+1998 & CSS 2     & Posicionamiento (absolute, relative), z-index.\\
+2004 & CSS 2.1   & Revisión de CSS 2 que es la usada en navegadores antiguos.\\
+2011 & CSS 3 (modular) & Transiciones, transformaciones, animaciones, gradientes.\\
+2012 & Flexbox CR  & Layout unidimensional con propiedades de eje.\\
+2017 & CSS Grid CR & Layout bidimensional con áreas nombradas.\\
+2020 & Custom Properties & Variables CSS nativas (\texttt{-{}-color: \#006633}).\\
+2022 & Container Queries & Estilos basados en el contenedor padre, no en el viewport.\\
+2023 & \texttt{:has()} selector & Selector «padre» tras décadas de espera.\\
+2024 & Cascade Layers & Capas declarativas para resolver especificidad.\\
+2025 & CSS Nesting nativo & Anidamiento estilo Sass sin preprocesador.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Fundamentos de CSS}
+
+Antes de discutir layouts modernos, conviene revisar los tres
+pilares de CSS: cómo se aplica el estilo, qué selectores existen y
+cómo funciona la cascada y la especificidad. Estas bases son la
+diferencia entre escribir CSS que mantiene el código bajo control y
+escribir CSS que se vuelve ingobernable.
+
+
+\subsection{Las tres formas de aplicar estilos}
+
+Existen tres mecanismos para aplicar estilo a elementos HTML, en
+orden de preferencia profesional. La enumeración siguiente los
+expone con su justificación.
+
+\textbf{Ejemplo corto comentado (las tres formas) (Listado~\ref{lst:3.1}):}
+\begin{lstlisting}[language=HTML5,numbers=none,caption={Ejemplo de HTML},label=lst:3.1]
+<!-- 1. EXTERNO: archivo .css separado. Es la forma profesional       -->
+<!--    porque permite cache del navegador y separa contenido/forma. -->
+<link rel="stylesheet" href="estilos.css">
+
+<!-- 2. INTERNO: <style> dentro de <head>. Util para una sola pagina  -->
+<!--    o para CSS critico que debe cargar sin peticion adicional.   -->
+<style>
+  p { color: navy; }   /* p = selector de tipo (todos los <p>) */
+</style>
+
+<!-- 3. INLINE: atributo style dentro del tag. Evitar en produccion   -->
+<!--    porque pulveriza la separacion de responsabilidades.        -->
+<p style="color: red">Texto rojo (inline, anti-patron).</p>
+\end{lstlisting}
+
+
+\begin{enumerate}
+\item \textbf{Inline} (\texttt{style=\char34{}...\char34{}}): evitar en producción.
+\item \textbf{Interno} (\texttt{<style>} en \texttt{<head>}): útil
+para páginas pequeñas o casos especiales.
+\item \textbf{Externo} (\texttt{<link rel=\char34{}stylesheet\char34{}>}): el modelo
+profesional. Permite caché del navegador y separación de
+responsabilidades.
+\end{enumerate}
+
+\subsection{Selectores principales}
+
+Un \emph{selector} CSS es la expresión que decide a qué
+elementos del DOM se les aplica un conjunto de propiedades. CSS
+ofrece más de una docena de tipos de selectores con distinta
+\emph{especificidad}. La tabla siguiente recoge los más usados.
+
+\textbf{Ejemplo corto comentado (selectores principales) (Listado~\ref{lst:3.2}):}
+\begin{lstlisting}[language=HTML5,numbers=none,caption={Ejemplo de HTML},label=lst:3.2]
+/* Selector de TIPO: todos los parrafos                  */
+p          { line-height: 1.6; }
+/* Selector de CLASE: elementos con class="destacado"    */
+.destacado { background: yellow; }
+/* Selector de ID: el unico elemento con id="logo"       */
+#logo      { width: 120px; }
+/* Selector DESCENDIENTE: <a> dentro de <nav>            */
+nav a      { text-decoration: none; }
+/* Selector de ATRIBUTO: inputs de tipo email            */
+input[type="email"] { border: 1px solid blue; }
+/* PSEUDO-CLASE: estado del elemento                     */
+a:hover    { color: red; }   /* Cuando el cursor pasa encima */
+\end{lstlisting}
+
+
+\begin{table}[htbp]
+\centering
+\caption{Selectores CSS más usados.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Selector} & \textbf{Aplica a} & \textbf{Especificidad}\\
+\midrule
+\texttt{*} & Todos los elementos & 0\\
+\texttt{p} & Por tag & 1\\
+\texttt{.clase} & Por clase & 10\\
+\texttt{\#id} & Por ID & 100\\
+\texttt{a:hover} & Pseudo-clase & 11\\
+\texttt{p::first-letter} & Pseudo-elemento & 2\\
+\texttt{ul > li} & Hijo directo & 2\\
+\texttt{[type=\char34{}email\char34{}]} & Por atributo & 11\\
+\texttt{:has(img)} & Padre con descendiente (2023) & varía\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Pseudo-clases CSS para feedback de validación}
+
+Las pseudo-clases relacionadas con formularios permiten dar feedback
+visual al usuario sin JavaScript:
+
+\begin{itemize}
+\item \texttt{:valid} --- el campo cumple la validación.
+\item \texttt{:invalid} --- el campo no cumple.
+\item \texttt{:user-valid} --- el usuario ya interactuó y es válido
+(no marca el campo vacío al cargar).
+\item \texttt{:user-invalid} --- el usuario interactuó y es inválido.
+\item \texttt{:required} --- el campo es obligatorio.
+\item \texttt{:placeholder-shown} --- mientras el placeholder es
+visible.
+\item \texttt{:focus-visible} --- foco visible (solo navegación con
+teclado).
+\end{itemize}
+
+\textbf{Ejemplo aplicable a formularios HTML5} (los formularios fueron
+vistos en el capítulo 2) (Listado~\ref{lst:3.3}):
+\begin{lstlisting}[style=css,numbers=none,caption={Ejemplo de CSS},label=lst:3.3]
+input:user-invalid { border-color: red; }
+input:user-valid   { border-color: green; }
+input:focus-visible { outline: 3px solid #0066CC; }
+\end{lstlisting}
+
+\section{Sistemas modernos de layout}
+
+Históricamente, maquetar páginas con CSS fue una pesadilla:
+floats, posicionamientos hack, márgenes negativos. Desde 2017,
+Flexbox y CSS Grid resuelven la mayoría de los layouts de forma
+limpia y declarativa. Las dos subsecciones siguientes los explican
+con ejemplos visuales.
+
+
+\subsection{Flexbox: layout unidimensional}
+
+Flexbox organiza elementos en una dimensión (fila o columna) y resuelve
+problemas históricos de CSS como centrado vertical, distribución de
+espacio y orden visual independiente del HTML \cite{robbins2018learning}.
+
+\begin{cajaejemplo}{Ejemplo 3.1 (RESUELTO) --- Navbar responsivo con Flexbox}
+
+\textbf{Objetivo:} crear una barra de navegación que se adapte a
+pantalla grande (horizontal) y pequeña (vertical).
+
+\textbf{IDE:} IntelliJ IDEA Ultimate.
+
+\textbf{Paso 1:} Crear archivo \texttt{navbar.html}. V\'ease el Listado~\ref{lst:3.4}.
+
+\begin{lstlisting}[style=html,caption={navbar.html},label=lst:3.4]
+<!DOCTYPE html>
+<html lang="es-EC">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar Flexbox</title>
+  <link rel="stylesheet" href="navbar.css">
+</head>
+<body>
+  <nav class="navbar" aria-label="Principal">
+    <div class="logo">UTEQ</div>
+    <ul class="menu">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="#">Carreras</a></li>
+      <li><a href="#">Investigacion</a></li>
+      <li><a href="#">Contacto</a></li>
+    </ul>
+  </nav>
+  <main><p>Contenido de la pagina.</p></main>
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Paso 2:} Crear \texttt{navbar.css}. V\'ease el Listado~\ref{lst:3.5}.
+
+\begin{lstlisting}[style=css,caption={navbar.css},label=lst:3.5]
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: system-ui, sans-serif; }
+
+.navbar {
+  /* activa Flexbox (layout unidimensional) */
+  display: flex;                                            /* activa Flexbox (layout unidimensional) */
+  /* alineacion principal en el eje horizontal */
+  justify-content: space-between;                           /* alineacion principal en el eje horizontal */
+  /* alineacion en el eje secundario (vertical) */
+  align-items: center;                                      /* alineacion en el eje secundario (vertical) */
+  background: #006633;
+  padding: 1rem 2rem;
+  /* permite saltos de linea en flex */
+  flex-wrap: wrap;                                          /* permite saltos de linea en flex */
+}
+
+.logo {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.menu {
+  /* activa Flexbox (layout unidimensional) */
+  display: flex;                                            /* activa Flexbox (layout unidimensional) */
+  list-style: none;
+  /* espacio entre elementos hijos */
+  gap: 1.5rem;                                              /* espacio entre elementos hijos */
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 0;
+}
+
+.menu a:hover { color: #CC9900; }
+
+/* media query (responsive) */
+@media (max-width: 600px) {                                 /* media query (responsive) */
+  /* direccion principal del flex container */
+  /* direccion principal del flex container */
+  .menu { flex-direction: column; width: 100%; gap: 0.5rem; }
+}
+
+main { padding: 2rem; }
+\end{lstlisting}
+
+\textbf{Resultado esperado (renderizado en pantalla ancha):}
+
+\fbox{\begin{minipage}{0.95\textwidth}
+\vspace{0.4em}
+\colorbox{uteqverde}{\parbox{0.94\textwidth}{
+\textcolor{white}{\bfseries UTEQ}\hfill
+\textcolor{white}{Inicio \quad Carreras \quad Investigación \quad Contacto}
+}}\\[0.5em]
+Contenido de la página.
+\vspace{0.4em}
+\end{minipage}}
+
+\textbf{Resultado esperado (pantalla móvil $<$ 600px):}
+
+\fbox{\begin{minipage}{0.45\textwidth}
+\vspace{0.4em}
+\colorbox{uteqverde}{\parbox{0.94\linewidth}{
+\textcolor{white}{\bfseries UTEQ}\\
+\textcolor{white}{Inicio}\\
+\textcolor{white}{Carreras}\\
+\textcolor{white}{Investigación}\\
+\textcolor{white}{Contacto}
+}}\\[0.3em]
+Contenido de la página.
+\vspace{0.4em}
+\end{minipage}}
+\end{cajaejemplo}
+
+\subsection{CSS Grid: layout bidimensional}
+
+Grid permite layouts en dos dimensiones simultáneas. Es ideal para
+maquetar páginas completas, dashboards y galerías
+\cite{macdonald2018css}.
+
+\begin{cajaejemplo}{Ejemplo 3.2 (RESUELTO) --- Galería de productos con Grid}
+
+
+\textbf{Enunciado.} Construir una galería de productos responsive con CSS Grid que se adapte automáticamente al ancho del viewport sin media queries explícitos.
+
+\begin{lstlisting}[style=css,caption={galeria.css (fragmento)},label=lst:3.6]
+.galeria {
+  /* activa CSS Grid (layout bidimensional) */
+  display: grid;                                            /* activa CSS Grid (layout bidimensional) */
+  /* define columnas del grid */
+  /* define columnas del grid */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  /* espacio entre elementos hijos */
+  gap: 1rem;                                                /* espacio entre elementos hijos */
+}
+.producto {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+}
+\end{lstlisting}
+
+\textbf{Resultado esperado:} una cuadrícula que ajusta automáticamente
+el número de columnas según el ancho del viewport (4 columnas en
+desktop, 2 en tablet, 1 en móvil).
+
+\fbox{\begin{minipage}{0.95\textwidth}
+\vspace{0.4em}
+\fbox{\parbox{0.22\linewidth}{\small Producto 1\\\$2.50}}
+\fbox{\parbox{0.22\linewidth}{\small Producto 2\\\$3.20}}
+\fbox{\parbox{0.22\linewidth}{\small Producto 3\\\$4.50}}
+\fbox{\parbox{0.22\linewidth}{\small Producto 4\\\$1.80}}
+\vspace{0.4em}
+\end{minipage}}
+\end{cajaejemplo}
+
+\section{Sass: el preprocesador profesional}
+
+Sass añade variables, mixins, anidamiento y módulos a CSS. Aunque
+CSS moderno ya tiene variables nativas, Sass sigue siendo el estándar
+en grandes proyectos por su capacidad de \emph{computación}. V\'ease el Listado~\ref{lst:3.7}.
+
+\begin{lstlisting}[style=sass,caption={ejemplo.scss},numbers=none,label=lst:3.7]
+$verde: #006633;
+$dorado: #CC9900;
+
+@mixin boton($bg) {                                         // definicion de mixin (codigo reutilizable)
+  background: $bg;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: 0;
+  border-radius: 4px;
+  &:hover { filter: brightness(1.1); }                      // referencia al selector padre
+}
+
+.btn-primario { @include boton($verde); }
+.btn-acento   { @include boton($dorado); }
+\end{lstlisting}
+
+\section{Ejercicios}
+
+Los siguientes ejercicios consolidan Flexbox, Grid y Sass.
+El estudiante debe entregar el código fuente más una captura del
+resultado renderizado en el navegador.
+
+
+\begin{cajaejercicio}{Ejercicio 3.1 (PROPUESTO) --- Card responsive con identidad UTEQ}
+
+\textbf{Objetivo:} construir un componente \emph{card} reutilizable
+con HTML semántico + CSS Flexbox + Grid.
+
+\textbf{Requisitos:}
+\begin{itemize}
+\item Tres cards alineadas con CSS Grid.
+\item Cada card tiene imagen (placeholder), título, descripción y
+botón.
+\item Colores institucionales (uteqverde \texttt{\#006633}, uteqdorado
+\texttt{\#CC9900}).
+\item Responsive: 3 columnas en desktop, 2 en tablet, 1 en móvil.
+\item Estado \texttt{:hover} con elevación (box-shadow).
+\item Score Lighthouse Accessibility $\geq$ 95.
+\end{itemize}
+
+\textbf{Entrega:} archivos \texttt{cards.html} + \texttt{cards.css}
+con capturas en escritorio, tablet y móvil (3 imágenes).
+\end{cajaejercicio}
+
+\begin{cajaejercicio}{Ejercicio 3.2 (PROPUESTO) --- Dashboard básico con CSS Grid}
+
+
+\textbf{Enunciado.} Construir un dashboard básico con CSS Grid de 3 columnas que se reorganice a 1 columna en móviles.
+
+Crear un dashboard con cuatro tarjetas de estadísticas alineadas
+con Grid, una gráfica simulada con \texttt{<div>}+CSS y un menú
+lateral fijo. Aplicar mobile-first y validar accesibilidad.
+\end{cajaejercicio}
+
+\section{Buenas prácticas CSS profesional}
+
+Conocer CSS no basta: la diferencia entre un proyecto
+mantenible y uno caótico está en aplicar disciplina al escribir
+estilos. La caja siguiente recopila doce reglas profesionales que
+el estudiante debe seguir desde el inicio.
+
+
+\begin{cajabuenas}{Doce reglas CSS profesionales 2026}
+\begin{enumerate}
+\item \texttt{box-sizing: border-box} global.
+\item Mobile-first siempre.
+\item Variables CSS para colores y tipografía (\texttt{-{}-primario}).
+\item BEM o similar para nombres de clase
+(\texttt{.card\_\_titulo}).
+\item Unidades relativas (\texttt{rem}, \texttt{em}, \texttt{\%})
+sobre \texttt{px}.
+\item Sin \texttt{!important} excepto utilidades muy específicas.
+\item No usar IDs como selectores (alta especificidad).
+\item Flexbox para 1D, Grid para 2D.
+\item Animaciones con \texttt{transform} y \texttt{opacity}
+(no afectan layout).
+\item Respetar \texttt{prefers-reduced-motion} para usuarios sensibles
+a animaciones.
+\item Lighthouse Performance + Accessibility $\geq$ 90.
+\item Minificación y autoprefixer en pipeline de build.
+\end{enumerate}
+\end{cajabuenas}
+
+% ---------------------------------------------------------------------
+%  Hoja de estilos base del libro (estilos.css)
+% ---------------------------------------------------------------------
+\section{La hoja de estilos base del libro: \texttt{estilos.css}}
+\label{sec:estilos-base}
+
+Todas las interfaces de este libro ---desde los formularios estáticos de
+esta unidad hasta los CRUD generados por Spring Boot, Django, Laravel o
+ASP.NET Core en las unidades siguientes--- comparten una misma hoja de
+estilos: \texttt{estilos.css}. Se define una sola vez aquí y se reutiliza
+sin cambios; en los capítulos posteriores solo se mostrarán las reglas
+\emph{nuevas} que cada ejercicio agregue. Así el lector concentra su
+atención en lo que cambia y no en repetir el andamiaje visual.
+
+La hoja emplea recursos propios de CSS3: \textbf{propiedades personalizadas}
+(variables \texttt{-{}-nombre}), \textbf{Flexbox} y \textbf{Grid} para la
+disposición, \texttt{nth-child} para el cebrado de filas, \texttt{transition}
+para los estados interactivos y una \textbf{consulta de medios} para la
+adaptación a pantallas pequeñas. La paleta corresponde a la identidad de la
+UTEQ (verde institucional y dorado).
+
+{\small\textbf{Crear en la raíz del sitio:} \texttt{estilos.css} --- parte 1 de 2 (variables, reinicio y estructura semántica)}
+\begin{lstlisting}[style=css,caption={estilos.css --- parte 1: variables, reinicio y estructura},label={lst:estilos-base-a}]
+/* estilos.css - hoja base compartida del libro Aplicaciones Web */
+:root {
+    --verde: #006633;
+    --dorado: #CC9900;
+    --gris-fondo: #F4F6F5;
+    --gris-borde: #D9DDDB;
+    --texto: #222222;
+    --radio: 8px;
+    --espacio: 1rem;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+    color: var(--texto);
+    background: var(--gris-fondo);
+    line-height: 1.6;
+}
+
+header.principal { background: var(--verde); color: #fff; padding: var(--espacio); }
+header.principal h1 { font-size: 1.4rem; }
+
+nav.principal { background: #00472B; }
+nav.principal ul { list-style: none; display: flex; gap: 1rem; padding: .5rem 1rem; }
+nav.principal a { color: #fff; text-decoration: none; }
+nav.principal a:hover { color: var(--dorado); }
+
+main { max-width: 960px; margin: 0 auto; padding: var(--espacio); }
+
+footer.principal {
+    background: #00472B; color: #fff; text-align: center;
+    padding: var(--espacio); margin-top: 2rem;
+}
+\end{lstlisting}
+
+{\small\textbf{Continúa en:} \texttt{estilos.css} --- parte 2 de 2 (tablas, formularios, botones, avisos y diseño responsivo)}
+\begin{lstlisting}[style=css,caption={estilos.css --- parte 2: tablas, formularios, botones y responsivo},label={lst:estilos-base-b}]
+/* Tarjetas de contenido */
+.tarjeta {
+    background: #fff; border: 1px solid var(--gris-borde);
+    border-radius: var(--radio); padding: var(--espacio);
+    margin-bottom: var(--espacio);
+}
+
+/* Tablas de datos (listados CRUD) */
+table.datos { width: 100%; border-collapse: collapse; background: #fff; }
+table.datos caption { text-align: left; font-weight: 700; padding: .5rem 0; }
+table.datos th, table.datos td {
+    border: 1px solid var(--gris-borde); padding: .6rem .8rem; text-align: left;
+}
+table.datos thead th { background: var(--verde); color: #fff; }
+table.datos tbody tr:nth-child(even) { background: #F0F4F2; }
+
+/* Formularios */
+form.formulario { display: grid; gap: .8rem; max-width: 480px; }
+form.formulario label { font-weight: 600; }
+form.formulario input, form.formulario select, form.formulario textarea {
+    width: 100%; padding: .55rem; font: inherit;
+    border: 1px solid var(--gris-borde); border-radius: var(--radio);
+}
+form.formulario input:focus { outline: 2px solid var(--dorado); }
+
+/* Botones y enlaces de accion */
+.boton, button {
+    display: inline-block; cursor: pointer; border: none; font: inherit;
+    background: var(--verde); color: #fff; text-decoration: none;
+    padding: .55rem 1rem; border-radius: var(--radio);
+    transition: background .2s ease;
+}
+.boton:hover, button:hover { background: var(--dorado); }
+.boton.peligro { background: #B00020; }
+
+/* Avisos */
+.aviso { padding: .8rem; border-radius: var(--radio); border-left: 4px solid; }
+.aviso.exito { background: #E7F4EC; border-color: var(--verde); }
+.aviso.error { background: #FDECEA; border-color: #B00020; }
+
+/* Diseno responsivo */
+@media (max-width: 600px) {
+    nav.principal ul { flex-direction: column; }
+    main { padding: .6rem; }
+}
+\end{lstlisting}
+
+Para usar la hoja, cada página HTML5 la enlaza en su \texttt{<head>}:
+
+\begin{lstlisting}[style=html,caption={Enlace de la hoja base en cualquier pagina},label={lst:estilos-enlace}]
+<link rel="stylesheet" href="estilos.css">
+\end{lstlisting}
+
+\begin{cajabuenas}{Convención de CSS incremental para todo el libro}
+A partir de aquí, ningún ejercicio vuelve a copiar \texttt{estilos.css}
+completo. Cuando una práctica necesite un estilo particular ---por ejemplo,
+resaltar una fila seleccionada o maquetar un panel--- solo se mostrará el
+\textbf{bloque nuevo} que se añade a la hoja, precedido de un comentario que
+indique a qué ejercicio pertenece. El lector mantiene una única
+\texttt{estilos.css} que crece de forma acumulativa.
+\end{cajabuenas}
+
+%%% ==== CAPITULO 4 v3 ====
+% =====================================================================
+%   CAPITULO 4 - VERSIÓN V3 MEJORADA
+%   JavaScript moderno y programación asíncrona
+% =====================================================================
+
+\chapter{JavaScript moderno y programación asíncrona}
+\label{cap:semana4}
+
+\epigraph{«Cualquier aplicación que pueda escribirse en JavaScript,
+eventualmente se escribirá en JavaScript.»}{--- \textit{Jeff
+Atwood, 2007 (Ley de Atwood)}}
+
+\section*{Resultado de aprendizaje}
+Al concluir el capítulo 4, el estudiante construye lógica interactiva
+del lado del cliente con JavaScript moderno (ES2024+), domina el DOM,
+los eventos, las APIs asíncronas (fetch, Promises, async/await), y
+aplica las buenas prácticas de la industria
+\cite{flanagan2020javascript,crockford2008javascript}.
+
+\section{Historia de JavaScript}
+
+JavaScript nació en 1995 como un lenguaje juguete creado en
+diez días por Brendan Eich. Hoy es la lingua franca del navegador,
+ejecuta servidores enteros (Node.js), corre en satélites y dispositivos
+IoT. Conocer su historia ayuda a entender por qué tiene
+particularidades sintácticas y por qué evoluciona tan rápido.
+
+
+\begin{cajahistoria}{De 10 días de diseño a la lingua franca de la web}
+En mayo de 1995, Netscape contrató a \textbf{Brendan Eich} para
+crear un lenguaje de scripting que se ejecutara en el navegador.
+Le dieron \emph{diez días}. El resultado, originalmente llamado
+\textbf{Mocha}, luego \textbf{LiveScript}, y finalmente
+\textbf{JavaScript} (1996, por razones de marketing aprovechando la
+popularidad de Java), tenía rasgos memorables: tipado dinámico,
+\emph{first-class functions}, prototipos en lugar de clases,
+\texttt{undefined} y \texttt{null} como dos formas distintas de
+«nada» \cite{crockford2008javascript}.
+
+Microsoft respondió con JScript en Internet Explorer 3 (1996),
+provocando una guerra de incompatibilidades que se cerró con la
+estandarización ECMA en 1997 (\textbf{ECMAScript}). Durante una
+década, JavaScript fue considerado un lenguaje de juguete. El cambio
+llegó con \textbf{Google Chrome} y su motor V8 (2008), que ejecutaba
+JavaScript hasta 100x más rápido. Ese mismo año Ryan Dahl creó
+\textbf{Node.js} (2009), llevando JS al servidor. \textbf{ECMAScript
+2015 (ES6)} formalizó clases, módulos, \texttt{let}, \texttt{const},
+arrow functions, Promises. ECMAScript 2024 ya es estándar y 2026
+\cite{ecma2024} incorpora características como \texttt{Array.fromAsync},
+\texttt{Promise.try}, y \emph{records} y \emph{tuples} inmutables.
+\end{cajahistoria}
+
+\subsection{Tabla evolutiva de ECMAScript}
+
+ECMAScript es el estándar formal que define el lenguaje
+JavaScript. Desde 2015, evoluciona anualmente añadiendo
+funcionalidades. La tabla siguiente lista las versiones más
+significativas y sus aportes.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Versiones recientes de ECMAScript.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Versión} & \textbf{Año} & \textbf{Aportes principales}\\
+\midrule
+ES5  & 2009 & \texttt{strict mode}, JSON nativo, getters/setters.\\
+ES6 (ES2015) & 2015 & Clases, módulos, \texttt{let}/\texttt{const}, arrow, Promises, destructuring.\\
+ES2017 & 2017 & \texttt{async/await}, \texttt{Object.entries}.\\
+ES2019 & 2019 & \texttt{Array.flat}, \texttt{Object.fromEntries}.\\
+ES2020 & 2020 & Optional chaining (\texttt{?.}), Nullish coalescing (\texttt{??}), BigInt.\\
+ES2022 & 2022 & Top-level await, campos privados (\texttt{\#}).\\
+ES2024 & 2024 & \texttt{Object.groupBy}, ArrayBuffer transferible.\\
+ES2026 \cite{ecma2024} & 2026 & \texttt{Array.fromAsync}, \texttt{Promise.try}, records y tuples.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Fundamentos modernos}
+
+Antes de ver el DOM y el código asíncrono, el estudiante debe
+dominar los fundamentos modernos: declaración de variables con
+\texttt{let}/\texttt{const}, funciones flecha, \emph{destructuring}
+y \emph{spread}. Estos elementos aparecen en todo código JavaScript
+profesional de 2026.
+
+
+\subsection{Variables: por qué \texttt{let}/\texttt{const} y nunca \texttt{var}}
+
+La palabra clave \texttt{var} tenía dos defectos graves:
+\emph{hoisting} (las variables se declaraban silenciosamente al
+inicio del scope) y \emph{function scope} en lugar de \emph{block
+scope}. ES6 introdujo \texttt{let} y \texttt{const} para resolverlos. V\'ease el Listado~\ref{lst:4.1}.
+
+
+\begin{lstlisting}[style=js,numbers=none,caption={Ejemplo de JavaScript},label=lst:4.1]
+const PI = 3.14159;          // inmutable, scope de bloque
+let contador = 0;            // mutable, scope de bloque
+var legacy = "no usar";      // hoisted, scope de funcion - EVITAR
+\end{lstlisting}
+
+\subsection{Funciones flecha y funciones regulares}
+
+Las funciones flecha (\texttt{=>}) introducidas en ES6 son
+sintaxis más concisa para funciones, pero además tienen una
+diferencia semántica importante: no enlazan su propio
+\texttt{this}. Esto las hace ideales como callbacks pero
+inadecuadas como métodos de objetos en algunos contextos. V\'ease el Listado~\ref{lst:4.2}.
+
+
+\begin{lstlisting}[style=js,numbers=none,caption={Ejemplo de JavaScript},label=lst:4.2]
+// Funcion regular
+function sumar(a, b) { return a + b; }                      // declaracion de funcion
+
+// Arrow function equivalente
+const sumar = (a, b) => a + b;                              // constante (no reasignable)
+
+// Arrow sin parametros
+const ahora = () => new Date();                             // constante (no reasignable)
+
+// Arrow con cuerpo
+const dividir = (a, b) => {                                 // constante (no reasignable)
+  if (b === 0) throw new Error("Division por cero");        // condicional
+  return a / b;                                             // devuelve valor de la funcion
+};
+\end{lstlisting}
+
+\subsection{Destructuring y spread}
+
+\emph{Destructuring} permite extraer valores de objetos y
+arrays con una sintaxis declarativa concisa; \emph{spread}
+(\texttt{...}) permite expandir colecciones en distintos
+contextos. Ambas técnicas son omnipresentes en código moderno. V\'ease el Listado~\ref{lst:4.3}.
+
+
+\begin{lstlisting}[style=js,numbers=none,caption={Ejemplo de JavaScript},label=lst:4.3]
+const usuario = { nombre: "Ana", edad: 22, rol: "admin" };  // constante (no reasignable)
+const { nombre, rol } = usuario;          // destructuring objeto
+
+const [primero, segundo] = [10, 20, 30];  // destructuring array
+
+const copia = { ...usuario, edad: 23 };   // spread + override
+\end{lstlisting}
+
+\section{Manipulación del DOM}
+
+El DOM (\emph{Document Object Model}) es la representación
+en memoria de la página HTML, expuesta como un árbol de objetos que
+JavaScript puede leer y modificar. Los siguientes ejemplos muestran
+las operaciones más frecuentes.
+
+
+\begin{cajaejemplo}{Ejemplo 4.1 (RESUELTO) --- Lista de tareas dinámica}
+
+\textbf{Objetivo:} crear una pequeña aplicación de lista de tareas
+con agregar y eliminar.
+
+\textbf{Paso 1:} En IntelliJ, crear \texttt{tareas.html}. V\'ease el Listado~\ref{lst:4.4}.
+
+\begin{lstlisting}[style=html,caption={tareas.html},label=lst:4.4]
+<!DOCTYPE html>
+<html lang="es-EC">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de tareas</title>
+  <style>
+    body { font-family: system-ui; max-width: 500px;
+           margin: 2rem auto; padding: 0 1rem; }
+    h1 { color: #006633; }
+    input, button { padding: 0.5rem; font-size: 1rem; }
+    button { background: #006633; color: white;
+             border: 0; cursor: pointer; }
+    ul { list-style: none; padding: 0; }
+    li { display: flex; justify-content: space-between;
+         padding: 0.5rem; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+  <h1>Mis tareas</h1>
+  <form id="form-tarea">
+    <input type="text" id="texto-tarea" required
+           placeholder="Nueva tarea" minlength="3">
+    <button type="submit">Agregar</button>
+  </form>
+  <ul id="lista"></ul>
+  <script src="tareas.js"></script>
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Paso 2:} Crear \texttt{tareas.js}. V\'ease el Listado~\ref{lst:4.5}.
+
+\begin{lstlisting}[style=js,caption={tareas.js},label=lst:4.5]
+"use strict";
+
+const form  = document.getElementById("form-tarea");        // constante (no reasignable)
+const input = document.getElementById("texto-tarea");       // constante (no reasignable)
+const lista = document.getElementById("lista");             // constante (no reasignable)
+
+form.addEventListener("submit", (e) => {                    // registra manejador de evento
+  e.preventDefault();
+  const texto = input.value.trim();                         // constante (no reasignable)
+  if (texto.length < 3) return;                             // condicional
+
+  const li = document.createElement("li");                  // constante (no reasignable)
+  li.textContent = texto;                                   // cambia el texto (seguro vs XSS)
+
+  const btn = document.createElement("button");             // constante (no reasignable)
+  btn.textContent = "X";                                    // cambia el texto (seguro vs XSS)
+  btn.addEventListener("click", () => li.remove());         // registra manejador de evento
+
+  li.appendChild(btn);
+  lista.appendChild(li);
+  input.value = "";
+  input.focus();
+});
+\end{lstlisting}
+
+\textbf{Resultado esperado:}
+
+\fbox{\begin{minipage}{0.85\textwidth}
+\vspace{0.4em}
+{\Large\bfseries\color{uteqverde} Mis tareas}\\[0.5em]
+\fbox{\parbox{0.55\linewidth}{Nueva tarea}}
+\colorbox{uteqverde}{\textcolor{white}{\bfseries\ Agregar\ }}\\[0.5em]
+Estudiar JavaScript \hfill \fbox{X}\\
+\hrule
+Hacer ejercicios HTML \hfill \fbox{X}\\
+\hrule
+Practicar Flexbox \hfill \fbox{X}
+\vspace{0.4em}
+\end{minipage}}
+\end{cajaejemplo}
+
+\section{Programación asíncrona: fetch, Promises, async/await}
+
+La programación asíncrona es ineludible en el navegador:
+peticiones HTTP, lectura de archivos, temporizadores y eventos no
+deben bloquear la interfaz. JavaScript provee tres mecanismos
+encadenados históricamente: callbacks, Promises y \texttt{async/await}.
+El ejemplo siguiente muestra el patrón moderno.
+
+
+\begin{cajaejemplo}{Ejemplo 4.2 (RESUELTO) --- Consumir API pública con fetch}
+
+\textbf{Enunciado.} Consumir una API REST pública con \texttt{fetch} usando \texttt{async/await} para mostrar los datos en la página, manejando correctamente los errores de red.
+
+\begin{lstlisting}[style=js,caption={api.js},label=lst:4.6]
+"use strict";
+
+async function obtenerUsuarios() {                          // funcion asincrona (devuelve Promise)
+  try {
+    const res = await fetch("https://jsonplaceholder.typicode.com/users");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);     // condicional
+    const usuarios = await res.json();                      // constante (no reasignable)
+    return usuarios;                                        // devuelve valor de la funcion
+  } catch (e) {
+    console.error("Error:", e.message);
+    return [];                                              // devuelve valor de la funcion
+  }
+}
+
+obtenerUsuarios().then(lista => {                           // callback ejecutado cuando la Promise se resuelve
+  lista.forEach(u => console.log(u.name, "-", u.email));    // imprime en la consola del navegador
+});
+\end{lstlisting}
+
+\textbf{Cómo probarlo:} abrir \texttt{tareas.html} (o cualquier
+archivo con un \texttt{<script>}), abrir la consola del navegador
+(F12 $\rightarrow$ Console), pegar el código. Aparecen 10 usuarios
+con su nombre y correo en la consola.
+\end{cajaejemplo}
+
+\section{Ejercicios}
+
+Los siguientes ejercicios consolidan DOM, fetch y patrones
+asíncronos. El estudiante debe entregar código y capturas del
+resultado en el navegador.
+
+
+\begin{cajaejercicio}{Ejercicio 4.1 (PROPUESTO) --- Calculadora simple}
+
+
+\textbf{Enunciado.} Implementar una calculadora simple en JavaScript puro con operaciones aritméticas básicas, capturando eventos de los botones.
+
+Crear una calculadora HTML+CSS+JS con las cuatro operaciones básicas.
+Validar división por cero. Mostrar el resultado en pantalla. Aplicar
+buenas prácticas (\texttt{strict mode}, \texttt{const}/\texttt{let},
+manejo de errores).
+\end{cajaejercicio}
+
+\begin{cajaejercicio}{Ejercicio 4.2 (PROPUESTO) --- Buscador de pokémon}
+
+
+\textbf{Enunciado.} Construir un buscador de Pokémon que consuma la PokeAPI pública y muestre imagen, tipos y estadísticas del Pokémon buscado.
+
+Consumir la API \url{https://pokeapi.co/api/v2/pokemon/\{nombre\}} con
+\texttt{fetch} y \texttt{async/await}. Mostrar al usuario el nombre,
+la imagen y los tipos del pokémon buscado. Manejar errores 404.
+Aplicar la pseudo-clase \texttt{:focus-visible} aprendida en la
+capítulo 3.
+\end{cajaejercicio}
+
+\section{Buenas prácticas JavaScript}
+
+Escribir JavaScript profesional es más que conocer la
+sintaxis: requiere disciplina con tipos, manejo de errores,
+inmutabilidad y modularidad. La caja siguiente reúne doce reglas
+profesionales que distinguen al desarrollador junior del senior.
+
+
+\begin{cajabuenas}{Doce reglas profesionales 2026}
+\begin{enumerate}
+\item \texttt{\char34{}use strict\char34{}} en todo módulo.
+\item \texttt{const} por defecto; \texttt{let} solo cuando muta;
+\texttt{var} nunca.
+\item \texttt{===} sobre \texttt{==} siempre (comparación estricta).
+\item Manejo de errores con \texttt{try/catch} en código asíncrono.
+\item Validar entrada de funciones públicas.
+\item Funciones pequeñas, una responsabilidad.
+\item Sin variables globales: usar módulos ES (\texttt{type=\char34{}module\char34{}}).
+\item Linter (ESLint) con configuración del equipo.
+\item Tests con Jest, Vitest o Playwright.
+\item No mezclar \texttt{Promise.then()} y \texttt{await}: elegir uno.
+\item Optional chaining (\texttt{?.}) para acceso seguro a objetos.
+\item Tipado con JSDoc o TypeScript en proyectos serios.
+\end{enumerate}
+\end{cajabuenas}
+
+%%% ==== CAPITULO 5 v3 ====
+% =====================================================================
+%                     UNIDAD II  ---  PARTE II
+% =====================================================================

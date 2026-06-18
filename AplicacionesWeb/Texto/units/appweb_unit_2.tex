@@ -1,0 +1,856 @@
+% =====================================================================
+%  UNIDAD II --- Lenguajes, Frameworks y Seguridad del Servidor
+%  Parte 1: Capitulos 5 y 6 (lenguajes e introduccion + CRUD sin framework)
+%  Reutiliza el preambulo de main.tex.
+% =====================================================================
+\part{Lenguajes, Frameworks y Seguridad del Servidor}
+
+% =====================================================================
+\chapter{Introducción a los lenguajes del lado del servidor}
+\label{cap:lenguajes}
+
+\epigraph{«Conocer cinco lenguajes del servidor no es saber cinco
+sintaxis: es entender que todos resuelven el mismo ciclo
+petición--respuesta de maneras distintas.»}{--- \textit{Principio
+pedagógico de la asignatura}}
+
+\section*{Resultado de aprendizaje}
+\addcontentsline{toc}{section}{Resultado de aprendizaje}
+Al terminar este capítulo, el estudiante reconoce el papel del lado del
+servidor en una aplicación web, identifica cinco tecnologías de servidor
+---Perl, PHP, Python, ASP.NET Core (C\#) y Java para la web--- y escribe
+en cada una un programa mínimo «Hola Mundo» que responde por HTTP,
+conociendo además la estructura de archivos que genera cada proyecto.
+
+\section{El lado del servidor y el ciclo petición--respuesta}
+\label{sec:cap5:ciclo}
+
+Cuando el navegador solicita una página dinámica, un programa en el
+servidor recibe la petición HTTP, ejecuta lógica (consulta datos,
+calcula, decide) y devuelve una respuesta ---casi siempre HTML5--- que
+el navegador presenta. Ese programa puede estar escrito en muchos
+lenguajes; este libro recorre cinco de uso real.
+
+\begin{cajadefinicion}{Concepto --- Cliente y servidor}
+El \emph{cliente} (navegador) ejecuta HTML5, CSS3 y JavaScript y se
+ocupa de la presentación. El \emph{servidor} ejecuta el lenguaje de
+turno (Perl, PHP, Python, C\# o Java) y se ocupa de la lógica y de los
+datos. La frontera entre ambos es el protocolo HTTP.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Punto de partida que asume este libro}
+Se asume que el lector ya programa en \textbf{Java} (Java SE: clases,
+métodos, colecciones), pero \textbf{no} conoce Perl, PHP, Python ni C\#,
+ni el desarrollo web con Java. Por eso cada lenguaje se introduce desde
+cero, y Java para la web se presenta al final, como puente desde lo que
+ya sabe.
+\end{cajaadvertencia}
+
+El IDE de referencia es \textbf{IntelliJ IDEA Ultimate} para Perl, PHP,
+Python y Java (mediante sus plugins). Para C\# / ASP.NET Core se usa
+\textbf{Visual Studio Code}, porque IntelliJ IDEA no ofrece soporte de
+C\#.
+
+\section{Perl}
+\label{sec:cap5:perl}
+
+\begin{cajahistoria}{Historia --- Perl}
+Creado por Larry Wall en 1987, Perl fue durante los años noventa el
+lenguaje dominante de la web a través de CGI. Su lema «hay más de una
+manera de hacerlo» y su potencia con expresiones regulares lo hicieron
+omnipresente en scripts de servidor. Hoy convive con lenguajes más
+nuevos, pero sigue vigente; la versión de referencia es Perl~5.42.
+\end{cajahistoria}
+
+Perl genera páginas escribiendo la respuesta HTTP por la salida
+estándar. El siguiente «Hola Mundo» es un script CGI: imprime una
+cabecera \texttt{Content-Type} y luego el HTML5.
+
+{\small\textbf{Crear en:} \texttt{cgi-bin/hola.pl}}
+\begin{lstlisting}[style=perl,caption={hola.pl --- Hola Mundo en Perl (CGI)},label={lst:c5-perl-hola}]
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+print "Content-Type: text/html; charset=UTF-8\n\n";
+print "<!DOCTYPE html>\n";
+print "<html lang=\"es\"><head><meta charset=\"UTF-8\">";
+print "<title>Hola</title></head>";
+print "<body><h1>Hola Mundo desde Perl</h1></body></html>";
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto Perl}
+\begin{lstlisting}[style=shell,caption={Estructura minima de un proyecto Perl/CGI},label={lst:c5-perl-tree}]
+hola-perl/
+|-- cgi-bin/
+|   `-- hola.pl              (programador)
+`-- public/
+    `-- estilos.css          (hoja base de la Unidad I)
+\end{lstlisting}
+\end{cajaejemplo}
+
+Se ejecuta con un servidor que soporte CGI (Apache con
+\texttt{mod\_cgi}, o el servidor de pruebas \texttt{plackup}). La sintaxis
+clave: las variables escalares empiezan con \texttt{\$}, \texttt{use
+strict} obliga a declararlas, y \texttt{print} envía texto al cliente.
+
+\section{PHP}
+\label{sec:cap5:php}
+
+\begin{cajahistoria}{Historia --- PHP}
+PHP (hoy «PHP: Hypertext Preprocessor») nació en 1994 de la mano de
+Rasmus Lerdorf. Diseñado específicamente para la web, se incrusta dentro
+del HTML y se ejecuta en el servidor. Es uno de los lenguajes más usados
+del mundo (WordPress, Laravel); la versión de referencia es PHP~8.4.
+\end{cajahistoria}
+
+En PHP el código va entre \texttt{<?php} y \texttt{?>}, intercalado con
+HTML. El intérprete ejecuta el bloque y deja el resto tal cual.
+
+{\small\textbf{Crear en:} \texttt{public/index.php}}
+\begin{lstlisting}[style=php,caption={index.php --- Hola Mundo en PHP},label={lst:c5-php-hola}]
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Hola</title>
+  <link rel="stylesheet" href="estilos.css"></head>
+<body>
+  <h1><?php echo "Hola Mundo desde PHP " . phpversion(); ?></h1>
+</body>
+</html>
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto PHP}
+\begin{lstlisting}[style=shell,caption={Estructura minima de un proyecto PHP},label={lst:c5-php-tree}]
+hola-php/
+`-- public/
+    |-- index.php            (programador)
+    `-- estilos.css          (hoja base de la Unidad I)
+\end{lstlisting}
+\end{cajaejemplo}
+
+Se ejecuta con el servidor incorporado: \texttt{php -S localhost:8000 -t
+public}. La sintaxis clave: las variables empiezan con \texttt{\$}, las
+cadenas se concatenan con el punto (\texttt{.}) y \texttt{echo} envía
+texto al cliente.
+
+\section{Python}
+\label{sec:cap5:python}
+
+\begin{cajahistoria}{Historia --- Python}
+Creado por Guido van Rossum en 1991, Python destaca por su legibilidad.
+En la web se usa con frameworks (Django, Flask), pero también se puede
+servir HTTP con la biblioteca estándar mediante WSGI ---la interfaz
+estándar entre un servidor y una aplicación Python---. La versión de
+referencia es Python~3.13.
+\end{cajahistoria}
+
+Para mantener el capítulo «sin framework», el «Hola Mundo» usa WSGI puro:
+una función que recibe el entorno de la petición y devuelve la respuesta.
+
+{\small\textbf{Crear en:} \texttt{app.py}}
+\begin{lstlisting}[style=python,caption={app.py --- Hola Mundo en Python (WSGI)},label={lst:c5-py-hola}]
+from wsgiref.simple_server import make_server
+
+
+def app(environ, start_response):
+    cuerpo = ("<!DOCTYPE html><html lang='es'><head>"
+              "<meta charset='UTF-8'><title>Hola</title></head>"
+              "<body><h1>Hola Mundo desde Python</h1></body></html>")
+    datos = cuerpo.encode("utf-8")
+    start_response("200 OK", [
+        ("Content-Type", "text/html; charset=UTF-8"),
+        ("Content-Length", str(len(datos))),
+    ])
+    return [datos]
+
+
+if __name__ == "__main__":
+    with make_server("", 8000, app) as servidor:
+        print("Escuchando en http://localhost:8000")
+        servidor.serve_forever()
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto Python}
+\begin{lstlisting}[style=shell,caption={Estructura minima de un proyecto Python/WSGI},label={lst:c5-py-tree}]
+hola-python/
+|-- app.py                   (programador)
+`-- static/
+    `-- estilos.css          (hoja base de la Unidad I)
+\end{lstlisting}
+\end{cajaejemplo}
+
+Se ejecuta con \texttt{python app.py}. La sintaxis clave: la indentación
+define los bloques, no hay llaves; \texttt{def} declara funciones y las
+cadenas se codifican a bytes antes de enviarse.
+
+\section{ASP.NET Core (C\#)}
+\label{sec:cap5:asp}
+
+\begin{cajahistoria}{Historia --- ASP.NET Core}
+Microsoft lanzó ASP.NET en 2002; en 2016 lo reescribió como
+\textbf{ASP.NET Core}, multiplataforma y de código abierto. C\# es su
+lenguaje, de tipado fuerte y sintaxis cercana a Java. La versión de
+referencia es \textbf{.NET~10 (LTS)} con \textbf{C\#~14} y ASP.NET
+Core~10.
+\end{cajahistoria}
+
+ASP.NET Core usa el modelo de \emph{Minimal API}: en pocas líneas se
+define una ruta y su respuesta. El proyecto se crea con la CLI de .NET.
+
+{\small\textbf{Crear el proyecto (terminal de VS Code):}}
+\begin{lstlisting}[style=shell,caption={Creacion del proyecto ASP.NET Core},label={lst:c5-asp-new}]
+dotnet new web -o HolaAsp
+cd HolaAsp
+dotnet run
+\end{lstlisting}
+
+{\small\textbf{Editar:} \texttt{Program.cs}}
+\begin{lstlisting}[style=cs,caption={Program.cs --- Hola Mundo en ASP.NET Core},label={lst:c5-asp-hola}]
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapGet("/", () => Results.Content(
+    "<!DOCTYPE html><html lang=\"es\"><head>" +
+    "<meta charset=\"UTF-8\"><title>Hola</title></head>" +
+    "<body><h1>Hola Mundo desde ASP.NET Core</h1></body></html>",
+    "text/html"));
+
+app.Run();
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto ASP.NET Core}
+\begin{lstlisting}[style=shell,caption={Estructura creada por dotnet new web},label={lst:c5-asp-tree}]
+HolaAsp/
+|-- Program.cs               (dotnet; lo edita el programador)
+|-- HolaAsp.csproj           (dotnet: proyecto y dependencias)
+|-- appsettings.json         (dotnet: configuracion)
+|-- Properties/
+|   `-- launchSettings.json   (dotnet: perfiles de ejecucion)
+`-- wwwroot/                  (programador: estaticos, estilos.css)
+\end{lstlisting}
+\end{cajaejemplo}
+
+La sintaxis clave: C\# es de tipado fuerte; \texttt{var} infiere el tipo;
+los \emph{lambdas} (\texttt{() => \ldots}) definen el manejador de la
+ruta. Se ejecuta con \texttt{dotnet run}.
+
+\section{Java para la Web}
+\label{sec:cap5:javaweb}
+
+Como el lector ya domina Java SE, aquí solo se tiende el puente hacia la
+web. En Java, un \textbf{servlet} es una clase que atiende peticiones
+HTTP: hereda de \texttt{HttpServlet} y sobrescribe \texttt{doGet}. Se
+ejecuta dentro de un servidor de aplicaciones; el de referencia es
+\textbf{Apache Tomcat~11} (Jakarta Servlet~6.1), con \textbf{Java~21}.
+
+{\small\textbf{Crear en:} \texttt{src/main/java/ec/edu/uteq/HolaServlet.java}}
+\begin{lstlisting}[style=java,caption={HolaServlet.java --- Hola Mundo en Java web},label={lst:c5-java-hola}]
+package ec.edu.uteq;
+
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/hola")
+public class HolaServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.getWriter().println(
+            "<!DOCTYPE html><html lang=\"es\"><head>"
+            + "<meta charset=\"UTF-8\"><title>Hola</title></head>"
+            + "<body><h1>Hola Mundo desde Java (Servlet)</h1></body></html>");
+    }
+}
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto Java web (Maven --- war)}
+\begin{lstlisting}[style=shell,caption={Estructura minima de un proyecto Java web},label={lst:c5-java-tree}]
+hola-java/
+|-- pom.xml                              (programador: dependencias)
+`-- src/main/
+    |-- java/ec/edu/uteq/
+    |   `-- HolaServlet.java             (programador)
+    `-- webapp/
+        |-- WEB-INF/web.xml              (IntelliJ)
+        `-- estilos.css                  (hoja base de la Unidad I)
+\end{lstlisting}
+\end{cajaejemplo}
+
+La anotación \texttt{@WebServlet("/hola")} mapea la URL; no hace falta
+\texttt{web.xml} para registrar el servlet. El detalle completo de
+JSP/Servlets/JSTL/EL llega en el Capítulo~\ref{cap:crud}.
+
+\begin{cajacompara}{Las cinco tecnologías de un vistazo}
+\small
+\begin{tabular}{>{\bfseries}l l l}
+\toprule
+Tecnología & Cómo responde HTTP & Se ejecuta con \\
+\midrule
+Perl   & \texttt{print} a la salida (CGI) & Apache/\texttt{plackup} \\
+PHP    & Código incrustado en HTML        & \texttt{php -S} \\
+Python & Función WSGI                     & \texttt{python app.py} \\
+C\#/ASP & \emph{Minimal API} (\texttt{MapGet}) & \texttt{dotnet run} \\
+Java   & Servlet (\texttt{doGet})         & Tomcat 11 \\
+\bottomrule
+\end{tabular}
+\end{cajacompara}
+
+% =====================================================================
+\chapter{CRUD sin framework: acceso a datos a mano}
+\label{cap:crud}
+
+\epigraph{«Antes de dejar que un framework escriba el SQL por ti,
+escríbelo tú: solo así sabrás qué hace ---y qué deshacer--- cuando
+falle.»}{--- \textit{Principio pedagógico de la asignatura}}
+
+\section*{Resultado de aprendizaje}
+\addcontentsline{toc}{section}{Resultado de aprendizaje}
+Al terminar este capítulo, el estudiante implementa una aplicación CRUD
+(crear, leer, actualizar y eliminar) sobre la tabla \texttt{estudiantes}
+en los cinco lenguajes, escribiendo a mano la conexión y el SQL
+parametrizado, sin emplear ningún framework ni ORM. En cada caso conoce
+la estructura del proyecto y reutiliza la hoja \texttt{estilos.css} de la
+Unidad~I.
+
+\section{El modelo de datos común}
+\label{sec:cap6:modelo}
+
+Las cinco implementaciones operan sobre la misma base PostgreSQL
+\texttt{appweb2026ppa} y la misma tabla. Se crea una sola vez.
+
+{\small\textbf{Crear en:} \texttt{db/schema.sql}}
+\begin{lstlisting}[style=sql,caption={Esquema compartido de la tabla estudiantes},label={lst:c6-schema}]
+CREATE TABLE IF NOT EXISTS estudiantes (
+    id      SERIAL       PRIMARY KEY,
+    nombre  VARCHAR(100) NOT NULL,
+    correo  VARCHAR(120) NOT NULL,
+    carrera VARCHAR(80)  NOT NULL,
+    creado  TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+\end{lstlisting}
+
+\begin{cajaadvertencia}{Credenciales y SQL parametrizado}
+Servidor \texttt{localhost:5432}, base \texttt{appweb2026ppa}, usuario
+\texttt{postgres}, contraseña \texttt{P@\$7Gr3\$QL}. En las cinco
+tecnologías los datos del usuario viajan como \textbf{parámetros}
+enlazados, nunca concatenados en la cadena SQL: esa es la defensa contra
+la inyección SQL.
+\end{cajaadvertencia}
+
+\section{Nuevo CSS para el listado}
+\label{sec:cap6:css}
+
+La hoja \texttt{estilos.css} de la Unidad~I ya define el reinicio, la
+tipografía y la estructura. Para las tablas del CRUD solo se agregan
+estas reglas \emph{nuevas}; el resto se hereda.
+
+{\small\textbf{Agregar a:} \texttt{estilos.css}}
+\begin{lstlisting}[style=css,caption={Reglas nuevas para la tabla del CRUD},label={lst:c6-css}]
+.tabla-crud { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.tabla-crud th, .tabla-crud td {
+  border: 1px solid var(--borde); padding: .5rem .75rem; text-align: left;
+}
+.tabla-crud th { background: var(--primario); color: #fff; }
+.tabla-crud tr:nth-child(even) { background: var(--fondo-alt); }
+.acciones a { margin-right: .5rem; }
+\end{lstlisting}
+
+% ---------------------------------------------------------------------
+\section{CRUD en Perl con DBI}
+\label{sec:cap6:perl}
+
+Perl accede a PostgreSQL con el módulo \textbf{DBI} y el driver
+\textbf{DBD::Pg}. La conexión se centraliza en una subrutina; cada
+operación usa \texttt{prepare} y \texttt{execute} con marcadores
+\texttt{?}.
+
+{\small\textbf{Crear en:} \texttt{lib/EstudianteDao.pm} --- parte 1 de 2 (conexion y lectura)}
+\begin{lstlisting}[style=perl,caption={EstudianteDao.pm --- parte 1: conexion y listar},label={lst:c6-perl-a}]
+package EstudianteDao;
+use strict;
+use warnings;
+use DBI;
+
+sub conectar {
+    my $dsn = "dbi:Pg:dbname=appweb2026ppa;host=localhost;port=5432";
+    return DBI->connect($dsn, "postgres", 'P@$7Gr3$QL',
+        { RaiseError => 1, AutoCommit => 1 });
+}
+
+sub listar {
+    my $dbh = conectar();
+    my $sth = $dbh->prepare(
+        "SELECT id, nombre, correo, carrera FROM estudiantes ORDER BY id");
+    $sth->execute();
+    my @lista;
+    while (my $fila = $sth->fetchrow_hashref) { push @lista, $fila; }
+    $dbh->disconnect;
+    return \@lista;
+}
+\end{lstlisting}
+
+{\small\textbf{Continúa en:} \texttt{lib/EstudianteDao.pm} --- parte 2 de 2 (escritura)}
+\begin{lstlisting}[style=perl,caption={EstudianteDao.pm --- parte 2: insertar, actualizar, eliminar},label={lst:c6-perl-b}]
+sub insertar {
+    my ($nombre, $correo, $carrera) = @_;
+    my $dbh = conectar();
+    $dbh->do("INSERT INTO estudiantes (nombre, correo, carrera) "
+           . "VALUES (?, ?, ?)", undef, $nombre, $correo, $carrera);
+    $dbh->disconnect;
+}
+
+sub actualizar {
+    my ($id, $nombre, $correo, $carrera) = @_;
+    my $dbh = conectar();
+    $dbh->do("UPDATE estudiantes SET nombre=?, correo=?, carrera=? "
+           . "WHERE id=?", undef, $nombre, $correo, $carrera, $id);
+    $dbh->disconnect;
+}
+
+sub eliminar {
+    my ($id) = @_;
+    my $dbh = conectar();
+    $dbh->do("DELETE FROM estudiantes WHERE id=?", undef, $id);
+    $dbh->disconnect;
+}
+1;
+\end{lstlisting}
+
+El script CGI usa el DAO y genera el listado HTML5 enlazando
+\texttt{estilos.css}.
+
+{\small\textbf{Crear en:} \texttt{cgi-bin/lista.pl}}
+\begin{lstlisting}[style=perl,caption={lista.pl --- vista de listado},label={lst:c6-perl-vista}]
+#!/usr/bin/perl
+use strict; use warnings; use lib "../lib"; use EstudianteDao;
+
+print "Content-Type: text/html; charset=UTF-8\n\n";
+print "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"UTF-8\">";
+print "<link rel=\"stylesheet\" href=\"/estilos.css\"></head><body>";
+print "<h1>Estudiantes</h1><table class=\"tabla-crud\">";
+print "<tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Carrera</th></tr>";
+for my $e (@{ EstudianteDao::listar() }) {
+    print "<tr><td>$e->{id}</td><td>$e->{nombre}</td>";
+    print "<td>$e->{correo}</td><td>$e->{carrera}</td></tr>";
+}
+print "</table></body></html>";
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto CRUD en Perl}
+\begin{lstlisting}[style=shell,caption={Estructura del CRUD Perl},label={lst:c6-perl-tree}]
+crud-perl/
+|-- db/schema.sql                (programador)
+|-- lib/
+|   `-- EstudianteDao.pm          (programador: acceso a datos)
+|-- cgi-bin/
+|   |-- lista.pl                  (programador: vista)
+|   |-- guardar.pl                (programador: alta/edicion)
+|   `-- eliminar.pl               (programador)
+`-- public/estilos.css            (hoja base de la Unidad I)
+\end{lstlisting}
+\end{cajaejemplo}
+
+% ---------------------------------------------------------------------
+\section{CRUD en PHP con PDO}
+\label{sec:cap6:php}
+
+PHP usa \textbf{PDO} (PHP Data Objects), una capa uniforme de acceso a
+datos. La conexión se crea una vez y se reutiliza; las consultas usan
+marcadores con nombre (\texttt{:nombre}).
+
+{\small\textbf{Crear en:} \texttt{src/conexion.php}}
+\begin{lstlisting}[style=php,caption={conexion.php --- conexion PDO},label={lst:c6-php-cn}]
+<?php
+function conectar(): PDO {
+    $dsn = 'pgsql:host=localhost;port=5432;dbname=appweb2026ppa';
+    return new PDO($dsn, 'postgres', 'P@$7Gr3$QL', [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+}
+\end{lstlisting}
+
+{\small\textbf{Crear en:} \texttt{src/EstudianteDao.php}}
+\begin{lstlisting}[style=php,caption={EstudianteDao.php --- CRUD con PDO},label={lst:c6-php-dao}]
+<?php
+require_once 'conexion.php';
+
+class EstudianteDao {
+    public function listar(): array {
+        $sql = 'SELECT id, nombre, correo, carrera FROM estudiantes ORDER BY id';
+        return conectar()->query($sql)->fetchAll();
+    }
+    public function insertar(string $nombre, string $correo, string $carrera): void {
+        $sql = 'INSERT INTO estudiantes (nombre, correo, carrera) '
+             . 'VALUES (:nombre, :correo, :carrera)';
+        $stmt = conectar()->prepare($sql);
+        $stmt->execute([':nombre'=>$nombre, ':correo'=>$correo, ':carrera'=>$carrera]);
+    }
+    public function actualizar(int $id, string $nombre, string $correo, string $carrera): void {
+        $sql = 'UPDATE estudiantes SET nombre=:nombre, correo=:correo, '
+             . 'carrera=:carrera WHERE id=:id';
+        $stmt = conectar()->prepare($sql);
+        $stmt->execute([':nombre'=>$nombre, ':correo'=>$correo,
+                        ':carrera'=>$carrera, ':id'=>$id]);
+    }
+    public function eliminar(int $id): void {
+        $stmt = conectar()->prepare('DELETE FROM estudiantes WHERE id=:id');
+        $stmt->execute([':id'=>$id]);
+    }
+}
+\end{lstlisting}
+
+{\small\textbf{Crear en:} \texttt{public/index.php}}
+\begin{lstlisting}[style=php,caption={index.php --- vista de listado},label={lst:c6-php-vista}]
+<?php require_once '../src/EstudianteDao.php';
+$lista = (new EstudianteDao())->listar(); ?>
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+  <link rel="stylesheet" href="estilos.css"></head>
+<body>
+  <h1>Estudiantes</h1>
+  <table class="tabla-crud">
+    <tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Carrera</th></tr>
+    <?php foreach ($lista as $e): ?>
+      <tr><td><?= htmlspecialchars($e['id']) ?></td>
+          <td><?= htmlspecialchars($e['nombre']) ?></td>
+          <td><?= htmlspecialchars($e['correo']) ?></td>
+          <td><?= htmlspecialchars($e['carrera']) ?></td></tr>
+    <?php endforeach; ?>
+  </table>
+</body></html>
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto CRUD en PHP}
+\begin{lstlisting}[style=shell,caption={Estructura del CRUD PHP},label={lst:c6-php-tree}]
+crud-php/
+|-- db/schema.sql                (programador)
+|-- src/
+|   |-- conexion.php             (programador: conexion)
+|   `-- EstudianteDao.php        (programador: acceso a datos)
+`-- public/
+    |-- index.php                (programador: vista)
+    `-- estilos.css              (hoja base de la Unidad I)
+\end{lstlisting}
+\end{cajaejemplo}
+
+La función \texttt{htmlspecialchars} escapa la salida: defensa anti-XSS,
+equivalente a \texttt{c:out} en JSTL.
+
+% ---------------------------------------------------------------------
+\section{CRUD en Python con psycopg (sin framework)}
+\label{sec:cap6:python}
+
+Para mantener el capítulo sin framework, Python accede a PostgreSQL con
+el adaptador \textbf{psycopg} (versión 3) y sirve HTTP por WSGI. El DAO
+ejecuta SQL parametrizado con marcadores \texttt{\%s}.
+
+{\small\textbf{Instalar:} \texttt{pip install "psycopg[binary]"}}
+
+{\small\textbf{Crear en:} \texttt{dao.py}}
+\begin{lstlisting}[style=python,caption={dao.py --- CRUD con psycopg},label={lst:c6-py-dao}]
+import psycopg
+
+CADENA = ("host=localhost port=5432 dbname=appweb2026ppa "
+          "user=postgres password=P@$7Gr3$QL")
+
+
+def listar():
+    with psycopg.connect(CADENA) as cn, cn.cursor() as cur:
+        cur.execute("SELECT id, nombre, correo, carrera "
+                    "FROM estudiantes ORDER BY id")
+        return cur.fetchall()
+
+
+def insertar(nombre, correo, carrera):
+    with psycopg.connect(CADENA) as cn, cn.cursor() as cur:
+        cur.execute("INSERT INTO estudiantes (nombre, correo, carrera) "
+                    "VALUES (%s, %s, %s)", (nombre, correo, carrera))
+
+
+def actualizar(id_est, nombre, correo, carrera):
+    with psycopg.connect(CADENA) as cn, cn.cursor() as cur:
+        cur.execute("UPDATE estudiantes SET nombre=%s, correo=%s, "
+                    "carrera=%s WHERE id=%s",
+                    (nombre, correo, carrera, id_est))
+
+
+def eliminar(id_est):
+    with psycopg.connect(CADENA) as cn, cn.cursor() as cur:
+        cur.execute("DELETE FROM estudiantes WHERE id=%s", (id_est,))
+\end{lstlisting}
+
+La aplicación WSGI construye el listado HTML5 y enlaza
+\texttt{estilos.css}.
+
+{\small\textbf{Crear en:} \texttt{app.py}}
+\begin{lstlisting}[style=python,caption={app.py --- vista de listado (WSGI)},label={lst:c6-py-app}]
+from wsgiref.simple_server import make_server
+from html import escape
+import dao
+
+
+def app(environ, start_response):
+    filas = "".join(
+        f"<tr><td>{e[0]}</td><td>{escape(e[1])}</td>"
+        f"<td>{escape(e[2])}</td><td>{escape(e[3])}</td></tr>"
+        for e in dao.listar())
+    html = (f"<!DOCTYPE html><html lang='es'><head>"
+            f"<meta charset='UTF-8'>"
+            f"<link rel='stylesheet' href='/estilos.css'></head><body>"
+            f"<h1>Estudiantes</h1><table class='tabla-crud'>"
+            f"<tr><th>ID</th><th>Nombre</th><th>Correo</th>"
+            f"<th>Carrera</th></tr>{filas}</table></body></html>")
+    datos = html.encode("utf-8")
+    start_response("200 OK", [("Content-Type", "text/html; charset=UTF-8")])
+    return [datos]
+
+
+if __name__ == "__main__":
+    with make_server("", 8000, app) as s:
+        s.serve_forever()
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto CRUD en Python}
+\begin{lstlisting}[style=shell,caption={Estructura del CRUD Python},label={lst:c6-py-tree}]
+crud-python/
+|-- db/schema.sql                (programador)
+|-- dao.py                       (programador: acceso a datos)
+|-- app.py                       (programador: vista WSGI)
+`-- static/estilos.css           (hoja base de la Unidad I)
+\end{lstlisting}
+\end{cajaejemplo}
+
+\begin{cajaadvertencia}{Sobre «sin framework» en Python}
+Hacer un CRUD web sin ningún framework es inusual: por eso se usa la
+biblioteca estándar (WSGI) y \texttt{psycopg} a bajo nivel. En el
+Capítulo~\ref{cap:frameworks} se reescribe este mismo CRUD con
+\textbf{Django}, que aporta enrutamiento, plantillas y mucho más.
+\end{cajaadvertencia}
+
+% ---------------------------------------------------------------------
+\section{CRUD en ASP.NET Core con ADO.NET (sin EF)}
+\label{sec:cap6:asp}
+
+C\# accede a PostgreSQL con el proveedor \textbf{Npgsql} (ADO.NET). Para
+que sea parejo con los demás, no se usa Entity Framework: el SQL se
+escribe a mano con parámetros (\texttt{@nombre}).
+
+{\small\textbf{Instalar:} \texttt{dotnet add package Npgsql} (versión 10)}
+
+{\small\textbf{Crear en:} \texttt{Datos/EstudianteDao.cs} --- parte 1 de 2 (conexion y lectura)}
+\begin{lstlisting}[style=cs,caption={EstudianteDao.cs --- parte 1: conexion y listar},label={lst:c6-asp-a}]
+using Npgsql;
+
+namespace CrudAsp.Datos;
+
+public class EstudianteDao
+{
+    private const string Cadena =
+        "Host=localhost;Port=5432;Database=appweb2026ppa;" +
+        "Username=postgres;Password=P@$7Gr3$QL";
+
+    public List<(int, string, string, string)> Listar()
+    {
+        var lista = new List<(int, string, string, string)>();
+        using var cn = new NpgsqlConnection(Cadena);
+        cn.Open();
+        using var cmd = new NpgsqlCommand(
+            "SELECT id, nombre, correo, carrera FROM estudiantes ORDER BY id", cn);
+        using var rd = cmd.ExecuteReader();
+        while (rd.Read())
+            lista.Add((rd.GetInt32(0), rd.GetString(1),
+                       rd.GetString(2), rd.GetString(3)));
+        return lista;
+    }
+}
+\end{lstlisting}
+
+{\small\textbf{Continúa en:} \texttt{Datos/EstudianteDao.cs} --- parte 2 de 2 (escritura)}
+\begin{lstlisting}[style=cs,caption={EstudianteDao.cs --- parte 2: insertar, actualizar, eliminar},label={lst:c6-asp-b}]
+    public void Insertar(string nombre, string correo, string carrera)
+    {
+        using var cn = new NpgsqlConnection(Cadena);
+        cn.Open();
+        using var cmd = new NpgsqlCommand(
+            "INSERT INTO estudiantes (nombre, correo, carrera) " +
+            "VALUES (@n, @c, @ca)", cn);
+        cmd.Parameters.AddWithValue("n", nombre);
+        cmd.Parameters.AddWithValue("c", correo);
+        cmd.Parameters.AddWithValue("ca", carrera);
+        cmd.ExecuteNonQuery();
+    }
+
+    public void Eliminar(int id)
+    {
+        using var cn = new NpgsqlConnection(Cadena);
+        cn.Open();
+        using var cmd = new NpgsqlCommand(
+            "DELETE FROM estudiantes WHERE id=@id", cn);
+        cmd.Parameters.AddWithValue("id", id);
+        cmd.ExecuteNonQuery();
+    }
+}
+\end{lstlisting}
+
+El \emph{Minimal API} expone la ruta que arma el listado HTML5.
+
+{\small\textbf{Editar:} \texttt{Program.cs}}
+\begin{lstlisting}[style=cs,caption={Program.cs --- vista de listado},label={lst:c6-asp-prog}]
+using CrudAsp.Datos;
+
+var app = WebApplication.CreateBuilder(args).Build();
+var dao = new EstudianteDao();
+
+app.MapGet("/estudiantes", () =>
+{
+    var filas = string.Join("", dao.Listar().Select(e =>
+        $"<tr><td>{e.Item1}</td><td>{e.Item2}</td>" +
+        $"<td>{e.Item3}</td><td>{e.Item4}</td></tr>"));
+    var html = "<!DOCTYPE html><html lang=\"es\"><head>" +
+        "<meta charset=\"UTF-8\">" +
+        "<link rel=\"stylesheet\" href=\"/estilos.css\"></head><body>" +
+        "<h1>Estudiantes</h1><table class=\"tabla-crud\">" +
+        "<tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Carrera</th></tr>" +
+        filas + "</table></body></html>";
+    return Results.Content(html, "text/html");
+});
+
+app.UseStaticFiles();
+app.Run();
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto CRUD en ASP.NET Core}
+\begin{lstlisting}[style=shell,caption={Estructura del CRUD ASP.NET Core},label={lst:c6-asp-tree}]
+CrudAsp/
+|-- Program.cs                   (programador: rutas/vista)
+|-- CrudAsp.csproj               (dotnet: proyecto y paquetes)
+|-- Datos/
+|   `-- EstudianteDao.cs          (programador: acceso a datos)
+|-- db/schema.sql                 (programador)
+`-- wwwroot/estilos.css           (hoja base de la Unidad I)
+\end{lstlisting}
+\end{cajaejemplo}
+
+% ---------------------------------------------------------------------
+\section{CRUD en Java con JSP, Servlets, JSTL y EL (JDBC)}
+\label{sec:cap6:java}
+
+Java reúne aquí las cuatro piezas: \textbf{Servlet} (control),
+\textbf{JDBC} (datos), \textbf{JSP} con \textbf{JSTL} y \textbf{EL}
+(vista). Es la versión ampliada del CRUD que se introdujo como práctica
+integradora; el detalle de cada etiqueta JSTL se trató en su material
+específico.
+
+{\small\textbf{Crear en:} \texttt{.../dao/EstudianteDAO.java} --- parte 1 de 2 (conexion y lectura)}
+\begin{lstlisting}[style=java,caption={EstudianteDAO.java --- parte 1: conexion y listar},label={lst:c6-java-a}]
+package ec.edu.uteq.appweb.dao;
+
+import ec.edu.uteq.appweb.modelo.Estudiante;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class EstudianteDAO {
+    private static final String URL =
+        "jdbc:postgresql://localhost:5432/appweb2026ppa";
+
+    private Connection cn() throws SQLException {
+        return DriverManager.getConnection(URL, "postgres", "P@$7Gr3$QL");
+    }
+
+    public List<Estudiante> listar() throws SQLException {
+        String sql = "SELECT id, nombre, correo, carrera "
+                   + "FROM estudiantes ORDER BY id";
+        List<Estudiante> lista = new ArrayList<>();
+        try (Connection c = cn();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next())
+                lista.add(new Estudiante(rs.getInt("id"),
+                    rs.getString("nombre"), rs.getString("correo"),
+                    rs.getString("carrera")));
+        }
+        return lista;
+    }
+}
+\end{lstlisting}
+
+{\small\textbf{Continúa en:} \texttt{.../dao/EstudianteDAO.java} --- parte 2 de 2 (escritura)}
+\begin{lstlisting}[style=java,caption={EstudianteDAO.java --- parte 2: insertar, actualizar, eliminar},label={lst:c6-java-b}]
+    public void insertar(Estudiante e) throws SQLException {
+        String sql = "INSERT INTO estudiantes (nombre, correo, carrera) "
+                   + "VALUES (?, ?, ?)";
+        try (Connection c = cn();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, e.getNombre());
+            ps.setString(2, e.getCorreo());
+            ps.setString(3, e.getCarrera());
+            ps.executeUpdate();
+        }
+    }
+
+    public void eliminar(int id) throws SQLException {
+        try (Connection c = cn();
+             PreparedStatement ps =
+                 c.prepareStatement("DELETE FROM estudiantes WHERE id=?")) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+}
+\end{lstlisting}
+
+La vista JSP recorre la lista con \texttt{c:forEach} y escapa la salida
+con \texttt{c:out}.
+
+{\small\textbf{Crear en:} \texttt{WEB-INF/vistas/lista.jsp}}
+\begin{lstlisting}[style=html,caption={lista.jsp --- vista con JSTL y EL},label={lst:c6-java-jsp}]
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+  <link rel="stylesheet" href="estilos.css"></head>
+<body>
+  <h1>Estudiantes</h1>
+  <table class="tabla-crud">
+    <tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Carrera</th></tr>
+    <c:forEach var="e" items="${lista}">
+      <tr><td>${e.id}</td><td><c:out value="${e.nombre}"/></td>
+          <td><c:out value="${e.correo}"/></td>
+          <td><c:out value="${e.carrera}"/></td></tr>
+    </c:forEach>
+  </table>
+</body></html>
+\end{lstlisting}
+
+\begin{cajaejemplo}{Estructura del proyecto CRUD en Java}
+\begin{lstlisting}[style=shell,caption={Estructura del CRUD Java web},label={lst:c6-java-tree}]
+crud-java/
+|-- pom.xml                                   (programador)
+|-- db/schema.sql                             (programador)
+`-- src/main/
+    |-- java/ec/edu/uteq/appweb/
+    |   |-- modelo/Estudiante.java            (programador: dominio)
+    |   |-- dao/EstudianteDAO.java            (programador: datos)
+    |   `-- controlador/EstudianteServlet.java (programador: control)
+    `-- webapp/
+        |-- WEB-INF/vistas/lista.jsp          (programador: vista)
+        `-- estilos.css                       (hoja base de la Unidad I)
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Síntesis del capítulo}
+\label{sec:cap6:sintesis}
+
+Los cinco lenguajes resolvieron el mismo CRUD con la misma idea:
+\emph{una conexión propia y SQL parametrizado}. Cambian la sintaxis y el
+marcador de parámetro ---\texttt{?} en Perl y Java, \texttt{:nombre} en
+PHP, \texttt{\%s} en Python, \texttt{@nombre} en C\#---, pero el patrón
+es idéntico. En el Capítulo~\ref{cap:frameworks} se reescriben estos
+CRUD con el framework de cada tecnología, donde el ORM generará el SQL
+por nosotros.

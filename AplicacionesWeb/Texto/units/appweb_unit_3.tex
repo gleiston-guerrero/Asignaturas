@@ -1,0 +1,4290 @@
+\part{Datos y Patrones Arquitectónicos}
+
+\chapter{Gestión de estado y objetos integrados en aplicaciones web}
+\label{cap:semana10}
+
+\epigraph{«HTTP es el protocolo de la amnesia colectiva: cada petición
+nace y muere sin memoria. Programar la web es, en buena medida, el arte
+de simular una memoria que el protocolo nos negó.»}{--- \textit{Adaptado
+de Roy Fielding}}
+
+\section*{Resultado de aprendizaje de la semana}
+Al concluir la semana 10, el estudiante diseña e implementa soluciones
+web que integran mecanismos robustos de gestión de estado --- cookies,
+sesiones de servidor, almacenamiento del cliente y tokens --- y domina
+los objetos integrados \texttt{Request}, \texttt{Response},
+\texttt{Session}, \texttt{Application} y \texttt{Page} en PHP, Java y
+ASP.NET Core, aplicando los flags de seguridad estándar que la
+industria exige en 2026.
+
+\section{Introducción: el dilema fundamental de HTTP}
+
+HTTP es un protocolo \emph{stateless}: cada petición se
+trata independientemente, sin recordar las anteriores. Esto es una
+fortaleza para escalar (cualquier servidor puede atender cualquier
+petición), pero un problema para construir aplicaciones que necesitan
+recordar al usuario entre clics. La resolución de esta tensión es el
+tema central de la semana.
+
+
+\begin{cajahistoria}{HTTP --- el protocolo amnésico que cambió el mundo}
+Cuando Tim Berners-Lee diseñó HTTP en 1989, lo hizo deliberadamente
+como un protocolo \emph{stateless} (sin estado): cada petición es
+independiente, autocontenida, y el servidor no recuerda nada de la
+petición anterior. Esta decisión, tomada en una época de servidores
+con poca memoria y conexiones lentas, parecía limitada pero resultó
+genial: permitió que la web escalara a miles de millones de usuarios
+sin colapsar bajo el peso de la memoria de sesiones.
+
+Pero la web pronto necesitó \emph{algo} que pareciera memoria: ¿cómo
+saber qué usuario está autenticado?, ¿cómo recordar los productos en
+el carrito?, ¿cómo personalizar la experiencia? La respuesta llegó en
+1994 cuando Lou Montulli, ingeniero de Netscape, inventó las
+\textbf{cookies HTTP} originalmente como solución para un cliente de
+e-commerce. Las cookies fueron una idea simple: el servidor envía un
+identificador en la respuesta; el navegador se lo guarda; en cada
+petición posterior, el navegador devuelve ese identificador. Con eso,
+el servidor puede asociar peticiones del mismo usuario.
+
+Sobre las cookies se construyeron las \textbf{sesiones de servidor}:
+el servidor guarda los datos del usuario en su propia memoria
+asociados a un \emph{session ID} aleatorio, y solo el ID viaja en la
+cookie. Treinta años después, este modelo sigue siendo el sustrato de
+la mayoría de aplicaciones web tradicionales del mundo. Pero la
+arquitectura moderna --- microservicios, escalado horizontal, SPAs
+--- llevó a la emergencia de los \textbf{tokens stateless} (JWT) que
+trasladan el estado de vuelta al cliente, permitiendo que el servidor
+permanezca verdaderamente sin memoria.
+
+La literatura técnica reciente confirma que la gestión de estado sigue
+siendo uno de los aspectos más críticos de la arquitectura web:
+\cite{fielding2000rest} en su tesis doctoral fundacional estableció
+que \emph{statelessness} es una restricción arquitectónica deseable
+para escalabilidad; \cite{kleppmann2017designing} discute en
+profundidad cómo el estado distribuido es la fuente de la mayoría de
+los bugs sutiles en sistemas modernos; y
+\cite{jones2015jwt} (RFC 7519) estandarizó JWT como el mecanismo
+dominante para sesiones distribuidas, hoy ampliamente adoptado en
+APIs públicas \cite{jones2015jwt}.
+\end{cajahistoria}
+
+\subsection{Las cinco estrategias de gestión de estado}
+
+Hay cinco estrategias diferentes para preservar estado entre
+peticiones HTTP. Cada una tiene ventajas, desventajas y casos donde
+es la mejor opción. La tabla siguiente las contrasta.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Estrategias de gestión de estado en aplicaciones web modernas.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXXl}
+\toprule
+\textbf{Mecanismo} & \textbf{Ubicación del estado} & \textbf{Caso de uso ideal} & \textbf{Tamaño}\\
+\midrule
+Cookie clásica & Cliente (cookie HTTP) & Preferencias simples (idioma, tema) & 4 KB\\
+Sesión servidor & Servidor (memoria/Redis) & App tradicional multi-página & MB \\
+\texttt{localStorage} & Cliente (navegador) & Datos persistentes locales & 5--10 MB\\
+\texttt{sessionStorage} & Cliente (pestaña) & Datos volátiles de pestaña & 5--10 MB\\
+JWT & Cliente (cookie/header) & APIs REST stateless, SPAs & 1--4 KB\\
+IndexedDB & Cliente (navegador) & Apps offline, gran volumen & GB\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Los flags de seguridad de cookies en 2026}
+
+Antes de profundizar en cualquier mecanismo, hay que dominar los
+\emph{flags} de seguridad que toda cookie debe llevar en producción:
+
+\begin{cajadefinicion}{Los cuatro flags imprescindibles}
+\begin{description}[leftmargin=1.5cm]
+\item[\texttt{Secure}.] La cookie solo viaja por HTTPS, nunca por HTTP
+plano. \emph{Sin este flag, la cookie puede ser interceptada en redes
+WiFi públicas.}
+\item[\texttt{HttpOnly}.] JavaScript del navegador no puede leer la
+cookie a través de \texttt{document.cookie}. \emph{Defensa principal
+contra XSS para robar la sesión.}
+\item[\texttt{SameSite}.] Controla cuándo el navegador envía la cookie
+en peticiones de otros sitios. Tres valores: \texttt{Strict} (nunca
+desde otros sitios), \texttt{Lax} (solo en navegación de nivel
+superior), \texttt{None} (siempre, requiere \texttt{Secure}).
+\emph{Defensa principal contra CSRF.}
+\item[\texttt{Max-Age} o \texttt{Expires}.] Tiempo de vida de la
+cookie. Sin esto, es \emph{session cookie} (se borra al cerrar el
+navegador).
+\end{description}
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Combinación correcta vs incorrecta}
+\textbf{Correcto para sesiones de autenticación (Listado~\ref{lst:10.1}):}
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:10.1]
+Set-Cookie: SESSID=abc123; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=1800
+\end{lstlisting}
+\textbf{Incorrecto (frecuentemente visto en código de aprendizaje) (Listado~\ref{lst:10.2}):}
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:10.2]
+Set-Cookie: SESSID=abc123
+\end{lstlisting}
+La segunda forma expone la cookie a HTTP plano (puede leerse en redes
+inseguras), permite que JavaScript la lea (vulnerabilidad XSS), y se
+envía en peticiones cross-site (vulnerabilidad CSRF).
+\end{cajaadvertencia}
+
+\section{El objeto Request: lectura segura de la petición}
+
+El objeto \texttt{Request} encapsula toda la información que el
+cliente envía al servidor. Su correcta lectura es la primera línea de
+defensa de la aplicación: nunca se debe confiar en datos del cliente
+sin filtrarlos.
+
+\subsection{Componentes del objeto Request}
+
+El objeto \emph{Request} encapsula todo lo que el cliente
+envía: URL, método, cabeceras, cuerpo, cookies. Conocer sus
+componentes es prerrequisito para programar cualquier endpoint
+profesional.
+
+\textbf{Ejemplo corto comentado (Listado~\ref{lst:10.3}):}
+\begin{lstlisting}[language=PHP,numbers=none,caption={Ejemplo de PHP},label=lst:10.3]
+<?php
+// Componentes principales del Request HTTP en PHP
+$_SERVER['REQUEST_METHOD']; // 'GET', 'POST', 'PUT', 'DELETE'
+$_SERVER['REQUEST_URI']; // '/api/v1/usuarios?id=42'
+$_SERVER['HTTP_HOST']; // 'tienda.uteq.edu.ec'
+$_SERVER['HTTP_USER_AGENT']; // navegador del cliente
+$_GET['id']; // parametros de la URL
+$_POST['email']; // datos del cuerpo (form-urlencoded)
+$_COOKIE['SESSID']; // cookies enviadas por el cliente
+file_get_contents('php://input'); // cuerpo crudo (JSON, XML)
+?>
+\end{lstlisting}
+
+
+\begin{itemize}
+\item \textbf{Método HTTP}: \texttt{GET}, \texttt{POST}, \texttt{PUT},
+\texttt{DELETE}, \texttt{PATCH}.
+\item \textbf{URL completa}: ruta, query string, fragmento.
+\item \textbf{Encabezados}: \texttt{Content-Type},
+\texttt{Authorization}, \texttt{User-Agent}, \texttt{Accept-Language}.
+\item \textbf{Cookies}: enviadas por el navegador.
+\item \textbf{Cuerpo} (en POST/PUT/PATCH): JSON, form-urlencoded,
+multipart, raw.
+\item \textbf{Metadatos del cliente}: IP origen, protocolo (HTTP/HTTPS).
+\end{itemize}
+
+\begin{cajaejemplo}{Ejemplo 10.1 --- Lectura segura del Request en PHP 8.4}
+
+\textbf{Enunciado.} Mostrar la lectura segura del objeto Request en PHP 8.4 obteniendo método, URL, cabeceras, query string y cuerpo, con validación básica de cada campo.
+
+\begin{lstlisting}[style=php,caption={request-helpers.php},label=lst:10.4]
+<?php
+declare(strict_types=1);
+
+/**
+ * Obtiene la IP real del cliente, considerando proxy reverso.
+ * Verifica las cabeceras X-Forwarded-For y X-Real-IP que un proxy
+ * Nginx o un balanceador de carga (HAProxy, AWS ELB) inyecta.
+ */
+function obtenerIpCliente(): string {
+    $cabeceras = [
+        'HTTP_X_FORWARDED_FOR', // proxy estandar
+        'HTTP_X_REAL_IP', // Nginx
+        'HTTP_CF_CONNECTING_IP', // Cloudflare
+        'REMOTE_ADDR' // conexion directa
+    ];
+    foreach ($cabeceras as $cabecera) { // itera sobre colecion
+        if (!empty($_SERVER[$cabecera])) { // condicional
+            // X-Forwarded-For puede tener varias IPs separadas por coma
+            $ip = explode(',', $_SERVER[$cabecera])[0];
+            $ip = trim($ip);
+            if (filter_var($ip, FILTER_VALIDATE_IP, // valida/sanea entrada con filtro
+                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                return $ip; // retorna valor
+            }
+        }
+    }
+    return '0.0.0.0'; // retorna valor
+}
+
+/**
+ * Lectura segura de un parametro GET.
+ * NUNCA acceder directamente a $_GET['param'] sin filtrar.
+ */
+function leerEntero(string $nombre, int $minimo = 1,
+                    int $maximo = PHP_INT_MAX, int $defecto = 1): int {
+    $val = filter_input(INPUT_GET, $nombre, FILTER_VALIDATE_INT,
+        ['options' => [
+            'default'   => $defecto,
+            'min_range' => $minimo,
+            'max_range' => $maximo
+        ]]);
+    return $val ?? $defecto; // retorna valor
+}
+
+function leerCadena(string $nombre, int $maxLen = 100,
+                    string $defecto = ''): string {
+    $raw = $_REQUEST[$nombre] ?? $defecto;
+    $val = trim((string)$raw);
+    // condicional
+    // condicional
+    if (strlen($val) > $maxLen) $val = substr($val, 0, $maxLen);
+    return $val; // retorna valor
+}
+
+function exigirMetodo(string $metodo): void {
+    // condicional
+    // condicional
+    if ($_SERVER['REQUEST_METHOD'] !== strtoupper($metodo)) {
+        http_response_code(405);
+        header('Allow: ' . strtoupper($metodo)); // envia cabecera HTTP al cliente
+        exit("Metodo no permitido"); // termina ejecucion
+    }
+}
+
+// Uso conjunto
+exigirMetodo('GET');
+$pagina  = leerEntero('page', 1, 1000, 1);
+$busca   = leerCadena('q', 80);
+$ip      = obtenerIpCliente();
+
+// Registrar acceso para auditoria
+error_log("[" . date('c') . "] $ip - GET ?page=$pagina&q=$busca");
+\end{lstlisting}
+
+\textbf{Por qué este código es importante:}
+\begin{itemize}
+\item Centraliza la lectura segura en funciones helper reutilizables.
+\item Detecta proxy reverso correctamente (un error común en
+producción).
+\item Filtra IPs privadas y reservadas con flags de
+\texttt{filter\_var}.
+\item Aplica límites estrictos a los enteros (rangos).
+\item Trunca cadenas demasiado largas para prevenir ataques DoS por
+memoria.
+\item Verifica el método HTTP esperado.
+\end{itemize}
+\end{cajaejemplo}
+
+\subsection{Lectura del Request en Java Servlets / Spring Boot}
+
+En Java/Spring Boot, el equivalente al \texttt{\$\_SERVER}
+de PHP es la interfaz \texttt{HttpServletRequest} o las anotaciones
+de Spring (\texttt{@RequestParam}, \texttt{@RequestHeader},
+\texttt{@RequestBody}). El ejemplo siguiente las recorre.
+
+
+\begin{cajaejemplo}{Ejemplo 10.2 --- Acceso al Request en Spring Boot 4}
+
+\textbf{Enunciado.} Mostrar el acceso al objeto Request en Spring Boot 4 usando las anotaciones idiomáticas: \texttt{@RequestParam}, \texttt{@RequestHeader}, \texttt{@RequestBody}.
+
+\begin{lstlisting}[style=java,caption={RequestInspectorController.java},label=lst:10.5]
+package ec.edu.uteq.appweb.controller; // paquete del archivo
+
+import jakarta.servlet.http.HttpServletRequest; // importacion de clase externa
+import org.springframework.web.bind.annotation.*; // importacion de clase externa
+import java.util.*; // importacion de clase externa
+
+@RestController // expone endpoints REST con JSON
+@RequestMapping("/api/inspeccion") // ruta base del controlador
+public class RequestInspectorController { // clase publica
+
+    @GetMapping // endpoint HTTP GET
+    public Map<String, Object> inspeccionar( // metodo publico
+            HttpServletRequest req,
+            @RequestParam(defaultValue = "") String q, // extrae parametro de query string
+            @RequestParam(defaultValue = "1") int page, // extrae parametro de query string
+            @RequestHeader(value = "User-Agent", // extrae cabecera HTTP
+                           defaultValue = "?") String userAgent) {
+
+        // Headers selectivos
+        var headers = new LinkedHashMap<String, String>();
+        var nombres = req.getHeaderNames();
+        while (nombres.hasMoreElements()) { // bucle while
+            var n = nombres.nextElement();
+            headers.put(n, req.getHeader(n));
+        }
+
+        return Map.of( // retorna
+            "metodo",      req.getMethod(),
+            "url",         req.getRequestURL().toString(),
+            "remoteAddr",  obtenerIp(req),
+            "userAgent",   userAgent,
+            "queryParams", Map.of("q", q, "page", page),
+            "headersSize", headers.size()
+        );
+    }
+
+    private String obtenerIp(HttpServletRequest r) { // campo privado
+        var fwd = r.getHeader("X-Forwarded-For");
+        if (fwd != null && !fwd.isBlank()) { // condicional
+            return fwd.split(",")[0].trim(); // retorna
+        }
+        return r.getRemoteAddr(); // retorna
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsection{Lectura del Request en ASP.NET Core 10}
+
+ASP.NET Core usa \texttt{HttpContext.Request} para acceder a
+los datos de la petición, con una API moderna basada en propiedades
+fuertemente tipadas. El ejemplo siguiente la ilustra.
+
+
+\begin{cajaejemplo}{Ejemplo 10.3 --- Endpoint que inspecciona el Request en ASP.NET Core}
+
+\textbf{Enunciado.} Implementar un endpoint en ASP.NET Core que inspeccione el Request: método, ruta, cabeceras, query string. Se usará el objeto \texttt{HttpContext.Request}.
+
+\begin{lstlisting}[style=cs,caption={Controllers/InspeccionController.cs},label=lst:10.6]
+using Microsoft.AspNetCore.Mvc; // importa namespace
+
+namespace AppwebApi.Controllers; // namespace del archivo
+
+[ApiController] // controlador de Web API (validacion automatica)
+[Route("api/[controller]")] // ruta base del controlador
+public class InspeccionController : ControllerBase // clase publica
+{
+    [HttpGet] // endpoint HTTP GET
+    public IActionResult Inspeccionar( // metodo o miembro publico
+        [FromQuery] string q = "", // mapea query string
+        [FromQuery] int page = 1) // mapea query string
+    {
+        // IP real considerando X-Forwarded-For
+        var ip = HttpContext.Request.Headers["X-Forwarded-For"]
+                    .FirstOrDefault()?.Split(',')[0].Trim()
+                 ?? HttpContext.Connection.RemoteIpAddress?.ToString()
+                 ?? "0.0.0.0";
+
+        return Ok(new { // HTTP 200 con cuerpo
+            metodo      = Request.Method,
+            url         = $"{Request.Scheme}://{Request.Host}{Request.Path}",
+            remoteAddr  = ip,
+            userAgent   = Request.Headers.UserAgent.ToString(),
+            queryParams = new { q, page },
+            cookieCount = Request.Cookies.Count
+        });
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{El objeto Response: control total de la respuesta HTTP}
+
+El objeto \texttt{Response} permite controlar tres aspectos:
+código de estado, cabeceras y cuerpo.
+
+\subsection{Códigos de estado HTTP --- la guía exhaustiva}
+
+Los códigos de estado HTTP son la \emph{lengua común} entre
+cliente y servidor para indicar el resultado de una petición.
+Confundirlos (devolver 200 cuando hubo un error, por ejemplo) es uno
+de los defectos más comunes en APIs amateur.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Códigos de estado HTTP de uso obligado en aplicaciones web profesionales.}
+\footnotesize
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Código} & \textbf{Nombre} & \textbf{Cuándo usarlo (con ejemplos)}\\
+\midrule
+\multicolumn{3}{l}{\textbf{2xx --- Éxito}}\\
+200 & OK                  & Operación exitosa con cuerpo en respuesta. GET, PUT exitosos.\\
+201 & Created             & Recurso creado. POST exitoso. Incluir \texttt{Location}.\\
+204 & No Content          & Operación exitosa sin cuerpo. DELETE típicamente.\\
+\midrule
+\multicolumn{3}{l}{\textbf{3xx --- Redirección}}\\
+301 & Moved Permanently   & Cambio definitivo de URL. SEO sigue al nuevo URL.\\
+302 & Found               & Redirección temporal. POST $\to$ GET (patrón PRG).\\
+304 & Not Modified        & Caché válida (responde a \texttt{If-None-Match}).\\
+\midrule
+\multicolumn{3}{l}{\textbf{4xx --- Error del cliente}}\\
+400 & Bad Request         & JSON mal formado, parámetro faltante crítico.\\
+401 & Unauthorized        & No autenticado. Falta JWT o cookie de sesión.\\
+403 & Forbidden           & Autenticado pero sin permiso. Rol insuficiente.\\
+404 & Not Found           & Recurso inexistente. ID inválido.\\
+405 & Method Not Allowed  & Endpoint existe pero no acepta ese verbo. Incluir \texttt{Allow}.\\
+409 & Conflict            & Email duplicado, optimistic locking failure.\\
+422 & Unprocessable Entity & Validación de negocio falla (campos inválidos).\\
+429 & Too Many Requests   & Rate limit excedido. Incluir \texttt{Retry-After}.\\
+\midrule
+\multicolumn{3}{l}{\textbf{5xx --- Error del servidor}}\\
+500 & Internal Server Error & Excepción no controlada. NUNCA mostrar stack trace al cliente.\\
+502 & Bad Gateway         & Proxy recibió respuesta inválida del upstream.\\
+503 & Service Unavailable & Mantenimiento programado. Incluir \texttt{Retry-After}.\\
+504 & Gateway Timeout     & Upstream tardó demasiado.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Errores estandarizados con RFC 7807 ProblemDetails}
+
+El RFC 7807 \cite{rfc7807} estandariza un formato JSON para errores
+HTTP. Es el estándar de la industria en 2026 y los frameworks modernos
+(ASP.NET Core, Spring Boot) lo soportan nativamente (Listado~\ref{lst:10.7}):
+
+\begin{lstlisting}[style=js,numbers=none,caption={Respuesta de error según RFC 7807},label=lst:10.7]
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/problem+json
+
+{
+  "type":   "https://uteq.edu.ec/errors/validacion",
+  "title":  "Datos invalidos",
+  "status": 422,
+  "detail": "El campo email no cumple el formato esperado",
+  "instance": "/api/usuarios",
+  "errores": {
+    "email":  ["debe tener formato valido"],
+    "edad":   ["debe ser mayor a 0"]
+  }
+}
+\end{lstlisting}
+
+\subsection{Cabeceras de seguridad obligatorias en producción}
+
+En producción, además de las cabeceras de seguridad básicas
+vistas en la semana 9, conviene configurar otras que protegen contra
+ataques específicos. La tabla y los ejemplos siguientes las catalogan.
+
+
+\begin{cajabuenas}{Las siete cabeceras de seguridad imprescindibles}
+\begin{enumerate}
+\item \textbf{Strict-Transport-Security}:
+\texttt{max-age=31536000; includeSubDomains; preload}\\
+Fuerza HTTPS por un año en todo el dominio.
+
+\item \textbf{Content-Security-Policy}:
+\texttt{default-src 'self'; script-src 'self' 'nonce-XYZ'}\\
+Mitiga XSS limitando fuentes de scripts y estilos.
+
+\item \textbf{X-Frame-Options}: \texttt{DENY}\\
+No permite que el sitio se cargue en \texttt{<iframe>}: anti-clickjacking.
+
+\item \textbf{X-Content-Type-Options}: \texttt{nosniff}\\
+Impide que el navegador deduzca el tipo MIME (anti-MIME-sniffing).
+
+\item \textbf{Referrer-Policy}:
+\texttt{strict-origin-when-cross-origin}\\
+Equilibrio entre privacidad y funcionalidad.
+
+\item \textbf{Permissions-Policy}:
+\texttt{geolocation=(), microphone=(), camera=()}\\
+Restringe APIs sensibles del navegador.
+
+\item \textbf{Cross-Origin-Opener-Policy}: \texttt{same-origin}\\
+Aísla el contexto de navegación de otros orígenes (mitigación
+Spectre).
+\end{enumerate}
+\end{cajabuenas}
+
+\begin{cajaejemplo}{Ejemplo 10.4 --- Cabeceras de seguridad en las tres plataformas}
+
+\textbf{Enunciado.} Aplicar las cabeceras de seguridad obligatorias en producción (\texttt{Content-Security-Policy}, \texttt{X-Frame-Options}, \texttt{Strict-Transport-Security}, etc.) en las tres plataformas del curso.
+
+\textbf{En PHP (Listado~\ref{lst:10.8}):}
+\begin{lstlisting}[style=php,numbers=none,caption={Ejemplo de PHP},label=lst:10.8]
+<?php
+// envia cabecera HTTP al cliente
+// envia cabecera HTTP al cliente
+header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+header("Content-Security-Policy: default-src 'self'"); // envia cabecera HTTP al cliente
+header('X-Frame-Options: DENY'); // envia cabecera HTTP al cliente
+header('X-Content-Type-Options: nosniff'); // envia cabecera HTTP al cliente
+header('Referrer-Policy: strict-origin-when-cross-origin'); // envia cabecera HTTP al cliente
+// envia cabecera HTTP al cliente
+// envia cabecera HTTP al cliente
+header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
+\end{lstlisting}
+
+\textbf{En Spring Boot 4 (Listado~\ref{lst:10.9}):}
+\begin{lstlisting}[style=java,numbers=none,caption={Ejemplo de Java},label=lst:10.9]
+@Configuration // clase de configuracion Spring
+public class SeguridadConfig { // clase publica
+    @Bean
+    // metodo publico
+    // metodo publico
+    public SecurityFilterChain seguridad(HttpSecurity http) throws Exception {
+        http.headers(h -> h
+            .httpStrictTransportSecurity(hsts -> hsts
+                .maxAgeInSeconds(31536000).includeSubDomains(true))
+            .frameOptions(f -> f.deny())
+            .contentSecurityPolicy(csp -> csp
+                .policyDirectives("default-src 'self'"))
+            .referrerPolicy(rp -> rp.policy(
+                ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+        );
+        return http.build(); // retorna
+    }
+}
+\end{lstlisting}
+
+\textbf{En ASP.NET Core 10 (Listado~\ref{lst:10.10}):}
+\begin{lstlisting}[style=cs,numbers=none,caption={Ejemplo de C\#},label=lst:10.10]
+app.Use(async (ctx, next) => {
+    ctx.Response.Headers["Strict-Transport-Security"]
+        = "max-age=31536000; includeSubDomains";
+    ctx.Response.Headers["X-Frame-Options"] = "DENY";
+    ctx.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    ctx.Response.Headers["Referrer-Policy"]
+        = "strict-origin-when-cross-origin";
+    ctx.Response.Headers["Content-Security-Policy"]
+        = "default-src 'self'";
+    await next();
+});
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{El objeto Session: estado entre peticiones}
+
+La \emph{sesión} es el mecanismo más antiguo y aún
+ampliamente usado para mantener estado entre peticiones: el servidor
+guarda los datos del usuario en memoria (o en Redis) y envía al
+cliente solo un identificador.
+
+
+\subsection{Mecánica detallada de las sesiones de servidor}
+
+Comprender la mecánica detallada de las sesiones de servidor
+es clave porque la mayoría de fallos de seguridad ocurren por
+desconocimiento de cómo se genera, transporta y persiste el
+\emph{Session ID}.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=1.2cm and 1.5cm,
+  every node/.style={font=\scriptsize,align=center},
+  caja/.style={rectangle,draw=uteqverde,thick,minimum width=2cm,
+               minimum height=0.8cm,fill=uteqverde!10,rounded corners=2pt},
+  flecha/.style={->,>=stealth,thick}]
+
+  \node[caja] (cli)  {Navegador};
+  \node[caja,right=4cm of cli] (srv) {Servidor};
+  \node[cylinder,draw=uteqverde,fill=uteqverde!15,thick,
+        shape border rotate=90,aspect=0.3,minimum width=1.5cm,
+        minimum height=1.7cm,below=0.5cm of srv] (sto)
+        {Session\\Store};
+
+  \draw[flecha] ([yshift=0.4cm]cli.east) --
+    node[above]{1. GET /login (sin cookie)} ([yshift=0.4cm]srv.west);
+  \draw[flecha] ([yshift=-0.4cm]srv.west) --
+    node[below,align=center]{\scriptsize 2. Set-Cookie: SESSID=abc...\\\scriptsize Secure; HttpOnly; SameSite}
+    ([yshift=-0.4cm]cli.east);
+  \draw[flecha] (srv) -- node[right]{3. Crear} (sto);
+
+\end{tikzpicture}
+\caption{Establecimiento de una sesión: el servidor genera un ID
+aleatorio, lo asocia con datos en su \emph{Session Store} (memoria,
+Redis o BD) y lo envía al cliente como cookie con flags de seguridad.}
+\end{figure}
+
+\subsection{Implementación comparada en las cuatro plataformas}
+
+Cada plataforma implementa sesiones con su propia API, pero los
+conceptos son los mismos. La tabla siguiente las contrasta en el orden
+del libro ---Spring Boot primero---: Spring Boot, Django, PHP y
+ASP.NET Core.
+
+
+\begin{cajacompara}{Comparativa de APIs de sesión}
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{l
+  >{\raggedright\arraybackslash}X
+  >{\raggedright\arraybackslash}X
+  >{\raggedright\arraybackslash}X
+  >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Operación} & \textbf{Spring Boot 4} & \textbf{Django 5.2} & \textbf{PHP 8.4} & \textbf{ASP.NET Core 10}\\
+\midrule
+Iniciar      & automático (Servlet)       & \emph{middleware} automático & \texttt{session\_start()}        & \texttt{UseSession()}\\
+Guardar      & \texttt{setAttribute(k,v)} & \texttt{session[k]=v}        & \texttt{\$\_SESSION[k]=\$v}      & \texttt{Session.SetString}\\
+Leer         & \texttt{getAttribute(k)}   & \texttt{session[k]}          & \texttt{\$\_SESSION[k]}          & \texttt{Session.GetString}\\
+Borrar       & \texttt{removeAttribute(k)}& \texttt{del session[k]}      & \texttt{unset(\$\_SESSION[k])}   & \texttt{Session.Remove}\\
+Destruir     & \texttt{invalidate()}      & \texttt{session.flush()}     & \texttt{session\_destroy()}      & \texttt{Session.Clear()}\\
+Regenerar ID & \texttt{changeSessionId()} & \texttt{cycle\_key()}        & \texttt{session\_\allowbreak regenerate\_id()} & regenerar cookie\\
+Cookie       & \texttt{JSESSIONID}        & \texttt{sessionid}           & \texttt{PHPSESSID}               & \texttt{AspNetCore.Session}\\
+Almacén      & JVM / Redis                & BD / cache / archivo         & archivos \texttt{/tmp}           & Memoria / Redis / SQL\\
+Timeout      & 30 min                     & 2 semanas                    & 24 min                           & 20 min\\
+\bottomrule
+\end{tabularx}
+\end{cajacompara}
+
+\subsection{Sesiones en PHP 8.4 con configuración profesional}
+
+PHP gestiona sesiones con la función nativa
+\texttt{session\_start()}. El ejemplo siguiente la configura con todos
+los flags de seguridad de producción y muestra los anti-patrones
+comunes a evitar.
+
+
+\begin{cajaejemplo}{Ejemplo 10.5 --- Sesión segura completa con login PHP}
+
+\textbf{Enunciado.} Construir una sesión segura completa con login PHP: hash BCrypt, cookies con todos los flags de seguridad, regeneración de ID y logout robusto.
+
+\begin{lstlisting}[style=php,caption={config/session.php (incluir antes de session\_start)},label=lst:10.11]
+<?php
+declare(strict_types=1);
+
+/**
+ * Configuracion de sesion para produccion.
+ * DEBE llamarse ANTES de session_start().
+ */
+function configurarSesionSegura(): void {
+    // Solo cookies HTTPS
+    ini_set('session.cookie_secure',  '1');
+    // JavaScript no puede leer la cookie
+    ini_set('session.cookie_httponly', '1');
+    // Anti-CSRF
+    ini_set('session.cookie_samesite', 'Strict');
+    // Forzar regeneracion de ID si llega uno desconocido
+    ini_set('session.use_strict_mode', '1');
+    // Timeout 30 min de inactividad
+    ini_set('session.gc_maxlifetime',  '1800');
+    // Cookie expira al cerrar navegador (=0) o tras 30 min (1800)
+    session_set_cookie_params([ // flags de cookie
+        'lifetime' => 1800,
+        'path'     => '/',
+        'secure'   => true,
+        'httponly' => true,
+        'samesite' => 'Strict',
+    ]);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=php,caption={login.php con todas las prácticas},label=lst:10.12]
+<?php
+declare(strict_types=1);
+require_once __DIR__ . '/config/session.php'; // incluye otro archivo PHP (fatal si falla)
+require_once __DIR__ . '/config/db.php'; // incluye otro archivo PHP (fatal si falla)
+
+configurarSesionSegura();
+session_start(); // arranca o reanuda la sesion
+
+// Si ya esta autenticado, redirigir
+if (!empty($_SESSION['user_id'])) { // condicional
+    header('Location: /dashboard.php'); // envia cabecera HTTP al cliente
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { // condicional
+    // Validar token CSRF (anti-CSRF en formularios)
+    $tokenEnviado = $_POST['_csrf'] ?? '';
+    $tokenSesion  = $_SESSION['_csrf'] ?? '';
+    if (!hash_equals($tokenSesion, $tokenEnviado)) { // condicional
+        http_response_code(419);
+        exit('Token CSRF invalido'); // termina ejecucion
+    }
+
+    $email = filter_input(INPUT_POST, 'email',
+                          FILTER_VALIDATE_EMAIL);
+    $pass  = $_POST['password'] ?? '';
+
+    if (!$email || strlen($pass) < 8) { // condicional
+        http_response_code(422);
+        echo 'Datos invalidos'; // imprime al output del servidor
+        exit;
+    }
+
+    // Rate limiting en memoria (en produccion: Redis)
+    $intentosKey = 'intentos:' . $_SERVER['REMOTE_ADDR'];
+    if (($_SESSION[$intentosKey] ?? 0) >= 5) { // condicional
+        http_response_code(429);
+        header('Retry-After: 900'); // 15 min
+        exit('Demasiados intentos. Vuelva en 15 minutos.'); // termina ejecucion
+    }
+
+    $pdo = obtenerPDO();
+    $stmt = $pdo->prepare( // prepara consulta SQL (defensa anti-SQLi)
+        // hashea contrasena con BCrypt
+        // hashea contrasena con BCrypt
+        'SELECT id, password_hash, rol, activo, intentos_fallidos
+         FROM usuarios WHERE email = :em LIMIT 1');
+    $stmt->execute([':em' => $email]); // ejecuta la consulta con parametros enlazados
+    $u = $stmt->fetch(PDO::FETCH_ASSOC); // recupera la siguiente fila como array
+
+    // password_verify usa tiempo constante (resistente a timing attacks)
+    // hashea contrasena con BCrypt
+    // hashea contrasena con BCrypt
+    if (!$u || !$u['activo'] || !password_verify($pass, $u['password_hash'])) {
+        $_SESSION[$intentosKey] = ($_SESSION[$intentosKey] ?? 0) + 1;
+        http_response_code(401);
+        echo 'Credenciales invalidas'; // imprime al output del servidor
+        exit;
+    }
+
+    // CRITICAL: regenerar el ID para prevenir session fixation
+    session_regenerate_id(true); // cambia el ID para evitar session fixation
+
+    $_SESSION['user_id']    = (int)$u['id'];
+    $_SESSION['user_rol']   = $u['rol'];
+    $_SESSION['login_time'] = time();
+    $_SESSION['ip']         = $_SERVER['REMOTE_ADDR'];
+    $_SESSION['ua']         = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    unset($_SESSION[$intentosKey]);
+
+    // Auditoria
+    error_log("[LOGIN] user_id={$u['id']} ip={$_SERVER['REMOTE_ADDR']}");
+
+    header('Location: /dashboard.php'); // envia cabecera HTTP al cliente
+    exit;
+}
+
+// Generar token CSRF para mostrar el formulario
+if (empty($_SESSION['_csrf'])) { // condicional
+    $_SESSION['_csrf'] = bin2hex(random_bytes(32));
+}
+$csrf = $_SESSION['_csrf'];
+?>
+<!DOCTYPE html>
+<html lang="es-EC">
+<head><meta charset="UTF-8"><title>Login UTEQ</title></head>
+<body>
+<form method="POST">
+  // escapa caracteres HTML (defensa anti-XSS)
+  // escapa caracteres HTML (defensa anti-XSS)
+  <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrf) ?>">
+  <label>Email: <input type="email" name="email" required></label>
+  <label>Password: <input type="password" name="password" required minlength="8"></label>
+  <button type="submit">Ingresar</button>
+</form>
+</body></html>
+\end{lstlisting}
+
+\textbf{Defensas implementadas en este código (todas combinadas):}
+\begin{enumerate}
+\item Cookies con \texttt{Secure}, \texttt{HttpOnly},
+\texttt{SameSite=Strict}.
+\item Token CSRF generado por sesión y validado con
+\texttt{hash\_equals} (tiempo constante).
+\item Validación email con \texttt{FILTER\_VALIDATE\_EMAIL}.
+\item Rate limiting (5 intentos por IP).
+\item \texttt{password\_verify} (BCrypt, resistente a timing attacks).
+\item \texttt{session\_regenerate\_id(true)}: previene session
+fixation.
+\item Auditoría con \texttt{error\_log}.
+\item \texttt{htmlspecialchars} al renderizar (anti-XSS).
+\item Verificación de cuenta activa.
+\end{enumerate}
+\end{cajaejemplo}
+
+\section{Almacenamiento del cliente: localStorage, sessionStorage e IndexedDB}
+
+Además del almacenamiento del servidor (cookies de sesión,
+JWT), el navegador ofrece tres APIs nativas para guardar datos del
+lado cliente: \texttt{localStorage}, \texttt{sessionStorage} e
+\texttt{IndexedDB}. Conocer cuándo usar cada una es esencial para
+SPAs modernas.
+
+
+\subsection{Comparativa de las APIs de almacenamiento del cliente}
+
+La tabla siguiente contrasta las tres APIs de almacenamiento
+cliente por capacidad, persistencia, tipo de datos y casos de uso
+recomendados.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Almacenamiento del cliente en navegadores modernos.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXll}
+\toprule
+\textbf{Mecanismo} & \textbf{Características} & \textbf{Capacidad} & \textbf{API}\\
+\midrule
+Cookies & Enviadas con cada petición; \emph{HttpOnly} oculta de JS & 4 KB & \texttt{document.cookie}\\
+\texttt{localStorage} & Persistente, mismo origen, síncrono, solo strings & 5--10 MB & Síncrona\\
+\texttt{sessionStorage} & Solo durante la pestaña, mismo origen & 5--10 MB & Síncrona\\
+IndexedDB & Persistente, transaccional, asíncrono, objetos & GB & Asíncrona\\
+Cache API & Almacena objetos \texttt{Response} (Service Workers) & GB & Asíncrona\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{cajaadvertencia}{La regla de oro --- ¿dónde guardar el JWT?}
+\textbf{Nunca} guarde el JWT en \texttt{localStorage} si su aplicación
+tiene cualquier riesgo de XSS (lo cual es prácticamente toda
+aplicación). El JavaScript puede leer \texttt{localStorage}; un solo
+script malicioso inyectado roba todos los tokens.
+
+\textbf{Solución correcta:} cookie \texttt{HttpOnly} + \texttt{Secure}
++ \texttt{SameSite=Strict}. JavaScript no puede leer cookies
+\texttt{HttpOnly}; el navegador las envía automáticamente al servidor
+en cada petición al mismo origen.
+\end{cajaadvertencia}
+
+\subsection{Ejemplos prácticos de almacenamiento}
+
+Los siguientes ejemplos breves muestran las tres APIs en
+acción para el caso más frecuente: persistir preferencias de UI.
+
+\textbf{Ejemplo corto comentado (localStorage) (Listado~\ref{lst:10.13}):}
+\begin{lstlisting}[style=js,numbers=none,caption={Ejemplo de JavaScript},label=lst:10.13]
+// localStorage persiste INDEFINIDAMENTE (hasta que el usuario lo borre)
+// Solo guarda STRINGS, asi que objetos hay que serializarlos con JSON
+localStorage.setItem('tema', 'oscuro'); // escribe
+const tema = localStorage.getItem('tema'); // lee
+localStorage.removeItem('tema'); // borra una clave
+localStorage.clear(); // borra todo
+
+// Guardar un objeto: serializar con JSON.stringify
+const prefs = { tema: 'oscuro', idioma: 'es' }; // constante (no reasignable)
+// serializa objeto a string JSON
+// serializa objeto a string JSON
+localStorage.setItem('preferencias', JSON.stringify(prefs));
+// Recuperar y parsear
+// constante (no reasignable)
+// constante (no reasignable)
+const guardado = JSON.parse(localStorage.getItem('preferencias') || '{}');
+\end{lstlisting}
+
+
+\begin{cajaejemplo}{Ejemplo 10.6 --- Persistencia de preferencias UI con localStorage}
+
+\textbf{Enunciado.} Persistir preferencias de UI (tema oscuro, idioma) en \texttt{localStorage} desde JavaScript, mostrando cómo serializar objetos con JSON y manejar errores de cuota.
+
+\begin{lstlisting}[style=js,caption={preferencias.js},label=lst:10.14]
+"use strict";
+
+const PREF_KEY = "uteq:preferencias:v1"; // constante (no reasignable)
+
+const Preferencias = { // constante (no reasignable)
+  cargar() {
+    try {
+      const raw = localStorage.getItem(PREF_KEY); // constante (no reasignable)
+      return raw ? JSON.parse(raw) : this.defectos(); // devuelve valor de la funcion
+    } catch (e) {
+      console.warn("Error leyendo preferencias", e);
+      return this.defectos(); // devuelve valor de la funcion
+    }
+  },
+  guardar(p) {
+    try {
+      localStorage.setItem(PREF_KEY, JSON.stringify(p)); // serializa objeto a string JSON
+    } catch (e) {
+      console.error("Error guardando preferencias", e);
+    }
+  },
+  defectos() {
+    return { tema: "auto", idioma: "es-EC", // devuelve valor de la funcion
+             fontSize: 1.0, animaciones: true };
+  },
+  aplicar(p) {
+    document.documentElement.dataset.tema = p.tema;
+    document.documentElement.lang = p.idioma;
+    document.documentElement.style.fontSize = `${p.fontSize}rem`;
+    if (!p.animaciones) { // condicional
+      document.documentElement.classList.add("sin-animaciones");
+    }
+  }
+};
+
+// Al cargar
+document.addEventListener("DOMContentLoaded", () => { // registra manejador de evento
+  const p = Preferencias.cargar(); // constante (no reasignable)
+  Preferencias.aplicar(p);
+
+  // Boton de cambio de tema
+  // busca elemento por id
+  // busca elemento por id
+  document.getElementById("toggle-tema")?.addEventListener("click", () => {
+    p.tema = p.tema === "claro" ? "oscuro" : "claro";
+    Preferencias.guardar(p);
+    Preferencias.aplicar(p);
+  });
+});
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Práctica integrada: carrito de compras con sesiones}
+
+La práctica de la semana es construir un carrito de compras
+completo con sesiones de servidor, integrando todos los conceptos:
+Request, Response, Session, Cookie segura y validación.
+
+
+\begin{cajaejercicio}{Ejercicio 10.1 --- Carrito de compras stateful en las tres plataformas (Sumativa GA-Práctica)}
+
+\textbf{Objetivo:} implementar un carrito de compras con sesiones de
+servidor en PHP 8.4, ASP.NET Core 10 y Spring Boot 4, evidenciando las
+diferencias de API y cómo cada plataforma maneja seguridad de cookies.
+
+\textbf{Especificación funcional:}
+\begin{itemize}
+\item Página de listado con productos hardcodeados (nombre, precio).
+\item Botón «Agregar» para cada producto que lo añade al carrito.
+\item Página del carrito que muestra los productos agregados y total.
+\item Botón «Eliminar» por producto en el carrito.
+\item Botón «Vaciar carrito».
+\item La cookie de sesión debe tener \texttt{HttpOnly},
+\texttt{Secure} y \texttt{SameSite=Strict}.
+\end{itemize}
+
+\subsubsection*{IDE recomendado}
+\textbf{IntelliJ IDEA Ultimate} con plugins:
+\begin{itemize}
+\item \emph{PHP} (JetBrains, instalado por defecto en Ultimate).
+\item \emph{Spring Boot} (incluido en Ultimate).
+\item \emph{.NET Core} (Marketplace) o usar JetBrains Rider para C\#.
+\end{itemize}
+
+\subsubsection*{Plataforma 1 --- PHP 8.4 con XAMPP}
+
+\textbf{Paso 1:} verificar XAMPP. Iniciar el panel
+(\texttt{xampp-control}). Pulsar \texttt{Start} en Apache. Verificar
+en \url{http://localhost} que aparece el dashboard XAMPP.
+
+\textbf{Paso 2:} crear carpeta \texttt{C:\textbackslash{}xampp\textbackslash{}htdocs\textbackslash{}carrito-php}.
+En IntelliJ: \texttt{File $\rightarrow$ Open}, seleccionar la carpeta.
+
+\textbf{Paso 3:} crear \texttt{config.php} (Listado~\ref{lst:10.15}):
+
+\begin{lstlisting}[style=php,caption={config.php},label=lst:10.15]
+<?php
+declare(strict_types=1);
+
+ini_set('session.cookie_httponly', '1');
+ini_set('session.cookie_secure',   '1');
+ini_set('session.cookie_samesite', 'Strict');
+ini_set('session.use_strict_mode', '1');
+ini_set('session.gc_maxlifetime',  '1800');
+
+session_name('CARRITO_PHP');
+session_start(); // arranca o reanuda la sesion
+
+// Inicializar carrito si no existe
+if (!isset($_SESSION['carrito'])) { // condicional
+    $_SESSION['carrito'] = [];
+}
+
+// Catalogo hardcodeado
+const CATALOGO = [
+    1 => ['id'=>1, 'nombre'=>'Cafe galletti 500g', 'precio'=>4.50],
+    2 => ['id'=>2, 'nombre'=>'Cacao Pacari 70%',   'precio'=>6.00],
+    3 => ['id'=>3, 'nombre'=>'Te verde organico',  'precio'=>3.20],
+    4 => ['id'=>4, 'nombre'=>'Panela en bloque',   'precio'=>2.80],
+];
+\end{lstlisting}
+
+\textbf{Paso 4:} crear \texttt{index.php} (Listado~\ref{lst:10.16}):
+
+\begin{lstlisting}[style=php,caption={index.php},label=lst:10.16]
+<?php require_once 'config.php'; ?>
+<!DOCTYPE html>
+<html lang="es-EC">
+<head><meta charset="UTF-8"><title>Tienda UTEQ</title>
+<style>
+  body{font-family:system-ui;max-width:700px;margin:2rem auto;padding:0 1rem}
+  h1{color:#006633} table{width:100%;border-collapse:collapse}
+  td,th{padding:.5rem;text-align:left;border-bottom:1px solid #eee}
+  .btn{padding:.4rem .8rem;background:#006633;color:white;
+       border:0;border-radius:4px;cursor:pointer}
+</style>
+</head>
+<body>
+<h1>Productos UTEQ</h1>
+<p><a href="carrito.php">Ver carrito (<?= count($_SESSION['carrito']) ?>)</a></p>
+<table>
+  <thead><tr><th>Producto</th><th>Precio</th><th></th></tr></thead>
+  <tbody>
+  <?php foreach (CATALOGO as $p): ?>
+    <tr>
+      <td><?= htmlspecialchars($p['nombre']) ?></td> // escapa caracteres HTML (defensa anti-XSS)
+      <td>$<?= number_format($p['precio'], 2) ?></td>
+      <td>
+        <form action="agregar.php" method="post" style="margin:0">
+          <input type="hidden" name="id" value="<?= $p['id'] ?>">
+          <button type="submit" class="btn">Agregar</button>
+        </form>
+      </td>
+    </tr>
+  <?php endforeach; ?>
+  </tbody>
+</table>
+</body></html>
+\end{lstlisting}
+
+\textbf{Paso 5:} crear \texttt{agregar.php}, \texttt{eliminar.php},
+\texttt{vaciar.php}, \texttt{carrito.php} (continuación obvia siguiendo
+el patrón).
+
+\textbf{Paso 6:} probar.
+\begin{enumerate}
+\item Abrir \url{http://localhost/carrito-php/index.php}.
+\item Agregar 3 productos diferentes.
+\item Ir a Carrito: aparecen los 3.
+\item Cerrar la pestaña, abrir nueva: el carrito persiste.
+\item Cerrar el navegador completamente, abrirlo de nuevo: el carrito
+sigue ahí (porque \texttt{lifetime=1800}).
+\end{enumerate}
+
+\textbf{Paso 7:} verificar la cookie. F12 $\rightarrow$ Application
+$\rightarrow$ Cookies $\rightarrow$ \url{http://localhost}. Debe
+aparecer \texttt{CARRITO\_PHP} con: \texttt{HttpOnly = true},
+\texttt{Secure = true}, \texttt{SameSite = Strict}.
+
+\textbf{Resultado esperado:} carrito persistente entre páginas y entre
+sesiones del navegador, con cookie hardenizada visible en DevTools.
+
+\subsubsection*{Plataforma 2 --- ASP.NET Core 10}
+
+\textbf{Paso 1:} verificar .NET 8. \texttt{dotnet --version} debe
+devolver \texttt{8.0.x}.
+
+\textbf{Paso 2:} crear el proyecto desde la terminal de IntelliJ
+(\texttt{Alt+F12}) (Listado~\ref{lst:10.17}):
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:10.17]
+dotnet new mvc -n CarritoAsp -o CarritoAsp
+cd CarritoAsp # cambia directorio
+\end{lstlisting}
+
+\textbf{Paso 3:} configurar sesiones en \texttt{Program.cs} (Listado~\ref{lst:10.18}):
+
+\begin{lstlisting}[style=cs,caption={Program.cs},label=lst:10.18]
+using Microsoft.AspNetCore.Builder; // importa namespace
+using Microsoft.Extensions.DependencyInjection; // importa namespace
+
+var builder = WebApplication.CreateBuilder(args); // crea el builder de la app
+
+builder.Services.AddControllersWithViews(); // configuracion de servicios DI
+builder.Services.AddDistributedMemoryCache(); // configuracion de servicios DI
+builder.Services.AddSession(o => { // configuracion de servicios DI
+    o.IdleTimeout = TimeSpan.FromMinutes(30);
+    o.Cookie.Name        = "CARRITO_ASP";
+    o.Cookie.HttpOnly    = true;
+    o.Cookie.IsEssential = true;
+    o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    o.Cookie.SameSite     = SameSiteMode.Strict;
+});
+
+var app = builder.Build(); // construye la app a partir del builder
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting(); // activa el routing del pipeline
+app.UseSession();
+app.UseAuthorization();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Tienda}/{action=Index}/{id?}");
+app.Run(); // arranca la aplicacion
+\end{lstlisting}
+
+\textbf{Paso 4:} crear \texttt{Models/Producto.cs} y
+\texttt{Controllers/TiendaController.cs} (con acciones
+\texttt{Index}, \texttt{Agregar}, \texttt{Carrito},
+\texttt{Eliminar}, \texttt{Vaciar} usando
+\texttt{HttpContext.Session.SetString} con JSON).
+
+\textbf{Paso 5:} ejecutar con \texttt{dotnet run}. Abrir
+\url{https://localhost:5001}.
+
+\textbf{Paso 6:} verificar la cookie \texttt{CARRITO\_ASP} en
+DevTools: debe tener \texttt{HttpOnly}, \texttt{Secure},
+\texttt{SameSite=Strict}.
+
+\subsubsection*{Plataforma 3 --- Spring Boot 4}
+
+\textbf{Paso 1:} en IntelliJ Ultimate:
+\texttt{File $\rightarrow$ New $\rightarrow$ Project $\rightarrow$ Spring Boot}.
+Java 21, Spring Boot 4, dependencias \texttt{Spring Web} y
+\texttt{Thymeleaf}.
+
+\textbf{Paso 2:} configurar \texttt{src/main/resources/application.yml} (Listado~\ref{lst:10.19}):
+
+\begin{lstlisting}[style=yaml,caption={application.yml},label=lst:10.19]
+server: # configuracion del servidor embebido
+  port: 8080 # puerto donde escucha la aplicacion
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        name:      CARRITO_SPRING
+        http-only: true
+        secure:    false # true en HTTPS de produccion
+        same-site: strict
+\end{lstlisting}
+
+\textbf{Paso 3:} crear \texttt{Producto.java} (record \texttt{Serializable}),
+\texttt{TiendaController.java} con \texttt{HttpSession}.
+
+\textbf{Paso 4:} ejecutar y probar en
+\url{http://localhost:8080}.
+
+\subsubsection*{Tabla comparativa de la práctica (entrega)}
+
+Cada estudiante debe completar y entregar:
+
+\begin{tabularx}{\textwidth}{lXXX}
+\toprule
+\textbf{Aspecto} & \textbf{PHP} & \textbf{ASP.NET} & \textbf{Spring}\\
+\midrule
+Líneas de código del proyecto & & & \\
+Tiempo de arranque & & & \\
+Cookie tiene HttpOnly & ¿sí/no? & ¿sí/no? & ¿sí/no?\\
+Cookie tiene Secure & & & \\
+Cookie tiene SameSite=Strict & & & \\
+Carrito persiste entre pestañas & & & \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection*{Reflexión final}
+
+Responder por escrito en máximo 200 palabras: ¿qué plataforma le
+resultó más fácil? ¿Cuál considera más segura por defecto? ¿Cuál usaría
+en un proyecto real y por qué?
+
+\textbf{Esta es la \emph{Sumativa GA-Práctica en clase} de la semana
+10.}
+\end{cajaejercicio}
+
+\section{Buenas prácticas profesionales en gestión de estado}
+
+Las técnicas de gestión de estado tienen su propio conjunto
+de reglas profesionales. La caja siguiente las reúne en 15 puntos.
+
+
+\begin{cajabuenas}{Quince reglas profesionales 2026}
+\begin{enumerate}
+\item Cookies de sesión SIEMPRE con \texttt{Secure},
+\texttt{HttpOnly}, \texttt{SameSite=Strict}.
+\item Regenerar el ID de sesión al hacer login (anti-fixation).
+\item Tiempo de inactividad razonable: 15--30 min para apps
+sensibles, 60 min para uso general.
+\item Logout debe invalidar el ID de sesión, no solo limpiar variables.
+\item Para APIs REST que sirven SPAs: preferir JWT en cookie
+\texttt{HttpOnly}.
+\item NUNCA guardar JWT en \texttt{localStorage} en sitios con riesgo
+de XSS.
+\item Validar token CSRF en todo POST/PUT/PATCH/DELETE.
+\item En clusters: usar Redis o BD compartida para sesiones, no
+memoria local.
+\item No almacenar información sensible en la cookie misma; solo el ID.
+\item Auditar logins exitosos y fallidos con IP y User-Agent.
+\item Implementar rate limiting (máx. 5--10 intentos por IP por minuto).
+\item Cookies con \texttt{Domain} restrictivo (no
+\texttt{example.com} si solo se necesita \texttt{app.example.com}).
+\item Nombres de cookies que NO revelen la tecnología
+(\texttt{SESS} en lugar de \texttt{PHPSESSID}).
+\item En SPAs Angular/React: usar \texttt{credentials: 'include'} y
+configurar CORS con \texttt{Access-Control-Allow-Credentials: true}.
+\item Documentar la estrategia de gestión de estado en la ADR-001 del
+proyecto.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Ejercicio resuelto adicional con resultado visual}
+
+Como cierre de la semana, el siguiente ejercicio adicional
+está completamente resuelto e incluye captura del resultado visual.
+Se complementa con un ejercicio propuesto para que el estudiante
+practique.
+
+
+\begin{cajaejemplo}{Ejercicio resuelto 10.1 --- Contador de visitas con sesión PHP}
+\textbf{Enunciado.} Implementar una página PHP que muestre cuántas
+veces el usuario ha visitado el sitio en la sesión actual, con
+botones para incrementar manualmente y para reiniciar el contador.
+La cookie de sesión debe llevar todos los flags de seguridad de
+producción.
+
+\textbf{Código completo (\texttt{contador.php}):}
+
+\begin{lstlisting}[language=PHP,caption={Contador stateful con sesión segura},label=lst:10.20]
+<?php
+// Configuracion ANTES de session_start()
+session_set_cookie_params([ // flags de cookie
+  'lifetime' => 1800,
+  'path'     => '/',
+  'domain'   => '',
+  'secure'   => false, // true en HTTPS de produccion
+  'httponly' => true,
+  'samesite' => 'Strict'
+]);
+session_name('VISITAS_SESS');
+session_start(); // arranca o reanuda la sesion
+
+// Inicializar contador
+if (!isset($_SESSION['visitas'])) { // condicional
+    $_SESSION['visitas'] = 1;
+} else {
+    // Solo incrementar en GET sin parametros (visita real)
+    // condicional
+    // condicional
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && empty($_GET)) {
+        $_SESSION['visitas']++;
+    }
+}
+
+// Acciones
+if (isset($_GET['accion'])) { // condicional
+    // condicional
+    // condicional
+    if ($_GET['accion'] === 'incrementar') $_SESSION['visitas']++;
+    // condicional
+    // condicional
+    if ($_GET['accion'] === 'reiniciar')   $_SESSION['visitas'] = 0;
+    header('Location: contador.php'); // envia cabecera HTTP al cliente
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Contador de visitas</title></head>
+<body>
+  <h1>Contador de visitas</h1>
+  <p>Visitas en esta sesion: <strong><?= $_SESSION['visitas'] ?></strong></p>
+  // escapa caracteres HTML (defensa anti-XSS)
+  // escapa caracteres HTML (defensa anti-XSS)
+  <p>Session ID: <code><?= htmlspecialchars(session_id()) ?></code></p>
+  <a href="?accion=incrementar">Incrementar +1</a> |
+  <a href="?accion=reiniciar">Reiniciar</a>
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Resultado visual en el navegador} (simulación de cómo se
+verá la página en la pantalla del estudiante tras varias recargas
+e incrementos manuales):
+
+\begin{center}
+\fbox{\begin{minipage}{0.85\textwidth}
+\vspace{0.2cm}
+\hspace{0.3cm}\textbf{\large Contador de visitas}\\[0.4cm]
+\hspace{0.3cm}Visitas en esta sesi\'on: \textbf{7}\\[0.2cm]
+\hspace{0.3cm}Session ID: \texttt{a8f3d9c2e1b4...}\\[0.3cm]
+\hspace{0.3cm}\textcolor{blue}{\underline{Incrementar +1}} \textbar{}
+\textcolor{blue}{\underline{Reiniciar}}\\
+\vspace{0.2cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Verificación de los flags de seguridad} con DevTools del
+navegador (pestaña \emph{Application $\to$ Cookies}):
+
+\begin{center}
+\fbox{\begin{minipage}{0.85\textwidth}
+\vspace{0.15cm}\footnotesize
+\hspace{0.3cm}\textbf{Cookie:} \texttt{VISITAS\_SESS}\\
+\hspace{0.3cm}Value: \texttt{a8f3d9c2e1b4...}\\
+\hspace{0.3cm}HttpOnly: $\checkmark$ \quad Secure: $\times$ \quad SameSite: \texttt{Strict}\\
+\hspace{0.3cm}Expires: Session\\
+\vspace{0.15cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Discusión.} El contador demuestra que la sesión persiste
+entre recargas (el navegador reenvía la cookie automáticamente) y
+que el servidor reconoce al mismo usuario. La cookie es invisible a
+JavaScript (\texttt{HttpOnly}), bloqueando ataques XSS de robo de
+sesión, y solo se envía desde el propio dominio
+(\texttt{SameSite=Strict}), bloqueando CSRF. En producción HTTPS,
+añadir \texttt{secure=true} bloquea su envío por HTTP plano.
+\end{cajaejemplo}
+
+\begin{cajaejercicio}{Ejercicio propuesto 10.2 --- Autenticación con login persistente «Recuérdame»}
+\textbf{Enunciado.} Implementar en cualquiera de las tres plataformas
+(PHP, Spring Boot o ASP.NET Core) un flujo de login con la opción
+\emph{«Recuérdame»} que mantenga al usuario autenticado durante 30
+días si la marca, o solo durante la sesión del navegador si no.
+
+\textbf{Requisitos técnicos:}
+\begin{enumerate}
+\item Formulario de login con campos \texttt{usuario},
+\texttt{contraseña} y checkbox \texttt{recordarme}.
+\item Si \texttt{recordarme} está marcado: crear una cookie
+adicional \texttt{REMEMBER\_TOKEN} con un valor aleatorio de 256 bits
+(\texttt{random\_bytes(32)} en PHP, \texttt{SecureRandom} en Java),
+\texttt{Max-Age=2592000} (30 días), todos los flags de seguridad.
+\item Persistir el hash del token (\texttt{password\_hash()} o
+\texttt{BCrypt}) en una tabla \texttt{remember\_tokens(user\_id,
+token\_hash, expires\_at)}.
+\item En cada nueva sesión, si el usuario no está autenticado pero
+existe \texttt{REMEMBER\_TOKEN}, validar contra la tabla y
+autenticar automáticamente.
+\item Al hacer logout, eliminar la fila correspondiente y borrar la
+cookie con \texttt{Max-Age=0}.
+\item Implementar rotación del token tras cada uso (defensa contra
+robo).
+\end{enumerate}
+
+\textbf{Criterios de evaluación:}
+\begin{itemize}
+\item Token nunca se almacena en plano (solo el hash).
+\item Cookies con todos los flags (\texttt{HttpOnly},
+\texttt{Secure}, \texttt{SameSite=Strict}, \texttt{Max-Age}).
+\item Rotación correcta del token tras autenticación automática.
+\item Caso de logout limpia BD y navegador.
+\item Documentación con capturas de Postman o navegador mostrando
+las cookies generadas.
+\end{itemize}
+
+\textbf{Lecturas recomendadas:} \cite{jones2015jwt} para
+comparar con JWT; \cite{ortega2022securecoding} para defensas
+contra robo de sesión.
+\end{cajaejercicio}
+
+% =====================================================================
+%       SEMANA 11: ACCESO A DATOS DESDE APLICACIONES WEB
+% =====================================================================
+\chapter{Acceso a datos desde aplicaciones web: SQL parametrizado y ORM}
+\label{cap:semana11}
+
+\epigraph{«Toda aplicación que persiste datos hereda, tarde o
+temprano, la disciplina o el caos de cómo accede a ellos. Elegir bien
+es proteger el sistema durante años.»}{--- \textit{Adaptado de Martin Fowler}}
+
+\section*{Resultado de aprendizaje de la semana}
+Al concluir la semana 11, el estudiante diseña e implementa el acceso a
+datos relacionales desde aplicaciones web utilizando SQL parametrizado
+y mapeo objeto-relacional (ORM), aplicando los patrones Repository y
+Unit of Work, prevenir totalmente la inyección SQL y comprende el
+problema N+1 y su solución.
+
+\section{Historia y panorama del acceso a datos}
+
+El acceso a datos es probablemente la decisión arquitectónica
+con mayor impacto en el rendimiento y la mantenibilidad de una
+aplicación web. La elección entre SQL plano, JPA/Hibernate, Entity
+Framework Core o Eloquent no es de detalle: condiciona todo el código
+del backend.
+
+
+\begin{cajahistoria}{Del SQL embebido a los ORM modernos --- 50 años de iteración}
+La historia del acceso a datos desde aplicaciones web comienza con SQL
+en su forma más cruda: cadenas de texto concatenadas dentro del código
+de la aplicación. En 1995--2005 era habitual ver código PHP así:
+\texttt{\$sql = \char34 SELECT * FROM users WHERE name = '\char34{} . \$\_POST['name'] . \char34 '\char34;}.
+Este patrón --- inocente en apariencia --- destruyó la seguridad de
+miles de aplicaciones durante una década por SQL Injection.
+
+La primera respuesta fueron las \textbf{sentencias preparadas}
+(\emph{prepared statements}), formalizadas en SQL-92 y ampliamente
+disponibles desde principios de los 2000: el SQL se compila una vez
+con marcadores (\texttt{?} o \texttt{:nombre}), y los valores viajan
+separadamente sin interpretarse como código. Esto cerró la mayor
+puerta de entrada a los ataques.
+
+Una segunda evolución fueron los \textbf{Query Builders}: APIs
+fluidas para construir SQL programáticamente sin escribirlo a mano
+(\texttt{Doctrine DBAL} en PHP, \texttt{jOOQ} en Java). Permiten
+componer consultas dinámicas sin riesgo de inyección.
+
+El salto cualitativo vino con los \textbf{ORM} (Object-Relational
+Mappers), que abstraen completamente la base de datos detrás de
+objetos del lenguaje. Hibernate en Java (Gavin King, 2001), Active
+Record en Ruby on Rails (David Heinemeier Hansson, 2004), Doctrine en
+PHP (Roman Borschel, 2006), Entity Framework en .NET (Microsoft, 2008)
+y Eloquent en Laravel (Taylor Otwell, 2011) representan distintas
+filosofías sobre el mismo problema. Hoy un desarrollador web rara vez
+escribe SQL a mano; pero comprender lo que hace el ORM por debajo es
+indispensable.
+
+La literatura técnica confirma que la elección del mecanismo de
+acceso a datos es una decisión arquitectónica de primer orden.
+\cite{fowler2002patterns} describe formalmente los patrones que hoy
+dominan (Data Mapper, Active Record, Unit of Work, Identity Map);
+\cite{ottinger2017hibernate} y \cite{bauer2015java} son las
+referencias canónicas para Hibernate; \cite{smith2018entity} para
+Entity Framework Core; \cite{otwell2024laravel} para Eloquent. El
+trabajo empírico de \cite{salah2017orm} compara performance entre
+los principales ORM y documenta que la diferencia de rendimiento
+respecto a SQL plano oscila entre 10\% y 30\%, justificándose
+ampliamente por la productividad ganada. Estudios más recientes
+\cite{ottinger2017hibernate} en revistas indexadas confirman que el problema
+N+1 sigue siendo la causa número uno de degradación de performance
+en aplicaciones Java EE y Spring Boot en producción.
+\end{cajahistoria}
+
+\subsection{Las cuatro estrategias de acceso a datos}
+
+En la industria conviven cuatro estrategias para acceder a
+datos desde una aplicación web. La tabla siguiente las contrasta
+con sus ventajas, desventajas y cuándo elegir cada una.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Estrategias de acceso a datos en aplicaciones web (2026).}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Estrategia} & \textbf{Características} & \textbf{Cuándo usarla}\\
+\midrule
+Driver nativo + SQL & Máximo control y rendimiento; máxima responsabilidad. PDO (PHP), JDBC (Java), ADO.NET (C\#). & Reportes complejos, consultas analíticas, ETL.\\
+Query Builder & SQL programático sin concatenación. Doctrine DBAL, jOOQ, knex.js. & Consultas dinámicas con muchos filtros opcionales.\\
+ORM Active Record & La entidad \emph{es} su unidad de persistencia: \texttt{User::find(1)->save()}. Eloquent, Rails AR. & CRUDs estándar; prototipado rápido.\\
+ORM Data Mapper & Entidades de dominio agnósticas; mapper externo. Hibernate, Doctrine ORM, EF Core. & Aplicaciones empresariales medianas/grandes con DDD.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Tabla evolutiva de los ORM principales}
+
+Los ORM dominantes han evolucionado durante dos décadas
+hasta sus versiones actuales. La tabla siguiente recoge las
+versiones de referencia 2026 con su licencia y características
+notables.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Versiones actuales de ORM en 2026.}
+\footnotesize
+\begin{tabular}{llll}
+\toprule
+\textbf{ORM} & \textbf{Lenguaje} & \textbf{Versión 2026} & \textbf{Filosofía}\\
+\midrule
+Hibernate / JPA      & Java       & Hibernate 6.6 / JPA 3.2 & Data Mapper\\
+Spring Data JPA      & Java       & 3.4                     & Repository sobre JPA\\
+Eloquent             & PHP        & Laravel 11 incluido     & Active Record\\
+Doctrine ORM         & PHP        & 3.x                     & Data Mapper\\
+Entity Framework Core & C\#       & 8.0                     & Code-First, Data Mapper\\
+TypeORM              & TypeScript & 0.3                     & Híbrido AR/DM\\
+Prisma               & TypeScript & 5.x                     & Schema-first generador\\
+SQLAlchemy           & Python     & 2.x                     & Data Mapper + AR\\
+Active Record (Rails) & Ruby      & 8.x                     & Active Record canónico\\
+GORM                 & Go         & 1.25                    & Active Record\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Consultas SQL desde aplicaciones web}
+
+Aunque el ORM oculte el SQL, el desarrollador web profesional
+debe conocer cómo se ejecutan las consultas desde aplicaciones,
+qué amenazas existen y qué defensas debe aplicar siempre.
+
+
+\subsection{La amenaza fundamental: SQL Injection}
+
+SQL Injection no es una vulnerabilidad teórica: ha sido la
+causa de ataques contra Sony, LinkedIn, Yahoo y miles de
+organizaciones. Sigue siendo la \emph{Top 3} del OWASP en 2021. Su
+mecánica es engañosamente simple.
+
+\textbf{Ejemplo corto comentado (anatomía de un SQL Injection) (Listado~\ref{lst:11.1}):}
+\begin{lstlisting}[language=PHP,numbers=none,caption={Ejemplo de PHP},label=lst:11.1]
+<?php
+// Codigo vulnerable: concatena directamente la entrada del usuario
+$email = $_POST['email'];
+$sql = "SELECT * FROM users WHERE email = '$email'";
+
+// El atacante introduce en el campo email:
+//   ' OR '1'='1
+// La consulta resultante se convierte en:
+//   SELECT * FROM users WHERE email = '' OR '1'='1'
+// Que devuelve TODOS los usuarios. El atacante entra sin password.
+?>
+\end{lstlisting}
+
+
+\begin{cajaadvertencia}{Anti-patrón --- el código que NUNCA debe escribirse}
+\begin{lstlisting}[style=php,numbers=none,caption={Ejemplo de PHP},label=lst:11.2]
+// VULNERABLE - PHP
+$sql = "SELECT * FROM users WHERE email = '" . $_POST['email'] . "'";
+$res = $pdo->query($sql);
+\end{lstlisting}
+\textbf{Ejemplo de ataque trivial:}\\
+Si \texttt{\$\_POST['email'] = \char34{}admin' OR '1'='1' -{}-\char34{}}, la consulta
+ejecutada será:\\
+\texttt{SELECT * FROM users WHERE email = 'admin' OR '1'='1' -{}-'}\\
+que devuelve \emph{todos} los usuarios. Variantes más sofisticadas
+permiten dropear tablas, exfiltrar contraseñas, leer archivos del
+servidor.
+
+\textbf{Estadística reveladora:} en el \emph{Verizon Data Breach
+Investigations Report 2025} \cite{verizon2025dbir}, SQL Injection
+sigue siendo responsable del 14\% de las brechas de aplicaciones web,
+30 años después de su descubrimiento.
+\end{cajaadvertencia}
+
+\subsection{La defensa: sentencias preparadas en las tres plataformas}
+
+La defensa universal contra SQLi es la \emph{sentencia
+preparada}: el SQL y los datos viajan por canales separados, de
+modo que los datos no pueden alterar la estructura del SQL. Las
+tres plataformas del curso la implementan.
+
+
+\subsubsection{PHP con PDO}
+
+PHP dispone de PDO (\emph{PHP Data Objects}), una capa de
+abstracción que soporta múltiples motores (MySQL, PostgreSQL, SQLite,
+SQL Server) con una API uniforme.
+
+
+\begin{cajaejemplo}{Ejemplo 11.1 --- PDO con parámetros nominales y posicionales}
+
+\textbf{Enunciado.} Implementar el CRUD de la entidad \texttt{Libro} con Spring Data JPA y H2: definir entidad, repositorio y controlador REST. Se exponen las cuatro operaciones básicas.
+
+\begin{lstlisting}[style=php,caption={UsuarioRepository.php},label=lst:11.3]
+<?php
+declare(strict_types=1);
+
+class UsuarioRepository // declara clase PHP
+{
+    public function __construct(private PDO $pdo) {} // metodo publico
+
+    /** Busqueda con parametros NOMINALES (recomendado). */
+    public function buscarPorEmail(string $email): ?array { // metodo publico
+        $sql = 'SELECT id, nombre, email, rol, activo
+                FROM usuarios
+                WHERE email = :em AND activo = 1';
+        $stmt = $this->pdo->prepare($sql); // prepara consulta SQL (defensa anti-SQLi)
+        $stmt->execute([':em' => $email]); // ejecuta la consulta con parametros enlazados
+        $u = $stmt->fetch(PDO::FETCH_ASSOC); // recupera la siguiente fila como array
+        return $u ?: null; // retorna valor
+    }
+
+    /** Busqueda con parametros POSICIONALES. */
+    public function buscarPorId(int $id): ?array { // metodo publico
+        $stmt = $this->pdo->prepare( // prepara consulta SQL (defensa anti-SQLi)
+            'SELECT id, nombre, email FROM usuarios WHERE id = ?');
+        $stmt->execute([$id]); // ejecuta la consulta con parametros enlazados
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null; // recupera la siguiente fila como array
+    }
+
+    /** Busqueda con LIKE seguro - nunca concatenar el % */
+    // metodo publico
+    // metodo publico
+    public function buscarPorNombre(string $patron): array {
+        $stmt = $this->pdo->prepare( // prepara consulta SQL (defensa anti-SQLi)
+            'SELECT id, nombre, email FROM usuarios
+             WHERE nombre LIKE :p
+             ORDER BY nombre LIMIT 50');
+        // El % se anade aqui, NO concatenado en el SQL
+        $stmt->execute([':p' => '%' . $patron . '%']); // ejecuta la consulta con parametros enlazados
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // recupera todas las filas restantes
+    }
+
+    /** INSERT con retorno del ID generado. */
+    public function crear(string $email, string $nombre, // metodo publico
+                          string $passwordPlano): int {
+        // hashea contrasena con BCrypt
+        // hashea contrasena con BCrypt
+        $hash = password_hash($passwordPlano, PASSWORD_BCRYPT,
+                              ['cost' => 12]);
+        $stmt = $this->pdo->prepare( // prepara consulta SQL (defensa anti-SQLi)
+            // hashea contrasena con BCrypt
+            // hashea contrasena con BCrypt
+            'INSERT INTO usuarios (email, nombre, password_hash, rol)
+             VALUES (:em, :nom, :hash, :rol)');
+        $stmt->execute([ // ejecuta la consulta con parametros enlazados
+            ':em'   => $email,
+            ':nom'  => $nombre,
+            ':hash' => $hash,
+            ':rol'  => 'ROLE_USER',
+        ]);
+        return (int)$this->pdo->lastInsertId(); // retorna valor
+    }
+
+    /** Transaccion explicita para operaciones multi-tabla. */
+    // metodo publico
+    // metodo publico
+    public function transferirPuntos(int $de, int $a, int $monto): bool {
+        try {
+            $this->pdo->beginTransaction();
+            $stmt1 = $this->pdo->prepare( // prepara consulta SQL (defensa anti-SQLi)
+                'UPDATE saldos SET puntos = puntos - ? WHERE user_id = ?');
+            $stmt1->execute([$monto, $de]); // ejecuta la consulta con parametros enlazados
+            $stmt2 = $this->pdo->prepare( // prepara consulta SQL (defensa anti-SQLi)
+                'UPDATE saldos SET puntos = puntos + ? WHERE user_id = ?');
+            $stmt2->execute([$monto, $a]); // ejecuta la consulta con parametros enlazados
+            $this->pdo->commit();
+            return true; // retorna valor
+        } catch (\Throwable $e) {
+            $this->pdo->rollBack();
+            error_log("Error transferir: " . $e->getMessage());
+            return false; // retorna valor
+        }
+    }
+}
+\end{lstlisting}
+
+\textbf{Configuración inicial obligatoria del PDO (Listado~\ref{lst:11.4}):}
+\begin{lstlisting}[style=php,numbers=none,caption={Ejemplo de PHP},label=lst:11.4]
+$pdo = new PDO( // conecta a la base de datos via PDO
+    'mysql:host=localhost;dbname=appweb;charset=utf8mb4',
+    'usuario', 'password',
+    [
+        // Errores como excepciones (NO codigos de error silenciosos)
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        // FETCH_ASSOC por defecto (arrays con keys, sin duplicar)
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        // Prepared statements REALES (no emulados, mas seguros)
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ]
+);
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsubsection{Java con JDBC y try-with-resources}
+
+Java accede a bases de datos a través de JDBC. Desde Java 7,
+la sintaxis \emph{try-with-resources} garantiza que las conexiones,
+\texttt{Statement}s y \texttt{ResultSet}s se cierren automáticamente,
+incluso si hay excepciones.
+
+
+\begin{cajaejemplo}{Ejemplo 11.2 --- JDBC moderno con try-with-resources}
+
+\textbf{Enunciado.} Mostrar el patrón profesional de acceso a datos en Java con JDBC moderno: \texttt{try-with-resources} que gestiona automáticamente el cierre de \texttt{Connection}, \texttt{Statement} y \texttt{ResultSet}.
+
+\begin{lstlisting}[style=java,caption={UsuarioJdbcRepository.java},label=lst:11.5]
+package ec.edu.uteq.appweb.repository; // paquete del archivo
+
+import java.sql.*; // importacion de clase externa
+import java.util.*; // importacion de clase externa
+import javax.sql.DataSource; // importacion de clase externa
+
+public class UsuarioJdbcRepository { // clase publica
+
+    private final DataSource ds; // inmutable
+
+    // metodo publico
+    // metodo publico
+    public UsuarioJdbcRepository(DataSource ds) { this.ds = ds; }
+
+    public Optional<Usuario> buscarPorEmail(String email) { // metodo publico
+        String sql = """
+            SELECT id, nombre, email, rol
+            FROM usuarios
+            WHERE email = ? AND activo = TRUE
+            """;
+        try (Connection cn = ds.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) { // condicional
+                    return Optional.of(new Usuario( // retorna
+                        rs.getLong("id"),
+                        rs.getString("nombre"),
+                        rs.getString("email"),
+                        rs.getString("rol")
+                    ));
+                }
+                return Optional.empty(); // retorna
+            }
+        } catch (SQLException e) {
+            // lanza excepcion explicita
+            // lanza excepcion explicita
+            throw new RepositoryException("Error buscando por email", e);
+        }
+    }
+
+    public List<Usuario> buscarPorPatron(String patron) { // metodo publico
+        String sql = """
+            SELECT id, nombre, email, rol
+            FROM usuarios
+            WHERE nombre LIKE ?
+            ORDER BY nombre LIMIT 50
+            """;
+        List<Usuario> resultado = new ArrayList<>();
+        try (Connection cn = ds.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, "%" + patron + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) { // bucle while
+                    resultado.add(new Usuario(
+                        rs.getLong("id"),
+                        rs.getString("nombre"),
+                        rs.getString("email"),
+                        rs.getString("rol")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            // lanza excepcion explicita
+            // lanza excepcion explicita
+            throw new RepositoryException("Error buscando por patron", e);
+        }
+        return resultado; // retorna
+    }
+
+    // metodo publico
+    // metodo publico
+    public long crear(String email, String nombre, String hash) {
+        String sql = """
+            INSERT INTO usuarios (email, nombre, password_hash, rol)
+            VALUES (?, ?, ?, 'ROLE_USER')
+            """;
+        try (Connection cn = ds.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql,
+                                       Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, email);
+            ps.setString(2, nombre);
+            ps.setString(3, hash);
+            ps.executeUpdate();
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) return keys.getLong(1); // condicional
+                // lanza excepcion explicita
+                // lanza excepcion explicita
+                throw new RepositoryException("No se obtuvo ID generado");
+            }
+        } catch (SQLException e) {
+            // lanza excepcion explicita
+            // lanza excepcion explicita
+            throw new RepositoryException("Error creando usuario", e);
+        }
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsubsection{C\# con ADO.NET}
+
+C\# accede a bases de datos a través de ADO.NET, la
+biblioteca clásica de .NET. Aunque Entity Framework Core es lo
+preferido en proyectos nuevos, ADO.NET sigue siendo la base sobre
+la que se construye y aparece en código heredado.
+
+
+\begin{cajaejemplo}{Ejemplo 11.3 --- ADO.NET puro con SqlClient}
+
+\textbf{Enunciado.} Mostrar el acceso a datos en C\# con ADO.NET puro (\texttt{SqlClient}), antes de pasar a Entity Framework Core. Útil para entender lo que el ORM oculta.
+
+\begin{lstlisting}[style=cs,caption={UsuarioRepository.cs},label=lst:11.6]
+using Microsoft.Data.SqlClient; // importa namespace
+using AppwebApi.Models; // importa namespace
+
+public class UsuarioRepository // clase publica
+{
+    private readonly string _connStr; // metodo o miembro privado
+
+    public UsuarioRepository(IConfiguration cfg) => // metodo o miembro publico
+        _connStr = cfg.GetConnectionString("Default")!;
+
+    // metodo o miembro publico
+    // metodo o miembro publico
+    public async Task<Usuario?> BuscarPorEmailAsync(string email)
+    {
+        const string sql = @"
+            SELECT id, nombre, email, rol
+            FROM usuarios
+            WHERE email = @email AND activo = 1";
+
+        await using var cn = new SqlConnection(_connStr);
+        await cn.OpenAsync();
+
+        await using var cmd = new SqlCommand(sql, cn);
+        cmd.Parameters.AddWithValue("@email", email);
+
+        await using var rdr = await cmd.ExecuteReaderAsync();
+        if (await rdr.ReadAsync()) { // condicional
+            return new Usuario { // retorna
+                Id     = rdr.GetInt64(0),
+                Nombre = rdr.GetString(1),
+                Email  = rdr.GetString(2),
+                Rol    = rdr.GetString(3)
+            };
+        }
+        return null; // retorna
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{El patrón Repository: encapsular el acceso a datos}
+
+El patrón Repository encapsula el acceso a datos detrás de
+una interfaz limpia, ocultando los detalles de SQL/JPA al resto de
+la aplicación. Esto mejora la testabilidad (se puede mockear) y la
+mantenibilidad (cambiar de SQL puro a JPA no afecta a los servicios).
+
+
+\begin{cajadefinicion}{Patrón Repository según Fowler}
+\emph{«Mediates between the domain and data mapping layers using a
+collection-like interface for accessing domain objects.»}
+\cite{fowler2002patterns}
+
+Un Repository expone una API estilo colección sobre las entidades de
+dominio, ocultando los detalles del SGBD. Sus responsabilidades:
+\begin{itemize}
+\item Encapsular consultas (no exponer SQL al servicio).
+\item Devolver objetos de dominio o DTOs, no \texttt{ResultSet}.
+\item Centralizar la traducción objeto $\leftrightarrow$ tabla.
+\item Facilitar el testing con repositorios fake o mocks.
+\end{itemize}
+\end{cajadefinicion}
+
+\subsection{Repositorio típico en Spring Data JPA}
+
+Spring Data JPA reduce el boilerplate al mínimo: basta con declarar
+una interfaz que extiende \texttt{JpaRepository}; Spring genera la
+implementación en tiempo de ejecución.
+
+\begin{cajaejemplo}{Ejemplo 11.4 --- ProductoRepository de Spring Data}
+
+\textbf{Enunciado.} Implementar un repositorio Spring Data JPA para la entidad \texttt{Producto} declarando solo la interfaz; Spring genera la implementación con todas las operaciones CRUD.
+
+\begin{lstlisting}[style=java,caption={ProductoRepository.java},label=lst:11.7]
+package ec.edu.uteq.appweb.repository; // paquete del archivo
+
+import ec.edu.uteq.appweb.model.Producto; // importacion de clase externa
+import org.springframework.data.domain.Page; // importacion de clase externa
+import org.springframework.data.domain.Pageable; // importacion de clase externa
+import org.springframework.data.jpa.repository.*; // importacion de clase externa
+import org.springframework.data.repository.query.Param; // importacion de clase externa
+import java.math.BigDecimal; // importacion de clase externa
+import java.util.List; // importacion de clase externa
+
+public interface ProductoRepository // declaracion de interfaz
+        extends JpaRepository<Producto, Long> {
+
+    // Consulta DERIVADA del nombre del metodo (sin SQL)
+    List<Producto> findByStockGreaterThanOrderByNombreAsc(int min);
+
+    Page<Producto> findByCategoriaIgnoreCase(String cat, Pageable pag);
+
+    // JPQL personalizado con parametros nominales
+    @Query(""" // JPQL
+        SELECT p FROM Producto p
+        WHERE p.precio BETWEEN :min AND :max
+          AND p.stock > 0
+        ORDER BY p.precio ASC
+        """)
+    List<Producto> rangoPrecio(@Param("min") BigDecimal min,
+                               @Param("max") BigDecimal max);
+
+    // Update masivo
+    @Modifying // consulta que modifica datos (no SELECT)
+    // JPQL
+    // JPQL
+    @Query("UPDATE Producto p SET p.stock = p.stock - :n WHERE p.id = :id AND p.stock >= :n")
+    int decrementarStock(@Param("id") Long id, @Param("n") int n);
+
+    // Native SQL cuando JPQL no alcanza
+    @Query(value = """ // JPQL
+        SELECT p.*, c.nombre AS cat_nombre
+        FROM productos p
+        JOIN categorias c ON c.id = p.categoria_id
+        WHERE p.stock > 0
+        """, nativeQuery = true)
+    List<Object[]> reporteStock();
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{El problema N+1 y su solución}
+
+El problema N+1 es la patología de rendimiento más común en
+aplicaciones que usan ORM. Ocurre cuando, al iterar una colección
+de N entidades con relaciones, se ejecutan N consultas adicionales
+en lugar de una sola con \texttt{JOIN}.
+
+
+\begin{cajaadvertencia}{Problema N+1 --- el bug silencioso que mata el rendimiento}
+Si tiene una entidad \texttt{Producto} con relación
+\texttt{@ManyToOne Categoria categoria}, y carga una lista de 100
+productos para mostrarlos con su categoría, ocurre lo siguiente sin
+optimización:
+
+\begin{enumerate}
+\item Una consulta para obtener los 100 productos.
+\item Cien consultas adicionales (una por cada producto) para
+obtener su categoría asociada.
+\end{enumerate}
+
+\textbf{Total: 101 consultas.} Si la página muestra 1000 productos,
+son 1001 consultas. La latencia se dispara, la BD colapsa.
+
+\textbf{La solución universal:} \emph{eager loading} explícito, que
+hace UN SOLO JOIN en lugar de N+1 consultas.
+\end{cajaadvertencia}
+
+\subsection{Solución en cada ORM}
+
+\textbf{Spring Data JPA --- usar JOIN FETCH (Listado~\ref{lst:11.8}):}
+\begin{lstlisting}[style=java,numbers=none,caption={Ejemplo de Java},label=lst:11.8]
+@Query(""" // JPQL
+    SELECT p FROM Producto p
+    JOIN FETCH p.categoria
+    WHERE p.stock > 0
+    """)
+List<Producto> findAllConCategoria();
+\end{lstlisting}
+
+\textbf{Eloquent (Laravel) --- usar with (Listado~\ref{lst:11.9}):}
+\begin{lstlisting}[style=php,numbers=none,caption={Ejemplo de PHP},label=lst:11.9]
+$productos = Producto::with('categoria')
+    ->where('stock','>',0)
+    ->get();
+\end{lstlisting}
+
+\textbf{Entity Framework Core --- usar Include (Listado~\ref{lst:11.10}):}
+\begin{lstlisting}[style=cs,numbers=none,caption={Ejemplo de C\#},label=lst:11.10]
+var productos = await _ctx.Productos
+    .Include(p => p.Categoria)
+    .Where(p => p.Stock > 0)
+    .ToListAsync();
+\end{lstlisting}
+
+\textbf{Doctrine ORM --- usar fetch en DQL (Listado~\ref{lst:11.11}):}
+\begin{lstlisting}[style=php,numbers=none,caption={Ejemplo de PHP},label=lst:11.11]
+$query = $em->createQuery(
+    'SELECT p, c FROM App\Entity\Producto p
+     JOIN p.categoria c WHERE p.stock > 0');
+$productos = $query->getResult();
+\end{lstlisting}
+
+\section{Migraciones de esquema con Flyway y Liquibase}
+
+Las migraciones permiten versionar el esquema de la BD como código.
+Cada migración es un script SQL numerado que se aplica una sola vez.
+La BD «sabe» qué migraciones ha aplicado mediante una tabla de control
+(\texttt{flyway\_schema\_history} o \texttt{databasechangelog}).
+
+\begin{cajaejemplo}{Ejemplo 11.5 --- Estructura Flyway en Spring Boot}
+
+\textbf{Enunciado.} Configurar Flyway en un proyecto Spring Boot para gestionar migraciones de base de datos versionadas y reproducibles entre entornos.
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:11.12]
+src/main/resources/db/migration/
+  V1__crear_usuarios.sql
+  V2__crear_productos.sql
+  V3__agregar_indice_email_usuarios.sql
+  V4__crear_pedidos.sql
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql,caption={V1\_\_crear\_usuarios.sql},label=lst:11.13]
+-- crea tabla nueva en la BD
+CREATE TABLE usuarios (                                     -- crea tabla nueva en la BD
+    id            BIGSERIAL PRIMARY KEY,
+    -- columna obligatoria (no admite NULL)
+    email         VARCHAR(180) NOT NULL UNIQUE,             -- columna obligatoria (no admite NULL)
+    -- columna obligatoria (no admite NULL)
+    nombre        VARCHAR(100) NOT NULL,                    -- columna obligatoria (no admite NULL)
+    -- columna obligatoria (no admite NULL)
+    password_hash VARCHAR(255) NOT NULL,                    -- columna obligatoria (no admite NULL)
+    -- columna obligatoria (no admite NULL)
+    -- columna obligatoria (no admite NULL)
+    rol           VARCHAR(30)  NOT NULL DEFAULT 'ROLE_USER',
+    -- columna obligatoria (no admite NULL)
+    activo        BOOLEAN      NOT NULL DEFAULT TRUE,       -- columna obligatoria (no admite NULL)
+    -- columna obligatoria (no admite NULL)
+    creado_en     TIMESTAMPTZ  NOT NULL DEFAULT NOW(),      -- columna obligatoria (no admite NULL)
+    actualizado_en TIMESTAMPTZ
+);
+
+-- crea indice para acelerar busquedas
+CREATE INDEX idx_usuarios_email_activo                      -- crea indice para acelerar busquedas
+    ON usuarios(email) WHERE activo = TRUE;
+\end{lstlisting}
+
+\textbf{Configuración mínima en \texttt{application.yml}:}
+\begin{lstlisting}[style=yaml,numbers=none,caption={Ejemplo de YAML},label=lst:11.14]
+spring: # configuracion de Spring
+  datasource: # configuracion de origen de datos (BD)
+    url:      jdbc:postgresql://localhost:5432/appweb
+    username: appweb # usuario de la BD
+    password: ${DB_PASSWORD} # contrasena (mejor leer de env var)
+  jpa: # configuracion JPA/Hibernate
+    hibernate: # configuracion especifica de Hibernate
+      ddl-auto: validate # NO usar 'update' con Flyway
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Procedimientos almacenados: cuándo aún tiene sentido}
+
+Los procedimientos almacenados (\emph{stored procedures})
+fueron durante décadas la forma canónica de encapsular lógica de
+datos en el motor de BD. Hoy se usan menos, pero hay casos donde aún
+tienen sentido y conviene conocerlos.
+
+
+\begin{cajacompara}{Procedimientos almacenados vs lógica en aplicación}
+\centering\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Aspecto} & \textbf{Stored Procedures} & \textbf{Lógica en aplicación}\\
+\midrule
+Rendimiento & Excelente (compilados, cerca del dato) & Bueno con cache\\
+Versionado con Git & Difícil (suele estar fuera del repo) & Natural\\
+Testing & Difícil (requiere BD viva) & Fácil con mocks\\
+Portabilidad SGBD & Acoplado a un motor & Multi-SGBD via ORM\\
+Lógica compleja & Mantenimiento difícil & Más limpia\\
+Operaciones masivas & Imbatible (sin round-trips) & Ineficiente\\
+\bottomrule
+\end{tabularx}
+\end{cajacompara}
+
+\textbf{Cuándo usar stored procedures en 2026:}
+\begin{itemize}
+\item Operaciones masivas que tocan miles de filas (ETL, batch).
+\item Lógica que requiere consistencia transaccional fina con
+múltiples tablas.
+\item Reportes complejos con muchos JOINs.
+\item Sistemas heredados donde la lógica ya está en SP.
+\end{itemize}
+
+\section{Práctica integrada: CRUD ORM vs SQL puro}
+
+La práctica integrada de la semana confronta directamente
+las dos estrategias dominantes: JDBC puro vs Spring Data JPA. El
+estudiante implementa el mismo CRUD con ambas y produce una tabla
+comparativa.
+
+
+\begin{cajaejercicio}{Ejercicio 11.1 --- Comparación experimental SQL puro vs ORM (Sumativa GA-PE Unidad III)}
+
+\textbf{Objetivo:} implementar el mismo CRUD en dos versiones (SQL
+puro y ORM) y comparar líneas de código, rendimiento y mantenibilidad.
+
+\subsubsection*{IDE: IntelliJ IDEA Ultimate}
+Plugins necesarios (todos incluidos en Ultimate):
+\begin{itemize}
+\item \emph{Database Tools and SQL} (cliente BD nativo).
+\item \emph{Spring Boot}.
+\item \emph{Lombok}.
+\end{itemize}
+
+\subsubsection*{Paso 1 --- Preparar PostgreSQL en Docker}
+
+Más simple que instalar PostgreSQL nativo (Listado~\ref{lst:11.15}):
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:11.15]
+docker run -d --name pg-appweb \ # arranca un contenedor
+  -e POSTGRES_USER=appweb \
+  -e POSTGRES_PASSWORD=appweb \
+  -e POSTGRES_DB=appweb \
+  -p 5432:5432 postgres:16
+\end{lstlisting}
+
+Verificar (Listado~\ref{lst:11.16}):
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:11.16]
+# ejecuta comando en contenedor activo
+# ejecuta comando en contenedor activo
+docker exec -it pg-appweb psql -U appweb -d appweb -c "SELECT version();"
+\end{lstlisting}
+
+\subsubsection*{Paso 2 --- Conectar IntelliJ a la BD}
+
+Una vez levantada PostgreSQL, el siguiente paso es configurar
+IntelliJ IDEA Ultimate para conectarse a ella desde la propia IDE.
+Esto permite ejecutar SQL ad-hoc, ver datos y probar consultas sin
+salir del entorno.
+
+
+\begin{enumerate}
+\item Abrir el panel \emph{Database} (lateral derecho).
+\item Pulsar \texttt{+} $\rightarrow$ \texttt{Data Source}
+$\rightarrow$ \texttt{PostgreSQL}.
+\item Host: \texttt{localhost}, Port: \texttt{5432},
+Database: \texttt{appweb}, User: \texttt{appweb}, Password:
+\texttt{appweb}.
+\item Pulsar \texttt{Test Connection}. Si pide descargar el driver,
+aceptar.
+\item Pulsar \texttt{OK}.
+\end{enumerate}
+
+\subsubsection*{Paso 3 --- Crear tabla y datos de prueba}
+
+Click derecho sobre la conexión $\rightarrow$ \texttt{New}
+$\rightarrow$ \texttt{Query Console}. Ejecutar (Listado~\ref{lst:11.17}):
+
+\begin{lstlisting}[style=sql,numbers=none,caption={Ejemplo de SQL},label=lst:11.17]
+-- crea tabla nueva en la BD
+CREATE TABLE productos (                                    -- crea tabla nueva en la BD
+    id        BIGSERIAL PRIMARY KEY,
+    -- columna obligatoria (no admite NULL)
+    nombre    VARCHAR(120) NOT NULL,                        -- columna obligatoria (no admite NULL)
+    -- columna obligatoria (no admite NULL)
+    precio    NUMERIC(10,2) NOT NULL CHECK (precio >= 0),   -- columna obligatoria (no admite NULL)
+    -- columna obligatoria (no admite NULL)
+    -- columna obligatoria (no admite NULL)
+    stock     INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
+    -- columna obligatoria (no admite NULL)
+    creado    TIMESTAMPTZ NOT NULL DEFAULT NOW()            -- columna obligatoria (no admite NULL)
+);
+
+-- Cargar 1000 productos para benchmark
+-- inserta una fila nueva
+INSERT INTO productos (nombre, precio, stock)               -- inserta una fila nueva
+SELECT
+    'Producto ' || i,
+    ROUND((random() * 100 + 1)::numeric, 2),
+    (random() * 100)::int
+-- tabla de origen
+FROM generate_series(1, 1000) i;                            -- tabla de origen
+\end{lstlisting}
+
+Verificar: \texttt{SELECT COUNT(*) FROM productos;} debe devolver 1000.
+
+\subsubsection*{Paso 4 --- Crear proyecto Spring Boot}
+
+En IntelliJ: \texttt{File $\rightarrow$ New $\rightarrow$ Project
+$\rightarrow$ Spring Boot}. Configurar:
+\begin{itemize}
+\item Language: Java; Build: Maven; JDK: 21.
+\item Group: \texttt{ec.edu.uteq}; Artifact: \texttt{benchmark-orm}.
+\item Spring Boot 4.x.
+\item Dependencies: \emph{Spring Web}, \emph{Spring Data JPA},
+\emph{PostgreSQL Driver}, \emph{Lombok}, \emph{Spring Boot DevTools}.
+\end{itemize}
+
+\subsubsection*{Paso 5 --- Configurar la conexión}
+
+Editar \texttt{src/main/resources/application.yml} (Listado~\ref{lst:11.18}):
+
+\begin{lstlisting}[style=yaml,numbers=none,caption={Ejemplo de YAML},label=lst:11.18]
+spring: # configuracion de Spring
+  datasource: # configuracion de origen de datos (BD)
+    url:      jdbc:postgresql://localhost:5432/appweb
+    username: appweb # usuario de la BD
+    password: appweb # contrasena (mejor leer de env var)
+  jpa: # configuracion JPA/Hibernate
+    hibernate.ddl-auto: none # tabla ya existe
+    show-sql: true # ver SQL generado
+    properties.hibernate.format_sql: true
+\end{lstlisting}
+
+\subsubsection*{Paso 6 --- Versión A: JDBC puro}
+
+La versión A implementa el CRUD usando solo JDBC puro: el
+estudiante escribe el SQL a mano, gestiona la conexión, prepara las
+sentencias y procesa los resultados. Es laborioso pero ilustrativo. V\'ease el Listado~\ref{lst:11.19}.
+
+
+\begin{lstlisting}[style=java,caption={JdbcController.java},label=lst:11.19]
+package ec.edu.uteq.benchmark.jdbc; // paquete del archivo
+
+import org.springframework.jdbc.core.JdbcTemplate; // importacion de clase externa
+import org.springframework.web.bind.annotation.*; // importacion de clase externa
+import java.sql.Timestamp; // importacion de clase externa
+import java.util.*; // importacion de clase externa
+
+@RestController // expone endpoints REST con JSON
+@RequestMapping("/api/jdbc/productos") // ruta base del controlador
+public class JdbcController { // clase publica
+
+    private final JdbcTemplate jdbc; // inmutable
+
+    // metodo publico
+    // metodo publico
+    public JdbcController(JdbcTemplate jdbc) { this.jdbc = jdbc; }
+
+    @GetMapping // endpoint HTTP GET
+    public List<Map<String, Object>> listar() { // metodo publico
+        return jdbc.queryForList( // retorna
+            "SELECT id, nombre, precio, stock, creado FROM productos "
+          + "ORDER BY id");
+    }
+
+    @GetMapping("/{id}") // endpoint HTTP GET
+    // metodo publico
+    // metodo publico
+    public Map<String, Object> obtener(@PathVariable long id) {
+        return jdbc.queryForMap( // retorna
+            "SELECT id, nombre, precio, stock, creado FROM productos "
+          + "WHERE id = ?", id);
+    }
+}
+\end{lstlisting}
+
+\subsubsection*{Paso 7 --- Versión B: Spring Data JPA}
+
+La versión B implementa el mismo CRUD usando Spring Data
+JPA: el estudiante define la entidad, declara la interfaz del
+repositorio, y JPA genera el SQL automáticamente. El contraste con
+la versión A es revelador. V\'ease el Listado~\ref{lst:11.20}.
+
+
+\begin{lstlisting}[style=java,caption={Producto.java},label=lst:11.20]
+package ec.edu.uteq.benchmark.jpa; // paquete del archivo
+
+import jakarta.persistence.*; // importacion de clase externa
+import lombok.*; // importacion de clase externa
+import java.math.BigDecimal; // importacion de clase externa
+import java.time.OffsetDateTime; // importacion de clase externa
+
+@Entity @Table(name = "productos") // entidad JPA (mapea a tabla)
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class Producto { // clase publica
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // campo clave primaria
+    private Long id; // campo privado
+    private String nombre; // campo privado
+    private BigDecimal precio; // campo privado
+    private Integer stock; // campo privado
+    private OffsetDateTime creado; // campo privado
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=java,caption={ProductoRepository.java + JpaController.java},label=lst:11.21]
+package ec.edu.uteq.benchmark.jpa; // paquete del archivo
+
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.data.jpa.repository.JpaRepository;
+public interface ProductoRepository // declaracion de interfaz
+    extends JpaRepository<Producto, Long> {}
+
+// ---
+
+import org.springframework.web.bind.annotation.*; // importacion de clase externa
+import java.util.*; // importacion de clase externa
+
+@RestController // expone endpoints REST con JSON
+@RequestMapping("/api/jpa/productos") // ruta base del controlador
+public class JpaController { // clase publica
+    private final ProductoRepository repo; // inmutable
+    // metodo publico
+    // metodo publico
+    public JpaController(ProductoRepository r) { this.repo = r; }
+
+    // endpoint HTTP GET
+    // endpoint HTTP GET
+    @GetMapping public List<Producto> listar() { return repo.findAll(); }
+
+    @GetMapping("/{id}") // endpoint HTTP GET
+    public Producto obtener(@PathVariable Long id) { // metodo publico
+        return repo.findById(id).orElseThrow(); // retorna
+    }
+}
+\end{lstlisting}
+
+\subsubsection*{Paso 8 --- Benchmark con Apache Bench}
+
+Ejecutar la app: \texttt{Shift+F10} sobre la clase principal. Servidor
+en \url{http://localhost:8080}.
+
+Desde otra terminal, instalar Apache Bench (\texttt{ab}). En Ubuntu:
+\texttt{sudo apt install apache2-utils}; en macOS: viene preinstalado.
+
+Ejecutar (Listado~\ref{lst:11.22}):
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:11.22]
+# 1000 peticiones, 10 concurrentes, version JDBC
+ab -n 1000 -c 10 http://localhost:8080/api/jdbc/productos > jdbc.txt
+
+# Misma prueba para JPA
+ab -n 1000 -c 10 http://localhost:8080/api/jpa/productos > jpa.txt
+
+cat jdbc.txt | grep "Requests per second"
+cat jpa.txt  | grep "Requests per second"
+\end{lstlisting}
+
+\subsubsection*{Paso 9 --- Tabla comparativa para entregar}
+
+Tras implementar las dos versiones, el estudiante debe
+producir una tabla comparativa que cuantifique las diferencias.
+
+
+\begin{tabularx}{\textwidth}{Xll}
+\toprule
+\textbf{Métrica} & \textbf{Versión JDBC} & \textbf{Versión JPA}\\
+\midrule
+Líneas de código del controller & & \\
+Líneas de código del repository & & \\
+Requests/segundo (1000 req, 10 conc) & & \\
+Tiempo medio por request (ms) & & \\
+SQL generado (consultas en log) & 1 fija & varía con caché L1/L2 \\
+Vulnerabilidad SQL Injection & Eliminada (\texttt{?}) & Eliminada (JPA) \\
+Mantenibilidad (1--5) & & \\
+Productividad para CRUD nuevo (1--5) & & \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection*{Reflexión final escrita (entregable)}
+
+Responder en máximo 300 palabras:
+\begin{enumerate}
+\item ¿Cuál fue más rápido en el benchmark?
+\item ¿Qué versión escribiría más rápido un desarrollador nuevo?
+\item ¿En qué casos el ORM es perjudicial (ineficiente)?
+\item ¿Por qué muchas empresas mantienen \emph{ambos} estilos en el
+mismo proyecto?
+\end{enumerate}
+
+\textbf{Esta es la \emph{Sumativa GA-PE Unidad III} de la semana 11.}
+\end{cajaejercicio}
+
+\section{Buenas prácticas profesionales en acceso a datos}
+
+La caja siguiente compila las reglas profesionales del
+acceso a datos: principios que separan el código mantenible del
+código que se vuelve ingobernable a los seis meses.
+
+
+\begin{cajabuenas}{Quince reglas profesionales 2026}
+\begin{enumerate}
+\item NUNCA concatenar datos del usuario en SQL: usar siempre
+parámetros.
+\item Configurar el driver con \texttt{ATTR\_EMULATE\_PREPARES = false}
+en PHP.
+\item DTOs separados de entidades: nunca exponer entidades JPA en
+controllers.
+\item Consultas paginadas siempre (\texttt{LIMIT} + \texttt{OFFSET})
+para listados.
+\item Resolver el problema N+1 con \emph{eager loading} explícito.
+\item Migraciones con Flyway o Liquibase: jamás
+\texttt{ddl-auto=update} en producción.
+\item Índices en columnas de búsqueda frecuente y en foreign keys.
+\item Conexiones desde un \emph{pool} (HikariCP en Spring, pgBouncer
+externo).
+\item Transacciones explícitas para operaciones multi-tabla.
+\item Soft delete (\texttt{activo=false}) sobre delete físico cuando
+hay relaciones.
+\item Auditar cambios sensibles (\texttt{creado\_en},
+\texttt{actualizado\_en}, \texttt{actualizado\_por}).
+\item Cuenta BD con permisos mínimos: la app no necesita
+\texttt{DROP TABLE}.
+\item Encriptar la conexión con SSL/TLS en producción.
+\item Tests con BD en memoria (H2) o testcontainers para integración
+real.
+\item Documentar el modelo entidad-relación en el repositorio
+(ER en draw.io).
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Ejercicio resuelto adicional con resultado visual}
+
+Como cierre de la semana 11, el siguiente ejercicio adicional
+está completamente resuelto y se complementa con un propuesto.
+
+
+\begin{cajaejemplo}{Ejercicio resuelto 11.1 --- CRUD de libros con Spring Data JPA y H2}
+\textbf{Enunciado.} Implementar un CRUD completo de la entidad
+\texttt{Libro} (id, titulo, autor, anio) con Spring Data JPA y H2
+embebido, exponer los endpoints REST y verificar visualmente las
+operaciones desde Postman.
+
+\textbf{Entidad (\texttt{Libro.java}):}
+\begin{lstlisting}[language=Java,caption={Entidad JPA con validaciones},label=lst:11.23]
+@Entity // entidad JPA (mapea a tabla)
+@Table(name = "libros") // nombre de la tabla en BD
+public class Libro { // clase publica
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // campo clave primaria
+  private Long id; // campo privado
+  @NotBlank @Size(max = 200) // validacion: no nulo y no vacio
+  private String titulo; // campo privado
+  @NotBlank @Size(max = 100) // validacion: no nulo y no vacio
+  private String autor; // campo privado
+  @Min(1900) @Max(2100) // validacion: valor minimo
+  private int anio; // campo privado
+  // getters/setters omitidos por brevedad
+}
+\end{lstlisting}
+
+\textbf{Repositorio (\texttt{LibroRepository.java}):}
+\begin{lstlisting}[language=Java,caption={Repositorio Spring Data},label=lst:11.24]
+// declaracion de interfaz
+// declaracion de interfaz
+public interface LibroRepository extends JpaRepository<Libro, Long> {
+  List<Libro> findByAutor(String autor);
+  @Query("SELECT l FROM Libro l WHERE l.anio >= :desde") // JPQL
+  List<Libro> publicadosDesde(@Param("desde") int desde);
+}
+\end{lstlisting}
+
+\textbf{Controlador REST (\texttt{LibroController.java}):}
+\begin{lstlisting}[language=Java,caption={Endpoints REST},label=lst:11.25]
+@RestController @RequestMapping("/api/v1/libros") // expone endpoints REST con JSON
+public class LibroController { // clase publica
+  private final LibroRepository repo; // inmutable
+  // metodo publico
+  // metodo publico
+  public LibroController(LibroRepository r) { this.repo = r; }
+
+  // endpoint HTTP GET
+  // endpoint HTTP GET
+  @GetMapping public List<Libro> listar() { return repo.findAll(); }
+  // endpoint HTTP GET
+  // endpoint HTTP GET
+  @GetMapping("/{id}") public ResponseEntity<Libro> obtener(@PathVariable Long id) {
+    return repo.findById(id).map(ResponseEntity::ok) // retorna
+      .orElse(ResponseEntity.notFound().build());
+  }
+  // endpoint HTTP POST (crear)
+  // endpoint HTTP POST (crear)
+  @PostMapping public ResponseEntity<Libro> crear(@Valid @RequestBody Libro l) {
+    Libro guardado = repo.save(l);
+    return ResponseEntity.status(201).body(guardado); // retorna
+  }
+  // endpoint HTTP PUT (actualizar completo)
+  // endpoint HTTP PUT (actualizar completo)
+  @PutMapping("/{id}") public ResponseEntity<Libro> actualizar(
+      @PathVariable Long id, @Valid @RequestBody Libro l) { // extrae valor de la URL
+    return repo.findById(id).map(existente -> { // retorna
+      existente.setTitulo(l.getTitulo());
+      existente.setAutor(l.getAutor());
+      existente.setAnio(l.getAnio());
+      return ResponseEntity.ok(repo.save(existente)); // retorna
+    }).orElse(ResponseEntity.notFound().build());
+  }
+  // endpoint HTTP DELETE (eliminar)
+  // endpoint HTTP DELETE (eliminar)
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    return repo.findById(id).map(l -> { // retorna
+      repo.delete(l);
+      return ResponseEntity.noContent().<Void>build(); // retorna
+    }).orElse(ResponseEntity.notFound().build());
+  }
+}
+\end{lstlisting}
+
+\textbf{Resultado visual} de \texttt{GET /api/v1/libros} en Postman
+tras insertar tres libros:
+
+\begin{center}
+\fbox{\begin{minipage}{0.9\textwidth}
+\vspace{0.2cm}\footnotesize
+\hspace{0.3cm}\textbf{GET} \texttt{http://localhost:8080/api/v1/libros} $\quad$ \textbf{200 OK}\\[0.3cm]
+\hspace{0.3cm}\texttt{[}\\
+\hspace{0.6cm}\texttt{\{ \char34{}id\char34{}: 1, \char34{}titulo\char34{}: \char34{}Clean Code\char34{}, \char34{}autor\char34{}: \char34{}Robert C. Martin\char34{}, \char34{}anio\char34{}: 2008 \},}\\
+\hspace{0.6cm}\texttt{\{ \char34{}id\char34{}: 2, \char34{}titulo\char34{}: \char34{}Designing Data-Intensive Applications\char34{},}\\
+\hspace{1.0cm}\texttt{\char34{}autor\char34{}: \char34{}Martin Kleppmann\char34{}, \char34{}anio\char34{}: 2017 \},}\\
+\hspace{0.6cm}\texttt{\{ \char34{}id\char34{}: 3, \char34{}titulo\char34{}: \char34{}Software Architecture in Practice\char34{},}\\
+\hspace{1.0cm}\texttt{\char34{}autor\char34{}: \char34{}Len Bass\char34{}, \char34{}anio\char34{}: 2021 \}}\\
+\hspace{0.3cm}\texttt{]}\\
+\vspace{0.1cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Vista de la tabla H2} (consola H2 en \url{http://localhost:8080/h2-console}):
+
+\begin{center}
+\fbox{\begin{minipage}{0.9\textwidth}
+\vspace{0.15cm}\footnotesize\centering
+\begin{tabular}{|c|l|l|c|}
+\hline
+\textbf{ID} & \textbf{TITULO} & \textbf{AUTOR} & \textbf{ANIO} \\
+\hline
+1 & Clean Code & Robert C. Martin & 2008 \\
+2 & Designing Data-Intensive Applications & Martin Kleppmann & 2017 \\
+3 & Software Architecture in Practice & Len Bass & 2021 \\
+\hline
+\end{tabular}\\[0.1cm]
+\end{minipage}}
+\end{center}
+
+\textbf{Discusión.} JPA generó automáticamente el SQL apropiado
+(\texttt{INSERT}, \texttt{SELECT}, \texttt{UPDATE}, \texttt{DELETE})
+y vinculó los parámetros por nombre, eliminando por completo la
+posibilidad de SQL Injection. Las validaciones \texttt{@NotBlank},
+\texttt{@Size} y \texttt{@Min}/\texttt{@Max} devuelven HTTP 400 con
+detalle si el cliente envía datos inválidos.
+\end{cajaejemplo}
+
+\begin{cajaejercicio}{Ejercicio propuesto 11.2 --- Catálogo de cursos con relaciones y paginación}
+\textbf{Enunciado.} Implementar un catálogo de cursos universitarios
+con relación \emph{«un curso tiene muchos estudiantes»} y
+\emph{«un estudiante puede estar en muchos cursos»} (\textbf{relación
+muchos-a-muchos}). Resolver el problema N+1 mediante \texttt{JOIN
+FETCH} y exponer endpoints REST con paginación, búsqueda y
+ordenamiento.
+
+\textbf{Entidades:}
+\begin{itemize}
+\item \texttt{Curso(id, codigo, nombre, creditos)}.
+\item \texttt{Estudiante(id, cedula, nombre, email)}.
+\item Tabla intermedia \texttt{inscripciones(curso\_id, estudiante\_id, fecha)}.
+\end{itemize}
+
+\textbf{Requisitos técnicos:}
+\begin{enumerate}
+\item Usar Spring Boot 4 + PostgreSQL 16 (no H2).
+\item Mapear la relación muchos-a-muchos con \texttt{@ManyToMany}.
+\item Endpoint \texttt{GET /api/v1/cursos?page=0\&size=10\&sort=nombre,asc}
+debe usar \texttt{Pageable}.
+\item Endpoint \texttt{GET /api/v1/cursos/\{id\}/estudiantes} debe
+usar \texttt{JOIN FETCH} para evitar N+1.
+\item Mostrar evidencia con Hibernate logs (\texttt{spring.jpa.show-sql=true})
+de que se ejecuta UNA consulta en lugar de N+1.
+\item Documentación OpenAPI con springdoc, accesible en
+\url{/swagger-ui.html}.
+\item Migraciones de BD con Flyway o Liquibase.
+\item Cobertura JaCoCo $\geq 70\%$ con tests de integración usando
+testcontainers.
+\end{enumerate}
+
+\textbf{Criterios de evaluación:}
+\begin{itemize}
+\item No hay SQL concatenado en ninguna parte del código.
+\item El log muestra una sola consulta para listar cursos con sus
+estudiantes (no N+1).
+\item Validaciones \texttt{@Valid} correctas en todos los endpoints.
+\item Documentación Swagger funcional.
+\end{itemize}
+
+\textbf{Lecturas recomendadas:} \cite{ottinger2017hibernate} para
+optimización de queries; \cite{ottinger2017hibernate} para análisis del
+problema N+1 en producción.
+\end{cajaejercicio}
+
+% =====================================================================
+%       SEMANA 12: PATRONES ARQUITECTÓNICOS PARA APLICACIONES WEB
+% =====================================================================
+\chapter{Patrones de arquitectura para aplicaciones web}
+\label{cap:semana12}
+
+\epigraph{«La arquitectura es el conjunto de decisiones que son
+difíciles de cambiar. Un buen arquitecto, por tanto, posterga las
+decisiones innecesarias y razona profundamente las inevitables.»}
+{--- \textit{Adaptado de Robert C.~Martin}}
+
+\section*{Resultado de aprendizaje de la semana}
+Al concluir la semana 12, el estudiante diseña aplicaciones web bajo
+patrones arquitectónicos escalables (multicapa, hexagonal, SOA,
+microservicios, EDA, P2P), documenta sus decisiones con el modelo C4
+\cite{brown2023c4} y los Architectural Decision Records (ADR), y
+evalúa los \emph{trade-offs} entre atributos de calidad ISO/IEC 25010
+\cite{iso25010}.
+
+\section{Principios fundacionales de arquitectura de software}
+
+Antes de hablar de patrones concretos (capas, hexagonal,
+microservicios), conviene fijar los principios fundacionales que los
+gobiernan todos: separación de intereses, alta cohesión, bajo
+acoplamiento, dependencias unidireccionales.
+
+
+\begin{cajadefinicion}{¿Qué es la arquitectura de software?}
+Según Bass, Clements y Kazman \cite{bass2021software}, la arquitectura
+de un sistema computacional es \emph{el conjunto de estructuras
+necesarias para razonar sobre el sistema, comprende los elementos del
+software, las relaciones entre ellos y las propiedades de ambos}.
+
+Tres ideas clave en esta definición:
+\begin{itemize}
+\item \textbf{Estructuras múltiples}: no hay UNA arquitectura, sino
+varias vistas (estática, dinámica, despliegue).
+\item \textbf{Razonamiento}: la arquitectura existe para que un
+equipo pueda pensar el sistema sin perderse en detalles.
+\item \textbf{Decisiones difíciles de cambiar}: lo arquitectónico es
+lo que costaría reescribir si se cambiara.
+\end{itemize}
+\end{cajadefinicion}
+
+\subsection{Los principios SOLID aplicados a la arquitectura}
+
+Los principios SOLID, formulados originalmente por Robert C.
+Martin para diseño orientado a objetos, se generalizan a la
+arquitectura. La caja siguiente los traduce al contexto
+arquitectónico.
+
+
+\begin{table}[htbp]
+\centering
+\caption{SOLID, sus autores y significado en arquitectura.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Principio} & \textbf{Significado} & \textbf{Aplicación arquitectónica}\\
+\midrule
+S --- Single Responsibility & Una clase, una razón para cambiar & Cada módulo/servicio tiene un foco\\
+O --- Open/Closed & Abierto a extensión, cerrado a modificación & Plugins, hooks, eventos\\
+L --- Liskov Substitution & Subtipos sustituibles por sus tipos base & Polimorfismo correcto\\
+I --- Interface Segregation & Interfaces pequeñas y enfocadas & APIs minimal por módulo\\
+D --- Dependency Inversion & Depender de abstracciones, no concreciones & Inyección de dependencias\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Atributos de calidad ISO/IEC 25010}
+
+El estándar ISO/IEC 25010 define las características de
+calidad de un sistema software. Conocerlas permite razonar sobre
+arquitectura de forma estructurada. La tabla siguiente las cataloga.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center},
+  centro/.style={circle,draw=uteqverde,thick,fill=uteqverde!20,
+                 minimum size=2.2cm,font=\small\bfseries},
+  atrib/.style={rectangle,draw=uteqverde!80,fill=uteqverde!8,thick,
+                rounded corners=4pt,minimum width=2cm,minimum height=0.7cm}]
+
+  \node[centro] (q) {Calidad\\ISO 25010};
+
+  \node[atrib,above=2cm of q] (func) {Idoneidad\\funcional};
+  \node[atrib,right=2cm of func] (perf) {Eficiencia de\\desempeño};
+  \node[atrib,right=of q] (comp) {Compatibilidad};
+  \node[atrib,below right=2cm and 1cm of q] (usab) {Usabilidad};
+  \node[atrib,below=2cm of q] (fiab) {Fiabilidad};
+  \node[atrib,below left=2cm and 1cm of q] (segu) {Seguridad};
+  \node[atrib,left=of q] (mant) {Mantenibilidad};
+  \node[atrib,left=2cm of func] (port) {Portabilidad};
+
+  \foreach \n in {func,perf,comp,usab,fiab,segu,mant,port}
+    \draw[uteqverde!50,thick] (q) -- (\n);
+\end{tikzpicture}
+\caption{Los ocho atributos de calidad de la norma ISO/IEC 25010. Toda
+decisión arquitectónica supone un \emph{trade-off} entre algunos de
+estos atributos.}
+\end{figure}
+
+\section{Patrón 1: Arquitectura por capas (3-capas y 4-capas)}
+
+La arquitectura por capas es el patrón más extendido en
+aplicaciones empresariales: la aplicación se divide en niveles
+horizontales con responsabilidades específicas y dependencias hacia
+abajo.
+
+
+\subsection{Estructura clásica}
+
+La estructura clásica de tres capas (presentación, lógica,
+datos) se ha extendido a cuatro al separar la lógica de aplicación
+del dominio. La figura siguiente la ilustra.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize,align=center},
+  capa/.style={rectangle,draw=uteqverde,thick,minimum width=10cm,
+               minimum height=1.1cm,rounded corners=2pt}]
+  \node[capa,fill=uteqverde!15]
+    (pres) {\textbf{Presentación}\\
+            Razor / Thymeleaf / Angular --- Controllers --- DTOs};
+  \node[capa,fill=uteqverde!25,below=0.3cm of pres]
+    (neg)  {\textbf{Negocio / Servicios}\\
+            Casos de uso, reglas de dominio, validación};
+  \node[capa,fill=uteqverde!35,below=0.3cm of neg]
+    (dat)  {\textbf{Acceso a Datos / Repositorios}\\
+            JPA / Doctrine / EF Core};
+  \node[capa,fill=uteqverde!50,below=0.3cm of dat]
+    (db)   {\textbf{Base de Datos}\\
+            PostgreSQL / MySQL / SQL Server};
+
+  \draw[->,>=stealth,thick] ([xshift=-3cm]pres.south)
+       -- ([xshift=-3cm]neg.north);
+  \draw[->,>=stealth,thick] ([xshift=-3cm]neg.south)
+       -- ([xshift=-3cm]dat.north);
+  \draw[->,>=stealth,thick] ([xshift=-3cm]dat.south)
+       -- ([xshift=-3cm]db.north);
+\end{tikzpicture}
+\caption{Arquitectura clásica de 4 capas para aplicaciones web. La
+dependencia siempre es descendente: la capa superior depende de la
+inferior, nunca al revés.}
+\end{figure}
+
+\textbf{Regla cardinal:} una capa puede invocar a la inmediatamente
+inferior; nunca al revés ni saltarse capas (no permitir que un
+controller acceda directamente al SGBD).
+
+\subsection{Implementación canónica en Spring Boot}
+
+Spring Boot facilita la implementación de la arquitectura por
+capas mediante sus anotaciones estereotipo
+(\texttt{@Controller}, \texttt{@Service}, \texttt{@Repository}). El
+ejemplo siguiente muestra una implementación canónica.
+
+
+\begin{cajaejemplo}{Ejemplo 12.1 --- Estructura por capas en un proyecto Spring Boot}
+
+\textbf{Enunciado.} Modelar arquitectónicamente con el modelo C4 (niveles 1 y 2) una tienda en línea sencilla. Producir el diagrama de Contexto y el de Contenedores.
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:12.1]
+src/main/java/ec/edu/uteq/appweb/
+  controller/         <- Capa de Presentacion
+    ProductoController.java
+    ExceptionHandler.java
+  service/            <- Capa de Negocio
+    ProductoService.java
+    impl/ProductoServiceImpl.java
+  repository/         <- Capa de Acceso a Datos
+    ProductoRepository.java
+  model/              <- Entidades de dominio
+    Producto.java
+  dto/                <- Objetos de transferencia
+    ProductoDto.java
+    ProductoRequest.java
+  exception/
+    ResourceNotFoundException.java
+    ValidationException.java
+  config/
+    SecurityConfig.java
+    WebConfig.java
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsection{Variante: Arquitectura Hexagonal (Ports and Adapters)}
+
+La arquitectura hexagonal (\emph{Ports and Adapters}) de
+Alistair Cockburn es una variante refinada de la arquitectura por
+capas que coloca el dominio en el centro y vuelve invertibles las
+dependencias.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center}]
+
+  \node[regular polygon,regular polygon sides=6,
+        draw=uteqverde,thick,fill=uteqverde!10,
+        minimum width=4cm] (hex) {};
+  \node[font=\small\bfseries,align=center] at (hex) {Dominio\\(Casos de uso)\\Puro Java};
+
+  \node[rectangle,draw=uteqdorado,fill=uteqdorado!15,thick,
+        rounded corners,minimum width=2cm,minimum height=0.8cm,
+        above left=1cm and -0.5cm of hex] (rest) {REST\\Controller};
+  \node[rectangle,draw=uteqdorado,fill=uteqdorado!15,thick,
+        rounded corners,minimum width=2cm,minimum height=0.8cm,
+        above right=1cm and -0.5cm of hex] (cli) {Cliente\\HTTP};
+  \node[rectangle,draw=uteqdorado,fill=uteqdorado!15,thick,
+        rounded corners,minimum width=2cm,minimum height=0.8cm,
+        below left=1cm and -0.5cm of hex] (jpa) {JPA\\Repository};
+  \node[rectangle,draw=uteqdorado,fill=uteqdorado!15,thick,
+        rounded corners,minimum width=2cm,minimum height=0.8cm,
+        below right=1cm and -0.5cm of hex] (cache) {Redis\\Cache};
+
+  \draw[<->,thick] (rest)  -- (hex);
+  \draw[<->,thick] (cli)   -- (hex);
+  \draw[<->,thick] (jpa)   -- (hex);
+  \draw[<->,thick] (cache) -- (hex);
+\end{tikzpicture}
+\caption{Arquitectura hexagonal: el dominio (centro) define
+\emph{ports} (interfaces) y los \emph{adapters} (implementaciones)
+externos lo conectan con tecnologías concretas (REST, JPA, Redis).
+Permite cambiar el adaptador de persistencia sin tocar el dominio.}
+\end{figure}
+
+\section{Patrón 2: Arquitectura Orientada a Servicios (SOA)}
+
+SOA emergió en los 2000 como enfoque para integrar sistemas
+heterogéneos mediante servicios autónomos comunicados por SOAP/XML
+sobre un \emph{Enterprise Service Bus} (ESB). Características:
+
+\begin{itemize}
+\item Servicios reutilizables expuestos vía contratos formales (WSDL).
+\item Comunicación asíncrona vía ESB (TIBCO, MuleSoft, IBM IIB).
+\item Gobernanza centralizada (registro de servicios, políticas
+unificadas).
+\item Datos a menudo compartidos entre servicios.
+\end{itemize}
+
+\textbf{Cuándo SOA sigue siendo relevante:} integraciones con
+sistemas heredados (banca, gobierno), entornos donde el WSDL es
+contractualmente exigido, dominios con altos requisitos de
+interoperabilidad B2B.
+
+\section{Patrón 3: Microservicios}
+
+Microservicios es el patrón arquitectónico que más atención
+ha recibido en la última década. Implica descomponer el sistema en
+servicios pequeños, autónomos, desplegables y escalables
+independientemente.
+
+
+\begin{cajadefinicion}{Microservicios según Newman}
+\emph{«Pequeños servicios autónomos que trabajan juntos, modelados
+alrededor de un dominio de negocio.»} \cite{newman2021building}
+
+\textbf{Características distintivas:}
+\begin{itemize}
+\item Servicios pequeños con responsabilidad acotada.
+\item Despliegue independiente (cada servicio tiene su pipeline CI/CD).
+\item Comunicación vía HTTP/JSON o eventos asíncronos.
+\item Datos descentralizados (una BD por servicio).
+\item Equipos autónomos (cada equipo es dueño de uno o varios servicios).
+\item Heterogeneidad tecnológica permitida.
+\end{itemize}
+\end{cajadefinicion}
+
+\subsection{Comparativa SOA vs microservicios}
+
+SOA (\emph{Service-Oriented Architecture}) y microservicios
+comparten la idea de modularidad por servicios, pero difieren en
+escala, autonomía y tecnologías. La tabla siguiente los contrasta.
+
+
+\begin{cajacompara}{SOA clásico vs microservicios modernos}
+\centering\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Criterio} & \textbf{SOA clásico} & \textbf{Microservicios}\\
+\midrule
+Tamaño del servicio & Mediano-grande & Pequeño y enfocado\\
+Comunicación & SOAP/XML, ESB centralizado & REST/JSON, gRPC, eventos\\
+Datos & Compartidos vía ESB & Una BD por servicio\\
+Despliegue & Acoplado al ESB & Independiente por servicio\\
+Equipos & Centralizados & Autónomos por servicio\\
+Lenguajes & Generalmente Java/.NET & Heterogéneo\\
+Coreografía/Orquestación & ESB orquesta & Coreografía con eventos\\
+Madurez del enfoque & 2000s & 2015+\\
+Complejidad operacional & Alta (ESB) & Alta (distribuida)\\
+\bottomrule
+\end{tabularx}
+\end{cajacompara}
+
+\subsection{Cuándo NO usar microservicios}
+
+Microservicios no es la solución para todo problema. Hay
+escenarios donde adoptarlos prematuramente genera más complejidad
+que valor. La caja siguiente enumera los casos donde un monolito
+modular es la mejor opción.
+
+
+\begin{cajaadvertencia}{El error costoso de los microservicios prematuros}
+Sam Newman y Martin Fowler son enfáticos: los microservicios son
+una \textbf{arquitectura distribuida}, y los sistemas distribuidos
+son \emph{inherentemente complejos}. Los problemas que un monolito
+resuelve trivialmente (transacciones ACID, debugging,
+deployment) se vuelven retos no triviales en microservicios.
+
+\textbf{No use microservicios si:}
+\begin{itemize}
+\item Su equipo es pequeño (menos de 8 personas).
+\item No tiene CI/CD maduro y observabilidad robusta.
+\item No domina contenedores y orquestación (Kubernetes).
+\item No ha experimentado los dolores reales de un monolito grande.
+\end{itemize}
+
+\textbf{La recomendación moderna} (Fowler 2024) es \emph{«monolith
+first»}: empezar con un monolito modular bien diseñado, y migrar
+servicios a microservicios solo cuando se justifique con datos.
+\end{cajaadvertencia}
+
+\subsection{Patrones esenciales de microservicios}
+
+Los microservicios traen consigo problemas distribuidos
+(latencia, fallos parciales, consistencia eventual) que se mitigan
+con patrones específicos. La lista siguiente recoge los esenciales.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Patrones imprescindibles en arquitectura de microservicios.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Patrón} & \textbf{Propósito}\\
+\midrule
+API Gateway & Punto único de entrada; auth, rate-limiting, routing.\\
+Service Discovery & Registro y descubrimiento dinámico (Eureka, Consul).\\
+Circuit Breaker & Cortar llamadas a servicios fallidos (Resilience4j).\\
+Saga & Transacciones distribuidas vía secuencia de eventos.\\
+CQRS & Separar comandos (escritura) de queries (lectura).\\
+Event Sourcing & El estado se deriva de un log de eventos inmutable.\\
+Sidecar & Funciones transversales en contenedor adyacente.\\
+Bulkhead & Aislamiento de recursos para evitar cascada de fallos.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Patrón 4: Arquitectura dirigida por eventos (EDA)}
+
+En EDA los componentes se comunican mediante \emph{eventos}
+(mensajes) en lugar de invocaciones directas. Tres roles:
+
+\begin{itemize}
+\item \textbf{Producer}: publica eventos cuando algo relevante ocurre.
+\item \textbf{Broker}: encamina eventos (RabbitMQ, Apache Kafka, AWS
+SNS/SQS).
+\item \textbf{Consumer}: se suscribe y procesa eventos
+asíncronamente.
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center},
+  caja/.style={rectangle,draw=uteqverde,thick,minimum width=2cm,
+               minimum height=0.8cm,fill=uteqverde!10,rounded corners=2pt},
+  flecha/.style={->,>=stealth,thick}]
+
+  \node[caja] (p1) {Servicio\\Pedidos};
+  \node[caja,below=of p1] (p2) {Servicio\\Pagos};
+
+  \node[regular polygon,regular polygon sides=8,
+        draw=uteqdorado,thick,fill=uteqdorado!15,
+        minimum width=2.5cm,right=2cm of p1,yshift=-0.7cm] (br) {};
+  \node[font=\bfseries\scriptsize] at (br) {Event\\Broker\\(Kafka)};
+
+  \node[caja,right=2cm of br,yshift=0.8cm] (c1) {Servicio\\Email};
+  \node[caja,right=2cm of br] (c2) {Servicio\\Inventario};
+  \node[caja,right=2cm of br,yshift=-0.8cm] (c3) {Servicio\\Analitica};
+
+  \draw[flecha] (p1) -- node[above]{publica} (br);
+  \draw[flecha] (p2) -- node[below]{publica} (br);
+  \draw[flecha] (br) -- node[above]{} (c1);
+  \draw[flecha] (br) -- node[above]{} (c2);
+  \draw[flecha] (br) -- node[above]{} (c3);
+\end{tikzpicture}
+\caption{Flujo en una arquitectura dirigida por eventos: los servicios
+publican eventos sin saber quién los consumirá; los consumers se
+suscriben a los eventos que les interesan.}
+\end{figure}
+
+\textbf{Ventajas:} desacoplamiento temporal y espacial,
+escalabilidad horizontal trivial, resiliencia ante caídas parciales.
+
+\textbf{Costos:} complejidad operacional, debugging distribuido
+difícil, consistencia eventual (no ACID), \emph{message ordering}
+problemático.
+
+\section{Patrón 5: Peer-to-peer (P2P)}
+
+Cada nodo es simultáneamente cliente y servidor. Histórica (Napster,
+Gnutella, BitTorrent), actualmente vigente en \emph{blockchain},
+\emph{IPFS}, dApps y comunicaciones cifradas (Briar, Jami).
+
+\textbf{Para aplicaciones web empresariales tradicionales, el modelo
+P2P rara vez es la respuesta.} Lo mencionamos porque el sílabo lo
+incluye y porque puede aparecer si el PFC tiene componentes
+descentralizados.
+
+\section{Documentación arquitectónica con el modelo C4 de Brown}
+
+El modelo C4 \cite{brown2023c4} estructura la documentación
+arquitectónica en cuatro niveles de abstracción crecientes en detalle.
+
+\subsection{Los cuatro niveles del modelo C4}
+
+El modelo C4 de Simon Brown propone documentar la
+arquitectura en cuatro niveles de zoom: Contexto, Contenedores,
+Componentes y Código. Cada nivel responde preguntas distintas. La
+descripción siguiente los detalla.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center},
+  nivel/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!10,
+                rounded corners=4pt,minimum width=4cm,minimum height=1.5cm}]
+
+  \node[nivel] (n1) {\textbf{Nivel 1: Contexto}\\
+                     Cómo el sistema encaja\\con usuarios y sistemas externos};
+  \node[nivel,right=0.5cm of n1] (n2)
+       {\textbf{Nivel 2: Contenedores}\\
+        Apps web, APIs, BDs,\\colas de mensajes};
+  \node[nivel,below=0.6cm of n1] (n3)
+       {\textbf{Nivel 3: Componentes}\\
+        Descomposición interna\\de cada contenedor};
+  \node[nivel,right=0.5cm of n3] (n4)
+       {\textbf{Nivel 4: Código}\\
+        Diagrama de clases UML,\\opcional};
+
+  \draw[->,>=stealth,thick,uteqverde!70!black] (n1) -- (n2);
+  \draw[->,>=stealth,thick,uteqverde!70!black] (n2) -- (n3);
+  \draw[->,>=stealth,thick,uteqverde!70!black] (n3) -- (n4);
+\end{tikzpicture}
+\caption{Los cuatro niveles del modelo C4. Cada nivel hace zoom sobre
+un elemento del nivel superior. La mayoría de equipos solo necesita
+los niveles 1, 2 y 3; el nivel 4 se genera automáticamente desde el
+código.}
+\end{figure}
+
+\subsection{Ejemplo: diagrama de contexto del PFC}
+
+El diagrama de contexto del PFC muestra el sistema como una
+caja única y sus interacciones con usuarios y sistemas externos. Es
+el primer artefacto que debe acompañar todo PFC.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=1.5cm and 2cm]
+  \cfourPerson{est}{(0,0)}{Estudiante}
+  \cfourPerson{adm}{(0,-2.5)}{Administrador}
+  \cfourSystem{sis}{(5,-1.25)}{Sistema PFC\\(API + SPA Angular)}
+  \cfourSystem{smtp}{(10,0)}{Servicio SMTP\\externo (SendGrid)}
+  \cfourSystem{idp}{(10,-2.5)}{Identidad UTEQ\\(LDAP)}
+
+  \draw[->,thick,>=stealth] (est) -- node[above,font=\tiny]{HTTPS} (sis);
+  \draw[->,thick,>=stealth] (adm) -- node[below,font=\tiny]{HTTPS} (sis);
+  \draw[->,thick,>=stealth] (sis) -- node[above,font=\tiny]{SMTP} (smtp);
+  \draw[->,thick,>=stealth] (sis) -- node[above,font=\tiny]{LDAP} (idp);
+\end{tikzpicture}
+\caption{Nivel 1 (Contexto) del modelo C4 para el PFC: usuarios y
+sistemas externos.}
+\end{figure}
+
+\subsection{Ejemplo: diagrama de contenedores del PFC}
+
+El diagrama de contenedores zoom-in sobre la caja del nivel
+1 y revela las piezas tecnológicas mayores: frontend SPA, backend
+API, base de datos, cache, servicios externos. La figura siguiente
+lo ilustra para el PFC.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=1.5cm and 1.8cm]
+  \cfourPerson{usr}{(0,0)}{Usuario\\(Estudiante)}
+
+  \cfourContainer{spa}{(4,0)}{Frontend\\Angular 19\\(SPA)}
+  \cfourContainer{api}{(8,0)}{API REST\\Spring Boot 4\\(Tomcat 10.1)}
+  \cfourDb{pg}{(12,0)}{PostgreSQL\\16}
+  \cfourDb{rd}{(12,-2.5)}{Redis 7.4\\(cache)}
+
+  \draw[->,thick,>=stealth] (usr.east) -- node[above,font=\tiny]{HTTPS} (spa.west);
+  \draw[->,thick,>=stealth] (spa.east) -- node[above,font=\tiny]{JSON} (api.west);
+  \draw[->,thick,>=stealth] (api.east) -- node[above,font=\tiny]{JDBC/SSL} (pg.west);
+  \draw[->,thick,>=stealth] (api) -- node[right,font=\tiny]{TCP} (rd);
+\end{tikzpicture}
+\caption{Nivel 2 (Contenedores) del PFC: las unidades desplegables
+y la tecnología de cada una.}
+\end{figure}
+
+\section{Architectural Decision Records (ADR)}
+
+Un ADR documenta una decisión arquitectónica significativa.
+Formato canónico (Michael Nygard, 2011) consta de cuatro secciones:
+\textbf{Contexto}, \textbf{Decisión}, \textbf{Estado},
+\textbf{Consecuencias}.
+
+\begin{cajaadr}{ADR-001 --- Adoptar JWT en lugar de sesiones de servidor}
+\textbf{Estado:} Aceptada el 2026-05-04.
+
+\textbf{Contexto:} El frontend del PFC es una SPA Angular y el
+backend es una API REST que requiere escalar horizontalmente con
+Docker Compose en el laboratorio y, eventualmente, en cloud. Las
+sesiones en memoria del servidor obligarían a \emph{sticky sessions}
+en el balanceador o a un \emph{session store} compartido (Redis,
+JDBC), lo que añade complejidad operacional.
+
+\textbf{Decisión:} Adoptar autenticación con JSON Web Token (JWT)
+firmado HS256 con secreto de 256 bits, transportado en cookie
+\texttt{HttpOnly} \texttt{Secure} \texttt{SameSite=Strict}, con
+\emph{refresh token} de 7 días y \emph{blacklist} en Redis para
+revocación inmediata por JTI.
+
+\textbf{Consecuencias:}
+\begin{itemize}
+\item[(+)] Backend stateless: cualquier instancia puede validar.
+\item[(+)] Compatible con CORS sin sticky sessions.
+\item[(+)] Incluye claims (rol, email) sin consulta extra a BD.
+\item[(--)] Revocación requiere blacklist (mayor complejidad).
+\item[(--)] El JWT es más grande que un session ID (\textasciitilde 350 bytes vs 32).
+\item[(--)] Si se compromete el secreto, todos los tokens son
+inválidos.
+\end{itemize}
+
+\textbf{Alternativas consideradas:}
+\begin{itemize}
+\item Sesiones server-side con Spring Session + Redis: descartada
+por complejidad operacional desproporcionada.
+\item OAuth 2.0 con servidor de autorización dedicado (Keycloak):
+descartada por excesiva infraestructura para un PFC.
+\end{itemize}
+\end{cajaadr}
+
+\section{Práctica integrada: documentar el PFC con C4 y ADRs}
+
+La práctica de la semana es documentar el PFC del equipo con
+diagramas C4 (niveles 1 y 2) y al menos dos ADRs justificando las
+decisiones arquitectónicas mayores.
+
+
+\begin{cajaejercicio}{Ejercicio 12.1 --- Entrega 2 del PFC --- Arquitectura Completa (Sumativa)}
+
+
+\textbf{Enunciado.} Producir la Entrega 2 completa del PFC del equipo: arquitectura documentada con C4, API REST funcional con OpenAPI y frontend Angular consumiéndola. Sumativa principal del segundo corte.
+
+\textbf{Esta es la \emph{Sumativa TA --- PFC Entrega 2: Arquitectura
+Completa + API REST Documentada + Frontend Angular Funcional}.}
+
+\subsubsection*{IDE y herramientas}
+
+Antes de los pasos, conviene confirmar las herramientas que
+el estudiante debe tener instaladas para la práctica.
+
+
+\begin{itemize}
+\item \textbf{IntelliJ IDEA Ultimate} (con plugins Spring Boot,
+Database, Docker).
+\item \textbf{Structurizr DSL} en línea (\url{https://www.structurizr.com/dsl})
+o \textbf{draw.io} integrado en IntelliJ
+(plugin \emph{Diagrams.net Integration}).
+\item \textbf{Postman} para probar endpoints.
+\end{itemize}
+
+\subsubsection*{Paso 1 --- Generar diagrama C4 Nivel 1 (Contexto)}
+
+En \url{https://www.structurizr.com/dsl}, crear un workspace y pegar (Listado~\ref{lst:12.2}):
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:12.2]
+workspace "PFC UTEQ" {
+  model {
+    estudiante = person "Estudiante"
+    admin      = person "Administrador"
+    sistema    = softwareSystem "Sistema PFC" {
+      tags "App Principal"
+    }
+    smtp = softwareSystem "Servicio SMTP" {
+      tags "Externo"
+    }
+    estudiante -> sistema "Usa via HTTPS"
+    admin      -> sistema "Administra"
+    sistema    -> smtp    "Envia notificaciones"
+  }
+  views {
+    systemContext sistema "Contexto" {
+      include *
+      autoLayout
+    }
+  }
+}
+\end{lstlisting}
+
+Pulsar \texttt{Render}: aparece el diagrama. Exportar como PNG.
+
+\subsubsection*{Paso 2 --- Generar diagrama C4 Nivel 2 (Contenedores)}
+
+Extender el modelo (Listado~\ref{lst:12.3}):
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:12.3]
+sistema = softwareSystem "Sistema PFC" {
+  spa     = container "SPA Angular"     "Angular 19" "TypeScript"
+  api     = container "API REST"        "Spring Boot 4" "Java"
+  db      = container "Base de datos"   "PostgreSQL 16"  "BD" {
+    tags "Database"
+  }
+  cache   = container "Cache"           "Redis 7.4"      "BD" {
+    tags "Database"
+  }
+  spa -> api "JSON via HTTPS"
+  api -> db  "JDBC/SSL"
+  api -> cache "TCP"
+}
+\end{lstlisting}
+
+\subsubsection*{Paso 3 --- Crear los 5 ADRs en el repositorio Git}
+
+En el repositorio del PFC, crear directorio \texttt{docs/adr/}.
+Crear estos archivos en formato Markdown:
+
+\begin{itemize}
+\item \texttt{ADR-001-JWT-vs-sesiones.md}
+\item \texttt{ADR-002-PostgreSQL-vs-MySQL.md}
+\item \texttt{ADR-003-Spring-Boot-vs-Quarkus.md}
+\item \texttt{ADR-004-Redis-cache-aside.md}
+\item \texttt{ADR-005-Docker-Compose-deployment.md}
+\end{itemize}
+
+Cada ADR sigue la plantilla de Nygard mostrada en este capítulo.
+
+\subsubsection*{Paso 4 --- Tabla de atributos de calidad ISO 25010}
+
+Documentar en el informe técnico esta tabla:
+
+\begin{tabularx}{\textwidth}{llXX}
+\toprule
+\textbf{Atributo} & \textbf{Prioridad} & \textbf{Escenario} & \textbf{Estrategia}\\
+\midrule
+Seguridad & Crítica & SQL Injection en endpoints & JPA + Bean Validation\\
+Eficiencia & Alta & Listado de productos < 200ms & Cache Redis con TTL 60s\\
+Usabilidad & Alta & Login intuitivo & Angular con feedback visual\\
+Mantenibilidad & Alta & Nuevo dev productivo en 1 día & C4 + ADRs + README\\
+Fiabilidad & Media & Disponibilidad 99\% & Health checks + Docker restart\\
+Portabilidad & Media & Mover de Windows a Linux & Docker Compose\\
+\bottomrule
+\end{tabularx}
+
+\subsubsection*{Paso 5 --- API REST documentada con Swagger UI}
+
+Agregar al \texttt{pom.xml} (Listado~\ref{lst:12.4}):
+
+\begin{lstlisting}[style=xml,numbers=none,caption={Ejemplo de XML},label=lst:12.4]
+<dependency>
+  <groupId>org.springdoc</groupId>
+  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+  <version>2.6.0</version>
+</dependency>
+\end{lstlisting}
+
+Reiniciar la aplicación. Abrir
+\url{http://localhost:8080/swagger-ui.html}: aparece toda la API
+documentada y probable interactivamente.
+
+\subsubsection*{Paso 6 --- Frontend Angular conectado}
+
+Crear el frontend con Angular CLI (Listado~\ref{lst:12.5}):
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:12.5]
+ng new frontend --standalone --routing --style=scss
+cd frontend # cambia directorio
+ng generate service auth
+ng generate component login --standalone
+\end{lstlisting}
+
+Implementar el flujo de login que llame al endpoint
+\texttt{POST /api/auth/login} y guarde el JWT en cookie HttpOnly
+(que el backend establece).
+
+\subsubsection*{Paso 7 --- Empaquetar todo con Docker Compose}
+
+Crear \texttt{docker-compose.yml} en la raíz (Listado~\ref{lst:12.6}):
+
+\begin{lstlisting}[style=yaml,numbers=none,caption={Ejemplo de YAML},label=lst:12.6]
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: appweb
+      POSTGRES_PASSWORD: appweb
+      POSTGRES_DB:   appweb
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD","pg_isready","-U","appweb"]
+      interval: 10s
+
+  redis: # configuracion del cliente Redis
+    image: redis:7-alpine # configuracion del cliente Redis
+    ports: ["6379:6379"]
+
+  api:
+    build: ./backend
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis:    { condition: service_started } # configuracion del cliente Redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/appweb
+      SPRING_REDIS_HOST: redis
+    ports: ["8080:8080"]
+
+  web:
+    build: ./frontend
+    depends_on: [api]
+    ports: ["80:80"]
+
+volumes:
+  pgdata:
+\end{lstlisting}
+
+\subsubsection*{Paso 8 --- Verificar el despliegue completo}
+
+Como verificación final, el estudiante debe levantar el
+sistema completo y validar que funciona end-to-end antes de
+considerar terminada la entrega. V\'ease el Listado~\ref{lst:12.7}.
+
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:12.7]
+docker compose up -d # levanta los servicios del compose
+docker compose ps # todos healthy
+curl http://localhost:8080/actuator/health
+# Abrir http://localhost en el navegador: SPA cargada
+\end{lstlisting}
+
+\subsubsection*{Entregables}
+
+La entrega de la práctica de la semana 12 debe incluir los
+siguientes artefactos consolidados.
+
+
+\begin{enumerate}
+\item Repositorio Git con tag \texttt{v0.5.0}.
+\item Documento PDF (15--25 páginas) con: portada UTEQ, diagrama C4
+nivel 1 y 2 (PNG), tabla atributos calidad, los 5 ADRs, capturas de
+Swagger UI funcional, capturas de la SPA Angular en login,
+\texttt{docker-compose.yml} comentado.
+\item Demostración en clase: \texttt{docker compose up} arranca todo
+en menos de 2 minutos.
+\end{enumerate}
+
+\textbf{Esta es la \emph{Sumativa de la semana 12}: PFC Entrega 2.}
+\end{cajaejercicio}
+
+\section{Buenas prácticas profesionales en arquitectura}
+
+La caja siguiente compila quince reglas profesionales de
+arquitectura que el estudiante debe respetar al diseñar cualquier
+sistema.
+
+
+\begin{cajabuenas}{Doce reglas profesionales 2026}
+\begin{enumerate}
+\item \emph{Monolith first}: empezar con monolito modular bien
+diseñado.
+\item Documentar TODA decisión significativa con un ADR.
+\item Diagramas C4 nivel 1 y 2 obligatorios; nivel 3 si el sistema
+es grande.
+\item Atributos de calidad explícitos al inicio del proyecto.
+\item Versionar la documentación arquitectónica como código (Git).
+\item Revisar la arquitectura cada trimestre con todo el equipo.
+\item Evitar acoplamiento entre servicios vía base de datos
+compartida.
+\item Cada servicio dueño de su esquema (en microservicios).
+\item Comunicación asíncrona cuando se pueda; síncrona solo cuando
+sea inevitable.
+\item Health checks y observabilidad desde el día 1.
+\item Tests de arquitectura con ArchUnit (Java) o NetArchTest (.NET).
+\item Pensar en \emph{evolutionary architecture}: cambiar es la
+norma, no la excepción.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Ejercicio resuelto adicional con resultado visual}
+
+Como cierre, el siguiente ejercicio resuelto adicional
+incluye un caso completo con diagramas y ADR; lo acompaña un
+propuesto.
+
+
+\begin{cajaejemplo}{Ejercicio resuelto 12.1 --- Diagrama C4 nivel 1 y 2 de una tienda en línea}
+\textbf{Enunciado.} Modelar arquitectónicamente con el modelo C4 una
+tienda en línea sencilla que tiene: SPA Angular para clientes,
+backend Spring Boot REST, PostgreSQL, Redis para caché de catálogo y
+servicio externo de pagos (Stripe). Producir los diagramas de nivel 1
+(Sistema-Contexto) y nivel 2 (Contenedores).
+
+\textbf{Nivel 1 --- Diagrama de Contexto del Sistema}
+(representación textual estilo ASCII; en producción se renderiza
+con PlantUML o Structurizr):
+
+\begin{center}
+\fbox{\begin{minipage}{0.9\textwidth}
+\vspace{0.2cm}\centering\footnotesize
+\begin{tabular}{c}
+\fbox{\textbf{Cliente}}\\[0.1cm]
+$\downarrow$\\[0.1cm]
+\fbox{\textbf{Sistema TiendaUTEQ}}\\[0.1cm]
+$\downarrow$ \\[0.1cm]
+\fbox{\textbf{Stripe API}}\\
+\end{tabular}\\[0.2cm]
+\textit{El cliente interactúa con TiendaUTEQ; el sistema consume Stripe para pagos.}
+\vspace{0.1cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Nivel 2 --- Diagrama de Contenedores:}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize,align=center},
+  persona/.style={circle,draw=uteqverde,thick,fill=uteqverde!15,minimum size=1.4cm},
+  contenedor/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!10,
+                     rounded corners=4pt,minimum width=2.8cm,minimum height=1.2cm},
+  externo/.style={rectangle,draw=uteqdorado,thick,fill=uteqdorado!15,
+                  dashed,minimum width=2.8cm,minimum height=1.2cm}]
+  \node[persona] (u) {Cliente};
+  \node[contenedor,right=1cm of u] (spa) {SPA Angular\\(Browser)};
+  \node[contenedor,right=1cm of spa] (api) {API REST\\(Spring Boot)};
+  \node[contenedor,below=0.6cm of api] (db) {BD\\(PostgreSQL)};
+  \node[contenedor,left=0.6cm of db] (redis) {Cache\\(Redis)};
+  \node[externo,right=1cm of api] (stripe) {Stripe};
+
+  \draw[->,thick] (u) -- node[above,font=\tiny]{HTTPS} (spa);
+  \draw[->,thick] (spa) -- node[above,font=\tiny]{JSON/HTTPS} (api);
+  \draw[->,thick] (api) -- node[right,font=\tiny]{JDBC} (db);
+  \draw[->,thick] (api) -- node[above,font=\tiny]{TCP} (redis);
+  \draw[->,thick] (api) -- node[above,font=\tiny]{HTTPS} (stripe);
+\end{tikzpicture}
+\caption{Diagrama C4 nivel 2 (contenedores) de TiendaUTEQ.}
+\end{figure}
+
+\textbf{ADR-001 correspondiente:}
+
+\begin{cajaadr}{ADR-001 --- Adopción de arquitectura por capas con caché Redis}
+\textbf{Estado:} Aceptado el 5 de mayo de 2026.
+
+\textbf{Contexto.} TiendaUTEQ requiere servir hasta 500
+usuarios concurrentes con tiempos de respuesta $<$ 300 ms en el
+listado de productos. La BD PostgreSQL muestra latencias de 50--80 ms
+en consultas frecuentes.
+
+\textbf{Decisión.} Adoptar arquitectura por capas (presentación,
+aplicación, dominio, infraestructura) con Spring Boot y agregar caché
+Redis al servicio de catálogo con TTL de 60 segundos.
+
+\textbf{Consecuencias positivas:}
+\begin{itemize}
+\item Tiempos de respuesta $<$ 50 ms tras el primer hit.
+\item Menor carga sobre PostgreSQL.
+\end{itemize}
+
+\textbf{Consecuencias negativas:}
+\begin{itemize}
+\item Complejidad operativa adicional (un contenedor más en Docker).
+\item Posibilidad de inconsistencia transitoria.
+\end{itemize}
+
+\textbf{Alternativas consideradas:}
+\begin{itemize}
+\item \emph{Caffeine in-process}: descartado por no compartir caché
+entre instancias.
+\item \emph{Memcached}: descartado por inferior soporte de
+estructuras de datos respecto a Redis.
+\end{itemize}
+\end{cajaadr}
+
+\textbf{Discusión.} El estudiante debe notar que el diagrama no
+muestra clases ni código: el nivel arquitectónico se ocupa de las
+piezas grandes y las decisiones difíciles de revertir
+\cite{bass2021software}. El ADR documenta la decisión para futuros
+mantenedores que se pregunten \emph{«¿por qué Redis?»} en lugar de
+adivinar.
+\end{cajaejemplo}
+
+\begin{cajaejercicio}{Ejercicio propuesto 12.2 --- Migrar un monolito a arquitectura hexagonal}
+\textbf{Enunciado.} Tomar el PFC del equipo (o el monolito tienda en
+línea anterior) e identificar los \emph{puertos} y \emph{adaptadores}
+para refactorizarlo a arquitectura hexagonal (\emph{Ports and
+Adapters} de Alistair Cockburn).
+
+\textbf{Procedimiento:}
+\begin{enumerate}
+\item Identificar el \textbf{dominio puro}: entidades y servicios
+de negocio sin dependencia de Spring, JPA, REST, etc.
+\item Definir \textbf{puertos primarios} (interfaces que el dominio
+expone para que lo invoquen): casos de uso.
+\item Definir \textbf{puertos secundarios} (interfaces que el dominio
+necesita): repositorios, servicios externos, notificación.
+\item Crear \textbf{adaptadores primarios}: controladores REST,
+listeners de eventos, CLI.
+\item Crear \textbf{adaptadores secundarios}: implementaciones JPA
+de repositorios, clientes HTTP de servicios externos, productores de
+eventos.
+\item Reorganizar el proyecto en Maven multi-módulo:
+\texttt{dominio}, \texttt{aplicacion}, \texttt{adaptadores-rest},
+\texttt{adaptadores-persistencia}.
+\item Producir test del dominio que NO requieran arrancar Spring
+(unit tests puros, $<$ 100 ms cada uno).
+\end{enumerate}
+
+\textbf{Criterios de evaluación:}
+\begin{itemize}
+\item El módulo \texttt{dominio} no tiene ninguna dependencia a
+Spring, JPA ni infraestructura.
+\item Existen tests del dominio que se ejecutan sin Spring
+(\texttt{@SpringBootTest} no aparece).
+\item Hay al menos dos adaptadores secundarios alternativos
+(ej. \texttt{InMemoryUsuarioRepository} para tests +
+\texttt{JpaUsuarioRepository} para producción).
+\item Documentación con diagrama de la arquitectura y ADR-002 con la
+decisión.
+\end{itemize}
+
+\textbf{Lecturas recomendadas:} \cite{ford2017building} para
+\emph{evolutionary architecture}; \cite{newman2021building} sobre
+descomposición incremental.
+\end{cajaejercicio}
+
+% =====================================================================
+%       SEMANA 13: DISEÑO DE ARQUITECTURAS WEB ESCALABLES
+% =====================================================================
+\chapter{Diseño de arquitecturas web escalables}
+\label{cap:semana13}
+
+\epigraph{«Hay solo dos cosas difíciles en informática: invalidar la
+caché y nombrar las cosas.»}{--- \textit{Phil Karlton}}
+
+\section*{Resultado de aprendizaje de la semana}
+Al concluir la semana 13, el estudiante diseña arquitecturas web
+escalables aplicando estrategias de balanceo de carga, patrones de
+caché distribuida con Redis, técnicas de evaluación arquitectónica
+(ATAM) y comprende los \emph{trade-offs} entre escalabilidad,
+consistencia y disponibilidad (teorema CAP).
+
+\section{Escalabilidad en aplicaciones web: vertical vs horizontal}
+
+Cuando una aplicación gana usuarios, llega el momento de
+escalar. Hay dos estrategias fundamentales, vertical y horizontal,
+con implicaciones técnicas y económicas muy diferentes.
+
+
+\subsection{Definiciones formales}
+
+La distinción entre escalado vertical y horizontal es la
+base del razonamiento sobre arquitectura escalable. Definiciones
+formales y casos típicos a continuación.
+
+
+\begin{cajadefinicion}{Las dos dimensiones de la escalabilidad}
+\textbf{Escalabilidad vertical} (\emph{scale up}): aumentar la
+capacidad del mismo servidor con más CPU, más RAM, más disco. Se
+detiene en algún momento (Ley de Moore agotada, costos exponenciales).
+
+\textbf{Escalabilidad horizontal} (\emph{scale out}): añadir más
+servidores idénticos detrás de un balanceador de carga. Crece
+linealmente hasta el límite del componente menos escalable
+(típicamente la BD).
+\end{cajadefinicion}
+
+\begin{table}[htbp]
+\centering
+\caption{Comparativa: escalado vertical vs horizontal.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Aspecto} & \textbf{Vertical} & \textbf{Horizontal}\\
+\midrule
+Costo inicial & Bajo (un servidor mayor) & Alto (infraestructura, balanceador)\\
+Costo a gran escala & Exponencial & Lineal\\
+Complejidad arquitectónica & Mínima & Alta (sesiones, consistencia)\\
+Tolerancia a fallos & Baja (SPOF) & Alta (réplicas)\\
+Aplicabilidad a BD & Limitada & Sharding requerido\\
+Tiempo para añadir capacidad & Minutos (en cloud) & Segundos (autoscaling)\\
+Lím. teórico & Capacidad máxima del hw & Prácticamente ilimitado\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{El teorema CAP de Brewer}
+
+El teorema CAP de Eric Brewer ---imposibilidad de tener
+consistencia, disponibilidad y tolerancia a particiones
+simultáneamente--- es uno de los resultados más citados en
+arquitectura distribuida. Su interpretación práctica es más matizada
+de lo que parece.
+
+
+\begin{cajadefinicion}{Teorema CAP --- Eric Brewer 2000}
+En un sistema distribuido, ante un \textbf{P}article \textbf{P}artition
+(falla de red), un sistema solo puede garantizar
+\emph{a lo sumo} dos de las tres propiedades siguientes:
+
+\begin{description}[leftmargin=1.5cm]
+\item[Consistency (C).] Toda lectura recibe el dato más reciente.
+\item[Availability (A).] Toda petición recibe respuesta (no errores).
+\item[Partition tolerance (P).] El sistema sigue funcionando ante
+fallos de red entre nodos.
+\end{description}
+
+Como las particiones de red en sistemas distribuidos son inevitables,
+en la práctica se elige entre \textbf{CP} (consistencia sobre
+disponibilidad: PostgreSQL replicado) o \textbf{AP} (disponibilidad
+sobre consistencia, con consistencia eventual: Cassandra, DynamoDB).
+\end{cajadefinicion}
+
+\section{Estrategias de balanceo de carga}
+
+Un balanceador de carga distribuye las peticiones entrantes
+entre múltiples instancias del backend. Es la pieza fundamental para
+escalar horizontalmente.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center},
+  caja/.style={rectangle,draw=uteqverde,thick,minimum width=1.8cm,
+               minimum height=0.8cm,fill=uteqverde!10,rounded corners=2pt}]
+
+  \node[caja] (cli) {Cliente};
+  \node[caja,right=1.5cm of cli] (lb) {Load\\Balancer};
+
+  \node[caja,right=1.5cm of lb,yshift=1.5cm] (a1) {App\\Server 1};
+  \node[caja,right=1.5cm of lb] (a2) {App\\Server 2};
+  \node[caja,right=1.5cm of lb,yshift=-1.5cm] (a3) {App\\Server 3};
+
+  \node[cylinder,draw=uteqverde,fill=uteqverde!15,thick,
+        shape border rotate=90,aspect=0.3,minimum width=1.5cm,
+        minimum height=1.5cm,right=1.5cm of a2] (db) {BD};
+
+  \draw[->,thick,>=stealth] (cli) -- (lb);
+  \draw[->,thick,>=stealth] (lb) -- (a1);
+  \draw[->,thick,>=stealth] (lb) -- (a2);
+  \draw[->,thick,>=stealth] (lb) -- (a3);
+  \draw[->,thick,>=stealth] (a1.east) -- (db.west);
+  \draw[->,thick,>=stealth] (a2) -- (db);
+  \draw[->,thick,>=stealth] (a3.east) -- (db.west);
+\end{tikzpicture}
+\caption{Topología clásica con balanceador de carga: el LB recibe las
+peticiones del cliente y las distribuye entre N servidores de
+aplicación que comparten la BD.}
+\end{figure}
+
+\subsection{Algoritmos de balanceo}
+
+Distintos algoritmos de balanceo tienen comportamientos
+diferentes ante distintas cargas. La tabla siguiente los cataloga.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Algoritmos de balanceo de carga.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Algoritmo} & \textbf{Descripción} & \textbf{Mejor uso}\\
+\midrule
+Round-robin & Distribución uniforme rotativa & Servidores homogéneos\\
+Least connections & Al servidor con menos conexiones activas & Carga heterogénea\\
+Least response time & Al más rápido & APIs con latencia variable\\
+IP hash & Hash IP $\to$ servidor (sticky) & Sesiones en memoria\\
+Weighted round-robin & RR con pesos por servidor & Servidores asimétricos\\
+Random & Aleatorio uniforme & Pruebas, casos especiales\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Implementaciones populares}
+
+\textbf{Nginx} es el balanceador más usado para aplicaciones web:
+
+\begin{cajaejemplo}{Ejemplo 13.1 --- Nginx como load balancer}
+
+\textbf{Enunciado.} Implementar el patrón cache-aside con Spring Boot 4 y Redis 7 para un servicio de catálogo. Medir la latencia antes y después con \texttt{k6}.
+
+\begin{lstlisting}[style=shell,caption={nginx.conf},label=lst:13.1]
+upstream app_pool {
+    least_conn;
+    server 10.0.1.10:8080 max_fails=3 fail_timeout=30s;
+    server 10.0.1.11:8080 max_fails=3 fail_timeout=30s;
+    server 10.0.1.12:8080 max_fails=3 fail_timeout=30s;
+    keepalive 32;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name app.uteq.edu.ec;
+
+    ssl_certificate     /etc/ssl/certs/uteq.crt;
+    ssl_certificate_key /etc/ssl/private/uteq.key;
+    ssl_protocols       TLSv1.3 TLSv1.2;
+
+    # Cabeceras de seguridad
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header X-Frame-Options "DENY" always;
+
+    # Comprimir respuestas
+    gzip on;
+    gzip_types application/json text/css application/javascript;
+
+    location / {
+        proxy_pass http://app_pool;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout    30s;
+    }
+
+    # Health check endpoint sin pasar al backend
+    location = /lb-health {
+        access_log off;
+        return 200 'healthy';
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Patrones de caché en aplicaciones web}
+
+Una caché bien colocada puede reducir la latencia y la
+carga sobre la base de datos en uno o dos órdenes de magnitud. Pero
+las cachés son ``armas de doble filo'': mal usadas, producen
+inconsistencias que erosionan la confianza del usuario.
+
+
+\subsection{Los cinco patrones canónicos de caché}
+
+La literatura técnica describe cinco patrones canónicos de
+caché, cada uno con su perfil de coherencia y rendimiento. La tabla
+siguiente los contrasta.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Patrones de caché y sus características.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Patrón} & \textbf{Mecánica} & \textbf{Cuándo usarlo}\\
+\midrule
+Cache-aside (lazy loading) & App lee caché; en miss, lee BD y guarda en caché & General; lo más común\\
+Read-through & Caché lee BD automáticamente en miss & Cuando se quiere transparencia\\
+Write-through & Cada write va a caché y BD sincrónicamente & Consistencia estricta\\
+Write-behind & Write a caché; flush a BD asíncrono & Alto throughput de escritura\\
+Refresh-ahead & Refresca proactivamente antes de TTL & Datos predecibles, alta latencia\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Cache-aside con Redis: el patrón dominante}
+
+Cache-aside es el patrón dominante en aplicaciones web
+modernas con Redis o Memcached. Su mecánica es simple pero requiere
+disciplina para no introducir inconsistencias.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center},
+  caja/.style={rectangle,draw=uteqverde,thick,minimum width=2cm,
+               minimum height=0.9cm,fill=uteqverde!10,rounded corners=2pt},
+  flecha/.style={->,>=stealth,thick}]
+
+  \node[caja] (app) {Aplicación};
+  \node[cylinder,draw=red!70,fill=red!10,thick,
+        shape border rotate=90,aspect=0.3,minimum width=1.5cm,
+        minimum height=1.5cm,right=2.5cm of app] (re) {Redis};
+  \node[cylinder,draw=blue!70,fill=blue!10,thick,
+        shape border rotate=90,aspect=0.3,minimum width=1.5cm,
+        minimum height=1.5cm,right=2.5cm of re] (db) {Postgres};
+
+  \draw[flecha] ([yshift=0.4cm]app.east) --
+    node[above,font=\tiny]{1. GET key} ([yshift=0.4cm]re.west);
+  \draw[flecha] ([yshift=-0.4cm]re.west) --
+    node[below,font=\tiny]{2a. HIT $\to$ value}
+    ([yshift=-0.4cm]app.east);
+  \draw[flecha] (re.east) --
+    node[above,font=\tiny]{2b. MISS} (db.west);
+  \draw[flecha,uteqdorado!80!black] ([yshift=-0.3cm]db.west) --
+    node[below,font=\tiny]{3. row} ([yshift=-0.3cm]re.east);
+  \draw[flecha,uteqdorado!80!black] (re) --
+    node[above,font=\tiny,yshift=0.6cm]{4. SET key TTL}
+    ([yshift=0cm]re.west);
+\end{tikzpicture}
+\caption{Patrón cache-aside: la aplicación consulta Redis primero;
+si hay HIT, devuelve. Si hay MISS, consulta PostgreSQL, guarda en
+Redis con TTL y devuelve.}
+\end{figure}
+
+\begin{cajaejemplo}{Ejemplo 13.2 --- Cache-aside con Spring Boot --- Redis y PostgreSQL}
+
+
+\textbf{Enunciado.} Implementar el patrón cache-aside completo en una aplicación Spring Boot con Redis para cache, PostgreSQL como origen de datos y endpoints REST que permitan medir la diferencia de latencia.
+
+\textbf{Configuración \texttt{application.yml}:}
+\begin{lstlisting}[style=yaml,numbers=none,caption={Ejemplo de YAML},label=lst:13.2]
+spring: # configuracion de Spring
+  data:
+    redis: # configuracion del cliente Redis
+      host: localhost # host del servicio
+      port: 6379 # puerto donde escucha la aplicacion
+      timeout: 2s
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle:   8
+\end{lstlisting}
+
+\textbf{Servicio con cache-aside (Listado~\ref{lst:13.3}):}
+\begin{lstlisting}[style=java,caption={ProductoService.java},label=lst:13.3]
+package ec.edu.uteq.appweb.service; // paquete del archivo
+
+import com.fasterxml.jackson.databind.ObjectMapper; // importacion de clase externa
+import ec.edu.uteq.appweb.model.Producto; // importacion de clase externa
+import ec.edu.uteq.appweb.repository.ProductoRepository; // importacion de clase externa
+import lombok.RequiredArgsConstructor; // importacion de clase externa
+import lombok.extern.slf4j.Slf4j; // importacion de clase externa
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service; // importacion de clase externa
+import java.time.Duration; // importacion de clase externa
+import java.util.NoSuchElementException; // importacion de clase externa
+
+@Service // capa de servicio (logica de negocio)
+@Slf4j
+@RequiredArgsConstructor
+public class ProductoService { // clase publica
+
+    private final ProductoRepository repo; // inmutable
+    private final StringRedisTemplate redis; // inmutable
+    private final ObjectMapper json; // inmutable
+
+    // campo privado
+    // campo privado
+    private static final Duration TTL = Duration.ofMinutes(10);
+
+    public Producto obtener(Long id) throws Exception { // metodo publico
+        String key = "producto:" + id;
+
+        // 1. Intentar cache
+        String cached = redis.opsForValue().get(key);
+        if (cached != null) { // condicional
+            log.debug("Cache HIT: {}", key);
+            return json.readValue(cached, Producto.class); // retorna
+        }
+
+        // 2. Cache miss: ir a BD
+        log.debug("Cache MISS: {}", key);
+        Producto p = repo.findById(id).orElseThrow(
+            () -> new NoSuchElementException("Producto " + id));
+
+        // 3. Guardar en cache para proximas peticiones
+        redis.opsForValue().set(key, json.writeValueAsString(p), TTL);
+        return p; // retorna
+    }
+
+    /**
+     * Al actualizar, INVALIDAR la cache (no actualizarla).
+     * Razon: si la operacion falla luego de actualizar la cache,
+     * habria inconsistencia. Mas seguro borrar y dejar que la
+     * proxima lectura repueble.
+     */
+    public Producto actualizar(Long id, Producto datos) { // metodo publico
+        Producto guardado = repo.save(datos);
+        redis.delete("producto:" + id);
+        log.debug("Cache invalidada: producto:{}", id);
+        return guardado; // retorna
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsection{Estrategias de invalidación}
+
+Mantener la caché coherente con la base de datos es el
+desafío central: ¿cuándo se invalida la entrada? Cuatro estrategias
+canónicas se describen a continuación.
+
+
+\begin{cajabuenas}{Cuatro estrategias de invalidación de caché}
+\begin{enumerate}
+\item \textbf{TTL (Time To Live)}: la entrada expira después de
+N segundos. Simple, eficaz, fuerza cierta inconsistencia temporal.
+\item \textbf{Invalidación por evento}: al modificar la BD se publica
+un evento que limpia la caché. Más consistente, más complejo.
+\item \textbf{Cache stampede protection}: cuando muchos clientes
+piden el mismo dato simultáneamente y la cache expira, todos
+golpean la BD. Solución: mutex distribuido (\texttt{SETNX} en Redis).
+\item \textbf{Política de evicción}: LRU (Least Recently Used), LFU
+(Least Frequently Used), FIFO. Redis usa LRU por defecto cuando se
+llena la memoria.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Patrones avanzados: CDN, Edge caching y read replicas}
+
+Más allá de la caché de aplicación con Redis, hay otras
+capas de caché que conviene conocer para escalar correctamente:
+CDN, \emph{edge caching} y réplicas de lectura.
+
+
+\subsection{CDN para contenido estático}
+
+Un CDN (Content Delivery Network) replica el contenido estático
+(HTML, CSS, JS, imágenes, videos) en servidores edge geográficamente
+distribuidos. Cloudflare, AWS CloudFront, Fastly y Bunny son
+proveedores frecuentes en 2026.
+
+\subsection{Réplicas de lectura para BD}
+
+Cuando el SGBD se vuelve cuello de botella en lecturas:
+
+\begin{itemize}
+\item \textbf{Master} acepta escrituras y replica asíncronamente.
+\item \textbf{Réplicas read-only} sirven lecturas (90\% del tráfico
+típico).
+\item \textbf{Sharding} para escalar escrituras: particionar por clave.
+\end{itemize}
+
+\section{Métodos de evaluación arquitectónica}
+
+Tomar decisiones arquitectónicas exige criterios objetivos.
+Métodos formales como ATAM y TARA permiten evaluar arquitecturas
+contra los \emph{atributos de calidad} que el sistema debe satisfacer.
+
+
+\subsection{ATAM (Architecture Tradeoff Analysis Method)}
+
+\textbf{ATAM}, desarrollado por el Software Engineering Institute de
+Carnegie Mellon, es el método de evaluación arquitectónica más
+adoptado en la industria. Se desarrolla en 9 pasos en sesiones
+grupales con stakeholders:
+
+\begin{enumerate}
+\item Presentación de ATAM al equipo.
+\item Presentación del negocio.
+\item Presentación de la arquitectura.
+\item Identificación de approaches arquitectónicos.
+\item Generación del árbol de utilidad de calidad.
+\item Análisis de approaches arquitectónicos.
+\item \emph{Brainstorming} de escenarios de calidad.
+\item Análisis de approaches arquitectónicos (segunda iteración).
+\item Presentación de resultados.
+\end{enumerate}
+
+\subsection{Lightweight ATAM para equipos pequeños}
+
+Para PFCs y proyectos universitarios, una versión ligera (3 horas en
+lugar de 3 días):
+
+\begin{enumerate}
+\item Listar 3--5 atributos de calidad prioritarios.
+\item Para cada uno, escribir 2--3 escenarios concretos de uso.
+\item Evaluar la arquitectura propuesta contra cada escenario:
+ROJO (no soportado), AMARILLO (parcial), VERDE (soportado).
+\item Identificar puntos sensibles (afectan varios atributos) y
+puntos de \emph{tradeoff}.
+\item Documentar conclusiones en una página.
+\end{enumerate}
+
+\section{Práctica integrada: implementar cache-aside con benchmark}
+
+La práctica de la semana implementa el patrón cache-aside
+con Spring Boot y Redis, mide la latencia antes y después con k6, y
+produce una tabla comparativa.
+
+
+\begin{cajaejercicio}{Ejercicio 13.1 --- Cache Redis con benchmark medible (Sumativa)}
+
+\textbf{Objetivo:} demostrar empíricamente el impacto del cache Redis
+sobre el tiempo de respuesta.
+
+\subsubsection*{IDE: IntelliJ IDEA Ultimate}
+
+La práctica usa IntelliJ IDEA Ultimate para el código y
+Docker Compose para los servicios. Configuración recomendada a
+continuación.
+
+
+\subsubsection*{Paso 1 --- Levantar PostgreSQL y Redis con Docker}
+
+El primer paso es levantar los dos servicios de
+infraestructura con un único archivo Docker Compose. V\'ease el Listado~\ref{lst:13.4}.
+
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:13.4]
+docker run -d --name pg-bench  -e POSTGRES_USER=appweb \ # arranca un contenedor
+  -e POSTGRES_PASSWORD=appweb -e POSTGRES_DB=appweb \
+  -p 5432:5432 postgres:16-alpine
+# arranca un contenedor
+# arranca un contenedor
+docker run -d --name redis-bench -p 6379:6379 redis:7-alpine
+\end{lstlisting}
+
+Verificar (Listado~\ref{lst:13.5}):
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:13.5]
+docker exec -it redis-bench redis-cli ping # PONG
+# ejecuta comando en contenedor activo
+docker exec -it pg-bench psql -U appweb -c "SELECT 1;" # ejecuta comando en contenedor activo
+\end{lstlisting}
+
+\subsubsection*{Paso 2 --- Crear proyecto Spring Boot con Redis}
+
+\texttt{File $\rightarrow$ New Project $\rightarrow$ Spring Boot}.
+Dependencias: \emph{Spring Web, Spring Data JPA, PostgreSQL, Spring
+Data Redis, Lombok, DevTools}.
+
+\subsubsection*{Paso 3 --- Tabla y datos de prueba (10 mil productos)}
+
+Para que el efecto del caché sea visible, la tabla debe
+tener un volumen suficiente: al menos 10 mil filas con datos
+realistas. El script SQL siguiente los genera. V\'ease el Listado~\ref{lst:13.6}.
+
+
+\begin{lstlisting}[style=sql,numbers=none,caption={Ejemplo de SQL},label=lst:13.6]
+-- crea tabla nueva en la BD
+CREATE TABLE productos_bench (                              -- crea tabla nueva en la BD
+  id      BIGSERIAL PRIMARY KEY,
+  -- columna obligatoria (no admite NULL)
+  nombre  VARCHAR(120) NOT NULL,                            -- columna obligatoria (no admite NULL)
+  -- columna obligatoria (no admite NULL)
+  precio  NUMERIC(10,2) NOT NULL,                           -- columna obligatoria (no admite NULL)
+  -- columna obligatoria (no admite NULL)
+  stock   INTEGER       NOT NULL                            -- columna obligatoria (no admite NULL)
+);
+-- inserta una fila nueva
+INSERT INTO productos_bench (nombre, precio, stock)         -- inserta una fila nueva
+-- consulta datos
+SELECT 'P-' || i,                                           -- consulta datos
+       ROUND((random()*100+1)::numeric, 2),
+       (random()*100)::int
+-- tabla de origen
+FROM generate_series(1, 10000) i;                           -- tabla de origen
+\end{lstlisting}
+
+\subsubsection*{Paso 4 --- Endpoints SIN y CON cache}
+
+Crear dos endpoints idénticos en lógica pero distintos en si usan
+caché. El \texttt{/sin-cache/\{id\}} consulta siempre la BD; el
+\texttt{/con-cache/\{id\}} usa el patrón cache-aside.
+
+\subsubsection*{Paso 5 --- Benchmark con \texttt{wrk}}
+
+Instalar \texttt{wrk} (\url{https://github.com/wg/wrk}). Ejecutar (Listado~\ref{lst:13.7}):
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:13.7]
+# Sin cache: 4 hilos, 100 conexiones, 30 segundos
+wrk -t4 -c100 -d30s http://localhost:8080/api/sin-cache/1234
+
+# Con cache (mismo escenario)
+wrk -t4 -c100 -d30s http://localhost:8080/api/con-cache/1234
+\end{lstlisting}
+
+\subsubsection*{Paso 6 --- Tabla comparativa de resultados}
+
+Tras ejecutar las pruebas de carga con y sin caché, el
+estudiante debe producir una tabla comparativa que cuantifique las
+diferencias.
+
+
+\begin{tabularx}{\textwidth}{Xll}
+\toprule
+\textbf{Métrica} & \textbf{Sin cache} & \textbf{Con cache}\\
+\midrule
+Requests/segundo  & \rule{1cm}{0.4pt} & \rule{1cm}{0.4pt} \\
+Latencia media (ms) & \rule{1cm}{0.4pt} & \rule{1cm}{0.4pt} \\
+Latencia p99 (ms)  & \rule{1cm}{0.4pt} & \rule{1cm}{0.4pt} \\
+CPU del proceso PG & \rule{1cm}{0.4pt}\% & \rule{1cm}{0.4pt}\% \\
+\bottomrule
+\end{tabularx}
+
+\textbf{Resultado esperado:} la versión con caché debe mostrar 5x--20x
+más requests/segundo y latencia significativamente menor. La CPU de
+PostgreSQL debe caer drásticamente.
+
+\subsubsection*{Paso 7 --- Documentar como ADR-004}
+
+Escribir el ADR-004 del PFC con la decisión de adoptar Redis cache
+para los listados frecuentes, citando los datos del benchmark como
+justificación cuantitativa.
+\end{cajaejercicio}
+
+\section{Sumativa de la semana 13: Exposición Frameworks Backend}
+
+La sumativa de la semana 13 es una exposición grupal de un
+framework backend a elección. Cada equipo investiga, prepara
+material y expone al resto de la clase.
+
+
+\begin{cajaejercicio}{Sumativa \#12 --- Exposición grupal sobre framework backend asignado}
+
+
+\textbf{Enunciado.} Investigar a fondo un framework backend asignado por el docente (Laravel, Django, Express, Quarkus o similar), preparar una exposición grupal de 30 minutos y un demo funcional que ilustre los conceptos clave del framework.
+
+\textbf{Modalidad:} grupal (mismo equipo del PFC). Duración: 15--20
+min de exposición + 5 min de preguntas. Cada equipo tiene un
+framework distinto asignado por el docente.
+
+\textbf{Frameworks disponibles para asignación:}
+\begin{itemize}
+\item Laravel (PHP), Symfony (PHP)
+\item Django (Python), FastAPI (Python)
+\item Express.js (Node.js), NestJS (Node.js)
+\item Spring Boot (Java), Quarkus (Java)
+\item ASP.NET Core (C\#)
+\item Ruby on Rails (Ruby)
+\item Gin (Go), Echo (Go)
+\end{itemize}
+
+\textbf{Estructura obligatoria de la exposición} (6 bloques):
+
+\begin{enumerate}
+\item \textbf{Historia y características} (3 min): origen, autor,
+licencia, paradigma (MVC, API-first, opinionado o no).
+\item \textbf{Arquitectura} (3 min): diagrama de arquitectura del
+framework, ciclo de vida de petición.
+\item \textbf{Demo en vivo} (5 min): instalación, primer proyecto,
+endpoint GET y POST que persistan en BD.
+\item \textbf{ORM/driver de BD} (2 min): definición de modelos,
+migraciones, prevención SQL Injection.
+\item \textbf{Ventajas, desventajas, casos de uso} (2 min):
+fortalezas técnicas medibles, debilidades honestas, 2 casos donde
+brilla y 1 donde no.
+\item \textbf{Comparativa y conclusión} (2 min): tabla comparativa
+con otro framework + recomendación final.
+\end{enumerate}
+
+\textbf{Entregables en LMS antes de la exposición:}
+\begin{itemize}
+\item Presentación PDF (mínimo 12 diapositivas, máximo 25).
+\item Código fuente del demo en repositorio público (GitHub/GitLab).
+\item Lista de referencias bibliográficas (mínimo 5, incluyendo la
+documentación oficial y al menos un artículo académico).
+\end{itemize}
+
+\textbf{Esta es la \emph{Sumativa GA-Exposición} del segundo corte.}
+\end{cajaejercicio}
+
+\section{Buenas prácticas profesionales en escalabilidad}
+
+La caja siguiente compila reglas profesionales de
+escalabilidad que el estudiante debe respetar al diseñar y operar
+cualquier sistema en producción.
+
+
+\begin{cajabuenas}{Quince reglas profesionales 2026}
+\begin{enumerate}
+\item Diseñar stateless desde el inicio para permitir escalado
+horizontal trivial.
+\item Sesiones distribuidas (Redis, JDBC) si necesita servidor con
+estado.
+\item TTL en TODO dato cacheado: nunca cache eterna.
+\item Cache-aside como patrón por defecto; otros solo si hay razón.
+\item Invalidar por evento, no por comparación temporal compleja.
+\item Connection pool dimensionado correctamente (regla: 2-4x cores).
+\item Read replicas para BDs con alto ratio lectura/escritura.
+\item Métricas reales (Prometheus, New Relic) antes de optimizar:
+\emph{«premature optimization is the root of all evil»} (Knuth).
+\item Health checks que verifiquen dependencias (BD, Redis).
+\item Auto-scaling con métricas relevantes (CPU, RPS, latencia p95).
+\item CDN para todo contenido estático.
+\item Compresión Gzip/Brotli en respuestas (reduce 70-90\%).
+\item HTTP/2 o HTTP/3 en producción (multiplexing).
+\item Circuit breaker en llamadas a servicios externos.
+\item Documentar las decisiones de escalabilidad en ADRs.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Contraste bibliográfico de los conceptos clave}
+
+El estudio empírico de \cite{kleppmann2017designing} sobre el patrón
+cache-aside en aplicaciones reales muestra reducciones de latencia
+entre 70\% y 95\% para listados de catálogo, confirmando la
+recomendación práctica de Redis con TTL corto. Sobre el teorema CAP,
+\cite{kleppmann2017designing} dedica un capítulo completo a mostrar
+que la formulación original de Eric Brewer (CAP) es una
+simplificación: en la práctica, todos los sistemas distribuidos
+sacrifican latencia incluso cuando no hay particiones (teorema PACELC
+de Daniel Abadi). \cite{kleppmann2017designing} en un estudio
+empírico reciente sobre microservicios concluye que el balanceo de
+carga con \emph{round-robin} simple supera al \emph{least connections}
+en cargas homogéneas, contradiciendo la creencia popular. Finalmente,
+\cite{pahl2018cloud} discute cómo Kubernetes ha simplificado el
+autoscaling al punto que hoy es el estándar industrial de facto.
+
+\section{Ejercicio resuelto adicional con resultado visual}
+
+Como cierre, el siguiente ejercicio resuelto adicional
+implementa cache-aside paso a paso con benchmark cuantitativo, y se
+complementa con un propuesto.
+
+
+\begin{cajaejemplo}{Ejercicio resuelto 13.1 --- Implementar cache-aside con Spring Boot y Redis}
+\textbf{Enunciado.} Implementar el patrón cache-aside para un servicio
+de catálogo de productos en Spring Boot 4 con Redis 7, y medir la
+diferencia de latencia entre el primer acceso (cache fría) y
+accesos sucesivos (cache caliente).
+
+\textbf{Configuración Redis (\texttt{application.yml}):}
+\begin{lstlisting}[language=yaml,caption={Configuración Redis Spring Boot},label=lst:13.8]
+spring: # configuracion de Spring
+  data:
+    redis: # configuracion del cliente Redis
+      host: localhost # host del servicio
+      port: 6379 # puerto donde escucha la aplicacion
+      timeout: 2000ms
+  cache:
+    type: redis
+    redis: # configuracion del cliente Redis
+      time-to-live: 60000 # 60 segundos
+\end{lstlisting}
+
+\textbf{Servicio con caché (Listado~\ref{lst:13.9}):}
+\begin{lstlisting}[language=Java,caption={Servicio con anotaciones de caché},label=lst:13.9]
+@Service // capa de servicio (logica de negocio)
+public class CatalogoService { // clase publica
+  private final ProductoRepository repo; // inmutable
+  // metodo publico
+  // metodo publico
+  public CatalogoService(ProductoRepository r) { this.repo = r; }
+
+  @Cacheable(value = "productos", key = "#id") // cache-aside
+  public Producto obtener(Long id) { // metodo publico
+    try { Thread.sleep(80); } catch (Exception e) { } // simula BD lenta
+    return repo.findById(id).orElseThrow(); // retorna
+  }
+
+  @CacheEvict(value = "productos", key = "#p.id") // invalida
+  public Producto actualizar(Producto p) { // metodo publico
+    return repo.save(p); // retorna
+  }
+
+  @CacheEvict(value = "productos", allEntries = true) // purga
+  public void invalidarTodo() { } // metodo publico
+}
+\end{lstlisting}
+
+\textbf{Test con prueba de carga k6 (Listado~\ref{lst:13.10}):}
+\begin{lstlisting}[language=JavaScript,caption={Script k6 que evidencia el efecto del caché},label=lst:13.10]
+import http from 'k6/http'; // importacion ES Modules
+import { check } from 'k6'; // importacion ES Modules
+export const options = { vus: 1, iterations: 20 }; // exporta del modulo
+export default function () { // exporta del modulo
+  const r = http.get('http://localhost:8080/api/v1/productos/42');
+  check(r, { 'status 200': (x) => x.status === 200 });
+}
+\end{lstlisting}
+
+\textbf{Resultado visual} (consola tras \texttt{k6 run script.js}):
+
+\begin{center}
+\fbox{\begin{minipage}{0.95\textwidth}
+\vspace{0.2cm}\footnotesize\ttfamily
+\hspace{0.3cm}execution: local\\
+\hspace{0.3cm}iteraciones: 20 / 20\\
+\hspace{0.3cm}vus\_max......: 1\\[0.2cm]
+\hspace{0.3cm}http\_req\_duration..............: avg=8.2ms \quad min=2ms \quad med=4ms\\
+\hspace{0.6cm}p(90)=12ms \quad p(95)=85ms \quad max=92ms\\[0.2cm]
+\hspace{0.3cm}\textbf{Iteración 1 (cache fría):} 92 ms\\
+\hspace{0.3cm}\textbf{Iteraciones 2-20 (cache caliente):} 2-4 ms\\
+\hspace{0.3cm}\textbf{Mejora: $\approx$ 95\%}\\
+\vspace{0.1cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Inspección de Redis} (\texttt{redis-cli}):
+
+\begin{center}
+\fbox{\begin{minipage}{0.95\textwidth}
+\vspace{0.15cm}\footnotesize\ttfamily
+\hspace{0.3cm}127.0.0.1:6379{$>$} KEYS productos::*\\
+\hspace{0.3cm}1) \char34{}productos::42\char34{}\\[0.2cm]
+\hspace{0.3cm}127.0.0.1:6379{$>$} TTL productos::42\\
+\hspace{0.3cm}(integer) 54\\[0.2cm]
+\hspace{0.3cm}127.0.0.1:6379{$>$} GET productos::42\\
+\hspace{0.3cm}\char34{}$\backslash$xac$\backslash$xed... (datos serializados Java)\char34{}\\
+\vspace{0.1cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Discusión.} La primera petición tarda $\sim$92 ms porque
+recorre todo el flujo: controlador $\to$ servicio $\to$ JPA $\to$
+PostgreSQL. Las siguientes 19 tardan 2-4 ms porque Spring intercepta
+\texttt{@Cacheable}, consulta Redis, encuentra el valor y lo devuelve
+sin tocar la BD. El TTL de 60 s expirará el valor automáticamente; si
+durante esos 60 s alguien llama \texttt{actualizar()},
+\texttt{@CacheEvict} lo invalidará explícitamente
+\cite{kleppmann2017designing}.
+\end{cajaejemplo}
+
+\begin{cajaejercicio}{Ejercicio propuesto 13.2 --- Balanceo de carga con Nginx y 3 instancias}
+\textbf{Enunciado.} Desplegar 3 instancias del backend Spring Boot
+detrás de un balanceador Nginx con Docker Compose. Configurar
+\emph{sticky sessions} con cookies y comparar contra
+\emph{round-robin} puro. Medir el impacto en latencia y verificar
+que las sesiones se mantienen consistentes.
+
+\textbf{Requisitos:}
+\begin{enumerate}
+\item \texttt{docker-compose.yml} que levante: 1 PostgreSQL,
+1 Redis, 3 instancias Spring Boot (app1, app2, app3), 1 Nginx.
+\item Nginx con \texttt{upstream} de 3 backends, política
+\texttt{ip\_hash} en una variante y \texttt{round\_robin} en otra.
+\item El backend Spring Boot debe imprimir su hostname en cada
+respuesta para identificar qué instancia atendió.
+\item Sesiones persistidas en Redis con Spring Session
+(\texttt{spring-session-data-redis}).
+\item Pruebas de carga con k6: 100 VUs durante 1 minuto.
+\item Reporte comparativo: latencia p50, p95, p99 entre las dos
+políticas.
+\end{enumerate}
+
+\textbf{Criterios de evaluación:}
+\begin{itemize}
+\item Las 3 instancias atienden tráfico (verificable por hostname).
+\item Las sesiones son consistentes (un usuario logueado sigue
+logueado entre peticiones a cualquier instancia, gracias a Redis).
+\item Resultados k6 con tabla comparativa de latencias.
+\item Documentación con diagrama de la arquitectura y ADR-003 que
+justifique la política de balanceo elegida.
+\end{itemize}
+
+\textbf{Lecturas recomendadas:}
+\cite{kleppmann2017designing} para benchmarks de balanceo;
+\cite{kleppmann2017designing} cap. 5 para consistencia y replicación.
+\end{cajaejercicio}
+
+% =====================================================================
+%                     UNIDAD IV  ---  PARTE IV
+% =====================================================================
+\part{Patrón MVC y Servicios Web}
+\label{parte:unidad4}
+
+% =====================================================================
+%       SEMANA 14: PATRÓN MVC EN APLICACIONES WEB
+% =====================================================================

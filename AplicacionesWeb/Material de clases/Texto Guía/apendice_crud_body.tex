@@ -1,0 +1,1318 @@
+% =====================================================================
+%  APÉNDICE — PRÁCTICA INTEGRADORA DE UNIDAD II
+%  CRUD con patrón DAO «sin framework» en JSP/JSTL/EL, Django y Laravel
+%  (Reutiliza el preámbulo del libro. Requiere \lstdefinestyle{python}.)
+% =====================================================================
+
+\appendix
+
+% --- Formato de capítulo para apéndices: «Apéndice X» en vez de «Semana X»
+\titleformat{\chapter}[display]
+  {\normalfont\Huge\bfseries\color{uteqverde}}
+  {\filleft\Large Apéndice \thechapter}
+  {1ex}{\titlerule\vspace{1ex}\filright}
+
+\chapter{Práctica integradora: CRUD con patrón DAO sin framework en JSP/JSTL/EL, Django y Laravel}
+\label{ap:crud-dao}
+
+\epigraph{«El mismo problema, resuelto tres veces, enseña más que tres
+problemas resueltos una sola vez: lo que permanece es el patrón; lo que
+cambia es el lenguaje.»}{--- \textit{Principio pedagógico de la
+asignatura}}
+
+\section*{Resultado de aprendizaje}
+\addcontentsline{toc}{section}{Resultado de aprendizaje}
+Al concluir esta práctica, el estudiante construye una misma aplicación
+\emph{CRUD} (crear, leer, actualizar y eliminar) sobre la tabla
+institucional \texttt{estudiantes} en tres pilas tecnológicas del lado
+del servidor ---Java con JSP/JSTL/EL, Django y Laravel---, aplicando en
+las tres el patrón \emph{Data Access Object} (DAO) y el acceso a datos
+con SQL parametrizado escrito a mano, sin delegar la persistencia en un
+ORM. Con ello consolida la separación de responsabilidades entre
+dominio, acceso a datos, control y presentación.
+
+\section{Propósito y el sentido de «sin framework»}
+\label{ap:crud:proposito}
+
+Esta práctica es el complemento aplicado de la Unidad~II. En los
+capítulos~\ref{cap:semana5} y~\ref{cap:semana6} se presentaron PHP y
+Java en el servidor, y la persistencia con frameworks que generan el
+SQL automáticamente. Aquí se hace lo contrario: se escribe el SQL
+\textbf{de forma explícita} y se encapsula en una capa DAO, de modo que
+el estudiante vea con total claridad qué consulta viaja a la base de
+datos y cómo se evita la inyección SQL mediante parámetros enlazados.
+
+\begin{cajadefinicion}{Concepto --- El patrón DAO}
+Un \emph{Data Access Object} (DAO) es una clase cuya única
+responsabilidad es traducir entre los objetos del dominio (por ejemplo,
+\texttt{Estudiante}) y las filas de una tabla. Expone métodos de
+negocio (\texttt{listar}, \texttt{buscarPorId}, \texttt{insertar},
+\texttt{actualizar}, \texttt{eliminar}) y oculta por completo los
+detalles de JDBC, PDO o el cursor de base de datos. Quien usa el DAO no
+sabe ---ni necesita saber--- que por dentro hay SQL.
+\end{cajadefinicion}
+
+La expresión «sin framework» se refiere de manera estricta a la
+\textbf{capa de persistencia}: no se utiliza el ORM (Hibernate/JPA en
+Java, el ORM de Django, ni Eloquent en Laravel). En la pista de Django
+y en la de Laravel sí se emplea el framework para el enrutamiento y las
+plantillas ---es su razón de ser---, pero el acceso a datos se resuelve
+con una conexión y consultas propias. Así el mismo patrón DAO se
+muestra portable entre lenguajes, y se evidencia que el ORM es una
+comodidad, no una obligación.
+
+\begin{cajabuenas}{Las cuatro capas que se repiten en las tres pistas}
+\begin{enumerate}
+\item \textbf{Dominio:} la clase \texttt{Estudiante} (datos puros).
+\item \textbf{Acceso a datos:} una clase de \emph{conexión} y un
+\texttt{EstudianteDAO} con SQL parametrizado.
+\item \textbf{Control:} un servlet/controlador que recibe la petición,
+decide la acción y elige la vista.
+\item \textbf{Presentación:} las vistas (JSP, plantilla Django o Blade)
+que solo muestran datos, sin lógica de negocio.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Modelo de datos común}
+\label{ap:crud:modelo}
+
+Las tres aplicaciones operan sobre la misma base de datos PostgreSQL
+\texttt{appweb2026ppa} y la misma tabla \texttt{estudiantes}, ya
+empleada en la Unidad~II. El esquema se crea una sola vez; las tres
+pistas lo reutilizan sin cambios.
+
+{\small\textbf{Crear en (cualquier pista):} \texttt{db/schema.sql}, y
+ejecutarlo en PostgreSQL.}
+\begin{lstlisting}[style=sql,caption={Esquema compartido de la tabla estudiantes},label={lst:crud-schema}]
+CREATE TABLE IF NOT EXISTS estudiantes (
+    id      SERIAL       PRIMARY KEY,
+    nombre  VARCHAR(100) NOT NULL,
+    correo  VARCHAR(120) NOT NULL,
+    carrera VARCHAR(80)  NOT NULL,
+    creado  TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+\end{lstlisting}
+
+\begin{cajaadvertencia}{Datos de conexión usados en todo el apéndice}
+Servidor \texttt{localhost}, puerto \texttt{5432}, base
+\texttt{appweb2026ppa}, usuario \texttt{postgres}, contraseña
+\texttt{P@\$7Gr3\$QL}. En un proyecto real, estas credenciales no se
+escriben en el código fuente: se leen de variables de entorno o de un
+archivo de configuración fuera del control de versiones. Se muestran
+aquí en el código solo para que la práctica sea reproducible de
+principio a fin.
+\end{cajaadvertencia}
+
+% =====================================================================
+\section{Pista 1 --- Java con JSP, JSTL y EL (JDBC puro, sin Spring)}
+\label{ap:crud:jsp}
+
+Esta pista usa únicamente la plataforma base de Java para la web:
+servlets como controladores, JSP con JSTL y EL como vistas, y JDBC para
+el acceso a datos. El servidor de aplicaciones es Apache Tomcat~11, que
+implementa Jakarta Servlet~6.1, Jakarta Server Pages~4.0 y Jakarta
+Expression Language~6.0 \cite{pgjdbc}.
+
+\subsection{Crear el proyecto en IntelliJ IDEA}
+\label{ap:crud:jsp:crear}
+
+\begin{enumerate}
+\item Menú \texttt{File > New > Project}.
+\item En el panel izquierdo, elija \textbf{Jakarta EE} (en IntelliJ
+IDEA Ultimate). Si prefiere partir de cero, elija \textbf{Maven
+Archetype} con \texttt{maven-archetype-webapp}.
+\item \textbf{Name:} \texttt{gestion-estudiantes-jsp}. \textbf{Build
+system:} Maven. \textbf{JDK:} 21 (LTS).
+\item \textbf{Template:} \emph{Web application}. \textbf{Application
+server:} agregue \emph{Tomcat 11} con el botón \texttt{New...} si aún
+no está registrado, indicando la carpeta donde descomprimió Tomcat.
+\item \texttt{Create}. IntelliJ genera el esqueleto Maven con
+empaquetado \texttt{war}.
+\end{enumerate}
+
+\begin{cajaejemplo}{Lo que IntelliJ genera automáticamente}
+\begin{lstlisting}[style=shell,caption={Esqueleto inicial creado por IntelliJ IDEA},label={lst:jsp-skel}]
+gestion-estudiantes-jsp/
+|-- pom.xml                         (IntelliJ)
+`-- src/
+    `-- main/
+        |-- java/                   (IntelliJ, vacio)
+        |-- resources/              (IntelliJ, vacio)
+        `-- webapp/
+            |-- WEB-INF/
+            |   `-- web.xml         (IntelliJ)
+            `-- index.jsp           (IntelliJ)
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsection{Estructura final del proyecto}
+\label{ap:crud:jsp:estructura}
+
+A partir del esqueleto, el programador crea los paquetes y archivos
+marcados como \emph{(programador)}. La organización por capas es la
+columna vertebral de toda la práctica.
+
+\begin{lstlisting}[style=shell,caption={Estructura completa de la pista JSP/JSTL/EL},label={lst:jsp-tree}]
+gestion-estudiantes-jsp/
+|-- pom.xml                                   (programador: dependencias)
+|-- db/
+|   `-- schema.sql                            (programador)
+`-- src/main/
+    |-- java/ec/edu/uteq/appweb/
+    |   |-- modelo/
+    |   |   `-- Estudiante.java               (programador: dominio)
+    |   |-- dao/
+    |   |   |-- ConexionBD.java               (programador: conexion)
+    |   |   `-- EstudianteDAO.java            (programador: acceso a datos)
+    |   `-- controlador/
+    |       `-- EstudianteServlet.java        (programador: control)
+    `-- webapp/
+        |-- WEB-INF/
+        |   |-- web.xml                       (IntelliJ)
+        |   `-- vistas/
+        |       |-- lista.jsp                 (programador: vista)
+        |       `-- formulario.jsp            (programador: vista)
+        `-- index.jsp                         (IntelliJ; redirige al servlet)
+\end{lstlisting}
+
+\subsection{Dependencias (pom.xml)}
+\label{ap:crud:jsp:pom}
+
+Las API de Servlet y JSP las provee Tomcat en tiempo de ejecución, por
+eso su \texttt{scope} es \texttt{provided}. JSTL y el driver de
+PostgreSQL sí se empaquetan dentro del WAR.
+
+{\small\textbf{Editar:} \texttt{pom.xml}}
+\begin{lstlisting}[style=xml,caption={Dependencias del proyecto JSP},label={lst:jsp-pom}]
+<properties>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
+
+<dependencies>
+    <!-- API de Jakarta Servlet (la provee Tomcat) -->
+    <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.1.0</version>
+        <scope>provided</scope>
+    </dependency>
+    <!-- API de Jakarta Server Pages (la provee Tomcat) -->
+    <dependency>
+        <groupId>jakarta.servlet.jsp</groupId>
+        <artifactId>jakarta.servlet.jsp-api</artifactId>
+        <version>4.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+    <!-- JSTL: API + implementacion (se empaquetan en el WAR) -->
+    <dependency>
+        <groupId>jakarta.servlet.jsp.jstl</groupId>
+        <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+        <version>3.0.2</version>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.web</groupId>
+        <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+        <version>3.0.1</version>
+    </dependency>
+    <!-- Driver JDBC de PostgreSQL -->
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.7.11</version>
+    </dependency>
+</dependencies>
+\end{lstlisting}
+
+\subsection{La clase de dominio}
+\label{ap:crud:jsp:dominio}
+
+Para que EL pueda leer \texttt{\$\{e.nombre\}} en la JSP, el objeto debe
+ser un \emph{JavaBean}: atributos privados y métodos \texttt{get}/%
+\texttt{set} públicos. Por eso se usa una clase clásica y no un
+\texttt{record}.
+
+{\small\textbf{Crear en:} \texttt{src/main/java/ec/edu/uteq/appweb/modelo/Estudiante.java}}
+\begin{lstlisting}[style=java,caption={Estudiante.java (JavaBean del dominio)},label={lst:jsp-modelo}]
+package ec.edu.uteq.appweb.modelo;
+
+public class Estudiante {
+    private int id;
+    private String nombre;
+    private String correo;
+    private String carrera;
+
+    public Estudiante() { }
+
+    public Estudiante(int id, String nombre, String correo, String carrera) {
+        this.id = id;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.carrera = carrera;
+    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getCorreo() { return correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
+    public String getCarrera() { return carrera; }
+    public void setCarrera(String carrera) { this.carrera = carrera; }
+}
+\end{lstlisting}
+
+\subsection{La conexión a la base de datos}
+\label{ap:crud:jsp:conexion}
+
+Desde JDBC~4 el driver se registra solo (vía \emph{ServiceLoader}), de
+modo que no hace falta \texttt{Class.forName}. La conexión se centraliza
+en una clase con un único método estático.
+
+{\small\textbf{Crear en:} \texttt{src/main/java/ec/edu/uteq/appweb/dao/ConexionBD.java}}
+\begin{lstlisting}[style=java,caption={ConexionBD.java (conexion JDBC centralizada)},label={lst:jsp-conexion}]
+package ec.edu.uteq.appweb.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public final class ConexionBD {
+    private static final String URL =
+        "jdbc:postgresql://localhost:5432/appweb2026ppa";
+    private static final String USUARIO = "postgres";
+    private static final String CLAVE = "P@$7Gr3$QL";
+
+    private ConexionBD() { }
+
+    public static Connection obtener() throws SQLException {
+        return DriverManager.getConnection(URL, USUARIO, CLAVE);
+    }
+}
+\end{lstlisting}
+
+\subsection{El DAO con SQL parametrizado}
+\label{ap:crud:jsp:dao}
+
+Cada método abre su conexión con \emph{try-with-resources}: así la
+conexión, la sentencia preparada (\texttt{Prepared\-Statement}) y el
+conjunto de resultados (\texttt{Result\-Set}) se cierran de forma
+automática. Todos los datos externos viajan como parámetros
+(\texttt{?}), nunca concatenados: así se previene la inyección SQL.
+
+{\small\textbf{Crear en:} \texttt{dao/EstudianteDAO.java} (parte 1 de 2: lectura)}
+\begin{lstlisting}[style=java,caption={EstudianteDAO.java --- parte 1: listar y buscar},label={lst:jsp-dao-a}]
+package ec.edu.uteq.appweb.dao;
+
+import ec.edu.uteq.appweb.modelo.Estudiante;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class EstudianteDAO {
+
+    public List<Estudiante> listar() throws SQLException {
+        String sql = "SELECT id, nombre, correo, carrera "
+                   + "FROM estudiantes ORDER BY id";
+        List<Estudiante> lista = new ArrayList<>();
+        try (Connection cn = ConexionBD.obtener();
+             PreparedStatement ps = cn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                lista.add(mapear(rs));
+            }
+        }
+        return lista;
+    }
+
+    public Estudiante buscarPorId(int id) throws SQLException {
+        String sql = "SELECT id, nombre, correo, carrera "
+                   + "FROM estudiantes WHERE id = ?";
+        try (Connection cn = ConexionBD.obtener();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? mapear(rs) : null;
+            }
+        }
+    }
+\end{lstlisting}
+
+{\small\textbf{Continúa en:} \texttt{dao/EstudianteDAO.java} (parte 2 de 2: escritura)}
+\begin{lstlisting}[style=java,caption={EstudianteDAO.java --- parte 2: insertar, actualizar, eliminar},label={lst:jsp-dao-b}]
+    public void insertar(Estudiante e) throws SQLException {
+        String sql = "INSERT INTO estudiantes (nombre, correo, carrera) "
+                   + "VALUES (?, ?, ?)";
+        try (Connection cn = ConexionBD.obtener();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, e.getNombre());
+            ps.setString(2, e.getCorreo());
+            ps.setString(3, e.getCarrera());
+            ps.executeUpdate();
+        }
+    }
+
+    public void actualizar(Estudiante e) throws SQLException {
+        String sql = "UPDATE estudiantes "
+                   + "SET nombre = ?, correo = ?, carrera = ? WHERE id = ?";
+        try (Connection cn = ConexionBD.obtener();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, e.getNombre());
+            ps.setString(2, e.getCorreo());
+            ps.setString(3, e.getCarrera());
+            ps.setInt(4, e.getId());
+            ps.executeUpdate();
+        }
+    }
+
+    public void eliminar(int id) throws SQLException {
+        String sql = "DELETE FROM estudiantes WHERE id = ?";
+        try (Connection cn = ConexionBD.obtener();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
+    private Estudiante mapear(ResultSet rs) throws SQLException {
+        return new Estudiante(
+            rs.getInt("id"),
+            rs.getString("nombre"),
+            rs.getString("correo"),
+            rs.getString("carrera"));
+    }
+}
+\end{lstlisting}
+
+\subsection{El controlador (Servlet)}
+\label{ap:crud:jsp:servlet}
+
+Un único servlet atiende la ruta \texttt{/estudiantes} y decide la
+acción según el parámetro \texttt{accion}. Las lecturas usan
+\texttt{doGet}; las escrituras (guardar) usan \texttt{doPost} y
+terminan con un \emph{redirect} para evitar reenvíos del formulario.
+
+{\small\textbf{Crear en:} \texttt{.../controlador/EstudianteServlet.java}}
+\begin{lstlisting}[style=java,caption={EstudianteServlet.java (control de la peticion)},label={lst:jsp-servlet}]
+package ec.edu.uteq.appweb.controlador;
+
+import ec.edu.uteq.appweb.dao.EstudianteDAO;
+import ec.edu.uteq.appweb.modelo.Estudiante;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+@WebServlet("/estudiantes")
+public class EstudianteServlet extends HttpServlet {
+
+    private final EstudianteDAO dao = new EstudianteDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String accion = req.getParameter("accion");
+        if (accion == null) { accion = "listar"; }
+        try {
+            switch (accion) {
+                case "nuevo" -> mostrarFormulario(req, resp, null);
+                case "editar" -> {
+                    int id = Integer.parseInt(req.getParameter("id"));
+                    mostrarFormulario(req, resp, dao.buscarPorId(id));
+                }
+                case "eliminar" -> {
+                    dao.eliminar(Integer.parseInt(req.getParameter("id")));
+                    resp.sendRedirect(req.getContextPath() + "/estudiantes");
+                }
+                default -> listar(req, resp);
+            }
+        } catch (SQLException ex) {
+            throw new ServletException("Error de base de datos", ex);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        Estudiante e = new Estudiante();
+        String id = req.getParameter("id");
+        e.setNombre(req.getParameter("nombre"));
+        e.setCorreo(req.getParameter("correo"));
+        e.setCarrera(req.getParameter("carrera"));
+        try {
+            if (id == null || id.isBlank()) {
+                dao.insertar(e);
+            } else {
+                e.setId(Integer.parseInt(id));
+                dao.actualizar(e);
+            }
+        } catch (SQLException ex) {
+            throw new ServletException("Error al guardar", ex);
+        }
+        resp.sendRedirect(req.getContextPath() + "/estudiantes");
+    }
+
+    private void listar(HttpServletRequest req, HttpServletResponse resp)
+            throws SQLException, ServletException, IOException {
+        req.setAttribute("lista", dao.listar());
+        req.getRequestDispatcher("/WEB-INF/vistas/lista.jsp")
+           .forward(req, resp);
+    }
+
+    private void mostrarFormulario(HttpServletRequest req,
+            HttpServletResponse resp, Estudiante e)
+            throws ServletException, IOException {
+        req.setAttribute("estudiante", e);
+        req.getRequestDispatcher("/WEB-INF/vistas/formulario.jsp")
+           .forward(req, resp);
+    }
+}
+\end{lstlisting}
+
+\subsection{Las vistas (JSP + JSTL + EL)}
+\label{ap:crud:jsp:vistas}
+
+Las vistas van en \texttt{WEB-INF/vistas/} para que no se puedan abrir
+directamente por URL: solo el servlet las despacha. La directiva
+\texttt{taglib} con URI \texttt{jakarta.tags.core} habilita JSTL; el
+\texttt{c:out} escapa la salida (defensa anti-XSS).
+
+{\small\textbf{Crear en:} \texttt{src/main/webapp/WEB-INF/vistas/lista.jsp}}
+\begin{lstlisting}[style=html,caption={lista.jsp (listado con JSTL y EL)},label={lst:jsp-lista}]
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Estudiantes</title></head>
+<body>
+  <h1>Listado de estudiantes</h1>
+  <p><a href="${ctx}/estudiantes?accion=nuevo">Nuevo estudiante</a></p>
+  <table border="1">
+    <tr><th>ID</th><th>Nombre</th><th>Correo</th>
+        <th>Carrera</th><th>Acciones</th></tr>
+    <c:forEach var="e" items="${lista}">
+      <tr>
+        <td>${e.id}</td>
+        <td><c:out value="${e.nombre}"/></td>
+        <td><c:out value="${e.correo}"/></td>
+        <td><c:out value="${e.carrera}"/></td>
+        <td>
+          <a href="${ctx}/estudiantes?accion=editar&id=${e.id}">Editar</a>
+          <a href="${ctx}/estudiantes?accion=eliminar&id=${e.id}"
+             onclick="return confirm('Eliminar?');">Eliminar</a>
+        </td>
+      </tr>
+    </c:forEach>
+  </table>
+</body>
+</html>
+\end{lstlisting}
+
+{\small\textbf{Crear en:} \texttt{src/main/webapp/WEB-INF/vistas/formulario.jsp}}
+\begin{lstlisting}[style=html,caption={formulario.jsp (alta y edicion)},label={lst:jsp-form}]
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Estudiante</title></head>
+<body>
+  <h1>
+    <c:choose>
+      <c:when test="${estudiante != null}">Editar</c:when>
+      <c:otherwise>Nuevo</c:otherwise>
+    </c:choose> estudiante
+  </h1>
+  <form method="post" action="${ctx}/estudiantes">
+    <input type="hidden" name="id" value="${estudiante.id}">
+    <p>Nombre:
+       <input type="text" name="nombre"
+              value="<c:out value='${estudiante.nombre}'/>" required></p>
+    <p>Correo:
+       <input type="email" name="correo"
+              value="<c:out value='${estudiante.correo}'/>" required></p>
+    <p>Carrera:
+       <input type="text" name="carrera"
+              value="<c:out value='${estudiante.carrera}'/>" required></p>
+    <button type="submit">Guardar</button>
+    <a href="${ctx}/estudiantes">Cancelar</a>
+  </form>
+</body>
+</html>
+\end{lstlisting}
+
+Para que la raíz del sitio lleve al listado, \texttt{index.jsp} solo
+redirige:
+
+{\small\textbf{Editar:} \texttt{src/main/webapp/index.jsp}}
+\begin{lstlisting}[style=html,caption={index.jsp (redireccion al servlet)},label={lst:jsp-index}]
+<% response.sendRedirect(request.getContextPath() + "/estudiantes"); %>
+\end{lstlisting}
+
+\subsection{Ejecutar y verificar}
+\label{ap:crud:jsp:run}
+
+\begin{enumerate}
+\item Ejecute \texttt{db/schema.sql} en PostgreSQL (pestaña
+\emph{Database} de IntelliJ o \texttt{psql}).
+\item \texttt{Run > Edit Configurations > +} \texttt{> Tomcat Server >
+Local}. En la pestaña \emph{Deployment} agregue el artefacto
+\texttt{gestion-estudiantes-jsp:war exploded}.
+\item Pulse \texttt{Run}. IntelliJ despliega en Tomcat y abre el
+navegador en la ruta de contexto \texttt{/gestion-estudiantes-jsp/}
+(puerto \texttt{8080} por defecto).
+\item Verifique el ciclo completo: crear, listar, editar y eliminar un
+estudiante. En la consola no deben aparecer trazas de error.
+\end{enumerate}
+
+\begin{cajaadvertencia}{Errores típicos en la pista JSP}
+\begin{itemize}
+\item \texttt{No suitable driver}: falta la dependencia del driver
+PostgreSQL en \texttt{pom.xml} o no se recargó Maven.
+\item Etiquetas \texttt{<c:forEach>} que aparecen como texto: el URI del
+\texttt{taglib} no es \texttt{jakarta.tags.core}, o falta la
+implementación de JSTL (segunda dependencia).
+\item \texttt{404} al abrir la JSP directamente: es lo esperado; las
+vistas están en \texttt{WEB-INF} y solo se acceden vía el servlet.
+\end{itemize}
+\end{cajaadvertencia}
+
+% =====================================================================
+\section{Pista 2 --- Django con SQL parametrizado (sin ORM)}
+\label{ap:crud:django}
+
+Django aporta el enrutamiento, las plantillas y la gestion de la
+peticion; el acceso a datos, en cambio, se resuelve con un DAO que
+ejecuta SQL a mano mediante el cursor de \texttt{django.db.connection}.
+No se definen modelos del ORM para \texttt{estudiantes}. Se usa Django
+5.2~LTS sobre Python~3.13 \cite{django52docs}.
+
+\subsection{Crear el proyecto en IntelliJ IDEA}
+\label{ap:crud:django:crear}
+
+\begin{enumerate}
+\item Active el plugin \emph{Python} (\texttt{Settings > Plugins}) en
+IntelliJ IDEA Ultimate.
+\item \texttt{File > New > Project > Python}. Defina un entorno virtual
+(\emph{Virtualenv}) con el interprete Python~3.13.
+\item Abra la \emph{Terminal} integrada e instale las dependencias:
+\end{enumerate}
+
+\begin{lstlisting}[style=shell,caption={Instalacion de Django y el adaptador de PostgreSQL},label={lst:dj-pip}]
+pip install "Django>=5.2,<6.0" "psycopg[binary]"
+django-admin startproject gestion .
+python manage.py startapp estudiantes
+\end{lstlisting}
+
+\begin{cajaejemplo}{Lo que generan startproject y startapp}
+\begin{lstlisting}[style=shell,caption={Esqueleto creado por django-admin},label={lst:dj-skel}]
+gestion/                          (raiz del proyecto)
+|-- manage.py                     (django-admin)
+|-- gestion/                      (django-admin: configuracion)
+|   |-- __init__.py
+|   |-- settings.py
+|   |-- urls.py
+|   |-- asgi.py
+|   `-- wsgi.py
+`-- estudiantes/                  (django-admin: la app)
+    |-- __init__.py
+    |-- admin.py
+    |-- apps.py
+    |-- migrations/
+    |-- models.py                 (NO se usa: no hay ORM)
+    |-- tests.py
+    `-- views.py
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsection{Estructura final del proyecto}
+\label{ap:crud:django:estructura}
+
+\begin{lstlisting}[style=shell,caption={Estructura completa de la pista Django},label={lst:dj-tree}]
+gestion/
+|-- manage.py                                 (django-admin)
+|-- db/schema.sql                             (programador)
+|-- gestion/
+|   |-- settings.py                           (programador: BD + app)
+|   `-- urls.py                               (programador: incluye la app)
+`-- estudiantes/
+    |-- dominio.py                            (programador: dominio)
+    |-- dao.py                                (programador: acceso a datos)
+    |-- views.py                              (programador: control)
+    |-- urls.py                               (programador: rutas de la app)
+    `-- templates/estudiantes/
+        |-- lista.html                        (programador: vista)
+        `-- formulario.html                   (programador: vista)
+\end{lstlisting}
+
+\subsection{Configuracion: base de datos y app}
+\label{ap:crud:django:settings}
+
+{\small\textbf{Editar:} \texttt{gestion/settings.py}}
+\begin{lstlisting}[style=python,caption={settings.py (conexion PostgreSQL y registro de la app)},label={lst:dj-settings}]
+INSTALLED_APPS = [
+    "django.contrib.staticfiles",
+    "estudiantes",
+]
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "appweb2026ppa",
+        "USER": "postgres",
+        "PASSWORD": "P@$7Gr3$QL",
+        "HOST": "localhost",
+        "PORT": "5432",
+    }
+}
+\end{lstlisting}
+
+\subsection{El dominio}
+\label{ap:crud:django:dominio}
+
+{\small\textbf{Crear en:} \texttt{estudiantes/dominio.py}}
+\begin{lstlisting}[style=python,caption={dominio.py (la clase Estudiante)},label={lst:dj-dominio}]
+from dataclasses import dataclass
+
+
+@dataclass
+class Estudiante:
+    id: int | None
+    nombre: str
+    correo: str
+    carrera: str
+\end{lstlisting}
+
+\subsection{El DAO con SQL parametrizado}
+\label{ap:crud:django:dao}
+
+El cursor de Django usa marcadores \texttt{\%s} (estilo DB-API). Al
+pasar los valores como segundo argumento de \texttt{execute}, la
+biblioteca los enlaza de forma segura: no hay concatenacion, no hay
+inyeccion SQL.
+
+{\small\textbf{Crear en:} \texttt{estudiantes/dao.py}}
+\begin{lstlisting}[style=python,caption={dao.py (CRUD con cursor, sin el ORM)},label={lst:dj-dao}]
+from django.db import connection
+from .dominio import Estudiante
+
+
+class EstudianteDAO:
+    """Acceso a datos con SQL parametrizado, sin el ORM de Django."""
+
+    def listar(self):
+        sql = ("SELECT id, nombre, correo, carrera "
+               "FROM estudiantes ORDER BY id")
+        with connection.cursor() as cur:
+            cur.execute(sql)
+            return [self._mapear(fila) for fila in cur.fetchall()]
+
+    def buscar_por_id(self, id_est):
+        sql = ("SELECT id, nombre, correo, carrera "
+               "FROM estudiantes WHERE id = %s")
+        with connection.cursor() as cur:
+            cur.execute(sql, [id_est])
+            fila = cur.fetchone()
+            return self._mapear(fila) if fila else None
+
+    def insertar(self, e):
+        sql = ("INSERT INTO estudiantes (nombre, correo, carrera) "
+               "VALUES (%s, %s, %s)")
+        with connection.cursor() as cur:
+            cur.execute(sql, [e.nombre, e.correo, e.carrera])
+
+    def actualizar(self, e):
+        sql = ("UPDATE estudiantes "
+               "SET nombre = %s, correo = %s, carrera = %s WHERE id = %s")
+        with connection.cursor() as cur:
+            cur.execute(sql, [e.nombre, e.correo, e.carrera, e.id])
+
+    def eliminar(self, id_est):
+        sql = "DELETE FROM estudiantes WHERE id = %s"
+        with connection.cursor() as cur:
+            cur.execute(sql, [id_est])
+
+    @staticmethod
+    def _mapear(fila):
+        return Estudiante(id=fila[0], nombre=fila[1],
+                          correo=fila[2], carrera=fila[3])
+\end{lstlisting}
+
+\subsection{El control (views) y las rutas}
+\label{ap:crud:django:views}
+
+{\small\textbf{Crear en:} \texttt{estudiantes/views.py}}
+\begin{lstlisting}[style=python,caption={views.py (control de la peticion)},label={lst:dj-views}]
+from django.shortcuts import render, redirect
+from .dao import EstudianteDAO
+from .dominio import Estudiante
+
+dao = EstudianteDAO()
+
+
+def listar(request):
+    return render(request, "estudiantes/lista.html",
+                  {"estudiantes": dao.listar()})
+
+
+def nuevo(request):
+    return render(request, "estudiantes/formulario.html",
+                  {"estudiante": None})
+
+
+def editar(request, id_est):
+    return render(request, "estudiantes/formulario.html",
+                  {"estudiante": dao.buscar_por_id(id_est)})
+
+
+def guardar(request):
+    id_txt = request.POST.get("id")
+    e = Estudiante(
+        id=int(id_txt) if id_txt else None,
+        nombre=request.POST.get("nombre"),
+        correo=request.POST.get("correo"),
+        carrera=request.POST.get("carrera"))
+    if e.id:
+        dao.actualizar(e)
+    else:
+        dao.insertar(e)
+    return redirect("estudiantes:listar")
+
+
+def eliminar(request, id_est):
+    dao.eliminar(id_est)
+    return redirect("estudiantes:listar")
+\end{lstlisting}
+
+{\small\textbf{Crear en:} \texttt{estudiantes/urls.py}}
+\begin{lstlisting}[style=python,caption={urls.py de la app},label={lst:dj-urls-app}]
+from django.urls import path
+from . import views
+
+app_name = "estudiantes"
+
+urlpatterns = [
+    path("", views.listar, name="listar"),
+    path("nuevo/", views.nuevo, name="nuevo"),
+    path("editar/<int:id_est>/", views.editar, name="editar"),
+    path("guardar/", views.guardar, name="guardar"),
+    path("eliminar/<int:id_est>/", views.eliminar, name="eliminar"),
+]
+\end{lstlisting}
+
+{\small\textbf{Editar:} \texttt{gestion/urls.py}}
+\begin{lstlisting}[style=python,caption={urls.py del proyecto (incluye la app)},label={lst:dj-urls-root}]
+from django.urls import path, include
+
+urlpatterns = [
+    path("estudiantes/", include("estudiantes.urls")),
+]
+\end{lstlisting}
+
+\subsection{Las plantillas}
+\label{ap:crud:django:templates}
+
+El formulario incluye \texttt{\{\% csrf\_token \%\}}: Django rechaza los
+POST sin ese testigo, lo que protege contra CSRF.
+
+{\small\textbf{Crear en:} \texttt{estudiantes/templates/estudiantes/lista.html}}
+\begin{lstlisting}[style=html,caption={lista.html (plantilla de listado)},label={lst:dj-lista}]
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Estudiantes</title></head>
+<body>
+  <h1>Listado de estudiantes</h1>
+  <p><a href="{% url 'estudiantes:nuevo' %}">Nuevo estudiante</a></p>
+  <table border="1">
+    <tr><th>ID</th><th>Nombre</th><th>Correo</th>
+        <th>Carrera</th><th>Acciones</th></tr>
+    {% for e in estudiantes %}
+      <tr>
+        <td>{{ e.id }}</td>
+        <td>{{ e.nombre }}</td>
+        <td>{{ e.correo }}</td>
+        <td>{{ e.carrera }}</td>
+        <td>
+          <a href="{% url 'estudiantes:editar' e.id %}">Editar</a>
+          <a href="{% url 'estudiantes:eliminar' e.id %}"
+             onclick="return confirm('Eliminar?');">Eliminar</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
+\end{lstlisting}
+
+{\small\textbf{Crear en:} \texttt{estudiantes/templates/estudiantes/formulario.html}}
+\begin{lstlisting}[style=html,caption={formulario.html (alta y edicion)},label={lst:dj-form}]
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Estudiante</title></head>
+<body>
+  <h1>{% if estudiante %}Editar{% else %}Nuevo{% endif %} estudiante</h1>
+  <form method="post" action="{% url 'estudiantes:guardar' %}">
+    {% csrf_token %}
+    <input type="hidden" name="id"
+           value="{% if estudiante %}{{ estudiante.id }}{% endif %}">
+    <p>Nombre: <input type="text" name="nombre"
+       value="{% if estudiante %}{{ estudiante.nombre }}{% endif %}" required></p>
+    <p>Correo: <input type="email" name="correo"
+       value="{% if estudiante %}{{ estudiante.correo }}{% endif %}" required></p>
+    <p>Carrera: <input type="text" name="carrera"
+       value="{% if estudiante %}{{ estudiante.carrera }}{% endif %}" required></p>
+    <button type="submit">Guardar</button>
+    <a href="{% url 'estudiantes:listar' %}">Cancelar</a>
+  </form>
+</body>
+</html>
+\end{lstlisting}
+
+\subsection{Ejecutar y verificar}
+\label{ap:crud:django:run}
+
+\begin{enumerate}
+\item Ejecute \texttt{db/schema.sql} en PostgreSQL.
+\item En la Terminal: \texttt{python manage.py runserver}.
+\item Abra \texttt{http://localhost:8000/estudiantes/} y pruebe crear,
+listar, editar y eliminar.
+\end{enumerate}
+
+\begin{cajaadvertencia}{Errores tipicos en la pista Django}
+\begin{itemize}
+\item \texttt{ModuleNotFoundError: psycopg}: falta instalar
+\texttt{psycopg[binary]} en el entorno virtual activo.
+\item \texttt{TemplateDoesNotExist}: la plantilla no esta en
+\texttt{estudiantes/templates/estudiantes/} o falta registrar la app en
+\texttt{INSTALLED\_APPS}.
+\item \texttt{403 (CSRF verification failed)}: el formulario no incluye
+\texttt{\{\% csrf\_token \%\}}.
+\end{itemize}
+\end{cajaadvertencia}
+
+% =====================================================================
+\section{Pista 3 --- Laravel con PDO (sin Eloquent)}
+\label{ap:crud:laravel}
+
+Laravel aporta el enrutamiento, los controladores y las plantillas
+Blade; el acceso a datos se resuelve con un DAO que usa PDO
+directamente, sin Eloquent. Se usa Laravel~13 sobre PHP~8.4
+\cite{laravel13docs,phppdo}.
+
+\subsection{Crear el proyecto en IntelliJ IDEA}
+\label{ap:crud:laravel:crear}
+
+\begin{enumerate}
+\item Active el plugin \emph{PHP} en IntelliJ IDEA Ultimate y configure
+el interprete PHP~8.4 (\texttt{Settings > PHP}). Asegure la extension
+\texttt{pdo\_pgsql} habilitada.
+\item Cree el proyecto con Composer desde la Terminal:
+\end{enumerate}
+
+\begin{lstlisting}[style=shell,caption={Creacion del proyecto Laravel},label={lst:lv-create}]
+composer create-project laravel/laravel gestion-estudiantes
+cd gestion-estudiantes
+php artisan key:generate
+\end{lstlisting}
+
+\begin{cajaejemplo}{Lo que genera Composer (estructura esencial)}
+\begin{lstlisting}[style=shell,caption={Esqueleto creado por laravel/laravel},label={lst:lv-skel}]
+gestion-estudiantes/
+|-- app/
+|   |-- Http/Controllers/Controller.php      (Composer)
+|   |-- Models/                              (Composer; no se usa Eloquent)
+|   `-- Providers/
+|-- bootstrap/  config/  database/
+|-- public/index.php                         (Composer: punto de entrada)
+|-- resources/views/                         (Composer)
+|-- routes/web.php                           (Composer)
+|-- .env                                     (Composer: configuracion)
+|-- composer.json
+`-- artisan
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsection{Estructura final del proyecto}
+\label{ap:crud:laravel:estructura}
+
+Las clases del DAO y del dominio se ubican en carpetas nuevas dentro de
+\texttt{app/}, aprovechando el autocargado PSR-4 (\texttt{App\textbackslash}).
+
+\begin{lstlisting}[style=shell,caption={Estructura completa de la pista Laravel},label={lst:lv-tree}]
+gestion-estudiantes/
+|-- db/schema.sql                             (programador)
+|-- app/
+|   |-- Dominio/Estudiante.php                (programador: dominio)
+|   |-- Dao/
+|   |   |-- ConexionBD.php                     (programador: conexion PDO)
+|   |   `-- EstudianteDao.php                  (programador: acceso a datos)
+|   `-- Http/Controllers/
+|       `-- EstudianteController.php           (programador: control)
+|-- routes/web.php                             (programador: rutas)
+`-- resources/views/estudiantes/
+    |-- lista.blade.php                        (programador: vista)
+    `-- formulario.blade.php                   (programador: vista)
+\end{lstlisting}
+
+\subsection{La conexion (PDO)}
+\label{ap:crud:laravel:conexion}
+
+{\small\textbf{Crear en:} \texttt{app/Dao/ConexionBD.php}}
+\begin{lstlisting}[style=php,caption={ConexionBD.php (conexion PDO reutilizable)},label={lst:lv-conexion}]
+<?php
+
+namespace App\Dao;
+
+use PDO;
+
+class ConexionBD
+{
+    private static ?PDO $pdo = null;
+
+    public static function obtener(): PDO
+    {
+        if (self::$pdo === null) {
+            $dsn = 'pgsql:host=localhost;port=5432;dbname=appweb2026ppa';
+            self::$pdo = new PDO($dsn, 'postgres', 'P@$7Gr3$QL', [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ]);
+        }
+        return self::$pdo;
+    }
+}
+\end{lstlisting}
+
+\subsection{El dominio}
+\label{ap:crud:laravel:dominio}
+
+{\small\textbf{Crear en:} \texttt{app/Dominio/Estudiante.php}}
+\begin{lstlisting}[style=php,caption={Estudiante.php (dominio con propiedades promovidas)},label={lst:lv-dominio}]
+<?php
+
+namespace App\Dominio;
+
+class Estudiante
+{
+    public function __construct(
+        public ?int $id,
+        public string $nombre,
+        public string $correo,
+        public string $carrera
+    ) {}
+}
+\end{lstlisting}
+
+\subsection{El DAO con SQL parametrizado}
+\label{ap:crud:laravel:dao}
+
+PDO usa marcadores con nombre (\texttt{:nombre}). El metodo
+\texttt{execute} recibe el arreglo de valores y los enlaza de forma
+segura.
+
+{\small\textbf{Crear en:} \texttt{app/Dao/EstudianteDao.php}}
+\begin{lstlisting}[style=php,caption={EstudianteDao.php (CRUD con PDO, sin Eloquent)},label={lst:lv-dao}]
+<?php
+
+namespace App\Dao;
+
+use App\Dominio\Estudiante;
+
+class EstudianteDao
+{
+    public function listar(): array
+    {
+        $sql = 'SELECT id, nombre, correo, carrera '
+             . 'FROM estudiantes ORDER BY id';
+        $stmt = ConexionBD::obtener()->query($sql);
+        return array_map([$this, 'mapear'], $stmt->fetchAll());
+    }
+
+    public function buscarPorId(int $id): ?Estudiante
+    {
+        $sql = 'SELECT id, nombre, correo, carrera '
+             . 'FROM estudiantes WHERE id = :id';
+        $stmt = ConexionBD::obtener()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        $fila = $stmt->fetch();
+        return $fila ? $this->mapear($fila) : null;
+    }
+
+    public function insertar(Estudiante $e): void
+    {
+        $sql = 'INSERT INTO estudiantes (nombre, correo, carrera) '
+             . 'VALUES (:nombre, :correo, :carrera)';
+        $stmt = ConexionBD::obtener()->prepare($sql);
+        $stmt->execute([
+            ':nombre' => $e->nombre,
+            ':correo' => $e->correo,
+            ':carrera' => $e->carrera,
+        ]);
+    }
+
+    public function actualizar(Estudiante $e): void
+    {
+        $sql = 'UPDATE estudiantes SET nombre = :nombre, '
+             . 'correo = :correo, carrera = :carrera WHERE id = :id';
+        $stmt = ConexionBD::obtener()->prepare($sql);
+        $stmt->execute([
+            ':nombre' => $e->nombre,
+            ':correo' => $e->correo,
+            ':carrera' => $e->carrera,
+            ':id' => $e->id,
+        ]);
+    }
+
+    public function eliminar(int $id): void
+    {
+        $sql = 'DELETE FROM estudiantes WHERE id = :id';
+        $stmt = ConexionBD::obtener()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+    }
+
+    private function mapear(array $fila): Estudiante
+    {
+        return new Estudiante(
+            (int) $fila['id'],
+            $fila['nombre'],
+            $fila['correo'],
+            $fila['carrera']
+        );
+    }
+}
+\end{lstlisting}
+
+\subsection{El control y las rutas}
+\label{ap:crud:laravel:control}
+
+{\small\textbf{Crear en:} \texttt{app/Http/Controllers/EstudianteController.php}}
+\begin{lstlisting}[style=php,caption={EstudianteController.php (control de la peticion)},label={lst:lv-controller}]
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Dao\EstudianteDao;
+use App\Dominio\Estudiante;
+use Illuminate\Http\Request;
+
+class EstudianteController extends Controller
+{
+    private EstudianteDao $dao;
+
+    public function __construct()
+    {
+        $this->dao = new EstudianteDao();
+    }
+
+    public function index()
+    {
+        return view('estudiantes.lista',
+            ['estudiantes' => $this->dao->listar()]);
+    }
+
+    public function nuevo()
+    {
+        return view('estudiantes.formulario', ['estudiante' => null]);
+    }
+
+    public function editar(int $id)
+    {
+        return view('estudiantes.formulario',
+            ['estudiante' => $this->dao->buscarPorId($id)]);
+    }
+
+    public function guardar(Request $request)
+    {
+        $datos = $request->validate([
+            'id' => 'nullable|integer',
+            'nombre' => 'required|string|max:100',
+            'correo' => 'required|email|max:120',
+            'carrera' => 'required|string|max:80',
+        ]);
+        $e = new Estudiante(
+            $datos['id'] ?? null,
+            $datos['nombre'], $datos['correo'], $datos['carrera']);
+        $e->id ? $this->dao->actualizar($e) : $this->dao->insertar($e);
+        return redirect()->route('estudiantes.index');
+    }
+
+    public function eliminar(int $id)
+    {
+        $this->dao->eliminar($id);
+        return redirect()->route('estudiantes.index');
+    }
+}
+\end{lstlisting}
+
+{\small\textbf{Editar:} \texttt{routes/web.php}}
+\begin{lstlisting}[style=php,caption={web.php (rutas del CRUD)},label={lst:lv-routes}]
+<?php
+
+use App\Http\Controllers\EstudianteController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/estudiantes', [EstudianteController::class, 'index'])
+    ->name('estudiantes.index');
+Route::get('/estudiantes/nuevo', [EstudianteController::class, 'nuevo'])
+    ->name('estudiantes.nuevo');
+Route::get('/estudiantes/{id}/editar', [EstudianteController::class, 'editar'])
+    ->name('estudiantes.editar');
+Route::post('/estudiantes/guardar', [EstudianteController::class, 'guardar'])
+    ->name('estudiantes.guardar');
+Route::post('/estudiantes/{id}/eliminar', [EstudianteController::class, 'eliminar'])
+    ->name('estudiantes.eliminar');
+\end{lstlisting}
+
+\subsection{Las vistas Blade}
+\label{ap:crud:laravel:vistas}
+
+La directiva \texttt{@csrf} inserta el testigo anti-CSRF; las llaves
+dobles \texttt{\{\{ \}\}} escapan la salida (anti-XSS).
+
+{\small\textbf{Crear en:} \texttt{resources/views/estudiantes/lista.blade.php}}
+\begin{lstlisting}[style=html,caption={lista.blade.php (listado)},label={lst:lv-lista}]
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Estudiantes</title></head>
+<body>
+  <h1>Listado de estudiantes</h1>
+  <p><a href="{{ route('estudiantes.nuevo') }}">Nuevo estudiante</a></p>
+  <table border="1">
+    <tr><th>ID</th><th>Nombre</th><th>Correo</th>
+        <th>Carrera</th><th>Acciones</th></tr>
+    @foreach ($estudiantes as $e)
+      <tr>
+        <td>{{ $e->id }}</td>
+        <td>{{ $e->nombre }}</td>
+        <td>{{ $e->correo }}</td>
+        <td>{{ $e->carrera }}</td>
+        <td>
+          <a href="{{ route('estudiantes.editar', $e->id) }}">Editar</a>
+          <form method="post" style="display:inline"
+                action="{{ route('estudiantes.eliminar', $e->id) }}"
+                onsubmit="return confirm('Eliminar?');">
+            @csrf
+            <button type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+    @endforeach
+  </table>
+</body>
+</html>
+\end{lstlisting}
+
+{\small\textbf{Crear en:} \texttt{resources/views/estudiantes/formulario.blade.php}}
+\begin{lstlisting}[style=html,caption={formulario.blade.php (alta y edicion)},label={lst:lv-form}]
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Estudiante</title></head>
+<body>
+  <h1>{{ $estudiante ? 'Editar' : 'Nuevo' }} estudiante</h1>
+  <form method="post" action="{{ route('estudiantes.guardar') }}">
+    @csrf
+    <input type="hidden" name="id" value="{{ $estudiante->id ?? '' }}">
+    <p>Nombre: <input type="text" name="nombre"
+       value="{{ $estudiante->nombre ?? '' }}" required></p>
+    <p>Correo: <input type="email" name="correo"
+       value="{{ $estudiante->correo ?? '' }}" required></p>
+    <p>Carrera: <input type="text" name="carrera"
+       value="{{ $estudiante->carrera ?? '' }}" required></p>
+    <button type="submit">Guardar</button>
+    <a href="{{ route('estudiantes.index') }}">Cancelar</a>
+  </form>
+</body>
+</html>
+\end{lstlisting}
+
+\subsection{Ejecutar y verificar}
+\label{ap:crud:laravel:run}
+
+\begin{enumerate}
+\item Ejecute \texttt{db/schema.sql} en PostgreSQL.
+\item En la Terminal: \texttt{php artisan serve}.
+\item Abra \texttt{http://localhost:8000/estudiantes} y pruebe el ciclo
+CRUD completo.
+\end{enumerate}
+
+\begin{cajaadvertencia}{Errores tipicos en la pista Laravel}
+\begin{itemize}
+\item \texttt{could not find driver}: falta habilitar la extension
+\texttt{pdo\_pgsql} en \texttt{php.ini}.
+\item \texttt{419 (Page Expired)}: el formulario no incluye
+\texttt{@csrf}.
+\item \texttt{Class not found}: el espacio de nombres del archivo no
+coincide con su carpeta (PSR-4); revise \texttt{namespace} y la ruta.
+\end{itemize}
+\end{cajaadvertencia}
+
+% =====================================================================
+\section{Los tres enfoques comparados}
+\label{ap:crud:comparacion}
+
+Las tres pistas resuelven el mismo problema con la misma arquitectura
+en cuatro capas; lo que cambia es la sintaxis y las piezas que aporta
+cada plataforma. La tabla~\ref{tab:crud-comparacion} resume las
+correspondencias.
+
+\begin{table}[H]
+\centering
+\caption{Correspondencia entre las tres pistas del CRUD con DAO}
+\label{tab:crud-comparacion}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.8cm}
+                >{\raggedright\arraybackslash}p{3.4cm}
+                >{\raggedright\arraybackslash}p{3.2cm}
+                >{\raggedright\arraybackslash}p{3.2cm}}
+\toprule
+\textbf{Aspecto} & \textbf{JSP/JSTL/EL} & \textbf{Django} & \textbf{Laravel} \\
+\midrule
+Lenguaje / versión & Java 21 & Python 3.13 & PHP 8.4 \\
+Servidor de ejecución & Tomcat 11 & runserver (dev) & artisan serve (dev) \\
+Conexión a la BD & JDBC \texttt{DriverManager} & cursor de \texttt{connection} & PDO \\
+Marcador de parámetro & \texttt{?} & \texttt{\%s} & \texttt{:nombre} \\
+Control & Servlet & función \emph{view} & Controller \\
+Presentación & JSP + JSTL + EL & plantilla Django & Blade \\
+Anti-XSS en la vista & \texttt{c:out} & \texttt{\{\{ \}\}} & \texttt{\{\{ \}\}} \\
+Anti-CSRF & (manual) & \texttt{csrf\_token} & \texttt{@csrf} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{cajabuenas}{Lo que el estudiante debe llevarse de esta práctica}
+\begin{enumerate}
+\item El patrón DAO es independiente del lenguaje: una clase de
+conexión y un DAO con métodos de negocio resuelven la persistencia en
+cualquier pila.
+\item El SQL parametrizado (\texttt{?}, \texttt{\%s} o \texttt{:nombre})
+es la defensa primaria contra la inyección SQL en las tres pilas.
+\item El controlador nunca contiene SQL ni la vista contiene lógica de
+negocio: esa separación es lo que hace mantenible la aplicación.
+\item El ORM ahorra código, pero comprender el SQL subyacente ---como
+en este apéndice--- es lo que permite depurar y optimizar cuando el ORM
+no basta.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Lista de verificación final}
+\label{ap:crud:checklist}
+
+\begin{enumerate}
+\item La tabla \texttt{estudiantes} existe en \texttt{appweb2026ppa}.
+\item Las cuatro capas (dominio, DAO, control, vista) están separadas
+en archivos distintos.
+\item Todas las consultas usan parámetros enlazados; no hay
+concatenación de cadenas en el SQL.
+\item Las vistas escapan la salida del usuario.
+\item El ciclo CRUD completo (crear, listar, editar, eliminar) funciona
+de extremo a extremo en las tres pistas.
+\end{enumerate}
