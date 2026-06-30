@@ -1,0 +1,1671 @@
+\documentclass[11pt,a4paper]{article}
+
+% ===================== CODIFICACION Y FUENTE =====================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ===================== MATEMATICAS =====================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+% ===================== GRAFICOS =====================
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc,decorations.pathreplacing,backgrounds}
+
+% ===================== TABLAS =====================
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+% ===================== CAJAS =====================
+\usepackage[most]{tcolorbox}
+
+% ===================== CODIGO =====================
+\usepackage{listings}
+
+% ===================== ENLACES =====================
+\usepackage[colorlinks=true,linkcolor=uteqBlue,citecolor=uteqGreen,urlcolor=uteqTeal]{hyperref}
+
+% ===================== GEOMETRIA Y CABECERAS =====================
+\usepackage[margin=2.3cm,headheight=22pt]{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{titlesec}
+
+% ===================== PALETA UTEQ =====================
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqLight}{HTML}{EAF1FB}
+\definecolor{uteqGray}{HTML}{4A4A4A}
+\definecolor{codeBg}{HTML}{F7F8FA}
+\definecolor{codeKey}{HTML}{0E3F7E}
+\definecolor{codeStr}{HTML}{2E7D32}
+\definecolor{codeCom}{HTML}{6E6E6E}
+
+% ===================== CABECERAS =====================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textbf{UTEQ} -- Aplicaciones Distribuidas (ISR-701)}
+\fancyhead[R]{\small Unidad 3 -- Bases de Datos Distribuidas}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{uteqBlue}\leaders\hrule height \headrulewidth\hfill}}
+
+% ===================== TITULOS DE SECCION =====================
+\titleformat{\section}{\Large\bfseries\color{uteqBlue}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{uteqMid}}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{uteqTeal}}{\thesubsubsection}{0.4em}{}
+
+% ===================== CAJAS PERSONALIZADAS =====================
+\newtcolorbox{defbox}[1]{
+  enhanced,
+  colback=uteqLight,
+  colframe=uteqBlue,
+  fonttitle=\bfseries\color{white},
+  coltitle=white,
+  title={Definicion: #1},
+  boxrule=0.7pt,
+  arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  breakable
+}
+
+\newtcolorbox{notebox}[1]{
+  enhanced,
+  colback=uteqAmber!8,
+  colframe=uteqAmber,
+  fonttitle=\bfseries,
+  coltitle=uteqBlue,
+  title={#1},
+  boxrule=0.7pt,
+  arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  breakable
+}
+
+\newtcolorbox{examplebox}[1]{
+  enhanced,
+  colback=uteqGreen!8,
+  colframe=uteqGreen,
+  fonttitle=\bfseries\color{white},
+  coltitle=white,
+  title={Ejemplo: #1},
+  boxrule=0.7pt,
+  arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  breakable
+}
+
+\newtcolorbox{practicebox}[1]{
+  enhanced,
+  colback=uteqTeal!8,
+  colframe=uteqTeal,
+  fonttitle=\bfseries\color{white},
+  coltitle=white,
+  title={Practica IDE -- #1},
+  boxrule=0.7pt,
+  arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  breakable
+}
+
+% ===================== ESTILOS DE CODIGO =====================
+\lstdefinestyle{JavaStyle}{
+  language=Java,
+  backgroundcolor=\color{codeBg},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{codeKey}\bfseries,
+  commentstyle=\color{codeCom}\itshape,
+  stringstyle=\color{codeStr},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt,
+  frame=single,
+  rulecolor=\color{uteqBlue!40},
+  framesep=4pt,
+  showstringspaces=false,
+  breaklines=true,
+  captionpos=b,
+  tabsize=2,
+  literate={\~}{{\textasciitilde}}1
+}
+
+\lstdefinestyle{SQLStyle}{
+  language=SQL,
+  backgroundcolor=\color{codeBg},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{codeKey}\bfseries,
+  commentstyle=\color{codeCom}\itshape,
+  stringstyle=\color{codeStr},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt,
+  frame=single,
+  rulecolor=\color{uteqGreen!40},
+  framesep=4pt,
+  showstringspaces=false,
+  breaklines=true,
+  captionpos=b,
+  tabsize=2
+}
+
+\lstdefinestyle{YamlStyle}{
+  language=,
+  backgroundcolor=\color{codeBg},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{codeKey}\bfseries,
+  commentstyle=\color{codeCom}\itshape,
+  stringstyle=\color{codeStr},
+  morekeywords={services,version,image,container_name,environment,ports,volumes,networks,depends_on,driver,build,command,restart,healthcheck},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt,
+  frame=single,
+  rulecolor=\color{uteqAmber!40},
+  framesep=4pt,
+  showstringspaces=false,
+  breaklines=true,
+  captionpos=b,
+  tabsize=2
+}
+
+% ===================== ENTORNOS MATEMATICOS =====================
+\newtheorem{teorema}{Teorema}
+\newtheorem{propiedad}{Propiedad}
+
+% ===================== DOCUMENTO =====================
+\begin{document}
+
+% ---------------- PORTADA ----------------
+\begin{titlepage}
+\centering
+\vspace*{1.2cm}
+{\color{uteqBlue}\rule{\textwidth}{2pt}}\\[0.3cm]
+{\LARGE\bfseries\color{uteqBlue} UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}\\[0.2cm]
+{\large\color{uteqGray} Facultad de Ciencias de la Computacion y Diseno Digital}\\[0.1cm]
+{\large\color{uteqGray} Carrera de Ingenieria de Software}\\
+{\color{uteqBlue}\rule{\textwidth}{2pt}}\\[2.5cm]
+{\Huge\bfseries\color{uteqBlue} BASES DE DATOS\\[0.4cm] DISTRIBUIDAS}\\[1cm]
+{\Large\itshape\color{uteqMid} Material Academico Integral}\\[0.3cm]
+{\large\color{uteqGray} Definicion, conceptos, caracteristicas, arquitecturas,\\ fragmentacion, replicacion, transacciones, NoSQL y ejercicio practico}\\[3cm]
+
+\begin{tcolorbox}[colback=uteqLight,colframe=uteqBlue,width=0.85\textwidth,arc=4pt]
+\centering
+\textbf{Asignatura:} Aplicaciones Distribuidas (ISR-701)\\[0.2cm]
+\textbf{Unidad:} 3 -- Bases de Datos Distribuidas\\[0.2cm]
+\textbf{Semanas:} 9, 10 y 11 del cronograma de 18 semanas\\[0.2cm]
+\textbf{Periodo Academico:} 2026--2027\\[0.2cm]
+\textbf{Docente:} Ph.D. Gleiston C. Guerrero-Ulloa\\[0.2cm]
+\textbf{Resultado de Aprendizaje:} Implementa soluciones de bases de datos distribuidas evaluando su rendimiento, consistencia y tolerancia a fallos.
+\end{tcolorbox}
+
+\vfill
+{\small\color{uteqGray} Quevedo, Los Rios -- Ecuador \\ Junio de 2026}
+\end{titlepage}
+
+% ---------------- TABLA DE CONTENIDO ----------------
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Introduccion}
+% ============================================================
+
+El presente material constituye la guia academica integral de la Unidad 3 de la asignatura \textit{Aplicaciones Distribuidas} (ISR-701), correspondiente al septimo nivel de la Carrera de Ingenieria de Software de la Universidad Tecnica Estatal de Quevedo. Su proposito es ofrecer al estudiante una vision completa, formal y aplicada de las Bases de Datos Distribuidas (BDD), desde sus fundamentos teoricos hasta su implementacion practica con tecnologias contemporaneas.
+
+El crecimiento exponencial del volumen de datos, la dispersion geografica de las organizaciones y la demanda creciente de disponibilidad continua han convertido a las BDD en una tecnologia central para los sistemas de informacion modernos. Comprender sus principios resulta indispensable para todo ingeniero de software que aspire a disenar arquitecturas escalables, resilientes y consistentes.
+
+El documento esta organizado en tres ejes que reflejan las tres semanas del cronograma de la unidad. El primero introduce los conceptos fundamentales: definicion formal, caracteristicas, arquitecturas, transparencias y posicionamiento CAP. El segundo desarrolla el diseno fisico de la distribucion: fragmentacion horizontal, vertical y mixta, estrategias de replicacion y catalogo distribuido. El tercero aborda el control de concurrencia distribuido, los protocolos de commit, la deteccion de deadlocks y los modelos NoSQL como alternativa a los SGBDD relacionales.
+
+Cada concepto se acompana de definiciones formales, ejemplos de sistemas reales en produccion (Google Spanner, CockroachDB, Cassandra, DynamoDB, MongoDB) y un ejercicio practico completo de implementacion sobre el caso de estudio \textit{Banco del Austro}, utilizando Java 21, Spring Boot 3.x, PostgreSQL 16 y Docker. Todo el codigo es compilable y reproducible.
+
+% ============================================================
+\section{Definicion Formal de Base de Datos Distribuida}
+% ============================================================
+
+\begin{defbox}{Base de Datos Distribuida (BDD)}
+Una \textbf{base de datos distribuida} es una coleccion de bases de datos multiples, logicamente interrelacionadas, distribuidas sobre una red de computadores. Un \textbf{Sistema de Gestion de Bases de Datos Distribuidas} (SGBDD o DDBMS, por sus siglas en ingles) es el sistema de software que permite la gestion de la base de datos distribuida y hace que la distribucion sea transparente para los usuarios \cite{ozsu2020}.
+\end{defbox}
+
+La definicion encierra dos requisitos esenciales que la distinguen de otros sistemas. Primero, la \textbf{interrelacion logica}: los datos almacenados en los distintos sitios no son meramente coexistentes, sino que conforman un esquema global coherente con relaciones entre tablas, integridad referencial y semantica unificada. Segundo, la \textbf{transparencia de la distribucion}: la complejidad de la ubicacion fisica, la fragmentacion y la replicacion queda oculta al usuario final y a las aplicaciones cliente.
+
+Es fundamental diferenciar la BDD de tres conceptos cercanos pero distintos. Una \textbf{base de datos centralizada con acceso remoto} ofrece un unico sitio fisico que recibe consultas desde la red, pero no hay distribucion de datos. Un \textbf{conjunto de bases de datos independientes} en distintos servidores carece de esquema logico unificado y por tanto no satisface el primer requisito. Una \textbf{base de datos paralela} ejecuta consultas con multiples procesadores sobre un mismo sitio fisico para acelerar el procesamiento, sin distribucion geografica.
+
+\begin{notebox}{Diferencia esencial}
+La diferencia esencial entre una base de datos distribuida y una centralizada no radica en la tecnologia de almacenamiento, sino en la \textbf{distribucion geografica o logica de los datos} y en como el sistema gestiona la \textbf{transparencia} de esa distribucion. Un cluster PostgreSQL con replicacion sincrona en dos centros de datos constituye una BDD; dos bases PostgreSQL independientes que comparten datos por exportacion CSV no.
+\end{notebox}
+
+% ============================================================
+\section{Conceptos Relacionados con Bases de Datos Distribuidas}
+% ============================================================
+
+Antes de profundizar en la arquitectura y el diseno de las BDD conviene fijar el vocabulario tecnico empleado a lo largo del documento. Estos terminos aparecen tanto en la literatura academica como en la documentacion industrial de los principales sistemas de produccion.
+
+\subsection{Sitio o Nodo}
+
+Un \textbf{sitio} (tambien llamado nodo o site) es una unidad logica de almacenamiento y procesamiento dentro de la BDD. Tipicamente corresponde a un servidor fisico con su propio motor SGBD local, su almacenamiento persistente y su porcion del esquema. En despliegues virtualizados un sitio puede ser un contenedor Docker, una maquina virtual o un pod de Kubernetes. La conexion entre sitios se realiza por una red TCP/IP que puede ser una LAN del centro de datos, una WAN entre ciudades o el internet publico.
+
+\subsection{Esquema Global y Esquemas Locales}
+
+El \textbf{esquema global} (o conceptual global) describe la base de datos completa como si fuera una sola entidad logica. Define las relaciones (tablas), atributos, restricciones de integridad y reglas de negocio. El \textbf{esquema local} de cada sitio describe los fragmentos o replicas que ese sitio almacena fisicamente. La aplicacion siempre conversa contra el esquema global; el SGBDD traduce las operaciones al esquema local apropiado.
+
+\subsection{Fragmento}
+
+Un \textbf{fragmento} es una porcion de una relacion del esquema global asignada a un sitio especifico. Existen tres tipos: \textbf{horizontal} (subconjunto de filas), \textbf{vertical} (subconjunto de columnas) y \textbf{mixto} (combinacion de los dos). El conjunto de todos los fragmentos de una relacion debe permitir reconstruirla sin perdida.
+
+\subsection{Replica}
+
+Una \textbf{replica} es una copia identica de un fragmento o relacion completa que reside en mas de un sitio. La replicacion incrementa la disponibilidad y reduce la latencia de lectura, a costa de mayor complejidad en el mantenimiento de la consistencia entre copias.
+
+\subsection{Catalogo Distribuido}
+
+El \textbf{catalogo distribuido} (tambien llamado diccionario de datos distribuido o catalogo global) es la estructura de metadatos que indica donde reside cada fragmento y replica. Es la pieza clave que habilita las transparencias de fragmentacion y ubicacion: cuando una consulta llega al SGBDD, este consulta primero el catalogo para determinar a que sitios enrutarla.
+
+\subsection{Transaccion Distribuida}
+
+Una \textbf{transaccion distribuida} es una unidad logica de trabajo que accede a datos en multiples sitios y debe satisfacer las propiedades ACID (atomicidad, consistencia, aislamiento y durabilidad) de forma global. Su correcta ejecucion exige protocolos de coordinacion como el commit en dos fases (2PC).
+
+\subsection{Procesamiento de Consultas Distribuido}
+
+El \textbf{procesamiento de consultas distribuido} es el conjunto de tecnicas que el SGBDD aplica para transformar una consulta global (escrita contra el esquema global) en un plan ejecutable que combina operaciones locales en cada sitio mas operaciones de transferencia de datos por la red. El optimizador distribuido busca minimizar el costo total, que ahora incluye no solo I/O y CPU sino tambien comunicacion.
+
+\subsection{Modelo de Consistencia}
+
+El \textbf{modelo de consistencia} es la garantia formal que el sistema ofrece sobre el orden y la visibilidad de las operaciones concurrentes. Va desde el modelo mas fuerte, la \textit{serializabilidad estricta}, hasta los mas debiles, como la \textit{consistencia eventual}. Cada modelo establece un balance distinto entre rendimiento, disponibilidad y simplicidad de programacion.
+
+\subsection{Tolerancia a Particiones de Red}
+
+Una \textbf{particion de red} ocurre cuando una falla de la red impide la comunicacion entre subconjuntos de sitios, aunque cada subconjunto siga funcionando internamente. La \textbf{tolerancia a particiones} es la capacidad del sistema para continuar operando bajo estas condiciones. El teorema CAP establece que ante una particion el sistema debe elegir entre preservar la consistencia o la disponibilidad.
+
+% ============================================================
+\section{Caracteristicas de las Bases de Datos Distribuidas}
+% ============================================================
+
+Las BDD presentan caracteristicas diferenciales que las hacen apropiadas para escenarios donde un sistema centralizado resultaria insuficiente. Estas caracteristicas constituyen tanto sus ventajas como las fuentes de su complejidad inherente.
+
+\subsection{Distribucion Fisica y Logica}
+
+Los datos residen en sitios geograficamente o logicamente separados, conectados por una red. La separacion puede ser intraciudad (varios centros de datos de la misma ciudad), interurbana (oficinas en distintas ciudades) o intercontinental (regiones cloud globales). En todos los casos el sistema mantiene la ilusion de un unico almacen logico.
+
+\subsection{Autonomia Local}
+
+Cada sitio puede operar de manera independiente cuando la red falla o cuando el resto del sistema esta indisponible. Las consultas y transacciones locales no se ven afectadas por fallos externos. Esta caracteristica es fundamental para la \textit{disponibilidad continua} y para el cumplimiento de la regla 1 de Date.
+
+\subsection{Crecimiento Incremental}
+
+Anadir nuevos sitios a la BDD debe ser posible sin reescribir aplicaciones ni reorganizar masivamente los datos existentes. La escalabilidad horizontal es uno de los principales motivadores para migrar desde un SGBD centralizado.
+
+\subsection{Mayor Disponibilidad}
+
+La replicacion permite que la caida de un sitio no implique la perdida de servicio: las consultas se redirigen automaticamente a replicas activas. Sistemas con replicacion 3x y consenso por mayoria (quorum Raft o Paxos) toleran la perdida de un nodo sin interrupcion.
+
+\subsection{Mejor Rendimiento Localizado}
+
+Los datos pueden colocarse cerca de los usuarios que los consultan con mas frecuencia, reduciendo la latencia de red. Este principio, conocido como \textit{localidad de referencia}, es la base del diseno de fragmentacion: ubicar las tuplas de Cuenca en el servidor de Cuenca, y las de Quito en el de Quito.
+
+\subsection{Heterogeneidad Potencial}
+
+Distintos sitios pueden ejecutar distintos motores SGBD (PostgreSQL en un sitio, Oracle en otro), siempre que exista una capa de federacion o middleware que unifique el acceso. La heterogeneidad permite integrar sistemas legados sin migrarlos.
+
+\subsection{Compromisos del Teorema CAP}
+
+Cualquier BDD debe declarar explicitamente su posicion en el teorema CAP: ante una particion de red, sacrifica consistencia (sistemas AP, como Cassandra) o disponibilidad (sistemas CP, como MongoDB con writeConcern majority). No existe el sistema ideal CA bajo particiones reales \cite{brewer2012}.
+
+\begin{notebox}{Trade-offs inherentes}
+Las caracteristicas anteriores no son gratuitas. La distribucion introduce \textbf{complejidad de coordinacion}, \textbf{latencia de red en operaciones cross-site}, \textbf{dificultad en el mantenimiento de la integridad referencial}, y \textbf{problemas de consistencia} que no existen en un SGBD centralizado. Disenar una BDD es ejercer un balance permanente entre estos compromisos.
+\end{notebox}
+
+% ============================================================
+\section{Las 12 Reglas de Date para SGBDD}
+% ============================================================
+
+En 1987 C.~J. Date formulo doce propiedades que deberia cumplir un SGBDD ideal. Aunque ninguna implementacion real las satisface al cien por ciento, constituyen el estandar de referencia academico e industrial para evaluar cualquier sistema distribuido de datos.
+
+\begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=*]
+\item \textbf{Autonomia local}: cada sitio gestiona su propia seguridad, integridad y operaciones sin depender de otros.
+\item \textbf{No dependencia de un sitio central}: no debe existir un nodo cuya caida paralice el sistema completo.
+\item \textbf{Operacion continua}: el sistema sigue disponible aunque fallen nodos individuales o se realicen tareas de mantenimiento.
+\item \textbf{Independencia de ubicacion}: el usuario no necesita conocer en que sitio reside un dato para acceder a el.
+\item \textbf{Independencia de fragmentacion}: las consultas se escriben contra el esquema global sin preocuparse por como esta dividida cada relacion.
+\item \textbf{Independencia de replicacion}: las aplicaciones operan como si existiera una unica copia de cada dato, aunque internamente haya varias.
+\item \textbf{Procesamiento de consultas distribuido}: el optimizador trata las consultas multi-sitio y elige el plan mas eficiente.
+\item \textbf{Manejo de transacciones distribuidas}: las propiedades ACID se garantizan globalmente mediante protocolos como 2PC.
+\item \textbf{Independencia de hardware}: el sistema funciona sobre maquinas con distinta arquitectura.
+\item \textbf{Independencia de sistema operativo}: los sitios pueden correr distintos SO sin afectar el funcionamiento global.
+\item \textbf{Independencia de red}: el protocolo de comunicacion subyacente (TCP/IP, RPC, gRPC) es transparente al usuario.
+\item \textbf{Independencia de SGBD}: distintos sitios pueden usar motores distintos, siempre que se cumpla un estandar comun (SQL, ODBC, JDBC).
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\caption{Grado aproximado de cumplimiento de las reglas de Date en sistemas reales}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Regla} & \textbf{PostgreSQL FDW} & \textbf{CockroachDB} & \textbf{Cassandra} & \textbf{MongoDB Sharded} \\
+\midrule
+R1 Autonomia local & Alta & Media & Alta & Media \\
+R2 Sin sitio central & Parcial & Total & Total & Total \\
+R3 Operacion continua & Parcial & Total & Total & Total \\
+R4 Indep. ubicacion & Total & Total & Total & Total \\
+R5 Indep. fragmentacion & Parcial & Total & Total & Total \\
+R6 Indep. replicacion & Parcial & Total & Total & Total \\
+R7 Consultas distribuidas & Parcial & Total & Limitada & Parcial \\
+R8 Trans. distribuidas & Parcial (2PC) & Total (Raft) & No ACID & Parcial \\
+R9--R11 Independencias HW/SO/Red & Total & Total & Total & Total \\
+R12 Indep. de SGBD & Total (FDW) & No & No & No \\
+\bottomrule
+\end{tabular}
+\label{tab:datereglas}
+\end{table}
+
+% ============================================================
+\section{Arquitecturas de SGBDD}
+% ============================================================
+
+La literatura clasica identifica tres modelos arquitectonicos principales que se diferencian por el grado de autonomia entre los sitios participantes y por la presencia o ausencia de un coordinador central \cite{ozsu2020,kleppmann2017}.
+
+\subsection{Arquitectura Cliente-Servidor}
+
+En la arquitectura cliente-servidor un servidor centralizado gestiona la BDD y los clientes envian solicitudes a traves de la red. Aunque historicamente se la considera el modelo mas simple, en su variante distribuida moderna el "servidor" puede ser un cluster con replicacion primaria-secundaria. PostgreSQL con streaming replication o MySQL con replicacion asincrona son ejemplos tipicos.
+
+La ventaja principal es la simplicidad operativa y la facilidad de gestion. La desventaja critica es que el servidor primario constituye un cuello de botella y un punto unico de fallo, mitigado pero no eliminado por la replicacion.
+
+\subsection{Arquitectura Federada}
+
+La arquitectura federada (tambien llamada multi-database o multi-DBMS) interconecta multiples SGBD locales preexistentes mediante una capa de federacion que ofrece una vista global unificada. Cada sitio conserva su autonomia y su esquema local; la capa intermedia traduce consultas globales en sub-consultas locales. PostgreSQL con Foreign Data Wrappers (FDW), Oracle Federated Database y Denodo son representantes de este modelo.
+
+La ventaja principal es la capacidad de integrar sistemas heterogeneos preexistentes sin migrarlos. La desventaja es la complejidad de mantener la coherencia semantica entre esquemas locales y la dificultad de optimizar consultas que cruzan sitios.
+
+\subsection{Arquitectura Par a Par (P2P)}
+
+En la arquitectura par a par todos los nodos tienen el mismo rol: pueden recibir consultas, almacenar datos y participar en el consenso. No existe coordinador central. Apache Cassandra, ScyllaDB, Riak y, en cierto sentido, CockroachDB son ejemplos de este modelo. La comunicacion entre nodos emplea protocolos gossip para diseminar el estado del cluster.
+
+La ventaja es la escalabilidad horizontal practicamente ilimitada y la maxima tolerancia a fallos. La desventaja es la complejidad de coordinacion: el consenso distribuido (Raft, Paxos) o las estructuras de hash consistente son indispensables.
+
+\begin{table}[H]
+\centering
+\caption{Comparativa de las tres arquitecturas SGBDD}
+\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Caracteristica} & \textbf{Cliente-Servidor} & \textbf{Federada} & \textbf{P2P} \\
+\midrule
+Autonomia local & Baja & Alta & Alta \\
+Escalabilidad horizontal & Limitada & Media & Muy alta \\
+Complejidad operativa & Baja & Alta & Muy alta \\
+Punto unico de fallo & Si & Parcial & No \\
+Tolera heterogeneidad SGBD & No & Si & No \\
+Ejemplo representativo & PostgreSQL replica & Oracle Federated & Apache Cassandra \\
+\bottomrule
+\end{tabular}
+\label{tab:arquitecturas}
+\end{table}
+
+% ============================================================
+\section{Transparencias en SGBDD}
+% ============================================================
+
+El concepto de \textbf{transparencia} es el principio rector del diseno de SGBDD: ocultar al usuario y a la aplicacion la complejidad de la distribucion para que el sistema se perciba como si fuera centralizado. Se distinguen ocho tipos de transparencia que extienden las cuatro clasicas de los sistemas distribuidos generales.
+
+\begin{table}[H]
+\centering
+\caption{Las ocho transparencias del SGBDD}
+\footnotesize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Tipo} & \textbf{Descripcion} & \textbf{Ejemplo} \\
+\midrule
+De red (acceso) & El usuario no conoce ni la topologia ni los protocolos de red & \texttt{SELECT * FROM clientes} funciona igual sin importar la red \\
+De ubicacion & El usuario no conoce el sitio fisico donde residen los datos & La consulta no incluye la direccion IP del servidor \\
+De fragmentacion & El usuario no sabe como se dividio cada relacion & Una tabla PEDIDOS puede estar fragmentada en cuatro nodos \\
+De replicacion & El usuario no sabe cuantas copias del dato existen & Se lee un dato sin saber de cual replica proviene \\
+De concurrencia & Las transacciones concurrentes se ven como si fueran seriales & No se observan estados intermedios de otras transacciones \\
+De fallos & Los fallos de nodos individuales se manejan internamente & Si nodo A cae, la consulta se redirige al nodo B sin error visible \\
+De rendimiento & El optimizador elige el plan mas eficiente automaticamente & Una consulta se redirige al nodo con menos carga \\
+De migracion & Los datos pueden moverse entre sitios sin afectar las aplicaciones & Un rebalanceo de shards no requiere cambios de codigo cliente \\
+\bottomrule
+\end{tabularx}
+\label{tab:transparencias}
+\end{table}
+
+Estas ocho transparencias coinciden parcialmente con las ocho transparencias ANSA estudiadas en la Unidad 1 (acceso, ubicacion, migracion, reubicacion, replicacion, concurrencia, fallos y persistencia), adaptadas al contexto especifico de los datos. La transparencia de \textit{fragmentacion} es propia de las BDD y no aparece en sistemas distribuidos genericos.
+
+% ============================================================
+\section{Homogeneidad versus Heterogeneidad}
+% ============================================================
+
+Los SGBDD se clasifican en dos grandes familias segun la uniformidad de sus sitios.
+
+Una BDD \textbf{homogenea} tiene en todos sus sitios el mismo motor SGBD, el mismo esquema, y la misma version del software. Esto simplifica la coordinacion, las transacciones distribuidas y el optimizador de consultas. Todos los sitios "hablan el mismo idioma" y comparten convenciones de tipos, codificacion y semantica. CockroachDB, Cassandra y MongoDB Sharded Cluster son ejemplos puramente homogeneos.
+
+Una BDD \textbf{heterogenea} integra sitios con motores SGBD distintos (por ejemplo, un sitio con PostgreSQL, otro con Oracle, otro con MySQL). Requiere una capa de federacion o middleware que traduzca consultas y reconcilie diferencias de tipos, semantica y modelo de datos. PostgreSQL con FDW para conectarse a Oracle, o sistemas de virtualizacion de datos como Denodo, son ejemplos de este modelo.
+
+\begin{table}[H]
+\centering
+\caption{Comparativa homogenea vs heterogenea}
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Aspecto} & \textbf{Homogenea} & \textbf{Heterogenea} \\
+\midrule
+Esfuerzo de integracion & Bajo & Alto \\
+Optimizacion de consultas distribuidas & Eficiente & Limitada \\
+Transacciones distribuidas (2PC) & Soporte nativo & Requiere coordinador externo \\
+Integracion con sistemas legados & Dificil & Facil \\
+Coordinacion del catalogo & Sencilla & Requiere mapeos de esquema \\
+Casos de uso tipicos & Nuevos despliegues & Modernizacion empresarial \\
+\bottomrule
+\end{tabular}
+\label{tab:homohetero}
+\end{table}
+
+% ============================================================
+\section{Fragmentacion de Datos}
+% ============================================================
+
+\begin{defbox}{Fragmentacion}
+La \textbf{fragmentacion} es el proceso de dividir una relacion (tabla) en porciones llamadas \textbf{fragmentos}, que se almacenan en diferentes sitios de la red. Cada fragmento es subconjunto de la relacion original, y la union de todos los fragmentos debe reconstruir la relacion completa sin perdida ni duplicacion (excepto en esquemas hibridos con replicacion).
+\end{defbox}
+
+La fragmentacion busca el principio de \textbf{localidad de referencia}: los datos se almacenan donde se usan con mayor frecuencia, reduciendo el trafico de red y la latencia de acceso. Existen tres tipos formales: horizontal, vertical y mixta.
+
+\subsection{Fragmentacion Horizontal}
+
+La fragmentacion horizontal divide las \textbf{filas} (tuplas) de una tabla entre los sitios. Cada fragmento contiene un subconjunto de tuplas que satisfacen un predicado de seleccion. Formalmente se expresa con el operador de seleccion del algebra relacional:
+
+\begin{equation}
+F_i = \sigma_{p_i}(R), \quad i = 1, 2, \ldots, n
+\end{equation}
+
+donde $R$ es la relacion original, $p_i$ es el predicado que define al fragmento $F_i$, y los predicados son \textit{minterminos} disjuntos que cubren todo el dominio de la clave de fragmentacion.
+
+La reconstruccion de la relacion original se obtiene mediante la union:
+
+\begin{equation}
+R = F_1 \cup F_2 \cup \cdots \cup F_n
+\end{equation}
+
+\begin{examplebox}{Fragmentacion horizontal de PEDIDOS por ciudad}
+Sea la relacion \texttt{PEDIDOS(id, cliente, ciudad, monto)}. Definimos dos fragmentos:
+\begin{align}
+F_1 &= \sigma_{ciudad = 'Cuenca'}(PEDIDOS) \rightarrow \text{nodo Cuenca}\\
+F_2 &= \sigma_{ciudad = 'Quito'}(PEDIDOS) \rightarrow \text{nodo Quito}
+\end{align}
+Los pedidos de clientes de Cuenca se almacenan en el nodo Cuenca y los de Quito en el nodo Quito. La reconstruccion es $PEDIDOS = F_1 \cup F_2$.
+\end{examplebox}
+
+Existe una variante llamada \textbf{fragmentacion horizontal derivada}, en la cual los fragmentos de una relacion se definen segun los de otra relacion relacionada. Por ejemplo, si \texttt{LINEAS\_PEDIDO} tiene una clave foranea hacia \texttt{PEDIDOS}, sus filas pueden fragmentarse \textit{junto con} las filas correspondientes de \texttt{PEDIDOS}, manteniendo la localidad de los \texttt{JOIN}.
+
+\subsection{Fragmentacion Vertical}
+
+La fragmentacion vertical divide las \textbf{columnas} (atributos) de una tabla. Cada fragmento incluye la \textbf{clave primaria} (para permitir la reconstruccion mediante \texttt{JOIN}) y un subconjunto de los demas atributos. Formalmente se expresa con el operador de proyeccion:
+
+\begin{equation}
+FV_i = \pi_{PK, A_i}(R), \quad i = 1, 2, \ldots, n
+\end{equation}
+
+donde $PK$ es el conjunto de atributos clave primaria y $A_i$ son subconjuntos disjuntos de atributos no clave. La reconstruccion se realiza con joins naturales:
+
+\begin{equation}
+R = FV_1 \bowtie FV_2 \bowtie \cdots \bowtie FV_n
+\end{equation}
+
+\begin{examplebox}{Fragmentacion vertical de EMPLEADOS por sensibilidad}
+Sea \texttt{EMPLEADOS(id, nombre, cargo, salario, depart, telefono)}. Separamos los datos organizacionales de los sensibles:
+\begin{align}
+FV_1 &= \pi_{id, nombre, cargo, depart}(EMPLEADOS) \rightarrow \text{nodo RRHH}\\
+FV_2 &= \pi_{id, salario, telefono}(EMPLEADOS) \rightarrow \text{nodo Nomina (cifrado)}
+\end{align}
+La reconstruccion es $EMPLEADOS = FV_1 \bowtie_{id} FV_2$. El atributo \texttt{id} aparece en ambos fragmentos por ser la clave primaria.
+\end{examplebox}
+
+El diseno de fragmentacion vertical optimo utiliza \textbf{analisis de afinidad de atributos}: se construye una matriz que mide cuantas veces dos atributos son consultados juntos, y un algoritmo aglomerativo (Hoffer-Severance) agrupa los atributos con alta afinidad en el mismo fragmento.
+
+\subsection{Fragmentacion Mixta o Hibrida}
+
+La fragmentacion mixta combina horizontal y vertical. Se puede aplicar primero una fragmentacion horizontal y luego, sobre cada fragmento horizontal, una fragmentacion vertical (o viceversa). El resultado es un arbol de fragmentos del cual la reconstruccion requiere primero \texttt{JOIN}s para deshacer la fragmentacion vertical y luego \texttt{UNION}s para deshacer la horizontal.
+
+\begin{examplebox}{Fragmentacion mixta de VENTAS}
+La relacion \texttt{VENTAS(id, vendedor, region, producto, monto)} se fragmenta primero por region (Sierra y Costa) y luego el fragmento Sierra se fragmenta verticalmente para separar datos comerciales (\texttt{vendedor}) de datos contables (\texttt{producto, monto}). El fragmento Costa permanece sin fragmentar verticalmente.
+\end{examplebox}
+
+\subsection{Reglas de Correctitud de la Fragmentacion}
+
+Todo esquema de fragmentacion debe satisfacer tres reglas formales para garantizar que la BDD se comporte como una unica base de datos logica:
+
+\begin{enumerate}[label=\textbf{C\arabic*.},leftmargin=*]
+\item \textbf{Completitud}: cada dato de la relacion original debe pertenecer a, al menos, un fragmento. Formalmente, $\bigcup_i F_i = R$. La violacion tipica es omitir una fila o columna en todos los fragmentos.
+\item \textbf{Reconstruccion}: la relacion original debe poder reconstruirse a partir de los fragmentos mediante un operador del algebra relacional (\texttt{UNION} para horizontal, \texttt{JOIN} para vertical). La violacion tipica es omitir la clave primaria en algun fragmento vertical, lo que impide el \texttt{JOIN}.
+\item \textbf{Disjuncion}: para la fragmentacion horizontal, ningun dato debe aparecer en mas de un fragmento (excepto la clave en la vertical). $F_i \cap F_j = \emptyset$ para $i \neq j$. La violacion tipica es predicados solapados que asignan la misma fila a dos sitios, generando inconsistencias.
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\caption{Reglas de correctitud por tipo de fragmentacion}
+\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Regla} & \textbf{Horizontal} & \textbf{Vertical} & \textbf{Mixta} \\
+\midrule
+Completitud & Si & Si & Si \\
+Reconstruccion via UNION & Si & No & Parcial \\
+Reconstruccion via JOIN & No & Si & Parcial \\
+Disjuncion en filas & Si & No aplica & Parcial \\
+Clave primaria en cada fragmento & No requerida & Obligatoria & Obligatoria \\
+\bottomrule
+\end{tabular}
+\label{tab:correctitud}
+\end{table}
+
+% ============================================================
+\section{Replicacion de Datos}
+% ============================================================
+
+\begin{defbox}{Replicacion}
+La \textbf{replicacion} es el proceso de mantener copias identicas de los datos (relaciones, fragmentos o tuplas individuales) en multiples sitios. A diferencia de la fragmentacion --donde un dato reside en un unico sitio--, en la replicacion el mismo dato existe en varios sitios. El objetivo es mejorar la \textbf{disponibilidad} y la \textbf{latencia de lectura}, a costa de mayor complejidad para mantener la \textbf{consistencia}.
+\end{defbox}
+
+\subsection{Replicacion Sincrona versus Asincrona}
+
+La replicacion \textbf{sincrona} confirma una escritura al cliente solo despues de que todas las replicas (o un quorum de ellas) hayan confirmado haber recibido y persistido el cambio. Garantiza consistencia fuerte: todas las copias estan siempre actualizadas. El costo es la latencia: la transaccion espera la confirmacion mas lenta. PostgreSQL con \texttt{synchronous\_commit = on} y \texttt{synchronous\_standby\_names} configurado es un ejemplo.
+
+La replicacion \textbf{asincrona} confirma la escritura al cliente inmediatamente despues de persistir en la replica primaria, y propaga los cambios al resto en segundo plano. Ofrece menor latencia, pero introduce un \textbf{lag de replicacion} durante el cual las replicas pueden devolver datos obsoletos. Si el primario falla antes de propagar, los ultimos cambios pueden perderse. MySQL con replicacion estandar y MongoDB con \texttt{writeConcern: 1} son ejemplos.
+
+\begin{table}[H]
+\centering
+\caption{Replicacion sincrona vs asincrona}
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Aspecto} & \textbf{Sincrona} & \textbf{Asincrona} \\
+\midrule
+Consistencia & Fuerte & Eventual \\
+Latencia de escritura & Alta & Baja \\
+Disponibilidad ante falla de replica & Reducida & Alta \\
+Riesgo de perdida de datos & Ninguno & Si (lag no propagado) \\
+Caso de uso tipico & Banca, inventario critico & Redes sociales, logs \\
+Ejemplo tecnologia & PostgreSQL synchronous standby & MySQL async replica \\
+\bottomrule
+\end{tabular}
+\label{tab:sincasync}
+\end{table}
+
+\subsection{Modelos de Escritura en Sistemas Replicados}
+
+Existen tres modelos principales para gestionar las escrituras en un sistema con replicas \cite{kleppmann2017}.
+
+El modelo \textbf{primario-secundario} (single-leader) designa una replica como primaria, unica autorizada para aceptar escrituras. Las secundarias reciben las escrituras propagadas y solo sirven lecturas. Es el modelo mas simple y soporta consistencia fuerte. Su desventaja es que el primario es un cuello de botella de escritura y un punto unico de fallo (mitigado por failover automatico).
+
+El modelo \textbf{multi-primario} (multi-leader) permite a varias replicas aceptar escrituras concurrentes. Mejora la disponibilidad de escritura y reduce la latencia para usuarios geograficamente distribuidos, pero introduce \textbf{conflictos de escritura} que deben resolverse con politicas (last-write-wins, vector clocks, CRDTs). MySQL Group Replication, Galera Cluster y Couchbase XDCR usan este modelo.
+
+El modelo \textbf{sin lider} (leaderless) elimina la distincion entre primario y replica. El cliente escribe en varios nodos en paralelo y considera la escritura exitosa si una cantidad minima ($W$) confirma. Para lecturas, el cliente consulta varios nodos ($R$) y compara versiones. La condicion de consistencia es $W + R > N$, donde $N$ es el numero total de replicas. Apache Cassandra, Riak y Amazon DynamoDB siguen este modelo.
+
+\subsection{Quorum y Consistencia W+R>N}
+
+En sistemas sin lider, el quorum proporciona consistencia ajustable. Con $N$ replicas totales, el cliente puede elegir cuantas replicas deben confirmar una escritura ($W$) y cuantas debe leer ($R$). La condicion $W + R > N$ garantiza que cualquier lectura intersecte con la ultima escritura, asegurando que se obtenga al menos un valor actualizado.
+
+\begin{examplebox}{Configuracion de quorum tipica}
+Con $N = 5$ replicas, una configuracion comun es $W = 3$ y $R = 3$, ya que $3 + 3 = 6 > 5$. Esto tolera la falla de hasta dos nodos sin perder disponibilidad de escritura ni de lectura, manteniendo consistencia. Si se prefiere optimizar lectura, se puede usar $W = 4$, $R = 2$, tolerando una falla de lectura pero exigiendo cuatro confirmaciones en escritura.
+\end{examplebox}
+
+% ============================================================
+\section{Catalogo Distribuido}
+% ============================================================
+
+\begin{defbox}{Catalogo Distribuido}
+El \textbf{catalogo distribuido} (tambien diccionario de datos distribuido o catalogo global) es la estructura de metadatos que describe \textbf{donde residen} los fragmentos y replicas de cada relacion del esquema global. Cuando una consulta llega al SGBDD, este consulta primero el catalogo para determinar a que sitios enrutar las sub-consultas. Es la pieza clave que habilita las transparencias de fragmentacion y ubicacion.
+\end{defbox}
+
+\subsection{Tipos de Catalogo segun su Distribucion}
+
+El propio catalogo, al ser un conjunto de datos critico, debe distribuirse cuidadosamente. Se distinguen tres estrategias.
+
+El \textbf{catalogo centralizado} reside en un unico nodo (frecuentemente el coordinador). Es simple de implementar y mantener consistente, pero introduce un punto unico de fallo: si el nodo del catalogo cae, ninguna consulta global puede enrutarse. Es la estrategia menos resiliente y solo se justifica en despliegues pequenos.
+
+El \textbf{catalogo completamente replicado} mantiene una copia identica en cada nodo. Cualquier consulta puede resolver el enrutamiento localmente sin red, lo que minimiza latencia. La desventaja es el costo de mantener todas las copias sincronizadas cuando se anaden o quitan fragmentos: cada cambio requiere una transaccion distribuida sobre el catalogo.
+
+El \textbf{catalogo parcialmente replicado} (o dividido) reparte la informacion: cada nodo guarda los metadatos de los fragmentos locales mas la informacion de los nodos con los que interactua frecuentemente. Ofrece un balance entre disponibilidad y costo de actualizacion. Es la estrategia adoptada por Apache Cassandra y CockroachDB.
+
+\subsection{Implementaciones Industriales del Catalogo}
+
+En sistemas modernos el catalogo distribuido se implementa con tecnologias de coordinacion especializadas. \textbf{Apache ZooKeeper}, \textbf{etcd} y \textbf{HashiCorp Consul} son almacenes de clave-valor consistentes basados en consenso (Zab o Raft) usados como catalogo en clusters de Hadoop, Kubernetes y CockroachDB. Almacenan informacion sobre nodos vivos, particiones, lideres y metadatos de esquema, garantizando que todos los participantes vean la misma vista del cluster.
+
+% ============================================================
+\section{Procesamiento de Consultas Distribuidas}
+% ============================================================
+
+El procesamiento de una consulta SQL en una BDD pasa por cuatro fases consecutivas, gestionadas por el optimizador distribuido.
+
+La \textbf{descomposicion} traduce la consulta SQL del usuario a una expresion del algebra relacional sobre el esquema global, valida sintaxis, semantica y resuelve referencias a vistas.
+
+La \textbf{localizacion} convierte la consulta global en una consulta sobre fragmentos especificos, usando el catalogo. Por ejemplo, una consulta \texttt{SELECT * FROM PEDIDOS WHERE ciudad = 'Cuenca'} se redirige al fragmento $F_1$ del nodo Cuenca, evitando consultar los demas.
+
+La \textbf{optimizacion global} elige el plan de ejecucion mas eficiente considerando los costos de I/O, CPU y, sobre todo, comunicacion entre sitios. Las decisiones tipicas incluyen donde realizar los \texttt{JOIN}s (semi-joins, bloom-joins), si se replica un fragmento temporalmente para reducir red, y en que orden se materializan los resultados intermedios.
+
+La \textbf{ejecucion} despacha las sub-consultas a los nodos correspondientes, recibe los resultados parciales y los combina segun el plan. El coordinador puede ser el nodo que recibio la consulta o un nodo elegido dinamicamente segun la localizacion de los datos.
+
+\begin{table}[H]
+\centering
+\caption{Tecnicas de optimizacion en consultas distribuidas}
+\small
+\begin{tabular}{lp{7.5cm}}
+\toprule
+\textbf{Tecnica} & \textbf{Descripcion} \\
+\midrule
+Filtrado temprano & Aplicar selecciones y proyecciones antes de transferir datos \\
+Semi-join & Transferir solo claves para reducir el tamano de los datos enviados en un join \\
+Bloom-join & Usar filtros de Bloom para reducir el coste del semi-join \\
+Replicacion temporal & Copiar un fragmento pequeno a varios nodos para evitar joins distribuidos \\
+Particion-wise join & Realizar joins entre fragmentos co-particionados localmente \\
+Caches de resultados & Reutilizar resultados intermedios entre consultas \\
+\bottomrule
+\end{tabular}
+\label{tab:optimizacion}
+\end{table}
+
+% ============================================================
+\section{Transacciones Distribuidas y Control de Concurrencia}
+% ============================================================
+
+\begin{defbox}{Transaccion Distribuida}
+Una \textbf{transaccion distribuida} es una unidad logica de trabajo que accede a datos en multiples sitios. Debe cumplir las propiedades \textbf{ACID} de manera global: atomicidad (todos o ningun nodo aplica el cambio), consistencia (el estado final es valido), aislamiento (no se observan estados intermedios) y durabilidad (los cambios confirmados persisten ante fallos).
+\end{defbox}
+
+\subsection{Protocolo de Bloqueo en Dos Fases (2PL)}
+
+El \textbf{Two-Phase Locking} (2PL) es el mecanismo clasico para garantizar la \textbf{serializabilidad} de transacciones concurrentes. Cada transaccion atraviesa dos fases:
+
+\begin{enumerate}[label=\textbf{Fase \arabic*:},leftmargin=*]
+\item \textbf{Crecimiento}: la transaccion solo puede \textbf{adquirir} bloqueos sobre los recursos que necesita; no puede liberar ninguno.
+\item \textbf{Decrecimiento}: una vez que la transaccion libera el primer bloqueo, no puede adquirir mas. Solo puede liberar los que ya posee.
+\end{enumerate}
+
+La variante \textbf{2PL Estricto} mantiene todos los bloqueos hasta el \texttt{COMMIT} o \texttt{ROLLBACK} de la transaccion, lo que evita problemas de \textit{lecturas sucias} y simplifica la recuperacion. Es la implementacion adoptada por la mayoria de SGBD comerciales.
+
+En entornos distribuidos el 2PL requiere un \textbf{gestor de bloqueos} que puede ser centralizado (un nodo unico arbitra todos los bloqueos) o distribuido (cada nodo gestiona sus propios bloqueos, con coordinacion para deteccion de deadlocks). Los bloqueos se clasifican segun su modo: \textbf{compartido} (S, para lectura), \textbf{exclusivo} (X, para escritura), \textbf{actualizacion} (U, previo a escritura) e \textbf{intencion} (IS, IX, para jerarquias).
+
+\subsection{Protocolo de Commit en Dos Fases (2PC)}
+
+\begin{defbox}{Two-Phase Commit (2PC)}
+El \textbf{commit en dos fases} es el protocolo estandar para garantizar la \textbf{atomicidad} de una transaccion distribuida. Coordina a varios participantes (los sitios que tocaron datos) para que todos confirmen o todos aborten la transaccion, evitando estados intermedios inconsistentes.
+\end{defbox}
+
+El protocolo procede en dos fases dirigidas por un \textbf{coordinador}:
+
+\begin{enumerate}[label=\textbf{Fase \arabic*:},leftmargin=*]
+\item \textbf{Preparacion (Voting)}: el coordinador envia un mensaje \texttt{PREPARE} a todos los participantes. Cada participante intenta ejecutar la parte local de la transaccion, escribe un registro \texttt{PREPARED} en su log de escritura anticipada (WAL) y responde \texttt{VOTE-COMMIT} si pudo o \texttt{VOTE-ABORT} si fallo.
+\item \textbf{Decision (Commit/Abort)}: si todos respondieron \texttt{VOTE-COMMIT}, el coordinador escribe \texttt{COMMIT} en su log y envia \texttt{GLOBAL-COMMIT} a todos. Si alguno respondio \texttt{VOTE-ABORT} o no respondio en un timeout, envia \texttt{GLOBAL-ABORT}. Cada participante aplica la decision y libera bloqueos.
+\end{enumerate}
+
+\begin{notebox}{Limitacion fundamental del 2PC}
+El 2PC es un protocolo \textbf{bloqueante}: si el coordinador falla despues de la fase de preparacion pero antes de comunicar la decision, los participantes quedan en estado \textit{prepared} reteniendo bloqueos, sin saber si confirmar o abortar. Pueden quedar bloqueados indefinidamente. Esta limitacion motivo la creacion del 3PC y, mas tarde, de los protocolos de consenso como Paxos y Raft, que toleran fallos del coordinador.
+\end{notebox}
+
+\subsection{Protocolo de Commit en Tres Fases (3PC)}
+
+El \textbf{3PC} extiende el 2PC con una fase intermedia \textbf{pre-commit} para evitar el bloqueo ante fallo del coordinador. Tras la votacion exitosa el coordinador envia un \texttt{PRE-COMMIT} que reciben los participantes, y solo despues envia el \texttt{COMMIT} final. Si el coordinador falla durante el pre-commit, los participantes pueden elegir un nuevo coordinador que conozca el estado y decida \texttt{COMMIT} o \texttt{ABORT} sin ambiguedad.
+
+En la practica el 3PC es raramente usado en produccion porque asume un \textit{modelo de red sincrono} (mensajes con retardo acotado) que rara vez se cumple. Los sistemas modernos prefieren protocolos de consenso como \textbf{Raft} \cite{ongaro2014} o \textbf{Paxos}, que tambien resuelven el problema sin asumir sincronia.
+
+\subsection{Deadlock Distribuido}
+
+Un \textbf{deadlock} (interbloqueo) ocurre cuando dos o mas transacciones esperan indefinidamente mutuamente para liberar recursos. En un entorno distribuido el grafo de espera se extiende entre nodos, lo que dificulta su deteccion.
+
+Las estrategias clasicas son:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Prevencion por ordenamiento de recursos}: las transacciones adquieren bloqueos siempre en el mismo orden global (por ejemplo, por identificador alfabetico de recurso). Elimina deadlocks por construccion pero reduce el paralelismo.
+\item \textbf{Prevencion por timestamps (Wait-Die, Wound-Wait)}: cada transaccion recibe un timestamp al iniciar; se aborta la mas joven (Wait-Die) o la mas vieja (Wound-Wait) cuando hay conflicto.
+\item \textbf{Deteccion por grafo de espera}: el sistema construye un grafo dirigido $T_i \rightarrow T_j$ si $T_i$ espera un recurso que $T_j$ tiene. Un ciclo en el grafo indica deadlock; el algoritmo elige una transaccion \textit{victima} y la aborta.
+\item \textbf{Deteccion por timeout}: si una transaccion espera mas de un umbral, se asume deadlock y se aborta. Simple pero genera falsos positivos.
+\end{itemize}
+
+\subsection{Control de Concurrencia Multiversion (MVCC)}
+
+El \textbf{MVCC} es una alternativa al 2PL clasico que evita bloqueos de lectura. Cada escritura crea una nueva \textit{version} del registro etiquetada con el identificador de la transaccion. Cada transaccion ve una \textit{snapshot} consistente del estado del sistema al momento en que inicio. Las lecturas nunca bloquean a las escrituras ni viceversa.
+
+PostgreSQL implementa MVCC desde sus origenes. Cada tupla almacena dos campos: \texttt{xmin} (identificador de la transaccion que la inserto) y \texttt{xmax} (identificador de la transaccion que la elimino o reemplazo). Una transaccion con identificador $T$ ve una version si su $xmin \leq T$ y $xmax > T$ o $xmax = NULL$. Las versiones obsoletas se eliminan con el proceso \texttt{VACUUM}. CockroachDB y MongoDB usan variantes de MVCC sobre estructuras LSM-Tree.
+
+% ============================================================
+\section{Teorema CAP y Modelo PACELC en BDD}
+% ============================================================
+
+El \textbf{teorema CAP}, formulado por Eric Brewer en 2000 y formalizado por Gilbert y Lynch en 2002, establece que un sistema distribuido no puede garantizar simultaneamente las tres propiedades siguientes \cite{brewer2012}:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{C} (Consistency): toda lectura recibe el dato mas reciente o un error.
+\item \textbf{A} (Availability): toda peticion recibe una respuesta (no error), aunque pueda no ser la mas reciente.
+\item \textbf{P} (Partition tolerance): el sistema continua operando incluso cuando la red presenta particiones.
+\end{itemize}
+
+Como las particiones de red son inevitables en sistemas reales, el verdadero compromiso es entre \textbf{C} y \textbf{A}: ante una particion, el sistema debe elegir consistencia (CP) o disponibilidad (AP).
+
+Los sistemas \textbf{CP} (MongoDB con \texttt{writeConcern majority}, HBase, ZooKeeper) prefieren rechazar peticiones antes que servir datos potencialmente obsoletos. Son apropiados para banca, inventario critico, sistemas de pago.
+
+Los sistemas \textbf{AP} (Cassandra, DynamoDB, CouchDB) prefieren servir peticiones con datos posiblemente desactualizados antes que rechazarlas. Son apropiados para redes sociales, catalogos, logs.
+
+\subsection{Modelo PACELC}
+
+Daniel Abadi propuso en 2012 el modelo \textbf{PACELC} como extension del CAP: \emph{"si hay Particion (P), elegir entre Availability y Consistency; Else (E), elegir entre Latency y Consistency"} \cite{abadi2012}. El modelo reconoce que incluso sin particiones, todo sistema distribuido enfrenta el dilema entre minimizar latencia y maximizar consistencia.
+
+\begin{table}[H]
+\centering
+\caption{Clasificacion PACELC de sistemas conocidos}
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Sistema} & \textbf{Bajo particion (PAC)} & \textbf{Sin particion (ELC)} \\
+\midrule
+MongoDB (majority) & PC & EC \\
+HBase & PC & EC \\
+Google Spanner & PC & EC \\
+CockroachDB & PC & EC \\
+Cassandra & PA & EL \\
+DynamoDB & PA & EL \\
+Riak & PA & EL \\
+PostgreSQL (async replica) & PA & EL \\
+\bottomrule
+\end{tabular}
+\label{tab:pacelc}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[uteqBlue!10] (0,0) -- (4,0) -- (2,3.4) -- cycle;
+  \draw[uteqBlue,thick] (0,0) -- (4,0) -- (2,3.4) -- cycle;
+  \node[font=\footnotesize\bfseries] at (2,3.6) {\textcolor{uteqBlue}{C} Consistencia};
+  \node[font=\footnotesize\bfseries] at (-0.5,-0.3) {\textcolor{uteqBlue}{A} Disponibilidad};
+  \node[font=\footnotesize\bfseries] at (4.5,-0.3) {\textcolor{uteqBlue}{P} Particion};
+  \node[font=\scriptsize,fill=uteqLight,draw=uteqBlue,rounded corners=3pt] at (1,2.2) {CP: MongoDB, HBase};
+  \node[font=\scriptsize,fill=uteqLight,draw=uteqBlue,rounded corners=3pt] at (3,2.2) {CP: CockroachDB};
+  \node[font=\scriptsize,fill=uteqGreen!15,draw=uteqGreen,rounded corners=3pt] at (1,0.8) {CA: PostgreSQL local};
+  \node[font=\scriptsize,fill=uteqAmber!15,draw=uteqAmber,rounded corners=3pt] at (3,0.8) {AP: Cassandra, DynamoDB};
+\end{tikzpicture}
+\caption{Posicionamiento de SGBDD conocidos en el triangulo CAP}
+\end{figure}
+
+% ============================================================
+\section{Bases de Datos NoSQL en Entornos Distribuidos}
+% ============================================================
+
+Las bases de datos \textbf{NoSQL} (Not Only SQL) son sistemas que no usan el modelo relacional clasico. Estan disenadas para escalabilidad horizontal nativa, esquemas flexibles y patrones de acceso especificos. Se agrupan en cuatro familias segun su modelo de datos.
+
+\subsection{Bases de Datos Documentales}
+
+Almacenan los datos como \textbf{documentos} (tipicamente JSON o BSON) agrupados en \textbf{colecciones}. Cada documento puede tener un esquema distinto. \textbf{MongoDB}, \textbf{CouchDB}, \textbf{Amazon DocumentDB} y \textbf{Azure Cosmos DB} (modo Mongo API) son representantes. Permiten anidacion natural de objetos y arrays, eliminando muchos \texttt{JOIN}s tipicos del modelo relacional. Son apropiadas para catalogos de productos, perfiles de usuario y configuraciones flexibles.
+
+\subsection{Bases de Datos Clave-Valor}
+
+El modelo mas simple: una asociacion entre clave (string o binario) y valor (cualquier blob). \textbf{Redis}, \textbf{Memcached}, \textbf{Amazon DynamoDB} (en modo clave-valor) y \textbf{Riak} son ejemplos. Ofrecen latencias submilisegundo y enorme rendimiento, pero las operaciones se limitan a get/put/delete. Son la base de caches, sesiones, carritos de compra y colas ligeras.
+
+\subsection{Bases de Datos Columnares (Wide Column)}
+
+Organizan los datos por columnas en lugar de por filas. \textbf{Apache Cassandra}, \textbf{Apache HBase}, \textbf{Google Bigtable} y \textbf{ScyllaDB} son los principales. Cada fila puede tener un conjunto distinto de columnas; el almacenamiento por columnas optimiza consultas analiticas y compresion. Son apropiadas para series de tiempo, telemetria IoT, logs masivos y eventos.
+
+\subsection{Bases de Datos de Grafos}
+
+Modelan los datos como \textbf{nodos} y \textbf{aristas} con propiedades. \textbf{Neo4j}, \textbf{JanusGraph}, \textbf{Amazon Neptune} y \textbf{TigerGraph} son representantes. Optimizan consultas que recorren relaciones de varios saltos (amigos-de-amigos, deteccion de fraude, rutas en redes). Soportan lenguajes como Cypher (Neo4j) y Gremlin (JanusGraph).
+
+\begin{table}[H]
+\centering
+\caption{Las cuatro familias NoSQL y sus casos de uso}
+\small
+\begin{tabular}{lll}
+\toprule
+\textbf{Familia} & \textbf{Ejemplos} & \textbf{Casos de uso tipicos} \\
+\midrule
+Documentales & MongoDB, CouchDB & Catalogos, perfiles, configuraciones \\
+Clave-Valor & Redis, DynamoDB & Caches, sesiones, contadores \\
+Columnares & Cassandra, HBase & Series de tiempo, IoT, logs \\
+Grafos & Neo4j, JanusGraph & Redes sociales, fraude, rutas \\
+\bottomrule
+\end{tabular}
+\label{tab:nosql}
+\end{table}
+
+% ============================================================
+\section{Ejemplos de Bases de Datos Distribuidas Reales}
+% ============================================================
+
+A continuacion se presentan los seis sistemas mas relevantes del ecosistema actual, con sus caracteristicas tecnicas verificables y su posicionamiento PACELC.
+
+\subsection{Google Spanner}
+
+\textbf{Google Spanner} es la BDD globalmente distribuida desarrollada por Google. Combina la escalabilidad horizontal de los sistemas NoSQL con las garantias ACID y SQL del mundo relacional. Su innovacion clave es \textbf{TrueTime}, una API de tiempo con cota de incertidumbre garantizada gracias a relojes atomicos y receptores GPS en cada centro de datos. Spanner usa el protocolo \textbf{Paxos} para replicacion y un protocolo de commit distribuido con \textbf{2PC} sobre Paxos para transacciones cross-particion. Se posiciona como sistema PC/EC: ofrece consistencia externa (serializabilidad estricta) sacrificando latencia.
+
+\subsection{CockroachDB}
+
+\textbf{CockroachDB} es un SGBDD relacional de codigo abierto disenado para escalabilidad horizontal y resistencia a fallos. Compatible con el protocolo PostgreSQL en su capa SQL, internamente fragmenta automaticamente las tablas en \textbf{ranges} de 64 MB que se replican (3x o mas) con consenso \textbf{Raft}. Cada transaccion distribuida usa un protocolo de commit propietario inspirado en 2PC pero con optimizaciones de paralelismo. Garantiza serializabilidad estricta a nivel global. Su posicion PACELC es PC/EC.
+
+\subsection{Apache Cassandra}
+
+\textbf{Apache Cassandra} es una BDD NoSQL columnar disenada para escalabilidad horizontal masiva y alta disponibilidad. Sigue el modelo P2P sin lider: todos los nodos son iguales y cualquiera puede aceptar escrituras. La replicacion se realiza con quorum configurable ($N$, $W$, $R$) y la consistencia es eventual por defecto, aunque puede subirse a "quorum" o "all". Se usa en cargas masivas: Netflix (recomendaciones), Apple (mensajeria), Instagram (mensajes). Su posicion es PA/EL.
+
+\subsection{Amazon DynamoDB}
+
+\textbf{Amazon DynamoDB} es el servicio gestionado de BDD clave-valor de AWS. Ofrece escalado automatico, latencias submilisegundo y replicacion multi-region opcional (Global Tables). Implementa consistencia eventual por defecto pero permite lecturas strongly consistent a doble precio. Usa hash consistente y sharding automatico transparente. Se posiciona como PA/EL.
+
+\subsection{MongoDB}
+
+\textbf{MongoDB} es la BDD documental de mayor adopcion. Implementa replicacion primaria-secundaria con failover automatico (Replica Sets) y sharding horizontal (Sharded Clusters) coordinado por procesos \texttt{mongos} y un catalogo en \texttt{config servers}. Desde la version 4.0 soporta transacciones ACID multi-documento. Su consistencia es ajustable mediante \texttt{writeConcern} y \texttt{readConcern}. Con \texttt{writeConcern: majority} se posiciona como PC/EC; con \texttt{writeConcern: 1} como PA/EL.
+
+\subsection{PostgreSQL Distribuido}
+
+\textbf{PostgreSQL} no es nativamente distribuido, pero soporta multiples patrones: \textbf{streaming replication} sincrona o asincrona para alta disponibilidad, \textbf{logical replication} para sincronizacion selectiva entre clusters, \textbf{Foreign Data Wrappers (FDW)} para acceso federado, y \textbf{Citus} (extension) para sharding horizontal. Es la base preferida para BDD heterogeneas y casos donde el ecosistema SQL maduro es prioritario.
+
+\begin{table}[H]
+\centering
+\caption{Comparativa tecnica de BDD reales}
+\footnotesize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{lllllX}
+\toprule
+\textbf{Sistema} & \textbf{Modelo} & \textbf{Consenso} & \textbf{PACELC} & \textbf{Replicacion} & \textbf{Uso tipico} \\
+\midrule
+Spanner & Relacional & Paxos+TrueTime & PC/EC & Multi-region & Banca global Google Ads \\
+CockroachDB & Relacional & Raft & PC/EC & Multi-region & Banca, retail \\
+Cassandra & Columnar & Gossip + Hinted Handoff & PA/EL & Configurable & IoT, logs, recomendaciones \\
+DynamoDB & Clave-Valor & Quorum & PA/EL & Multi-AZ & Sesiones, carritos AWS \\
+MongoDB & Documental & Raft (oplog) & Configurable & Replica Set + Shards & Catalogos, perfiles \\
+PostgreSQL + Citus & Relacional & 2PC + WAL & PC/EC & Streaming + sharding & ERP, analitica \\
+\bottomrule
+\end{tabularx}
+\label{tab:sistemasreales}
+\end{table}
+
+% ============================================================
+\section{Recuperacion ante Fallos en BDD}
+% ============================================================
+
+La recuperacion en BDD extiende los mecanismos clasicos del SGBD centralizado (logs WAL, checkpoints, rollback) con consideraciones de coordinacion entre sitios.
+
+\textbf{Write-Ahead Logging (WAL)}: cada sitio mantiene un log local de todas las operaciones, persistido en disco antes de aplicar los cambios a la base. En caso de fallo, el log permite reconstruir el estado consistente al reiniciar (recuperacion ARIES).
+
+\textbf{Checkpoints}: periodicamente cada sitio escribe un checkpoint que captura el estado de las transacciones activas, lo que reduce el tiempo de recuperacion al limitar cuanto log debe replicarse.
+
+\textbf{Logging del coordinador (2PC)}: el coordinador escribe el \texttt{COMMIT} o \texttt{ABORT} global en su log antes de comunicarlo. Si el coordinador falla, los participantes consultan el log de un nuevo coordinador para recuperar la decision.
+
+\textbf{Replicacion sincrona como mecanismo de recuperacion}: si una replica falla, otra puede tomar su lugar (failover) sin perdida de datos, siempre que la replicacion sea sincrona o casi sincrona.
+
+\textbf{Snapshot y point-in-time recovery (PITR)}: muchos SGBDD permiten restaurar el sistema a un instante exacto del pasado combinando un snapshot completo con el log WAL posterior. Critico para corregir errores logicos (un \texttt{DELETE} accidental).
+
+\textbf{Consenso (Raft, Paxos) como base de recuperacion}: en sistemas modernos el log replicado por consenso reemplaza al log local: cualquier nodo con el log puede reconstruir el estado. CockroachDB y etcd son ejemplos paradigmaticos.
+
+% ============================================================
+\section{Ejercicio Practico de Implementacion}
+% ============================================================
+
+Esta seccion desarrolla, paso a paso, un ejercicio completo de implementacion de una BDD homogenea federada con \textbf{PostgreSQL 16}, orquestada con \textbf{Docker Compose} y consumida desde una aplicacion \textbf{Spring Boot 3.x} en \textbf{Java 21}. El caso de estudio es el sistema de informacion del \textbf{Banco del Austro}, con sucursales en Cuenca (sede central) y Quito.
+
+\subsection{Caso de Estudio: Banco del Austro}
+
+El Banco del Austro requiere distribuir su base de datos con los siguientes requisitos no funcionales:
+
+\begin{itemize}[leftmargin=*]
+\item Las consultas de saldo deben responder en menos de 200 milisegundos desde cualquier oficina.
+\item Las transferencias bancarias deben cumplir ACID estricto.
+\item La caida de una oficina no debe afectar la operacion de las demas.
+\item Los datos de clientes son compartidos entre oficinas (acceso multi-sucursal).
+\item Los datos de transacciones locales son propios de cada oficina.
+\end{itemize}
+
+\subsubsection{Analisis CAP}
+
+Las transferencias requieren consistencia fuerte (ACID), por lo que el sistema se posiciona en \textbf{CP}. Ante una particion de red, preferimos bloquear la operacion en lugar de transferir dinero incorrectamente.
+
+\subsubsection{Diseno de Distribucion}
+
+Definimos el esquema de distribucion para tres tablas principales:
+
+\begin{itemize}[leftmargin=*]
+\item Tabla \texttt{CLIENTES}: \textbf{replicada} en todos los nodos. Justificacion: lectura frecuente desde cualquier oficina, escritura infrecuente (alta de clientes).
+\item Tabla \texttt{CUENTAS}: \textbf{fragmentada horizontalmente} por oficina ($F_{Cuenca}$, $F_{Quito}$) con \textbf{replicacion} de fragmentos en la sede central. Justificacion: localidad para operaciones del titular en su oficina.
+\item Tabla \texttt{TRANSACCIONES}: \textbf{fragmentada horizontalmente} por oficina sin replicacion. Justificacion: log de operaciones locales.
+\end{itemize}
+
+\subsubsection{Arquitectura Elegida}
+
+Arquitectura federada con coordinador en Cuenca. Cada oficina tiene un PostgreSQL local con autonomia para consultas locales. Las transferencias cross-site usan una transaccion coordinada con 2PC (en este ejercicio simulada en la capa de aplicacion).
+
+\subsection{Paso 1: Levantamiento del Cluster PostgreSQL con Docker}
+
+Creamos el archivo \texttt{docker-compose-bdd.yml} en la raiz del proyecto.
+
+\begin{lstlisting}[style=YamlStyle,caption={docker-compose-bdd.yml: dos nodos PostgreSQL en contenedores Docker}]
+services:
+  pg-cuenca:
+    image: postgres:16-alpine
+    container_name: pg_cuenca
+    environment:
+      POSTGRES_DB: banco_cuenca
+      POSTGRES_USER: banco
+      POSTGRES_PASSWORD: banco123
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_cuenca_data:/var/lib/postgresql/data
+      - ./sql/init_cuenca.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - banco_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U banco -d banco_cuenca"]
+      interval: 5s
+      retries: 5
+  pg-quito:
+    image: postgres:16-alpine
+    container_name: pg_quito
+    environment:
+      POSTGRES_DB: banco_quito
+      POSTGRES_USER: banco
+      POSTGRES_PASSWORD: banco123
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_quito_data:/var/lib/postgresql/data
+      - ./sql/init_quito.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - banco_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U banco -d banco_quito"]
+      interval: 5s
+      retries: 5
+volumes:
+  pg_cuenca_data:
+  pg_quito_data:
+networks:
+  banco_net:
+    driver: bridge
+\end{lstlisting}
+
+Los scripts de inicializacion crean las tablas y datos de prueba en cada nodo. El nodo Cuenca contiene el fragmento $F_{Cuenca}$ de \texttt{CUENTAS} y \texttt{TRANSACCIONES}.
+
+\begin{lstlisting}[style=SQLStyle,caption={sql/init\_cuenca.sql: esquema y datos del nodo Cuenca}]
+CREATE TABLE IF NOT EXISTS clientes (
+  id          SERIAL PRIMARY KEY,
+  cedula      VARCHAR(10) UNIQUE NOT NULL,
+  nombre      VARCHAR(100) NOT NULL,
+  ciudad      VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cuentas (
+  id          SERIAL PRIMARY KEY,
+  numero      VARCHAR(20) UNIQUE NOT NULL,
+  cliente_id  INTEGER REFERENCES clientes(id),
+  saldo       NUMERIC(15,2) DEFAULT 0.00 CHECK (saldo >= 0),
+  oficina     VARCHAR(50) NOT NULL DEFAULT 'Cuenca'
+);
+
+CREATE TABLE IF NOT EXISTS transacciones (
+  id              SERIAL PRIMARY KEY,
+  cuenta_origen   VARCHAR(20),
+  cuenta_destino  VARCHAR(20),
+  monto           NUMERIC(15,2) NOT NULL,
+  fecha           TIMESTAMP DEFAULT NOW(),
+  estado          VARCHAR(20) DEFAULT 'COMPLETADA'
+);
+
+INSERT INTO clientes (cedula, nombre, ciudad) VALUES
+  ('0101234567', 'Maria Ordonez',     'Cuenca'),
+  ('0109876543', 'Carlos Vintimilla', 'Loja'),
+  ('0105551234', 'Ana Mosquera',      'Machala');
+
+INSERT INTO cuentas (numero, cliente_id, saldo, oficina) VALUES
+  ('2201000001', 1, 5000.00, 'Cuenca'),
+  ('2201000002', 2, 1200.50, 'Cuenca'),
+  ('2201000003', 3, 3400.00, 'Cuenca');
+\end{lstlisting}
+
+\begin{lstlisting}[style=SQLStyle,caption={sql/init\_quito.sql: esquema y datos del nodo Quito}]
+CREATE TABLE IF NOT EXISTS clientes (
+  id          SERIAL PRIMARY KEY,
+  cedula      VARCHAR(10) UNIQUE NOT NULL,
+  nombre      VARCHAR(100) NOT NULL,
+  ciudad      VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cuentas (
+  id          SERIAL PRIMARY KEY,
+  numero      VARCHAR(20) UNIQUE NOT NULL,
+  cliente_id  INTEGER REFERENCES clientes(id),
+  saldo       NUMERIC(15,2) DEFAULT 0.00 CHECK (saldo >= 0),
+  oficina     VARCHAR(50) NOT NULL DEFAULT 'Quito'
+);
+
+CREATE TABLE IF NOT EXISTS transacciones (
+  id              SERIAL PRIMARY KEY,
+  cuenta_origen   VARCHAR(20),
+  cuenta_destino  VARCHAR(20),
+  monto           NUMERIC(15,2) NOT NULL,
+  fecha           TIMESTAMP DEFAULT NOW(),
+  estado          VARCHAR(20) DEFAULT 'COMPLETADA'
+);
+
+INSERT INTO clientes (cedula, nombre, ciudad) VALUES
+  ('1701234567', 'Pedro Jimenez',  'Quito'),
+  ('1709876543', 'Luisa Paredes',  'Ibarra');
+
+INSERT INTO cuentas (numero, cliente_id, saldo, oficina) VALUES
+  ('1701000001', 1, 8000.00, 'Quito'),
+  ('1701000002', 2, 2500.00, 'Quito');
+\end{lstlisting}
+
+Levantamos el cluster con \texttt{docker compose -f docker-compose-bdd.yml up -d} y verificamos que ambos contenedores esten en estado \texttt{healthy} con \texttt{docker compose ps}.
+
+\subsection{Paso 2: Proyecto Spring Boot con Multiples DataSources}
+
+Creamos el proyecto Spring Boot mediante Spring Initializr con las dependencias: Spring Web, Spring Data JPA, PostgreSQL Driver y Lombok. El proyecto sigue la siguiente estructura de paquetes:
+
+\begin{table}[H]
+\centering
+\caption{Estructura de paquetes del proyecto banco-distribuido}
+\small
+\begin{tabular}{ll}
+\toprule
+\textbf{Paquete} & \textbf{Responsabilidad} \\
+\midrule
+\texttt{ec.uteq.banco} & Clase principal BancoApplication \\
+\texttt{ec.uteq.banco.config} & Configuracion de DataSources multiples \\
+\texttt{ec.uteq.banco.catalogo} & Catalogo distribuido \\
+\texttt{ec.uteq.banco.service} & Servicios de negocio (consulta, transferencia) \\
+\texttt{ec.uteq.banco.controller} & API REST \\
+\texttt{ec.uteq.banco.model} & Entidades y DTOs \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El archivo de configuracion define las dos fuentes de datos.
+
+\begin{lstlisting}[style=YamlStyle,caption={src/main/resources/application.yml: configuracion multi-DataSource}]
+spring:
+  application:
+    name: banco-distribuido
+  datasource:
+    cuenca:
+      url: jdbc:postgresql://localhost:5432/banco_cuenca
+      username: banco
+      password: banco123
+      driver-class-name: org.postgresql.Driver
+    quito:
+      url: jdbc:postgresql://localhost:5433/banco_quito
+      username: banco
+      password: banco123
+      driver-class-name: org.postgresql.Driver
+server:
+  port: 8080
+logging:
+  level:
+    ec.uteq.banco: DEBUG
+\end{lstlisting}
+
+La configuracion de los DataSources se realiza programaticamente para que coexistan dos pools HikariCP independientes.
+
+\begin{lstlisting}[style=JavaStyle,caption={DataSourceConfig.java: configuracion de los dos DataSources}]
+package ec.uteq.banco.config;
+
+import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
+import javax.sql.DataSource;
+
+@Configuration
+public class DataSourceConfig {
+
+    @Bean(name = "cuencaDataSource")
+    @Primary
+    @ConfigurationProperties(prefix = "spring.datasource.cuenca")
+    public DataSource cuencaDataSource() {
+        return DataSourceBuilder.create()
+                .type(HikariDataSource.class)
+                .build();
+    }
+
+    @Bean(name = "quitoDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.quito")
+    public DataSource quitoDataSource() {
+        return DataSourceBuilder.create()
+                .type(HikariDataSource.class)
+                .build();
+    }
+}
+\end{lstlisting}
+
+\subsection{Paso 3: Catalogo Distribuido}
+
+Implementamos el catalogo distribuido como un componente que conoce la distribucion de los fragmentos y resuelve las consultas hacia el nodo correcto.
+
+\begin{lstlisting}[style=JavaStyle,caption={CatalogoDistribuido.java: gestion de metadatos de fragmentos}]
+package ec.uteq.banco.catalogo;
+
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+@Component
+public class CatalogoDistribuido {
+
+    public enum Fragmento {
+        CUENTAS_CUENCA("cuencaDataSource", "Cuenca"),
+        CUENTAS_QUITO("quitoDataSource",   "Quito");
+
+        private final String dataSourceBean;
+        private final String oficina;
+
+        Fragmento(String dataSourceBean, String oficina) {
+            this.dataSourceBean = dataSourceBean;
+            this.oficina = oficina;
+        }
+
+        public String getDataSourceBean() { return dataSourceBean; }
+        public String getOficina()        { return oficina; }
+    }
+
+    public Optional<Fragmento> resolverPorCiudad(String ciudad) {
+        if (ciudad == null) return Optional.empty();
+        return switch (ciudad.toLowerCase()) {
+            case "cuenca", "loja", "machala" -> Optional.of(Fragmento.CUENTAS_CUENCA);
+            case "quito",  "ibarra", "ambato" -> Optional.of(Fragmento.CUENTAS_QUITO);
+            default -> Optional.empty();
+        };
+    }
+
+    public Optional<Fragmento> resolverPorNumeroCuenta(String numero) {
+        if (numero == null || numero.length() < 2) return Optional.empty();
+        String prefijo = numero.substring(0, 2);
+        return switch (prefijo) {
+            case "22" -> Optional.of(Fragmento.CUENTAS_CUENCA);
+            case "17" -> Optional.of(Fragmento.CUENTAS_QUITO);
+            default   -> Optional.empty();
+        };
+    }
+
+    public List<Fragmento> todosLosFragmentos() {
+        return Arrays.asList(Fragmento.values());
+    }
+}
+\end{lstlisting}
+
+\subsection{Paso 4: Servicio de Consulta Distribuida}
+
+Implementamos el servicio que orquesta consultas usando el catalogo para enrutar la peticion al nodo correcto.
+
+\begin{lstlisting}[style=JavaStyle,caption={ConsultaDistribuidaService.java: consulta y union de resultados}]
+package ec.uteq.banco.service;
+
+import ec.uteq.banco.catalogo.CatalogoDistribuido;
+import ec.uteq.banco.catalogo.CatalogoDistribuido.Fragmento;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@Service
+public class ConsultaDistribuidaService {
+
+    private final JdbcTemplate jdbcCuenca;
+    private final JdbcTemplate jdbcQuito;
+    private final CatalogoDistribuido catalogo;
+    private final ApplicationContext context;
+
+    public ConsultaDistribuidaService(
+            @Qualifier("cuencaDataSource") DataSource cuencaDs,
+            @Qualifier("quitoDataSource")  DataSource quitoDs,
+            CatalogoDistribuido catalogo,
+            ApplicationContext context) {
+        this.jdbcCuenca = new JdbcTemplate(cuencaDs);
+        this.jdbcQuito  = new JdbcTemplate(quitoDs);
+        this.catalogo   = catalogo;
+        this.context    = context;
+    }
+
+    private JdbcTemplate jdbcDe(Fragmento f) {
+        return switch (f) {
+            case CUENTAS_CUENCA -> jdbcCuenca;
+            case CUENTAS_QUITO  -> jdbcQuito;
+        };
+    }
+
+    public Map<String, Object> consultarSaldo(String numeroCuenta) {
+        Optional<Fragmento> destino = catalogo.resolverPorNumeroCuenta(numeroCuenta);
+
+        if (destino.isPresent()) {
+            String sql = "SELECT numero, saldo, oficina FROM cuentas WHERE numero = ?";
+            List<Map<String, Object>> filas = jdbcDe(destino.get())
+                    .queryForList(sql, numeroCuenta);
+            if (!filas.isEmpty()) {
+                Map<String, Object> fila = filas.get(0);
+                fila.put("fuente", destino.get().getOficina());
+                return fila;
+            }
+        }
+        return Map.of("error", "Cuenta no encontrada", "numero", numeroCuenta);
+    }
+
+    public List<Map<String, Object>> listarTodosLosClientes() {
+        String sql = "SELECT cedula, nombre, ciudad FROM clientes ORDER BY nombre";
+        List<Map<String, Object>> resultado = new ArrayList<>();
+
+        jdbcCuenca.queryForList(sql).forEach(row -> {
+            row.put("nodo", "CUENCA");
+            resultado.add(row);
+        });
+        jdbcQuito.queryForList(sql).forEach(row -> {
+            row.put("nodo", "QUITO");
+            resultado.add(row);
+        });
+        resultado.sort(Comparator.comparing(r -> r.get("nombre").toString()));
+        return resultado;
+    }
+
+    public List<Map<String, Object>> consultarCuentasPorOficina(String oficina) {
+        Optional<Fragmento> destino = catalogo.resolverPorCiudad(oficina);
+        if (destino.isEmpty()) {
+            return List.of(Map.of("error", "Oficina desconocida", "oficina", oficina));
+        }
+        String sql = "SELECT numero, saldo, oficina FROM cuentas ORDER BY numero";
+        return jdbcDe(destino.get()).queryForList(sql);
+    }
+}
+\end{lstlisting}
+
+\subsection{Paso 5: Transferencia Cross-Site con 2PC Manual}
+
+Implementamos la operacion mas critica: una transferencia entre cuentas que residen en distintos nodos. Esto requiere una transaccion distribuida con commit en dos fases.
+
+\begin{lstlisting}[style=JavaStyle,caption={TransferenciaService.java: simulacion didactica de 2PC en capa de aplicacion}]
+package ec.uteq.banco.service;
+
+import ec.uteq.banco.catalogo.CatalogoDistribuido;
+import ec.uteq.banco.catalogo.CatalogoDistribuido.Fragmento;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import javax.sql.DataSource;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Map;
+
+@Service
+public class TransferenciaService {
+
+    private static final Logger log = LoggerFactory.getLogger(TransferenciaService.class);
+
+    private final DataSource dsCuenca;
+    private final DataSource dsQuito;
+    private final CatalogoDistribuido catalogo;
+
+    public TransferenciaService(
+            @Qualifier("cuencaDataSource") DataSource dsCuenca,
+            @Qualifier("quitoDataSource")  DataSource dsQuito,
+            CatalogoDistribuido catalogo) {
+        this.dsCuenca = dsCuenca;
+        this.dsQuito  = dsQuito;
+        this.catalogo = catalogo;
+    }
+
+    private DataSource dsDe(Fragmento f) {
+        return switch (f) {
+            case CUENTAS_CUENCA -> dsCuenca;
+            case CUENTAS_QUITO  -> dsQuito;
+        };
+    }
+
+    public Map<String, Object> transferir(String cuentaOrigen,
+                                          String cuentaDestino,
+                                          BigDecimal monto) {
+        if (monto == null || monto.signum() <= 0) {
+            return Map.of("status", "ERROR", "mensaje", "Monto invalido");
+        }
+
+        Fragmento fOrig = catalogo.resolverPorNumeroCuenta(cuentaOrigen)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta origen no enrutable"));
+        Fragmento fDest = catalogo.resolverPorNumeroCuenta(cuentaDestino)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta destino no enrutable"));
+
+        Connection cOrig = null;
+        Connection cDest = null;
+        try {
+            cOrig = dsDe(fOrig).getConnection();
+            cDest = dsDe(fDest).getConnection();
+            cOrig.setAutoCommit(false);
+            cDest.setAutoCommit(false);
+
+            // FASE 1 - PREPARACION: debitar origen y acreditar destino
+            if (!debitar(cOrig, cuentaOrigen, monto)) {
+                rollbackAmbos(cOrig, cDest);
+                return Map.of("status", "ABORT", "mensaje", "Saldo insuficiente en origen");
+            }
+            if (!acreditar(cDest, cuentaDestino, monto)) {
+                rollbackAmbos(cOrig, cDest);
+                return Map.of("status", "ABORT", "mensaje", "Cuenta destino inexistente");
+            }
+            registrarTransaccion(cOrig, cuentaOrigen, cuentaDestino, monto);
+
+            // FASE 2 - COMMIT: ambos confirman
+            cOrig.commit();
+            cDest.commit();
+
+            log.info("[2PC] Transferencia OK: {} -> {} por {}",
+                     cuentaOrigen, cuentaDestino, monto);
+            return Map.of("status", "COMMIT",
+                          "origen", cuentaOrigen,
+                          "destino", cuentaDestino,
+                          "monto", monto);
+
+        } catch (SQLException ex) {
+            log.error("[2PC] Fallo durante transaccion distribuida", ex);
+            rollbackAmbos(cOrig, cDest);
+            return Map.of("status", "ABORT", "mensaje", ex.getMessage());
+        } finally {
+            cerrar(cOrig);
+            cerrar(cDest);
+        }
+    }
+
+    private boolean debitar(Connection con, String cuenta, BigDecimal monto) throws SQLException {
+        String sql = "UPDATE cuentas SET saldo = saldo - ? WHERE numero = ? AND saldo >= ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setBigDecimal(1, monto);
+            ps.setString(2, cuenta);
+            ps.setBigDecimal(3, monto);
+            return ps.executeUpdate() == 1;
+        }
+    }
+
+    private boolean acreditar(Connection con, String cuenta, BigDecimal monto) throws SQLException {
+        String sql = "UPDATE cuentas SET saldo = saldo + ? WHERE numero = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setBigDecimal(1, monto);
+            ps.setString(2, cuenta);
+            return ps.executeUpdate() == 1;
+        }
+    }
+
+    private void registrarTransaccion(Connection con, String origen, String destino, BigDecimal monto)
+            throws SQLException {
+        String sql = "INSERT INTO transacciones (cuenta_origen, cuenta_destino, monto, estado) "
+                   + "VALUES (?, ?, ?, 'COMPLETADA')";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, origen);
+            ps.setString(2, destino);
+            ps.setBigDecimal(3, monto);
+            ps.executeUpdate();
+        }
+    }
+
+    private void rollbackAmbos(Connection c1, Connection c2) {
+        try { if (c1 != null) c1.rollback(); } catch (SQLException ignored) {}
+        try { if (c2 != null) c2.rollback(); } catch (SQLException ignored) {}
+    }
+
+    private void cerrar(Connection c) {
+        try { if (c != null) c.close(); } catch (SQLException ignored) {}
+    }
+}
+\end{lstlisting}
+
+\begin{notebox}{Nota didactica}
+La implementacion del 2PC mostrada es \textbf{didactica}, no apta para produccion. Un 2PC real exige: persistencia del log del coordinador en disco \textbf{antes} de comunicar la decision, manejo de timeouts con reintentos idempotentes, identificadores de transaccion globales (XID), y un protocolo de recuperacion ante caida del coordinador. Java EE provee \textbf{JTA} (Java Transaction API) y servidores como Narayana, Bitronix o Atomikos implementan estos detalles. Spring soporta JTA con \texttt{@Transactional(transactionManager = "jtaTransactionManager")} sobre estos coordinadores.
+\end{notebox}
+
+\subsection{Paso 6: API REST}
+
+Exponemos los servicios mediante una API REST.
+
+\begin{lstlisting}[style=JavaStyle,caption={BancoController.java: endpoints de consulta y transferencia}]
+package ec.uteq.banco.controller;
+
+import ec.uteq.banco.service.ConsultaDistribuidaService;
+import ec.uteq.banco.service.TransferenciaService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/banco")
+public class BancoController {
+
+    private final ConsultaDistribuidaService consulta;
+    private final TransferenciaService transferencia;
+
+    public BancoController(ConsultaDistribuidaService consulta,
+                           TransferenciaService transferencia) {
+        this.consulta = consulta;
+        this.transferencia = transferencia;
+    }
+
+    @GetMapping("/saldo/{numero}")
+    public ResponseEntity<Map<String, Object>> saldo(@PathVariable String numero) {
+        return ResponseEntity.ok(consulta.consultarSaldo(numero));
+    }
+
+    @GetMapping("/clientes")
+    public ResponseEntity<List<Map<String, Object>>> clientes() {
+        return ResponseEntity.ok(consulta.listarTodosLosClientes());
+    }
+
+    @GetMapping("/cuentas/{oficina}")
+    public ResponseEntity<List<Map<String, Object>>> cuentas(@PathVariable String oficina) {
+        return ResponseEntity.ok(consulta.consultarCuentasPorOficina(oficina));
+    }
+
+    @PostMapping("/transferencia")
+    public ResponseEntity<Map<String, Object>> transferir(
+            @RequestParam String origen,
+            @RequestParam String destino,
+            @RequestParam BigDecimal monto) {
+        Map<String, Object> resultado = transferencia.transferir(origen, destino, monto);
+        if ("ABORT".equals(resultado.get("status")) || "ERROR".equals(resultado.get("status"))) {
+            return ResponseEntity.badRequest().body(resultado);
+        }
+        return ResponseEntity.ok(resultado);
+    }
+}
+\end{lstlisting}
+
+\subsection{Paso 7: Clase Principal Spring Boot}
+
+\begin{lstlisting}[style=JavaStyle,caption={BancoApplication.java: punto de entrada de la aplicacion}]
+package ec.uteq.banco;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+
+@SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
+public class BancoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(BancoApplication.class, args);
+    }
+}
+\end{lstlisting}
+
+\subsection{Paso 8: Maven pom.xml}
+
+\begin{lstlisting}[style=YamlStyle,caption={pom.xml: dependencias Maven del proyecto}]
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.4</version>
+  </parent>
+  <groupId>ec.uteq</groupId>
+  <artifactId>banco-distribuido</artifactId>
+  <version>1.0.0</version>
+  <properties>
+    <java.version>21</java.version>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+\end{lstlisting}
+
+\subsection{Paso 9: Ejecucion y Pruebas}
+
+\begin{practicebox}{Ejecucion del proyecto}
+\textbf{Paso 1.} Levantar los contenedores PostgreSQL:\\
+\texttt{docker compose -f docker-compose-bdd.yml up -d}\\[0.2cm]
+
+\textbf{Paso 2.} Verificar el estado:\\
+\texttt{docker compose ps} -- ambos en estado \texttt{healthy}\\[0.2cm]
+
+\textbf{Paso 3.} Compilar y ejecutar la aplicacion Spring Boot:\\
+\texttt{./mvnw spring-boot:run}\\[0.2cm]
+
+\textbf{Paso 4.} Probar los endpoints con \texttt{curl} o Postman:\\
+\texttt{curl http://localhost:8080/api/banco/saldo/2201000001}\\
+\texttt{curl http://localhost:8080/api/banco/saldo/1701000001}\\
+\texttt{curl http://localhost:8080/api/banco/clientes}\\
+\texttt{curl http://localhost:8080/api/banco/cuentas/Cuenca}\\
+\texttt{curl -X POST "http://localhost:8080/api/banco/transferencia?origen=2201000001\&destino=1701000001\&monto=100"}\\[0.2cm]
+
+\textbf{Paso 5.} Verificar la atomicidad de la transferencia consultando ambas cuentas tras la operacion y comprobando el registro en la tabla \texttt{transacciones} del nodo origen.\\[0.2cm]
+
+\textbf{Paso 6.} Probar el escenario de falla: detener \texttt{docker stop pg\_quito} y ejecutar de nuevo la transferencia. Debe responder \texttt{ABORT} y los saldos deben permanecer inalterados (rollback exitoso en origen).
+\end{practicebox}
+
+\subsection{Resultados Esperados}
+
+Tras ejecutar las pruebas se observan los siguientes comportamientos clave:
+
+\begin{itemize}[leftmargin=*]
+\item Las consultas de saldo se dirigen al nodo correcto segun el prefijo del numero de cuenta, demostrando la \textbf{transparencia de fragmentacion}.
+\item Las consultas globales (\texttt{/api/banco/clientes}) realizan union distribuida sin que el cliente perciba que los datos provienen de dos nodos.
+\item Las transferencias cross-site se confirman atomicamente: ambos saldos se actualizan o ninguno (atomicidad).
+\item Ante caida de un nodo, las transferencias cross-site fallan con rollback limpio, mientras que las operaciones locales en el nodo superviviente siguen funcionando (\textbf{autonomia local}).
+\end{itemize}
+
+\subsection{Ejercicio Reto: Extension a CockroachDB}
+
+Como extension de este ejercicio, los estudiantes pueden migrar el mismo esquema a un cluster CockroachDB de tres nodos, comparando: 1) la complejidad del despliegue, 2) el comportamiento ante caida de un nodo (Raft sigue operando con dos de tres), 3) la transparencia de la fragmentacion automatica (no se requiere el catalogo manual), y 4) las garantias de serializabilidad estricta de CockroachDB versus el aislamiento de PostgreSQL local. Este ejercicio se desarrolla completamente en la \textbf{Guia de Practica Experimental GA-SUM-03} de la asignatura.
+
+% ============================================================
+\section{Conclusiones}
+% ============================================================
+
+Las bases de datos distribuidas constituyen una respuesta tecnologica a las exigencias contemporaneas de escala, disponibilidad y dispersion geografica. Mas que una evolucion del SGBD centralizado, son un cambio de paradigma que introduce trade-offs ineludibles entre consistencia, disponibilidad y tolerancia a particiones.
+
+El diseno de una BDD comienza con tres decisiones estrategicas: la arquitectura (cliente-servidor, federada o P2P), el esquema de distribucion (fragmentacion horizontal, vertical, mixta y nivel de replicacion) y el modelo de consistencia (CP o AP, fuerte o eventual). Estas decisiones se sustentan en los requisitos de negocio y se materializan en la eleccion tecnologica (PostgreSQL distribuido, CockroachDB, Cassandra, MongoDB, entre otras).
+
+El control de concurrencia distribuido (2PL, MVCC), los protocolos de commit (2PC, 3PC) y los algoritmos de consenso (Raft, Paxos) son los mecanismos que sostienen las garantias ACID en entornos donde la red puede fallar. El ingeniero de software debe comprender sus principios, sus limitaciones (por ejemplo, el bloqueo del 2PC ante fallo del coordinador) y sus alternativas modernas.
+
+El ejercicio practico del Banco del Austro ilustra que los conceptos teoricos se materializan en codigo Java compilable, contenedores Docker funcionales y comportamientos verificables. La distancia entre la pizarra y la produccion es mas corta de lo que parece, pero exige rigor en el diseno y conciencia plena de los compromisos asumidos.
+
+% ============================================================
+\section*{Referencias}
+\addcontentsline{toc}{section}{Referencias}
+\begin{thebibliography}{99}
+
+\bibitem{ozsu2020}
+M.~T. \"Ozsu and P. Valduriez,
+\textit{Principles of Distributed Database Systems},
+4th ed.
+Cham, Switzerland: Springer, 2020.
+doi: 10.1007/978-3-030-26253-2.
+
+\bibitem{kleppmann2017}
+M. Kleppmann,
+\textit{Designing Data-Intensive Applications}.
+Sebastopol, CA, USA: O'Reilly Media, 2017.
+ISBN: 978-1-4493-7332-0.
+
+\bibitem{brewer2012}
+E. Brewer,
+``CAP twelve years later: How the `rules' have changed,''
+\textit{IEEE Computer}, vol. 45, no. 2, pp. 23--29, Feb. 2012.
+doi: 10.1109/MC.2012.37.
+
+\bibitem{abadi2012}
+D.~J. Abadi,
+``Consistency tradeoffs in modern distributed database system design: CAP is only part of the story,''
+\textit{IEEE Computer}, vol. 45, no. 2, pp. 37--42, Feb. 2012.
+doi: 10.1109/MC.2012.33.
+
+\bibitem{ongaro2014}
+D. Ongaro and J. Ousterhout,
+``In search of an understandable consensus algorithm,''
+in \textit{Proc. 2014 USENIX Annual Technical Conference (USENIX ATC '14)},
+Philadelphia, PA, USA, Jun. 2014, pp. 305--319.
+ISBN: 978-1-931971-10-2.
+
+\bibitem{vansteen2023}
+M. van Steen and A.~S. Tanenbaum,
+\textit{Distributed Systems},
+4th ed., ver. 4.03.
+Maastricht, The Netherlands: Maarten van Steen, Jan. 2025.
+ISBN: 978-90-815406-3-6.
+
+\bibitem{coulouris2012}
+G. Coulouris, J. Dollimore, T. Kindberg, and G. Blair,
+\textit{Distributed Systems: Concepts and Design},
+5th ed.
+Boston, MA, USA: Addison-Wesley, 2012.
+ISBN: 978-0-13-214301-1.
+
+\end{thebibliography}
+
+\end{document}
