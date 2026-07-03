@@ -1,0 +1,435 @@
+% =====================================================================
+%  EXAMEN DE LA UNIDAD II
+%  Herramientas de Programacion Web del Servidor
+%  Aplicaciones Web  --  UTEQ  --  PPA 2026-2027
+%  Estructura: planteamiento + guia de desarrollo + guia GitHub + rubrica
+% =====================================================================
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage[a4paper,margin=1.8cm,top=1.3cm,bottom=1.6cm]{geometry}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{microtype}
+\usepackage{ragged2e}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Paleta institucional UTEQ ----------
+\definecolor{uteqverde}{HTML}{006633}
+\definecolor{uteqgold}{HTML}{CC9900}
+\definecolor{verdeclaro}{HTML}{E3F0E8}
+\definecolor{goldclaro}{HTML}{FBF2D9}
+\definecolor{grisfila}{HTML}{F4F6F5}
+\definecolor{textogris}{HTML}{383A42}
+
+% ---------- Niveles de la escala ----------
+\definecolor{nivelexc}{HTML}{1B7A3D}
+\definecolor{nivelbue}{HTML}{4F9D5B}
+\definecolor{nivelreg}{HTML}{C8A21A}
+\definecolor{nivelins}{HTML}{D17A22}
+
+\renewcommand{\arraystretch}{1.30}
+\setlength{\tabcolsep}{4pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{textogris} Aplicaciones Web --- Ingenieria de Software --- UTEQ}
+\fancyfoot[C]{\footnotesize\color{textogris} Examen de la Unidad II}
+\fancyfoot[R]{\footnotesize\color{textogris} Pagina \thepage}
+
+\newcolumntype{C}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcommand{\nivel}[2]{\textbf{\textcolor{#1}{#2}}}
+
+% ---------- Estilos para listados ----------
+\lstdefinestyle{shellestilo}{%
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    keywordstyle=\color{uteqverde}\bfseries,
+    commentstyle=\color{textogris!70}\itshape,
+    stringstyle=\color{uteqgold!80!black},
+    frame=single,
+    framerule=0.4pt,
+    rulecolor=\color{textogris!40},
+    backgroundcolor=\color{grisfila},
+    xleftmargin=6pt,
+    xrightmargin=6pt
+}
+
+\begin{document}
+\color{textogris}
+
+% =====================================================================
+% ENCABEZADO INSTITUCIONAL
+% =====================================================================
+\begin{tcolorbox}[colback=verdeclaro,colframe=uteqverde,boxrule=1pt,arc=2pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+    \begin{center}
+        {\normalsize\bfseries\color{uteqverde} Universidad Tecnica Estatal de Quevedo}\\[1pt]
+        {\footnotesize Facultad de Ciencias de la Computacion y Diseno Digital \quad\textbar\quad Carrera de Ingenieria de Software (Redisenio)}\\[3pt]
+        {\large\bfseries\color{uteqverde} Aplicaciones Web}\\[1pt]
+        {\footnotesize Quinto nivel \quad\textbar\quad Periodo Academico Presencial 2026-2027 (PPA)}\\[3pt]
+        {\normalsize\bfseries Rubrica de evaluacion --- Examen de la Unidad II}\\
+        {\footnotesize\itshape Herramientas de programacion web del lado del servidor (PERL, PHP, Java, ASP.NET, seguridad)}
+    \end{center}
+\end{tcolorbox}
+
+\vspace{2pt}
+
+% =====================================================================
+% RESULTADO DE APRENDIZAJE
+% =====================================================================
+\noindent\textbf{Resultado de aprendizaje evaluado:} el estudiante \emph{construye una aplicacion web dinamica del lado del servidor que integra el ciclo request-response de HTTP, un mecanismo de autenticacion basado en sesion, el acceso a datos con SQL parametrizado, la estructura por capas y las defensas basicas del OWASP Top 10:2021} \cite{owasp2021top10} \emph{en una de las tres pilas trabajadas en la Unidad II} (PHP 8.3+PDO \cite{nixon2021learning}, Java con Spring Boot 3 \cite{walls2022spring} o ASP.NET Core 8 \cite{lock2021asp}).
+
+\vspace{4pt}
+
+\noindent\textbf{Aporte al perfil de egreso.} La Unidad II es la segunda de las cuatro que componen la asignatura y constituye la puerta de entrada al desarrollo profesional del lado del servidor. Su dominio es prerrequisito directo del Proyecto Fin de Curso (PFC) y de las Unidades III (persistencia y patrones) y IV (MVC y servicios).
+
+% =====================================================================
+% 1. ESTRUCTURA DEL EXAMEN
+% =====================================================================
+\section*{1. Estructura del examen}
+El examen consta de dos partes complementarias cuya suma constituye la calificacion total de la Unidad II.
+
+\vspace{2pt}
+\noindent
+\begin{tabular}{|C{2.8cm}|C{10.4cm}|c|}
+    \hline
+    \rowcolor{verdeclaro}
+    \textbf{Parte} & \textbf{Modalidad} & \textbf{Peso} \\
+    \hline
+    Parte teorica &
+    Cuestionario de seleccion multiple de 20 preguntas sobre los contenidos de la Unidad II. Todas las alternativas de cada pregunta corresponden a terminos, versiones o valores presentes en el material del curso. &
+    40\,\% \\
+    \hline
+    Parte practica &
+    Resolucion del problema planteado en la Practica Unidad II --- micro CRUD web seguro con autenticacion, en la pila del servidor que el estudiante elija (PHP 8.3, Spring Boot 3 o ASP.NET Core 8). &
+    60\,\% \\
+    \hline
+    \rowcolor{goldclaro}
+    \textbf{Total} & & \textbf{100\,\%} \\
+    \hline
+\end{tabular}
+
+% =====================================================================
+% 2. DIRECTRICES HABILITANTES DE LA EVALUACION
+% =====================================================================
+\section*{2. Directrices habilitantes de la evaluacion}
+Las siguientes tres condiciones son \textbf{habilitantes}: la ausencia de cualquiera de ellas hace que el examen no sea evaluable y la nota resultante sea \textbf{cero} en la parte practica.
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+    \item \textbf{Publicacion en el SGA dentro del plazo (habilitante).} El estudiante sube al SGA una unica pagina PDF con: (a) apellidos y nombres completos, (b) numero de cedula, (c) paralelo, (d) fecha del examen, (e) pila tecnologica elegida, (f) enlace HTTPS al repositorio GitHub publico y (g) el hash abreviado (7 caracteres) del ultimo commit anterior o igual a las 10H45.
+    \item \textbf{Repositorio verificable en GitHub (habilitante).} El repositorio debe ser \textbf{publico}, el enlace debe abrir directamente el repositorio (no un fork privado ni un enlace roto), y la autoria de los commits debe corresponder al estudiante. La estructura del repositorio debe permitir la \textbf{clonacion, construccion y ejecucion completa} de la aplicacion desde una maquina limpia siguiendo estrictamente el \texttt{README.md}, sin conocimiento previo del proyecto.
+    \item \textbf{Corte del historial Git a las 10H45 (habilitante).} El \emph{ultimo commit} del repositorio debe tener \texttt{AuthorDate} y \texttt{CommitDate} en zona \emph{America/Guayaquil} (UTC$-$5) \textbf{a mas tardar a las 10H45} del dia del examen. Los commits posteriores no se consideran para la calificacion. Verificacion:
+\end{enumerate}
+\begin{lstlisting}[style=shellestilo]
+git log --pretty=format:'%h | %an | %ad | %s' --date=iso-strict | head -30
+git rev-list -1 --before='YYYY-MM-DD 10:45:00 -0500' HEAD
+\end{lstlisting}
+
+% =====================================================================
+% 3. PARTE TEORICA - CUESTIONARIO (40%)
+% =====================================================================
+\section*{3. Parte teorica --- Cuestionario de seleccion multiple (40\,\%)}
+\noindent\fbox{\begin{minipage}{0.98\textwidth}
+    \footnotesize
+    \textbf{Criterio de calificacion.} Cuestionario de 20 preguntas de seleccion multiple de igual valor sobre los contenidos de la Unidad II: historia y sintaxis de PERL y PHP, servlets y Spring Boot, ASP.NET Core, gestion de sesion, hash de contrasenas, defensas contra SQL Injection, XSS y CSRF, y cabeceras de seguridad HTTP.
+
+    La calificacion es proporcional al numero de respuestas correctas, sin penalizacion por respuestas incorrectas:
+    \begin{center}
+        $\displaystyle \text{Nota teorica} \;=\; \frac{\text{respuestas correctas}}{20} \times 40$\,\%
+    \end{center}
+\end{minipage}}
+
+% =====================================================================
+% 4. PARTE PRACTICA - PLANTEAMIENTO
+% =====================================================================
+\section*{4. Parte practica --- Planteamiento del problema (60\,\%)}
+\subsection*{4.1 Contexto}
+La Facultad de Ciencias de la Computacion y Diseno Digital requiere un micro-sistema web para la administracion de las \emph{materias} que ofrece la carrera de Ingenieria de Software. El sistema \textbf{debe estar protegido por autenticacion}: solo un usuario administrador previamente registrado accede al mantenimiento. El estudiante desarrolla el sistema en una unica pila tecnologica del lado del servidor y lo entrega en un repositorio GitHub verificable, autocontenido y ejecutable con un solo comando desde una clonacion limpia.
+
+\subsection*{4.2 Entidad de dominio: \texttt{Materia}}
+\noindent
+\begin{tabular}{|C{2.2cm}|C{4.0cm}|C{7.0cm}|}
+    \hline
+    \rowcolor{verdeclaro}
+    \textbf{Atributo} & \textbf{Tipo} & \textbf{Restricciones} \\
+    \hline
+    \texttt{id} & entero (autonumerico) & clave primaria. \\
+    \hline
+    \texttt{codigo} & cadena de 6 caracteres & unico, obligatorio (p.\,ej. \texttt{APW501}). \\
+    \hline
+    \texttt{nombre} & cadena 5--80 caracteres & obligatorio. \\
+    \hline
+    \texttt{creditos} & entero 1--6 & obligatorio, con \texttt{CHECK} en BD. \\
+    \hline
+    \texttt{semestre} & entero 1--10 & obligatorio, con \texttt{CHECK} en BD. \\
+    \hline
+    \texttt{activa} & booleano & valor por defecto \texttt{true}; la eliminacion es \emph{logica}. \\
+    \hline
+\end{tabular}
+
+\subsection*{4.3 Usuario administrador semilla (obligatorio)}
+El esquema debe crear un usuario \texttt{admin} con contrasena \texttt{Admin*2026} \textbf{almacenada como hash BCrypt} \cite{owasp2021top10,ortega2022securecoding}. Este usuario debe existir al arrancar la aplicacion desde una BD vacia (migracion + \emph{seed} automaticos).
+
+\subsection*{4.4 Funcionalidades minimas exigidas}
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+    \item Formulario de \textbf{login} en \texttt{GET /login}, procesado por \texttt{POST /login}, que verifica credenciales contra la BD usando la funcion equivalente a \texttt{password\_verify} (\texttt{BCryptPasswordEncoder.matches} en Java o \texttt{PasswordHasher} en .NET).
+    \item \textbf{Gestion de sesion} tras login exitoso; toda ruta distinta de \texttt{/login} exige sesion valida; sin sesion, redirige a \texttt{/login} con \texttt{HTTP 302}.
+    \item \textbf{Listado} de materias en \texttt{GET /materias} (tabla HTML).
+    \item \textbf{Creacion:} \texttt{GET /materias/nueva} muestra el formulario y \texttt{POST /materias} lo procesa.
+    \item \textbf{Edicion:} \texttt{GET /materias/\{id\}/editar} y \texttt{POST /materias/\{id\}}.
+    \item \textbf{Eliminacion logica:} \texttt{POST /materias/\{id\}/eliminar} pone \texttt{activa=false} (nunca borrado fisico).
+    \item \textbf{Logout} en \texttt{POST /logout} que invalida la sesion.
+\end{enumerate}
+
+\clearpage
+
+% =====================================================================
+% 5. GUIA DE DESARROLLO
+% =====================================================================
+\section*{5. Guia de desarrollo --- pasos para lograr el resultado de aprendizaje}
+Los siete pasos que siguen son \emph{tecnologicamente neutros} y cubren tanto PHP 8.3 como Spring Boot 3 o ASP.NET Core 8. Cada paso conecta con un contenido de la Unidad II del libro de texto de la asignatura.
+
+\subsection*{Paso 1. Iniciar el proyecto en la pila elegida (Semana 5, 6 o 7)}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+    \item \textbf{PHP 8.3:} carpeta con \texttt{index.php}, router simple y \texttt{composer.json}; usar \texttt{declare(strict\_types=1);} en cada archivo \cite{nixon2021learning}.
+    \item \textbf{Spring Boot 3:} \texttt{start.spring.io} con dependencias \emph{Web}, \emph{Security}, \emph{JPA}, \emph{Validation} y driver de BD; Java 21 LTS \cite{walls2022spring}.
+    \item \textbf{ASP.NET Core 8:} \texttt{dotnet new mvc -n MateriasApp}, agregar \emph{EF Core}, \emph{Identity} o autenticacion basada en cookies \cite{lock2021asp}.
+\end{itemize}
+
+\subsection*{Paso 2. Modelar la persistencia con SQL parametrizado (Semana 5 y refuerzo Semana 9)}
+Aplicar el esquema SQL siguiente (adaptable a MySQL, PostgreSQL o SQLite) y \textbf{prohibir la concatenacion} de datos del usuario al SQL: usar \texttt{PDO} + marcadores en PHP, \texttt{PreparedStatement} o JPA en Java, \texttt{DbCommand} o EF Core en .NET \cite{owasp2021top10}.
+
+\begin{lstlisting}[style=shellestilo]
+CREATE TABLE usuarios (
+  id            BIGSERIAL PRIMARY KEY,
+  username      VARCHAR(50)  NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  rol           VARCHAR(20)  NOT NULL DEFAULT 'ADMIN'
+);
+CREATE TABLE materias (
+  id       BIGSERIAL PRIMARY KEY,
+  codigo   CHAR(6)      NOT NULL UNIQUE,
+  nombre   VARCHAR(80)  NOT NULL,
+  creditos SMALLINT     NOT NULL CHECK (creditos BETWEEN 1 AND 6),
+  semestre SMALLINT     NOT NULL CHECK (semestre BETWEEN 1 AND 10),
+  activa   BOOLEAN      NOT NULL DEFAULT TRUE
+);
+\end{lstlisting}
+
+\subsection*{Paso 3. Implementar autenticacion con hash BCrypt (Semana 9)}
+Al registrar al usuario semilla, aplicar \texttt{password\_hash(\$clave, PASSWORD\_DEFAULT)} en PHP, \texttt{BCryptPasswordEncoder} en Spring Security, o \texttt{PasswordHasher} en ASP.NET Core Identity. \textbf{Nunca} guardar contrasenas en texto plano, MD5 ni SHA-1 \cite{ortega2022securecoding}. En el login, comparar con la funcion \emph{verify} correspondiente, nunca con \texttt{==}.
+
+\subsection*{Paso 4. Iniciar sesion segura y proteger rutas (Semana 9)}
+Tras login exitoso, iniciar la sesion del servidor. La \textbf{cookie de sesion} debe emitirse con las banderas \texttt{HttpOnly=true}, \texttt{SameSite=Strict} (o \texttt{Lax} justificado) y \texttt{Secure=true} cuando la evaluacion sea contra HTTPS \cite{owasp2021top10}. Toda ruta distinta de \texttt{/login} debe verificar la sesion; si no existe, redirigir con \texttt{HTTP 302} a \texttt{/login}.
+
+\subsection*{Paso 5. Construir el CRUD por capas (Semana 6)}
+Separar rigurosamente tres responsabilidades:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+    \item \textbf{Controlador / Servlet / Controller:} recibe la peticion, valida sesion, delega en el servicio.
+    \item \textbf{Servicio:} logica de negocio (unicidad de codigo, validacion de rangos).
+    \item \textbf{DAO / Repository:} unico lugar donde hay SQL o consultas JPA/EF; nunca en el controlador \cite{walls2022spring}.
+\end{itemize}
+Implementar las cuatro operaciones (crear, listar, editar, eliminacion logica) con vistas HTML del lado del servidor (JSP/Thymeleaf/Razor/PHP puro con \texttt{htmlspecialchars}).
+
+\subsection*{Paso 6. Blindar la aplicacion contra el OWASP Top 10:2021 (Semana 9)}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+    \item \textbf{Anti-XSS:} escapar toda salida dinamica (\texttt{htmlspecialchars(\dots,ENT\_QUOTES,'UTF-8')} en PHP; Thymeleaf y Razor escapan por defecto; JSP EL con \texttt{fn:escapeXml}).
+    \item \textbf{Anti-CSRF:} cada formulario \texttt{POST} lleva un token secreto (generado con \texttt{random\_bytes(32)} en PHP; nativo en Spring Security; \texttt{@Html.AntiForgeryToken()} en Razor). Verificar con \texttt{hash\_equals} o equivalente.
+    \item \textbf{Cabeceras HTTP:} \texttt{Strict-Transport-Security: max-age=31536000; includeSubDomains}, \texttt{X-Frame-Options: DENY}, \texttt{X-Content-Type-Options: nosniff} y \texttt{Content-Security-Policy: default-src 'self'} \cite{owasp2021top10}.
+    \item \textbf{Anti-SQLi:} confirmar que ninguna consulta concatena datos del usuario (\emph{grep} del docente al codigo).
+\end{itemize}
+
+\subsection*{Paso 7. Validar en cliente y servidor}
+La validacion HTML5 nativa (\texttt{required}, \texttt{minlength}, \texttt{maxlength}, \texttt{pattern}, \texttt{min}, \texttt{max}) es \emph{ayuda al usuario}, no defensa: el \textbf{servidor} es la fuente de verdad. Revalidar rangos y longitudes en el servidor y devolver \texttt{HTTP 400} o \texttt{422} con mensajes claros al usuario cuando la entrada sea invalida.
+
+% =====================================================================
+% 6. GUIA DE PUBLICACION EN GITHUB
+% =====================================================================
+\section*{6. Guia de publicacion en GitHub --- criterio de evaluabilidad}
+El repositorio es \textbf{la fuente de verdad} de la calificacion practica. Debe permitir que el docente \emph{clone, arranque y verifique} la aplicacion sin conocimiento previo del proyecto ni del estudiante. Ese principio de \emph{evaluabilidad} se traduce en la siguiente estructura y contenidos obligatorios.
+
+\subsection*{6.1 Estructura de directorios sugerida}
+\begin{lstlisting}[style=shellestilo]
+materias-<apellido>/
+|-- README.md                        # obligatorio: ver 6.2
+|-- LICENSE                          # licencia MIT o similar
+|-- .gitignore
+|-- .env.example                     # variables sin secretos reales
+|-- docker-compose.yml               # obligatorio: ver 6.3
+|-- docs/
+|   |-- capturas/                    # 4-6 capturas de pantalla como respaldo
+|   |   |-- 01-login.png
+|   |   |-- 02-listado.png
+|   |   |-- 03-alta.png
+|   |   |-- 04-edicion.png
+|   |   |-- 05-eliminacion-logica.png
+|   |-- requests.http                # o coleccion Postman equivalente
+|   `-- decisiones.md                # 3-5 decisiones tecnicas justificadas
+|-- db/
+|   |-- schema.sql                   # DDL de las tablas
+|   `-- seed.sql                     # usuario admin con hash BCrypt real
+`-- src/                             # codigo de la pila elegida
+\end{lstlisting}
+
+\subsection*{6.2 Contenido obligatorio del \texttt{README.md}}
+El \texttt{README.md} debe permitir al docente reproducir el entorno en menos de cinco minutos. Debe contener las siguientes secciones, en este orden:
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+    \item \textbf{Datos del estudiante} (apellidos, nombres, cedula, paralelo, fecha del examen).
+    \item \textbf{Pila tecnologica} elegida y version exacta (p.\,ej. PHP 8.3.6, Spring Boot 3.3.4, o .NET 8.0.10).
+    \item \textbf{Requisitos previos} (Docker Desktop 4.x o equivalentes locales).
+    \item \textbf{Instrucciones de arranque en un solo comando}: bloque de codigo que se pueda copiar y pegar tal cual y arrancar el sistema (ver 6.3).
+    \item \textbf{Credenciales del usuario semilla} (\texttt{admin} / \texttt{Admin*2026}), advirtiendo que se usan solo para la evaluacion.
+    \item \textbf{URL local} del sistema una vez levantado (p.\,ej. \texttt{http://localhost:8080/login}).
+    \item \textbf{Como probar} el CRUD (referencia a \texttt{docs/requests.http} o a la coleccion Postman).
+    \item \textbf{Como verificar} las defensas de seguridad activadas (comandos \texttt{curl -I} para leer las cabeceras).
+    \item \textbf{Hash del ultimo commit} anterior o igual a las 10H45 (7 caracteres, alineado con el PDF del SGA).
+\end{enumerate}
+
+\subsection*{6.3 Arranque en un solo comando --- \texttt{docker-compose.yml}}
+El repositorio debe incluir un \texttt{docker-compose.yml} que levante \textbf{aplicacion + base de datos} y aplique automaticamente las migraciones y el \emph{seed}. Comandos que debe ejecutar el docente y que deben funcionar tal cual:
+\begin{lstlisting}[style=shellestilo]
+git clone https://github.com/<usuario>/materias-<apellido>.git
+cd materias-<apellido>
+cp .env.example .env
+docker compose up -d --build
+# esperar 30-60 s y abrir http://localhost:<puerto>/login
+\end{lstlisting}
+
+\subsection*{6.4 Prohibiciones y salvaguardas}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+    \item \textbf{Prohibido subir secretos reales} al repositorio (contrasenas, tokens, claves privadas). Solo \texttt{.env.example} con valores ficticios.
+    \item \textbf{Prohibido subir binarios} pesados (JAR o DLL construidos): agregar \texttt{target/} y \texttt{bin/} al \texttt{.gitignore}.
+    \item \textbf{Obligatorio historial Git} con al menos ocho commits del estudiante distribuidos a lo largo del examen; commits descriptivos siguiendo \emph{Conventional Commits} (\texttt{feat:}, \texttt{fix:}, \texttt{docs:}).
+    \item \textbf{Obligatorio dejar el repositorio publico} durante toda la ventana de evaluacion (72 horas posteriores a la entrega).
+\end{itemize}
+
+\clearpage
+
+% =====================================================================
+% 7. RUBRICA DE LA PARTE PRACTICA (60%)
+% =====================================================================
+\section*{7. Parte practica --- Rubrica de evaluacion (60\,\%)}
+Cada criterio se califica en uno de cuatro niveles equivalentes al 100\,\%, 75\,\%, 50\,\% o 25\,\% de su peso, siguiendo la misma escala del Examen de la Unidad I.
+
+\vspace{2pt}
+\noindent
+\begin{tabular}{l l l l l}
+    \nivel{nivelexc}{Excelente = 100\,\%} &
+    \nivel{nivelbue}{Bueno = 75\,\%} &
+    \nivel{nivelreg}{Regular = 50\,\%} &
+    \nivel{nivelins}{Insuficiente = 25\,\%} & \\
+\end{tabular}
+
+\vspace{6pt}
+
+{\footnotesize
+\begin{longtable}{
+    C{3.0cm}
+    C{4.0cm}
+    C{3.5cm}
+    C{3.2cm}
+    C{2.7cm}
+}
+\rowcolor{uteqverde}
+\textcolor{white}{\textbf{Criterio (peso)}} &
+\textcolor{white}{\textbf{Excelente}} &
+\textcolor{white}{\textbf{Bueno}} &
+\textcolor{white}{\textbf{Regular}} &
+\textcolor{white}{\textbf{Insuficiente}} \\
+\endfirsthead
+
+\rowcolor{uteqverde}
+\textcolor{white}{\textbf{Criterio (peso)}} &
+\textcolor{white}{\textbf{Excelente}} &
+\textcolor{white}{\textbf{Bueno}} &
+\textcolor{white}{\textbf{Regular}} &
+\textcolor{white}{\textbf{Insuficiente}} \\
+\endhead
+
+\textbf{Autenticacion segura y sesion (10\,\%)} &
+Login y logout funcionales; contrasenas en BCrypt; cookie de sesion con \texttt{HttpOnly}, \texttt{SameSite} y \texttt{Secure} cuando aplica; rutas protegidas redirigen a \texttt{/login}. &
+Autenticacion funcional con una bandera de cookie faltante o justificada en \texttt{README}. &
+Autenticacion funcional pero con hash debil (SHA-256/MD5) o sin proteccion de rutas. &
+Contrasenas comparadas en texto plano o sin sesion. \\
+\rowcolor{grisfila}
+
+\textbf{Acceso a datos por capas con SQL parametrizado (10\,\%)} &
+DAO/Repository con \emph{todas} las consultas usando sentencias preparadas con marcadores; controlador delgado; servicio con reglas de negocio. &
+Estructura por capas correcta con una consulta con concatenacion menor documentada. &
+Estructura parcial; SQL en el controlador o mezcla de sentencias preparadas y concatenacion. &
+Concatenacion de datos del usuario al SQL (vulnerable a SQLi \cite{owasp2021top10}). \\
+
+\textbf{CRUD funcional completo sobre \texttt{Materia} (15\,\%)} &
+Las cuatro operaciones funcionan de extremo a extremo: crear, listar, editar y eliminacion logica; persistencia verificada en BD; validacion de \texttt{codigo} unico. &
+CRUD operativo con una operacion con fallo menor (p.\,ej. redireccion incorrecta despues del \texttt{POST}). &
+Solo dos o tres operaciones funcionan. &
+Solo una operacion funciona (tipicamente listar) o CRUD sobre otra entidad. \\
+\rowcolor{grisfila}
+
+\textbf{Defensas activas: XSS, CSRF y cabeceras (10\,\%)} &
+Escape de salida en toda vista; token CSRF verificado en cada \texttt{POST}; \texttt{HSTS}, \texttt{X-Frame-Options}, \texttt{nosniff} y \texttt{CSP} minima presentes y verificables con \texttt{curl -I} \cite{owasp2021top10}. &
+Las tres defensas presentes con alguna cabecera menor faltante. &
+Solo dos de las tres defensas presentes. &
+Solo una defensa presente o defensa aparente sin verificacion real en el servidor. \\
+
+\textbf{Validacion en cliente y servidor (5\,\%)} &
+Validacion HTML5 (\texttt{required}, \texttt{minlength}, \texttt{pattern}) mas revalidacion en el servidor con mensajes claros; rechazo con \texttt{HTTP 400}/\texttt{422}. &
+Validacion en ambos lados con mensajes poco claros. &
+Validacion solo en un lado (cliente o servidor). &
+Sin validacion; acepta datos invalidos. \\
+\rowcolor{grisfila}
+
+\textbf{Calidad de codigo y entrega (10\,\%)} &
+Repositorio publico, \texttt{README.md} completo (secciones 1--9 de 6.2), \texttt{docker-compose.yml} que arranca todo con un solo comando, al menos 8 commits descriptivos del estudiante, capturas de respaldo en \texttt{docs/capturas/}. &
+Codigo limpio con \texttt{README} correcto pero commits pobres o \texttt{docker-compose} que exige un ajuste menor. &
+Codigo desordenado; pocos commits; el sistema arranca solo con intervencion manual. &
+Sin control de versiones util; el proyecto no arranca en clonacion limpia. \\
+
+\rowcolor{goldclaro}
+\multicolumn{5}{r}{\textbf{Subtotal parte practica: 60\,\%}} \\
+\end{longtable}
+}
+
+\vspace{2pt}
+\noindent\fbox{\begin{minipage}{0.98\textwidth}
+    \footnotesize
+    \textbf{Penalizaciones y salvaguardas.} (1)~El \emph{uso de librerias generadoras de codigo asistidas por IA} durante el examen anula los puntos de los criterios de \emph{Acceso a datos por capas}, \emph{CRUD funcional} y \emph{Calidad de codigo y entrega}, por incumplir el caracter individual del examen. (2)~La \emph{concatenacion de datos del usuario al SQL} rebaja el criterio de acceso a datos a \emph{Insuficiente} incluso si el CRUD funciona. (3)~La \emph{ausencia de repositorio verificable} lleva la parte practica a cero (habilitante). (4)~El repositorio Git es la \textbf{fuente de verdad}: capturas y PDF no sustituyen la verificacion del codigo.
+\end{minipage}}
+
+% =====================================================================
+% 8. CALIFICACION FINAL
+% =====================================================================
+\section*{8. Calificacion final}
+\noindent\fbox{\begin{minipage}{0.98\textwidth}
+    \footnotesize
+    \textbf{Como se obtiene la nota de la unidad.} La calificacion final de la Unidad II es la suma directa de ambas partes:
+    \begin{center}
+        \textbf{Nota final = Nota teorica (40\,\%) + Nota practica (60\,\%)},
+    \end{center}
+    equivalente al 100\,\% del examen de la unidad. Se aprueba con nota igual o superior a 7.0/10, conforme al reglamento academico UTEQ.
+\end{minipage}}
+
+% =====================================================================
+% Bibliografia verificada desde LibroWebApp.bib
+% =====================================================================
+\footnotesize
+\bibliographystyle{plain}
+\bibliography{LibroWebApp}
+
+\vspace{4pt}
+\noindent{\footnotesize\textit{Docente:} Dr. Gleiston Ciceron Guerrero Ulloa, Ph.D. \quad\textbar\quad \texttt{gguerrero@uteq.edu.ec}}
+
+\end{document}
