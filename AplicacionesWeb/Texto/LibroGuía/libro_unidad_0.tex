@@ -1,0 +1,365 @@
+% =====================================================================
+%  UNIDAD 0 --- ENCUADRE Y PROYECTO CONDUCTOR
+%  Aplicaciones Web --- Compendio v4 --- UTEQ --- PPA 2026-2027
+%
+%  Rol dentro del libro:
+%  Introduce el proyecto BiblioUTEQ que atravesara los 4 unidades,
+%  fija el dominio, la arquitectura general, la estructura del monorepo
+%  y el metodo de trabajo. No corresponde a una semana lectiva sino al
+%  bloque de encuadre previo a la Semana 1.
+% =====================================================================
+
+\part*{Encuadre}
+\addcontentsline{toc}{part}{Encuadre}
+\markboth{ENCUADRE}{ENCUADRE}
+
+\chapter{El proyecto BiblioUTEQ}
+\label{cap:unidad0}
+
+\epigraph{«Un ingeniero no aprende a construir sistemas leyendo listas de tecnolog\'ias, sino resolviendo un problema real de principio a fin.»}{--- \textit{Principio metodol\'ogico del compendio}}
+
+\section*{Resultado de aprendizaje del encuadre}
+\addcontentsline{toc}{section}{Resultado de aprendizaje del encuadre}
+
+Al concluir la lectura de este cap\'itulo, el aprendiz reconoce el dominio de negocio de BiblioUTEQ, identifica las entidades y reglas que gobiernan el sistema, entiende la estructura del monorepo que soportar\'a el trabajo de las cuatro unidades, y sabe qu\'e r\'ol asume en cada uno de los cuatro cortes del PFC. En otras palabras, deja de leer un libro y comienza a habitar un proyecto.
+
+\section{Contexto de la asignatura y del compendio}
+\label{sec:u0:contexto}
+
+Aplicaciones Web es una asignatura de quinto nivel de la carrera de Ingenier\'ia de Software de la Universidad T\'ecnica Estatal de Quevedo, con carga de cinco cr\'editos distribuidos en 190 horas totales a lo largo de dieciocho semanas del per\'iodo acad\'emico PPA 2026--2027. Su ubicaci\'on en la malla no es casual: el estudiante llega con dominio de Java, algoritmos, bases de datos relacionales y modelado orientado a objetos, y sale ---si el curso cumple su prop\'osito--- capaz de dise\~nar, construir, asegurar y desplegar un sistema completo del lado servidor con su cliente enriquecido.
+
+El compendio est\'a organizado en cuatro unidades que reproducen el arco pedag\'ogico natural de la disciplina: los fundamentos del cliente (Unidad~I), las tecnolog\'ias del servidor (Unidad~II), los datos y sus patrones (Unidad~III), y la arquitectura completa con servicios web y despliegue (Unidad~IV). Cada unidad cierra con una entrega del Proyecto de Fin de Curso ---el PFC--- que acumula, por sedimentaci\'on, la totalidad del sistema aprendido.
+
+\subsection{La asignatura Aplicaciones Web}
+\label{sec:u0:contexto:asignatura}
+
+La asignatura persigue un objetivo profesional que trasciende lo procedimental: formar un desarrollador que no solo escriba c\'odigo funcional, sino que decida qu\'e patr\'on arquitect\'onico aplica a cada problema, qu\'e trade-off asume al elegir un stack por sobre otro, y qu\'e evidencias documentar para que la decisi\'on quede trazable. Esta segunda capa ---el porqu\'e detr\'as del c\'omo--- distingue a un profesional de un usuario avanzado del framework de moda.
+
+\subsection{El aprendiz al que se dirige el compendio}
+\label{sec:u0:contexto:aprendiz}
+
+El lector supuesto es un estudiante que ha aprobado Programaci\'on Orientada a Objetos y Bases de Datos en niveles anteriores, y que se encuentra por primera vez con la construcci\'on de aplicaciones distribuidas. No se asume experiencia previa con HTML5, CSS3 o JavaScript m\'as all\'a de lo que resulta de una curiosidad t\'ecnica normal; s\'i se asume dominio del ecosistema Java b\'asico ---clases, colecciones, excepciones, JDBC--- y familiaridad con SQL est\'andar.
+
+El aprendiz que este libro imagina es alguien que quiere ver funcionar el sistema, entiende que el fallo es parte del proceso, y no espera recetas m\'agicas que compensen la ausencia de comprensi\'on. Con esa disposici\'on, el compendio funciona; sin ella, ning\'un libro lo hace.
+
+\subsection{C\'omo se lee este libro}
+\label{sec:u0:contexto:lectura}
+
+Cada cap\'itulo sigue una estructura repetitiva de prop\'osito. Se abre con el problema concreto que se va a resolver, planteado en una caja de \textit{Problema}; se contin\'ua con una explicaci\'on t\'ecnica sostenida en referencias verificables; se muestra un listado de c\'odigo con la ruta del archivo dentro del proyecto y una explicaci\'on posterior de c\'omo el listado resuelve el problema planteado; y se cierra con una nota que conecta la pieza reci\'en construida con el estado global del proyecto BiblioUTEQ.
+
+El lector que persiga solo el c\'odigo tender\'a a saltar de listado en listado. Esa lectura, aunque tentadora, deja fuera el porqu\'e y hace pesado el mantenimiento posterior del sistema. La recomendaci\'on del autor es leer los textos que enmarcan cada listado: son cortos por decisi\'on de dise\~no, y llevan las citas donde el aprendiz puede ampliar cada tema en su fuente original.
+
+\section{El dominio: gesti\'on de biblioteca universitaria}
+\label{sec:u0:dominio}
+
+\begin{cajaproblema}{Problema a resolver}
+La biblioteca central de una universidad p\'ublica ecuatoriana atiende alrededor de tres mil usuarios diarios en per\'iodos acad\'emicos activos, con un cat\'alogo que supera los cuarenta mil t\'itulos, catorce mil de los cuales tienen m\'as de un ejemplar. El sistema anterior es una hoja de c\'alculo compartida y un cuaderno de pr\'estamos f\'isico. La direcci\'on de biblioteca necesita un sistema web que registre pr\'estamos, controle vencimientos, prevenga p\'erdidas y produzca reportes verificables para la auditor\'ia institucional.\par
+\end{cajaproblema}
+
+La gesti\'on de una biblioteca universitaria concentra, en un dominio conocido por cualquier estudiante, todas las tensiones que aparecen en sistemas de informaci\'on m\'as complejos: identidad de personas con roles diferenciados, inventario con estados que transitan, reglas de negocio con excepciones bien definidas, reportes que agregan datos hist\'oricos, y una superficie de auditor\'ia sobre operaciones sensibles. Precisamente por su cercan\'ia cotidiana ---todo estudiante sabe qu\'e es pedir un libro prestado--- resulta pedag\'ogicamente id\'oneo para trabajar los patrones cl\'asicos de una aplicaci\'on empresarial \cite{martin2017clean,bass2021software}.
+
+\subsection{Actores del sistema}
+\label{sec:u0:dominio:actores}
+
+El sistema reconoce cinco actores primarios cuyos derechos y responsabilidades son distintos entre s\'i.
+
+El \termino{lector} ---estudiante, docente o administrativo--- se autentica en la aplicaci\'on, consulta el cat\'alogo, reserva t\'itulos, revisa sus pr\'estamos activos y recibe notificaciones de vencimiento. No modifica el cat\'alogo ni gestiona a otros usuarios; su alcance es su propia cuenta.
+
+El \termino{bibliotecario} atiende el mostrador. Registra pr\'estamos f\'isicos y devoluciones, marca ejemplares como perdidos o da\~nados, resuelve conflictos entre reservas y disponibilidad, y consulta el hist\'orico de un lector espec\'ifico cuando as\'i lo requiere la operaci\'on diaria.
+
+El \termino{catalogador} da de alta t\'itulos y ejemplares. Es un rol especializado que trabaja m\'as con la calidad del cat\'alogo que con el mostrador; corrige metadatos, fusiona duplicados y gestiona la clasificaci\'on Dewey o el sistema tem\'atico institucional \cite{sommerville2015se}.
+
+El \termino{director de biblioteca} accede a reportes agregados, revisa indicadores de rotaci\'on, morosidad y cobertura tem\'atica, y aprueba baja de ejemplares o depuraci\'on de fichas hist\'oricas. No opera el mostrador ni carga catalogaci\'on masiva.
+
+El \termino{administrador del sistema} gestiona usuarios y roles, ejecuta migraciones de esquema y supervisa la salud t\'ecnica de la aplicaci\'on. Se documenta como actor de sistema para que las decisiones de seguridad ---por qui\'en pasa la creaci\'on de un rol, por ejemplo--- queden expl\'icitas en los diagramas de casos de uso.
+
+\subsection{Reglas de negocio principales}
+\label{sec:u0:dominio:reglas}
+
+La biblioteca opera sobre un conjunto de reglas que la aplicaci\'on debe hacer cumplir de forma autom\'atica y auditable. La Tabla~\ref{tab:u0:reglas} resume las m\'as importantes; cada una da lugar, m\'as adelante en el libro, a un caso de uso o a una regla implementada en el servidor.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Reglas de negocio principales de BiblioUTEQ.}
+    \label{tab:u0:reglas}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{>{\bfseries}p{3.2cm} p{10.6cm}}
+        \toprule
+        \rowcolor{uteqverde!12}
+        \textnormal{\textbf{Regla}} & \textbf{Enunciado} \\
+        \midrule
+        R1 --- L\'imite de pr\'estamos activos & Un lector tiene simult\'aneamente hasta 3 pr\'estamos activos si es estudiante, hasta 5 si es docente y hasta 4 si es administrativo. \\
+        R2 --- Plazo de pr\'estamo & El plazo es de 7 d\'ias calendario para estudiantes, 14 d\'ias para docentes y 10 d\'ias para administrativos, contados desde la fecha de retiro. \\
+        R3 --- Renovaci\'on & Un pr\'estamo se renueva una sola vez si el ejemplar no tiene reservas y el lector no tiene multas pendientes. \\
+        R4 --- Multa por retraso & Cada d\'ia de retraso genera una multa de USD 0,50 hasta un tope de USD 20,00 por ejemplar. La multa se aplica al momento de la devoluci\'on. \\
+        R5 --- Reserva y cola & Un lector reserva un t\'itulo cuando todos sus ejemplares est\'an prestados; la cola es FIFO y expira si el lector no retira el ejemplar dentro de 48 horas de su disponibilidad. \\
+        R6 --- Bloqueo por multa & Un lector con al menos una multa impaga no puede realizar pr\'estamos nuevos ni reservas. \\
+        R7 --- Auditor\'ia & Toda operaci\'on que altere el estado de un ejemplar o de una multa se registra en una bit\'acora que conserva usuario, fecha, valor previo y valor posterior. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Estas siete reglas conforman el n\'ucleo del comportamiento del sistema, y el libro las trata expl\'icitamente como \termino{invariantes del dominio}: propiedades que el software debe garantizar independientemente del camino de ejecuci\'on que las provoque \cite{evans2003ddd}. La caracter\'istica de invariante ---frente a la de simple validaci\'on--- justifica m\'as adelante decisiones espec\'ificas sobre d\'onde y c\'omo se comprueban en el c\'odigo.
+
+\subsection{Restricciones no funcionales}
+\label{sec:u0:dominio:rnf}
+
+Adem\'as de las reglas del dominio, el sistema debe cumplir un conjunto de restricciones de calidad expresadas en atributos de la norma ISO/IEC~25010 \cite{iso25010}. La aplicaci\'on debe responder al ochenta por ciento de las consultas de cat\'alogo en menos de dos segundos, soportar cien usuarios concurrentes en horario pico, resistir intentos b\'asicos de inyecci\'on SQL y de cross-site scripting seg\'un el Top~10 de OWASP \cite{owasp2021top10}, y ofrecer una interfaz accesible al nivel AA de las gu\'ias WCAG~2.1 \cite{w3c2018wcag21}.
+
+Las restricciones no funcionales aparecen aqu\'i con nombre propio porque m\'as adelante se convertir\'an en criterios de aceptaci\'on de la r\'ubrica del PFC. Un aprendiz que las tenga presentes desde la Unidad~I tomar\'a decisiones ---elegir imagenes con \texttt{alt} descriptivo, parametrizar las consultas SQL, escribir pruebas de carga--- que un lector distra\'ido postergar\'a hasta que sea tarde.
+
+\section{Modelo conceptual de BiblioUTEQ}
+\label{sec:u0:modelo}
+
+El modelo conceptual describe las entidades del dominio en un nivel de abstracci\'on independiente de la tecnolog\'ia con que se implementar\'an. La Figura~\ref{fig:u0:mer} muestra el diagrama entidad-relaci\'on inicial, y las subsecciones que siguen describen cada entidad y sus responsabilidades. Esta separaci\'on inicial ---modelo antes que tabla, entidad antes que anotaci\'on JPA--- es una recomendaci\'on directa del enfoque orientado al dominio \cite{evans2003ddd}.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+            entity/.style = {rectangle, draw=uteqverde, thick, fill=uteqverde!8,
+                             rounded corners=2pt, minimum width=2.2cm,
+                             minimum height=0.9cm, align=center, font=\small\bfseries},
+            rel/.style    = {diamond, draw=uteqoro, thick, fill=goldclaro,
+                             align=center, font=\scriptsize, aspect=1.8},
+            attr/.style   = {ellipse, draw=textogris!60, thin, fill=grisfila,
+                             align=center, font=\scriptsize\itshape,
+                             minimum width=1.2cm, minimum height=0.5cm},
+            line/.style   = {thick, textogris!70}
+        ]
+        \node[entity] (usu)  at (0,0)   {Usuario};
+        \node[entity] (pre)  at (5,0)   {Pr\'estamo};
+        \node[entity] (eje)  at (10,0)  {Ejemplar};
+        \node[entity] (lib)  at (10,-2.5){Libro};
+        \node[entity] (res)  at (0,-2.5) {Reserva};
+        \node[entity] (mul)  at (0,-5)   {Multa};
+        \node[entity] (cat)  at (10,-5)  {Categor\'ia};
+
+        \node[rel] (r1) at (2.5,0)  {realiza\\1..N};
+        \node[rel] (r2) at (7.5,0)  {sobre\\N..1};
+        \node[rel] (r3) at (10,-1.25){es de\\N..1};
+        \node[rel] (r4) at (2.5,-2.5){de\\N..1};
+        \node[rel] (r5) at (5,-2.5) {sobre\\N..1};
+        \node[rel] (r6) at (2.5,-3.75){genera\\1..N};
+        \node[rel] (r7) at (10,-3.75){clasifica\\N..1};
+
+        \draw[line] (usu) -- (r1) -- (pre);
+        \draw[line] (pre) -- (r2) -- (eje);
+        \draw[line] (eje) -- (r3) -- (lib);
+        \draw[line] (usu) -- (r4) -- (res);
+        \draw[line] (res) -- (r5) -- (lib);
+        \draw[line] (pre) -- (r6) -- (mul);
+        \draw[line] (lib) -- (r7) -- (cat);
+    \end{tikzpicture}
+    \caption{Diagrama entidad-relaci\'on inicial de BiblioUTEQ. Las cardinalidades finales se refinan al pasar del modelo conceptual al f\'isico en la Unidad~III.}
+    \label{fig:u0:mer}
+\end{figure}
+
+\subsection{Entidades y sus responsabilidades}
+\label{sec:u0:modelo:entidades}
+
+El sistema se articula sobre siete entidades cuya responsabilidad se enuncia antes de definir sus atributos. Esta secuencia ---responsabilidad primero, esquema despu\'es--- refleja el consejo de dise\~no dirigido por el dominio de escribir el porqu\'e antes que el qu\'e \cite{evans2003ddd}.
+
+La entidad \termino{Libro} representa la obra intelectual: t\'itulo, autor, editorial, ISBN, a\~no. Una obra existe en el cat\'alogo aun cuando no haya ejemplares f\'isicos disponibles, y una operaci\'on de reserva se hace sobre el libro, no sobre el ejemplar.
+
+La entidad \termino{Ejemplar} representa la copia f\'isica. Un mismo libro tiene t\'ipicamente varios ejemplares con c\'odigos de barras distintos y estados propios ---disponible, prestado, reservado, en reparaci\'on, perdido---. El pr\'estamo se materializa sobre un ejemplar concreto, no sobre el libro abstracto.
+
+La entidad \termino{Usuario} identifica a la persona que interact\'ua con el sistema, sea lector, bibliotecario, catalogador, director o administrador. Contiene los datos de contacto, el rol asignado y el estado de bloqueo por multa. No incluye la contrase\~na en claro; el cap\'itulo de seguridad de la Unidad~II detalla c\'omo se almacena.
+
+La entidad \termino{Pr\'estamo} registra el hecho hist\'orico: un usuario retir\'o un ejemplar, con fecha de retiro, fecha de vencimiento calculada y fecha de devoluci\'on efectiva. Cuando el ejemplar regresa, el pr\'estamo no se elimina; simplemente se cierra. La distinci\'on entre \emph{pr\'estamo activo} y \emph{pr\'estamo cerrado} vive en el estado, no en la existencia de la fila.
+
+La entidad \termino{Reserva} registra la intenci\'on de un usuario de retirar un libro cuando ninguno de sus ejemplares est\'e disponible. La cola FIFO de reservas se resuelve autom\'aticamente al momento de la devoluci\'on.
+
+La entidad \termino{Multa} registra el importe generado por un pr\'estamo devuelto tarde. Se calcula con base en la regla~R4 en el momento de cerrar el pr\'estamo, y bloquea al usuario hasta ser pagada.
+
+La entidad \termino{Categor\'ia} clasifica los libros por \'area tem\'atica y sirve como dimensi\'on de los reportes de rotaci\'on por materia. Es una jerarqu\'ia simple en la primera versi\'on y puede evolucionar a un \'arbol en versiones posteriores.
+
+\subsection{Casos de uso cr\'iticos}
+\label{sec:u0:modelo:casos}
+
+Sobre este modelo se enuncian cuatro casos de uso que dominan la superficie funcional del sistema y que atravesar\'an, uno u otro, cada cap\'itulo del libro. La lista no es exhaustiva; es el m\'inimo con el que el aprendiz reconoce la utilidad del sistema.
+
+El caso de uso \textit{registrar pr\'estamo} valida que el usuario est\'e sin bloqueo, verifica el l\'imite de pr\'estamos activos, comprueba que el ejemplar est\'e disponible, calcula la fecha de vencimiento seg\'un el rol del usuario, y persiste el pr\'estamo dejando el ejemplar en estado \texttt{prestado}. Es el caso que m\'as reglas de negocio concentra.
+
+El caso de uso \textit{devolver ejemplar} recibe un c\'odigo de ejemplar, localiza el pr\'estamo activo asociado, compara la fecha actual con la de vencimiento, genera la multa cuando corresponda seg\'un la regla~R4, cierra el pr\'estamo y libera el ejemplar. Si existe una reserva pendiente sobre el libro, notifica al primer usuario en la cola.
+
+El caso de uso \textit{reservar libro} verifica que no haya ejemplares disponibles, comprueba que el usuario no exceda su l\'imite de reservas activas, y encola la reserva. Si m\'as tarde se libera un ejemplar, la reserva se convierte en una notificaci\'on con un plazo de 48~horas para el retiro.
+
+El caso de uso \textit{reporte de rotaci\'on} agrega, por rango de fechas y por categor\'ia, la cantidad de pr\'estamos y la duraci\'on promedio del pr\'estamo. Es un caso de solo lectura, computacionalmente m\'as pesado que los anteriores, y se convertir\'a en el ejemplo canon del procedimiento almacenado en la Unidad~III.
+
+\section{Arquitectura general y decisiones iniciales}
+\label{sec:u0:arq}
+
+\begin{cajaproblema}{Problema a resolver}
+Antes de escribir la primera l\'inea de c\'odigo el equipo debe fijar decisiones arquitect\'onicas que afectar\'an todas las decisiones posteriores. Elegir mal en este momento ---o no elegir en absoluto--- convierte el proyecto en una acumulaci\'on de parches. La pregunta operativa es: \textbf{qu\'e decisiones dejan cerradas la Unidad~0, y c\'omo se documentan para que el equipo las respete}.\par
+\end{cajaproblema}
+
+La respuesta se apoya en un instrumento sencillo y probado: los \termino{registros de decisi\'on de arquitectura} o ADR, propuestos originalmente por Nygard como bit\'acora ligera y trazable de las opciones tomadas por el equipo \cite{nygard2011adr}. Cada decisi\'on relevante ---estilo arquitect\'onico, base de datos, mecanismo de autenticaci\'on, formato de identificadores--- vive en un archivo peque\~no bajo \texttt{docs/adr/} con un formato uniforme que declara el contexto, la decisi\'on, sus consecuencias y su estado.
+
+El compendio adopta esta pr\'actica de forma expl\'icita desde la Unidad~0. El aprendiz que trabaje sobre BiblioUTEQ producir\'a al menos tres ADR en la primera entrega y uno adicional en cada entrega posterior. Los cap\'itulos que introducen decisiones nuevas ---por ejemplo, JPA versus procedimientos almacenados en la Unidad~III--- indicar\'an expl\'icitamente qu\'e ADR debe redactarse.
+
+\subsection{Estilo arquitect\'onico: cliente monop\'agina m\'as API REST}
+\label{sec:u0:arq:estilo}
+
+BiblioUTEQ se construye como una aplicaci\'on de tipo \termino{single-page application} respaldada por una API REST sin estado. El navegador carga una aplicaci\'on Angular que consume, mediante peticiones HTTP autenticadas, un conjunto de recursos publicados por un servidor Spring Boot. La separaci\'on clara entre cliente y servidor obedece a las cuatro restricciones cl\'asicas del estilo REST propuestas por Fielding \cite{fielding2000rest}: interfaz uniforme, ausencia de estado en el servidor, cacheable donde corresponda y sistema por capas.
+
+Esa elecci\'on tiene consecuencias. Habilita ---y hasta obliga a--- desplegar frontend y backend de forma independiente, obliga a resolver desde el primer d\'ia la pol\'itica CORS, y saca del servidor toda la l\'ogica de presentaci\'on. Es una carga aparente m\'as alta al principio, pero produce un sistema m\'as escalable y m\'as f\'acil de auditar en la etapa de servicios web \cite{richards2020fundamentals}.
+
+\subsection{Pilas del servidor aceptadas por la asignatura}
+\label{sec:u0:arq:pilas}
+
+Aunque el proyecto de referencia del libro utiliza Spring Boot como pila del servidor, la asignatura acepta tres pilas equivalentes en el PFC: Spring Boot con Java, ASP.NET Core con C\# y PHP moderno con Postgres. La equivalencia no es solo t\'ecnica sino tambi\'en evaluativa: la r\'ubrica del PFC califica atributos de calidad ---seguridad, mantenibilidad, testabilidad--- independientes del lenguaje.
+
+Esta apertura persigue dos prop\'ositos. Reconoce la diversidad real del mercado laboral ecuatoriano, donde los tres ecosistemas conviven, y evita el sesgo de una \'unica pila que empobrece al egresado. En el compendio, los cap\'itulos que introducen concepto ---inyecci\'on de dependencias, transacciones, autenticaci\'on--- llevan primero la explicaci\'on agn\'ostica de la pila y despu\'es la realizaci\'on en cada una, en el orden Spring Boot, ASP.NET Core y PHP.
+
+\subsection{Base de datos: PostgreSQL como est\'andar}
+\label{sec:u0:arq:bd}
+
+Para todo el compendio, la base de datos de referencia es PostgreSQL en su versi\'on 16 o superior. La decisi\'on descansa en tres criterios: es software libre con licencia abierta, ofrece cumplimiento estricto de SQL est\'andar y tiene soporte robusto para procedimientos almacenados en \texttt{plpgsql}, requisito de la pol\'itica h\'ibrida de acceso a datos que se introduce en la Unidad~III. Otras opciones ---SQL Server, MySQL o MariaDB--- son admisibles en el PFC siempre que el equipo justifique la desviaci\'on mediante un ADR.
+
+En BiblioUTEQ, la base recibir\'a el esquema \texttt{biblioteca} y se poblar\'a con datos iniciales seudo-realistas: cien libros, doscientos ejemplares, cincuenta usuarios de prueba con distintos roles. El script de poblaci\'on vivir\'a en el mismo repositorio, versionado, y ser\'a idempotente ---el aprendiz puede ejecutarlo dos veces sin romper el estado.
+
+\section{Estructura del repositorio (monorepo)}
+\label{sec:u0:repo}
+
+BiblioUTEQ se organiza como un \termino{monorepo}: un \'unico repositorio Git contiene el c\'odigo del frontend Angular, el c\'odigo del backend Spring Boot, los scripts de base de datos, la documentaci\'on y la configuraci\'on de despliegue. La elecci\'on facilita al aprendiz recorrer el sistema completo sin saltar entre repositorios, y simplifica la trazabilidad entre commits del frontend y del backend en un mismo cambio funcional \cite{chacon2014progit}.
+
+\subsection{Convenci\'on de carpetas}
+\label{sec:u0:repo:carpetas}
+
+La Figura~\ref{fig:u0:tree} muestra la estructura de carpetas de nivel superior, con la funci\'on de cada una. Las profundidades mayores se detallan en cada cap\'itulo cuando aparezca la tecnolog\'ia correspondiente.
+
+\begin{figure}[htbp]
+\begin{cajacodigo}[Estructura de directorios de BiblioUTEQ]
+\begin{lstlisting}[style=markup]
+biblioteq/
+|-- backend-java/            # Spring Boot 3 (pila de referencia)
+|   |-- src/main/java/
+|   |-- src/main/resources/
+|   |-- src/test/java/
+|   |-- pom.xml
+|   `-- Dockerfile
+|-- backend-aspnet/          # ASP.NET Core 8 (pila alternativa)
+|-- backend-php/             # PHP 8.3 (pila alternativa)
+|-- frontend/                # Angular 18
+|   |-- src/app/
+|   |-- src/styles.css       # incluye estilos.css compartido
+|   |-- package.json
+|   `-- angular.json
+|-- db/
+|   |-- schema.sql           # DDL versionado
+|   |-- datos-iniciales.sql  # datos seudo-realistas
+|   `-- procs/               # procedimientos almacenados
+|-- docs/
+|   |-- adr/                 # registros de decision de arquitectura
+|   |-- arquitectura/        # diagramas C4 y de despliegue
+|   |-- basedatos/           # MER, diccionario y CATALOGO-SP.md
+|   |-- requerimientos/      # RF y RNF trazables
+|   `-- entregas/            # PFC: 1A, 1B, 2A, 2B
+|-- .github/                 # workflows de CI
+|-- docker-compose.yml       # base de datos + servicios locales
+|-- README.md
+`-- LICENSE
+\end{lstlisting}
+\end{cajacodigo}
+\caption{Estructura de carpetas de nivel superior del monorepo BiblioUTEQ.}
+\label{fig:u0:tree}
+\end{figure}
+
+El listado anterior fija cuatro decisiones que gu\'ian el resto del libro. Cada backend se aloja en su propia carpeta, lo que permite al equipo de PFC elegir su pila sin tocar las dem\'as. El frontend es \'unico y agn\'ostico del backend: consume la API REST por HTTP. Los artefactos de base de datos son un ciudadano de primera clase del repositorio ---no viven en una carpeta oculta--- porque el equipo los versionar\'a con la misma disciplina que el c\'odigo. La documentaci\'on convive con el c\'odigo, no en un wiki paralelo, por congruencia con el enfoque \emph{docs as code} recomendado por Bass y coautores \cite{bass2021software}.
+
+\subsection{Convenci\'on de nombres de paquetes}
+\label{sec:u0:repo:paquetes}
+
+En el backend Java, la ra\'iz de paquetes es \texttt{ec.uteq.biblioteq}. La organizaci\'on sigue el patr\'on de \emph{package by feature} ---no \emph{package by layer}--- porque agrupa por caracter\'istica de negocio y hace visible el dominio en el \'arbol de paquetes.
+
+Bajo la ra\'iz, cada agregado del dominio recibe un paquete: \texttt{libro}, \texttt{ejemplar}, \texttt{usuario}, \texttt{prestamo}, \texttt{reserva}, \texttt{multa} y \texttt{categoria}. Dentro de cada uno se ubican las clases de dominio, el repositorio, el servicio, el controlador REST y los objetos de transferencia. La secci\'on de seguridad tiene su propio paquete \texttt{security}, y la configuraci\'on transversal vive en \texttt{config}. Esta convenci\'on hace que un aprendiz que abra el proyecto por primera vez encuentre en el \'arbol de carpetas el mismo mapa mental que aparece en el diagrama de dominio.
+
+\subsection{Convenci\'on de ramas y etiquetas Git}
+\label{sec:u0:repo:git}
+
+El equipo trabaja con dos ramas de larga vida ---\texttt{main} y \texttt{develop}--- y ramas de trabajo tipo \texttt{feature/<nombre-corto>} que nacen de \texttt{develop} y se integran mediante \emph{pull request}. Cada entrega del PFC se marca con una etiqueta Git firmada que sigue el est\'andar de \termino{versionado sem\'antico} \cite{prestonwerner2013semver}: la Entrega 1A obtiene la etiqueta \texttt{v0.1.0}, la 1B \texttt{v0.2.0}, la 2A \texttt{v0.9.0-rc} y la 2B \texttt{v1.0.0}. Las correcciones posteriores a una entrega, si las hubiese, incrementan el n\'umero de \emph{patch}.
+
+La disciplina de etiquetado tiene una consecuencia pr\'actica que el docente evaluar\'a: cualquier estado del sistema en el momento de una entrega debe poder reconstruirse \'exactamente clonando el repositorio y ejecutando \texttt{git checkout v0.2.0}. Esta reproducibilidad es la base de la evaluaci\'on objetiva y coincide con las buenas pr\'acticas de citaci\'on de software recomendadas por FORCE11 \cite{smith2016software}.
+
+\section{Herramientas del entorno de desarrollo}
+\label{sec:u0:tools}
+
+El compendio parte del supuesto de que el aprendiz dispone de un entorno de desarrollo unificado. La homogeneidad reduce la fricci\'on inicial y libera al docente para atender problemas de fondo en lugar de diferencias de configuraci\'on. La Tabla~\ref{tab:u0:tools} resume las herramientas requeridas con la versi\'on de referencia verificada al inicio del per\'iodo lectivo.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Herramientas del entorno de desarrollo con versiones de referencia.}
+    \label{tab:u0:tools}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{>{\bfseries}p{4.0cm} p{3.4cm} p{6.3cm}}
+        \toprule
+        \rowcolor{uteqverde!12}
+        \textnormal{\textbf{Herramienta}} & \textbf{Versi\'on} & \textbf{Rol en el proyecto} \\
+        \midrule
+        Java (Temurin JDK)       & 21 LTS o 25 LTS  & Ejecuci\'on del backend Spring Boot \\
+        Node.js                  & 20 LTS           & Ejecuci\'on de Angular y \emph{tooling} del frontend \\
+        Angular CLI              & 18.x             & Andamiaje del proyecto frontend \\
+        PostgreSQL               & 16 o 18          & Base de datos relacional \\
+        Docker Engine            & 24 o superior    & Contenedores para servicios locales \\
+        Docker Compose           & Plugin v2        & Orquestaci\'on de la base y otros servicios \\
+        Git                      & 2.40 o superior  & Control de versiones distribuido \\
+        IntelliJ IDEA Ultimate   & 2024.x           & IDE de referencia para Java y Angular \\
+        Visual Studio Code       & 1.90 o superior  & Editor auxiliar y \'unico para ASP.NET Core \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{IDE de referencia y editores auxiliares}
+\label{sec:u0:tools:ide}
+
+El IDE de referencia para el compendio es IntelliJ IDEA Ultimate, cuya licencia acad\'emica gratuita cubre a los estudiantes de la carrera. IntelliJ ofrece soporte de primer nivel para el ecosistema Java, integra Angular con el mismo motor de an\'alisis y expone acciones de refactor autom\'atico que respaldan las buenas pr\'acticas de dise\~no que se ense\~nan en el libro \cite{fowler2018refactoring}.
+
+Visual Studio Code se utiliza como editor auxiliar para tareas puntuales ---edici\'on de Markdown, YAML, scripts SQL de datos--- y como IDE \'unico para el backend ASP.NET Core cuando el equipo elige esa pila. La combinaci\'on de ambos cubre la variabilidad de est\'andares laborales que el egresado encontrar\'a al terminar la carrera.
+
+\subsection{Servicios locales}
+\label{sec:u0:tools:services}
+
+La base de datos y otros servicios auxiliares se ejecutan localmente mediante Docker Compose. Esta elecci\'on evita conflictos de versi\'on entre desarrolladores y garantiza que el arranque de un entorno nuevo se reduzca a clonar el repositorio y ejecutar \texttt{docker~compose~up}. El archivo \texttt{docker-compose.yml} en la ra\'iz del monorepo declara los servicios esperados y sus par\'ametros de red.
+
+En etapas posteriores del libro, cuando se introduzcan cach\'e distribuida y colas de mensajes, esos servicios se sumar\'an al mismo archivo. Esta acumulaci\'on progresiva ---en lugar de un \emph{stack} inicial imponente--- respeta el principio de introducir cada componente cuando exista una necesidad concreta que lo justifique.
+
+\subsection{Comandos de arranque}
+\label{sec:u0:tools:cmd}
+
+Con las herramientas instaladas, el aprendiz clona el repositorio, entra al directorio del backend Java y ejecuta \texttt{mvn~spring-boot:run}; en otra terminal, entra al directorio del frontend Angular y ejecuta \texttt{ng~serve}. La aplicaci\'on completa queda accesible en \texttt{http://localhost:4200} con la API REST respondiendo en \texttt{http://localhost:8080}.
+
+Este flujo, tan corto, es el resultado deliberado de las convenciones fijadas en las secciones anteriores. Un aprendiz sin gu\'ia terminar\'ia inventando decisiones ad hoc en cada arranque; con las convenciones documentadas, el proyecto se comporta como un producto de ingenier\'ia.
+
+\section{C\'omo se organiza cada cap\'itulo del libro}
+\label{sec:u0:metodo}
+
+Cada cap\'itulo del compendio sigue una estructura uniforme cuya raz\'on de ser es did\'actica y no cosm\'etica. Un aprendiz que reconozca los bloques del cap\'itulo puede navegar con seguridad, saltar cuando le convenga y volver cuando lo necesite. La uniformidad reduce la carga cognitiva del acto de leer y libera esfuerzo para el acto de aprender.
+
+\subsection{El m\'etodo del libro}
+\label{sec:u0:metodo:metodo}
+
+El m\'etodo se resume en cuatro pasos que se repiten a lo largo del libro. Primero, el cap\'itulo abre planteando expl\'icitamente el problema que se resolver\'a en el cap\'itulo, con una descripci\'on breve y una caja de \textit{Problema} destacada visualmente.
+
+Segundo, se explica la t\'ecnica que resuelve el problema, con las referencias bibliogr\'aficas que respaldan cada afirmaci\'on no trivial. La explicaci\'on privilegia la comprensi\'on por sobre la exhaustividad: se cubre lo esencial y se remite al aprendiz a la referencia primaria cuando desee ampliar.
+
+Tercero, se muestra el listado de c\'odigo que materializa la t\'ecnica. Cada listado va precedido por un p\'arrafo que anuncia qu\'e se pretende resolver y qu\'e funciones o clases apareceran; y se cierra con un p\'arrafo posterior que explica c\'omo el c\'odigo resuelve el problema. Los listados que muestran archivos completos llevan como comentario inicial la ruta corta del archivo dentro del proyecto ---por ejemplo, \texttt{// org.uteq.biblioteq.services.LibroService.java}---, lo que permite al aprendiz ubicar en un vistazo d\'onde debe colocar el archivo.
+
+Cuarto, el cap\'itulo cierra conectando la pieza reci\'en construida con el estado global del proyecto BiblioUTEQ. Este cierre es lo que distingue una gu\'ia t\'ecnica de un libro sobre un sistema: mantiene la coherencia narrativa del compendio y evita la fragmentaci\'on en tutoriales inconexos \cite{washizaki2024swebok}.
+
+\subsection{Cajas tem\'aticas y su significado}
+\label{sec:u0:metodo:cajas}
+
+El libro utiliza siete tipos de cajas visualmente distintas con un significado fijo que conviene fijar aqu\'i. La caja de \textit{Problema} enmarca el planteamiento que abre cada bloque tem\'atico. La caja de \textit{Definici\'on} formaliza un t\'ermino que se usar\'a m\'as adelante; el aprendiz que dude puede volver a ella. La caja de \textit{Ejemplo} muestra un caso peque\~no completo, casi siempre resuelto en el flujo del texto.
+
+La caja de \textit{C\'odigo} envuelve un listado con su ruta y su lenguaje. La caja de \textit{Ejercicio} propone una tarea al aprendiz con criterios de evaluaci\'on. Las cajas de \textit{Consejo}, \textit{Advertencia} y \textit{Peligro} marcan buenas pr\'acticas, errores frecuentes y decisiones irreversibles respectivamente, con colores que van del verde al rojo.
+
+Un lector atento notar\'a que las cajas no son un adorno tipogr\'afico: sirven a la funci\'on de navegaci\'on. Un cap\'itulo que carezca de caja de \textit{Problema} al abrir, o que no cierre con la conexi\'on al proyecto, contradice el m\'etodo del libro y debe ser reportado al autor como un defecto editorial.
+
+\section{Cierre del encuadre}
+\label{sec:u0:cierre}
+
+Con este cap\'itulo cero, el proyecto BiblioUTEQ deja de ser un enunciado gen\'erico y se convierte en un dominio con siete entidades, siete reglas de negocio, cuatro casos de uso principales, un modelo relacional inicial, un monorepo con carpetas definidas, un flujo de Git con convenciones de ramas y etiquetas, una pila de referencia con versiones verificadas y un m\'etodo de trabajo declarado. Todos esos elementos permanecen constantes a lo largo de las cuatro unidades; lo que cambia es qu\'e piezas se agregan al mismo repositorio y qu\'e problema se resuelve en cada cap\'itulo.
+
+La Unidad~I comienza en el navegador. El aprendiz maquetar\'a la p\'agina de aterrizaje del cat\'alogo de BiblioUTEQ, escribir\'a la hoja de estilos base que compartir\'an el resto de las p\'aginas del sistema, y programar\'a la interacci\'on inicial con JavaScript moderno. La entrega 1A del PFC, al cierre de la Unidad~I, requerir\'a exactamente esos artefactos en el repositorio, etiquetados con \texttt{v0.1.0}. El aprendiz que llegue con este encuadre le\'ido tendr\'a el mapa del territorio que est\'a a punto de recorrer.
+
+\cleardoublepage
