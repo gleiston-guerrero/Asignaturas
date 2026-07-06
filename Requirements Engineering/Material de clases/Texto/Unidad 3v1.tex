@@ -1,0 +1,274 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{caption}
+
+% Configuración de márgenes para publicaciones de alta calidad
+\geometry{top=3cm, bottom=3cm, left=2.5cm, right=2.5cm}
+
+% Paleta tipográfica sobria y ejecutiva
+\definecolor{navyblue}{RGB}{11, 37, 69}
+\definecolor{goldaccent}{RGB}{197, 160, 89}
+\definecolor{darkgray}{RGB}{43, 45, 66}
+\definecolor{lightbg}{RGB}{245, 246, 248}
+
+% Estilización avanzada de secciones académicas
+\titleformat{\section}{\color{navyblue}\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\color{navyblue}\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\color{navyblue}\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% Configuración del motor de listados de código fuente
+\lstset{
+	backgroundcolor=\color{lightbg},
+	basicstyle=\small\ttfamily\color{darkgray},
+	breaklines=true,
+	frame=leftline,
+	framerule=3pt,
+	rulecolor=\color{navyblue},
+	xleftmargin=15pt,
+	framexleftmargin=15pt,
+	extendedchars=true,
+	literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {Ü}{{\"U}}1 {ü}{{\"u}}1 {Ó}{{\'O}}1
+}
+
+\title{\color{navyblue}\textbf{Tratado de Especificación de Requisitos de Software (ERS)}\\ \large Análisis Extenso, Metodologías Avanzadas y Estándares Internacionales}
+\author{\textbf{Material de Soporte Científico e Ingeniería de Software}}
+\date{2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Este documento presenta un análisis profundo e integrador de la Unidad 3: Especificación de Requisitos de Software[cite: 1]. A través de un enfoque que equilibra el rigor académico con las realidades operativas de la industria tecnológica, se examinan las metodologías de documentación, el uso de metadatos, los criterios de calidad y los marcos estandarizados como la norma ISO/IEC/IEEE 29148:2018[cite: 2]. Cada sección aborda un concepto central de forma fluida, traduciendo los retos abstractos del modelado en arquitecturas de software deterministas, robustas y verificables[cite: 3, 7].
+	\end{abstract}
+	
+	\vspace{1em}
+	\tableofcontents
+	\newpage
+	
+	\section{Especificación de Requisitos de Software: El Puente entre el Caos del Negocio y el Determinismo Técnico}
+	En el ciclo de vida del desarrollo de sistemas complejos, el mayor peligro latente no radica en escribir código ineficiente o seleccionar un marco de trabajo de programación equivocado; el verdadero riesgo crítico se encuentra en la posibilidad de construir de manera impecable el sistema incorrecto[cite: 4, 5]. La Especificación de Requisitos de Software (ERS) no debe interpretarse jamás como un trámite burocrático de mera recopilación de datos o un formalismo administrativo pasivo, sino como un proceso dinámico de traducción cognitiva y técnica[cite: 6].
+	
+	El núcleo de esta disciplina implica tomar las necesidades e intenciones humanas —las cuales son por definición vagas, cambiantes, sesgadas y frecuentemente contradictorias— y transformarlas mediante un riguroso análisis en un plano de ingeniería preciso, consistente, unívoco y matemáticamente verificable[cite: 7]. Cuando esta etapa de especificación adolece de fisuras latentes o superficialidades conceptuales, toda la arquitectura de software subsiguiente se construye sobre arenas movedizas, conduciendo inevitablemente a fallos en producción, insatisfacción del usuario y sobrecostos económicos prohibitivos[cite: 8].
+	
+	\subsection{Documentación de Requisitos}
+	La formalización del conocimiento en la ingeniería de requisitos es una batalla constante contra la entropía informativa[cite: 7]. El proceso de documentación de requisitos no representa un esfuerzo retrospectivo de transcripción pasiva, sino el acto fundacional donde las necesidades del negocio adquieren persistencia, estructura y validez legal dentro de un marco de ingeniería[cite: 6, 7]. Documentar es, en esencia, modelar las fronteras operativas de un sistema para que dejen de habitar exclusivamente en el plano de las intenciones humanas cambiantes y se conviertan en activos de configuración tecnológica auditables y gestionables[cite: 7, 39].
+	
+	El mayor desafío en los entornos de software contemporáneos es mitigar el desvanecimiento del conocimiento técnico provocado por la rotación de personal o por la informalidad en la comunicación verbal. Al consolidar un repositorio documental riguroso, la organización establece un canal de transferencia de conocimiento inmutable a lo largo del ciclo de vida del sistema. Esto no solo mitiga drásticamente los riesgos de regresión lógica durante las fases de mantenimiento correctivo y evolutivo, sino que blinda legalmente los contratos de desarrollo técnico al erradicar las zonas grises interpretativas que suelen dinamitar la relación entre proveedores de tecnología y clientes corporativos[cite: 8, 15].
+	
+	\subsubsection{Objetivo de la Documentación y Tipos de Artefactos}
+	El establecimiento formal de un entendimiento compartido, explícito y auditable entre los interesados (\textit{stakeholders}) y el equipo de desarrollo se consolida técnicamente bajo el concepto de la \textit{Línea Base de Requisitos} (\textit{Baseline})[cite: 10, 11]. Esta directriz opera como un punto de control inmutable en la gestión de la configuración, estabilizando temporalmente el alcance del proyecto para permitir que los arquitectos diseñen la infraestructura técnica con la certeza de que las reglas de negocio no mutarán arbitrariamente a mitad de un ciclo de desarrollo[cite: 11, 12].
+	
+	UN EJEMPLO DE LINEA BASE DE REQUISITOS. Y ESTABILIZA TEMPORALMENTE EL ALCANCE DE AL MENOS 2 PFC.
+	
+	Cuando un equipo prescinde de este rigor y confía la evolución del sistema a la memoria colectiva o a minutas efímeras de reuniones, emerge el fenómeno destructivo de la ``corrupción del alcance'' (\textit{scope creep})[cite: 13]. En estos escenarios anárquicos, las fases de entrega se degradan en disputas contractuales debido a la falta de un soporte explícito que arbitre el cumplimiento del servicio[cite: 15]. 
+	
+	
+	DA EJEMPLOS DE LOS ANTERIOR PARA QUE ATERRICE MEJOR ESA TEORÍA
+	
+	Para solucionar esta vulnerabilidad organizativa en sistemas de alta densidad informativa —como una plataforma automatizada de gestión logística internacional— la documentación se fragmenta metódicamente en tres tipologías de artefactos interconectados. El primero es el \textit{Artefacto de Requisito Atómico} (por ejemplo, ``RF-LOG-102: El sistema deberá calcular el impuesto de aduana aplicando la tasa arancelaria vigente del país de destino al valor FOB del contenedor de manera automática'')[cite: 16]. Este se complementa con el \textit{Artefacto de Contexto}, consistente en diagramas de flujo de procesos que mapean las interacciones físicas entre transportistas y agentes aduanales[cite: 16]. 
+	
+	INSERTA UN DIAGRAMA DE FLUJO DE PROCESOS
+	
+	Finalmente, el \textit{Artefacto de Proceso} instrumenta la gobernanza mediante matrices de trazabilidad que asocian el requisito conceptual con leyes arancelarias específicas y casos de prueba[cite: 17]. Si una reforma legal ocurre, el ingeniero no inspecciona miles de líneas de código a ciegas, sino que interroga la matriz de proceso para aislar e intervenir quirúrgicamente el módulo afectado, controlando el impacto temporal y financiero del cambio[cite: 21].
+	
+	EJEMPLOS DE AGENTES DE PROCESOS
+	
+	
+	\subsubsection{Formatos de Representación}
+	Las gramáticas estructuradas empleadas para plasmar los requisitos se distribuyen a lo largo de un espectro continuo de formalidad que equilibra la comprensibilidad por parte de audiencias no técnicas con la precisión matemática indispensable para la verificación computacional[cite: 22, 23]. Este espectro transita fluidamente desde el Lenguaje Natural libre hacia el Lenguaje Semiestructurado (como las plantillas EARS o los escenarios Gherkin), avanza por el Modelado Gráfico Estructurado (UML) y culmina en los Métodos Formales fundamentados en lógica de primer orden y teoría de conjuntos[cite: 24].
+	
+	EJEMPLO DE TODO ESE TRANSITO DESDE EL LENGUAJE NATURAL LIBRE HASTA TEORÍA DE CONJUNTOS.
+	
+	Confiar ciegamente en el lenguaje natural cotidiano introduce riesgos catastróficos, dado que está plagado de sesgos cognitivos y adjetivos calificativos espurios[cite: 25, 26, 27]. Afirmar en un pliego técnico que ``el sistema debe procesar las transacciones de forma segura y lo más rápido posible'' imposibilita la creación de pruebas de calidad objetivas al no parametrizar los umbrales físicos de la palabra ``rápido'' bajo condiciones críticas de carga[cite: 27, 28, 30].
+	
+	Para erradicar esta vaguedad conceptual, la ingeniería moderna exige refinar el requisito a través de los diferentes niveles de formalidad del espectro. De una declaración defectuosa en lenguaje natural (``El cajero automático debe responder con eficiencia cuando el usuario pida dinero''), se migra a una estructura semiestructurada bajo la sintaxis EARS: \texttt{WHEN a user requests a cash withdrawal, THE ATM SHALL dispense the cash WITHIN 30 seconds}[cite: 31]. Este comportamiento se desglosa funcionalmente para los entornos de automatización empleando la sintaxis Gherkin:
+	
+	\begin{lstlisting}[caption={Especificación de Comportamiento en Formato Gherkin}]
+Escenario: Intento de retiro exitoso dentro del limite temporal
+GIVEN que la cuenta del cliente posee un saldo activo de $500
+WHEN el usuario solicita un retiro de efectivo de $100
+THEN el cajero debe dispensar el dinero en efectivo
+AND actualizar el balance de la cuenta a $400 en menos de 30 segundos
+	\end{lstlisting}
+	
+	En el extremo del espectro, el núcleo de la transferencia de fondos se blinda contra fallos lógicos modelando matemáticamente sus invariantes de estado mediante lógica de conjuntos:
+	$$S \ge x \ \wedge \ S' = S - x$$
+	EXPLICA LA FÓRMULA CON UN PAR DE EJEMPLOS
+	
+	Al forzar esta transición desde la prosa hacia ecuaciones de estado, se eliminan las subjetividades[cite: 33, 34]. El equipo de control de calidad (\textit{QA}) ya no se enfrenta a interpretaciones; dispone de una métrica determinista para programar scripts de prueba automatizados capaces de certificar de forma infalible el éxito de la ejecución[cite: 35, 36].
+	
+	
+	EJEMPLIFICAR TODA ESA TEORÍA EN CASOS CONCRETOS DE LOS PFC
+	
+	\subsubsection{Atributos de Requisitos}
+	Un requisito profesional jamás debe ser tratado como una cadena aislada de texto plano, sino como un objeto complejo provisto de metadatos estructurados y acoplados de manera indisoluble dentro de una base de datos de gestión de la configuración de software[cite: 37, 38, 39]. Estos atributos mínimos normativos incluyen identificadores únicos, niveles de prioridad, fuentes de procedencia y enlaces de trazabilidad relacional[cite: 40].
+	
+	UN DIAGRAMA DE CLASES QUE REPRESENTA LA BASE DE DATOS DE GESTIÓN DE LA CONFIGURACIÓN DE SOFTWARE.
+	
+	UNA TABLA CON AL MENOS 10 REQUISITOS CON TODOS ESOS DATOS.
+	
+	En macroproyectos tecnológicos complejos —como el software de guiado de un vehículo autónomo, que puede integrar millares de directrices operativas— la ausencia de metadatos condena a la arquitectura al fenómeno del ``impacto ciego'' ante cualquier cambio regulatorio[cite: 41, 42]. Si un marco legal de tránsito altera las distancias mínimas de frenado, resulta inviable determinar en un mar de texto qué archivos de código fuente, qué módulos de hardware o qué pruebas automatizadas se ven afectadas, desencadenando efectos dominó destructivos sobre componentes estables[cite: 43].
+	
+	La gobernanza se alcanza encapsulando cada requisito en una estructura parametrizada cuyos atributos vivos dictan la estrategia de diseño del proyecto, tal como se detalla en la Tabla~\ref{tab:atributos}.
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Ficha de Configuración de Requisito con Metadatos de Ingeniería}
+		\label{tab:atributos}
+		\begin{tabular}{llp{7.5cm}}
+			\toprule
+			\textbf{Atributo de Gestión} & \textbf{Valor Asignado} & \textbf{Propósito Estratégico en el Proyecto} \\ \midrule
+			\textbf{Identificador Único} & RF-NAV-402 & Clave alfanumérica inmutable para rastreo indexado en código fuente (\textit{commits})[cite: 45]. \\
+			\textbf{Prioridad Operativa} & Must Have (Crítico) & Define que el producto no puede ser liberado al mercado sin esta función activa[cite: 46]. \\
+			\textbf{Fuente de Procedencia} & Ley de Tránsito $\S$12 & Identifica el marco legal o interesado que justifica el costo financiero del desarrollo[cite: 47]. \\
+			\textbf{Estabilidad Lógica} & Baja (Riesgo Alto) & Alerta a la arquitectura de que la regla cambiará pronto; exige diseño desacoplado[cite: 48]. \\
+			\textbf{Trazabilidad} & Origen: Reg. 42 $\rightarrow$ Código & Vinculación explícita desde el origen conceptual hasta el componente físico y su prueba de QA[cite: 49]. \\ \bottomrule
+		\end{tabular}
+	\end{table}
+	
+	A través de esta arquitectura relacional, el mantenimiento del software pasa de ser una adivinanza empírica de alto riesgo a un procedimiento quirúrgico controlado[cite: 53]. El arquitecto simplemente ejecuta un filtro indexado sobre el metadato ``Fuente de Procedencia'', extrayendo de manera instantánea el identificador \texttt{RF-NAV-402} y mapeando con precisión matemática el impacto total del cambio normativo sobre el ecosistema técnico[cite: 51, 52].
+	
+	\subsubsection{Criterios de Calidad y Criterios de Aceptación}
+	
+	EN EL CONTENIDO DEBE LEERSE CLARAMENTE QUÉ SON LOS CRITERIOS DE CALIDAD Y QUÉ SON LOS CRITERIOS DE ACEPTACIÓN. Si es correcto hablar de requisitos y sus criterios de calidad y de aceptación, presenta una tabla con los requisitos los criterios de calidad y los criterios de aceptación. o una tabla como estimes conveniente.
+	
+	Los criterios de calidad operan como el marco de auditoría técnica que certifica si un requisito está lo suficientemente maduro para ser transferido a la fase de construcción, evaluando propiedades como la atomicidad, la verificabilidad y la consistencia colectiva[cite: 54, 55]. En paralelo, los criterios de aceptación actúan como las condiciones límites cuantitativas y contractuales que el software debe superar para que el cliente valide formalmente la conformidad de la entrega y libere los hitos financieros en las fases de pruebas de aceptación de usuario (\textit{UAT})[cite: 56].
+	
+	La formulación ambigua de estos marcos condena a los proyectos al síndrome del ``cierre perpetuo'', una vulnerabilidad donde el sistema jamás alcanza la finalización formal[cite: 57]. Redactar que ``el sistema debe ser altamente seguro contra ciberataques externos'' viola el criterio de verificabilidad e introduce un riesgo jurídico insostenible, puesto que el cliente puede retener los pagos argumentando de manera subjetiva que el software sigue siendo vulnerable ante amenazas teóricas complejas[cite: 58, 59].
+	
+	EJEMPLOS CUANDO SE HABLA DE UN CIERRE PERPETUO.
+	 (CONFIRMA DEBE O DEBERÁ)
+	 
+	Para erradicar este conflicto, la especificación abstracta se refina en un requisito atómico corregido (\texttt{RF-SEC-801}): ``El sistema de autenticación de la plataforma deberá bloquear temporalmente el acceso a la cuenta de un usuario tras detectar tres intentos fallidos consecutivos de inicio de sesión en un intervalo de 15 minutos''[cite: 60]. A partir de este núcleo, se derivan criterios de aceptación contractuales explícitos y binarios: por un lado, al registrarse tres fallos sucesivos, el atributo lógico \texttt{isLocked} en la base de datos debe mutar inmediatamente al valor \texttt{true}; por otro lado, el sistema de mensajería asíncrona debe despachar un correo de alerta de seguridad en un tiempo menor o igual a 60 segundos[cite: 61, 62]. Esta atomización numérica disuelve las zonas grises interpretativas, suministrando al programador una regla exacta de codificación y al auditor de calidad un protocolo incuestionable para certificar el éxito del desarrollo[cite: 64, 65].
+	
+	UNA TABLA CON MAYOR NÚMERO DE CRITERIOS DE ACEPTACIÓN
+	
+	\subsection{Documento ERS / SRS}
+	El Documento de Especificación de Requisitos de Software (ERS o SRS) representa la consolidación definitiva del plano arquitectónico e ingenieril del sistema[cite: 67]. Este instrumento no debe verse como un compendio pasivo de deseos del cliente, sino como el contrato técnico formal que unifica la visión del negocio con las restricciones tecnológicas del entorno de cómputo[cite: 6, 78]. Es la única fuente de verdad (*Single Source of Truth*) que gobierna de forma simultánea los presupuestos de la gerencia, los diseños de los arquitectos, las líneas de código de los desarrolladores y las matrices de prueba de los ingenieros de calidad[cite: 11, 35, 70, 75].
+	
+	La madurez estructural de un ERS determina en gran medida la tasa de éxito predictivo de un proyecto tecnológico. Un documento deficientemente estructurado provoca malentendidos entre las distintas áreas organizativas, duplicidad de esfuerzos en el diseño del backend y un incremento exponencial de costes debido a correcciones tardías en entornos de producción[cite: 8, 69, 82]. Por lo tanto, la adopción de taxonomías estandarizadas y técnicas avanzadas de control lingüístico constituye un pilar obligatorio para la gobernanza y la sostenibilidad de los sistemas de software modernos[cite: 78, 89].
+	
+	\subsubsection{Tipos de Especificaciones}
+	Dentro de los ecosistemas informáticos conviven múltiples niveles de abstracción documentaria diseñados específicamente según el perfil cognitivo de la audiencia que consumirá la información[cite: 66, 67]. La ingeniería clásica organiza esta pirámide mediante el \textit{Documento de Visión} (centrado en el retorno de inversión y metas estratégicas de negocio), la \textit{Especificación de Requisitos de Software} o SRS (el plano analítico detallado orientado a ingenieros y arquitectos) y la \textit{Documentación de Usuario} (enfocada en manuales operativos y guías de despliegue funcional)[cite: 67, 68].
+	
+	MAYOR DETALLE SOBRE LOS TIPOS DE DOCUMENTOS (VISIÓN, REQUISITOS, USUARIO)
+	
+	Un error grave de gobernanza consiste en unificar estas capas en un único documento masivo, pretendiendo que satisfaga a todas las audiencias simultáneamente[cite: 69]. Entregar especificaciones colmadas de firmas de APIs, diagramas de clases y restricciones de concurrencia al Director Financiero (CFO) para la aprobación del presupuesto genera parálisis por análisis[cite: 70]. De igual manera, suministrar meras metas comerciales abstractas a los desarrolladores provoca una fragmentación anárquica de la arquitectura, dado que cada programador implementará la lógica fina guiado por su libre albedrío[cite: 71].
+	
+	La gestión óptima del flujo de comunicación exige aislar los niveles de abstracción. En el diseño de un motor avanzado de recomendaciones para comercio electrónico, el nivel estratégico de la Visión declara de forma macro: ``La plataforma optimizará el ticket promedio de compra mediante algoritmos de sugerencia predictivos''[cite: 72]. Al descender al plano puramente técnico de la SRS (\texttt{RF-REC-02}), la instrucción se vuelve matemática y explícita: ``El motor deberá ejecutar un modelo de filtrado colaborativo que procese el vector de compras en un tiempo menor a 400ms, inyectando los IDs resultantes en el componente \texttt{CarouselView}''[cite: 72]. Finalmente, el nivel operativo del Manual de Usuario instruye de manera simple: ``Para activar las sugerencias personalizadas, marque la casilla Permitir análisis de compras''[cite: 73]. Esta segregación lingüística maximiza la eficiencia comunicativa, garantizando que cada actor tome decisiones fundamentadas en el lenguaje que domina[cite: 74, 77].
+	
+	\subsubsection{Estructura de Referencia según ISO/IEC/IEEE 29148:2018}
+	La norma internacional unificada ISO/IEC/IEEE 29148:2018 provee la taxonomía estructural más robusta de la industria para organizar y redactar especificaciones de software, operando como una estricta lista de verificación arquitectónica[cite: 78, 79]. Este marco asegura de manera sistemática que variables invisibles de la infraestructura —como los límites de concurrencia, los protocolos de cifrado, las interfaces externas o las tolerancias a fallos catastróficos— no queden omitidas o relegadas a la improvisación[cite: 79, 81].
+	
+	Cuando los ingenieros estructuran una especificación de forma empírica o reactiva, suelen manifestar un sesgo cognitivo que los lleva a documentar en exceso lo visual e intuitivo (interfaces gráficas y flujos felices), omitiendo por completo las restricciones del entorno técnico[cite: 80]. Es habitual encontrar proyectos donde no se especificó el comportamiento de la base de datos ante picos imprevistos de tráfico, provocando el colapso del sistema al desplegarse en producción o severas sanciones legales por vacíos en la retención de datos corporativos[cite: 81, 82].
+	
+	La aplicación rigorista de la norma mitiga este riesgo forzando al equipo de ingeniería a completar una arquitectura jerárquica obligatoria y estandarizada, cuya taxonomía estructural de referencia se detalla en el Listado~\ref{lst:estructura}.
+	
+	\begin{lstlisting}[caption={Arquitectura Estructural de una SRS conforme a la Norma ISO/IEC/IEEE 29148}, label={lst:estructura}]
+	1. INTRODUCCION
+	1.1 Proposito del Documento de Especificacion
+	1.2 Alcance del Producto (Fronteras y Exclusiones)
+	1.3 Glosario Tecnico (Erradicacion de Homonimos)
+	1.4 Referencias y Cumplimiento Normativo Legal
+	2. DESCRIPCION GENERAL
+	2.1 Perspectiva del Producto (Sub-sistemas y Dependencias)
+	2.2 Funciones Principales (Mapa de Capacidades)
+	2.3 Caracteristicas y Matriz de Roles de Usuarios
+	2.4 Restricciones de Diseño e Infraestructura
+	2.5 Suposiciones y Dependencias de Terceros
+	3. REQUISITOS ESPECIFICOS
+	3.1 Requisitos de Capacidad Funcional
+	3.2 Requisitos de Interfaces Externas
+	3.2.1 Interfaz de Usuario (UI/UX)
+	3.2.2 Interfaz de Hardware y Sensores
+	3.2.3 Interfaz de Software (APIs)
+	3.2.4 Interfaz de Comunicaciones (Cifrado TLS)
+	3.3 Atributos de Calidad del Sistema (RNF)
+	3.3.1 Seguridad (Autenticacion, Auditoria)
+	3.3.2 Disponibilidad (Esquemas de Redundancia)
+	3.3.3 Rendimiento (Eficiencia Temporal)
+	3.4 Restricciones de Base de Datos y Privacidad
+	\end{lstlisting}
+	
+	Completar rigurosamente apartados críticos como ``Interfaz de Comunicaciones'' o ``Atributos de Calidad de Rendimiento'' actúa como un escudo de defensa arquitectónica[cite: 87]. Al obligar al análisis profundo de las variables de red, seguridad e infraestructura de forma previa al proceso de codificación, la norma reduce los parches de última hora en producción en más de un 80\%, blindando la estabilidad operativa del sistema[cite: 88].
+	
+	\subsubsection{Lenguaje Natural Avanzado: Técnicas de Precisión Lingüística}
+	El empleo avanzado del lenguaje natural en la ingeniería de requisitos exige despojar a la prosa de cualquier laxitud literaria, sometiéndola a restricciones gramaticales rígidas donde vocablos específicos adquieren significados técnico-jurídicos unívocos[cite: 89]. Directrices internacionales determinan que el término imperativo \textit{Deberá} (\textit{Shall}) denota una obligación contractual ineludible, mientras que \textit{Debería} (\textit{Should}) se reserva para metas opcionales o de optimización[cite: 90]. Para sistematizar esta precisión, la metodología recurre a marcos sintácticos como la notación EARS (\textit{Easy Approach to Requirements Syntax}), gobernando la construcción de enunciados a través de patrones lógicos predecibles[cite: 91].
+	
+	El habla cotidiana está inherentemente plagada de ambigüedades, generalizaciones vagas y construcciones en voz pasiva que destruyen la viabilidad del desarrollo[cite: 92]. Afirmaciones laxas como ``se espera que el sistema envíe las alertas de forma rápida si ocurre un problema grave en el servidor'' disuelven el determinismo técnico, al ocultar qué componente despacha la alerta, qué métrica física define una gravedad crítica y cuántos milisegundos representa el adjetivo ``rápido''[cite: 93, 94, 95].
+	
+	UNA TABLA DE REQUISITOS MAL FORMULADOS Y COMO DEBEN SER
+	
+	Someter dicho enunciado a un proceso de reingeniería lingüística bajo el patrón de evento excepcional de la sintaxis EARS erradica la vaguedad: \texttt{IF la temperatura del nucleo del procesador excede los 85 grados Celsius, THEN el modulo de monitoreo SHALL emitir una alerta de correo electronico a los administradores de sistemas WITHIN 5 seconds}[cite: 96]. Esta estructura asienta una ecuación lingüística inmutable de tipo \textit{Condición + Sujeto + Obligación + Acción + Restricción Temporal}[cite: 97]. El programador traduce esta sentencia directamente en una instrucción condicional parametrizada en el código backend, y el equipo de control de calidad adquiere los valores numéricos exactos para simular fallos térmicos en los entornos de prueba, certificando el rendimiento del software de forma puramente objetiva[cite: 100].
+	
+	EJEMPLOS DE LOS DIFERENTES TIPOS
+	
+	\subsubsection{Combinación de Modelos UML y Texto}
+	La especificación moderna de sistemas de software rechaza la dicotomía arcaica de elegir entre documentación puramente textual o modelos visuales abstractos[cite: 101]. La metodología contemporánea más eficiente reside en la cohabitación simbiótica de ambos enfoques: aprovechar la capacidad espacial del Lenguaje de Modelado Unificado (UML) para trazar topologías estructurales de alto nivel, entrelazándola de forma bidimensional con anotaciones textuales estructuradas que describen minuciosamente la lógica interna y el manejo de excepciones de la infraestructura[cite: 102].
+	
+	Los diagramas gráficos aislados sufren crónicamente de sub-especificación, ocultando la complejidad del mundo real, mientras que los bloques monolíticos de texto plano inducen fatiga cognitiva y desorientación espacial en el equipo técnico[cite: 103]. Un caso de uso de UML que exhiba un óvalo flotante denominado ``Aprobar Crédito Hipotecario'' conectado a un actor comunica una intención macro del negocio, pero silencia las variables de fallo: ¿cómo reacciona el backend si la API de verificación crediticia externa sufre una caída de red o un retraso de respuesta? [cite: 104, 105] El desarrollador recibe una brújula general pero carece del plano fino para codificar de forma segura[cite: 106].
+	
+	Para resolver esta desconexión, cada componente gráfico del modelo UML se vincula obligatoriamente a una plantilla de anotación textual formalizada, como se ejemplifica en la Tabla~\ref{tab:uc}[cite: 107].
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Ficha de Anotación Textual Estructurada para Caso de Uso UML}
+		\label{tab:uc}
+		\begin{tabular}{lp{11cm}}
+			\toprule
+			\textbf{Elemento de Modelo} & \textbf{Caso de Uso Detallado: UC-FIN-705} \\ \midrule
+			\textbf{Nombre del Caso} & Aprobar Crédito Hipotecario dentro de la Plataforma Financiera[cite: 108]. \\
+			\textbf{Actores Cooperantes} & Analista de Riesgo (Principal), API Buró de Crédito Externo (Secundario)[cite: 109]. \\
+			\textbf{Precondiciones} & El expediente digital del cliente debe estar en estado ``Pre-evaluado'' y poseer el estudio de títulos aprobado[cite: 110]. \\
+			\textbf{Flujo Principal} & 1. El Analista solicita la evaluación en la interfaz.\\
+			& 2. El sistema invoca la API externa del Buró enviando el ID.\\
+			& 3. El sistema recibe un puntaje mayor o igual a 750 puntos.\\
+			& 4. El sistema calcula la capacidad y cambia a ``Aprobado''[cite: 111]. \\
+			\textbf{Flujos Alternativos} & \textbf{3a. API Externa Fuera de Línea (Timeout $>$ 5000ms):} \\
+			& 1. El sistema aborta la conexión de red[cite: 112]. \\
+			& 2. Registra el evento en el log de errores. \\
+			& 3. Modifica el estado a ``Pendiente de Validación Manual''[cite: 113]. \\
+			& 4. Despacha una notificación push al supervisor. \\
+			\textbf{Postcondiciones} & El estado se actualiza en la base de datos y se dispara el trigger de generación del contrato legal[cite: 114]. \\ \bottomrule
+		\end{tabular}
+	\end{table}
+	
+	Esta aproximación bidimensional unifica el poder conceptual del gráfico con el rigor analítico de la prosa técnica[cite: 115]. El diagrama UML opera como un índice cognitivo veloz para mapear las interacciones relacionales del sistema, mientras que la ficha de anotación abre el microscopio del proceso, detallando de forma matemática los flujos alternativos y el control explícito de excepciones[cite: 116, 117]. La arquitectura se vuelve transparente para el desarrollador y suministra al equipo de pruebas la guía perfecta para programar matrices unitarias y de integración robustas[cite: 118].
+	
+	\subsection{Modelos de Especificación UML}
+	Los modelos visuales bajo el estándar UML representan la formalización estructural y dinámica de las restricciones del software, transformándose en especificaciones técnicas de alta fidelidad que gobiernan directamente la construcción del sistema[cite: 119, 120]. Para capturar los requisitos específicos de un sistema complejo de manera determinista, la ingeniería recurre a tres pilares metodológicos: los Diagramas de Casos de Uso (límites y fronteras de capacidad), los Diagramas de Clases de Dominio (estructura lógica de datos y reglas de negocio estáticas) y los Diagramas de Máquinas de Estados (comportamiento dinámico e invariantes lógicas de las entidades a lo largo de su ciclo de vida)[cite: 121].
+	
+	INSERTA LOS DIFERENTES DIAGRAMAS UML DE UN CONJUNTO DE REQUISITOS.
+	
+	Describir los ciclos de vida de entidades críticas y volátiles —como la entidad ``Pedido'' dentro de una plataforma global de comercio electrónico masivo— exclusivamente a través de texto libre introduce de forma sistemática inconsistencias lógicas severas[cite: 122]. Es común que un analista declare en los capítulos iniciales que un pedido cancelado admite un reembolso automático, y secciones más adelante restrinja los reembolsos únicamente a transacciones en estado ``Pagado''[cite: 123]. Esta falta de coherencia sintáctica propicia que los programadores implementen lógica difusa en el backend, abriendo brechas críticas en la base de datos que permiten a usuarios maliciosos explotar transiciones de estado inválidas y perpetrar fraudes financieros[cite: 124].
+	
+	Para blindar el comportamiento dinámico del sistema y asegurar que la lógica sea robusta, el ciclo de vida de la entidad comercial se restringe mediante una Máquina de Estados de UML, la cual mapea de forma matemática las transiciones válidas y se implementa en código mediante patrones estructurales de diseño como el patrón \textit{State}:
+	
+	\begin{lstlisting}[caption={Flujo de Transición de Estados de la Entidad Pedido (UML Dinámico)}]
+[ Estado Inicial: CREADO ] 
+|
+v  ( Evento: ValidarPago / Accion: CargoTarjeta() )
+[ Estado: PAGADO ] 
+|
++---> ( Evento: SolicitarCancelacion [Condicion: Tiempo < 24h] ) -> [ Estado: REEMBOLSADO ]
+|
+v  ( Evento: DespacharMercancia / Accion: GenerarGuiaEnvio() )
+[ Estado: ENVIADO ]
+	\end{lstlisting}
+	
+	De forma paralela, el modelado de la estructura estática de los datos se rige por especificaciones de multiplicidad rígidas en el diagrama de clases de dominio, dictando las restricciones relacionales de persistencia en las bases de datos:
+	$$\text{Pedido } (1) \longleftrightarrow (1\dots*) \text{ Producto}$$
+	
+	Esta formalización diagramática integrada constituye el mecanismo de defensa más potente contra los errores lógicos de diseño[cite: 128]. Al operar como una matriz matemática cerrada de transiciones, la máquina de estados prohíbe en el backend cualquier mutación que no haya sido modelada de forma explícita; si un evento de cancelación es gatillado de manera anómala cuando el pedido ya transitó hacia el estado ``ENVIADO'', el motor de software aborta la operación por diseño de arquitectura, anulando la posibilidad de fraude[cite: 129, 130]. Igualmente, las reglas de multiplicidad estática impiden la creación de registros huérfanos, garantizando la integridad referencial absoluta del software desde su misma concepción estructural[cite: 131].
+	
+\end{document}
