@@ -1,0 +1,108 @@
+% =====================================================================
+%  PREAMBULO LATEX COMPARTIDO - GUIAS DEL PFC INGENIERIA DE REQUISITOS
+%  Ubicacion: docs/entregas/preamble_ingreq.tex
+%  Uso: cada guia hace \input{preamble_ingreq} en su cabecera.
+% =====================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{parskip}
+
+\usepackage[table]{xcolor}
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{grisfila}{RGB}{245,245,245}
+\definecolor{goldclaro}{RGB}{252,245,220}
+\definecolor{verdeclaro}{RGB}{235,247,238}
+\definecolor{textogris}{RGB}{60,60,60}
+\definecolor{nivelaus}{RGB}{176,42,42}
+\definecolor{codebg}{RGB}{248,248,248}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{cajadefinicion}[1]{
+    colback=uteqverde!5,
+    colframe=uteqverde,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajaentregable}[1]{
+    colback=uteqdorado!8,
+    colframe=uteqdorado!80!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajacritica}[1]{
+    colback=red!5,
+    colframe=red!70!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajarepo}[1]{
+    colback=blue!4,
+    colframe=blue!60!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajaconcepto}[1]{
+    colback=verdeclaro,
+    colframe=uteqverde!70!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.5pt,
+    arc=2pt,
+    breakable
+}
+
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    breaklines=true,
+    columns=fullflexible,
+    keepspaces=true
+}
+
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\usepackage{enumitem}\setlist{itemsep=2pt,topsep=2pt}
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}

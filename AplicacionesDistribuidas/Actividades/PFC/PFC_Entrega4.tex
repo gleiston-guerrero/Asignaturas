@@ -1,0 +1,535 @@
+\documentclass[11pt,a4paper]{article}
+\input{uteq_preamble.tex}
+\input{uteq_cover.tex}
+
+\title{Guia de la Entrega 4 del Proyecto Fin de Curso}
+\author{Aplicaciones Distribuidas $\cdot$ ISR-701}
+\date{}
+
+\begin{document}
+\thispagestyle{fancy}
+
+\begin{center}
+    {\Large\bfseries\color{uteqBlue} Guia Integral de la Entrega 4 del Proyecto Fin de Curso}\\[2pt]
+    {\normalsize\color{uteqGray} Aplicación completa (Web y Móvil), calidad y evaluación experimental}\\[2pt]
+    {\small Aplicaciones Distribuidas $\cdot$ Septimo semestre $\cdot$ ISR-701}
+\end{center}
+\vspace{0.4em}
+
+\uteqheader{Guia PFC Entrega 4 (E4) --- Entrega final}{Semana 17}{v1.0}
+
+\section{Presentación y lógica acumulativa de la entrega}
+
+    La Entrega 4 (E4) constituye el cierre integral del PFC. En ella el sistema distribuido, construido incrementalmente durante todo el semestre, se completa con sus dos interfaces obligatorias (aplicación web y aplicación móvil), su capa de calidad (pruebas automatizadas y \textit{pipeline} de integración y despliegue continuos), su infraestructura de observabilidad (métricas, registros y trazas distribuidas) y su evaluación experimental frente al modelo de calidad ISO/IEC 25010:2023~\cite{ISO25010_2023}.
+    
+    La E4 hereda directamente los artefactos producidos en las entregas anteriores: el análisis del dominio y el prototipo de comunicación de la E1, la arquitectura de microservicios REST con Docker Compose de la E2, y la capa de datos distribuida en CockroachDB con el pipeline paralelo PySpark de la E3. Ninguna de esas piezas se desecha. La E4 las envuelve, las refactoriza para elevar su cohesion y su calidad, y las expone a los usuarios finales a través de dos canales: un cliente web y un cliente móvil.
+    
+    \begin{critBox}
+        \textbf{Requisito estricto de esta entrega.} Cada equipo debe presentar dos aplicaciones cliente que consumen la misma API distribuida: (i) una aplicación web y (ii) una aplicación móvil. Ambas son obligatorias y no sustituibles entre si. La ausencia total de una de ellas aplica un factor multiplicativo de $0{,}5$ sobre la nota final de la entrega.
+    \end{critBox}
+    
+    El nivel de rigor exigido corresponde al reporte de un experimento controlado en ingeniería de software: propósito, hipótesis, variables, protocolo, replicabilidad y discusión de amenazas a la validez~\cite{Wohlin2012Experimentation,Runeson2009CaseStudy}. El manuscrito final consolidara todo el trabajo del semestre y será la evidencia única de evaluación del cierre.
+
+\section{Objetivos}
+
+\subsection{Objetivo general}
+
+    Completar, evaluar y documentar el sistema distribuido del PFC con arquitectura en capas, aplicaciones web y móvil, pipeline CI/CD, observabilidad distribuida y evaluación experimental de calidad, cumpliendo el modelo ISO/IEC 25010:2023 y los principios de reproducibilidad propios de la investigación empírica.
+
+\subsection{Objetivos específicos}
+
+    \begin{enumerate}
+        \item Refactorizar el backend de E2--E3 aplicando arquitectura en capas, principios SOLID~\cite{Martin2017CleanArch} y al menos cinco patrones de diseño GoF~\cite{Gamma1994GoF}.
+        \item Desarrollar una aplicación web (SPA) que consume la API a través del API Gateway, con \textit{routing}, gestión de estado, internacionalizacion y accesibilidad básica.
+        \item Desarrollar una aplicación móvil (Android nativa con Kotlin o multiplataforma con Flutter/React Native) que consume la misma API y hace uso de al menos dos capacidades del dispositivo (sensores, camara, notificaciones o geolocalizacion).
+        \item Establecer un \textit{pipeline} completo de CI/CD con GitHub Actions que compila, prueba, empaqueta y pública artefactos de las tres capas (backend, web, móvil)~\cite{Kim2021DevOpsHandbook,Humble2010CD}.
+        \item Instrumentar el sistema con las tres señales de observabilidad (métricas, registros estructurados y trazas distribuidas) según la especificacion OpenTelemetry~\cite{OpenTelemetry2024,Sigelman2010Dapper} y publicar un dashboard operativo.
+        \item Evaluar el sistema contra cinco características del modelo ISO/IEC 25010:2023 con métricas objetivas medidas experimentalmente~\cite{ISO25010_2023}.
+        \item Presentar el manuscrito final consolidando la totalidad del ciclo del PFC, con al menos 20 páginas de contenido, con estructura de reporte experimental y con análisis de amenazas a la validez.
+    \end{enumerate}
+
+\section{Aplicación por equipo PFC}
+
+    La Tabla~\ref{tab:pfc-e4-app} concreta la aplicación por equipo. Se supone conocida la arquitectura de microservicios de E2 y la capa de datos distribuida de E3; la E4 se centra en refactorizar el backend en capas, materializar los dos clientes y evaluar la calidad.
+
+    \renewcommand{\arraystretch}{1.15}
+    \small
+    \begin{xltabular}{\linewidth}{@{}p{1.9cm} X X X@{}}
+        \caption{Aplicación concreta de E4 por equipo PFC.}
+        \label{tab:pfc-e4-app}\\
+        \toprule
+        \textbf{Equipo} & \textbf{Aplicación Web (SPA)} & \textbf{Aplicación Móvil (obligatoria)} & \textbf{Patrones GoF aplicados}\\
+        \midrule
+        \endfirsthead
+        \toprule
+        \textbf{Equipo} & \textbf{Aplicación Web (SPA)} & \textbf{Aplicación Móvil (obligatoria)} & \textbf{Patrones GoF aplicados}\\
+        \midrule
+        \endhead
+        \bottomrule
+        \endfoot
+        AGLS \newline TiendaTech &
+        Catalogo, carrito, checkout, panel de vendedor, dashboard de métricas para el administrador. &
+        Cliente móvil de compra: catalogo, carrito, notificaciones \textit{push} de estado del pedido, camara para reconocer códigos de barras. &
+        Repository, Factory Method, Strategy (métodos de pago), Observer (eventos de pedido), Decorator (promociones).\\
+        \addlinespace
+        BCEL \newline SGA Escuela &
+        Portal de docente, secretaría y directivo, con captura de calificaciones y reportes por período. &
+        Cliente móvil para representantes: consulta de calificaciones, asistencia y comunicaciones, con notificaciones \textit{push}. &
+        Repository, Template Method (reportes), Observer (notificaciones), Facade (fachada del portal), Strategy (algoritmos de promedio).\\
+        \addlinespace
+        FUVV \newline Laboratorios &
+        Panel de reserva y monitoreo con visualizacion de series temporales y calendario semanal. &
+        Cliente móvil para técnicos: reservas rapidas, notificacion de incidentes, escaneo de QR de sala. &
+        Singleton (cliente Prometheus), Observer (alertas), State (estados de la reserva), Strategy (políticas de reserva), Facade.\\
+        \addlinespace
+        ACC \newline Soporte ISP &
+        Consola de operadores y coordinadores, con vista de SLA por zona y por técnico. &
+        Cliente móvil para técnicos de campo: tickets asignados, cierre en sitio, geolocalizacion y camara para evidencias. &
+        Command (acciones sobre tickets), Chain of Responsibility (escalado), Observer (SLA), Repository, Strategy (rutas).\\
+    \end{xltabular}
+    \normalsize
+
+\section{Fundamento teórico exigible}
+
+\subsection{Arquitectura en capas y principios SOLID}
+
+    La arquitectura en capas separa el sistema en (i) presentación, (ii) aplicación, (iii) dominio e (iv) infraestructura~\cite{Martin2017CleanArch,Evans2003DDD}. Los principios SOLID son las restricciones que impiden que las capas se acoplen incorrectamente y que las clases se conviertan en \emph{objetos-Dios}: responsabilidad única, abierto-cerrado, sustitución de Liskov, segregacion de interfaz e inversion de dependencias. El uso disciplinado de estos principios es prerrequisito para que los patrones GoF~\cite{Gamma1994GoF} aporten valor real.
+
+\subsection{Ingeniería de aplicaciones móviles}
+
+    Las aplicaciones móviles se rigen por retos particulares: heterogeneidad de dispositivos, restricciones de batería y red, ciclo de vida gestionado por el sistema operativo y ventanas de publicación controladas por tiendas~\cite{Wasserman2010MobileSE}. La decisión entre desarrollo nativo o multiplataforma no es una preferencia estetica: tiene consecuencias medibles en rendimiento, mantenimiento y \textit{time-to-market}~\cite{ElKassas2017CrossPlatform,BiornHansen2019CrossPlatform,Ahmad2018CrossPlatformSurvey}. El equipo debe justificar su elección con al menos dos criterios cuantitativos.
+
+\subsection{Integración y entrega continuas (CI/CD)}
+
+    La entrega continua se apoya en un \textit{pipeline} automatizado que ejecuta pruebas, empaqueta artefactos y despliega en ambientes segregados~\cite{Humble2010CD}. La cultura DevOps subyacente~\cite{Kim2021DevOpsHandbook} demanda que ningun cambio llegue a producción sin pasar por los mismos controles. En el PFC el \emph{pipeline} de GitHub Actions actua como \emph{quality gate}: si la integración falla, el despliegue no ocurre.
+
+\subsection{Observabilidad distribuida}
+
+    La observabilidad de un sistema distribuido se sustenta en tres señales: métricas (agregados numéricos con etiquetas), registros (\textit{logs} estructurados) y trazas (secuencias de \textit{spans} correlacionados por un identificador comun)~\cite{Sigelman2010Dapper,Beyer2016SRE}. El estándar OpenTelemetry~\cite{OpenTelemetry2024} unifica su modelo y su exportacion, permitiendo que diferentes proveedores consuman las mismas señales. En el PFC estas tres señales se integran en un dashboard operativo que se demostrara en vivo.
+
+\subsection{Modelo de calidad ISO/IEC 25010:2023}
+
+    El modelo ISO/IEC 25010:2023~\cite{ISO25010_2023} organiza la calidad de producto en ocho características: adecuación funcional, eficiencia de desempeño, compatibilidad, usabilidad, fiabilidad, seguridad, mantenibilidad y portabilidad. Cada característica se descompone en subcaracterísticas y admite medición mediante métricas objetivas. En el PFC se evaluarán cinco de ellas con al menos una métrica cuantitativa cada una.
+
+\section{Manual de desarrollo (paso a paso)}
+
+    Se asume que el equipo parte de la rama \texttt{main} con la E3 fusionada. Todo el trabajo de esta entrega se realiza en la rama \texttt{feature/entrega-4} y se fusiona a \texttt{main} por \textit{pull request} tras la revisión cruzada final.
+
+\subsection{Stack tecnológico consolidado}
+
+    \begin{utqbox}[title={Stack obligatorio para E4}]
+        \small
+        \begin{itemize}
+            \item \textbf{Backend:} Java 21 + Spring Boot 3.x (o el equivalente adoptado en E2), refactorizado en capas.
+            \item \textbf{Persistencia distribuida:} cluster CockroachDB de la E3, sin cambios.
+            \item \textbf{Analitica paralela:} pipeline PySpark de la E3, empaquetado en el mismo \textit{compose}.
+            \item \textbf{Web (SPA):} React 18 o Angular 17 (a elección del equipo, justificada); TypeScript; \textit{router} declarativo; \textit{state} con Redux Toolkit, Zustand, NgRx o Signals; \textit{i18n} con \texttt{react-i18next} o \texttt{ngx-translate}; empaquetado en Docker \textit{multi-stage} servido con Nginx.
+            \item \textbf{Móvil:} Android nativa con Kotlin y Jetpack Compose, o multiplataforma con Flutter 3.x o React Native 0.74+.
+            \item \textbf{CI/CD:} GitHub Actions con \textit{matrix build} para las tres capas.
+            \item \textbf{Observabilidad:} Prometheus (heredado de E2), Grafana, OpenTelemetry Collector, exportadores JVM y de sistema.
+            \item \textbf{Pruebas de carga:} Locust 2.x.
+            \item \textbf{Documentación:} LaTeX (repositorio ya lo tiene desde E1).
+        \end{itemize}
+    \end{utqbox}
+
+\subsection{Módulo A: refactorización del backend en capas}
+
+    \textbf{Entrada:} microservicio principal de E3 conectado al cluster CockroachDB.\\
+    \textbf{Procedimiento:}
+    \begin{enumerate}
+        \item Reorganizar el código en cuatro paquetes por microservicio: \path{presentation}, \path{application}, \path{domain} e \path{infrastructure}.
+        \item Extraer entidades y objetos de valor al paquete \path{domain}; en Spring Boot, estas entidades \emph{no} deben tener anotaciones JPA (las anotaciones se colocan en clases de infraestructura).
+        \item Introducir puertos (interfaces) en \path{domain} y adaptadores en \path{infrastructure}: repositorios JDBC, clientes HTTP y \textit{publishers} de mensajes.
+        \item Aplicar cinco patrones GoF con nombre y propósito documentados en un ADR (\path{docs/adr/ADR-005-patrones-gof.md}). La lista puede variar por equipo pero debe incluir al menos Repository, Factory Method y Strategy.
+        \item Actualizar las pruebas de E2 y E3 para que se apoyen en dobles de prueba de los puertos y no en la infraestructura real, exceptuando las pruebas de integración.
+    \end{enumerate}
+    \textbf{Salida esperada:} el sistema mantiene el mismo comportamiento externo (API sin cambios), pero su estructura interna esta desacoplada. La cobertura de pruebas unitarias sube a $\ge 70\%$.
+
+\subsection{Módulo B: aplicación web (SPA)}
+
+    \textbf{Procedimiento (independiente del framework elegido):}
+    \begin{enumerate}
+        \item Crear la carpeta \path{apps/web/} en el repositorio.
+        \item Configurar el proyecto con TypeScript en modo estricto y \textit{linter} obligatorio (\texttt{eslint} + \texttt{prettier}).
+        \item Implementar el patrón de arquitectura por características (\textit{feature-based}): cada módulo de negocio agrupa componentes, servicios de acceso a la API, hooks (o servicios) y pruebas.
+        \item Cubrir al menos cinco rutas: \path{/}, \path{/login}, \path{/main} (el dominio del PFC), \path{/settings} y \path{/about}; incluir manejo de rutas protegidas por JWT.
+        \item Integrar internacionalizacion (español e ingles como mínimo), tema claro/oscuro y estados de carga y de error explicitos.
+        \item Consumir la API del backend a través del API Gateway; guardar el JWT en \texttt{httpOnly cookie} o en \texttt{sessionStorage} con expiracion, nunca en \texttt{localStorage} plano.
+        \item Empaquetar en \textit{Dockerfile multi-stage} (etapa \texttt{builder} con Node LTS y etapa \texttt{runtime} con \texttt{nginx:alpine}); agregar el servicio al \texttt{docker-compose.yml}.
+        \item Publicar como \emph{artefacto} en el pipeline CI un \texttt{.tar.gz} del \path{dist/} versionado con el hash de \textit{commit}.
+    \end{enumerate}
+    El Listado~\ref{lst:dockerfile-web} muestra el Dockerfile de referencia.
+    \begin{lstlisting}[language=bash,caption={Dockerfile multi-stage para la SPA.},label={lst:dockerfile-web}]
+# apps/web/Dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:1.27-alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD wget -q -O- http://localhost/ || exit 1
+    \end{lstlisting}
+
+\subsection{Módulo C: aplicación móvil}
+
+    \textbf{Procedimiento (Android nativa como referencia; los equipos que elijan multiplataforma siguen los pasos analogos):}
+    \begin{enumerate}
+        \item Crear \path{apps/mobile/} con proyecto Gradle Android; SDK mínimo API 26 (Android 8), objetivo API 34.
+        \item Definir la arquitectura MVVM con Jetpack Compose para la vista, ViewModel para el estado y un repositorio por característica.
+        \item Implementar la autenticacion consumiendo el mismo endpoint \path{/auth/login} del backend; almacenar el JWT en \texttt{EncryptedSharedPreferences}.
+        \item Implementar el listado y el detalle del recurso principal del PFC, con \textit{pull to refresh} y modo sin conexión (caché local con Room o SQLDelight).
+        \item Integrar al menos dos capacidades del dispositivo: notificaciones \textit{push} (Firebase Cloud Messaging), camara (para OCR o códigos), geolocalizacion (fused location), o sensores de aceleración según el dominio del PFC.
+        \item Cubrir con pruebas unitarias los ViewModels (JUnit 5 + coroutines-test) y con al menos una prueba instrumentada \textit{end-to-end} (Espresso o Compose Testing).
+        \item Generar un APK firmado con clave de \emph{debug} y publicarlo como artefacto del pipeline CI en \path{release/apk/}.
+    \end{enumerate}
+
+\subsection{Módulo D: pirámide de pruebas}
+
+    La estrategia de pruebas cubre las cuatro capas de la pirámide clasica~\cite{Ammann2016SWTesting,Winters2020SEatGoogle}:
+    \begin{itemize}
+        \item \textbf{Unitarias:} cobertura $\ge 70\%$ en backend, web y móvil. Herramientas: JUnit 5 / Vitest o Jest / JUnit Android.
+        \item \textbf{Integración:} pruebas de repositorios con Testcontainers apuntando a un CockroachDB efímero.
+        \item \textbf{Contrato:} \emph{consumer-driven contract testing} con Pact entre el frontend (web y móvil como consumidores) y el backend (proveedor).
+        \item \textbf{Extremo a extremo (E2E):} Playwright para la web; Espresso o Detox para el móvil.
+        \item \textbf{Carga:} Locust con al menos dos escenarios: (i) 50 usuarios durante 5 minutos, (ii) rampa progresiva de 0 a 200 usuarios en 10 minutos.
+    \end{itemize}
+    Cada tipo de prueba se ejecuta en un \textit{job} distinto del pipeline y sus resultados se almacenan como artefactos.
+
+\subsection{Módulo E: pipeline CI/CD end-to-end}
+
+    El archivo \path{.github/workflows/ci-cd.yml} define siete \textit{jobs} en un \emph{DAG}: \texttt{lint}, \texttt{test-backend}, \texttt{test-web}, \texttt{test-mobile}, \texttt{build-images}, \texttt{build-mobile-apk} e \texttt{integration}. Solo cuando todos los \textit{jobs} estan en verde, el pipeline pública las imagenes en GitHub Container Registry (GHCR) etiquetadas con el hash del commit. El Listado~\ref{lst:ci} muestra un esqueleto reducido del pipeline.
+    \begin{lstlisting}[language=yaml,caption={Esqueleto del pipeline .github/workflows/ci-cd.yml.},label={lst:ci}]
+name: pfc-cicd
+on:
+  push:    { branches: [main, "feature/*"] }
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Backend lint
+        run: ./mvnw -pl services/resource-service checkstyle:check
+      - name: Web lint
+        working-directory: apps/web
+        run: npm ci && npm run lint
+
+  test-backend:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "21" }
+      - run: ./mvnw -pl services/resource-service verify
+
+  test-web:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - working-directory: apps/web
+        run: |
+          npm ci
+          npm run test -- --coverage
+
+  test-mobile:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17" }
+      - working-directory: apps/mobile
+        run: ./gradlew test
+
+  build-images:
+    needs: [test-backend, test-web]
+    runs-on: ubuntu-latest
+    permissions: { contents: read, packages: write }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build backend
+        run: docker build -t ghcr.io/${{ github.repository }}/backend:${{ github.sha }} services/resource-service
+      - name: Build web
+        run: docker build -t ghcr.io/${{ github.repository }}/web:${{ github.sha }} apps/web
+      - run: docker push --all-tags ghcr.io/${{ github.repository }}/backend
+      - run: docker push --all-tags ghcr.io/${{ github.repository }}/web
+
+  build-mobile-apk:
+    needs: test-mobile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - working-directory: apps/mobile
+        run: ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pfc-debug-apk
+          path: apps/mobile/app/build/outputs/apk/debug/*.apk
+
+  integration:
+    needs: build-images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose -f docker-compose.yml up -d
+      - run: |
+          sleep 30
+          curl -f http://localhost:8080/actuator/health
+      - run: docker compose down
+    \end{lstlisting}
+
+\subsection{Módulo F: observabilidad distribuida}
+
+    \textbf{Procedimiento:}
+    \begin{enumerate}
+        \item Añadir al microservicio principal el \emph{starter} \texttt{opentelemetry-spring-boot-starter} (o equivalente).
+        \item Configurar el exportador OTLP hacia un \textit{OpenTelemetry Collector} añadido al \texttt{docker-compose.yml}.
+        \item Reutilizar las métricas Prometheus de la E3 (\path{crdb_*}) y añadir cuatro nuevas: \path{http_requests_total} (etiquetado por ruta, método y código), \path{http_request_duration_seconds}, \path{app_business_events_total} y \path{app_active_sessions}.
+        \item Emitir registros en formato JSON con Logback (backend) y con \texttt{Timber} + \texttt{tree} JSON (móvil), incluyendo el campo \texttt{trace\_id} para correlacion.
+        \item Construir un dashboard Grafana con seis paneles obligatorios: tasa de peticiones, latencia p50/p95/p99, tasa de errores 5xx, disponibilidad Raft del cluster CRDB, uso de recursos por contenedor y latencia \textit{end-to-end} desde el cliente móvil.
+        \item Exportar el dashboard como JSON versionado en \path{ops/grafana/pfc-dashboard.json} para que sea reproducible.
+    \end{enumerate}
+
+\subsection{Módulo G: evaluación experimental ISO 25010}
+
+    \textbf{Protocolo experimental (rigor JCR):}
+    \begin{enumerate}
+        \item \textbf{Sujeto de estudio:} el propio sistema del PFC en el \textit{compose} de despliegue local.
+        \item \textbf{Instrumentos:} Locust para carga, Grafana para observación, scripts de pruebas contractuales y de disponibilidad.
+        \item \textbf{Diseño experimental:} bloque completo con $r=10$ repeticiones por escenario; se descartan la primera y la última repetición.
+        \item \textbf{Métricas objetivas por característica ISO 25010} según la Tabla~\ref{tab:iso25010}.
+        \item \textbf{Análisis:} media, desviación típica e intervalo de confianza al 95\%; se contrasta cada métrica con su umbral objetivo.
+        \item \textbf{Amenazas a la validez:} al menos tres internas y dos externas, discutidas en la sección de amenazas del manuscrito.
+    \end{enumerate}
+
+    \renewcommand{\arraystretch}{1.2}
+    \small
+    \begin{xltabular}{\linewidth}{@{}p{3.3cm} X p{2.7cm}@{}}
+        \caption{Características ISO/IEC 25010:2023 evaluadas en E4 y sus métricas objetivas.}
+        \label{tab:iso25010}\\
+        \toprule
+        \textbf{Característica} & \textbf{Métrica y protocolo de medición} & \textbf{Umbral objetivo}\\
+        \midrule
+        \endfirsthead
+        \toprule
+        \textbf{Característica} & \textbf{Métrica y protocolo de medición} & \textbf{Umbral objetivo}\\
+        \midrule
+        \endhead
+        \bottomrule
+        \endfoot
+        Fiabilidad & Tasa de errores 5xx durante una hora continua bajo carga nominal. & $<1\%$\\
+        Eficiencia de desempeño & Latencia p95 con 50 usuarios concurrentes según escenario Locust. & $<500$ ms\\
+        Seguridad & Porcentaje de endpoints con verificación JWT y ausencia de las 10 vulnerabilidades OWASP más comunes~\cite{OWASP2021Top10}. & $100\%$\\
+        Mantenibilidad & Cobertura de pruebas unitarias + complejidad ciclomatica media. & $\ge 70\%$; $<10$\\
+        Compatibilidad & Aplicación web funciona en Chrome, Firefox y Safari; aplicación móvil funciona en API 26+. & Pasa suite E2E\\
+    \end{xltabular}
+    \normalsize
+
+\subsection{Módulo H: consolidacion del documento final}
+
+    El manuscrito de la E4 es acumulativo: incluye, actualizadas, todas las secciones de E1, E2 y E3, y añade las secciones nuevas de U5. La cita a las entregas previas es interna: no se referencian como fuentes externas, sino que se integran en un texto continuo con estructura de reporte experimental. El total mínimo es de $20$ páginas de contenido y $\ge 12$ referencias IEEE con DOI o ISBN verificable.
+
+\section{Documento LaTeX exigido}
+
+    La Tabla~\ref{tab:doc-e4} lista la estructura mínima del manuscrito.
+
+    \renewcommand{\arraystretch}{1.15}
+    \small
+    \begin{xltabular}{\linewidth}{@{}p{3.4cm} X p{1.5cm}@{}}
+        \caption{Estructura mínima del manuscrito LaTeX de la Entrega 4.}
+        \label{tab:doc-e4}\\
+        \toprule
+        \textbf{Sección} & \textbf{Contenido} & \textbf{Páginas ref.}\\
+        \midrule
+        \endfirsthead
+        \toprule
+        \textbf{Sección} & \textbf{Contenido} & \textbf{Páginas ref.}\\
+        \midrule
+        \endhead
+        \bottomrule
+        \endfoot
+        Resumen bilingue & Objetivo, método, resultados, conclusiones; $\le 200$ palabras cada uno. & 1\\
+        Introducción & Motivación, contribuciones, panorama del semestre. & 1.5\\
+        Trabajos relacionados & $\ge 6$ fuentes indexadas sobre BDD, microservicios, móvil y calidad. & 2\\
+        Fundamento teórico & Capas + SOLID, GoF, móvil, CI/CD, observabilidad, ISO 25010. & 3\\
+        Arquitectura del sistema & Vistas C4 nivel 1 a 3, decisiones (ADR), stack. & 2\\
+        Aplicación web & Manual del Módulo B, capturas de las 5 rutas, evidencia i18n. & 2\\
+        Aplicación móvil & Manual del Módulo C, capturas, evidencia de capacidades usadas. & 2\\
+        Pruebas y CI/CD & Piramide de pruebas, resumen del pipeline, cobertura. & 2\\
+        Observabilidad & Módulo F; dashboard como figura; ejemplo de traza distribuida. & 1.5\\
+        Evaluación ISO 25010 & Módulo G; tabla de métricas con IC 95\%; discusión. & 2\\
+        Discusión y amenazas a la validez & Interpretación, alcance, limitaciones. & 1.5\\
+        Conclusiones e trabajo futuro & Cierre del ciclo E1--E4. & 1\\
+        Bibliografía & IEEE; $\ge 12$ referencias verificadas. & ---\\
+    \end{xltabular}
+    \normalsize
+
+\section{Estructura del repositorio}
+
+    El Listado~\ref{lst:repo-e4} muestra la estructura resultante después del \emph{merge} de la E4. Ninguna carpeta de las entregas anteriores desaparece; se añaden las de web, móvil y observabilidad.
+    \begin{lstlisting}[language=bash,caption={Estructura del repositorio después de fusionar E4.},label={lst:repo-e4}]
+proyecto-pfc/
+  README.md                    # actualizado con instrucciones completas
+  LICENSE
+  .env.example                 # incluye variables de web y móvil
+  docker-compose.yml           # backend + CRDB + web + collector
+  docs/
+    adr/
+      ADR-001-arquitectura.md
+      ADR-002-microservicios.md
+      ADR-003-fragmentación.md
+      ADR-004-consenso-raft.md
+      ADR-005-patrones-gof.md          # nuevo
+      ADR-006-elección-móvil.md        # nuevo
+    api/openapi.yaml
+    db/schema.sql
+    diagrams/
+      c4-nivel1.drawio.png
+      c4-nivel2.drawio.png
+      c4-nivel3.drawio.png             # actualizado con Web + Móvil
+    experimentos/
+      protocolo-e3.md
+      protocolo-e4.md                  # nuevo
+      resultados/
+        iso25010.csv                   # nuevo
+        boxplot_latencia.png           # nuevo
+    entrega1/  entrega2/  entrega3/  entrega4/
+  services/
+    resource-service/                  # refactor en capas
+    auth-service/
+    notification-service/
+  apps/
+    web/                               # nuevo, SPA
+    mobile/                            # nuevo, Android/multiplataforma
+  spark/                               # heredado de E3
+  ops/
+    grafana/
+      pfc-dashboard.json               # nuevo
+    prometheus/
+      prometheus.yml                   # actualizado
+    otel-collector/
+      config.yaml                      # nuevo
+  release/
+    apk/                               # APK generado por CI
+    screenshots/                       # capturas de web y móvil
+  tests/
+    integration/
+    load/
+    e2e-web/                           # nuevo, Playwright
+    contract/                          # nuevo, Pact
+  .github/
+    workflows/
+      ci-cd.yml                        # ampliado con matriz web/móvil
+    \end{lstlisting}
+
+\section{Rúbrica de evaluación}
+
+    La rúbrica opera con nueve dimensiones, veintiun criterios y cinco niveles (0 a 4). Se aplica la fórmula
+    \begin{equation}
+        \text{Nota}_{/10} = \left[ \frac{\sum_i w_i \cdot n_i}{4} \right] \cdot 10 \quad , \quad \sum_i w_i = 1.0
+        \label{eq:nota-e4}
+    \end{equation}
+    Se recuerda que la ausencia total de la aplicación web o de la aplicación móvil aplica un factor multiplicativo de $0{,}5$ sobre la nota final calculada con la Ecuación~\eqref{eq:nota-e4}.
+
+    \renewcommand{\arraystretch}{1.2}
+    \small
+    \begin{xltabular}{\linewidth}{@{}p{0.9cm} p{4.6cm} X p{1cm}@{}}
+        \caption{Rúbrica de evaluación de la Entrega 4.}
+        \label{tab:rúbrica-e4}\\
+        \toprule
+        \textbf{Dim.} & \textbf{Criterio} & \textbf{Indicador clave nivel 4} & \textbf{Peso}\\
+        \midrule
+        \endfirsthead
+        \toprule
+        \textbf{Dim.} & \textbf{Criterio} & \textbf{Indicador clave nivel 4} & \textbf{Peso}\\
+        \midrule
+        \endhead
+        \bottomrule
+        \endfoot
+        D1 & 1.1 Refactor en capas y SOLID & Cuatro capas, dependencias del dominio hacia abstracciones & 6\%\\
+           & 1.2 Patrones GoF aplicados & $\ge 5$ patrones justificados en ADR-005; código real, no placebo & 6\%\\
+        D2 & 2.1 Aplicación Web (funcional) & Cinco rutas, i18n, tema, JWT correcto, sin errores de consola & 8\%\\
+           & 2.2 Aplicación Web (calidad) & Lint verde, cobertura $\ge 70\%$, Dockerfile multi-stage & 4\%\\
+        D3 & 3.1 Aplicación Móvil (funcional) & Login, listado y detalle, dos capacidades del dispositivo & 8\%\\
+           & 3.2 Aplicación Móvil (calidad) & Tests unit + instrumentados; APK firmado publicado por CI & 4\%\\
+        D4 & 4.1 Integración Web + Móvil + Backend & Contratos Pact en verde; misma API sirve a los dos clientes & 5\%\\
+           & 4.2 Persistencia distribuida operando & Cluster CRDB de E3 sigue funcionando; healthchecks verdes & 2\%\\
+        D5 & 5.1 Piramide de pruebas & Unit + Integración + Contrato + E2E + Carga; artefactos publicados & 6\%\\
+           & 5.2 Pipeline CI/CD end-to-end & Los 7 jobs del Listado~\ref{lst:ci} en verde; imagenes en GHCR & 5\%\\
+        D6 & 6.1 Observabilidad completa & Métricas + logs con trace\_id + trazas OTel; dashboard versionado & 6\%\\
+           & 6.2 Evidencia operativa & Demo en vivo del dashboard bajo carga Locust en la defensa & 2\%\\
+        D7 & 7.1 Evaluación ISO 25010 & Cinco características medidas con IC 95\%; discusión honesta & 5\%\\
+        D8 & 8.1 Manuscrito final & Estructura de Tabla~\ref{tab:doc-e4}; $\ge 20$ páginas; sin errores LaTeX & 5\%\\
+           & 8.2 Bibliografía & IEEE, $\ge 12$ referencias, la mayoría con DOI resoluble & 3\%\\
+           & 8.3 Trazabilidad E1--E4 & Se muestra que los artefactos de las entregas previas siguen vivos & 3\%\\
+           & 8.4 Repositorio y README & README completo, \path{.env.example} vigente, semillas deterministas & 3\%\\
+        D9 & 9.1 Defensa oral (grupal) & Demo en vivo; cada integrante responde preguntas sin leer & 5\%\\
+           & 9.2 Reflexión ética & $\ge {}$media página con referencia al ACM Code of Ethics~\cite{ACMCode2018} & 2\%\\
+           & 9.3 Discusión de amenazas a la validez & Al menos tres internas y dos externas, cada una con mitigacion & 2\%\\
+           & 9.4 Reproducibilidad & \path{docker compose up} + instrucciones despliegan todo desde cero & 2\%\\
+    \end{xltabular}
+    \normalsize
+
+\section{Anexos}
+
+\subsection*{Anexo A. Lista de verificación final}
+
+    \begin{itemize}
+        \item[$\square$] Rama \texttt{feature/entrega-4} fusionada a \texttt{main} por PR con revisión cruzada.
+        \item[$\square$] Backend refactorizado en capas; ADR-005 firmado.
+        \item[$\square$] Aplicación web (SPA) desplegada con \texttt{docker compose up}; $\ge 5$ rutas; i18n.
+        \item[$\square$] Aplicación móvil compilando; APK generado por CI; dos capacidades del dispositivo.
+        \item[$\square$] Pipeline CI/CD con los 7 jobs verdes en el último commit de la entrega.
+        \item[$\square$] Contratos Pact publicados y verdes; suite E2E Playwright y Espresso pasando.
+        \item[$\square$] Prueba de carga Locust ejecutada; capturas incluidas en el manuscrito.
+        \item[$\square$] Dashboard Grafana operativo con las seis paneles obligatorios.
+        \item[$\square$] Tabla ISO 25010 con las cinco características y sus IC 95\%.
+        \item[$\square$] Manuscrito LaTeX compila sin errores; $\ge 20$ páginas de contenido.
+        \item[$\square$] Bibliografía con $\ge 12$ referencias IEEE verificadas.
+        \item[$\square$] Reflexión ética de al menos media página.
+        \item[$\square$] README con instrucciones de despliegue reproducible.
+    \end{itemize}
+
+\subsection*{Anexo B. Preguntas obligatorias para la defensa}
+
+    \begin{enumerate}
+        \item Justifique la elección de framework para la web y para el móvil, con al menos dos criterios cuantitativos.
+        \item Explique como los principios SOLID se materializan en el módulo más complejo de su backend.
+        \item Muestre una traza distribuida completa desde la app móvil hasta el cluster CRDB y describa cada \textit{span}.
+        \item Explique como el pipeline CI/CD garantiza que el código desplegado cumple los atributos de calidad definidos.
+        \item Interprete los resultados de la evaluación ISO 25010: que característica no alcanzo el umbral y por que.
+        \item Describa el plan técnico para llevar el sistema a producción real, incluyendo escalado horizontal.
+        \item Discuta al menos tres amenazas a la validez de su evaluación experimental y como las mitigo.
+        \item Reflexione sobre las responsabilidades eticas del equipo frente a los datos de los usuarios finales.
+    \end{enumerate}
+
+\subsection*{Anexo C. Plantilla de ADR (formato Nygard)}
+
+    Cada ADR (\emph{Architectural Decisión Record}) debe seguir el formato:
+    \begin{itemize}
+        \item \textbf{Título:} número y título corto.
+        \item \textbf{Estado:} propuesto, aceptado, sustituido, deprecado.
+        \item \textbf{Contexto:} problema, restricciones y alternativas consideradas.
+        \item \textbf{Decisión:} elección tomada y razones.
+        \item \textbf{Consecuencias:} positivas, negativas y neutrales, con impacto en las entregas anteriores y futuras.
+    \end{itemize}
+
+\bibliographystyle{ieeetr}
+\bibliography{references_PFC}
+
+\end{document}

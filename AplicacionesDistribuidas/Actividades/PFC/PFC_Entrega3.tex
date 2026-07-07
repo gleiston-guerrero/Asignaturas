@@ -1,0 +1,445 @@
+\documentclass[11pt,a4paper]{article}
+\input{uteq_preamble.tex}
+\input{uteq_cover.tex}
+
+\title{Guia de la Entrega 3 del Proyecto Fin de Curso}
+\author{Aplicaciones Distribuidas $\cdot$ ISR-701}
+\date{}
+
+\begin{document}
+\thispagestyle{fancy}
+
+\begin{center}
+    {\Large\bfseries\color{uteqBlue} Guia Integral de la Entrega 3 del Proyecto Fin de Curso}\\[2pt]
+    {\normalsize\color{uteqGray} Capa de datos distribuida y pipeline analitico paralelo}\\[2pt]
+    {\small Aplicaciones Distribuidas $\cdot$ Septimo semestre $\cdot$ ISR-701}
+\end{center}
+\vspace{0.4em}
+
+\uteqheader{Guia PFC Entrega 3 (E3)}{Semana 13}{v1.0}
+
+\section{Presentación y lógica acumulativa de la entrega}
+
+    La Entrega 3 (E3) del Proyecto Fin de Curso (PFC) no es un ejercicio aislado, sino la continuacion natural del sistema distribuido que cada equipo viene construyendo desde la Entrega 1 (E1) y la Entrega 2 (E2). En E1 los equipos fundamentaron el problema, propusieron la arquitectura y prototiparon la comunicación entre procesos con sockets y gRPC bajo el modelo lógico de Lamport, con lo que quedaron establecidos el dominio, los actores, los requisitos no funcionales y el estilo arquitectónico. En E2 los equipos materializaron ese diseño como una arquitectura de microservicios REST contenerizada con Docker Compose, con API Gateway y autenticacion basada en \textit{JSON Web Tokens} (JWT) según la especificacion RFC 7519~\cite{Jones2015JWT,Fielding2000REST,Newman2021Microservices}.
+    
+    La E3 completa esa arquitectura con las dos capas que faltan para que el sistema sea \emph{distribuido en sentido pleno}: (i) una capa de persistencia distribuida real, con fragmentación, replicación y consenso, sustituyendo las bases embebidas o mono-nodo utilizadas en E2; y (ii) un pipeline de procesamiento paralelo que consume esos datos, mide y demuestra empíricamente la aceleración (\textit{speedup}) obtenida. Con estos dos añadidos la aplicación queda con arquitectura distribuida completa a nivel de servicios, datos y cómputo, condición necesaria para que la Entrega 4 (E4) aborde en el siguiente ciclo la calidad, la interfaz web, la interfaz móvil y la observabilidad de manera integral.
+    
+    \begin{noteBox}
+        \textbf{Principio de complementariedad E3 $\rightarrow$ E4.} Todo artefacto producido en E3 debe ser reutilizado, ampliado o instrumentado en E4. En consecuencia, esta guia excluye deliberadamente actividades desechables y prioriza artefactos duraderos: esquema de BDD, cluster de CockroachDB, pipeline PySpark y protocolo experimental replicable.
+    \end{noteBox}
+
+\section{Objetivos}
+
+\subsection{Objetivo general}
+
+    Consolidar la capa de datos distribuida y el procesamiento paralelo del sistema del PFC, integrandolos con la arquitectura de microservicios de E2, y evaluar experimentalmente su rendimiento y tolerancia a fallos con el rigor metodológico propio de la experimentación en ingeniería de software~\cite{Wohlin2012Experimentation}.
+
+\subsection{Objetivos específicos}
+
+    \begin{enumerate}
+        \item Disenar el esquema distribuido del sistema con estrategias explicitas de fragmentación (horizontal o mixta) y replicación, fundamentadas en el modelo de acceso del dominio~\cite{Ozsu2020Distributed,Kleppmann2017DDIA}.
+        \item Desplegar un cluster CockroachDB de tres nodos en contenedores y refactorizar el microservicio principal de E2 para que consuma ese cluster en lugar de la base de datos mono-nodo original~\cite{Taft2020CockroachDB}.
+        \item Verificar de manera reproducible las propiedades de consistencia serializable y de tolerancia a fallos mediante caída controlada de nodos, apoyándose en el algoritmo de consenso Raft~\cite{Ongaro2014Raft}.
+        \item Ejecutar un protocolo experimental de comparacion de rendimiento entre el cluster distribuido y una instancia mono-nodo equivalente, reportando media, desviación típica e intervalo de confianza al 95\%~\cite{Jain1991Perf,Cooper2010YCSB}.
+        \item Implementar un pipeline analitico en Apache Spark (PySpark) que consume datos del cluster, aplica al menos cinco transformaciones y expone su rendimiento contra un baseline secuencial en \texttt{pandas}~\cite{Zaharia2012RDD,Chambers2018Spark,Salloum2016Spark}.
+        \item Comprobar experimentalmente la Ley de Amdahl~\cite{Amdahl1967} y comparar los resultados con la reevaluacion propuesta por Gustafson~\cite{Gustafson1988}.
+        \item Documentar la totalidad del trabajo en un manuscrito LaTeX con estructura afin al reporte de un experimento controlado, siguiendo las guias metodológicas de Wohlin~et~al.~\cite{Wohlin2012Experimentation} y Runeson y H\"{o}st~\cite{Runeson2009CaseStudy}.
+    \end{enumerate}
+
+\section{Aplicación por equipo PFC}
+
+    La Tabla~\ref{tab:pfc-e3-app} concreta la aplicación de cada bloque de la E3 sobre los cuatro equipos del período, tomando como base el dominio establecido en E1 y los microservicios implementados en E2.
+
+    \renewcommand{\arraystretch}{1.15}
+    \small
+    \begin{xltabular}{\linewidth}{@{}p{1.9cm} X X X@{}}
+        \caption{Aplicación concreta de E3 por equipo PFC (arrastre desde E1--E2 + adición propia de E3).}
+        \label{tab:pfc-e3-app}\\
+        \toprule
+        \textbf{Equipo} & \textbf{Fragmentación + colocalización} & \textbf{Consultas de referencia} & \textbf{Analitica paralela (Spark)}\\
+        \midrule
+        \endfirsthead
+        \toprule
+        \textbf{Equipo} & \textbf{Fragmentación + colocalización} & \textbf{Consultas de referencia} & \textbf{Analitica paralela (Spark)}\\
+        \midrule
+        \endhead
+        \bottomrule
+        \endfoot
+        AGLS \newline TiendaTech &
+        Fragmentación horizontal de \texttt{pedidos} por \texttt{fecha\_pedido} (partition by range trimestral); colocalización \texttt{clientes} $\Join$ \texttt{pedidos} por \texttt{cliente\_id}. &
+        Top-N productos por trimestre; embudo de conversion; \textit{cross-sell} entre categorias de hardware. &
+        Recomendador colaborativo con \texttt{spark.ml} sobre historial simulado ($\ge$500k pedidos); segmentacion RFM.\\
+        \addlinespace
+        BCEL \newline SGA Escuela &
+        Fragmentación horizontal de \texttt{calificaciones} por \texttt{período\_academico}; colocalización con \texttt{matriculas} por \texttt{estudiante\_id}. &
+        Reporte de rendimiento por asignatura y período; detección de estudiantes en riesgo; series temporales por curso. &
+        Modelado predictivo de aprobacion/reprobacion; análisis de correlacion asistencia--rendimiento sobre $\ge$500k registros sintéticos.\\
+        \addlinespace
+        FUVV \newline Laboratorios &
+        Fragmentación horizontal de \texttt{reservas} por \texttt{fecha}; particionado por sala en tablas de \texttt{monitoreo}. &
+        Uso por franja horaria; picos por laboratorio; correlacion incidentes--carga. &
+        Análisis de series temporales de telemetría; detección de anomalías con IQR y ventanas móviles.\\
+        \addlinespace
+        ACC \newline Soporte ISP &
+        Fragmentación horizontal de \texttt{tickets} por \texttt{fecha\_apertura}; colocalización \texttt{clientes} $\Join$ \texttt{tickets} por \texttt{cliente\_id}. &
+        SLA por tipo de incidente; tiempo medio de resolucion; escalamientos por zona geográfica. &
+        Análisis de reincidencia; agrupamiento (clustering) de incidentes por texto y zona.\\
+    \end{xltabular}
+    \normalsize
+
+\section{Fundamento teórico exigible}
+
+    Este bloque delimita el cuerpo teórico mínimo que el documento LaTeX del equipo debe desarrollar. Se exige rigor conceptual: definiciones formales, notacion consistente, discusión de \textit{trade-offs} y citas primarias.
+
+\subsection{Modelo de bases de datos distribuidas}
+
+    Un sistema de base de datos distribuido (SBDD) se define como un conjunto de múltiples bases de datos lógicamente relacionadas, gestionadas por un único sistema y percibidas por el usuario como una única base~\cite{Ozsu2020Distributed}. Sus objetivos son transparencia (fragmentación, replicación y ubicación), autonomia local, disponibilidad y escalabilidad horizontal.
+    
+    La \emph{fragmentación horizontal} de una relación $R$ produce fragmentos $R_1, R_2, \dots, R_n$ mediante selección sobre un atributo particionador: $R_i = \sigma_{p_i}(R)$, siendo $\{p_i\}$ predicados mutuamente excluyentes y colectivamente exhaustivos. La \emph{replicación} exige un factor $f\ge 3$ para tolerar la caída de un nodo con quórum mayoritario. Un sistema con $N$ nodos y factor de replicación $f$ tolera la pérdida simultanea de hasta $\lfloor (f-1)/2 \rfloor$ réplicas por rango, siempre que se mantenga el quórum de escritura $\lceil f/2 \rceil + 1$~\cite{Ongaro2014Raft,Taft2020CockroachDB}.
+
+\subsection{Teorema CAP y modelo PACELC}
+
+    El teorema CAP establece que un sistema distribuido no puede satisfacer simultáneamente consistencia, disponibilidad y tolerancia a particiones~\cite{Brewer2012CAP}. El modelo PACELC extiende esta discusión incorporando el trade-off entre latencia y consistencia en ausencia de particiones~\cite{Abadi2012PACELC}. CockroachDB se ubica como sistema CP con consistencia serializable, priorizando corrección sobre disponibilidad ante particiones~\cite{Taft2020CockroachDB}.
+
+\subsection{Consenso distribuido: Raft}
+
+    El algoritmo Raft descompone el consenso en tres subproblemas: elección de líder, replicación de logs y seguridad~\cite{Ongaro2014Raft}. Cada rango de datos en CockroachDB constituye un grupo Raft independiente con su propio líder. Una escritura se considera comprometida cuando el líder recibe confirmacion de una mayoría estricta de réplicas, garantizando durabilidad frente a la caída de una minoria.
+
+\subsection{Modelo de programación paralela}
+
+    El modelo RDD (\textit{Resilient Distributed Dataset}) de Spark abstrae una colección distribuida inmutable con linaje de transformaciones, evaluación perezosa y tolerancia a fallos mediante recomputo~\cite{Zaharia2012RDD}. La Ley de Amdahl expresa el speedup teórico máximo alcanzable:
+    \begin{equation}
+        S(N) = \frac{1}{(1-p) + \dfrac{p}{N}}
+        \label{eq:amdahl}
+    \end{equation}
+    donde $p$ es la fracción paralelizable del programa y $N$ el número de procesadores. La reevaluacion de Gustafson replantea el enfoque asumiendo que el volumen de trabajo escala con los recursos disponibles~\cite{Gustafson1988}.
+
+\section{Manual de desarrollo (paso a paso)}
+
+    Este bloque es el núcleo técnico de la guia. Cada módulo describe entradas, procedimiento, salidas esperadas y criterios de aceptacion. Se asume que el equipo ya cuenta con la solución de E2 en su rama \texttt{main} y que crea una rama \texttt{feature/entrega-3} para el trabajo de esta entrega.
+
+\subsection{Stack tecnológico consolidado}
+
+    \begin{utqbox}[title={Stack obligatorio para E3}]
+        \small
+        \begin{itemize}
+            \item \textbf{Persistencia distribuida:} CockroachDB v23.2+, cluster de 3 nodos en Docker.
+            \item \textbf{Backend:} el mismo microservicio principal del PFC (Java 21 + Spring Boot 3.x o equivalente ya adoptado en E2), refactorizado para usar el driver JDBC PostgreSQL apuntando al cluster.
+            \item \textbf{Contenerizacion:} Docker $\ge$ 24, Docker Compose plugin v2.
+            \item \textbf{Analitica paralela:} Apache Spark 3.5+ (PySpark) sobre Python 3.11+.
+            \item \textbf{Instrumentación de métricas:} Prometheus client library (heredado de E2), extendida con contadores y \textit{histogramas} nuevos para las consultas distribuidas.
+            \item \textbf{Documentación y CI/CD:} el repositorio, el pipeline GitHub Actions y la documentación LaTeX se heredan de E2 y solo se amplian.
+        \end{itemize}
+    \end{utqbox}
+
+\subsection{Módulo A: refactorización del microservicio de E2}
+
+    \textbf{Entrada:} microservicio principal de E2 (por ejemplo, \texttt{resource-service}) con persistencia mono-nodo (H2, SQLite o PostgreSQL local).\\
+    \textbf{Procedimiento:}
+    \begin{enumerate}
+        \item Crear una rama \texttt{feature/entrega-3} desde \texttt{main}.
+        \item Sustituir la dependencia embebida por el driver PostgreSQL 42.x (compatible con el protocolo CockroachDB).
+        \item Externalizar la cadena de conexión vía variables de entorno (\texttt{DB\_URL}, \texttt{DB\_USER}, \texttt{DB\_PASS}); documentar en \texttt{.env.example}.
+        \item Introducir un \emph{profile} \texttt{crdb} en la configuración de Spring Boot (o equivalente) que activa la conexión al cluster.
+        \item Adaptar los repositorios: usar SQL portable, evitar sentencias específicas de un motor y explicitar transacciones con nivel \texttt{SERIALIZABLE}.
+        \item Actualizar las pruebas de integración para levantar el cluster con \texttt{Testcontainers} y no depender de una base local.
+    \end{enumerate}
+    \textbf{Salida esperada:} el microservicio compila, arranca y responde igual que en E2, pero contra el cluster CockroachDB. Todas las pruebas de E2 siguen en verde.
+
+\subsection{Módulo B: diseño del esquema distribuido}
+
+    \textbf{Entrada:} modelo entidad-relación consolidado en E1.\\
+    \textbf{Procedimiento:}
+    \begin{enumerate}
+        \item Identificar la tabla \emph{de mayor cardinalidad} y su patrón de acceso predominante (rango temporal, geográfico, categorial).
+        \item Definir el esquema de fragmentación horizontal con clausulas \texttt{PARTITION BY RANGE} o \texttt{PARTITION BY LIST} de CockroachDB~\cite{CockroachDocs2024}.
+        \item Establecer colocalización con \texttt{INTERLEAVE IN PARENT} o mediante índices geo-particionados cuando corresponda al dominio.
+        \item Fijar el factor de replicación en 3 (por defecto) mediante \texttt{ALTER RANGE default CONFIGURE ZONE USING num\_replicas = 3}.
+        \item Documentar la decisión en un \emph{Architectural Decisión Record} (ADR) siguiendo la plantilla de Nygard, almacenado en \texttt{docs/adr/ADR-003-fragmentación.md}.
+    \end{enumerate}
+    \textbf{Salida esperada:} script \texttt{db/schema.sql} versionado, ADR firmado y diagrama del esquema en \texttt{docs/diagrams/db-schema.drawio.png}.
+
+\subsection{Módulo C: cluster CockroachDB con Docker Compose}
+
+    \textbf{Procedimiento:} añadir al \texttt{docker-compose.yml} de E2 tres nodos CockroachDB y un servicio de inicialización, tal como se muestra en el Listado~\ref{lst:crdb-compose}.
+    \begin{lstlisting}[language=yaml,caption={Extensión del docker-compose.yml de E2 con el cluster CockroachDB.},label={lst:crdb-compose}]
+services:
+  crdb-1:
+    image: cockroachdb/cockroach:v23.2.4
+    command: start --insecure --advertise-addr=crdb-1
+             --join=crdb-1,crdb-2,crdb-3
+             --http-addr=0.0.0.0:8081
+    ports: ["26257:26257", "8081:8081"]
+    volumes: ["crdb1-data:/cockroach/cockroach-data"]
+    networks: [pfc-net]
+
+  crdb-2:
+    image: cockroachdb/cockroach:v23.2.4
+    command: start --insecure --advertise-addr=crdb-2
+             --join=crdb-1,crdb-2,crdb-3
+    volumes: ["crdb2-data:/cockroach/cockroach-data"]
+    networks: [pfc-net]
+
+  crdb-3:
+    image: cockroachdb/cockroach:v23.2.4
+    command: start --insecure --advertise-addr=crdb-3
+             --join=crdb-1,crdb-2,crdb-3
+    volumes: ["crdb3-data:/cockroach/cockroach-data"]
+    networks: [pfc-net]
+
+  crdb-init:
+    image: cockroachdb/cockroach:v23.2.4
+    depends_on: [crdb-1, crdb-2, crdb-3]
+    entrypoint: /bin/sh
+    command: -c "sleep 5 && cockroach init
+             --insecure --host=crdb-1
+             && cockroach sql --insecure --host=crdb-1
+             -f /docker-entrypoint-initdb.d/schema.sql"
+    volumes: ["./db:/docker-entrypoint-initdb.d"]
+    networks: [pfc-net]
+
+volumes:
+  crdb1-data: {}
+  crdb2-data: {}
+  crdb3-data: {}
+
+networks:
+  pfc-net: {}
+    \end{lstlisting}
+    \textbf{Verificación:} desde el nodo líder ejecutar \texttt{cockroach node status --insecure} y confirmar que los tres nodos aparecen como \texttt{is\_live=true} y \texttt{is\_available=true}.
+
+\subsection{Módulo D: verificación experimental de tolerancia a fallos}
+
+    Este módulo produce evidencia audiovisual y numérica del comportamiento Raft.
+    \begin{enumerate}
+        \item Con \texttt{docker compose up -d} levantar el sistema completo.
+        \item Poblar la tabla de mayor cardinalidad con al menos $10^5$ filas usando un generador reproducible.
+        \item Grabar en vídeo: (a) consulta \texttt{SELECT COUNT(*)} exitosa; (b) parada abrupta de un nodo con \texttt{docker kill crdb-2}; (c) reconsulta que debe seguir siendo exitosa; (d) reincorporación con \texttt{docker start crdb-2} y espera de la reconvergencia.
+        \item Registrar en la tabla de resultados la latencia observada antes, durante y después del fallo.
+        \item Ejecutar la misma prueba deteniendo dos nodos: se espera pérdida de disponibilidad (comportamiento CP consistente con~\cite{Taft2020CockroachDB}).
+    \end{enumerate}
+    \textbf{Salida esperada:} vídeo en \path{docs/evidencias/tolerancia_fallos.mp4} y bitacora \path{docs/evidencias/tolerancia_fallos.md}.
+
+\subsection{Módulo E: pipeline analitico paralelo}
+
+    \textbf{Procedimiento:}
+    \begin{enumerate}
+        \item Crear \texttt{spark/} en el repositorio con un script \texttt{pipeline.py} (PySpark) y un notebook \texttt{análisis.ipynb} equivalente.
+        \item Extraer datos del cluster mediante el conector JDBC PostgreSQL configurando particiones de lectura por rango.
+        \item Aplicar \textbf{exactamente} cinco transformaciones: filtrado, joins entre tablas colocalizadas, agregacion con ventanas, transformación de tipos temporales y una operación de \texttt{ml} (\texttt{StringIndexer}, \texttt{Bucketizer} o similar).
+        \item Persistir la salida en formato Parquet en \texttt{spark/out/}.
+        \item Implementar el \emph{baseline secuencial} equivalente con \texttt{pandas} en \texttt{spark/baseline.py}.
+    \end{enumerate}
+    El Listado~\ref{lst:spark} muestra el esqueleto mínimo del pipeline.
+    \begin{lstlisting}[language=Python,caption={Esqueleto de \texttt{spark/pipeline.py}.},label={lst:spark}]
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+import time
+
+def run(url, user, password, table, k):
+    spark = (SparkSession.builder
+             .appName("pfc-e3-pipeline")
+             .master(f"local[{k}]")
+             .config("spark.sql.shuffle.partitions", 8)
+             .getOrCreate())
+    t0 = time.perf_counter()
+    df = (spark.read.format("jdbc")
+          .option("url", url).option("dbtable", table)
+          .option("user", user).option("password", password)
+          .option("driver", "org.postgresql.Driver")
+          .option("partitionColumn", "id")
+          .option("lowerBound", 1).option("upperBound", 5_000_000)
+          .option("numPartitions", 16).load())
+    t1 = df.filter(F.col("estado") == "OK")
+    t2 = t1.groupBy("categoria").agg(F.count("*").alias("n"),
+                                     F.avg("monto").alias("prom"))
+    w  = Window.partitionBy("categoria").orderBy(F.desc("prom"))
+    t3 = t2.withColumn("rk", F.row_number().over(w))
+    t4 = t3.withColumn("dia", F.to_date("fecha"))
+    t5 = t4.filter(F.col("rk") <= 10)
+    t5.write.mode("overwrite").parquet("out/topN")
+    t_end = time.perf_counter() - t0
+    print(f"cores={k}  t_total_s={t_end:.3f}")
+    spark.stop()
+    return t_end
+    \end{lstlisting}
+
+\subsection{Módulo F: protocolo experimental (rigor JCR)}
+
+    Para que los resultados sean defendibles como evidencia empírica, el equipo debe seguir el siguiente protocolo:
+    \begin{enumerate}
+        \item \textbf{Hipótesis operativa:} $H_1$ el pipeline paralelo con $N$ cores presenta menor tiempo medio de ejecución que el baseline secuencial para $|D|\ge 5\cdot 10^5$ registros; $H_0$ no hay diferencia.
+        \item \textbf{Variables:} independiente $N\in\{1,2,4,8\}$; dependientes tiempo total $t$, tiempo por transformación $t_i$, uso de CPU y memoria residente.
+        \item \textbf{Diseño:} bloque completo con $r=10$ repeticiones por nivel de $N$; se descartan la primera y última repetición (calentamiento y enfriamiento).
+        \item \textbf{Análisis:} media $\bar{t}$, desviación típica $s$, intervalo de confianza al 95\% $\bar{t}\pm 1.96\cdot s/\sqrt{r}$; contraste con prueba $t$ pareada si se cumple normalidad, Wilcoxon en caso contrario.
+        \item \textbf{Amenazas a la validez:} listar como mínimo tres amenazas internas (calentamiento JVM, ruido del sistema anfitrion, caché OS) y dos externas (representatividad del dataset, generalidad a otras cargas).
+    \end{enumerate}
+    Este protocolo sigue las recomendaciones de Jain~\cite{Jain1991Perf} y Wohlin~et~al.~\cite{Wohlin2012Experimentation} y se documenta en \texttt{docs/experimentos/protocolo.md}.
+
+\subsection{Módulo G: instrumentación de métricas incrementales}
+
+    Extender el endpoint \texttt{/metrics} del microservicio principal (heredado de E2) con nuevas métricas Prometheus:
+    \begin{itemize}
+        \item \texttt{crdb\_query\_duration\_seconds} (\textit{histogram}, buckets 5\,ms--2\,s).
+        \item \texttt{crdb\_transaction\_retries\_total} (\textit{counter}).
+        \item \texttt{crdb\_pool\_active\_connections} (\textit{gauge}).
+    \end{itemize}
+    Estas métricas se emplearan tal cual en la E4 para construir el dashboard consolidado; por eso se instrumentan aqui y no después.
+
+\section{Documento LaTeX exigido}
+
+    El manuscrito de E3 se estructura como un \emph{reporte experimental}, con las secciones minimas de la Tabla~\ref{tab:doc-e3}. El texto debe tener al menos 15 páginas de contenido (sin portada ni bibliografía) y como mínimo 10 referencias, de las cuales al menos seis provienen de revistas o conferencias indexadas (IEEE Xplore, ACM DL, Springer, Elsevier). El estilo bibliografico es IEEE (biblatex \texttt{IEEEtran} o bibtex \texttt{ieeetr}).
+
+    \renewcommand{\arraystretch}{1.15}
+    \begin{xltabular}{\linewidth}{@{}p{3.2cm} X p{1.5cm}@{}}
+        \caption{Estructura mínima del manuscrito LaTeX de la Entrega 3.}
+        \label{tab:doc-e3}\\
+        \toprule
+        \textbf{Sección} & \textbf{Contenido} & \textbf{Páginas ref.}\\
+        \midrule
+        \endfirsthead
+        \toprule
+        \textbf{Sección} & \textbf{Contenido} & \textbf{Páginas ref.}\\
+        \midrule
+        \endhead
+        \bottomrule
+        \endfoot
+        Resumen & Español + ingles, $\le 200$ palabras cada uno, estructurado objetivo-método-resultado-conclusion. & 1\\
+        Introducción & Contexto acumulativo (que se hereda de E1--E2), problema abordado en E3, contribuciones. & 1--1.5\\
+        Trabajos relacionados & Al menos 5 fuentes indexadas sobre BDD, CockroachDB, Spark, Amdahl. & 1--1.5\\
+        Fundamento teórico & Los cuatro bloques de la Sección~4 con notacion y citas. & 2--2.5\\
+        Diseño del esquema distribuido & Fragmentación, replicación, ADR, diagrama del esquema. & 1.5--2\\
+        Cluster y su verificación & Módulo C y D, con capturas y bitacora del vídeo. & 1.5--2\\
+        Pipeline paralelo & Módulo E; código en lstlisting; explicación de cada transformación. & 2--2.5\\
+        Protocolo y resultados & Módulo F; tabla de mediciones, ecuación~\eqref{eq:amdahl}, IC 95\%. & 2.5--3\\
+        Discusión & Interpretación, amenazas a la validez, limitaciones. & 1--1.5\\
+        Conclusiones e integración con E4 & Que artefactos de E3 se reutilizan en E4. & 0.5--1\\
+        Bibliografía & IEEE, $\ge 10$ referencias, la mayoría con DOI resoluble. & ---\\
+    \end{xltabular}
+
+\section{Estructura del repositorio}
+
+    El repositorio de E3 es la \textbf{misma} instancia iniciada en E1 y ampliada en E2; se crea la rama \texttt{feature/entrega-3} y, al final, se fusiona a \texttt{main} por \emph{pull request} con revisión cruzada entre integrantes. El Listado~\ref{lst:repo-e3} muestra la estructura resultante después del \emph{merge} de esta entrega.
+    \begin{lstlisting}[language=bash,caption={Estructura del repositorio después de fusionar E3.},label={lst:repo-e3}]
+proyecto-pfc/
+  README.md                     # actualizado con sección "Entrega 3"
+  LICENSE
+  .env.example                  # incluye credenciales del cluster
+  docker-compose.yml            # ampliado con cluster CockroachDB
+  docs/
+    adr/
+      ADR-001-arquitectura.md   # heredado de E1
+      ADR-002-microservicios.md # heredado de E2
+      ADR-003-fragmentación.md  # nuevo
+      ADR-004-consenso-raft.md  # nuevo
+    api/
+      openapi.yaml              # heredado de E2, con nuevas rutas si aplica
+    db/
+      schema.sql                # nuevo
+      seeds.sql                 # nuevo
+      diagrams/
+        db-schema.drawio.png    # nuevo
+    diagrams/
+      c4-nivel2.drawio.png      # heredado de E1
+      c4-nivel3.drawio.png      # actualizado con el cluster
+    evidencias/
+      tolerancia_fallos.mp4     # nuevo
+      tolerancia_fallos.md      # nuevo
+    experimentos/
+      protocolo.md              # nuevo
+      resultados/
+        raw.csv                 # datos crudos
+        boxplot.png             # figura para el manuscrito
+    entrega1/  entrega2/  entrega3/    # snapshots de PDFs
+  services/
+    resource-service/           # microservicio principal de E2, refactorizado
+    auth-service/               # sin cambios
+    notification-service/       # sin cambios
+  spark/
+    pipeline.py                 # nuevo
+    baseline.py                 # nuevo
+    requirements.txt            # nuevo
+    análisis.ipynb              # nuevo
+    out/                        # ignorado por git
+  tests/
+    integration/                # heredado, ahora con Testcontainers CRDB
+    load/                       # heredado
+  .github/
+    workflows/
+      ci.yml                    # heredado de E2, con job "crdb-tests"
+    \end{lstlisting}
+
+\section{Rúbrica de evaluación}
+
+    La rúbrica opera con siete dimensiones, dieciseis criterios y cinco niveles (0 a 4). Se aplica la fórmula estándar de la asignatura:
+    \begin{equation}
+        \text{Nota}_{/10} = \left[ \frac{\sum_i w_i \cdot n_i}{4} \right] \cdot 10 \quad , \quad \sum_i w_i = 1.0
+        \label{eq:nota}
+    \end{equation}
+    donde $w_i$ es el peso del criterio $i$ y $n_i \in \{0,1,2,3,4\}$ es su nivel alcanzado. La ausencia de un indicador se puntua CERO en el criterio correspondiente; esta condición es no negociable y coherente con la política de la asignatura.
+
+    \renewcommand{\arraystretch}{1.2}
+    \small
+    \begin{xltabular}{\linewidth}{@{}p{0.9cm} p{4.6cm} X p{1cm}@{}}
+        \caption{Rúbrica de evaluación de la Entrega 3.}
+        \label{tab:rúbrica-e3}\\
+        \toprule
+        \textbf{Dim.} & \textbf{Criterio} & \textbf{Indicador clave nivel 4} & \textbf{Peso}\\
+        \midrule
+        \endfirsthead
+        \toprule
+        \textbf{Dim.} & \textbf{Criterio} & \textbf{Indicador clave nivel 4} & \textbf{Peso}\\
+        \midrule
+        \endhead
+        \bottomrule
+        \endfoot
+        D1 & 1.1 Esquema distribuido y fragmentación & Estrategia justificada por patrón de acceso, con ADR y colocalización & 9\%\\
+           & 1.2 Diseño de replicación y factor Raft & Factor $f=3$, discusión de quórum, tolerancia demostrada & 8\%\\
+        D2 & 2.1 Cluster de 3 nodos funcionando & \texttt{node status} verde, esquema aplicado, healthchecks pasan & 8\%\\
+           & 2.2 Verificación de tolerancia a fallos & Vídeo + bitacora, latencia registrada, prueba con 2 nodos caidos & 10\%\\
+        D3 & 3.1 Integración microservicio $\to$ cluster & Refactor limpio, Testcontainers en verde, transacciones serializable & 8\%\\
+           & 3.2 Métricas Prometheus incrementales & Los 3 instrumentos exigidos exportados y validados con \texttt{promtool} & 4\%\\
+        D4 & 4.1 Pipeline PySpark completo & Las 5 transformaciones, salida en Parquet, notebook reproducible & 10\%\\
+           & 4.2 Baseline pandas y comparativa & Ambos scripts, mismos datos, resultados numéricos comparables & 4\%\\
+           & 4.3 Protocolo experimental JCR & $r=10$ repeticiones, IC 95\%, contraste estadístico, amenazas & 8\%\\
+        D5 & 5.1 Estructura del manuscrito & Todas las secciones de la Tabla~\ref{tab:doc-e3}, resumen bilingue & 5\%\\
+           & 5.2 Uso de LaTeX y calidad tipografica & Compila limpio, figuras con \texttt{\textbackslash caption/\textbackslash label}, tablas booktabs, \texttt{listings} & 4\%\\
+           & 5.3 Bibliografía & IEEE, $\ge 10$ referencias, $\ge 6$ indexadas con DOI resoluble & 4\%\\
+        D6 & 6.1 Repositorio y trazabilidad & Ramas, PR con revisión cruzada, commits equilibrados por integrante & 4\%\\
+           & 6.2 Reproducibilidad & \texttt{docker compose up} levanta todo, README actualizado, semillas deterministas & 4\%\\
+        D7 & 7.1 Defensa oral (grupal) & Todos los integrantes responden preguntas técnicas sin leer & 6\%\\
+           & 7.2 Ética y honestidad académica & Declaración de uso de IA, atribución correcta, ausencia de plagio & 4\%\\
+    \end{xltabular}
+    \normalsize
+
+\section{Anexos}
+
+\subsection*{Anexo A. Lista de verificación final}
+
+    \begin{itemize}
+        \item[$\square$] Rama \texttt{feature/entrega-3} fusionada a \texttt{main} por PR con revisión.
+        \item[$\square$] Cluster de 3 nodos operativo con \texttt{docker compose up -d}.
+        \item[$\square$] Esquema aplicado con la estrategia de fragmentación documentada en ADR.
+        \item[$\square$] Vídeo de tolerancia a fallos $\le$ 5 minutos, con audio explicativo.
+        \item[$\square$] Pipeline PySpark y baseline pandas ejecutan sin error sobre el dataset de referencia.
+        \item[$\square$] Tabla de resultados con al menos $10$ repeticiones por nivel de $N$.
+        \item[$\square$] Manuscrito LaTeX compila sin errores; $\ge 15$ páginas de contenido.
+        \item[$\square$] Bibliografía con $\ge 10$ referencias IEEE y $\ge 6$ con DOI verificado.
+        \item[$\square$] Repositorio con README actualizado y \texttt{.env.example} vigente.
+    \end{itemize}
+
+\subsection*{Anexo B. Preguntas obligatorias para la defensa}
+
+    \begin{enumerate}
+        \item Explique como el algoritmo Raft garantiza consistencia serializable en su cluster ante la caída de un nodo, apoyándose en su bitacora experimental.
+        \item Justifique la clave de particionado elegida en su tabla principal a partir del patrón de acceso del PFC y estime el impacto en las consultas de referencia.
+        \item Presente la Ley de Amdahl con los valores de $p$ estimados a partir de sus mediciones y calcule el número de cores con el cual se alcanza el 90\% del speedup teórico máximo.
+        \item Discuta al menos tres amenazas a la validez interna de su experimento y como las mitigo.
+        \item Indique que artefactos de esta entrega serán consumidos, directamente y sin modificacion, por la Entrega 4.
+    \end{enumerate}
+
+\bibliographystyle{ieeetr}
+\bibliography{references_PFC}
+
+\end{document}

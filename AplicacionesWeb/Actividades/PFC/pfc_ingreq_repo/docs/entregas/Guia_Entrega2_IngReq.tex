@@ -1,0 +1,382 @@
+\documentclass[11pt,a4paper]{article}
+\input{preamble_ingreq}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textcolor{uteqverde}{Ingenier\'ia de Requisitos --- Cuarto nivel --- PPA 2026-2027}}
+\rhead{\footnotesize\textcolor{uteqverde}{PFC --- Gu\'ia de la Segunda Entrega}}
+\rfoot{\thepage}
+\lfoot{\footnotesize UTEQ --- FCCDD --- Software}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\hypersetup{
+    pdftitle={Guia de la Segunda Entrega del PFC --- Ingenieria de Requisitos},
+    pdfauthor={Dr. Gleiston Guerrero Ulloa},
+    pdfsubject={Segunda Entrega del Proyecto Fin de Curso},
+    pdfkeywords={PFC, Ingenieria de Requisitos, Volere, RF, RNF, matriz de trazabilidad, MoSCoW, Kano}
+}
+
+\begin{document}
+
+\begin{center}
+    \vspace*{1.2cm}
+    {\Large\bfseries\textcolor{uteqverde}{UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}}\\[4pt]
+    {\large Facultad de Ciencias de la Computaci\'on y Dise\~no Digital}\\[2pt]
+    {\large Carrera de Ingenier\'ia de Software}\\[22pt]
+
+    {\LARGE\bfseries Gu\'ia de la Segunda Entrega del}\\[6pt]
+    {\LARGE\bfseries Proyecto Fin de Curso (PFC)}\\[16pt]
+
+    {\large Ingenier\'ia de Requisitos --- Cuarto nivel}\\[2pt]
+    {\large Per\'iodo Acad\'emico Presencial 2026-2027}\\[22pt]
+
+    \begin{tcolorbox}[colback=uteqverde!8,colframe=uteqverde,arc=3pt,
+                      width=0.88\textwidth,boxrule=0.8pt]
+        \centering
+        \textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[2pt]
+        \texttt{gguerrero@uteq.edu.ec}\\[6pt]
+        \textbf{Etiqueta objetivo:} \texttt{v0.5.0}\\[2pt]
+        \textbf{Fecha de cierre:} viernes de la semana 8\\[2pt]
+        \textbf{Continua desde:} Entrega 1 (\texttt{v0.2.0}, semana 4)\\[2pt]
+        \textbf{Precede a:} Entrega 3 (\texttt{v0.8.0-rc}, semana 12)\\[2pt]
+        \textbf{Referencia de calidad:} \texttt{IngReq-Modelo.pdf} secciones 4, 5.1, 5.2, 5.3, 5.4 y Anexos B, C, D
+    \end{tcolorbox}
+
+    \vfill
+    {\small Quevedo --- Los R\'ios --- Ecuador}\\[2pt]
+    {\small 2026}
+\end{center}
+
+\newpage
+\tableofcontents
+\newpage
+
+% =====================================================================
+%  1. NATURALEZA
+% =====================================================================
+\section{Naturaleza y ubicaci\'on temporal de la Segunda Entrega}
+
+La Segunda Entrega convierte los instrumentos de elicitaci\'on aprobados en la Entrega 1 en un cuerpo formal de requisitos verificables, trazables y priorizados. Se cierra el viernes de la semana 8 con la etiqueta \texttt{v0.5.0} sobre el repositorio p\'ublico del equipo. Todos los artefactos producidos en esta entrega deben cumplir la cl\'ausula 6.4 de la norma ISO/IEC/IEEE 29148:2018 (definici\'on de requisitos del sistema o software) y las cuarenta y una reglas del INCOSE GtWR v4~\cite{iso29148,incose2023requirements}.
+
+El equipo dedica esta entrega a tres actividades secuenciales y no negociables. Primero, aplica en campo los instrumentos preparados en la Entrega 1: realiza las entrevistas, aplica la encuesta y revisa la documentaci\'on institucional identificada. Segundo, transforma los datos recolectados en requisitos formales, cada uno redactado con la plantilla Volere completa y clasificado en las cinco categor\'ias reconocidas por el proyecto modelo. Tercero, establece las relaciones cruzadas entre requisitos, fuentes, actores y casos de uso previstos, y aplica dos t\'ecnicas de priorizaci\'on complementarias (MoSCoW y Kano).
+
+\begin{cajadefinicion}{Regla de continuidad con la Entrega 1}
+Antes de aplicar cualquier r\'ubrica de esta entrega, el docente verificar\'a que todas las observaciones abiertas en \texttt{docs/observaciones/OBSERVACIONES.md} desde la Entrega 1 est\'en marcadas como \texttt{RESUELTAS} o \texttt{DIFERIDAS} con justificaci\'on. Una observaci\'on \texttt{ABIERTA} sin \emph{commit} de resoluci\'on impide iniciar la evaluaci\'on de esta entrega y provoca la reducci\'on autom\'atica de un nivel en el criterio C0.
+\end{cajadefinicion}
+
+% =====================================================================
+%  2. BLOQUE A --- ELICITACION APLICADA
+% =====================================================================
+\section{Bloque A --- Elicitaci\'on aplicada con \emph{stakeholders} reales}
+
+\subsection{Aplicaci\'on de entrevistas semi-estructuradas}
+
+El equipo aplicar\'a entre cinco y siete entrevistas semi-estructuradas siguiendo el guion aprobado en la Entrega 1. Cada entrevista se grabar\'a con consentimiento firmado por el participante, tendr\'a una duraci\'on de entre veinte y cuarenta y cinco minutos, y ser\'a transcrita \'integramente por el equipo. La transcripci\'on se guarda en Google Drive privado del equipo, no en el repositorio p\'ublico, para preservar la confidencialidad. En el repositorio se archiva un resumen tem\'atico por entrevista, siguiendo el patr\'on aplicado por el proyecto modelo en su Anexo C~\cite{hove2005interviews}.
+
+El resumen tem\'atico de cada entrevista se organiza en secciones tem\'aticas identificadas durante la codificaci\'on abierta de la transcripci\'on. Cada secci\'on debe contener entre dos y seis afirmaciones sustantivas, redactadas en tercera persona, sin adornos, y sin interpretaci\'on adicional. El proyecto modelo aporta ejemplos concretos: en su Anexo C.7.3.1 aparecen los resumenes tem\'aticos de una coordinadora y cuatro docentes con categor\'ias como \emph{Experiencia y rol}, \emph{Manejo actual}, \emph{Limitaciones}, \emph{Funcionalidades deseadas}, \emph{Reglas y controles}, e \emph{Impacto esperado}.
+
+\begin{cajaentregable}{Entregable A.1 --- Res\'umenes de entrevistas}
+Archivos obligatorios en \texttt{docs/requisitos/elicitacion/entrevistas/}:
+\begin{itemize}
+    \item \texttt{ENT-01-<rol>.md} hasta \texttt{ENT-NN-<rol>.md}: un archivo por entrevista, con estructura de secciones tem\'aticas.
+    \item \texttt{INDICE.md}: tabla \'indice con c\'odigo, nombre del entrevistado, rol, fecha, duraci\'on, canal (presencial/virtual) y estado del consentimiento firmado.
+    \item \texttt{consentimientos/}: copia digitalizada firmada de los consentimientos (formato PDF, un archivo por participante).
+\end{itemize}
+\end{cajaentregable}
+
+\subsection{Aplicaci\'on de encuestas al usuario final masivo}
+
+La encuesta preparada en la Entrega 1 se difundir\'a por los canales institucionales acordados con el docente. El equipo debe alcanzar al menos treinta respuestas v\'alidas o el diez por ciento del universo, lo que sea menor, con un piso absoluto de veinte respuestas. El proyecto modelo alcanz\'o cuarenta respuestas de estudiantes de un semestre, cifra que se considera excelente para un PFC de esta naturaleza.
+
+El an\'alisis de la encuesta debe reportar, para cada pregunta, la distribuci\'on de respuestas con porcentajes y n\'umeros absolutos, y para las preguntas abiertas debe reportar los c\'odigos emergentes tras codificaci\'on abierta y su frecuencia. Los gr\'aficos que acompa\~nan al an\'alisis (barras, pastel, histogramas) deben generarse en formato vectorial reproducible desde un script en \texttt{scripts/analisis-encuesta.py} o desde una hoja de c\'alculo abierta en Google Sheets con permisos de solo lectura para el docente~\cite{kitchenham2008surveys}.
+
+\begin{cajaentregable}{Entregable A.2 --- An\'alisis de encuesta}
+Archivos obligatorios en \texttt{docs/requisitos/elicitacion/encuestas/}:
+\begin{itemize}
+    \item \texttt{RESUMEN-ENCUESTA.md}: resumen ejecutivo con conteo total, tasa de respuesta y hallazgos por pregunta.
+    \item \texttt{respuestas-crudas.csv}: exportaci\'on cruda del formulario (con anonimizaci\'on de datos personales).
+    \item \texttt{graficos/}: los gr\'aficos generados en PNG y SVG.
+    \item \texttt{analisis-encuesta.py} o \texttt{analisis-encuesta.ipynb}: c\'odigo reproducible del an\'alisis.
+\end{itemize}
+\end{cajaentregable}
+
+\subsection{Revisi\'on documental normativa}
+
+El equipo revisar\'a los reglamentos, pol\'iticas y documentos institucionales aplicables al dominio. Para PFC en el dominio acad\'emico de la UTEQ es obligatoria la revisi\'on del Reglamento del Consejo de Educaci\'on Superior RPC-SO-44-No.586-2015~\cite{ces2015reglamento} y del Reglamento Interno vigente de la UTEQ. Para dominios corporativos privados, se revisar\'an los reglamentos internos de la organizaci\'on y la normativa ecuatoriana aplicable (Ley Org\'anica de Protecci\'on de Datos Personales, cuando corresponda).
+
+El producto de la revisi\'on documental es una tabla de \emph{requisitos normativos derivados}, donde cada fila contiene el art\'iculo o cl\'ausula fuente, el requisito derivado, y su car\'acter (obligatorio o recomendado). Estos requisitos alimentan directamente el listado de requisitos de proceso y algunos de los requisitos no funcionales.
+
+% =====================================================================
+%  3. BLOQUE B --- ESPECIFICACION VOLERE
+% =====================================================================
+\section{Bloque B --- Especificaci\'on de requisitos con plantilla Volere}
+
+Cada requisito identificado se documentar\'a con la plantilla Volere adaptada por el proyecto modelo. La plantilla contiene once campos que deben rellenarse siempre; no se aceptan requisitos con campos vac\'ios (excepto \emph{Interesados secundarios} cuando no aplican).
+
+\begin{cajaconcepto}{Plantilla Volere (obligatoria por requisito)}
+\begin{tabular}{@{}l@{~~$\to$~~}p{9.4cm}@{}}
+ID del Requisito & Codigo unico (por ejemplo RF-01, RNF-01, RI-01, RU-01, RP-01)\\
+Nombre & Frase nominal corta que identifica el requisito\\
+Tipo & Funcional, No funcional, Interfaz, Usabilidad o Proceso\\
+Descripcion & Redaccion completa siguiendo el patron 29148 (condicion, sujeto, deber+accion, objeto, restriccion)\\
+Rationale (Justificacion) & Por que este requisito es necesario para el proyecto\\
+Criterios de aceptacion & Condiciones verificables de que el requisito esta cumplido\\
+Prioridad & Alta, Media o Baja (primera aproximacion; luego se cruzara con MoSCoW y Kano)\\
+Fuente & De donde salio: entrevista, encuesta, normativa, analisis funcional\\
+Restricciones & Condiciones limite bajo las que aplica el requisito\\
+Responsable / Actor principal & Rol que ejecuta o dispara la funcionalidad\\
+Interesados secundarios & Otros roles impactados por el requisito\\
+\end{tabular}
+\end{cajaconcepto}
+
+\subsection{Categor\'ias obligatorias y volumen esperado}
+
+Los requisitos deben clasificarse en cinco categor\'ias siguiendo el patr\'on del proyecto modelo. La Tabla~\ref{tab:categorias} indica el nombre, prefijo de c\'odigo, cantidad m\'inima esperable para un PFC de esta escala y la referencia autoritativa que sustenta la categor\'ia.
+
+\begin{table}[htbp]
+\centering
+\caption{Categor\'ias de requisitos y volumen m\'inimo esperable.}
+\label{tab:categorias}
+\rowcolors{2}{grisfila}{white}
+\begin{tabularx}{\textwidth}{L{4.2cm}C{1.4cm}C{2.4cm}X}
+\toprule
+\rowcolor{uteqverde!25}
+\textbf{Categor\'ia} & \textbf{Prefijo} & \textbf{M\'inimo} & \textbf{Referencia autoritativa}\\
+\midrule
+Requisitos funcionales (RF) & RF & 20 & Cl\'ausula 6.4.2 de ISO 29148:2018~\cite{iso29148}, cap. 6 de Wiegers y Beatty~\cite{wiegers2013software}\\
+Requisitos no funcionales (RNF) & RNF & 6 & Cl\'ausula 6.4.3 de ISO 29148:2018, ISO 25010:2011, Shankar y otros~\cite{shankar2020nfr}\\
+Requisitos de interfaz (RI) & RI & 8 & Cl\'ausula 6.4.4 de ISO 29148:2018, Hix y otros~\cite{hix1994customer}\\
+Requisitos de usabilidad (RU) & RU & 4 & Juristo 2009~\cite{juristo2009usability}, Cooper y otros~\cite{cooper2007about}, Carroll y Rosson~\cite{carroll2014handbook}\\
+Requisitos de proceso (RP) & RP & 5 & Sommerville~\cite{sommerville2011software}, Dick y otros~\cite{dick2017requirements}, Pohl~\cite{pohl2010requirements}\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+El proyecto modelo tiene 26 RF, 3 RNF, 11 RI, 5 RU y 8 RP para un dominio acot\'ado. Los conteos m\'inimos exigidos por esta gu\'ia son inferiores para no forzar la sobre-especificaci\'on de dominios menos ricos, pero un dominio corporativo o acad\'emico serio dif\'icilmente alcanzar\'a menos de veinte RF si la elicitaci\'on ha sido completa.
+
+\subsection{Redacci\'on conforme a INCOSE v4}
+
+Cada descripci\'on de requisito debe cumplir con las cinco reglas m\'as importantes de la cuarta versi\'on del INCOSE Guide to Writing Requirements~\cite{incose2023requirements}: R1 (estructura de patr\'on 29148), R2 (voz activa con sujeto responsable identificado), R6 (usar ``deber\'a''; evitar ``debe'', ``deber\'ia'' y ``puede''), R7 (evitar t\'erminos vagos como ``r\'apido'', ``eficiente'', ``adecuado''), y R15 (usar convenciones l\'ogicas claras para AND, OR y XOR). Adem\'as debe respetarse R16 (evitar el uso de ``no'') y R17 (evitar el s\'imbolo oblicuo ``/'' fuera de unidades).
+
+\begin{cajaconcepto}{Patr\'on can\'onico de redacci\'on 29148:2018}
+Al recibir la se\~nal x [Condici\'on], el sistema [Sujeto] deber\'a establecer [Acci\'on] el bit ``se\~nal x recibida'' [Objeto] en un plazo m\'aximo de 2 segundos [Restricci\'on].
+\end{cajaconcepto}
+
+Se rechazar\'a cualquier requisito redactado con estructura de t\'itulo nominal (por ejemplo ``Registro de solicitud''). El nombre puede ser nominal (como el campo \emph{Nombre} de la plantilla Volere), pero la descripci\'on debe ser una oraci\'on completa con ``deber\'a''.
+
+\subsection{Ejemplo aplicado del proyecto modelo}
+
+La Tabla~\ref{tab:ejemplovolere} reproduce el requisito RF-01 del proyecto modelo (Tabla D1.1 del Anexo D) con todos sus campos completos. Este ejemplo debe usarse como patr\'on de calidad al redactar los propios requisitos del equipo.
+
+\begin{table}[htbp]
+\centering
+\caption{Ejemplo de aplicaci\'on de la plantilla Volere (RF-01 del proyecto modelo).}
+\label{tab:ejemplovolere}
+\rowcolors{2}{grisfila}{white}
+\begin{tabularx}{\textwidth}{L{3.7cm}X}
+\toprule
+\rowcolor{uteqverde!25}
+\textbf{Campo} & \textbf{Contenido}\\
+\midrule
+ID del Requisito & RF-01\\
+Nombre & Registro de solicitud de tutor\'ia\\
+Tipo & Funcional\\
+Descripci\'on & El estudiante deber\'a registrar una solicitud de tutor\'ia seleccionando la asignatura, el tema o motivo, la hora de disponibilidad, su preferencia para el tipo (individual o grupal), la modalidad (presencial o virtual) y cargar un archivo cuando sea necesario.\\
+Rationale (Justificaci\'on) & Es la funcionalidad central para formalizar las solicitudes de tutor\'ia y garantizar trazabilidad.\\
+Criterios de aceptaci\'on & El formulario valida campos obligatorios; la solicitud queda registrada en la base de datos; se genera notificaci\'on al docente correspondiente.\\
+Prioridad & Alta\\
+Fuente & Encuesta estudiantil (n=40, junio 2025)\\
+Restricciones & Solo se pueden solicitar tutor\'ias de asignaturas activas en el ciclo acad\'emico vigente.\\
+Responsable / Actor principal & Estudiante\\
+Interesados secundarios & Docente, Coordinaci\'on acad\'emica\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{cajaentregable}{Entregable B.1 --- Especificaci\'on Volere completa}
+Archivos obligatorios en \texttt{docs/requisitos/especificacion/}:
+\begin{itemize}
+    \item \texttt{RF.md}: todos los requisitos funcionales, uno por bloque estructurado.
+    \item \texttt{RNF.md}: todos los requisitos no funcionales.
+    \item \texttt{RI.md}: todos los requisitos de interfaz.
+    \item \texttt{RU.md}: todos los requisitos de usabilidad.
+    \item \texttt{RP.md}: todos los requisitos de proceso.
+    \item \texttt{VOLERE-FULL.tex}: la especificaci\'on completa compilable a PDF con formato acad\'emico (SRS-v0.5.0.pdf).
+\end{itemize}
+\end{cajaentregable}
+
+% =====================================================================
+%  4. BLOQUE C --- MATRIZ DE TRAZABILIDAD
+% =====================================================================
+\section{Bloque C --- Matriz de trazabilidad}
+
+La matriz de trazabilidad establece relaciones cruzadas entre cada requisito, su fuente de origen, el actor principal, los casos de uso a los que se vincular\'a en la Entrega 3, el m\'etodo de verificaci\'on previsto (inspecci\'on, an\'alisis, prueba o demostraci\'on), el nivel de riesgo (alto, medio o bajo) y el estado (aprobado, propuesto, rechazado)~\cite{iso29148,dick2017requirements}. En la Entrega 2 el equipo puede dejar el campo \emph{Caso de uso asociado} como \emph{provisional} hasta que se completen los diagramas UML en la Entrega 3, pero todas las columnas restantes deben estar completas.
+
+Se producir\'a una matriz por cada categor\'ia de requisitos, siguiendo el patr\'on de las Tablas~10, 11, 12 y 13 del proyecto modelo. Las cuatro matrices se compilar\'an en el mismo documento acad\'emico compilado a PDF.
+
+\begin{cajaentregable}{Entregable C.1 --- Matrices de trazabilidad}
+Archivo obligatorio: \texttt{docs/requisitos/especificacion/MATRIZ-TRAZABILIDAD.tex} + PDF compilado. Debe contener cuatro tablas (RF, RNF, RI y RP) con las columnas: \emph{ID, Nombre, Descripci\'on, Fuente, Actor Principal, Caso(s) de Uso Asociado(s), M\'etodo de Verificaci\'on, Riesgo, Estado}.
+\end{cajaentregable}
+
+% =====================================================================
+%  5. BLOQUE D --- HISTORIAS DE USUARIO
+% =====================================================================
+\section{Bloque D --- Historias de usuario}
+
+Se producir\'a un conjunto de historias de usuario que capturen las necesidades expresadas por los actores desde su punto de vista. El formato Connextra ``Como [rol], quiero [funcionalidad], para [beneficio]'' de Mike Cohn es de uso obligatorio~\cite{cohn2004userstories}. Cada historia se acompa\~nar\'a de los criterios INVEST (\emph{Independent, Negotiable, Valuable, Estimable, Small, Testable}) y de al menos dos criterios de aceptaci\'on redactados en Gherkin (Given-When-Then).
+
+\begin{cajaconcepto}{Historia de usuario en formato Connextra + Gherkin}
+\textbf{Como} estudiante, \textbf{quiero} consultar el estado de mis solicitudes de tutor\'ia (pendiente, aceptada, rechazada, realizada), \textbf{para} saber en qu\'e situaci\'on se encuentra cada solicitud y cu\'ando debo esperar la respuesta.
+
+\textbf{Criterios de aceptaci\'on (Gherkin):}
+\begin{itemize}
+    \item \textbf{Dado} que soy un estudiante autenticado con solicitudes registradas, \textbf{cuando} accedo a la vista de mis solicitudes, \textbf{entonces} el sistema muestra el estado actualizado de cada una.
+    \item \textbf{Dado} que el docente cambia el estado de una solicitud, \textbf{cuando} el cambio ocurre, \textbf{entonces} el sistema refleja el nuevo estado en la vista del estudiante en menos de treinta segundos.
+\end{itemize}
+\end{cajaconcepto}
+
+El proyecto modelo produce once historias de usuario cubriendo los principales flujos (Tabla~14 del modelo). El m\'inimo esperado para el PFC del equipo es de al menos ocho historias, con distribuci\'on equilibrada entre roles.
+
+\begin{cajaentregable}{Entregable D.1 --- Historias de usuario}
+Archivo obligatorio: \texttt{docs/requisitos/especificacion/HISTORIAS-USUARIO.md} y la tabla resumen en \texttt{HISTORIAS-USUARIO.tex} con las columnas \emph{Historia}, \emph{Requisitos asociados} y \emph{Criterios de aceptaci\'on}.
+\end{cajaentregable}
+
+% =====================================================================
+%  6. BLOQUE E --- PRIORIZACION MoSCoW Y KANO
+% =====================================================================
+\section{Bloque E --- Priorizaci\'on MoSCoW y modelo Kano}
+
+Cada requisito funcional recibir\'a dos priorizaciones complementarias. La priorizaci\'on MoSCoW (\emph{Must, Should, Could, Won't}) se aplica sobre los requisitos con criterio del equipo y de los \emph{stakeholders} para separar lo irrenunciable de lo deseable~\cite{wiegers2013software,cohn2004userstories}. Todos los \emph{Must} deben corresponder a requisitos con prioridad \emph{Alta} en el campo Volere, y viceversa; cualquier incoherencia deber\'a corregirse antes del cierre.
+
+La priorizaci\'on Kano se aplica sobre los mismos requisitos para clasificarlos en \emph{Imprescindibles} (insatisfactores), \emph{Satisfactorios} (unidimensionales) y \emph{Atractivos} (\emph{delighters}) seg\'un el impacto en la satisfacci\'on del usuario final~\cite{kano1984attractive,tan2000kano}. La clasificaci\'on Kano se obtiene mediante conversaciones estructuradas de validaci\'on con \emph{stakeholders}, no por criterio interno del equipo: se debe registrar en \texttt{docs/requisitos/validacion/} el guion de la conversaci\'on Kano y las respuestas de cada participante.
+
+\begin{cajaentregable}{Entregable E.1 --- Priorizaciones}
+Archivo obligatorio: \texttt{docs/requisitos/priorizacion/}.
+\begin{itemize}
+    \item \texttt{MoSCoW.tex} + PDF: tabla con columnas \emph{ID, Nombre, Prioridad Volere, Clasificaci\'on MoSCoW, Justificaci\'on}.
+    \item \texttt{KANO.tex} + PDF: tabla con columnas de las tres categor\'ias, siguiendo el patr\'on de la Tabla~15 del proyecto modelo.
+    \item \texttt{PRIORIZACION-METODO.md}: descripci\'on del procedimiento seguido para aplicar cada priorizaci\'on.
+\end{itemize}
+\end{cajaentregable}
+
+% =====================================================================
+%  7. ESTRUCTURA DEL REPOSITORIO
+% =====================================================================
+\section{Estructura del repositorio al cierre de la Segunda Entrega}
+
+\begin{cajarepo}{Estructura de \'arbol acumulada al final de la Entrega 2}
+\begin{lstlisting}
+pfc-<nombre-corto>/
++-- README.md
++-- CHANGELOG.md   (con seccion Entrega 2)
++-- CITATION.cff
++-- LICENSE
++-- docs/
+|   +-- entregas/
+|   +-- requisitos/
+|   |   +-- PLANTEAMIENTO.md        (de Entrega 1)
+|   |   +-- METODOLOGIA.md          (de Entrega 1)
+|   |   +-- SISTEMA-PROPUESTO.md    (de Entrega 1, actualizado)
+|   |   +-- estado_arte/            (de Entrega 1)
+|   |   +-- elicitacion/
+|   |   |   +-- ENTREVISTA-COORDINACION.md
+|   |   |   +-- ENTREVISTA-OPERATIVO.md
+|   |   |   +-- ENCUESTA-USUARIO.md
+|   |   |   +-- CONSENTIMIENTO-INFORMADO.md
+|   |   |   +-- entrevistas/
+|   |   |   |   +-- ENT-01-coord.md ... ENT-NN-<rol>.md
+|   |   |   |   +-- INDICE.md
+|   |   |   |   +-- consentimientos/
+|   |   |   +-- encuestas/
+|   |   |       +-- RESUMEN-ENCUESTA.md
+|   |   |       +-- respuestas-crudas.csv
+|   |   |       +-- graficos/
+|   |   +-- especificacion/
+|   |   |   +-- RF.md, RNF.md, RI.md, RU.md, RP.md
+|   |   |   +-- VOLERE-FULL.tex   (SRS-v0.5.0.pdf)
+|   |   |   +-- MATRIZ-TRAZABILIDAD.tex
+|   |   |   +-- HISTORIAS-USUARIO.md
+|   |   |   +-- HISTORIAS-USUARIO.tex
+|   |   +-- priorizacion/
+|   |       +-- MoSCoW.tex, KANO.tex, PRIORIZACION-METODO.md
+|   +-- adr/
+|   |   +-- ADR-001-dominio-y-alcance.md   (de Entrega 1)
+|   |   +-- ADR-002-canales-notificacion.md
+|   |   +-- ADR-003-metodologia-priorizacion.md
+|   +-- observaciones/
+|       +-- OBSERVACIONES.md   (con OBS de Entrega 1 resueltas + nuevas de Entrega 2)
++-- scripts/
+|   +-- analisis-encuesta.py
++-- assets/
+|   +-- figuras/
+|   +-- tablas/
++-- .github/
+    +-- workflows/
+        +-- ci-latex.yml
+\end{lstlisting}
+\end{cajarepo}
+
+% =====================================================================
+%  8. RUBRICA DE EVALUACION
+% =====================================================================
+\section{R\'ubrica de evaluaci\'on de la Segunda Entrega}
+
+\begin{longtable}{|L{4.2cm}|C{0.9cm}|L{3.3cm}|L{2.4cm}|L{2.4cm}|L{1.6cm}|}
+\hline
+\rowcolor{uteqverde!25}
+\textbf{Criterio} & \textbf{Peso} & \textbf{Excelente (100\,\%)} & \textbf{Bueno (75\,\%)} & \textbf{En desarrollo (50\,\%)} & \textbf{Insuf. (25\,\%)}\\ \hline
+\endhead
+
+\textbf{C0. Continuidad y observaciones} & 5\,\% & Todas las observaciones de la Entrega 1 est\'an resueltas o diferidas con justificaci\'on. & Una o dos observaciones abiertas menores. & Tres o cuatro observaciones abiertas. & Cinco o m\'as abiertas.\\ \hline
+\rowcolor{grisfila}
+\textbf{C1. Aplicaci\'on de entrevistas} & 15\,\% & $\geq 5$ entrevistas aplicadas con res\'umenes tem\'aticos completos y consentimientos firmados. & 3--4 entrevistas completas. & 1--2 entrevistas. & Ninguna aplicada o sin consentimientos.\\ \hline
+\textbf{C2. Aplicaci\'on de encuestas} & 15\,\% & $\geq 30$ respuestas v\'alidas, an\'alisis reproducible con script, gr\'aficos vectoriales. & 20--29 respuestas con an\'alisis parcial. & 10--19 respuestas. & $< 10$ respuestas o an\'alisis ausente.\\ \hline
+\rowcolor{grisfila}
+\textbf{C3. Especificaci\'on Volere} & 20\,\% & $\geq 20$ RF, $\geq 6$ RNF, $\geq 8$ RI, $\geq 4$ RU, $\geq 5$ RP en plantilla Volere completa. & Volumen cumplido, redacci\'on con detalles menores. & Volumen parcialmente cumplido. & Volumen muy por debajo.\\ \hline
+\textbf{C4. Redacci\'on conforme INCOSE v4} & 15\,\% & Todas las descripciones siguen patr\'on 29148, voz activa, ``deber\'a'', sin ``no'', sin ``/'', sin t\'erminos vagos. & 1--3 requisitos con violaciones menores. & 4--8 requisitos con violaciones. & 9 o m\'as violaciones.\\ \hline
+\rowcolor{grisfila}
+\textbf{C5. Matriz de trazabilidad} & 10\,\% & Cuatro matrices con todas las columnas completas y verificables. & Matrices completas con lagunas menores. & Matriz \'unica sin desagregaci\'on. & Matriz ausente.\\ \hline
+\textbf{C6. Historias de usuario} & 5\,\% & $\geq 8$ historias en Connextra con Gherkin. & 5--7 historias. & 3--4 historias. & $\leq 2$ historias.\\ \hline
+\rowcolor{grisfila}
+\textbf{C7. Priorizaci\'on MoSCoW y Kano} & 10\,\% & Ambas priorizaciones aplicadas, con evidencia de validaci\'on Kano. & Ambas presentes; Kano sin evidencia. & Solo una aplicada. & Ninguna aplicada.\\ \hline
+\textbf{C8. Organizaci\'on del repositorio y autor\'ia} & 5\,\% & Estructura completa, tag \texttt{v0.5.0}, $\geq 5$ commits acumulados por integrante, CI verde. & Estructura completa, autor\'ia desbalanceada. & Estructura parcial. & Estructura incompleta o sin tag.\\ \hline
+\end{longtable}
+
+\begin{cajacritica}{Criterio de descarte de requisitos}
+Cualquier requisito con menos de tres campos Volere completos se descarta autom\'aticamente. Cualquier requisito redactado sin ``deber\'a'' o con estructura de t\'itulo nominal en el campo \emph{Descripci\'on} recibe descuento inmediato en C4. Cualquier requisito trazado a una fuente que el docente no pueda verificar en el repositorio se marca como \emph{no verificado} y se descuenta en C5.
+\end{cajacritica}
+
+% =====================================================================
+%  9. PROCEDIMIENTO DE ENTREGA Y DEFENSA
+% =====================================================================
+\section{Procedimiento de entrega y defensa oral parcial}
+
+El cierre en repositorio se aplica con la etiqueta \texttt{v0.5.0} en el \emph{commit} de cierre. El comando canonico:
+
+\begin{lstlisting}
+git tag -a v0.5.0 -m "Entrega 2 - 2026-07-25 - <Apellidos>" && git push origin v0.5.0
+\end{lstlisting}
+
+La defensa oral parcial se realiza durante la semana 9 con estructura de treinta minutos:
+
+\begin{itemize}
+    \item Cinco minutos: recapitulaci\'on de la Entrega 1 y observaciones resueltas.
+    \item Diez minutos: proceso de elicitaci\'on aplicado y hallazgos.
+    \item Diez minutos: recorrido por la especificaci\'on Volere, matriz de trazabilidad y priorizaciones.
+    \item Cinco minutos: preguntas del docente y dos equipos evaluadores pares.
+\end{itemize}
+
+% =====================================================================
+%  10. AVISO SOBRE LA ENTREGA 3
+% =====================================================================
+\section{Aviso sobre la Entrega 3}
+
+La Entrega 3 (semana 12, \texttt{v0.8.0-rc}) toma la especificaci\'on Volere de esta entrega y la traduce a diagramas UML y de an\'alisis de requisitos. El equipo debe ir familiariz\'andose con la notaci\'on de casos de uso~\cite{cockburn2001usecases,fowler2018uml,booch2005uml}, con el marco i* para modelado de dependencias estrat\'egicas~\cite{yu1997istar,dardenne1993kaos} y con SysML/UML para diagramas de requisitos~\cite{weilkiens2011sysml,hause2006sysml}. La herramienta gr\'afica recomendada es \emph{Visual Paradigm} en modalidad Community con exportaci\'on a PNG y a formato nativo \texttt{.vpp} versionado en el repositorio; alternativamente, se acepta \emph{draw.io} con exportaci\'on a PNG + \texttt{.drawio}.
+
+% =====================================================================
+%  BIBLIOGRAFIA
+% =====================================================================
+\bibliographystyle{IEEEtran}
+\bibliography{IngReq}
+
+\end{document}

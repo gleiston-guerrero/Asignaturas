@@ -1,0 +1,75 @@
+# =====================================================================
+#  .gitignore para el repositorio PFC de Ingenieria de Requisitos
+#  Ubicacion: raiz del repositorio
+# =====================================================================
+
+# ---- LaTeX ----
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.nav
+*.snm
+*.vrb
+
+# Los PDFs de las guias SI se comitean (para no exigir compilacion local)
+# Los PDFs intermedios de borrador NO se comitean:
+docs/entregas/documento-academico/main.pdf
+docs/requisitos/**/*-draft.pdf
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+.jupyter/
+
+# ---- Node / build tools ----
+node_modules/
+dist/
+build/
+
+# ---- IDE ----
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ---- Datos sensibles / consentimientos ----
+# Las transcripciones integras NO se suben. Se resguardan en Drive privado.
+docs/requisitos/elicitacion/entrevistas/transcripciones/
+docs/requisitos/elicitacion/entrevistas/consentimientos/*.pdf
+!docs/requisitos/elicitacion/entrevistas/consentimientos/EJEMPLO-*.pdf
+
+# Respuestas crudas sin anonimizar
+docs/requisitos/elicitacion/encuestas/respuestas-con-datos-personales.csv
+
+# ---- Visual Paradigm ----
+*.vpp.bak
+*.vpp.lck
+.vp/
+
+# ---- draw.io backups ----
+*.drawio.bkp
+
+# ---- Sistema ----
+*.tmp
+*.bak
+*.orig

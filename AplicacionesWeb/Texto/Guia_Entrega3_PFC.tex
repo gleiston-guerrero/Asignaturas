@@ -1,0 +1,768 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{parskip}
+
+\usepackage[table]{xcolor}
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{grisfila}{RGB}{245,245,245}
+\definecolor{goldclaro}{RGB}{252,245,220}
+\definecolor{verdeclaro}{RGB}{235,247,238}
+\definecolor{textogris}{RGB}{60,60,60}
+\definecolor{nivelaus}{RGB}{176,42,42}
+\definecolor{codebg}{RGB}{248,248,248}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{cajadefinicion}[1]{
+    colback=uteqverde!5,
+    colframe=uteqverde,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajaentregable}[1]{
+    colback=uteqdorado!8,
+    colframe=uteqdorado!80!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajacritica}[1]{
+    colback=red!5,
+    colframe=red!70!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajarepo}[1]{
+    colback=blue!4,
+    colframe=blue!60!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajaejemplo}[1]{
+    colback=verdeclaro,
+    colframe=uteqverde!70!black,
+    fonttitle=\bfseries\itshape,
+    coltitle=white,
+    title={Ejemplo --- #1},
+    boxrule=0.5pt,
+    arc=3pt,
+    breakable
+}
+
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    breaklines=true,
+    columns=fullflexible,
+    keepspaces=true
+}
+
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\usepackage{enumitem}\setlist{itemsep=2pt,topsep=2pt}
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textcolor{uteqverde}{Aplicaciones Web --- Quinto nivel --- PPA 2026-2027}}
+\rhead{\footnotesize\textcolor{uteqverde}{PFC --- Gu\'{i}a de la Tercera Entrega}}
+\rfoot{\thepage}
+\lfoot{\footnotesize UTEQ --- FCI --- Software}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\hypersetup{
+    pdftitle={Gu\'{i}a de la Tercera Entrega del PFC --- Aplicaciones Web},
+    pdfauthor={Dr. Gleiston Guerrero Ulloa},
+    pdfsubject={Tercera Entrega del Proyecto Fin de Curso},
+    pdfkeywords={PFC, Reproducibilidad, FAIR, evidencia emp\'{i}rica, Aplicaciones Web, UTEQ}
+}
+
+\begin{document}
+
+% =====================================================================
+%  PORTADA
+% =====================================================================
+\begin{center}
+    \vspace*{1.5cm}
+    {\Large\bfseries\textcolor{uteqverde}{UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}}\\[4pt]
+    {\large Facultad de Ciencias de la Computacion y Dise\~{n}o Digital}\\[2pt]
+    {\large Carrera de Ingenier\'{i}a de Software}\\[24pt]
+
+    {\LARGE\bfseries Gu\'{i}a de la Tercera Entrega del}\\[6pt]
+    {\LARGE\bfseries Proyecto Fin de Curso (PFC)}\\[18pt]
+
+    {\large Aplicaciones Web --- Quinto nivel}\\[2pt]
+    {\large Periodo Acad\'{e}mico Presencial 2026-2027}\\[24pt]
+
+    \begin{tcolorbox}[colback=uteqverde!8,colframe=uteqverde,arc=3pt,
+                      width=0.88\textwidth,boxrule=0.8pt]
+        \centering
+        \textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[2pt]
+        \texttt{gguerrero@uteq.edu.ec}\\[6pt]
+        \textbf{Etiqueta objetivo de esta entrega:} \texttt{v0.9.0-rc}\\[2pt]
+        \textbf{Fecha de cierre:} viernes 24 de julio de 2026 (semana 13)\\[2pt]
+        \textbf{Precede a:} Entrega Final (\texttt{v1.0.0}, 17 de agosto de 2026)\\[2pt]
+        \textbf{Continua desde:} Entrega 1B (\texttt{v0.7.0}, semana del 14 de junio)\\ y Entrega 1A (\texttt{v0.3.0}, semana del 4 de junio)
+    \end{tcolorbox}
+
+    \vfill
+
+    {\small Quevedo --- Los Rios --- Ecuador}\\[2pt]
+    {\small 2026}
+\end{center}
+
+\newpage
+
+% =====================================================================
+%  1. NATURALEZA
+% =====================================================================
+\section{Naturaleza y ubicacion temporal de la Tercera Entrega}
+
+La Tercera Entrega del PFC ocupa el hito intermedio entre la Entrega 1B (\texttt{v0.7.0}, semana del 14 de junio de 2026) y la Entrega Final (\texttt{v1.0.0}, semana del 17 de agosto de 2026, semana 17 del calendario acad\'{e}mico). Cierra el 24 de julio de 2026. Su prop\'{o}sito no es cerrar nuevas funcionalidades sino consolidar y verificar, con evidencia emp\'{i}rica reproducible, todo lo entregado hasta la Entrega 1B, elevando el proyecto al estado \emph{release candidate} (\texttt{v0.9.0-rc}) exigido por las normas de reproducibilidad y de reporte de las revista cient\'{i}ficas de alto impacto en ingenier\'{i}a de software.
+
+El PFC no comienza en la Entrega 1B. Su cimiento formal es el \emph{corpus de ingenieria de requisitos} producido durante la Entrega 1A (semana del 4 de junio) y en el ciclo previo 2025 PAS, que documenta el problema real que el sistema resuelve, los actores del dominio, los objetivos de negocio, los requisitos funcionales y no funcionales, los casos de uso y las historias de usuario. La Tercera Entrega debe conservar la trazabilidad hacia ese corpus y hacer expl\'{i}cita la evoluci\'{o}n que los requisitos han tenido desde su primera especificaci\'{o}n hasta la versi\'{o}n estable candidata, siguiendo la disciplina de gesti\'{o}n de requisitos formalizada por la especificaci\'{o}n internacional \emph{ISO/IEC/IEEE 29148:2018}~\cite{iso29148,pohl2010requirements,wiegers2013software}.
+
+Mientras que la Entrega 1B verifica lo que el sistema \emph{hace} (m\'{o}dulo de autenticaci\'{o}n \emph{stateless} con JWT sobre \emph{cookie HttpOnly}\footnote{\textbf{Cookie HttpOnly}: atributo de las \emph{cookies} HTTP que impide su lectura desde c\'{o}digo JavaScript del navegador; protege el JWT contra ataques de tipo \emph{Cross-Site Scripting} (XSS).}, CRUD sobre entidades del dominio con Spring Data JPA, migraciones Flyway\footnote{\textbf{Flyway}: herramienta de control de versiones del esquema de base de datos que ejecuta \emph{scripts} SQL numerados de forma incremental y garantiza que todos los entornos de despliegue (desarrollo, prueba, producci\'{o}n) tengan el mismo esquema.} sobre PostgreSQL 16, \emph{cache Redis}\footnote{\textbf{Cache Redis}: almac\'{e}n en memoria de tipo clave-valor usado para guardar respuestas frecuentes y evitar consultas repetidas a la base de datos.}, cabeceras de seguridad y contenedores orquestados con Docker Compose), la Tercera Entrega verifica \emph{c\'{o}mo} lo hace, \emph{con qu\'{e} garant\'{i}a}, \emph{con qu\'{e} evidencia emp\'{i}rica cuantitativa} y \emph{con qu\'{e} grado de reproducibilidad por un tercero sin conocimiento previo del proyecto}. Esta distinci\'{o}n es la que separa un producto software de un artefacto de investigaci\'{o}n reutilizable, reproducible y verificable seg\'{u}n las normas contempor\'{a}neas de gesti\'{o}n de datos y de artefactos de investigaci\'{o}n~\cite{wilkinson2016fair,acm2020artifact,ralph2021empirical}.
+
+En consecuencia, la Tercera Entrega solicita al equipo cuatro transformaciones sobre el estado \texttt{v0.7.0} que ya posee. Cada transformaci\'{o}n se ilustra con un ejemplo concreto que aclara c\'{o}mo se ejecuta en la pr\'{a}ctica.
+
+\begin{enumerate}
+    \item \textbf{Aplicaci\'{o}n \'{i}ntegra de las observaciones de las Entregas 1A y 1B}: cada observaci\'{o}n del docente en los informes de retroalimentaci\'{o}n recibidos debe estar resuelta y su resoluci\'{o}n debe ser trazable en el historial de \emph{commits}\footnote{\textbf{Commit}: unidad at\'{o}mica de cambio en Git; representa un conjunto de modificaciones registradas con autor, fecha y mensaje descriptivo.} del repositorio, con referencia expl\'{i}cita a la observaci\'{o}n original.
+
+    \begin{cajaejemplo}{Aplicaci\'{o}n de observaciones}
+        Sup\'{o}ngase que en la Entrega 1B el docente coment\'{o}: \emph{``el JWT deber\'{i}a incluir el claim \texttt{aud} para restringir el p\'{u}blico objetivo del token''}. En la bit\'{a}cora \texttt{docs/observaciones/OBSERVACIONES.md} se registra:
+
+        \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+| Codigo | Fuente     | Criterio | Observacion             | Decision            | Commit    |
+|--------|------------|----------|-------------------------|---------------------|-----------|
+| OBS-04 | Entrega 1B | Auth JWT | Anadir claim aud al JWT | Aplicada en JwtSvc  | a1b2c3d   |
+        \end{lstlisting}
+
+        El mensaje del \emph{commit} correspondiente es:
+        \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+feat(auth): anade claim aud al JWT firmado (OBS-04)
+        \end{lstlisting}
+    \end{cajaejemplo}
+
+    \item \textbf{Consolidaci\'{o}n de la ingenier\'{i}a de requisitos}: la especificaci\'{o}n de requisitos producida en la Entrega 1A se actualiza, se valida y se hace trazable de extremo a extremo hacia el c\'{o}digo, las pruebas y la evidencia emp\'{i}rica del sistema, siguiendo el marco de \emph{ISO/IEC/IEEE 29148:2018} y la gu\'{i}a de calidad de requisitos del \emph{INCOSE Requirements Working Group}~\cite{iso29148,incose2023requirements,pohl2010requirements}.
+
+    \begin{cajaejemplo}{Consolidaci\'{o}n de un requisito}
+        Un requisito funcional t\'{i}pico de un sistema de gesti\'{o}n de pedidos podr\'{i}a redactarse as\'{i} (patr\'{o}n \emph{[condici\'{o}n] [sujeto] shall [acci\'{o}n] [objeto] [restricci\'{o}n]} de ISO/IEC/IEEE 29148):
+
+        \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+Id:              REQ-F-014
+Tipo:            Funcional
+Prioridad:       Must (MoSCoW)
+Enunciado:       Al recibir una solicitud de anulacion, el sistema
+                 debera cambiar el estado del pedido a ANULADO en un
+                 plazo maximo de 2 segundos.
+Rationale:       El cliente pierde la confianza si la anulacion
+                 tarda mas de 2s (evidencia: entrevista E-03).
+Verificacion:    Test JUnit integrationTest_anularPedido_p95_2000ms
+Trazabilidad:    -> Historia HU-08 -> Caso de uso CU-05 ->
+                 -> Endpoint POST /api/pedidos/{id}/anular ->
+                 -> Test PedidoTest.anular_p95 -> Evidencia perf/run-03.json
+Estado:          verificado
+        \end{lstlisting}
+    \end{cajaejemplo}
+
+    \item \textbf{Consolidaci\'{o}n de la reproducibilidad autom\'{a}tica}: el proyecto debe poder ser reconstruido de forma id\'{e}ntica por un tercero desde una clonaci\'{o}n limpia, con contenedores anclados por \emph{digest}\footnote{\textbf{Digest sha256}: huella criptogr\'{a}fica \'{u}nica de 256 bits que identifica una imagen Docker por su contenido exacto, evitando derivas silenciosas cuando la imagen del registro se modifica pero conserva su etiqueta.} \texttt{sha256}, semillas deterministas fijadas y \emph{scripts} de un solo comando para levantar, ejecutar pruebas, generar m\'{e}tricas y apagar el sistema~\cite{wilkinson2016fair,acm2020artifact}.
+
+    \begin{cajaejemplo}{Reproducibilidad autom\'{a}tica en un solo comando}
+        Un revisor externo clona el repositorio y ejecuta:
+        \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+$ git clone https://github.com/<equipo>/<repo>.git
+$ cd <repo>
+$ git checkout v0.9.0-rc
+$ cp .env.example .env
+$ make up
+        \end{lstlisting}
+
+        En menos de dos minutos el sistema completo est\'{a} operativo. En el \texttt{docker-compose.yml} las im\'{a}genes van fijadas por \emph{digest}, no por etiqueta variable:
+        \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+services:
+  postgres:
+    image: postgres@sha256:2f7e3f7...
+  redis:
+    image: redis@sha256:5c1c8b9...
+        \end{lstlisting}
+    \end{cajaejemplo}
+
+    \item \textbf{Consolidaci\'{o}n de la evidencia emp\'{i}rica cuantitativa y de la trazabilidad}: cada afirmaci\'{o}n no trivial del sistema (rendimiento, seguridad, usabilidad, fiabilidad, cobertura) debe estar respaldada por un archivo de mediciones crudo, un \emph{script} de an\'{a}lisis y un reporte agregado con estad\'{i}stica descriptiva e inferencial m\'{i}nima, y cada requisito funcional y no funcional debe estar trazado hasta su c\'{o}digo, su prueba automatizada y su evidencia emp\'{i}rica de cumplimiento~\cite{nygard2011adr,brown2023c4,bass2021software,richards2020fundamentals,ralph2021empirical}.
+
+    \begin{cajaejemplo}{Evidencia emp\'{i}rica y trazabilidad}
+        La afirmaci\'{o}n \emph{``el \emph{endpoint} de listado de productos responde con \texttt{p95 $\leq$ 200\,ms} con cach\'{e} caliente''} se sustenta con tres archivos versionados:
+
+        \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+docs/mediciones/perf/k6-run1.json    # datos crudos, corrida 1
+docs/mediciones/perf/k6-run2.json    # datos crudos, corrida 2
+docs/mediciones/perf/k6-run3.json    # datos crudos, corrida 3
+scripts/perf-analysis.py             # script con seed=42, IC 95%
+docs/mediciones/perf/REPORT.md       # media, DT, IC 95%, p50/p90/p95/p99
+        \end{lstlisting}
+
+        En la matriz \texttt{docs/trazabilidad/matriz.csv} se lee, para el requisito no funcional de rendimiento:
+
+        \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+REQ-NF-03,No funcional,Must,,,ProductoService,GET /api/productos,
+ProductoPerfTest,CRUD-ORM,docs/mediciones/perf/REPORT.md,verificado
+        \end{lstlisting}
+    \end{cajaejemplo}
+\end{enumerate}
+
+La lista siguiente resume el arco completo de las entregas del PFC para situar visualmente la Tercera Entrega.
+
+\begin{cajadefinicion}{Arco completo de entregas del PFC (calendario acad\'{e}mico 2026)}
+    \begin{itemize}
+        \item \textbf{Entrega 1A} (semana del 4 de junio, \texttt{v0.3.0}): consolidaci\'{o}n del corpus de ingenier\'{i}a de requisitos (SRS conforme a ISO/IEC/IEEE 29148:2018, casos de uso, historias de usuario, requisitos no funcionales), dise\~{n}o arquitect\'{o}nico C4 nivel 1 y 2, selecci\'{o}n y justificaci\'{o}n de la pila, esqueleto ejecutable con Docker~\cite{iso29148,cockburn2001writing,cohn2004user,brown2023c4}.
+        \item \textbf{Entrega 1B} (semana del 14 de junio, \texttt{v0.7.0}): primer m\'{o}dulo funcional del PFC. Modulo de autenticaci\'{o}n stateless con JWT (jjwt 0.12, cookie \texttt{HttpOnly + Secure + SameSite=Strict}, RFC 7519 con claims est\'{a}ndar), CRUD completo de al menos una entidad principal con Spring Data JPA sobre PostgreSQL 16, migraciones Flyway 9.x, cache Redis 7 para \emph{blacklist} de JTI revocados, Springdoc OpenAPI 2.x en \texttt{/api/docs}, Angular 17+ con \emph{interceptor} JWT, docker-compose con \texttt{healthcheck}, m\'{i}nimo cinco pruebas JUnit 5 + MockMvc verdes~\cite{jones2015jwt,rfc7807,walls2022spring,owasp2021top10}.
+        \item \textbf{Entrega 3} (24 de julio, \emph{esta guia}, \texttt{v0.9.0-rc}): aplicaci\'{o}n de observaciones acumuladas, consolidaci\'{o}n de la ingenier\'{i}a de requisitos, reproducibilidad autom\'{a}tica, evidencia emp\'{i}rica cuantitativa preliminar, trazabilidad completa y publicabilidad del artefacto (FAIR, DOI Zenodo, CITATION.cff, CRediT).
+        \item \textbf{Entrega Final} (semana del 17 de agosto, semana 17, \texttt{v1.0.0}): sistema estable con cobertura JaCoCo\footnote{\textbf{JaCoCo} (\emph{Java Code Coverage}): herramienta libre que mide qu\'{e} porcentaje de l\'{i}neas, ramas y m\'{e}todos del c\'{o}digo Java son ejercitados por las pruebas automatizadas; permite identificar zonas sin cobertura.} $\geq 70$\,\%, k6 y Lighthouse dentro de umbrales, auditor\'{i}a completa de los seis controles OWASP m\'{i}nimos, puesta en producci\'{o}n en un ambiente p\'{u}blicamente accesible, documento acad\'{e}mico final con estructura IMRaD\footnote{\textbf{IMRaD} (\emph{Introduction, Methods, Results and Discussion}): estructura est\'{a}ndar de los art\'{i}culos cient\'{i}ficos originales de investigaci\'{o}n, universal en las revistas indexadas.} ampliada, paquete de datos con DOI propio, y sistema listo para archivo permanente~\cite{owasp2021top10,ortega2022securecoding,ralph2021empirical,acm2020artifact}.
+    \end{itemize}
+\end{cajadefinicion}
+
+% =====================================================================
+%  2. REQUISITOS
+% =====================================================================
+\section{Requisitos ineludibles de la Tercera Entrega}
+
+Los requisitos que siguen consolidan lo entregado en la Entrega 1B y a\~{n}aden las capas de ingenier\'{i}a de requisitos formalizada, evidencia emp\'{i}rica y gesti\'{o}n de artefactos que las revista de alto impacto exigen para aceptar un proyecto c\'{o}mo reutilizable y reproducible por un tercero sin comunicaci\'{o}n con los autores originales~\cite{wilkinson2016fair,acm2020artifact,smith2016software,ralph2021empirical}. La lectura del apartado debe hacerse en el orden en que aparece: cada bloque supone que el anterior ya est\'{a} cerrado.
+
+\subsection{Bloque 0 --- Aplicacion integra de las observaciones de las Entregas 1A y 1B}
+
+Antes de abordar los bloques t\'{e}cnicos de la Tercera Entrega, el equipo cierra la deuda de calidad acumulada en las entregas previas. Este bloque no es opcional y su verificaci\'{o}n es previa a la calificaci\'{o}n de cualquier otro bloque.
+
+\begin{cajaentregable}{0.1 --- Bitacora de observaciones y su resoluci\'{o}n}
+    \begin{itemize}
+        \item Se archiva en el repositorio el archivo \texttt{docs/observaciones/OBSERVACIONES.md} que enumera, con c\'{o}digo \'{u}nico (\texttt{OBS-01}, \texttt{OBS-02}, \ldots), cada observaci\'{o}n que el docente formulo en los informes de retroalimentaci\'{o}n de las Entregas 1A y 1B. Para cada observaci\'{o}n se declara: fuente (Entrega 1A o 1B), criterio de la r\'{u}brica afectado, texto \'{i}ntegro de la observaci\'{o}n, decisi\'{o}n del equipo, y el o los \emph{commits} en los que la resoluci\'{o}n quedo aplicada, con el hash corto.
+        \item Cada mensaje de \emph{commit} que resuelve una observaci\'{o}n referencia su c\'{o}digo (por ejemplo, \texttt{fix(auth): rota clave HS256 y firma con RS256 (OBS-07)}).
+        \item El repositorio conserva la etiqueta \texttt{v0.7.0} intacta c\'{o}mo fotograf\'{i}a de la Entrega 1B y a\~{n}ade la etiqueta intermedia \texttt{v0.7.1} sobre el commit que cierra la aplicaci\'{o}n de observaciones, previa a los trabajos de esta Tercera Entrega.
+        \item El PDF del informe t\'{e}cnico de la Tercera Entrega incluye, c\'{o}mo primer cap\'{i}tulo despu\'{e}s del resumen, una tabla-resumen de las observaciones cerradas con el porcentaje total resuelto y las razones de las no resueltas si las hubiera.
+    \end{itemize}
+\end{cajaentregable}
+
+\subsection{Bloque A --- Consolidacion del sistema entregado en la Entrega 1B}
+
+Se exige que la totalidad del alcance de la Entrega 2 permanezca operativo, con las siguientes correcciones y refuerzos, organizados en dos apartados. El apartado A.1 consolida las propiedades funcionales heredadas de la Entrega 2. El apartado A.2 formaliza la estrategia de acceso a datos que rige desde la Tercera Entrega en adelante.
+
+\subsubsection*{A.1 --- Consolidaci\'{o}n funcional heredada de la Entrega 2}
+
+\begin{itemize}
+    \item Todos los \emph{endpoints} CRUD de la API REST deben mantenerse funcionando y documentados en la especificaci\'{o}n \emph{OpenAPI 3.0}\footnote{\textbf{OpenAPI 3.0}: est\'{a}ndar abierto para describir de manera formal la interfaz de una API REST, permitiendo generar documentaci\'{o}n interactiva (Swagger UI) y clientes autom\'{a}ticos.} accesible en \texttt{/api/docs}~\cite{fielding2000rest,walls2022spring}.
+    \item Toda la autenticaci\'{o}n debe operar bajo \emph{cookie} \texttt{HttpOnly + Secure\footnote{\textbf{Secure}: atributo de \emph{cookie} que exige que el navegador s\'{o}lo la env\'{i}e a trav\'{e}s de conexiones HTTPS, protegi\'{e}ndola de interceptaciones en redes no cifradas.} + SameSite=Strict\footnote{\textbf{SameSite=Strict}: atributo de \emph{cookie} que impide que el navegador la env\'{i}e en solicitudes generadas por sitios de terceros, mitigando ataques \emph{Cross-Site Request Forgery} (CSRF).}} con JWT firmado, siguiendo el flujo definido en el \emph{RFC 7519}\footnote{\textbf{RFC 7519}: est\'{a}ndar del IETF que define el formato JSON Web Token (JWT) para representar afirmaciones seguras entre partes, con firma criptogr\'{a}fica.} y con los siete \emph{claims}\footnote{\textbf{Claim}: par clave-valor dentro de un JWT que representa una afirmaci\'{o}n sobre el sujeto (por ejemplo, \texttt{sub} identifica al usuario, \texttt{exp} declara la fecha de expiraci\'{o}n).} est\'{a}ndar (\texttt{iss, sub, aud, exp, nbf, iat, jti})~\cite{jones2015jwt}.
+    \item Todos los errores deben responder con \emph{ProblemDetails} de acuerdo con el \emph{RFC 7807}\footnote{\textbf{RFC 7807}: est\'{a}ndar del IETF que define un formato uniforme para reportar errores en APIs HTTP, con los campos \texttt{type} (URI del tipo de error), \texttt{title} (t\'{i}tulo corto), \texttt{status} (c\'{o}digo HTTP), \texttt{detail} (explicaci\'{o}n) e \texttt{instance} (URI del caso concreto).}, incluyendo los campos \texttt{type, title, status, detail} y, cuando aplique, \texttt{instance}~\cite{rfc7807}.
+    \item El \emph{cache} Redis debe seguir en el mismo \emph{endpoint} de listado seleccionado en la Entrega 2, ahora con \emph{TTL}\footnote{\textbf{TTL} (\emph{Time To Live}): duraci\'{o}n m\'{a}xima que una entrada permanece en el \emph{cache} antes de ser eliminada autom\'{a}ticamente, expresada en segundos.} declarado en configuraci\'{o}n externa (no en c\'{o}digo) y una \emph{hit ratio}\footnote{\textbf{Hit ratio}: proporci\'{o}n de peticiones que se resuelven directamente desde el \emph{cache} sin consultar la base de datos; mide la eficacia de la estrategia de \emph{caching}.} objetivo medida emp\'{i}ricamente y reportada en \texttt{docs/mediciones/}.
+\end{itemize}
+
+\subsubsection*{A.2 --- Estrategia obligatoria de acceso a datos}
+
+Desde la Tercera Entrega en adelante, el equipo adopta y evidencia una estrategia h\'{i}brida de acceso a datos en la que la responsabilidad se reparte con precisi\'{o}n entre el mapeo objeto-relacional\footnote{\textbf{Mapeo objeto-relacional} (ORM, \emph{Object-Relational Mapping}): t\'{e}cnica que traduce autom\'{a}ticamente objetos del c\'{o}digo Java (o del lenguaje de la aplicaci\'{o}n) a filas de tablas de una base de datos relacional, y viceversa.} y los procedimientos almacenados\footnote{\textbf{Procedimiento almacenado} (\emph{stored procedure}): bloque de c\'{o}digo SQL guardado y compilado en el motor de base de datos, invocable con par\'{a}metros; encapsula l\'{o}gica que se ejecuta directamente en el servidor de datos.}. El sustento formal del enfoque es la especificaci\'{o}n \emph{Jakarta Persistence 2.1}, que estandariza el llamado a procedimientos almacenados desde repositorios ORM mediante las anotaciones \texttt{@NamedStoredProcedureQuery} y \texttt{@StoredProcedureParameter} y la interfaz \texttt{StoredProcedureQuery}, con implementaci\'{o}n completa en Spring Data JPA a trav\'{e}s de la anotaci\'{o}n \texttt{@Procedure} sobre m\'{e}todos de repositorio~\cite{demichiel2013jpa21,springdata2025procedures}. Ambos mecanismos son reconocidos por la \emph{OWASP Foundation}\footnote{\textbf{OWASP} (\emph{Open Worldwide Application Security Project}): fundaci\'{o}n internacional sin \'{a}nimo de lucro dedicada a mejorar la seguridad del software; p\'{u}blica gu\'{i}as autoritativas c\'{o}mo el \emph{OWASP Top 10} y los \emph{Cheat Sheets} sobre pr\'{a}cticas seguras.} c\'{o}mo defensas primarias equivalentes contra la inyecci\'{o}n SQL, siempre que la parametrizaci\'{o}n sea estricta~\cite{owaspsqlicheatsheet,owasp2021top10}.
+
+\begin{cajarepo}{A.2.1 --- Alcance de los CRUD elementales sobre entidades JPA}
+    Los cuatro CRUD elementales de cada entidad simple se implementan directamente sobre entidades JPA mapeadas con \texttt{@Entity}, expuestas c\'{o}mo repositorios que extienden \texttt{JpaRepository} o \texttt{CrudRepository} de Spring Data. Se consideran CRUD elementales, y por tanto se implementan en el ORM:
+    \begin{itemize}
+        \item La creaci\'{o}n de una fila \'{u}nica en una \'{u}nica tabla (\texttt{save} sobre una entidad).
+        \item La lectura de una fila por su clave primaria (\texttt{findById}).
+        \item El listado completo o paginado de una \'{u}nica tabla, con filtros triviales sobre atributos escalares directos de la propia entidad (\texttt{findAll(Pageable)}, \texttt{findByCampo}, \texttt{findByCampoAndCampo}).
+        \item La actualizaci\'{o}n de una fila por su clave primaria cuando la operaci\'{o}n consiste en asignar valores directos a atributos escalares de la propia entidad.
+        \item La eliminaci\'{o}n l\'{o}gica de una fila por su clave primaria, expresada c\'{o}mo cambio de un atributo booleano de la propia entidad.
+    \end{itemize}
+    Todos estos accesos usan m\'{e}todos derivados de Spring Data o \texttt{@Query} con par\'{a}metros nombrado; queda prohibido concatenar entrada de usuario en cualquier fragmento JPQL\footnote{\textbf{JPQL} (\emph{Jakarta Persistence Query Language}): lenguaje de consultas orientado a objetos definido por la especificaci\'{o}n JPA; opera sobre entidades y sus atributos, no directamente sobre tablas y columnas SQL.}, HQL\footnote{\textbf{HQL} (\emph{Hibernate Query Language}): dialecto propio de Hibernate anterior a JPQL, extendido con car\'{a}cter\'{i}sticas espec\'{i}ficas del \emph{framework}.} o SQL nativo.
+\end{cajarepo}
+
+\begin{cajarepo}{A.2.2 --- Alcance obligatorio de los procedimientos almacenados}
+    Toda operaci\'{o}n contra la base de datos que no sea un CRUD elemental seg\'{u}n A.2.1 se implementa c\'{o}mo procedimiento almacenado o funci\'{o}n SQL en el motor de base de datos, versionado en el repositorio y llamado desde la aplicaci\'{o}n mediante \texttt{@Procedure} sobre un m\'{e}todo de repositorio Spring Data, o mediante \texttt{@NamedStoredProcedureQuery} sobre una entidad, siguiendo el contrato de la especificaci\'{o}n JPA 2.1~\cite{demichiel2013jpa21,springdata2025procedures}. Se consideran operaciones obligatoriamente encapsuladas en procedimientos almacenados o funciones, sin excepcion:
+    \begin{itemize}
+        \item Consultas que involucran mas de una tabla mediante \emph{joins}, sub-consultas o expresiones \emph{common table expressions}.
+        \item Consultas con c\'{a}lculos agregados: \texttt{COUNT}, \texttt{SUM}, \texttt{AVG}, \texttt{MIN}, \texttt{MAX}, agrupaciones con \texttt{GROUP BY} y filtros \texttt{HAVING}.
+        \item Reportes de cualquier naturaleza, incluyendo los que retornan un conjunto de resultados heterogeneo respecto de las entidades del dominio.
+        \item Actualizaciones masivas sobre multiples filas con criterios de selecci\'{o}n no triviales.
+        \item Eliminaciones l\'{o}gicas o fisicas condicionadas por reglas de negocio evaluadas sobre mas de una tabla.
+        \item Movimientos transaccionales que afectan a mas de una tabla en la misma unidad de trabajo y requieren validaciones cruzadas o consistencia atomica en el motor.
+        \item Generacion de codigos secuenciales, identificadores de negocio o folios con reglas propias distintas del autoincremento simple.
+        \item Validaciones cruzadas que dependen del estado actual de varias tablas antes de aceptar una operaci\'{o}n de escritura.
+        \item Cualquier consulta que retorne una proyecci\'{o}n (\emph{DTO}) que no coincide con la estructura de una entidad, incluidas vista materializadas.
+    \end{itemize}
+    Cada procedimiento almacenado o funci\'{o}n se define en un archivo SQL versionado bajo \texttt{db/procs/} con nombre \texttt{sp\_<verbo>\_<sustantivo>.sql} o \texttt{fn\_<verbo>\_<sustantivo>.sql}, aplica exclusivamente par\'{a}metros nombrado, se abstiene de construir SQL din\'{a}mico mediante concatenacion (\texttt{EXECUTE IMMEDIATE}, \texttt{sp\_executesql} o equivalentes), y se documenta en \texttt{docs/basedatos/CATALOGO-SP.md} con nombre, prop\'{o}sito, par\'{a}metros de entrada y salida, cursores devueltos y tabla o tablas afectadas.
+\end{cajarepo}
+
+\begin{cajarepo}{A.2.3 --- Prohibiciones explicitas y cuenta de aplicaci\'{o}n}
+    \begin{itemize}
+        \item Queda prohibido concatenar entrada de usuario en cualquier query, tanto en el c\'{o}digo de la aplicaci\'{o}n c\'{o}mo dentro de los procedimientos almacenados.
+        \item Queda prohibido el uso de SQL din\'{a}mico dentro de los procedimientos (\texttt{EXECUTE IMMEDIATE} sobre cadenas construidas con concatenacion).
+        \item Queda prohibido depender de \texttt{spring.jpa.hibernate.ddl-auto=update} o equivalentes; el esquema y los procedimientos se aplican unicamente desde \texttt{db/schema.sql}, \texttt{db/seed.sql} y los archivos de \texttt{db/procs/} montados en \texttt{/docker-entrypoint-initdb.d/}.
+        \item La cuenta de base de datos con la que la aplicaci\'{o}n se conecta al motor tiene privilegios m\'{i}nimos: derechos de \texttt{EXECUTE} sobre los procedimientos y funciones necesarios, y derechos de \texttt{SELECT}, \texttt{INSERT}, \texttt{UPDATE} y \texttt{DELETE} restringidos a las tablas del dominio; sin \texttt{DBA}, \texttt{OWNER} ni \emph{superuser}~\cite{owaspsqlicheatsheet}.
+    \end{itemize}
+\end{cajarepo}
+
+\subsubsection*{A.3 --- Consolidaci\'{o}n de la ingenier\'{i}a de requisitos}
+
+La Tercera Entrega formaliza y consolida el corpus de ingenier\'{i}a de requisitos que rige el PFC desde la Entrega 1A. La especificaci\'{o}n se actualiza a la versi\'{o}n estable candidata, se valida contra el sistema implementado, y se hace trazable de extremo a extremo hacia el c\'{o}digo, las pruebas y la evidencia emp\'{i}rica del bloque C. El marco normativo obligatorio es la especificaci\'{o}n internacional \emph{ISO/IEC/IEEE 29148:2018}, que define los procesos de ciclo de vida, las plantillas de \emph{Software Requirements Specification} (SRS) y las caracter\'{i}sticas de calidad de un requisito bien formado~\cite{iso29148}. El equipo complementa este marco con las reglas del \emph{INCOSE Guide to Writing Requirements v4} para redaccion de enunciados individuales y conjuntos~\cite{incose2023requirements}, con los principios de la ingenier\'{i}a de requisitos contemporanea documentados por Pohl y por Wiegers y Beatty~\cite{pohl2010requirements,wiegers2013software}, y con la plantilla \emph{Volere} de Robertson y Robertson para la organizaci\'{o}n del documento de requisitos~\cite{robertson2012mastering}.
+
+\begin{cajaentregable}{A.3.1 --- SRS conforme a ISO/IEC/IEEE 29148:2018}
+    \begin{itemize}
+        \item El repositorio contiene el archivo \texttt{docs/requisitos/SRS.pdf} y su fuente \texttt{docs/requisitos/SRS.tex} (o Markdown) siguiendo la plantilla de \emph{Software Requirements Specification} de ISO/IEC/IEEE 29148:2018, con las secciones obligatorias: introduccion (prop\'{o}sito, alcance, definiciones, referencias, resumen), descripci\'{o}n global (perspectiva del producto, funciones, caracter\'{i}sticas de usuarios, restricciones, supuestos y dependencias), requisitos espec\'{i}ficos (funcionales, no funcionales, de interfaz externa, de rendimiento, de seguridad, de calidad de software).
+        \item Cada requisito individual cumple las nueve car\'{a}cter\'{i}sticas de calidad para \emph{requisitos individuales} definidas en el \emph{INCOSE Guide to Writing Requirements v4} (C1--C9): \emph{Necessary}, \emph{Appropriate}, \emph{Unambiguous}, \emph{Complete}, \emph{Singular}, \emph{Feasible}, \emph{Verifiable}, \emph{Correct} y \emph{Conforming}. Adem\'{a}s, el conjunto completo de requisitos del sistema cumple las seis car\'{a}cter\'{i}sticas de calidad para \emph{conjuntos de requisitos} (C10--C15): \emph{Complete}, \emph{Consistent}, \emph{Feasible}, \emph{Comprehensible}, \emph{Able to be validated} y \emph{Correct}~\cite{incose2023requirements}.
+        \item Cada requisito posee un identificador \'{u}nico persistente (\texttt{REQ-F-001, REQ-NF-001, \ldots}), rationale, atributos de trazabilidad hacia el origen (\emph{stakeholder}), prioridad seg\'{u}n \emph{MoSCoW} (\emph{Must, Should, Could, Won't}), criterio de aceptacion medible y m\'{e}todo de verificaci\'{o}n (\emph{inspection, analysis, demonstration, test}).
+    \end{itemize}
+\end{cajaentregable}
+
+\begin{cajaentregable}{A.3.2 --- Historias de usuario y casos de uso}
+    \begin{itemize}
+        \item Las funcionalidades de la Entrega 1B (autenticaci\'{o}n, CRUD de la entidad principal) y las que se cierran hasta la Tercera Entrega se especifican c\'{o}mo historias de usuario en formato \emph{Connextra} (\textit{As a $\langle$rol$\rangle$, I want $\langle$objetivo$\rangle$, so that $\langle$beneficio$\rangle$}), siguiendo los criterios INVEST de Cohn (\emph{Independent, Negotiable, Valuable, Estimable, Small, Testable})~\cite{cohn2004user}. Cada historia tiene sus criterios de aceptacion redactados c\'{o}mo \emph{Given/When/Then} de Gherkin.
+        \item Los flujos cr\'{i}ticos del sistema (por ejemplo el flujo de autenticaci\'{o}n documentado en la Entrega 1B) se detallan tambien c\'{o}mo casos de uso completos siguiendo la plantilla de Cockburn, con los niveles de precisi\'{o}n 1 a 4 (nombre del actor principal y objetivo, escenario principal de exito, condiciones de extensi\'{o}n, pasos de manejo de extensi\'{o}n)~\cite{cockburn2001writing}.
+        \item Todo el conjunto se archiva bajo \texttt{docs/requisitos/historias/} y \texttt{docs/requisitos/casos-de-uso/}, ambos versionados en el repositorio y referenciados desde el SRS.
+    \end{itemize}
+\end{cajaentregable}
+
+\begin{cajaentregable}{A.3.3 --- Matriz de trazabilidad end-to-end}
+    \begin{itemize}
+        \item Se actualiza \texttt{docs/trazabilidad/matriz.csv} para que su fila raiz sea el requisito, no el m\'{o}dulo. Las columnas obligatorias son: \texttt{id\_requisito}, \texttt{tipo} (funcional o no funcional), \texttt{prioridad\_moscow}, \texttt{historia\_usuario}, \texttt{caso\_de\_uso}, \texttt{modulo\_codigo}, \texttt{endpoint\_api}, \texttt{prueba\_automatizada}, \texttt{tipo\_acceso} (\texttt{CRUD-ORM} o \texttt{SP}), \texttt{evidencia\_empirica}, \texttt{estado} (\texttt{pendiente}, \texttt{implementado}, \texttt{verificado}).
+        \item La matriz cubre el 100\,\% de los requisitos con prioridad \emph{Must} vigentes en el estado \texttt{v0.9.0-rc}. Los requisitos \emph{Should} y \emph{Could} pueden aparecer con estado \texttt{pendiente} pero deben estar presentes en la matriz.
+        \item El \emph{pipeline}\footnote{\textbf{Pipeline de CI/CD}: secuencia autom\'{a}tica de pasos (compilaci\'{o}n, pruebas, an\'{a}lisis, despliegue) que se ejecuta ante cada cambio del repositorio; en este PFC se implementa con GitHub Actions y se declara en \texttt{.github/workflows/}.} de CI ejecuta un \emph{script} de validaci\'{o}n (\texttt{scripts/validate-traceability.sh}) que rechaza commits en los que se agregue un requisito sin correspondencia en al menos una historia, un caso de uso o una prueba.
+    \end{itemize}
+\end{cajaentregable}
+
+\begin{cajaentregable}{A.3.4 --- Gesti\'{o}n del cambio de requisitos}
+    \begin{itemize}
+        \item El archivo \texttt{docs/requisitos/CHANGELOG-REQ.md} lleva el registro de cada modificacion a los requisitos desde la Entrega 1A, con fecha, autor, requisito afectado, tipo de cambio (\emph{added, modified, deprecated, removed}) y motivo. El formato sigue la convencion \emph{Keep a Changelog} adaptada a requisitos.
+        \item Cualquier modificacion sustantiva de un requisito \emph{Must} despu\'{e}s del cierre de la Entrega 1B se documenta c\'{o}mo ADR\footnote{\textbf{ADR} (\emph{Architecture Decision Record}): documento corto y versionado que registra una decisi\'{o}n arquitect\'{o}nica importante, con el contexto que la motiv\'{o}, las alternativas evaluadas, la decisi\'{o}n adoptada y sus consecuencias; formato propuesto por Michael Nygard en 2011.} complementario en \texttt{docs/adr/} con la plantilla de Nygard~\cite{nygard2011adr,wiegers2013software}.
+    \end{itemize}
+\end{cajaentregable}
+
+\subsection{Bloque B --- Reproducibilidad automatica desde clonacion limpia}
+
+Este bloque es el mas exigente para el equipo y el mas discriminante para la nota. Su cumplimiento estricto es lo que permite que un revisor externo emita el badge \emph{Artifacts Evaluated --- Reusable} definido por la ACM~\cite{acm2020artifact}.
+
+\begin{cajarepo}{B.1 --- Arranque en un solo comando y sistema autocontenido}
+    \begin{itemize}
+        \item El repositorio debe contener un \texttt{Makefile} (o \texttt{justfile}, o \texttt{Taskfile.yml}) con al menos los objetivos \texttt{make up}, \texttt{make down}, \texttt{make test}, \texttt{make bench}, \texttt{make audit} y \texttt{make clean}. La sola ejecuci\'{o}n de \texttt{make up} debe levantar el sistema completo sin intervencion humana adicional.
+        \item El archivo \texttt{docker-compose.yml} debe pinar cada imagen por \emph{digest} \texttt{sha256} (no solo por \emph{tag}), evitando derivas silenciosas entre reconstrucciones.
+        \item Las variables de entorno se centralizan en \texttt{.env.example}, comentadas y con valores por defecto seguros para desarrollo local. El archivo \texttt{.env} real queda excluido por \texttt{.gitignore}.
+        \item El esquema de la base de datos se aplica exclusivamente desde \texttt{db/schema.sql} y \texttt{db/seed.sql} montados en \texttt{/docker-entrypoint-initdb.d/}. Queda prohibido depender de \texttt{spring.jpa.hibernate.ddl-auto=update} o similares.
+        \item Todo estado observable de la base al inicio se crea con datos semilla reproducibles: el archivo \texttt{db/seed.sql} contiene el usuario \texttt{admin} con hash \emph{BCrypt} v\'{a}lido para la contrasena documentada en el \texttt{README}.
+    \end{itemize}
+\end{cajarepo}
+
+\begin{cajarepo}{B.2 --- Determinismo de las mediciones}
+    \begin{itemize}
+        \item Cualquier \emph{script} de generaci\'{o}n de datos, de benchmark o de an\'{a}lisis fija su semilla aleatoria (\texttt{--seed}, \texttt{np.random.seed(42)}, etc.) y la documenta en el propio archivo.
+        \item Los benchmarks k6 se ejecutan con la misma configuraci\'{o}n (\texttt{50 VUs}, duracion \texttt{30s}, \emph{ramp-up} declarado en \texttt{k6/opts.js}) para permitir la comparacion entre corridas~\cite{ortega2022securecoding}.
+        \item Los reportes Lighthouse se generan con \texttt{npx lhci autorun} contra un contenedor recien levantado, con perfil movil declarado y \emph{throttling} de red \texttt{Slow 4G}.
+        \item Cada archivo de resultados incluye en su cabecera la fecha \texttt{ISO 8601}, el \emph{commit hash} corto y las versiones exactas de las herramientas (\texttt{k6 -{-}version}, \texttt{lighthouse -{-}version}, \texttt{java -version}).
+    \end{itemize}
+\end{cajarepo}
+
+\subsection{Bloque C --- Evidencia empirica cuantitativa}
+
+La calidad de un proyecto de ingenier\'{i}a de software se mide por evidencia, no por afirmaci\'{o}n. Este bloque exige que cada propiedad no funcional relevante este respaldada por un archivo crudo de mediciones, un \emph{script} de an\'{a}lisis reproducible y un reporte agregado con estadistica descriptiva m\'{i}nima~\cite{wohlin2012experimentation,washizaki2024swebok}.
+
+\subsubsection*{C.1 --- Rendimiento}
+
+Se ejecutan al menos tres corridas independientes de la misma prueba de carga con k6 (\texttt{50 VUs, 30 s}) contra el \emph{endpoint} de listado protegido por la API. Para cada corrida se registran los datos crudos en \texttt{docs/mediciones/perf/kNN-run\{1,2,3\}.json} y se calcula:
+
+\begin{itemize}
+    \item Media, mediana, desviaci\'{o}n tipica e intervalo de confianza al $95$\,\% del tiempo de respuesta.
+    \item Percentiles \texttt{p50, p90, p95, p99}.
+    \item Tasa de errores HTTP $\geq 500$ (debe ser cero).
+    \item \emph{Throughput}\footnote{\textbf{Throughput} (rendimiento): cantidad de peticiones que el sistema procesa por unidad de tiempo, usualmente expresada en peticiones por segundo (RPS); es una m\'{e}trica clave de capacidad y escalabilidad.} en peticiones por segundo (media $\pm$ IC 95\,\%).
+\end{itemize}
+
+Los umbrales objetivo son: \texttt{p95} de tiempo de respuesta menor a $200\,\text{ms}$ con cache caliente y menor a $500\,\text{ms}$ con cache frio. Estos umbrales est\'{a}n alineados con los objetivos de calidad recomendados por la ISO/IEC 25010 para la caracter\'{i}stica de \emph{Eficiencia de desempeno}~\cite{iso25010}.
+
+\subsubsection*{C.2 --- Seguridad}
+
+Se realiza una auditor\'{i}a autom\'{a}tica de los seis controles OWASP m\'{i}nimos, con evidencia crudo en \texttt{docs/mediciones/sec/}~\cite{owasp2021top10}.
+
+\begin{itemize}
+    \item \textbf{A01} (control de acceso roto): \texttt{curl}\footnote{\textbf{curl}: herramienta de l\'{i}nea de comandos que env\'{i}a peticiones HTTP arbitrarias y muestra las respuestas del servidor; es el instrumento est\'{a}ndar para verificar manualmente el comportamiento de una API REST.} de un usuario \texttt{A} solicitando el recurso de \texttt{B} debe devolver \texttt{403 Forbidden}. Guardar la salida completa de \texttt{curl -{-}include}.
+    \item \textbf{A02} (fallo criptografico): capturar \texttt{curl -v https://localhost:8443} mostrando \texttt{TLSv1.3} y suite AEAD.
+    \item \textbf{A03} (inyecci\'{o}n): enviar \texttt{POST} con payload \texttt{' OR '1'='1} en un campo de busqueda; la respuesta esperada es \texttt{422} con \emph{ProblemDetails}.
+    \item \textbf{A05} (mala configuraci\'{o}n de seguridad): \texttt{curl -I} contra la raiz y verificar \texttt{Strict-Transport-Security, X-Frame-Options: DENY, X-Content-Type-Options: nosniff} y \emph{Content-Security-Policy}.
+    \item \textbf{A07} (fallo de identificacion y autenticaci\'{o}n): enviar seis intentos fallidos consecutivos de login desde la misma IP y verificar respuesta \texttt{429 Too Many Requests} desde el sexto en adelante.
+    \item \textbf{A09} (fallo de registro y monitoreo): capturar el archivo de log donde consten las entradas de \texttt{login} exitoso y fallido con \texttt{ip, timestamp, sub} del JWT.
+\end{itemize}
+
+\subsubsection*{C.3 --- Usabilidad}
+
+Se aplica el instrumento \emph{System Usability Scale} de Brooke, con las diez preguntas originales sin modificar la escala de cinco puntos~\cite{brooke1996sus}. El protocolo m\'{i}nimo es:
+
+\begin{itemize}
+    \item Poblacion: m\'{i}nimo diez participantes externos al equipo del PFC, con perfil declarado (edad, sexo, experiencia web, dispositivo). El instrumento SUS ha demostrado validez con muestras desde cinco participantes, pero diez es el m\'{i}nimo recomendado para producir estimaciones estables de la media.
+    \item Consentimiento informado firmado (fisico o digital) y almacenado en \texttt{docs/etica/consentimientos/} con datos personales anonimizados (los formularios firmados quedan fuera del repositorio p\'{u}blico y se listan por c\'{o}digo \texttt{P01, P02, \ldots}).
+    \item Tarea comun de \emph{onboarding}: login, alta de un registro, edicion, eliminaci\'{o}n l\'{o}gica, logout.
+    \item Resultados: matriz cruda (\texttt{docs/mediciones/sus/sus-raw.csv}) con una fila por participante y una columna por item, y reporte agregado con puntuacion media SUS ($0$ a $100$), desviaci\'{o}n tipica e intervalo de confianza al $95$\,\%.
+\end{itemize}
+
+\subsubsection*{C.4 --- Cobertura de pruebas}
+
+Se genera reporte JaCoCo con la cobertura de \emph{lines, branches, complexity} sobre el m\'{o}dulo de dominio y de servicios de la API. La cobertura objetivo declarada por el planteamiento del PFC es $\geq 70$\,\% para la Entrega Final; en la Tercera Entrega se exige alcanzar al menos $\geq 60$\,\% y una tendencia creciente entre entregas.
+
+\subsubsection*{C.5 --- Accesibilidad y calidad web}
+
+Se ejecuta \texttt{npx lhci autorun} contra el frontend Angular servido por el contenedor. Los umbrales m\'{i}nimos declarados en \texttt{lighthouserc.js} son:
+
+\begin{itemize}
+    \item \emph{Performance} $\geq 80$.
+    \item \emph{Accessibility} $\geq 90$.
+    \item \emph{Best practices} $\geq 90$.
+    \item \emph{SEO} $\geq 90$.
+\end{itemize}
+
+El archivo JSON de cada auditor\'{i}a queda archivado en \texttt{docs/mediciones/lighthouse/} con nombre \texttt{lhci-YYYYMMDD-HHMM.json}.
+
+\subsection{Bloque D --- Documentacion arquitectonica completa y trazable}
+
+La arquitectura documentada en la Entrega 2 se refuerza con los siguientes artefactos.
+
+\begin{itemize}
+    \item Diagramas C4 en niveles 1, 2 y 3, con c\'{o}digo fuente en \emph{Structurizr DSL} versionado en \texttt{docs/arquitectura/} y exportacion PNG generada por el pipeline~\cite{brown2023c4}.
+    \item Seis ADRs siguiendo la plantilla de Nygard (\emph{Title, Context, Decision, Status, Consequences}), archivados en \texttt{docs/adr/adr-NNN-titulo.md}. Los seis temas obligatorios son: eleccion de la pila principal, esquema de autenticaci\'{o}n, gestor de base de datos, estrategia de cache, estrategia de despliegue y estrategia de acceso a datos (separacion entre CRUD elementales sobre entidades ORM y operaciones adicionales encapsuladas en procedimientos almacenados o funciones)~\cite{nygard2011adr,demichiel2013jpa21}.
+    \item Tabla de atributos de calidad ISO/IEC 25010, con prioridad, escenario y estrategia por cada uno~\cite{iso25010}.
+    \item Matriz de trazabilidad \emph{requisitos $\rightarrow$ modulos $\rightarrow$ endpoints $\rightarrow$ pruebas $\rightarrow$ evidencia} en \texttt{docs/trazabilidad/matriz.csv} o \texttt{.md}.
+\end{itemize}
+
+\subsection{Bloque E --- Publicabilidad del artefacto y gestion de datos}
+
+Este bloque orienta la Tercera Entrega hacia el estado de reutilizabilidad exigido por las gu\'{i}as FAIR y por el badge \emph{Artifacts Available} de la ACM~\cite{wilkinson2016fair,acm2020artifact}. Su cumplimiento se demuestra con archivos concretos dentro del repositorio.
+
+\begin{cajaentregable}{E.1 --- Licencia y metadatos de citacion}
+    \begin{itemize}
+        \item \texttt{LICENSE} en la raiz con el texto \'{i}ntegro de una licencia aprobada por la Open Source Initiative (MIT, Apache-2.0 o BSD-3-Clause). La eleccion se justifica en un ADR.
+        \item \texttt{CITATION.cff} en la raiz siguiendo la versi\'{o}n \texttt{1.2.0} de la especificaci\'{o}n, con los campos obligatorios (\texttt{cff-version, message, title, authors}) y los recomendados (\texttt{version, date-released, license, repository-code, doi, keywords})~\cite{druskat2021cff,smith2016software}.
+        \item Las contribuciones de cada integrante se declaran en \texttt{CONTRIBUTORS.md} usando la taxonomia CRediT (14 roles), asignando expl\'{i}citamente a cada persona los roles en que participo~\cite{niso2022credit}.
+    \end{itemize}
+\end{cajaentregable}
+
+\begin{cajaentregable}{E.2 --- Identificador persistente y archivo del artefacto}
+    \begin{itemize}
+        \item Se crea el archivo Zenodo del repositorio en el estado \texttt{v0.9.0-rc}, obteniendo un DOI persistente. El DOI se documenta en el \texttt{README}, en \texttt{CITATION.cff} y en el propio archivo del PDF de informe.
+        \item El badge Zenodo (\texttt{[![DOI](\ldots)]}) aparece al inicio del \texttt{README}, junto al badge de \emph{CI passing} y al badge de licencia.
+    \end{itemize}
+\end{cajaentregable}
+
+\begin{cajaentregable}{E.3 --- Diccionario de datos}
+    \begin{itemize}
+        \item Para cada archivo crudo de mediciones bajo \texttt{docs/mediciones/} se registra en \texttt{docs/mediciones/DATA-DICTIONARY.md} el nombre de la variable, su tipo de dato, la unidad, el rango esperado y su significado.
+        \item El diccionario se actualiza con \emph{pull request} cada vez que se a\~{n}ade una nueva variable, y su vigencia se verifica autom\'{a}ticamente en el pipeline con un test de esquema (por ejemplo con \emph{jsonschema} o \emph{pandera} si se usa Python).
+    \end{itemize}
+\end{cajaentregable}
+
+\begin{cajaentregable}{E.4 --- Versionado semantico y \emph{changelog}}
+    \begin{itemize}
+        \item El proyecto adopta \emph{Semantic Versioning 2.0.0} de forma estricta desde la Tercera Entrega. La regla \texttt{MAJOR.MINOR.PATCH} se documenta en \texttt{docs/VERSIONING.md} y el tag de est\'{a} entrega debe ser exactamente \texttt{v0.9.0-rc}~\cite{prestonwerner2013semver}.
+        \item El archivo \texttt{CHANGELOG.md} sigue la convencion \emph{Keep a Changelog}, con secciones \texttt{Added, Changed, Deprecated, Removed, Fixed, Security} para cada versi\'{o}n.
+        \item Los mensajes de \emph{commit} siguen \emph{Conventional Commits} (\texttt{feat:, fix:, docs:, chore:, refactor:, test:, perf:}) para permitir la generaci\'{o}n autom\'{a}tica del changelog.
+    \end{itemize}
+\end{cajaentregable}
+
+\subsection{Bloque F --- Etica y responsabilidad de los datos}
+
+Aunque el proyecto no manipule datos de salud, financieros o personales sensibles, la disciplina de investigaci\'{o}n contemporanea exige declarar expl\'{i}citamente los aspectos eticos del uso de datos y de participantes~\cite{washizaki2024swebok,wohlin2012experimentation}.
+
+\begin{itemize}
+    \item \texttt{docs/etica/ETHICS.md} declara: (i) fuentes de datos y su licencia, (ii) tratamiento de datos personales si los hubiera, (iii) mecanismo de consentimiento informado para las pruebas de usabilidad, y (iv) ausencia de datos identificables en el repositorio p\'{u}blico.
+    \item \texttt{docs/etica/consentimientos/plantilla.md} contiene la plantilla de consentimiento informado utilizada en las pruebas SUS del Bloque C.3. Los consentimientos firmados no se suben al repositorio p\'{u}blico.
+\end{itemize}
+
+% =====================================================================
+%  3. ESTRUCTURA DE REPOSITORIO
+% =====================================================================
+\section{Estructura obligatoria del repositorio para la Tercera Entrega}
+
+El arbol de directorio que el revisor debe encontrar al clonar el repositorio en el estado \texttt{v0.9.0-rc} es el siguiente. Cualquier desviaci\'{o}n se considera evidencia de una entrega incompleta y se penaliza en el criterio de calidad de entrega.
+
+\begin{lstlisting}[caption={Estructura minima del repositorio para la Tercera Entrega}]
+.
+|-- README.md                   # badges, arranque, credenciales,
+|                               # DOI Zenodo, licencia
+|-- LICENSE                     # texto integro OSI-approved
+|-- CITATION.cff                # metadatos de citacion CFF 1.2.0
+|-- CONTRIBUTORS.md             # roles CRediT por integrante
+|-- CHANGELOG.md                # Keep-a-Changelog
+|-- Makefile                    # objetivos up down test bench audit
+|-- docker-compose.yml          # con digests sha256 pinados
+|-- .env.example                # variables comentadas
+|-- .gitignore
+|-- backend/                    # codigo Spring Boot 3.2.x (Java 21 LTS)
+|-- frontend/                   # codigo Angular 17+
+|-- db/
+|   |-- schema.sql
+|   |-- seed.sql
+|   `-- procs/                  # sp_*.sql y fn_*.sql versionados
+|-- database/migrations/        # migraciones Flyway V1__, V2__, R__
+|-- docs/
+|   |-- requisitos/
+|   |   |-- SRS.pdf             # ISO/IEC/IEEE 29148:2018
+|   |   |-- SRS.tex             # fuente LaTeX del SRS
+|   |   |-- historias/          # historias INVEST + Gherkin
+|   |   |-- casos-de-uso/       # plantilla Cockburn niveles 1..4
+|   |   `-- CHANGELOG-REQ.md    # Keep-a-Changelog de requisitos
+|   |-- observaciones/
+|   |   `-- OBSERVACIONES.md    # bitacora de OBS Entregas 1A y 1B
+|   |-- adr/                    # 6 ADRs plantilla Nygard
+|   |   |-- adr-001-...md
+|   |   |-- ...
+|   |   `-- adr-006-...md
+|   |-- basedatos/
+|   |   `-- CATALOGO-SP.md      # catalogo de procedimientos SP/fn
+|   |-- arquitectura/           # Structurizr DSL + PNG C4 L1..L3
+|   |-- mediciones/
+|   |   |-- perf/               # k6 raw runs 1..3 + reporte
+|   |   |-- sec/                # curl -I, curl -v, capturas OWASP
+|   |   |-- sus/                # SUS raw csv + reporte + IC 95%
+|   |   |-- lighthouse/         # JSON lhci por corrida
+|   |   |-- jacoco/             # report.xml + report.html
+|   |   `-- DATA-DICTIONARY.md  # variables + tipos + unidades
+|   |-- trazabilidad/
+|   |   `-- matriz.csv          # req -> historia -> caso uso ->
+|   |                           #    modulo -> endpoint -> prueba ->
+|   |                           #    tipo_acceso -> evidencia -> estado
+|   |-- etica/
+|   |   |-- ETHICS.md
+|   |   `-- consentimientos/plantilla.md
+|   |-- VERSIONING.md
+|   `-- informe-entrega-3.pdf   # informe tecnico 20-30 paginas
+|-- k6/                         # scripts + opts.js
+|-- lighthouserc.js
+|-- scripts/                    # analisis con seed fija
+|   |-- validate-traceability.sh
+|   `-- audit-sql-dynamic.sh
+`-- .github/workflows/          # CI que ejecuta test bench audit
+\end{lstlisting}
+
+% =====================================================================
+%  4. ENTREGABLES
+% =====================================================================
+\section{Entregables consolidados de la Tercera Entrega}
+
+El equipo entrega, unicamente a traves del repositorio Git p\'{u}blico y del formulario institucional del SGA, los siguientes artefactos.
+
+\begin{enumerate}
+    \item Repositorio Git p\'{u}blico con \emph{tag} exactamente igual a \texttt{v0.9.0-rc}, cuyo \emph{commit hash} corto se declara en la portada del PDF de informe t\'{e}cnico.
+    \item DOI persistente asignado por Zenodo al tag \texttt{v0.9.0-rc}. El DOI se declara en tres lugares (README, CITATION.cff, portada del PDF) y debe resolver a la misma versi\'{o}n.
+    \item PDF de informe t\'{e}cnico de 20 a 30 p\'{a}ginas, ubicado en \texttt{docs/informe-entrega-3.pdf}, con las secciones: portada, resumen ejecutivo, estado del sistema, arquitectura actual (C4 L1--L3), matriz de trazabilidad, protocolo experimental, resultados por bloque (rendimiento, seguridad, usabilidad, cobertura, accesibilidad), amenazas a la validez, declaraci\'{o}n de contribuciones (CRediT), declaraci\'{o}n \'{e}tica, referencias.
+    \item Coleccion Postman actualizada (\texttt{docs/postman/coleccion.json}) con al menos 20 peticiones cubriendo casos de exito, error de validaci\'{o}n (\texttt{422}), no autorizado (\texttt{401}), prohibido (\texttt{403}) y no encontrado (\texttt{404}).
+    \item Video corto (2--3 minutos, alojado enlazado desde el README) donde el equipo demuestra \texttt{make up}, ejecuci\'{o}n de \texttt{make bench} y \texttt{make audit}, y muestra los reportes generados. No sustituye a la evidencia archivada.
+\end{enumerate}
+
+% =====================================================================
+%  5. RUBRICA
+% =====================================================================
+\section{Rubrica de evaluacion de la Tercera Entrega}
+
+La r\'{u}brica pondera once criterios agrupados en tres ejes: eje de continuidad y requisitos (criterios C0 y C0R, $22$\,\%), eje de ingenier\'{i}a (criterios C1--C6, $53$\,\%) y eje de publicabilidad del artefacto (criterios C7--C10, $25$\,\%). Cada criterio se evalua en cinco niveles: \emph{Excelente} $= 100$\,\%, \emph{Satisfactorio} $= 75$\,\%, \emph{En desarrollo} $= 50$\,\%, \emph{Insuficiente} $= 25$\,\%, \emph{Ausente} $= 0$\,\%. La escala de cuatro niveles activos mas Ausente ya fue empleada por el docente en la r\'{u}brica GA-PE-U2 y se mantiene aqui por consistencia interna del curso.
+
+\subsection{Formula de calificacion}
+
+\begin{center}
+$\displaystyle \text{Nota}_{100} \;=\; \sum_{i=1}^{11} \bigl(\text{peso}_{i} \times \text{nivel}_{i}\bigr) \qquad \text{Nota}_{10} \;=\; \frac{\text{Nota}_{100}}{10}$
+\end{center}
+
+\subsection{Rubrica detallada}
+
+{
+\footnotesize
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|L{3.0cm}|C{0.9cm}|L{2.5cm}|L{2.5cm}|L{2.5cm}|L{2.3cm}|}
+\hline
+\rowcolor{uteqverde!85}
+{\color{white}\textbf{Criterio}} &
+{\color{white}\textbf{Peso}} &
+{\color{white}\textbf{Excelente (100\,\%)}} &
+{\color{white}\textbf{Satisfactorio (75\,\%)}} &
+{\color{white}\textbf{En desarrollo (50\,\%)}} &
+{\color{white}\textbf{Insuficiente (25\,\%)}} \\
+\hline
+\endfirsthead
+
+\hline
+\rowcolor{uteqverde!85}
+{\color{white}\textbf{Criterio}} &
+{\color{white}\textbf{Peso}} &
+{\color{white}\textbf{Excelente (100\,\%)}} &
+{\color{white}\textbf{Satisfactorio (75\,\%)}} &
+{\color{white}\textbf{En desarrollo (50\,\%)}} &
+{\color{white}\textbf{Insuficiente (25\,\%)}} \\
+\hline
+\endhead
+
+% ============ C0 ============
+\textbf{C0. Aplicacion de observaciones de Entregas 1A y 1B} (Bloque 0) &
+\centering 10\,\% &
+\texttt{docs/observaciones/OBSERVACIONES.md} presente con el 100\,\% de las observaciones cerradas, cada una con c\'{o}digo, texto \'{i}ntegro, decisi\'{o}n del equipo y commit hash de resoluci\'{o}n; commits referencian el c\'{o}digo (\texttt{OBS-NN}); tag \texttt{v0.7.1} colocado sobre el commit de cierre de observaciones. &
+$\geq 80$\,\% de observaciones cerradas con trazabilidad correcta; tag \texttt{v0.7.1} presente. &
+Entre $60$\,\% y $80$\,\% de observaciones cerradas o trazabilidad parcial. &
+Menos del $60$\,\% de observaciones cerradas o ausencia del archivo. \\
+\rowcolor{grisfila}
+
+% ============ C0R ============
+\textbf{C0R. Consolidacion de ingenieria de requisitos} (Bloque A.3) &
+\centering 12\,\% &
+SRS conforme a ISO/IEC/IEEE 29148:2018 versionado en \texttt{docs/requisitos/SRS.pdf}; 100\,\% de los requisitos \emph{Must} con identificador, rationale, prioridad MoSCoW, criterio de aceptacion medible y m\'{e}todo de verificaci\'{o}n; historias de usuario en formato Connextra con INVEST y Gherkin; casos de uso Cockburn niveles 1--4; reglas INCOSE v4 aplicadas a la redaccion; matriz de trazabilidad end-to-end operativa con validaci\'{o}n en CI. &
+SRS presente con estructura ISO/IEC/IEEE 29148:2018 y $\geq 80$\,\% de requisitos con atributos completos; historias y casos de uso presentes con calidad aceptable; matriz cubre $\geq 80$\,\% de \emph{Must}. &
+SRS presente pero con estructura parcial; historias o casos de uso incompletos; matriz de trazabilidad con vacios. &
+Sin SRS formal o requisitos redactados sin cumplir las quince caracter\'{i}sticas INCOSE. \\
+
+% ============ C1 ============
+\textbf{C1. Consolidacion funcional y estrategia de acceso a datos} (Bloque A.1 y A.2) &
+\centering 6\,\% &
+Todos los \emph{endpoints} de la Entrega 1B operativos, JWT en cookie HttpOnly+Secure+SameSite, ProblemDetails RFC 7807 en el 100\,\% de errores, cache Redis operativo con TTL externo, y separacion CRUD-elementales-en-ORM frente a operaciones-adicionales-en-SP evidenciada con al menos un procedimiento almacenado invocado desde un repositorio Spring Data y catalogado en \texttt{docs/basedatos/CATALOGO-SP.md}. &
+Igual pero con una discrepancia menor documentada o con catalogo de SPs parcial. &
+Al menos un \emph{endpoint} caido, ProblemDetails en menos del 80\,\% de errores, o ausencia del catalogo de SPs pese a existir operaciones adicionales a los CRUD elementales. &
+Regresiones funcionales significativas respecto a la Entrega 1B o ausencia total de procedimientos almacenados para las operaciones adicionales. \\
+\rowcolor{grisfila}
+
+% ============ C2 ============
+\textbf{C2. Reproducibilidad automatica} (Bloque B.1) &
+\centering 10\,\% &
+\texttt{make up} arranca todo desde clonacion limpia sin intervencion; imagenes pinadas por digest sha256; \texttt{.env.example} completo; seed y schema montados en \texttt{docker-entrypoint-initdb.d}. &
+Arranque en un solo comando con una variable de entorno adicional documentada. &
+Requiere pasos manuales no documentados o falla ocasional. &
+No arranca desde clonacion limpia siguiendo el README. \\
+
+% ============ C3 ============
+\textbf{C3. Determinismo de mediciones} (Bloque B.2) &
+\centering 7\,\% &
+Todos los scripts con semilla fija y versiones de herramientas capturadas en cada archivo de resultados; 3 corridas independientes por benchmark. &
+Semillas fijas en scripts principales; menos de 3 corridas o versiones parcialmente registradas. &
+Semillas presentes en algunos scripts; corridas \'{u}nicas. &
+Sin semillas fijas ni control de versiones de herramientas. \\
+\rowcolor{grisfila}
+
+% ============ C4 ============
+\textbf{C4. Evidencia empirica cuantitativa} (Bloque C) &
+\centering 10\,\% &
+Los cinco sub-bloques (perf, sec, sus, cobertura, lighthouse) con archivos crudos, scripts de an\'{a}lisis y reportes con media, IC 95\,\% y percentiles; SUS con $\geq 10$ participantes. &
+Cuatro de los cinco sub-bloques completos; el faltante justificado en el informe. &
+Tres de los cinco sub-bloques; SUS con menos de 10 participantes. &
+Menos de tres sub-bloques con evidencia; SUS ausente. \\
+
+% ============ C5 ============
+\textbf{C5. Documentacion arquitectonica y trazabilidad} (Bloque D) &
+\centering 8\,\% &
+C4 L1--L3 versionado en Structurizr DSL; cinco ADRs con plantilla Nygard completa; tabla ISO 25010; matriz de trazabilidad completa \emph{req $\rightarrow$ codigo $\rightarrow$ prueba $\rightarrow$ evidencia}. &
+Cuatro ADRs completos; matriz cubre $\geq 80$\,\% de requisitos. &
+Tres ADRs; matriz parcial. &
+Menos de tres ADRs y matriz ausente o superficial. \\
+\rowcolor{grisfila}
+
+% ============ C6 ============
+\textbf{C6. Auditoria de seguridad OWASP} (Bloque C.2 con enfasis) &
+\centering 12\,\% &
+Los seis controles OWASP evidenciados con \texttt{curl} verificable, respuestas HTTP correctas (403/422/429), cabeceras HSTS, CSP, X-Frame-Options, X-Content-Type-Options presentes; logs con timestamp, IP y sub. &
+Cinco controles evidenciados; una cabecera menor faltante. &
+Cuatro controles evidenciados. &
+Tres o menos controles evidenciados. \\
+
+% ============ C7 ============
+\textbf{C7. Licencia, citacion y contribucion} (Bloque E.1) &
+\centering 5\,\% &
+\texttt{LICENSE} OSI-approved presente; \texttt{CITATION.cff} v1.2.0 v\'{a}lido; \texttt{CONTRIBUTORS.md} con roles CRediT explicitos por integrante. &
+Licencia y CITATION.cff presentes; roles CRediT parciales. &
+Licencia presente; CITATION.cff ausente o invalido. &
+Sin licencia declarada. \\
+\rowcolor{grisfila}
+
+% ============ C8 ============
+\textbf{C8. Archivo permanente e identificador} (Bloque E.2) &
+\centering 5\,\% &
+DOI Zenodo asignado al tag \texttt{v0.9.0-rc}, declarado en tres lugares y resolviendo a la misma versi\'{o}n. &
+DOI asignado y declarado en dos lugares. &
+DOI asignado pero no declarado en el repositorio. &
+Sin DOI persistente. \\
+
+% ============ C9 ============
+\textbf{C9. Datos, diccionario y versionado} (Bloques E.3, E.4) &
+\centering 7\,\% &
+Datos crudos en \texttt{docs/mediciones/}; \texttt{DATA-DICTIONARY.md} completo; SemVer 2.0.0 estricto; \texttt{CHANGELOG.md} con Keep-a-Changelog; commits siguen Conventional Commits. &
+Diccionario cubre $\geq 80$\,\% de variables; changelog presente. &
+Diccionario parcial; changelog irregular. &
+Sin diccionario o sin changelog. \\
+\rowcolor{grisfila}
+
+% ============ C10 ============
+\textbf{C10. Etica y calidad de la entrega global} (Bloque F + integridad global) &
+\centering 8\,\% &
+\texttt{ETHICS.md} y plantilla de consentimiento presentes; PDF de informe con las 10 secciones exigidas; matriz de amenazas a la validez presente; historial Git con $\geq 30$ commits granulares y autoria correcta de todos los integrantes. &
+Documentaci\'{o}n \'{e}tica presente; informe con una secci\'{o}n faltante justificada. &
+\texttt{ETHICS.md} m\'{i}nimo; informe con dos secciones faltante. &
+Sin declaraci\'{o}n \'{e}tica ni informe estructurado. \\
+
+\hline
+\rowcolor{goldclaro}
+\multicolumn{2}{|r|}{\textbf{Total ponderado}} &
+\multicolumn{4}{l|}{\textbf{100\,\%} \quad \footnotesize Nota${}_{100} = \sum (\text{peso}_i \times \text{nivel}_i)$ \; \textbar\; Nota${}_{10} = \text{Nota}_{100}/10$} \\
+\hline
+\end{longtable}
+}
+
+\subsection{Reglas transversales de calificacion}
+
+\begin{cajacritica}{Reglas transversales que aplican a todos los criterios}
+    \begin{enumerate}
+        \item \textbf{El repositorio Git es la fuente de verdad}. La evidencia verificada directamente en el repositorio se distingue siempre de la inferida de un PDF o de capturas.
+        \item Los criterios dependientes de c\'{o}digo (C1--C6) se califican \emph{Ausente} ($0$\,\%) cuando no existe repositorio p\'{u}blico accesible o cuando el tag \texttt{v0.9.0-rc} no existe.
+        \item Cualquier commit posterior al corte declarado en la primera p\'{a}gina del informe se ignora para efectos de calificaci\'{o}n, pero no se penaliza (queda c\'{o}mo evidencia de trabajo posterior a la entrega).
+        \item Si el \texttt{make up} falla desde una clonacion limpia siguiendo estrictamente el README, el criterio C2 se califica autom\'{a}ticamente \emph{Insuficiente} ($25$\,\%) o menos, independientemente del resto.
+        \item Si el DOI declarado no resuelve al tag \texttt{v0.9.0-rc}, el criterio C8 se califica \emph{Ausente} ($0$\,\%).
+        \item Si el \texttt{CITATION.cff} no valida contra el esquema \texttt{cff-version: 1.2.0} publicado en Zenodo (validado con \texttt{cffconvert}), el criterio C7 se limita a \emph{En desarrollo} ($50$\,\%) c\'{o}mo maximo~\cite{druskat2021cff}.
+        \item Cualquier evidencia de concatenacion de entrada de usuario en JPQL, HQL, SQL nativo o dentro de un procedimiento almacenado, y cualquier uso de SQL din\'{a}mico construido por concatenacion (\texttt{EXECUTE IMMEDIATE}, \texttt{sp\_executesql} o equivalentes), califica autom\'{a}ticamente el criterio C1 c\'{o}mo \emph{Insuficiente} ($25$\,\%) y el criterio C6 c\'{o}mo \emph{Insuficiente} ($25$\,\%) o menos, independientemente del resto de la evidencia~\cite{owaspsqlicheatsheet,owasp2021top10}.
+        \item Todos los archivos crudos de mediciones deben conservarse tal cual los produjo la herramienta original; su edicion manual invalida la evidencia.
+    \end{enumerate}
+\end{cajacritica}
+
+% =====================================================================
+%  6. TRABAJO PENDIENTE PARA LA CUARTA ENTREGA
+% =====================================================================
+\section{Consideraciones para la Entrega Final (semana 16)}
+
+La Tercera Entrega deja al equipo en el estado \texttt{v0.9.0-rc}, es decir, un candidato a versi\'{o}n estable. La transicion a \texttt{v1.0.0} en la Entrega Final consistira en absorber las observaciones de la evaluaci\'{o}n de est\'{a} entrega, elevar la cobertura JaCoCo desde el m\'{i}nimo del $60$\,\% hasta el objetivo del $70$\,\% o superior, completar las mediciones que la Tercera Entrega haya dejado incompletas, ampliar la muestra SUS si aplica y consolidar el archivo permanente. En consecuencia, ninguna decisi\'{o}n arquitect\'{o}nica mayor debe posponerse a la Entrega Final: si algo requiere reescribir un ADR o refactorizar un m\'{o}dulo, debe ocurrir dentro de la Tercera Entrega.
+
+% =====================================================================
+%  REFERENCIAS
+% =====================================================================
+\bibliographystyle{plain}
+\bibliography{Entrega3}
+
+\end{document}

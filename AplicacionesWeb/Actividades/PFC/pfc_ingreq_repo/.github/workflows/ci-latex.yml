@@ -1,0 +1,98 @@
+name: ci-latex
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'docs/**/*.tex'
+      - 'docs/**/*.bib'
+      - '.github/workflows/ci-latex.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'docs/**/*.tex'
+      - 'docs/**/*.bib'
+
+jobs:
+  compilar-guias:
+    name: Compilar guias de entrega y verificar bibliografia
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar TeXLive
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+              texlive-latex-base \
+              texlive-latex-recommended \
+              texlive-latex-extra \
+              texlive-fonts-recommended \
+              texlive-fonts-extra \
+              texlive-lang-spanish \
+              texlive-bibtex-extra \
+              texlive-science \
+              lmodern \
+              biber \
+              latexmk
+
+      - name: Compilar Guia_Entrega1_IngReq.tex
+        working-directory: docs/entregas
+        run: |
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega1_IngReq.tex
+          bibtex   Guia_Entrega1_IngReq
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega1_IngReq.tex
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega1_IngReq.tex
+
+      - name: Compilar Guia_Entrega2_IngReq.tex
+        working-directory: docs/entregas
+        run: |
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega2_IngReq.tex
+          bibtex   Guia_Entrega2_IngReq
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega2_IngReq.tex
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega2_IngReq.tex
+
+      - name: Compilar Guia_Entrega3_IngReq.tex
+        working-directory: docs/entregas
+        run: |
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega3_IngReq.tex
+          bibtex   Guia_Entrega3_IngReq
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega3_IngReq.tex
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega3_IngReq.tex
+
+      - name: Compilar Guia_Entrega4_IngReq.tex
+        working-directory: docs/entregas
+        run: |
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega4_IngReq.tex
+          bibtex   Guia_Entrega4_IngReq
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega4_IngReq.tex
+          pdflatex -interaction=nonstopmode -halt-on-error Guia_Entrega4_IngReq.tex
+
+      - name: Verificar bibliografia (citas sin entrada)
+        working-directory: docs/entregas
+        run: |
+          set -e
+          grep -oE '\\cite\{[^}]+\}' *.tex \
+            | grep -oE '\{[^}]+\}' \
+            | tr -d '{}' \
+            | tr ',' '\n' \
+            | sed 's/^ *//;s/ *$//' \
+            | sort -u > citas-usadas.txt
+          grep -E '^@[a-zA-Z]+\{' IngReq.bib \
+            | sed -E 's/^@[a-zA-Z]+\{([^,]+),.*/\1/' \
+            | sort -u > entradas-bib.txt
+          echo "Citas sin entrada en IngReq.bib:"
+          comm -23 citas-usadas.txt entradas-bib.txt | tee sin-entrada.txt
+          if [ -s sin-entrada.txt ]; then
+            echo "ERROR: existen citas sin entrada en la bibliografia"
+            exit 1
+          fi
+
+      - name: Subir PDF de las guias como artefacto
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guias-pdf
+          path: docs/entregas/*.pdf

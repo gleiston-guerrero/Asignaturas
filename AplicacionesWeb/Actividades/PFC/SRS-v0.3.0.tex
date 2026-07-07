@@ -1,0 +1,844 @@
+\documentclass[11pt,a4paper,twoside]{report}
+
+% ============================================================================
+%  Especificacion de Requisitos del Software (SRS)
+%  Sistema de Gestion de Tutorias Academicas de la UTEQ
+%  Version 0.3.0 - Entrega 1 del PFC de Aplicaciones Web (PPA 2026-2027)
+%
+%  Compilar con:
+%    pdflatex -interaction=nonstopmode SRS-v0.3.0.tex
+%    bibtex SRS-v0.3.0
+%    pdflatex -interaction=nonstopmode SRS-v0.3.0.tex
+%    pdflatex -interaction=nonstopmode SRS-v0.3.0.tex
+% ============================================================================
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.8cm,bottom=2.8cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\tcbuselibrary{skins,breakable}
+
+% ---- Colores institucionales UTEQ ----
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{grisSuave}{RGB}{240,240,240}
+\definecolor{grisTexto}{RGB}{60,60,60}
+
+% ---- Hipervinculos ----
+\hypersetup{
+    colorlinks=true,
+    linkcolor=uteqverde,
+    citecolor=uteqverde,
+    urlcolor=uteqdorado,
+    pdftitle={SRS Sistema de Gestion de Tutorias Academicas UTEQ v0.3.0},
+    pdfauthor={PFC Aplicaciones Web UTEQ 2026-2027}
+}
+
+% ---- Cabeceras y pies ----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\textcolor{uteqverde}{\small\bfseries SRS Sistema de Gesti\'on de Tutor\'ias UTEQ}}
+\fancyhead[RE,LO]{\textcolor{uteqverde}{\small\itshape v0.3.0 (Entrega 1)}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ---- Titulos de capitulo y seccion ----
+\titleformat{\chapter}[block]{\color{uteqverde}\Huge\bfseries}{Cap\'itulo \thechapter}{15pt}{\Huge}
+\titleformat{\section}{\color{uteqverde}\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\color{uteqverde!85!black}\large\bfseries}{\thesubsection}{1em}{}
+
+% ---- Cajas tematicas ----
+\newtcolorbox{cajaNota}[1][]{
+    enhanced,
+    colback=grisSuave,
+    colframe=uteqverde,
+    boxrule=1pt,
+    arc=3pt,
+    left=6pt,right=6pt,top=4pt,bottom=4pt,
+    fonttitle=\bfseries\color{white},
+    coltitle=white,
+    colbacktitle=uteqverde,
+    breakable,
+    #1
+}
+
+% ---- Listings para JSON ----
+\lstdefinelanguage{json}{
+    numbers=none,
+    frame=single,
+    rulecolor=\color{uteqverde!60},
+    showstringspaces=false,
+    breaklines=true,
+    basicstyle=\ttfamily\small,
+    string=[s]{"}{"},
+    stringstyle=\color{uteqverde!85!black},
+    comment=[l]{:},
+    commentstyle=\color{grisTexto},
+    keywordstyle=\color{uteqdorado!85!black}\bfseries,
+    keywords={true,false,null}
+}
+\lstdefinelanguage{sql-mini}{
+    keywords={CREATE,TABLE,PRIMARY,KEY,FOREIGN,REFERENCES,NOT,NULL,VARCHAR,INTEGER,TIMESTAMP,BOOLEAN,UUID,JSONB,DEFAULT,INDEX,ON},
+    keywordstyle=\color{uteqverde}\bfseries,
+    basicstyle=\ttfamily\small,
+    frame=single,
+    rulecolor=\color{uteqverde!60},
+    breaklines=true
+}
+
+% ---- Comandos utilitarios ----
+\newcommand{\reqid}[1]{\texttt{\textbf{#1}}}
+\newcommand{\actor}[1]{\textsc{#1}}
+\newcommand{\rnf}[1]{\hyperref[rnf:#1]{RNF-#1}}
+\newcommand{\rf}[1]{\hyperref[rf:#1]{RF-#1}}
+
+% ============================================================================
+\begin{document}
+
+% ---- Portada ----
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1.5cm}
+
+        {\color{uteqverde}\Huge\bfseries\uppercase{Universidad T\'ecnica}\\[4pt]
+        \uppercase{Estatal de Quevedo}}
+
+        \vspace{0.4cm}
+        {\color{uteqdorado}\Large\itshape Facultad de Ciencias de la Computaci\'on\\ y Dise\~no Digital}\\[4pt]
+        {\color{uteqdorado}\Large\itshape Carrera de Ingenier\'ia de Software}
+
+        \vspace{2.5cm}
+
+        {\huge\bfseries\color{uteqverde} Especificaci\'on de Requisitos\\[4pt] del Software (SRS)}\\[24pt]
+
+        {\LARGE Sistema de Gesti\'on de\\[3pt] Tutor\'ias Acad\'emicas de la UTEQ}\\[10pt]
+
+        \rule{0.6\textwidth}{1pt}\\[10pt]
+
+        {\Large\itshape Conforme a la cl\'ausula 9 de}\\[3pt]
+        {\Large\bfseries ISO/IEC/IEEE 29148:2018}\\[6pt]
+        {\normalsize Systems and software engineering --- Requirements engineering}\\[24pt]
+
+        \begin{tabular}{rl}
+            \bfseries Versi\'on:            & \texttt{v0.3.0} (Entrega 1) \\[3pt]
+            \bfseries Fecha:                & 4 de junio de 2026 \\[3pt]
+            \bfseries Producto Owner:       & Dr. Gleiston Guerrero Ulloa, Ph.D. \\[3pt]
+            \bfseries Asignatura:           & Aplicaciones Web (5.\textordmasculine{} nivel) \\[3pt]
+            \bfseries Per\'iodo:            & PPA 2026--2027 \\[3pt]
+            \bfseries Estado:               & \textcolor{uteqverde}{\bfseries APROBADO PARA \texttt{v0.3.0}} \\
+        \end{tabular}
+
+        \vfill
+
+        {\small\itshape Este documento se distribuye bajo licencia MIT como parte del repositorio p\'ublico\\ del PFC de Aplicaciones Web (UTEQ, PPA 2026--2027).}\\[6pt]
+        {\small\itshape Ciudad de Quevedo, R\'io Quevedo, Ecuador}
+
+    \end{center}
+\end{titlepage}
+
+% ---- Indice ----
+\tableofcontents
+\clearpage
+
+% ============================================================================
+\chapter{Introducci\'on}
+\label{cap:introduccion}
+
+% ---- Nota introductoria ----
+\begin{cajaNota}[title=Prop\'osito de este cap\'itulo]
+    Este cap\'itulo cumple con la cl\'ausula 9.5.1 de la norma \textbf{ISO/IEC/IEEE 29148:2018} \cite{iso29148}, declarando el prop\'osito del documento, el alcance del sistema, las definiciones y acr\'onimos, las referencias autoritativas y la estructura general del SRS.
+\end{cajaNota}
+
+\section{Prop\'osito del documento}
+\label{sec:proposito}
+
+Este documento constituye la \textbf{Especificaci\'on de Requisitos del Software} (\emph{Software Requirements Specification}, SRS) del \textit{Sistema de Gesti\'on de Tutor\'ias Acad\'emicas de la Universidad T\'ecnica Estatal de Quevedo} (en adelante, \textbf{Sistema de Tutor\'ias UTEQ}), formalizado conforme a la cl\'ausula 9 de la norma internacional ISO/IEC/IEEE 29148:2018 \cite{iso29148}.
+
+El prop\'osito del SRS es declarar de manera precisa, completa, correcta, verificable y trazable qu\'e debe hacer el sistema, bajo qu\'e restricciones lo debe hacer, con qu\'e nivel de calidad y para qui\'en. En palabras de Wiegers y Beatty, un SRS bien redactado es \textit{``el contrato entre quienes solicitan un sistema y quienes lo construyen''}, y su calidad determina la calidad de todos los artefactos posteriores del ciclo de vida \cite{wiegers2013software}.
+
+El documento est\'a dirigido a cuatro audiencias diferenciadas: (i) el equipo desarrollador del PFC, que lo usa como fuente de la verdad para el dise\~no, la implementaci\'on y las pruebas; (ii) el docente responsable de la asignatura y \emph{Product Owner} institucional, quien lo emplea como instrumento formal de validaci\'on y calificaci\'on; (iii) los revisores externos (jurado de defensa) que auditan la coherencia entre requisitos, arquitectura y evidencia entregada; y (iv) futuros mantenedores del sistema, quienes lo consultar\'an para comprender las decisiones tomadas y su justificaci\'on.
+
+Este SRS corresponde a la versi\'on \texttt{v0.3.0} del PFC, publicada como parte de la \textbf{Primera Entrega} (4 de junio de 2026). Su alcance de contenido es completo respecto a la especificaci\'on de requisitos; su alcance de implementaci\'on es limitado a la infraestructura y al esqueleto ejecutable. Los m\'odulos funcionales se implementar\'an progresivamente en las Entregas 2, 3 y Final del calendario del PFC.
+
+\section{Alcance del sistema}
+\label{sec:alcance}
+
+El Sistema de Tutor\'ias UTEQ es una \textbf{aplicaci\'on web multiusuario} que soporta el ciclo completo de las tutor\'ias acad\'emicas institucionales, desde la configuraci\'on de la disponibilidad docente hasta la generaci\'on de reportes agregados de coordinaci\'on. El sistema se despliega inicialmente para la Carrera de Ingenier\'ia de Software (FCCDD) con potencial de expansi\'on a toda la Facultad y eventualmente a la Universidad completa.
+
+\subsection{Nombre del sistema}
+
+Nombre oficial: \textbf{Sistema de Gesti\'on de Tutor\'ias Acad\'emicas de la UTEQ}. Nombre corto: \textbf{Tutor\'ias UTEQ}. Identificador de repositorio: \texttt{pfc-tutorias}. Grupo Maven: \texttt{ec.edu.uteq}. Artefacto backend: \texttt{pfc-tutorias-api}. Artefacto frontend: \texttt{pfc-tutorias-web}.
+
+\subsection{Qu\'e s\'i har\'a el sistema}
+
+El sistema soportar\'a las siguientes funcionalidades de negocio:
+
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt]
+    \item Configuraci\'on de disponibilidad horaria por parte del docente.
+    \item Registro de solicitudes de tutor\'ia por parte del estudiante, con selecci\'on de asignatura, tema, modalidad (individual o grupal) y tipo (presencial o virtual).
+    \item Aceptaci\'on, rechazo o reprogramaci\'on de solicitudes por parte del docente.
+    \item Registro de tutor\'ias efectivamente realizadas con captura de duraci\'on, asistentes, temas cubiertos, observaciones y adjuntos.
+    \item Consulta del historial personal de tutor\'ias por estudiante y por docente.
+    \item Generaci\'on de reportes agregados institucionales por parte de la coordinaci\'on acad\'emica, con filtrado por carrera, asignatura, docente, modalidad y per\'iodo, y exportaci\'on a formatos PDF y Excel.
+    \item Env\'io de notificaciones autom\'aticas por canal preferido (correo institucional, plataforma o WhatsApp) al cambio de estado de las solicitudes.
+    \item Autenticaci\'on stateless mediante JSON Web Tokens (JWT) conforme al RFC 7519 \cite{jones2015jwt}, transportados por cookie \texttt{HttpOnly + Secure + SameSite=Strict}.
+\end{itemize}
+
+\subsection{Qu\'e no har\'a el sistema}
+
+Para preservar la claridad del alcance, se declaran expl\'icitamente las funcionalidades \emph{fuera del \'ambito}:
+
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt]
+    \item El sistema \emph{no} sustituye al SGA institucional en la gesti\'on de matr\'iculas, calificaciones formales ni actas.
+    \item El sistema \emph{no} maneja pagos, facturaci\'on ni gesti\'on de becas.
+    \item El sistema \emph{no} implementa videoconferencia integrada; se apoya en enlaces externos (Zoom, Meet, Teams) para las tutor\'ias virtuales.
+    \item El sistema \emph{no} realiza evaluaciones acad\'emicas formales ni califica trabajos.
+    \item El sistema \emph{no} sustituye la comunicaci\'on directa entre estudiantes y docentes por canales alternativos.
+    \item El sistema \emph{no} integra un chat en tiempo real; las comunicaciones no s\'incronas se manejan por los canales habituales institucionales.
+\end{itemize}
+
+\subsection{Beneficios esperados}
+
+Se identifican tres beneficios institucionales medibles:
+
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt]
+    \item \textbf{Trazabilidad institucional}. La coordinaci\'on tendr\'a por primera vez visibilidad agregada sobre cu\'antas tutor\'ias se solicitan, cu\'antas se realizan efectivamente y qu\'e asignaturas presentan mayor demanda.
+    \item \textbf{Reducci\'on de fricci\'on operativa}. Los estudiantes acceden a la disponibilidad docente en una sola vista, sin depender de mensajes bilaterales dispersos por m\'ultiples canales informales.
+    \item \textbf{Base de datos para mejora continua}. Los datos capturados permitir\'an que la Facultad tome decisiones basadas en evidencia sobre asignaci\'on de horas de tutor\'ia, distribuci\'on por carrera y detecci\'on temprana de asignaturas cr\'iticas.
+\end{itemize}
+
+\section{Definiciones, acr\'onimos y abreviaturas}
+\label{sec:definiciones}
+
+Se recopilan aqu\'i los t\'erminos y acr\'onimos que aparecen en el resto del documento. La lista sigue el orden alfab\'etico.
+
+\begin{longtable}{@{}p{3.2cm}p{11.5cm}@{}}
+    \toprule
+    \textbf{T\'ermino} & \textbf{Definici\'on} \\
+    \midrule
+    \endhead
+    ADR & \emph{Architecture Decision Record}. Formato liviano de documentaci\'on de decisiones arquitect\'onicas relevantes, popularizado por Nygard \cite{nygard2011adr}. \\
+    C4 Model & Modelo de notaci\'on de arquitectura de software en cuatro niveles (Contexto, Contenedores, Componentes, C\'odigo) propuesto por Simon Brown \cite{brown2023c4}. \\
+    Coordinaci\'on & Rol acad\'emico institucional que supervisa la actividad tutorial de una carrera o de un grupo de carreras dentro de una facultad. \\
+    Cookie \texttt{HttpOnly} & Atributo de cookie HTTP que impide su lectura desde JavaScript, mitigando el robo por \emph{cross-site scripting}. Definida en el RFC 6265. \\
+    curl & Herramienta de l\'inea de comandos para transferir datos con URLs, ampliamente usada para verificar respuestas HTTP. \\
+    Docker Compose & Herramienta de orquestaci\'on multi-contenedor mediante archivo YAML declarativo. \\
+    FAIR & Findable, Accessible, Interoperable, Reusable. Principios rectores para la gesti\'on de datos y artefactos cient\'ificos \cite{wilkinson2016fair}. \\
+    Flyway & Herramienta de migraciones de base de datos versionadas por archivos SQL. \\
+    IMRaD & Estructura est\'andar de art\'iculos cient\'ificos: Introduction, Methods, Results, and Discussion. \\
+    ISO/IEC 25010 & Norma internacional que define el modelo de calidad del producto software \cite{iso25010}. \\
+    ISO/IEC/IEEE 29148 & Norma internacional que define el proceso de ingenier\'ia de requisitos y el contenido del SRS \cite{iso29148}. \\
+    JaCoCo & \emph{Java Code Coverage}. Biblioteca de instrumentaci\'on para medici\'on de cobertura de pruebas en la JVM. \\
+    JWT & \emph{JSON Web Token}. Token compacto autocontenido para transmitir afirmaciones firmadas entre partes, especificado en el RFC 7519 \cite{jones2015jwt}. \\
+    \emph{claims} & Afirmaciones incluidas en el \emph{payload} de un JWT (por ejemplo, identidad, roles, expiraci\'on). \\
+    OWASP & \emph{Open Web Application Security Project}. Comunidad que publica el ranking anual de riesgos de seguridad en aplicaciones web \cite{owasp2021top10}. \\
+    PFC & Proyecto Final de Curso. Trabajo integrador de la asignatura Aplicaciones Web del quinto nivel. \\
+    \emph{pipeline} & Secuencia automatizada de tareas de construcci\'on, prueba y despliegue de un artefacto de software. \\
+    ProblemDetails & Formato est\'andar de descripci\'on de errores HTTP definido por el RFC 7807 \cite{rfc7807}. \\
+    Redis & Sistema de almacenamiento clave-valor en memoria usado como cache y como \emph{blacklist} de \emph{tokens} revocados. \\
+    RFC 7519 & Documento normativo del IETF que define el formato JWT \cite{jones2015jwt}. \\
+    RFC 7807 & Documento normativo del IETF que define el formato \emph{Problem Details for HTTP APIs} \cite{rfc7807}. \\
+    RFC 9110 & Documento normativo del IETF que consolida la sem\'antica HTTP moderna \cite{rfc9110}. \\
+    \texttt{SameSite=Strict} & Atributo de cookie HTTP que restringe su env\'io exclusivamente a peticiones originadas en el mismo sitio, mitigando CSRF. \\
+    SGA & Sistema de Gesti\'on Acad\'emica institucional de la UTEQ, fuente de la verdad para matr\'iculas y catalogaci\'on de asignaturas. \\
+    SPA & \emph{Single Page Application}. Arquitectura de aplicaci\'on web en la que una \'unica p\'agina se actualiza din\'amicamente sin recargas completas. \\
+    SRS & \emph{Software Requirements Specification}. Documento formal que especifica los requisitos del software. \\
+    SUS & \emph{System Usability Scale} \cite{brooke1996sus}. Instrumento estandarizado de 10 \'items para medir usabilidad percibida. \\
+    throughput & Cantidad de operaciones que un sistema procesa por unidad de tiempo, t\'ipicamente medida en peticiones por segundo. \\
+    TTL & \emph{Time to Live}. Tiempo de vigencia de una entrada en cache antes de su expiraci\'on autom\'atica. \\
+    \bottomrule
+\end{longtable}
+
+\section{Referencias normativas}
+\label{sec:referencias}
+
+Este SRS se apoya en el corpus normativo y editorial listado en \cref{tab:normativas}. Las referencias completas se encuentran en la bibliograf\'ia del documento.
+
+\begin{table}[htbp]
+    \centering
+    \small
+    \caption{Referencias normativas empleadas en este SRS.}
+    \label{tab:normativas}
+    \begin{tabularx}{\textwidth}{@{}lXl@{}}
+        \toprule
+        \textbf{Documento} & \textbf{Uso en este SRS} & \textbf{Fuente} \\
+        \midrule
+        ISO/IEC/IEEE 29148:2018        & Estructura y contenido del SRS. & \cite{iso29148} \\
+        ISO/IEC 25010:2011             & Modelo de calidad para clasificar los RNF. & \cite{iso25010} \\
+        INCOSE GtWR v4                 & Caracter\'isticas de requisitos bien redactados. & \cite{incose2023requirements} \\
+        RFC 9110                       & Sem\'antica HTTP para el dise\~no de la API. & \cite{rfc9110} \\
+        RFC 7519 (JWT)                 & Formato del \emph{token} de autenticaci\'on. & \cite{jones2015jwt} \\
+        RFC 7807 (Problem Details)     & Formato de errores HTTP. & \cite{rfc7807} \\
+        OWASP Top 10:2021              & Cat\'alogo de riesgos que gu\'ia las medidas de seguridad. & \cite{owasp2021top10} \\
+        SUS (Brooke, 1996)             & Instrumento de medici\'on de usabilidad. & \cite{brooke1996sus} \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Adem\'as del corpus normativo, se apoya en literatura acad\'emica y editorial autorizada para las t\'ecnicas de ingenier\'ia de requisitos \cite{cockburn2001writing,cohn2004user,pohl2010requirements,wiegers2013software}, arquitectura de software \cite{martin2017clean,bass2021software,richards2020fundamentals,brown2023c4} y gesti\'on de datos \cite{kleppmann2017designing}.
+
+\section{Estructura del documento}
+\label{sec:estructura}
+
+El resto del documento se organiza como sigue. El \cref{cap:descripcion} presenta la descripci\'on general del sistema en su contexto operativo (\emph{Overall Description} de la cl\'ausula 9.5.2 de ISO/IEC/IEEE 29148:2018). El \cref{cap:requisitos_especificos} enumera los requisitos espec\'ificos (\emph{Specific Requirements} de la cl\'ausula 9.5.3), organizados en funcionales, no funcionales, de interfaz, de usabilidad y de proceso. El \cref{cap:verificacion} define la estrategia de verificaci\'on y validaci\'on (\emph{Verification} de la cl\'ausula 9.5.4), especificando el instrumento de verificaci\'on de cada requisito. El \cref{cap:trazabilidad} presenta la matriz de trazabilidad completa. Los ap\'endices incluyen la bibliograf\'ia consultada.
+
+% ============================================================================
+\chapter{Descripci\'on general}
+\label{cap:descripcion}
+
+\begin{cajaNota}[title=Prop\'osito de este cap\'itulo]
+    Este cap\'itulo cumple con la cl\'ausula 9.5.2 de la norma \textbf{ISO/IEC/IEEE 29148:2018} \cite{iso29148}, describiendo el sistema en su contexto operativo: perspectiva del producto, funciones principales, caracter\'isticas de los usuarios, restricciones, supuestos y dependencias.
+\end{cajaNota}
+
+\section{Perspectiva del producto}
+\label{sec:perspectiva}
+
+El Sistema de Tutor\'ias UTEQ es un \textbf{producto nuevo} dentro del ecosistema institucional. No sustituye a ning\'un sistema previo; complementa al SGA institucional en un dominio hoy no cubierto por herramientas oficiales. Antes de este sistema, la coordinaci\'on de tutor\'ias se realizaba por canales dispersos (correo institucional, mensajer\'ia instant\'anea, acuerdos verbales) sin trazabilidad ni reportabilidad institucional.
+
+Desde el punto de vista arquitect\'onico, el sistema es un \textbf{monolito modular} con exposici\'on REST conforme al RFC 9110 \cite{rfc9110} y al estilo arquitect\'onico definido por Fielding \cite{fielding2000rest}. La justificaci\'on completa de esta elecci\'on se encuentra en el ADR-001 del repositorio.
+
+\subsection{Diagrama de contexto (C4 Nivel 1)}
+
+El diagrama de contexto de sistema (\cref{fig:c4nivel1}) muestra al Sistema de Tutor\'ias UTEQ en el centro, rodeado por sus tres tipos de actores humanos y por sus tres sistemas externos con los que interact\'ua. La notaci\'on empleada es la del modelo C4 propuesto por Brown \cite{brown2023c4}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{../arquitectura/c4-nivel1-contexto.pdf}
+    \caption{Diagrama C4 Nivel 1: contexto del sistema. Elaboraci\'on propia siguiendo la notaci\'on del modelo C4 \cite{brown2023c4}.}
+    \label{fig:c4nivel1}
+\end{figure}
+
+Los tres actores humanos son el \actor{Estudiante} (usuario principal en volumen), el \actor{Docente} (usuario principal en operaciones cr\'iticas) y la \actor{Coordinaci\'on acad\'emica} (usuario administrativo con acceso a reportes agregados). Los tres sistemas externos son el \textbf{SGA UTEQ} (fuente de verdad para asignaturas activas y matr\'iculas), el \textbf{servidor SMTP institucional} (canal de notificaciones por defecto) y la \textbf{API de WhatsApp Business} (canal opcional de notificaciones).
+
+\subsection{Diagrama de contenedores (C4 Nivel 2)}
+
+El diagrama de contenedores (\cref{fig:c4nivel2}) descompone al Sistema de Tutor\'ias UTEQ en sus cuatro contenedores desplegables: la SPA en Angular 17, la API REST en Spring Boot 3, la base de datos PostgreSQL 16 y el cache en Redis 7. La notaci\'on y los principios siguen a \cite{brown2023c4}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../arquitectura/c4-nivel2-contenedores.pdf}
+    \caption{Diagrama C4 Nivel 2: contenedores desplegables del sistema. Elaboraci\'on propia \cite{brown2023c4}.}
+    \label{fig:c4nivel2}
+\end{figure}
+
+\subsection{Interfaces con sistemas externos}
+
+Las tres integraciones externas se describen a alto nivel a continuaci\'on. Los detalles t\'ecnicos se especifican en la Entrega 2 (\texttt{v0.7.0}) del repositorio.
+
+\begin{itemize}[leftmargin=1.5em,itemsep=3pt]
+    \item \textbf{SGA UTEQ}. Integraci\'on por API REST sobre HTTPS. Recuperaci\'on de asignaturas activas del ciclo acad\'emico y validaci\'on de matr\'icula del estudiante. En \texttt{v0.3.0} la integraci\'on se declara pero no se activa; el sistema opera con un cat\'alogo local sembrado con datos de prueba.
+    \item \textbf{Servidor SMTP institucional}. Env\'io de correos transaccionales mediante conexi\'on SMTP con TLS. Servidor: \texttt{smtp.uteq.edu.ec:587} (definitivo). Usuario: cuenta de servicio institucional a solicitar en la Entrega 2.
+    \item \textbf{WhatsApp Business API}. Integraci\'on opcional. Su activaci\'on est\'a condicionada a la disponibilidad de la API oficial de Meta. Si no est\'a disponible, el sistema opera con solo dos canales (plataforma y correo).
+\end{itemize}
+
+\section{Funciones principales}
+\label{sec:funciones}
+
+Las cinco funciones nucleares del sistema, cada una detallada como caso de uso en la carpeta \texttt{docs/requisitos/casos-uso/} del repositorio, son:
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=3pt]
+    \item \textbf{Registrar solicitud de tutor\'ia} (CU-01, actor \actor{Estudiante}). Punto de entrada del flujo de tutor\'ia. Alta frecuencia esperada.
+    \item \textbf{Aceptar o rechazar solicitud} (CU-02, actor \actor{Docente}). Punto de decisi\'on cr\'itico que define si la tutor\'ia se realizar\'a.
+    \item \textbf{Registrar tutor\'ia realizada} (CU-03, actor \actor{Docente}). Cierre del ciclo tutorial con captura de datos para reportes.
+    \item \textbf{Consultar estado de solicitudes} (CU-04, actor \actor{Estudiante}). Consulta de solo lectura con muy alta frecuencia.
+    \item \textbf{Generar reporte institucional} (CU-05, actor \actor{Coordinaci\'on}). Consulta agregada con filtros y exportaci\'on a PDF/Excel.
+\end{enumerate}
+
+Todas las funciones se implementan siguiendo el estilo REST del RFC 9110 \cite{rfc9110}, con verbos HTTP est\'andar y respuestas de error en formato \emph{ProblemDetails} del RFC 7807 \cite{rfc7807}. La autenticaci\'on emplea JWT conforme al RFC 7519 \cite{jones2015jwt}.
+
+\section{Caracter\'isticas de los usuarios}
+\label{sec:usuarios}
+
+\subsection{Perfil del estudiante}
+
+Es el usuario m\'as numeroso del sistema (400 estudiantes activos estimados en la Carrera de Ingenier\'ia de Software al inicio del PPA 2026-2027). Su perfil t\'ecnico es alto: manejo natural de aplicaciones web m\'oviles y de escritorio, familiaridad con formularios y notificaciones push, expectativa de tiempos de respuesta comparables a redes sociales comerciales. Su motivaci\'on principal es resolver dudas acad\'emicas oportunamente sin exponerse a la fricci\'on de conseguir agendas o intercambiar mensajes por canales informales.
+
+\subsection{Perfil del docente}
+
+Poblaci\'on entre 30 y 40 docentes activos por carrera. Su perfil t\'ecnico es variable: la mayor\'ia con soltura en aplicaciones web y correo institucional; una minor\'ia con preferencia por interfaces con menos elementos visuales simult\'aneos. Su motivaci\'on principal es tener control eficiente sobre su tiempo asignado a tutor\'ias, con visibilidad de la demanda entrante y capacidad de aceptar, rechazar o reprogramar con m\'inima fricci\'on.
+
+\subsection{Perfil de la coordinaci\'on acad\'emica}
+
+Poblaci\'on entre 4 y 8 coordinadores por facultad. Perfil t\'ecnico alto y familiaridad con reportes ejecutivos institucionales. Su motivaci\'on principal es tener por primera vez una vista agregada de la actividad tutorial de las carreras bajo su responsabilidad, para tomar decisiones basadas en evidencia sobre asignaci\'on de horas, distribuci\'on por asignatura y detecci\'on de asignaturas con demanda cr\'itica.
+
+\section{Restricciones}
+\label{sec:restricciones}
+
+Las restricciones aplicables al sistema se agrupan en cuatro categor\'ias.
+
+\subsection{Restricciones tecnol\'ogicas obligatorias}
+
+Estas restricciones son \textbf{no negociables} y provienen del programa de la asignatura Aplicaciones Web (PPA 2026-2027) y de los ADR aprobados por el equipo con veto pedag\'ogico del \emph{Product Owner} institucional:
+
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt]
+    \item Backend en \textbf{Spring Boot 3.4} sobre \textbf{Java 21 LTS} (ADR-002). Justificaci\'on t\'ecnica en \cite{walls2022spring}.
+    \item Frontend en \textbf{Angular 17+} con TypeScript 5.4.
+    \item Base de datos relacional \textbf{PostgreSQL 16} con migraciones versionadas \textbf{Flyway 9.x}.
+    \item Cache en memoria \textbf{Redis 7}.
+    \item Autenticaci\'on con \textbf{JWT (RFC 7519)} por cookie \texttt{HttpOnly} (ADR-003, \cite{jones2015jwt}).
+    \item Documentaci\'on de la API con \textbf{Springdoc OpenAPI 2.x}.
+    \item Contenerizaci\'on con \textbf{Docker Compose $\geq$ 2.20} con \textbf{im\'agenes pinadas por digest SHA-256} (ADR-005).
+    \item \textbf{Pol\'itica h\'ibrida de acceso a datos}: CRUD elemental v\'ia JPA + Spring Data; resto de operaciones v\'ia procedimientos almacenados versionados (ADR-004). Concatenaci\'on din\'amica de SQL \textbf{prohibida absolutamente}.
+\end{itemize}
+
+\subsection{Restricciones normativas y regulatorias}
+
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt]
+    \item El SRS se ci\~ne a la cl\'ausula 9 de \textbf{ISO/IEC/IEEE 29148:2018} \cite{iso29148}.
+    \item Los RNF se clasifican seg\'un el modelo de calidad de \textbf{ISO/IEC 25010:2011} \cite{iso25010}.
+    \item La seguridad se eval\'ua contra el \textbf{OWASP Top 10:2021} \cite{owasp2021top10}.
+    \item Las decisiones arquitect\'onicas se documentan con la plantilla \textbf{ADR} de Nygard \cite{nygard2011adr}.
+    \item El c\'odigo se versiona con \textbf{SemVer 2.0.0} \cite{prestonwerner2013semver}.
+    \item El repositorio incorpora \texttt{CITATION.cff} conforme al est\'andar \emph{Citation File Format} \cite{druskat2021cff}.
+\end{itemize}
+
+\subsection{Restricciones de proceso}
+
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt]
+    \item El repositorio p\'ublico es la \textbf{\'unica fuente de verdad} para la evaluaci\'on: lo que no est\'a en el \emph{tag} correspondiente no existe.
+    \item Cada entrega se identifica con un \emph{tag} SemVer del repositorio: \texttt{v0.3.0}, \texttt{v0.7.0}, \texttt{v0.9.0-rc}, \texttt{v1.0.0}.
+    \item Cada decisi\'on arquitect\'onica relevante genera un ADR versionado.
+    \item Cada cambio a requisitos ya publicados se registra en \texttt{CHANGELOG-REQ.md}.
+    \item Los aportes de asistentes de IA generativa se declaran en \texttt{docs/DECLARACION-IA.md} con verificaci\'on humana obligatoria.
+\end{itemize}
+
+\subsection{Restricciones de recursos}
+
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt]
+    \item El calendario efectivo del PFC son 17 semanas totales del PPA, con aproximadamente 12 semanas de desarrollo efectivo.
+    \item El equipo consta de 3 a 5 estudiantes de quinto nivel.
+    \item Las m\'aquinas de desarrollo del laboratorio de la Carrera tienen 8 GiB de RAM y CPU de 4 n\'ucleos como m\'inimo, suficientes para correr Docker Compose con los cuatro contenedores y IntelliJ IDEA Ultimate simult\'aneamente.
+\end{itemize}
+
+\section{Supuestos y dependencias}
+\label{sec:supuestos}
+
+\subsection{Supuestos}
+
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt]
+    \item Los usuarios finales disponen de conexi\'on a Internet estable con ancho de banda m\'inimo de 4 Mbps para operaci\'on interactiva.
+    \item Los navegadores usados por los usuarios son versiones vigentes de Chrome, Firefox o Edge (\'ultimas dos versiones mayores).
+    \item El servidor SMTP institucional est\'a disponible con SLA razonable durante horario acad\'emico.
+    \item El SGA institucional expondr\'a en la Entrega 2 al menos un \emph{endpoint} REST para consultar asignaturas activas por estudiante.
+    \item Las contrase\~nas de los usuarios cumplen la pol\'itica institucional de la UTEQ (m\'inimo 8 caracteres, al menos una may\'uscula, una min\'uscula y un d\'igito).
+\end{itemize}
+
+\subsection{Dependencias externas}
+
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt]
+    \item Disponibilidad del registro p\'ublico de im\'agenes Docker Hub para la resoluci\'on de los digests pinados.
+    \item Disponibilidad de Maven Central para la resoluci\'on de dependencias del backend.
+    \item Disponibilidad del registro NPM para la resoluci\'on de dependencias del frontend.
+    \item Disponibilidad de GitHub para la ejecuci\'on del \emph{pipeline} de integraci\'on continua.
+    \item Disponibilidad del correo institucional \texttt{@uteq.edu.ec} para el env\'io de notificaciones a partir de la Entrega 2.
+\end{itemize}
+
+Si alguna de las dependencias externas cae temporalmente, el sistema aplica los patrones de resiliencia declarados en el ADR-001 (\emph{Circuit Breaker} de Resilience4j 2.x) para degradar servicio de forma controlada sin caer completamente.
+
+% ============================================================================
+\chapter{Requisitos espec\'ificos}
+\label{cap:requisitos_especificos}
+
+\begin{cajaNota}[title=Prop\'osito de este cap\'itulo]
+    Este cap\'itulo cumple con la cl\'ausula 9.5.3 de la norma \textbf{ISO/IEC/IEEE 29148:2018} \cite{iso29148}, enumerando los requisitos espec\'ificos del sistema. Cada requisito satisface las nueve caracter\'isticas individuales (\emph{necessary, appropriate, unambiguous, complete, singular, feasible, verifiable, correct, conforming}) y las seis caracter\'isticas de conjunto (\emph{complete, consistent, feasible, comprehensible, able to be validated, non-redundant}) declaradas en la Gu\'ia GtWR v4 del INCOSE \cite{incose2023requirements}, que totalizan 15 caracter\'isticas: nueve individuales por requisito y seis para el conjunto completo.
+\end{cajaNota}
+
+\section{Requisitos funcionales}
+\label{sec:rf}
+
+Los requisitos funcionales del sistema se derivan del corpus base de Ingenier\'ia de Requisitos (PPA 2025-2026) y se refinan aqu\'i para adecuarse a la cl\'ausula 9.5.3 de ISO/IEC/IEEE 29148:2018 \cite{iso29148} y a las nueve caracter\'isticas individuales de la Gu\'ia GtWR v4 del INCOSE \cite{incose2023requirements}. La priorizaci\'on emplea el modelo de Kano seg\'un lo definido en \cite{pohl2010requirements}.
+
+Los 26 requisitos funcionales se listan en la \cref{tab:rf}. Cada uno declara el actor que dispara la acci\'on, la acci\'on esperada del sistema, la prioridad MoSCoW y el caso de uso al que est\'a trazado.
+
+\begin{longtable}{@{}p{1.2cm}p{7.5cm}p{2.5cm}p{1.3cm}p{1.5cm}@{}}
+    \caption{Requisitos funcionales del Sistema de Tutor\'ias UTEQ.}
+    \label{tab:rf}\\
+    \toprule
+    \textbf{ID} & \textbf{Enunciado} & \textbf{Actor} & \textbf{MoSCoW} & \textbf{CU} \\
+    \midrule
+    \endfirsthead
+    \multicolumn{5}{c}{\itshape (continuaci\'on de la \cref{tab:rf})}\\
+    \toprule
+    \textbf{ID} & \textbf{Enunciado} & \textbf{Actor} & \textbf{MoSCoW} & \textbf{CU} \\
+    \midrule
+    \endhead
+
+    \reqid{RF-01}\label{rf:01} & El sistema debe permitir al estudiante registrar solicitudes de tutor\'ia indicando asignatura, tema, modalidad, tipo y franja preferida. & Estudiante & Must & CU-01 \\
+    \reqid{RF-02}\label{rf:02} & El sistema debe permitir al docente configurar su disponibilidad horaria semanal en franjas discretas de al menos 30 minutos. & Docente & Must & CU-02 \\
+    \reqid{RF-03}\label{rf:03} & El sistema debe permitir al docente aceptar, rechazar o reprogramar cada solicitud recibida en estado \texttt{PENDIENTE}. & Docente & Must & CU-02 \\
+    \reqid{RF-04}\label{rf:04} & El sistema debe permitir al docente registrar una tutor\'ia realizada con duraci\'on real, asistentes, temas cubiertos, observaciones y adjuntos. & Docente & Must & CU-03 \\
+    \reqid{RF-05}\label{rf:05} & El sistema debe permitir la confirmaci\'on de asistencia efectiva por parte del docente (al registrar la sesi\'on) o del estudiante (v\'ia la SPA). & Docente y Estudiante & Must & CU-03 \\
+    \reqid{RF-06}\label{rf:06} & El sistema debe permitir al estudiante consultar el estado actualizado de sus solicitudes (pendiente, aceptada, rechazada, realizada, no realizada). & Estudiante & Must & CU-04 \\
+    \reqid{RF-07}\label{rf:07} & El sistema debe permitir a la coordinaci\'on generar reportes agregados por carrera, asignatura, docente y modalidad, con filtrado por rango de fechas. & Coordinaci\'on & Should & CU-05 \\
+    \reqid{RF-08}\label{rf:08} & El sistema debe permitir agrupar solicitudes con tema similar y franja coincidente en una \'unica sesi\'on grupal, mediante sugerencia autom\'atica confirmada manualmente por el docente. & Docente & Could & CU-02 \\
+    \reqid{RF-09}\label{rf:09} & El sistema debe permitir seleccionar la modalidad de la tutor\'ia (individual o grupal) al registrar la solicitud, condicionada por la configuraci\'on del docente. & Estudiante & Must & CU-01 \\
+    \reqid{RF-10}\label{rf:10} & El sistema debe actualizar din\'amicamente el cat\'alogo de asignaturas activas y aulas disponibles consultando al SGA UTEQ. & Sistema & Must & CU-01 \\
+    \reqid{RF-11}\label{rf:11} & El sistema debe mantener y permitir consultar el historial completo de tutor\'ias por estudiante y por docente. & Estudiante, Docente & Must & CU-04 \\
+    \reqid{RF-12}\label{rf:12} & El sistema debe permitir clasificar cada tutor\'ia por tipo (t\'ecnica, te\'orica o mixta) al registrar la solicitud. & Estudiante & Must & CU-01 \\
+    \reqid{RF-13}\label{rf:13} & El sistema debe permitir a cada usuario configurar sus preferencias de notificaci\'on (canal principal y frecuencia). & Estudiante, Docente & Should & --- \\
+    \reqid{RF-14}\label{rf:14} & El sistema debe enviar notificaciones autom\'aticas al usuario correspondiente ante cada cambio de estado de una solicitud. & Sistema & Must & CU-01, CU-02 \\
+    \reqid{RF-15}\label{rf:15} & El sistema debe permitir configurar la frecuencia de recordatorios (\'unico, 24h antes, 1h antes, todos). & Usuario & Should & --- \\
+    \reqid{RF-16}\label{rf:16} & El sistema debe visualizar la disponibilidad del docente en formato calendario semanal navegable. & Estudiante, Docente & Must & CU-01 \\
+    \reqid{RF-17}\label{rf:17} & El sistema debe permitir configurar la duraci\'on de cada franja (30, 45 o 60 minutos), con valor por defecto de 45 minutos. & Docente & Must & CU-02 \\
+    \reqid{RF-18}\label{rf:18} & El sistema debe permitir asociar cada franja presencial a un tipo de espacio f\'isico (aula, laboratorio, oficina o exterior). & Docente & Could & CU-02 \\
+    \reqid{RF-19}\label{rf:19} & El sistema debe permitir configurar la modalidad de trabajo (individual, grupal o mixta) por cada franja. & Docente & Should & CU-02 \\
+    \reqid{RF-20}\label{rf:20} & El sistema debe permitir configurar el horario acad\'emico institucional (inicio y fin del ciclo, semanas de evaluaci\'on) para el c\'alculo de m\'etricas agregadas. & Coordinaci\'on & Must & --- \\
+    \reqid{RF-21}\label{rf:21} & El sistema debe registrar el motivo obligatorio ante cada rechazo de una solicitud, con m\'inimo 20 caracteres. & Docente & Must & CU-02 \\
+    \reqid{RF-22}\label{rf:22} & El sistema debe permitir la reprogramaci\'on de una solicitud aceptada, proponiendo hasta 3 franjas alternativas al estudiante. & Docente & Should & CU-02 \\
+    \reqid{RF-23}\label{rf:23} & El sistema debe permitir al docente generar reportes personales de sus tutor\'ias, filtrados por asignatura, grupo o rango de fechas. & Docente & Should & CU-05 \\
+    \reqid{RF-24}\label{rf:24} & El sistema debe permitir exportar cualquier reporte a formato PDF y a formato Excel (.xlsx). & Coordinaci\'on, Docente & Should & CU-05 \\
+    \reqid{RF-25}\label{rf:25} & El sistema debe permitir al docente proponer un nuevo horario para tutor\'ias grupales cuando la demanda supera la capacidad de sus franjas configuradas. & Docente & Must & CU-02 \\
+    \reqid{RF-26}\label{rf:26} & El sistema debe mostrar en el panel de la coordinaci\'on un cuadro de estad\'isticas r\'apidas (KPIs) con las m\'etricas del ciclo en curso. & Coordinaci\'on & Could & CU-05 \\
+    \bottomrule
+\end{longtable}
+
+\section{Requisitos de interfaz}
+\label{sec:ri}
+
+Los requisitos de interfaz declaran las expectativas sobre las interfaces de usuario, de comunicaci\'on con sistemas externos y de intercambio de datos. Se listan en la \cref{tab:ri}.
+
+\begin{longtable}{@{}p{1.2cm}p{12.5cm}p{1.3cm}@{}}
+    \caption{Requisitos de interfaz del sistema.}
+    \label{tab:ri}\\
+    \toprule
+    \textbf{ID} & \textbf{Enunciado} & \textbf{MoSCoW} \\
+    \midrule
+    \endfirsthead
+    \multicolumn{3}{c}{\itshape (continuaci\'on de la \cref{tab:ri})}\\
+    \toprule
+    \textbf{ID} & \textbf{Enunciado} & \textbf{MoSCoW} \\
+    \midrule
+    \endhead
+
+    \reqid{RI-01} & La interfaz web debe ser responsive con dos \emph{breakpoints}: dispositivo m\'ovil ($\leq 600$ px) y escritorio ($> 600$ px). & Must \\
+    \reqid{RI-02} & La navegaci\'on principal debe estar visible en todas las vistas mediante men\'u lateral (escritorio) o inferior (m\'ovil). & Must \\
+    \reqid{RI-03} & La interfaz debe cumplir el nivel AA de las WCAG 2.1 en contraste de color y navegaci\'on por teclado. & Should \\
+    \reqid{RI-04} & Las respuestas de error de la API deben cumplir el formato \emph{Problem Details} del RFC 7807 \cite{rfc7807}. & Must \\
+    \reqid{RI-05} & Los recursos REST deben nombrarse en plural (\texttt{/solicitudes}, \texttt{/sesiones}, \texttt{/usuarios}) y emplear los verbos HTTP con la sem\'antica del RFC 9110 \cite{rfc9110}. & Must \\
+    \reqid{RI-06} & La API debe exponer documentaci\'on interactiva OpenAPI 3.1 accesible en la ruta \texttt{/swagger-ui.html} con acceso restringido en producci\'on. & Must \\
+    \reqid{RI-07} & La integraci\'on con el SGA UTEQ debe realizarse mediante API REST sobre HTTPS con autenticaci\'on por \emph{token} de servicio. & Must \\
+    \reqid{RI-08} & La integraci\'on con el servidor SMTP debe realizarse mediante SMTP+TLS en el puerto 587 con autenticaci\'on por cuenta de servicio institucional. & Must \\
+    \reqid{RI-09} & La integraci\'on con WhatsApp Business debe realizarse mediante la API oficial de Meta cuando est\'e disponible; en caso contrario, el sistema opera sin ella. & Could \\
+    \reqid{RI-10} & El intercambio de datos con el cliente debe emplear JSON con codificaci\'on UTF-8 y encabezado \texttt{Content-Type: application/json}. & Must \\
+    \reqid{RI-11} & Las cookies de sesi\'on deben incluir los atributos \texttt{HttpOnly}, \texttt{Secure} y \texttt{SameSite=Strict} (ADR-003, \cite{jones2015jwt}). & Must \\
+    \bottomrule
+\end{longtable}
+
+\section{Requisitos no funcionales}
+\label{sec:rnf}
+
+Los requisitos no funcionales se clasifican seg\'un el modelo de calidad de ISO/IEC 25010:2011 \cite{iso25010}. Cada uno declara m\'etrica, instrumento de medici\'on y umbral de aceptaci\'on. La \cref{tab:rnf} presenta el resumen; los detalles completos se encuentran en el archivo \texttt{docs/requisitos/RNF.md} del repositorio.
+
+\begin{longtable}{@{}p{1.2cm}p{4.5cm}p{5.5cm}p{3.5cm}@{}}
+    \caption{Requisitos no funcionales por caracter\'istica ISO/IEC 25010 \cite{iso25010}.}
+    \label{tab:rnf}\\
+    \toprule
+    \textbf{ID} & \textbf{Caracter\'istica ISO 25010} & \textbf{M\'etrica} & \textbf{Umbral aceptable} \\
+    \midrule
+    \endfirsthead
+    \multicolumn{4}{c}{\itshape (continuaci\'on de la \cref{tab:rnf})}\\
+    \toprule
+    \textbf{ID} & \textbf{Caracter\'istica ISO 25010} & \textbf{M\'etrica} & \textbf{Umbral aceptable} \\
+    \midrule
+    \endhead
+
+    \reqid{RNF-01}\label{rnf:01} & Eficiencia $\cdot$ Comportamiento temporal & $p_{95}$(t\_respuesta) & $\leq 300$ ms \\
+    \reqid{RNF-02}\label{rnf:02} & Confiabilidad $\cdot$ Disponibilidad & Disponibilidad en horario acad\'emico & $\geq 99.5\%$ \\
+    \reqid{RNF-03}\label{rnf:03} & Seguridad $\cdot$ Confidencialidad e integridad & Conformidad OWASP Top 10:2021 \cite{owasp2021top10} & 0 hallazgos altos/medios \\
+    \reqid{RNF-04}\label{rnf:04} & Usabilidad $\cdot$ Aprendibilidad + Operabilidad & Puntaje SUS \cite{brooke1996sus} & $\geq 68$ \\
+    \reqid{RNF-05}\label{rnf:05} & Mantenibilidad $\cdot$ Testabilidad & Cobertura de l\'ineas (JaCoCo) & $\geq 70\%$ \\
+    \reqid{RNF-06}\label{rnf:06} & Eficiencia $\cdot$ Frontend & Lighthouse categor\'ias & $\geq 90$ cada una \\
+    \reqid{RNF-07}\label{rnf:07} & Portabilidad $\cdot$ Instalabilidad & Tiempo desde \texttt{git clone} a \texttt{/actuator/health UP} & $\leq 3$ min (primera vez) \\
+    \reqid{RNF-08}\label{rnf:08} & Seguridad $\cdot$ No repudio + Rendici\'on de cuentas & Cobertura de auditor\'ia sobre acciones cr\'iticas & $100\%$ \\
+    \bottomrule
+\end{longtable}
+
+\section{Requisitos de usabilidad}
+\label{sec:ru}
+
+Los cinco requisitos de usabilidad refinan el RNF-04 (\rnf{04}) con dimensiones espec\'ificas del modelo de aprendibilidad de \cite{iso25010}. Se listan en la \cref{tab:ru}.
+
+\begin{longtable}{@{}p{1.2cm}p{12.5cm}p{1.3cm}@{}}
+    \caption{Requisitos de usabilidad del sistema.}
+    \label{tab:ru}\\
+    \toprule
+    \textbf{ID} & \textbf{Enunciado} & \textbf{MoSCoW} \\
+    \midrule
+    \endfirsthead
+    \multicolumn{3}{c}{\itshape (continuaci\'on de la \cref{tab:ru})}\\
+    \toprule
+    \textbf{ID} & \textbf{Enunciado} & \textbf{MoSCoW} \\
+    \midrule
+    \endhead
+
+    \reqid{RU-01} & Un estudiante que use el sistema por primera vez debe poder registrar exitosamente su primera solicitud de tutor\'ia en menos de 3 minutos sin consultar manuales. & Must \\
+    \reqid{RU-02} & Los formularios deben validar el llenado en tiempo real (por campo) y mostrar mensajes de error contextualizados. & Must \\
+    \reqid{RU-03} & Las acciones destructivas (rechazo, cancelaci\'on) deben requerir confirmaci\'on modal con motivo obligatorio. & Must \\
+    \reqid{RU-04} & Las tablas de datos deben ser ordenables por cada columna y filtrables con debounce de al menos 400 ms. & Should \\
+    \reqid{RU-05} & Los idiomas soportados son espa\~nol (por defecto) e ingl\'es, seleccionables por preferencia de usuario. & Could \\
+    \bottomrule
+\end{longtable}
+
+\section{Requisitos de proceso}
+\label{sec:rp}
+
+Los requisitos de proceso declaran las obligaciones sobre el proceso de desarrollo, no sobre el producto ejecutable. Se listan en la \cref{tab:rp}.
+
+\begin{longtable}{@{}p{1.2cm}p{12.5cm}p{1.3cm}@{}}
+    \caption{Requisitos de proceso del PFC.}
+    \label{tab:rp}\\
+    \toprule
+    \textbf{ID} & \textbf{Enunciado} & \textbf{MoSCoW} \\
+    \midrule
+    \endfirsthead
+    \multicolumn{3}{c}{\itshape (continuaci\'on de la \cref{tab:rp})}\\
+    \toprule
+    \textbf{ID} & \textbf{Enunciado} & \textbf{MoSCoW} \\
+    \midrule
+    \endhead
+
+    \reqid{RP-01} & El repositorio debe versionarse con SemVer 2.0.0 \cite{prestonwerner2013semver} y cada Entrega debe corresponder a un \emph{tag} anotado del repositorio p\'ublico. & Must \\
+    \reqid{RP-02} & Cada decisi\'on arquitect\'onica no trivial debe registrarse como ADR conforme a la plantilla de Nygard \cite{nygard2011adr}. & Must \\
+    \reqid{RP-03} & El repositorio debe incluir un \emph{pipeline} de CI que en cada \emph{push} compile el SRS y valide que \texttt{docker compose up} levanta el ambiente completo. & Must \\
+    \reqid{RP-04} & Cada cambio a requisitos ya publicados debe registrarse en \texttt{CHANGELOG-REQ.md} antes del siguiente \emph{tag} \cite{iso29148}. & Must \\
+    \reqid{RP-05} & El uso de asistentes de inteligencia artificial generativa debe declararse en \texttt{docs/DECLARACION-IA.md} con verificaci\'on humana obligatoria. & Must \\
+    \reqid{RP-06} & Las im\'agenes Docker deben pinarse por digest SHA-256 verificado en Docker Hub (ADR-005). & Must \\
+    \reqid{RP-07} & Los aportes de cada integrante deben declararse conforme a la taxonom\'ia CRediT (ANSI/NISO Z39.104-2022) \cite{niso2022credit} en la Entrega Final. & Should \\
+    \reqid{RP-08} & El repositorio debe cumplir los principios FAIR de Wilkinson et al. \cite{wilkinson2016fair} en la Entrega Final, elegible para las insignias de artefacto de la ACM \cite{acm2020artifact}. & Should \\
+    \bottomrule
+\end{longtable}
+
+\section{Priorizaci\'on Kano y MoSCoW}
+\label{sec:priorizacion}
+
+La priorizaci\'on de los 26 requisitos funcionales sigue el modelo de Kano introducido en el corpus base y refinado con el filtro MoSCoW seg\'un las buenas pr\'acticas de \cite{pohl2010requirements}. El resumen agregado se presenta en la \cref{tab:kano}.
+
+\begin{table}[htbp]
+    \centering
+    \small
+    \caption{Distribuci\'on de los 26 RF por prioridad MoSCoW y clasificaci\'on Kano.}
+    \label{tab:kano}
+    \begin{tabular}{@{}lccc@{}}
+        \toprule
+        \textbf{MoSCoW / Kano} & \textbf{Cantidad} & \textbf{\% relativo} & \textbf{Ejemplo} \\
+        \midrule
+        Must $\cdot$ Imprescindible (insatisfactor)  & 14 & 53.8 & RF-01, RF-04, RF-06, RF-10 \\
+        Should $\cdot$ Satisfactorio (unidimensional) & 4  & 15.4 & RF-14, RF-22, RF-23, RF-24 \\
+        Could $\cdot$ Delighter (atractivo)           & 1  & 3.9  & RF-26 \\
+        Otros (Should/Could/M\'inimos)                  & 7  & 26.9 & RF-08, RF-13, RF-15, RF-18 \\
+        \midrule
+        \textbf{Total}                                & \textbf{26} & \textbf{100.0} & --- \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Los 14 requisitos \emph{Must + Imprescindibles} constituyen el n\'ucleo m\'inimo necesario para que el sistema aporte valor. Su ausencia genera insatisfacci\'on inmediata en los usuarios; su presencia s\'olida es esperada, no celebrada. Los 4 \emph{Satisfactorios} son proporcionales: cuanto mejor implementados, mayor satisfacci\'on. El \emph{Delighter} RF-26 (cuadro de KPIs de coordinaci\'on) tiene alto potencial de generar entusiasmo institucional aunque su ausencia no perjudique la funci\'on b\'asica.
+
+% ============================================================================
+\chapter{Verificaci\'on de requisitos}
+\label{cap:verificacion}
+
+\begin{cajaNota}[title=Prop\'osito de este cap\'itulo]
+    Este cap\'itulo cumple con la cl\'ausula 9.5.4 de la norma \textbf{ISO/IEC/IEEE 29148:2018} \cite{iso29148}, declarando el instrumento y el m\'etodo de verificaci\'on de cada requisito. Un requisito no verificable es un defecto; por eso cada requisito de este SRS declara expl\'icitamente su instrumento.
+\end{cajaNota}
+
+\section{M\'etodos de verificaci\'on aplicables}
+
+Se emplean los cuatro m\'etodos cl\'asicos de verificaci\'on declarados en la cl\'ausula 6.5.5 de ISO/IEC/IEEE 29148:2018 \cite{iso29148}:
+
+\begin{itemize}[leftmargin=1.5em,itemsep=3pt]
+    \item \textbf{Inspecci\'on} (\emph{Inspection}). Examen visual del artefacto contra un criterio documentado. Aplicable a estructura de repositorio, presencia de archivos requeridos, contenido de ADR y de CHANGELOG.
+    \item \textbf{An\'alisis} (\emph{Analysis}). Aplicaci\'on de modelos, c\'alculos o razonamiento sobre el artefacto. Aplicable a m\'etricas est\'aticas de c\'odigo (SonarQube), cobertura (JaCoCo), an\'alisis de seguridad autom\'atica (OWASP ZAP).
+    \item \textbf{Demostraci\'on} (\emph{Demonstration}). Ejecuci\'on operacional del sistema en un ambiente representativo con casos de uso reales. Aplicable a validaci\'on de flujos de negocio en la defensa oral.
+    \item \textbf{Prueba} (\emph{Test}). Ejecuci\'on con casos formalmente especificados y comparaci\'on autom\'atica del resultado obtenido contra el esperado. Aplicable a JUnit 5 en el backend, pruebas de contrato de la API y pruebas de carga con k6.
+\end{itemize}
+
+\section{Instrumentos de verificaci\'on por categor\'ia}
+
+La \cref{tab:verificacion} declara el instrumento espec\'ifico previsto para cada categor\'ia de requisito.
+
+\begin{table}[htbp]
+    \centering
+    \small
+    \caption{Instrumento de verificaci\'on por categor\'ia de requisito.}
+    \label{tab:verificacion}
+    \begin{tabularx}{\textwidth}{@{}lXl@{}}
+        \toprule
+        \textbf{Categor\'ia} & \textbf{Instrumento} & \textbf{M\'etodo} \\
+        \midrule
+        Funcionales (RF)    & JUnit 5 + MockMvc en el backend; Vitest + Testing Library en el frontend & Prueba \\
+        Interfaz (RI)       & Contratos OpenAPI + tests de contrato Pact & Prueba \\
+        RNF Rendimiento     & k6 (grafana/k6:latest) con escenario de 50 usuarios/5 min & Prueba \\
+        RNF Disponibilidad  & Prometheus + Grafana con alertas por 3+ min de indisponibilidad & An\'alisis \\
+        RNF Seguridad       & OWASP ZAP 2.14 (\emph{baseline scan}) + \emph{SonarCloud} & An\'alisis \\
+        RNF Usabilidad      & Cuestionario SUS \cite{brooke1996sus} a $n \geq 30$ estudiantes & Demostraci\'on \\
+        RNF Mantenibilidad  & JaCoCo (backend) + Vitest coverage (frontend) & An\'alisis \\
+        RNF Frontend        & Lighthouse CI en \emph{pipeline} GitHub Actions & An\'alisis \\
+        RNF Portabilidad    & Cron\'ometro sobre \texttt{time bash scripts/up.sh} en m\'aquina limpia & Demostraci\'on \\
+        RNF Auditor\'ia     & Consulta SQL de cobertura sobre \texttt{auditoria\_evento} & An\'alisis \\
+        Proceso (RP)        & Inspecci\'on manual del repositorio en cada \emph{tag} & Inspecci\'on \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\section{Criterios de aceptaci\'on de la Entrega 1 (v0.3.0)}
+
+Los criterios verificables espec\'ificos de esta \texttt{v0.3.0} son:
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=3pt]
+    \item El repositorio tiene el \emph{tag} anotado \texttt{v0.3.0} apuntando al \emph{commit} principal de la Entrega 1.
+    \item El archivo \texttt{docker-compose.yml} incluye las cinco im\'agenes base pinadas por digest SHA-256 (ADR-005).
+    \item El comando \texttt{docker compose up -d --wait} completa exitosamente en la m\'aquina de evaluaci\'on en menos de 3 minutos (RNF-07).
+    \item El \emph{endpoint} \texttt{GET /actuator/health} responde \texttt{\{"status":"UP"\}} tras el arranque.
+    \item El \emph{pipeline} de GitHub Actions muestra estado verde en el \emph{tag} \texttt{v0.3.0}.
+    \item Los cinco ADR (001-005) est\'an presentes en \texttt{docs/adr/} con estado \texttt{Aprobada}.
+    \item Los diagramas C4 de nivel 1 y nivel 2 est\'an presentes en \texttt{docs/arquitectura/} en formato Structurizr DSL y renderizados a PNG (\cite{brown2023c4}).
+    \item Este SRS est\'a presente en \texttt{docs/requisitos/SRS-v0.3.0.tex} y su PDF compilado, cumpliendo la cl\'ausula 9 de \cite{iso29148}.
+    \item Al menos 5 casos de uso en formato Cockburn est\'an presentes en \texttt{docs/requisitos/casos-uso/} \cite{cockburn2001writing}.
+    \item Al menos 10 historias de usuario en formato Connextra + Gherkin est\'an presentes en \texttt{docs/requisitos/historias-usuario/BACKLOG.md} \cite{cohn2004user}.
+    \item Al menos 8 RNF con m\'etrica ISO/IEC 25010 \cite{iso25010} est\'an presentes en \texttt{docs/requisitos/RNF.md}.
+\end{enumerate}
+
+% ============================================================================
+\chapter{Matriz de trazabilidad}
+\label{cap:trazabilidad}
+
+\begin{cajaNota}[title=Prop\'osito de este cap\'itulo]
+    La matriz de trazabilidad conecta requisitos, casos de uso, historias de usuario y decisiones arquitect\'onicas, proveyendo la vista consolidada exigida por la cl\'ausula 6.4 de \textbf{ISO/IEC/IEEE 29148:2018} \cite{iso29148}. La trazabilidad bidireccional evita requisitos hu\'erfanos (sin caso de uso que los realice) y funcionalidades hu\'erfanas (sin requisito que las respalde).
+\end{cajaNota}
+
+\section{Matriz RF $\to$ Casos de uso $\to$ Historias de usuario}
+\label{sec:matriz}
+
+La \cref{tab:matriz} muestra la trazabilidad de los 26 requisitos funcionales hacia los 5 casos de uso y las 11 historias de usuario redactadas en la Entrega 1.
+
+\begin{longtable}{@{}p{1.5cm}p{4.5cm}p{2.5cm}p{2.5cm}p{2.5cm}@{}}
+    \caption{Matriz de trazabilidad RF $\to$ CU $\to$ HU $\to$ ADR.}
+    \label{tab:matriz}\\
+    \toprule
+    \textbf{RF} & \textbf{Enunciado (resumido)} & \textbf{CU} & \textbf{HU} & \textbf{ADR} \\
+    \midrule
+    \endfirsthead
+    \multicolumn{5}{c}{\itshape (continuaci\'on de la \cref{tab:matriz})}\\
+    \toprule
+    \textbf{RF} & \textbf{Enunciado (resumido)} & \textbf{CU} & \textbf{HU} & \textbf{ADR} \\
+    \midrule
+    \endhead
+
+    RF-01 & Registrar solicitud       & CU-01 & HU-06 & 001, 003 \\
+    RF-02 & Configurar disponibilidad & CU-02 & HU-05 & 001 \\
+    RF-03 & Aceptar / rechazar        & CU-02 & HU-09 & 001, 003 \\
+    RF-04 & Registrar realizada       & CU-03 & HU-02 & 001, 004 \\
+    RF-05 & Confirmar asistencia      & CU-03 & HU-02 & 001 \\
+    RF-06 & Consultar estado          & CU-04 & HU-01 & 001, 004 \\
+    RF-07 & Reportes institucionales  & CU-05 & HU-03 & 001, 004 \\
+    RF-08 & Agrupar sesiones          & CU-02 & ---   & 001 \\
+    RF-09 & Modalidad                 & CU-01 & HU-04 & 001 \\
+    RF-10 & Actualizar SGA            & CU-01 & HU-06 & 001, 005 \\
+    RF-11 & Historial                 & CU-04 & HU-11 & 001, 004 \\
+    RF-12 & Tipo de tutor\'ia         & CU-01 & HU-04 & 001 \\
+    RF-13 & Preferencias              & ---   & HU-08 & 001 \\
+    RF-14 & Notificaciones            & CU-01, CU-02 & HU-07 & 001 \\
+    RF-15 & Frecuencia recordatorio   & ---   & HU-08 & 001 \\
+    RF-16 & Visualizar horarios       & CU-01 & HU-06 & 001 \\
+    RF-17 & Duraci\'on                & CU-02 & HU-02 & 001 \\
+    RF-18 & Tipo espacio f\'isico     & CU-02 & ---   & 001 \\
+    RF-19 & Modalidad de trabajo      & CU-02 & HU-05 & 001 \\
+    RF-20 & Horario acad\'emico       & ---   & ---   & 001 \\
+    RF-21 & Motivo rechazo            & CU-02 & HU-09 & 001 \\
+    RF-22 & Reprogramaci\'on          & CU-02 & HU-09 & 001 \\
+    RF-23 & Reportes docente          & CU-05 & HU-10 & 001, 004 \\
+    RF-24 & Exportaci\'on             & CU-05 & HU-03, HU-10 & 001 \\
+    RF-25 & Nuevo horario grupal      & CU-02 & HU-09 & 001 \\
+    RF-26 & KPIs coordinaci\'on       & CU-05 & HU-03 & 001, 004 \\
+    \bottomrule
+\end{longtable}
+
+\section{Trazabilidad RNF $\to$ instrumentos}
+
+Los 8 RNF quedan trazados con su instrumento de verificaci\'on en la \cref{tab:rnfinstr}.
+
+\begin{table}[htbp]
+    \centering
+    \small
+    \caption{Trazabilidad de los 8 RNF a su instrumento espec\'ifico.}
+    \label{tab:rnfinstr}
+    \begin{tabularx}{\textwidth}{@{}lXl@{}}
+        \toprule
+        \textbf{RNF} & \textbf{Instrumento} & \textbf{Entrega} \\
+        \midrule
+        RNF-01 & k6 (grafana/k6:latest), 50 VUs, 5 min & 3 \\
+        RNF-02 & Prometheus + Grafana con alertas         & Final \\
+        RNF-03 & OWASP ZAP 2.14 en \emph{pipeline}          & 2, 3 \\
+        RNF-04 & Cuestionario SUS $n \geq 30$                & 3 \\
+        RNF-05 & JaCoCo 0.8.x en Maven \texttt{verify}    & 2, 3 \\
+        RNF-06 & Lighthouse CI en GitHub Actions          & 3 \\
+        RNF-07 & Cron\'ometro sobre \texttt{scripts/up.sh}   & 1 (esta entrega) \\
+        RNF-08 & Consulta SQL de cobertura                 & Final \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\section{Verificaci\'on de completitud del conjunto}
+
+Se aplican las seis caracter\'isticas de conjunto de la Gu\'ia GtWR v4 del INCOSE \cite{incose2023requirements} al conjunto completo de requisitos declarados en este SRS. Los 15 aspectos totales (nueve individuales por requisito y seis de conjunto) se verifican por inspecci\'on documentada en la \cref{tab:completitud}.
+
+\begin{table}[htbp]
+    \centering
+    \small
+    \caption{Verificaci\'on de las 6 caracter\'isticas de conjunto de GtWR v4 \cite{incose2023requirements}.}
+    \label{tab:completitud}
+    \begin{tabularx}{\textwidth}{@{}lXl@{}}
+        \toprule
+        \textbf{Caracter\'istica} & \textbf{Evidencia en este SRS} & \textbf{Estado} \\
+        \midrule
+        C10 \emph{Complete}          & Los 26 RF cubren los 5 casos de uso principales y sus flujos alternativos. & Verificado \\
+        C11 \emph{Consistent}        & No hay contradicciones entre RF, RNF, RI, RU y RP. Verificado por revisi\'on cruzada. & Verificado \\
+        C12 \emph{Feasible}          & Los 26 RF y 8 RNF son alcanzables con la pila declarada y el calendario disponible. & Verificado \\
+        C13 \emph{Comprehensible}    & Redacci\'on en espa\~nol acad\'emico neutro; acr\'onimos definidos; tablas ordenadas. & Verificado \\
+        C14 \emph{Validated}         & Cada requisito est\'a trazado a un caso de uso o a un ADR revisado por el \emph{Product Owner}. & Verificado \\
+        C15 \emph{Non-redundant}     & Los enunciados fueron consolidados eliminando duplicaciones del corpus base. & Verificado \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+% ============================================================================
+\chapter*{Cierre}
+\addcontentsline{toc}{chapter}{Cierre}
+
+Este SRS constituye el contrato interno del equipo del PFC de Aplicaciones Web con su \emph{Product Owner} institucional para la Entrega 1 (\texttt{v0.3.0}). Su compromiso principal es doble: (1) que los requisitos aqu\'i declarados son suficientes, correctos y consistentes para guiar el dise\~no e implementaci\'on de las Entregas 2, 3 y Final; y (2) que cualquier cambio a estos requisitos durante las Entregas posteriores quedar\'a registrado formalmente en \texttt{CHANGELOG-REQ.md} antes de su siguiente \emph{tag}, cumpliendo la cl\'ausula 6.5.6 de \cite{iso29148}.
+
+El equipo declara haber revisado personalmente que cada afirmaci\'on no trivial del documento tiene respaldo en una fuente cient\'ifica o normativa verificada, y que las 33 entradas del archivo \texttt{Entrega1.bib} corresponden a documentos reales, disponibles y consultables al momento de la publicaci\'on.
+
+\vspace{1em}
+
+\begin{center}
+    \begin{tabular}{c}
+        \color{uteqverde}\bfseries\itshape ``El repositorio es la \'unica fuente de verdad. Todo lo que no est\'a en \'el, no existe.''\\[6pt]
+        \color{grisTexto}\small --- Aviso operativo del \emph{Product Owner} institucional, PPA 2026-2027
+    \end{tabular}
+\end{center}
+
+% ============================================================================
+% Bibliografia
+% ============================================================================
+\bibliographystyle{apalike}
+\bibliography{Entrega1}
+
+\end{document}

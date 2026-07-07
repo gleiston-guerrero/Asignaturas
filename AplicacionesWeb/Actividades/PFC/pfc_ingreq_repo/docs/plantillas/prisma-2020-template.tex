@@ -1,0 +1,90 @@
+% =====================================================================
+%  PLANTILLA PRISMA 2020 en TikZ
+%  Ubicacion: docs/plantillas/prisma-2020-template.tex
+%  Uso: copiar y adaptar los conteos con los numeros reales del equipo.
+%  Referencia: Page et al. (2021). The PRISMA 2020 Statement. BMJ, 372:n71.
+% =====================================================================
+
+\documentclass[11pt,a4paper]{article}
+\input{../entregas/preamble_ingreq}
+
+\begin{document}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=0.5cm,
+    every node/.style={font=\small,align=center},
+    caja/.style={draw,rectangle,rounded corners=2pt,minimum width=6cm,minimum height=1.1cm,fill=uteqverde!5},
+    cajarechazo/.style={draw,rectangle,rounded corners=2pt,minimum width=5cm,minimum height=1cm,fill=red!5},
+    flecha/.style={-Latex,thick},
+    fase/.style={font=\bfseries,rotate=90,anchor=center},
+]
+
+% =========== FASE 1: IDENTIFICACION ===========
+\node[caja] (identificados)
+    {Registros identificados desde bases de datos\\
+     ($n = \mathbf{XXX}$)\\[2pt]
+     IEEE Xplore: $n=XX$, ACM DL: $n=XX$,\\
+     Scopus: $n=XX$, Springer: $n=XX$};
+
+\node[caja,right=3cm of identificados] (otrasfuentes)
+    {Registros identificados desde\\ otras fuentes\\
+     ($n = \mathbf{XX}$)\\[2pt]
+     Referencias hacia atras: $n=X$, expertos: $n=X$};
+
+% Duplicados eliminados
+\node[caja,below=1cm of identificados] (dedup)
+    {Registros tras eliminar duplicados\\
+     ($n = \mathbf{XXX}$)};
+
+\draw[flecha] (identificados) -- (dedup);
+\draw[flecha] (otrasfuentes.south) |- (dedup.east);
+
+% =========== FASE 2: CRIBADO ===========
+\node[caja,below=1.5cm of dedup] (cribados)
+    {Registros cribados por titulo y resumen\\
+     ($n = \mathbf{XXX}$)};
+
+\node[cajarechazo,right=2cm of cribados] (excluidos1)
+    {Registros excluidos\\
+     ($n = \mathbf{XX}$)\\
+     No pertinentes al dominio};
+
+\draw[flecha] (dedup) -- (cribados);
+\draw[flecha] (cribados) -- (excluidos1);
+
+% =========== FASE 3: ELEGIBILIDAD ===========
+\node[caja,below=1.5cm of cribados] (elegibles)
+    {Articulos evaluados a texto completo\\
+     ($n = \mathbf{XX}$)};
+
+\node[cajarechazo,right=2cm of elegibles] (excluidos2)
+    {Excluidos por razones\\
+     ($n = \mathbf{XX}$)\\
+     - Sin datos empiricos: $n=X$\\
+     - Fuera de ventana temporal: $n=X$\\
+     - Idioma no soportado: $n=X$};
+
+\draw[flecha] (cribados) -- (elegibles);
+\draw[flecha] (elegibles) -- (excluidos2);
+
+% =========== FASE 4: INCLUSION ===========
+\node[caja,below=1.5cm of elegibles,fill=uteqverde!20] (incluidos)
+    {\textbf{Estudios incluidos en la sintesis}\\
+     ($n = \mathbf{XX}$)};
+
+\draw[flecha] (elegibles) -- (incluidos);
+
+% =========== ETIQUETAS DE FASE ===========
+\node[fase,left=1.5cm of identificados,anchor=center] {\textcolor{uteqverde}{IDENTIFICACION}};
+\node[fase,left=1.5cm of cribados,anchor=center] {\textcolor{uteqverde}{CRIBADO}};
+\node[fase,left=1.5cm of elegibles,anchor=center] {\textcolor{uteqverde}{ELEGIBILIDAD}};
+\node[fase,left=1.5cm of incluidos,anchor=center] {\textcolor{uteqverde}{INCLUSION}};
+
+\end{tikzpicture}
+\caption{Diagrama de flujo PRISMA 2020 aplicado a la revisi\'on del estado del arte.}
+\label{fig:prisma}
+\end{figure}
+
+\end{document}

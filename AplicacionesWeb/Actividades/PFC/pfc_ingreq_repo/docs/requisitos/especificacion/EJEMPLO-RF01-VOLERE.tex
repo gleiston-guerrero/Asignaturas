@@ -1,0 +1,82 @@
+% =====================================================================
+%  EJEMPLO — Ficha Volere del RF-01 (Registro de solicitud de tutoria)
+%  Ubicacion: docs/requisitos/especificacion/EJEMPLO-RF01-VOLERE.tex
+%  Uso: reemplazar los contenidos con los propios requisitos del equipo.
+% =====================================================================
+
+\documentclass[11pt,a4paper]{article}
+\input{../../entregas/preamble_ingreq}
+
+\begin{document}
+
+\section*{Ejemplo aplicado --- RF-01 en formato Volere}
+
+\begin{table}[htbp]
+\centering
+\caption{Ficha Volere del requisito funcional RF-01 (tomado del proyecto modelo, Tabla D1.1).}
+\label{tab:rf01}
+\rowcolors{2}{grisfila}{white}
+\begin{tabularx}{\textwidth}{L{3.7cm}X}
+\toprule
+\rowcolor{uteqverde!25}
+\textbf{Campo} & \textbf{Contenido}\\
+\midrule
+ID del Requisito             & RF-01\\
+Nombre                       & Registro de solicitud de tutor\'ia\\
+Tipo                         & Funcional\\
+Descripci\'on                & El estudiante deber\'a registrar una solicitud de tutor\'ia
+                               seleccionando la asignatura, el tema o motivo, la hora de
+                               disponibilidad, su preferencia para el tipo (individual
+                               o grupal), la modalidad (presencial o virtual) y cargar
+                               un archivo cuando sea necesario.\\
+Rationale (Justificaci\'on)  & Es la funcionalidad central para formalizar las solicitudes
+                               de tutor\'ia y garantizar trazabilidad.\\
+Criterios de aceptaci\'on    & \begin{itemize}[leftmargin=*,nosep]
+                                 \item El formulario valida campos obligatorios.
+                                 \item La solicitud queda registrada en la base de datos.
+                                 \item Se genera notificaci\'on al docente correspondiente.
+                               \end{itemize}\\
+Prioridad                    & Alta\\
+Fuente                       & Encuesta estudiantil (n=40, junio 2025)\\
+Restricciones                & Solo se pueden solicitar tutor\'ias de asignaturas
+                               activas en el ciclo acad\'emico vigente.\\
+Responsable / Actor          & Estudiante\\
+Interesados secundarios      & Docente, Coordinaci\'on acad\'emica\\
+Casos de uso asociados       & CU-01 (Registrar solicitud de tutor\'ia)\\
+Historias de usuario         & HU-06 (Como estudiante, quiero registrar una solicitud
+                               de tutor\'ia\ldots)\\
+Priorizaci\'on MoSCoW        & \textbf{Must}\\
+Priorizaci\'on Kano          & \textbf{Imprescindible} (insatisfactor)\\
+M\'etodo de verificaci\'on   & Inspecci\'on del formulario y prueba de aceptaci\'on Gherkin\\
+Riesgo                       & Alto (impacto en el flujo principal del sistema)\\
+Estado                       & Aprobado\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Cumplimiento de INCOSE v4 (autoevaluaci\'on)}
+
+Este requisito cumple con las siguientes caracter\'isticas individuales de INCOSE
+Guide to Writing Requirements v4:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Necesario}: sin este requisito, el proceso no puede iniciarse.
+    \item \textbf{Apropiado}: est\'a al nivel de detalle correcto para su categor\'ia (funcional).
+    \item \textbf{No ambiguo}: los t\'erminos ``solicitud'', ``asignatura'', ``tema'', ``modalidad'', ``tipo'' est\'an definidos en el glosario.
+    \item \textbf{Completo}: incluye todos los elementos necesarios para su implementaci\'on.
+    \item \textbf{Singular}: expresa una \'unica funcionalidad (registrar una solicitud).
+    \item \textbf{Factible}: es t\'ecnicamente realizable con la pila propuesta.
+    \item \textbf{Verificable}: los criterios de aceptaci\'on son observables.
+    \item \textbf{Correcto}: refleja fielmente la necesidad expresada en la encuesta.
+    \item \textbf{Conforme}: sigue el patr\'on 29148 (sujeto expl\'icito, verbo modal ``deber\'a'').
+    \item \textbf{Expresado positivamente}: no usa ``no''.
+    \item \textbf{Apto para la abstracci\'on}: es independiente del framework de implementaci\'on.
+    \item \textbf{Consistente}: no entra en conflicto con otros requisitos.
+    \item \textbf{Comparable}: puede compararse con requisitos an\'alogos de otros sistemas.
+    \item \textbf{Modificable}: puede refinarse en iteraciones futuras sin afectar la estructura.
+    \item \textbf{Permitido}: no viola normativa institucional ni legal.
+\end{itemize}
+
+\textbf{Total de caracter\'isticas cumplidas}: 15/15 (100\,\%).
+
+\end{document}

@@ -1,0 +1,334 @@
+\documentclass[11pt,a4paper]{article}
+\input{preamble_ingreq}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textcolor{uteqverde}{Ingenier\'ia de Requisitos --- Cuarto nivel --- PPA 2026-2027}}
+\rhead{\footnotesize\textcolor{uteqverde}{PFC --- Gu\'ia de la Primera Entrega}}
+\rfoot{\thepage}
+\lfoot{\footnotesize UTEQ --- FCCDD --- Software}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\hypersetup{
+    pdftitle={Guia de la Primera Entrega del PFC --- Ingenieria de Requisitos},
+    pdfauthor={Dr. Gleiston Guerrero Ulloa},
+    pdfsubject={Primera Entrega del Proyecto Fin de Curso},
+    pdfkeywords={PFC, Ingenieria de Requisitos, Volere, ISO 29148, INCOSE, elicitacion, UTEQ}
+}
+
+\begin{document}
+
+% =====================================================================
+%  PORTADA
+% =====================================================================
+\begin{center}
+    \vspace*{1.2cm}
+    {\Large\bfseries\textcolor{uteqverde}{UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}}\\[4pt]
+    {\large Facultad de Ciencias de la Computaci\'on y Dise\~no Digital}\\[2pt]
+    {\large Carrera de Ingenier\'ia de Software}\\[22pt]
+
+    {\LARGE\bfseries Gu\'ia de la Primera Entrega del}\\[6pt]
+    {\LARGE\bfseries Proyecto Fin de Curso (PFC)}\\[16pt]
+
+    {\large Ingenier\'ia de Requisitos --- Cuarto nivel}\\[2pt]
+    {\large Per\'iodo Acad\'emico Presencial 2026-2027}\\[22pt]
+
+    \begin{tcolorbox}[colback=uteqverde!8,colframe=uteqverde,arc=3pt,
+                      width=0.88\textwidth,boxrule=0.8pt]
+        \centering
+        \textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[2pt]
+        \texttt{gguerrero@uteq.edu.ec}\\[6pt]
+        \textbf{Etiqueta objetivo de esta entrega:} \texttt{v0.2.0}\\[2pt]
+        \textbf{Fecha de cierre:} viernes de la semana 4\\[2pt]
+        \textbf{Precede a:} Entrega 2 (\texttt{v0.5.0}, semana 8)\\[2pt]
+        \textbf{Referencia de calidad esperada:} \texttt{IngReq-Modelo.pdf} secciones 1--3
+    \end{tcolorbox}
+
+    \vfill
+
+    {\small Quevedo --- Los R\'ios --- Ecuador}\\[2pt]
+    {\small 2026}
+\end{center}
+
+\newpage
+
+\tableofcontents
+\newpage
+
+% =====================================================================
+%  1. NATURALEZA
+% =====================================================================
+\section{Naturaleza y ubicaci\'on temporal de la Primera Entrega}
+
+La Primera Entrega es el hito fundacional del Proyecto Fin de Curso (PFC) de la asignatura \emph{Ingenier\'ia de Requisitos}. Se cierra al final de la semana 4 del calendario acad\'emico con la etiqueta \texttt{v0.2.0} sobre el repositorio del equipo. Todo lo que se produzca en esta entrega debe cumplir con la disciplina metodol\'ogica de la norma \emph{ISO/IEC/IEEE 29148:2018}~\cite{iso29148} y con los criterios de calidad para enunciados de necesidades y requisitos definidos por el INCOSE en la cuarta versi\'on de la \emph{Guide to Writing Requirements}~\cite{incose2023requirements}.
+
+El prop\'osito central de la Primera Entrega es doble. En primer lugar, dejar por escrito y con evidencia empirica reproducible qu\'e problema resolver\'a el equipo, con qu\'e alcance, para qu\'e comunidad y bajo qu\'e restricciones institucionales; y, en segundo lugar, dejar operativos los instrumentos de elicitaci\'on de requisitos que se aplicar\'an durante la Entrega 2 con los interesados reales. El equipo debe emerger de esta entrega con un problema legitimamente identificado, un estado del arte estructurado, una propuesta de sistema comprensible por un tercero y las gu\'ias de entrevista y encuesta listas para su aplicaci\'on.
+
+La lista siguiente resume la posici\'on de la Primera Entrega en la l\'inea temporal del PFC.
+
+\begin{cajadefinicion}{L\'inea temporal de las entregas del PFC}
+    \begin{itemize}
+        \item \textbf{Entrega 1} (semana 4, \texttt{v0.2.0}): planteamiento del problema, estado del arte, sistema propuesto, metodolog\'ia, e instrumentos de elicitaci\'on aprobados por el docente. \emph{Es la entrega guiada por este documento.}
+        \item \textbf{Entrega 2} (semana 8, \texttt{v0.5.0}): elicitaci\'on aplicada, datos recolectados, requisitos funcionales, no funcionales, de interfaz, usabilidad y proceso en formato Volere, matriz de trazabilidad, priorizaci\'on MoSCoW y priorizaci\'on Kano.
+        \item \textbf{Entrega 3} (semana 12, \texttt{v0.8.0-rc}): diagramas UML (casos de uso, clases, actividad, secuencia, componentes, despliegue), diagramas de an\'alisis (contexto, dependencia estrat\'egica i*, requisitos SysML), validaci\'on intermedia con \emph{stakeholders} y correcci\'on de deuda t\'ecnica.
+        \item \textbf{Entrega Final} (semana 16, \texttt{v1.0.0}): documento acad\'emico integrado en estructura IMRaD, validaci\'on plena con \emph{stakeholders}, m\'etricas de calidad INCOSE calculadas y reportadas, insumos para publicaci\'on en revistas JCR (Zenodo, ORCID, CITATION.cff, checklist FAIR) y defensa oral p\'ublica.
+    \end{itemize}
+\end{cajadefinicion}
+
+En cada entrega el docente evaluar\'a el estado del repositorio contra la r\'ubrica publicada en su respectiva gu\'ia. La calificaci\'on se apoya en el repositorio como \'unica fuente de verdad: lo que no est\'a en el repositorio no existe para efectos de calificaci\'on. Este principio se detalla en la Secci\'on~\ref{sec:evaluacion}.
+
+% =====================================================================
+%  2. REQUISITOS INELUDIBLES
+% =====================================================================
+\section{Requisitos ineludibles de la Primera Entrega}
+
+Los siguientes requisitos deben cumplirse en su totalidad para que el equipo obtenga la calificaci\'on m\'inima aprobatoria (7,0/10). Los apartados de esta secci\'on son secuenciales: cada bloque asume que el anterior est\'a cerrado.
+
+\subsection{Bloque A --- Constituci\'on formal del equipo}
+
+Cada equipo estar\'a conformado por entre tres y cinco estudiantes matriculados en Ingenier\'ia de Requisitos durante el per\'iodo 2026-2027. La conformaci\'on ser\'a comunicada al docente durante la semana 1 mediante un correo institucional que incluir\'a los nombres, c\'edulas, correos institucionales, roles asumidos por cada integrante y la URL del repositorio en GitHub creado por el equipo bajo la organizaci\'on p\'ublica que ellos elijan.
+
+Los roles corresponden a la traspolaci\'on de Scrum al contexto acad\'emico, siguiendo el patr\'on establecido en el proyecto modelo (v\'ease Tabla~\ref{tab:roles}). Un integrante asume la coordinaci\'on general con perfil de \emph{Scrum Master}, otro conduce la arquitectura de requisitos y modelado UML, otro dirige la elicitaci\'on con \emph{stakeholders} y otro sistematiza la documentaci\'on Volere. El docente asume el rol de \emph{Product Owner institucional}, con derecho de veto pedag\'ogico sobre cualquier decisi\'on que comprometa la calidad cient\'ifico-t\'ecnica del entregable~\cite{schwaber2020scrum,kniberg2010kanban}.
+
+\begin{table}[htbp]
+\centering
+\caption{Roles y responsabilidades del equipo (traspolaci\'on de Scrum al contexto acad\'emico).}
+\label{tab:roles}
+\rowcolors{2}{grisfila}{white}
+\begin{tabularx}{\textwidth}{L{3.3cm}L{3.3cm}X}
+\toprule
+\rowcolor{uteqverde!25}
+\textbf{Rol Scrum} & \textbf{Rol traspolado} & \textbf{Responsabilidades principales}\\
+\midrule
+Product Owner & Product Owner institucional (docente) & Validar avances, corregir con retroalimentaci\'on estrat\'egica alineada a la UTEQ y a las revistas objetivo.\\
+Scrum Master & Coordinador(a) del equipo & Facilitar la coordinaci\'on general; organizar Scrum y Kanban; asegurar entregables y trazabilidad.\\
+Development Team & Arquitecto(a) de Requisitos & Evaluar viabilidad t\'ecnica; modelar UML; garantizar coherencia requisitos-dise\~no.\\
+Development Team & Analista Funcional & Liderar elicitaci\'on (entrevistas y encuestas); interpretar necesidades; redactar RF y RNF en Volere.\\
+Development Team & Documentador(a) T\'ecnico(a) & Sistematizar hallazgos; matrices de requisitos; conformidad con ISO/IEC/IEEE 29148:2018.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Bloque B --- Definici\'on del dominio y del problema}
+
+El equipo elegir\'a un problema real dentro del dominio de la Universidad T\'ecnica Estatal de Quevedo o de una organizaci\'on p\'ublica o privada del cant\'on Quevedo con la cual pueda concertar acceso legitimo a \emph{stakeholders}. Debe evitarse a toda costa la elecci\'on de un problema hipot\'etico o el uso de datos ficticios: la evaluaci\'on del PFC exige interacci\'on demostrable con personas reales.
+
+El problema debe describirse siguiendo el patr\'on de \emph{Business or Mission Analysis} descrito en la cl\'ausula 6.2.1 de ISO/IEC/IEEE 29148:2018~\cite{iso29148}: primero se caracteriza el espacio del problema (dimensiones pol\'itica, econ\'omica, social, tecnol\'ogica y legal); luego se define la oportunidad; y finalmente se describe el espacio de soluci\'on con las clases de soluci\'on candidatas. La redacci\'on debe evitar el vocabulario laxo y utilizar el patr\'on \texttt{[condici\'on] [sujeto] deber\'a [acci\'on] [objeto] [restricci\'on]} en las enunciaciones formales que se produzcan~\cite{iso29148,pohl2010requirements}.
+
+\begin{cajaentregable}{Entregable B.1 --- Documento de planteamiento del problema}
+Archivo obligatorio en el repositorio: \texttt{docs/requisitos/PLANTEAMIENTO.md}. Debe contener las secciones:
+\begin{enumerate}
+    \item Contexto institucional u organizacional (m\'aximo 300 palabras).
+    \item Problema identificado con evidencia inicial (al menos una fuente citada).
+    \item Objetivo general del PFC y tres a cinco objetivos espec\'ificos.
+    \item Alcance declarado con inclusiones y exclusiones expl\'icitas.
+    \item Beneficiarios directos e indirectos.
+    \item Justificaci\'on cient\'ifica, t\'ecnica y social.
+    \item Limitaciones metodol\'ogicas y \'eticas asumidas.
+\end{enumerate}
+\end{cajaentregable}
+
+\subsection{Bloque C --- Revisi\'on estructurada del estado del arte}
+
+El equipo llevar\'a a cabo una revisi\'on estructurada del estado del arte con la disciplina de una revisi\'on sistem\'atica reducida al alcance del PFC, siguiendo los principios de Kitchenham y Charters~\cite{kitchenham2007guidelines} y reportando el proceso con el flujo PRISMA 2020~\cite{page2021prisma}. Se declarar\'an expl\'icitamente la cadena de b\'usqueda, las bases consultadas (IEEE Xplore, ACM Digital Library, Scopus, Springer, ScienceDirect como m\'inimo tres de las cinco), la ventana temporal, los criterios de inclusi\'on y exclusi\'on, y los resultados del cribado.
+
+El producto de la revisi\'on ser\'a una tabla comparativa con no menos de ocho trabajos donde se contraste, columna por columna, el contexto, las funciones documentadas, los requisitos declarados, las limitaciones y la aplicabilidad al problema del equipo. La revisi\'on cerrar\'a con un p\'arrafo expl\'icito de \emph{brecha identificada} (\emph{research gap}) que motiva la propuesta del equipo. El proyecto modelo dedica su Secci\'on~2 a esta actividad, incluyendo dos tablas de s\'intesis (Tablas~1 y 2 del modelo) que sirven de patr\'on de calidad.
+
+\begin{cajaentregable}{Entregable C.1 --- Estado del arte estructurado}
+Archivos obligatorios:
+\begin{itemize}
+    \item \texttt{docs/requisitos/estado\_arte/BUSQUEDA.md}: cadena de b\'usqueda, criterios y resultados por base.
+    \item \texttt{docs/requisitos/estado\_arte/PRISMA-2020.tex}: diagrama de flujo generado con TikZ, con conteos reales por etapa.
+    \item \texttt{docs/requisitos/estado\_arte/TABLA-COMPARATIVA.tex}: tabla comparativa de al menos ocho trabajos.
+    \item \texttt{docs/requisitos/estado\_arte/SINTESIS.md}: brecha identificada y c\'omo la propuesta del equipo la aborda.
+\end{itemize}
+\end{cajaentregable}
+
+\subsection{Bloque D --- Descripci\'on del sistema propuesto}
+
+Con la brecha identificada, el equipo redactar\'a una descripci\'on comprensible del sistema propuesto. La descripci\'on debe explicar qui\'enes son los actores principales, cu\'ales son los m\'odulos funcionales, c\'omo se articulan y qu\'e beneficios inmediatos aporta la soluci\'on. Se incluir\'a una \emph{vista conceptual del sistema} en formato de diagrama simple (no exhaustivo) con los principales actores y m\'odulos, an\'aloga a la Figura~1 del proyecto modelo.
+
+Esta descripci\'on no equivale a una arquitectura formal; su finalidad es que un lector no t\'ecnico pueda comprender de qu\'e trata el sistema en tres p\'aginas. La descripci\'on debe evitar decisiones tecnol\'ogicas prematuras (no se debe mencionar frameworks, bases de datos concretas, ni patrones arquitect\'onicos): eso corresponde a fases posteriores del proceso de requisitos~\cite{sommerville2011software,wiegers2013software}.
+
+\begin{cajaentregable}{Entregable D.1 --- Documento del sistema propuesto}
+Archivo obligatorio: \texttt{docs/requisitos/SISTEMA-PROPUESTO.md}. Debe contener el t\'itulo del sistema, actores principales, m\'odulos funcionales identificados en primera aproximaci\'on, vista conceptual en imagen exportada desde draw.io (\texttt{assets/figuras/vista-conceptual.png}) y beneficios esperados.
+\end{cajaentregable}
+
+\subsection{Bloque E --- Metodolog\'ia h\'ibrida declarada}
+
+El equipo adoptar\'a la misma metodolog\'ia h\'ibrida que aplica el proyecto modelo: metodolog\'ias \'agiles Scrum y Kanban para la gesti\'on operativa y el marco Volere para la documentaci\'on estandarizada de requisitos~\cite{schwaber2020scrum,kniberg2010kanban,porter2014sentire,robertson2012mastering}. Esta elecci\'on no es opcional: garantiza homogeneidad de artefactos entre equipos y facilita la evaluaci\'on comparada.
+
+En el documento de metodolog\'ia se declarar\'an los sprints previstos, las t\'ecnicas de elicitaci\'on que se aplicar\'an en la Entrega 2 (entrevistas semi-estructuradas~\cite{hove2005interviews}, encuestas en l\'inea~\cite{kitchenham2008surveys} y revisi\'on documental), y el procedimiento de validaci\'on con \emph{stakeholders} (revisiones de requisitos y prototipos, complementado con el modelo Kano~\cite{kano1984attractive,tan2000kano}).
+
+\begin{cajaentregable}{Entregable E.1 --- Documento metodol\'ogico}
+Archivo obligatorio: \texttt{docs/requisitos/METODOLOGIA.md}. Debe contener el enfoque metodol\'ogico, roles traspolados (Tabla~\ref{tab:roles}), los ocho sprints previstos (an\'alogos a los del proyecto modelo, Tablas~A.2 a A.8), t\'ecnicas de elicitaci\'on y procedimiento de validaci\'on.
+\end{cajaentregable}
+
+\subsection{Bloque F --- Instrumentos de elicitaci\'on aprobados}
+
+El equipo dise\~nar\'a los instrumentos de elicitaci\'on que aplicar\'a en la Entrega 2. Como m\'inimo se dise\~nar\'an: una gu\'ia de entrevista semi-estructurada para el rol de \emph{coordinaci\'on} de la organizaci\'on elegida, una gu\'ia de entrevista para el rol operativo principal (por ejemplo docentes, si el sistema es acad\'emico; jefaturas de operaci\'on, si es corporativo) y una encuesta en Google Forms para el rol usuario final masivo (por ejemplo estudiantes o clientes).
+
+Cada instrumento debe pasar la revisi\'on cr\'itica del docente antes de aplicarse. Los guiones de entrevista contendr\'an al menos diez preguntas abiertas por rol, con objetivo declarado y con espacio para preguntas emergentes. La encuesta contendr\'a al menos diez preguntas con una mezcla adecuada de preguntas cerradas dicot\'omicas, de elecci\'on m\'ultiple, de escala Likert y una a dos preguntas abiertas obligatorias.
+
+\begin{cajaentregable}{Entregable F.1 --- Instrumentos de elicitaci\'on}
+Archivos obligatorios en la carpeta \texttt{docs/requisitos/elicitacion/}:
+\begin{itemize}
+    \item \texttt{ENTREVISTA-COORDINACION.md}: gu\'ia de entrevista para el rol de coordinaci\'on.
+    \item \texttt{ENTREVISTA-OPERATIVO.md}: gu\'ia de entrevista para el rol operativo.
+    \item \texttt{ENCUESTA-USUARIO.md}: encuesta con al menos diez preguntas y enlace al formulario en Google Forms.
+    \item \texttt{CONSENTIMIENTO-INFORMADO.md}: documento firmado por cada participante que autoriza la grabaci\'on y el uso de sus respuestas con fines acad\'emicos.
+\end{itemize}
+\end{cajaentregable}
+
+Los instrumentos deben adherirse a las pr\'acticas recogidas por Hove y Anda para entrevistas semi-estructuradas en investigaci\'on emp\'irica en ingenier\'ia del software~\cite{hove2005interviews}: introducci\'on breve al objetivo, informe expl\'icito al entrevistado sobre la grabaci\'on, uso de preguntas abiertas primero y cerradas de aclaraci\'on despu\'es, resumen de retroalimentaci\'on al final. La encuesta debe seguir las recomendaciones de Kitchenham y Pfleeger sobre encuestas de opini\'on personal~\cite{kitchenham2008surveys}: neutralidad del vocabulario, evitar preguntas con doble filo y balanceo de escalas Likert.
+
+% =====================================================================
+%  3. ESTRUCTURA DEL REPOSITORIO
+% =====================================================================
+\section{Estructura del repositorio al cierre de la Primera Entrega}
+
+Al momento del cierre (\texttt{v0.2.0}) el repositorio debe presentar la siguiente estructura m\'inima. Las carpetas o archivos ausentes descuentan directamente en el criterio C7 de la r\'ubrica (organizaci\'on del repositorio).
+
+\begin{cajarepo}{Estructura de \'arbol requerida al final de la Entrega 1}
+\begin{lstlisting}
+pfc-<nombre-corto-del-proyecto>/
++-- README.md
++-- CHANGELOG.md
++-- LICENSE
++-- CITATION.cff
++-- .gitignore
++-- docs/
+|   +-- entregas/
+|   |   +-- Guia_Entrega1_IngReq.pdf   (esta guia, para referencia interna)
+|   +-- requisitos/
+|   |   +-- PLANTEAMIENTO.md
+|   |   +-- METODOLOGIA.md
+|   |   +-- SISTEMA-PROPUESTO.md
+|   |   +-- estado_arte/
+|   |   |   +-- BUSQUEDA.md
+|   |   |   +-- PRISMA-2020.tex
+|   |   |   +-- TABLA-COMPARATIVA.tex
+|   |   |   +-- SINTESIS.md
+|   |   +-- elicitacion/
+|   |       +-- ENTREVISTA-COORDINACION.md
+|   |       +-- ENTREVISTA-OPERATIVO.md
+|   |       +-- ENCUESTA-USUARIO.md
+|   |       +-- CONSENTIMIENTO-INFORMADO.md
+|   +-- observaciones/
+|       +-- OBSERVACIONES.md   (vacio o con OBS-000 inicial)
++-- assets/
+|   +-- figuras/
+|       +-- vista-conceptual.png
++-- scripts/
++-- .github/
+    +-- workflows/
+        +-- ci-latex.yml   (compila las guias PDF en cada push)
+\end{lstlisting}
+\end{cajarepo}
+
+El repositorio debe estar bajo control de versi\'on Git desde el primer d\'ia. Se recomienda seguir las convenciones del libro \emph{Pro Git} de Chacon y Straub~\cite{gitforteams} en cuanto a nomenclatura de \emph{branches}, redacci\'on de \emph{commit messages} y uso de tags. Cada integrante del equipo debe realizar al menos cinco \emph{commits} propios con su cuenta personal de GitHub (autenticados con su correo institucional). El docente auditar\'a la autor\'ia de los \emph{commits} y reportar\'a desbalances significativos como observaci\'on al equipo, aunque sin penalizar la calificaci\'on grupal (pol\'itica de aviso). La l\'inea de comando de auditor\'ia es:
+
+\begin{lstlisting}
+git log --pretty=format:'%an <%ae>' | sort | uniq -c | sort -rn
+\end{lstlisting}
+
+% =====================================================================
+%  4. NORMA DE CALIDAD APLICABLE A ESTA ENTREGA
+% =====================================================================
+\section{Norma de calidad aplicable a esta entrega}
+
+La calidad de los artefactos producidos en la Primera Entrega se juzgar\'a contra tres est\'andares complementarios que el equipo debe conocer y aplicar desde ahora.
+
+\subsection{ISO/IEC/IEEE 29148:2018 --- Procesos de ingenier\'ia de requisitos}
+
+La norma establece cuatro procesos: an\'alisis de negocio o misi\'on, definici\'on de necesidades y requisitos de \emph{stakeholders}, definici\'on de requisitos del sistema o software, y gesti\'on de requisitos con control de cambios y medici\'on~\cite{iso29148}. En la Primera Entrega el equipo est\'a en el primer proceso: an\'alisis de negocio o misi\'on. Los subproductos del planteamiento del problema, sistema propuesto y estado del arte deben poder mapearse expl\'icitamente a los outcomes declarados por la cl\'ausula 6.2.1 de la norma.
+
+\subsection{INCOSE Guide to Writing Requirements v4 (2023)}
+
+La cuarta versi\'on de la gu\'ia formula cuarenta y una reglas de redacci\'on agrupadas en catorce categor\'ias y quince caracter\'isticas de calidad para requisitos individuales y para conjuntos de requisitos~\cite{incose2023requirements}. Aunque los requisitos formales se redactar\'an en la Entrega 2, el equipo debe ya en la Primera Entrega usar voz activa, evitar el uso de ``no'', evitar el ``/'' fuera de unidades, y definir todos los t\'erminos t\'ecnicos que utilice. Las cinco caracter\'isticas m\'as importantes que se auditar\'an desde ahora son \emph{necesario}, \emph{no ambiguo}, \emph{verificable}, \emph{trazable} y \emph{singular}.
+
+\subsection{PRISMA 2020 --- Reporte de revisiones sistem\'aticas}
+
+El est\'andar PRISMA 2020 exige transparencia total en el proceso de b\'usqueda, cribado y s\'intesis de literatura~\cite{page2021prisma}. Aun cuando el equipo realice una revisi\'on de menor escala que una sistem\'atica completa, se exige el diagrama de flujo con los conteos reales por etapa. El repositorio contiene una plantilla \texttt{docs/plantillas/prisma-2020-template.tex} que el equipo debe adaptar con sus n\'umeros propios.
+
+% =====================================================================
+%  5. RUBRICA DE EVALUACION
+% =====================================================================
+\section{R\'ubrica de evaluaci\'on de la Primera Entrega}\label{sec:evaluacion}
+
+La calificaci\'on de la Primera Entrega usa siete criterios ponderados que suman 100\,\%. Cada criterio se eval\'ua en una escala de cuatro niveles: Excelente (100\,\%), Bueno (75\,\%), En desarrollo (50\,\%) e Insuficiente (25\,\%). La nota final se convierte a la escala /10 dividiendo entre diez y a la escala /40 multiplicando por cuatro (correspondencia SGA).
+
+\begin{longtable}{|L{4.3cm}|C{0.9cm}|L{3.3cm}|L{2.4cm}|L{2.4cm}|L{1.6cm}|}
+\hline
+\rowcolor{uteqverde!25}
+\textbf{Criterio} & \textbf{Peso} & \textbf{Excelente (100\,\%)} & \textbf{Bueno (75\,\%)} & \textbf{En desarrollo (50\,\%)} & \textbf{Insuf. (25\,\%)}\\ \hline
+\endhead
+
+\textbf{C1. Planteamiento del problema} & 15\,\% & Problema real, dominio institucional legitimo, patr\'on 29148 aplicado, fuentes citadas. & Problema real y dominio v\'alido, redacci\'on formal parcial. & Problema real pero justificaci\'on d\'ebil. & Problema hipot\'etico o fuente ausente.\\ \hline
+\rowcolor{grisfila}
+\textbf{C2. Estado del arte} & 20\,\% & $\geq 8$ trabajos comparados, PRISMA 2020 con conteos reales, brecha expl\'icita. & 6--7 trabajos comparados, PRISMA parcial. & 4--5 trabajos, sin PRISMA. & $\leq 3$ trabajos o sin s\'intesis.\\ \hline
+\textbf{C3. Sistema propuesto} & 15\,\% & Vista conceptual clara, actores y m\'odulos identificados, redacci\'on comprensible. & Vista conceptual presente, actores parciales. & Descripci\'on textual sin diagrama. & Sistema no descrito o incoherente.\\ \hline
+\rowcolor{grisfila}
+\textbf{C4. Metodolog\'ia} & 10\,\% & Enfoque h\'ibrido (Scrum + Kanban + Volere) declarado con roles y ocho sprints previstos. & Enfoque declarado con parte de detalles. & Enfoque nombrado sin desarrollo. & Enfoque ausente.\\ \hline
+\textbf{C5. Instrumentos de elicitaci\'on} & 20\,\% & Tres instrumentos completos + consentimiento, con $\geq 10$ preguntas y buenas pr\'acticas de Hove-Anda y Kitchenham-Pfleeger. & Tres instrumentos completos con detalles menores omitidos. & Dos instrumentos completos. & Uno o ninguno completo.\\ \hline
+\rowcolor{grisfila}
+\textbf{C6. Bibliograf\'ia verificada} & 10\,\% & Todas las citas resuelven a fuente primaria, entradas .bib correctas, sin referencias fantasma. & Uno o dos errores menores. & Tres a cinco errores. & Muchas fuentes no verificables.\\ \hline
+\textbf{C7. Organizaci\'on del repositorio y autor\'ia distribuida} & 10\,\% & Estructura completa, tag \texttt{v0.2.0}, $\geq 5$ commits por integrante, CI verde. & Estructura completa, tag presente, autor\'ia desbalanceada. & Estructura parcial. & Estructura incompleta o sin tag.\\ \hline
+\end{longtable}
+
+\begin{cajacritica}{Regla del repositorio como \'unica fuente de verdad}
+Lo que no est\'a en el repositorio p\'ublico del equipo con \texttt{v0.2.0} etiquetado al momento del cierre \emph{no existe} para efectos de la calificaci\'on. Screenshots, correos, mensajes de WhatsApp o borradores locales no ser\'an aceptados como evidencia. Todo entregable relevante debe estar bajo control de versi\'on con historial de \emph{commits} atribuibles.
+\end{cajacritica}
+
+Para superar el 8,0/10 el equipo debe presentar un estado del arte con m\'as de diez trabajos comparados, con diagrama PRISMA renderizado con TikZ desde LaTeX (no imagen escaneada), y con un p\'arrafo de brecha que discuta con nombre y apellido cada limitaci\'on identificada.
+
+% =====================================================================
+%  6. PROCEDIMIENTO DE ENTREGA Y DEFENSA
+% =====================================================================
+\section{Procedimiento de entrega y defensa oral parcial}
+
+La Primera Entrega se cierra con dos actos administrativos secuenciales.
+
+\subsection{Cierre en repositorio}
+
+El equipo aplicar\'a la etiqueta \texttt{v0.2.0} sobre el \emph{commit} de cierre. El mensaje del tag debe contener el hash corto del \emph{commit}, la fecha en formato ISO 8601 (YYYY-MM-DD) y los apellidos de los integrantes. El comando canonico es:
+
+\begin{lstlisting}
+git tag -a v0.2.0 -m "Entrega 1 - 2026-06-27 - Toaquiza, Lombeida, Munoz, Zambrano" && git push origin v0.2.0
+\end{lstlisting}
+
+El equipo publicar\'a el enlace directo al tag en el aula virtual (Moodle SGA) antes de las 23:59 (hora Ecuador, UTC-5) del viernes de la semana 4. Los enlaces enviados por otros canales no ser\'an revisados.
+
+\subsection{Defensa oral parcial}
+
+Durante la semana 5 el equipo defender\'a la Entrega 1 en una sesi\'on presencial de veinte minutos. La estructura obligatoria de la defensa es:
+
+\begin{itemize}
+    \item Cinco minutos: contexto, problema y objetivos.
+    \item Cinco minutos: estado del arte y brecha identificada.
+    \item Cinco minutos: sistema propuesto e instrumentos de elicitaci\'on listos.
+    \item Cinco minutos: preguntas del docente y de dos equipos evaluadores pares.
+\end{itemize}
+
+Cada integrante debe hablar al menos tres minutos. La defensa se realiza sin di\'apositivas prefabricadas: el equipo abre su repositorio en pantalla y navega su propio contenido. Esta modalidad se elige para desalentar la brecha entre lo entregado y lo defendido, y para reforzar el conocimiento compartido del equipo sobre los artefactos producidos.
+
+% =====================================================================
+%  7. OBSERVACIONES OPERATIVAS
+% =====================================================================
+\section{Observaciones operativas y aviso sobre entregas posteriores}
+
+Todos los documentos textuales se producir\'an en Markdown, y los documentos con f\'ormulas, TikZ o citas se producir\'an en LaTeX. El motivo de esta separaci\'on es que Markdown se diferencia mejor en \emph{pull requests} y facilita la revisi\'on colaborativa, mientras que LaTeX es necesario para la calidad tipogr\'afica y la citaci\'on autom\'atica con BibTeX de los artefactos que ir\'an al documento acad\'emico final.
+
+Todas las decisiones de dise\~no que se tomen desde la Primera Entrega en adelante deben quedar registradas como \emph{Architecture Decision Records} (ADR) siguiendo la plantilla de Nygard, en la carpeta \texttt{docs/adr/}. En esta entrega la primera decisi\'on documentada obligatoria es \texttt{ADR-001-dominio-y-alcance.md}, donde el equipo justifica el dominio elegido y los criterios de inclusi\'on y exclusi\'on. La rigurosidad de los ADR se auditar\'a en cada entrega posterior.
+
+El equipo mantendr\'a en \texttt{docs/observaciones/OBSERVACIONES.md} un registro perpetuo de observaciones recibidas, con c\'odigo \texttt{OBS-NN}, texto \'integro, decisi\'on tomada, commit de resoluci\'on y estado (\texttt{ABIERTA}, \texttt{RESUELTA}, \texttt{DIFERIDA}). Este archivo es cr\'itico en las entregas 2, 3 y Final, donde el docente verificar\'a que ninguna observaci\'on grave haya quedado sin resolver antes de aplicar la r\'ubrica siguiente. Este mecanismo es an\'alogo al implementado con \'exito por otros PFC del programa~\cite{dick2017requirements,wiegers2013software}.
+
+Con la entrega ya calificada, el equipo dispondr\'a de la semana 5 y la primera mitad de la semana 6 para aplicar los instrumentos de elicitaci\'on con \emph{stakeholders} reales. El cierre de la Entrega 2 ser\'a el viernes de la semana 8, con etiqueta \texttt{v0.5.0}, y esa entrega se rige por su propia gu\'ia (\texttt{Guia\_Entrega2\_IngReq.pdf}).
+
+% =====================================================================
+%  BIBLIOGRAFIA
+% =====================================================================
+\bibliographystyle{IEEEtran}
+\bibliography{IngReq}
+
+\end{document}
