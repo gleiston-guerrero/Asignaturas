@@ -1,0 +1,1391 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.3cm,headheight=15pt]{geometry}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{xltabular}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{csquotes}
+
+% ============================================================
+% Paleta institucional UTEQ
+% ============================================================
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqGray}{HTML}{5A6470}
+\definecolor{uteqRed}{HTML}{C0392B}
+
+\usepackage[colorlinks=true,linkcolor=uteqBlue,urlcolor=uteqTeal,citecolor=uteqMid]{hyperref}
+
+% ============================================================
+% Encabezado y pie
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{uteqBlue}\textbf{UTEQ} $\cdot$ Aplicaciones Distribuidas (ISR-701)}
+\fancyhead[R]{\footnotesize\color{uteqBlue}Pr\'actica: Banco del Austro}
+\fancyfoot[C]{\footnotesize\color{uteqGray}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.0pt}
+
+% ============================================================
+% Estilos de secci\'on
+% ============================================================
+\titleformat{\section}
+    {\color{uteqBlue}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}
+    {\color{uteqMid}\large\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}
+    {\color{uteqTeal}\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+
+% ============================================================
+% Listings
+% ============================================================
+\lstdefinestyle{sqlstyle}{
+    language=SQL,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{uteqBlue}\bfseries,
+    commentstyle=\color{uteqGreen}\itshape,
+    stringstyle=\color{uteqAmber},
+    backgroundcolor=\color{gray!5},
+    frame=single,
+    rulecolor=\color{uteqGray!40},
+    numbers=left,
+    numberstyle=\tiny\color{uteqGray},
+    breaklines=true,
+    showstringspaces=false,
+    columns=fullflexible,
+    keepspaces=true
+}
+
+\lstdefinestyle{yamlstyle}{
+    language={},
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{uteqBlue}\bfseries,
+    commentstyle=\color{uteqGreen}\itshape,
+    stringstyle=\color{uteqAmber},
+    backgroundcolor=\color{gray!5},
+    frame=single,
+    rulecolor=\color{uteqGray!40},
+    numbers=left,
+    numberstyle=\tiny\color{uteqGray},
+    breaklines=true,
+    showstringspaces=false,
+    morecomment=[l]{\#}
+}
+
+\lstdefinestyle{javastyle}{
+    language=Java,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{uteqBlue}\bfseries,
+    commentstyle=\color{uteqGreen}\itshape,
+    stringstyle=\color{uteqAmber},
+    backgroundcolor=\color{gray!5},
+    frame=single,
+    rulecolor=\color{uteqGray!40},
+    numbers=left,
+    numberstyle=\tiny\color{uteqGray},
+    breaklines=true,
+    showstringspaces=false
+}
+
+\lstdefinestyle{bashstyle}{
+    language=bash,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{uteqBlue}\bfseries,
+    commentstyle=\color{uteqGreen}\itshape,
+    stringstyle=\color{uteqAmber},
+    backgroundcolor=\color{gray!5},
+    frame=single,
+    rulecolor=\color{uteqGray!40},
+    breaklines=true,
+    showstringspaces=false,
+    columns=fullflexible
+}
+
+\lstdefinestyle{plainstyle}{
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{gray!5},
+    frame=single,
+    rulecolor=\color{uteqGray!40},
+    breaklines=true,
+    columns=fullflexible
+}
+
+% ============================================================
+% Cajas tem\'aticas
+% ============================================================
+\newtcolorbox{pasobox}[1]{
+    enhanced, breakable,
+    colback=uteqBlue!5!white,
+    colframe=uteqBlue,
+    coltitle=white,
+    fonttitle=\bfseries,
+    title={#1},
+    boxrule=0.6pt, arc=2pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+
+\newtcolorbox{casobox}[1]{
+    enhanced, breakable,
+    colback=uteqAmber!8!white,
+    colframe=uteqAmber!85!black,
+    coltitle=black,
+    fonttitle=\bfseries,
+    title={#1},
+    boxrule=0.6pt, arc=2pt
+}
+
+\newtcolorbox{conceptobox}[1]{
+    enhanced, breakable,
+    colback=uteqTeal!5!white,
+    colframe=uteqTeal,
+    coltitle=white,
+    fonttitle=\bfseries,
+    title={\'?Qu\'e es #1?},
+    boxrule=0.5pt, arc=2pt
+}
+
+\newtcolorbox{notabox}{
+    enhanced, breakable,
+    colback=uteqGray!5!white,
+    colframe=uteqGray,
+    coltitle=white,
+    fonttitle=\bfseries,
+    title={Nota t\'ecnica},
+    boxrule=0.5pt, arc=2pt
+}
+
+\newtcolorbox{verifbox}{
+    enhanced, breakable,
+    colback=uteqGreen!8!white,
+    colframe=uteqGreen!80!black,
+    coltitle=white,
+    fonttitle=\bfseries,
+    title={\'?C\'omo saber si sali\'o bien?},
+    boxrule=0.5pt, arc=2pt
+}
+
+\newtcolorbox{errorbox}{
+    enhanced, breakable,
+    colback=uteqRed!5!white,
+    colframe=uteqRed,
+    coltitle=white,
+    fonttitle=\bfseries,
+    title={Si algo falla\ldots},
+    boxrule=0.5pt, arc=2pt
+}
+
+% ============================================================
+% Portada
+% ============================================================
+\title{
+    \vspace{-1.2cm}
+    \color{uteqBlue}\textbf{Pr\'actica de Bases de Datos Distribuidas}\\[0.15cm]
+    \color{uteqMid}\large Caso Banco del Austro: gu\'ia paso a paso desde cero\\[0.3cm]
+    \color{uteqGray}\normalsize
+    Aplicaciones Distribuidas (ISR-701) $\cdot$ Unidad~2 $\cdot$ Semana~10--11
+}
+\author{
+    \color{uteqGray}\normalsize
+    Ph.D. Gleiston Guerrero Ulloa\\
+    Universidad T\'ecnica Estatal de Quevedo\\
+    Facultad de Ciencias de la Computaci\'on\\
+    Carrera de Ingenier\'ia de Software
+}
+\date{\color{uteqGray}\small Per\'iodo acad\'emico 2026--2027 SPA}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{casobox}{\'?Para qui\'en es esta gu\'ia?}
+Esta gu\'ia est\'a escrita asumiendo que usted \textbf{ya sabe programar en Java y ya us\'o alguna vez PostgreSQL, Docker Desktop, IntelliJ y pgAdmin} pero \textbf{es la primera vez que va a construir una base de datos distribuida}. Por eso cada concepto de la Unidad~2 (sede, nodo, fragmento, r\'eplica, contenedor, volumen) se explica en su propia caja antes de aparecer en el c\'odigo, y cada archivo que va a crear tiene indicado con precisi\'on \emph{d\'onde} guardarlo, \emph{con qu\'e nombre}, \emph{con qu\'e extensi\'on} y \emph{con qu\'e programa} escribirlo.
+
+Al terminar la pr\'actica habr\'a levantado dos motores PostgreSQL~16 independientes (uno para la oficina de Cuenca y otro para Quito) coordinados desde una aplicaci\'on Spring~Boot que decide, para cada consulta, en qu\'e motor buscar. Es el \emph{prototipo did\'actico} m\'as peque\~no que sigue evidenciando las tres propiedades centrales de una BDD: \textbf{fragmentaci\'on horizontal}, \textbf{transparencia de ubicaci\'on} y \textbf{autonom\'ia local}.
+\end{casobox}
+
+\tableofcontents
+\clearpage
+
+% ============================================================
+\section{Antes de empezar: glosario m\'inimo}
+% ============================================================
+
+En Unidad~1 usted trabaj\'o con sockets, gRPC y relojes de Lamport~\cite{Lamport1978Time}. En Unidad~2 va a cambiar el enfoque: ahora el \emph{dato} es lo que est\'a distribuido, no solamente los procesos que lo consultan. Antes de tocar Docker o IntelliJ es imprescindible fijar el vocabulario, porque los mismos t\'erminos significan cosas distintas seg\'un el contexto.
+
+\begin{conceptobox}{una ``sede''?}
+Una \textbf{sede} (o \emph{site}, \emph{sitio}) es una ubicaci\'on f\'isica donde reside \textbf{una copia de un motor de base de datos con parte o todo el dato de la organizaci\'on}. En este caso, Banco del Austro tiene cinco sedes reales: Cuenca, Quito, Guayaquil, Loja y Machala. En el prototipo did\'actico se implementan solo dos (Cuenca y Quito) porque con dos ya se ilustran las mismas propiedades y los recursos del laboratorio se optimizan.
+
+Cada sede corre su propio motor PostgreSQL, tiene su propio disco l\'ogico y puede seguir operando aunque otra sede se caiga. Eso es lo que en la literatura de sistemas distribuidos se llama \emph{autonom\'ia local}~\cite{Ozsu2020Principles}.
+\end{conceptobox}
+
+\begin{conceptobox}{un ``nodo''?}
+Un \textbf{nodo} es cada motor de base de datos individual, considerado como participante del sistema distribuido. En esta pr\'actica cada sede tendr\'a exactamente un nodo (una instancia de PostgreSQL) y por eso las palabras ``sede'' y ``nodo'' se usan de manera intercambiable. En sistemas m\'as grandes una sede puede tener varios nodos por redundancia; en Unidad~3 se ver\'a esa complicaci\'on.
+\end{conceptobox}
+
+\begin{conceptobox}{un ``fragmento''?}
+Un \textbf{fragmento} es un subconjunto de las filas (o de las columnas) de una tabla completa, que reside en un nodo espec\'ifico. En la pr\'actica se va a fragmentar \emph{horizontalmente} la tabla \texttt{cuentas}: las cuentas cuya oficina de origen es Cuenca residir\'an f\'isicamente solo en el nodo Cuenca, y las de Quito solo en el nodo Quito. Nadie almacena la tabla completa; la ``tabla completa'' es una entidad l\'ogica que solo existe cuando se hace la uni\'on de los fragmentos.
+
+La regla t\'ecnica es que los fragmentos deben ser \textbf{completos} (ninguna fila se pierde), \textbf{reconstruibles} (uniendo los fragmentos se recupera la tabla original) y \textbf{disjuntos} (ninguna fila est\'a en dos fragmentos al mismo tiempo)~\cite[cap.~3]{Ozsu2020Principles}.
+\end{conceptobox}
+
+\begin{conceptobox}{una ``r\'eplica''?}
+Una \textbf{r\'eplica} es una copia \emph{completa} de una tabla que se mantiene en m\'as de un nodo, para acelerar las lecturas o tolerar la ca\'ida de un nodo. En esta pr\'actica la tabla \texttt{clientes} se replica: los mismos clientes existen en Cuenca y en Quito, porque cualquier oficina debe poder identificar al titular de una cuenta aunque este pertenezca a otra sede.
+
+La contrapartida es que las \emph{escrituras} sobre una tabla replicada son m\'as caras porque hay que actualizar todas las copias~\cite{Kleppmann2017DDIA}.
+\end{conceptobox}
+
+\clearpage
+% ============================================================
+\section{Ambiente de trabajo: programas y d\'onde conseguirlos}
+% ============================================================
+
+Esta secci\'on lista los programas que va a usar, con qu\'e sirve cada uno y d\'onde descargarlos oficialmente. Instale todos antes de continuar; los pasos posteriores asumen que ya est\'an listos.
+
+\subsection{Sistema operativo asumido}
+
+La gu\'ia est\'a redactada para \textbf{Windows~10 o Windows~11}. En Linux o macOS los conceptos son id\'enticos y la mayor\'ia de comandos tambi\'en; \'unicamente cambia la ruta de trabajo (\texttt{/home/usuario/uteq/} en lugar de \texttt{C:\textbackslash uteq\textbackslash}) y el terminal (\texttt{bash} o \texttt{zsh} en lugar de \texttt{cmd.exe}).
+
+Todos los comandos de esta gu\'ia se ejecutan en la \textbf{Consola de comandos de Windows}, tambi\'en llamada \texttt{cmd.exe} o simplemente ``Simbolo del sistema''. \textbf{No use PowerShell}: algunos comandos con comillas se comportan distinto en PowerShell y le har\'an perder tiempo.
+
+Para abrir \texttt{cmd.exe}: presione la tecla \emph{Windows}, escriba \texttt{cmd} y pulse \emph{Enter}. Debe aparecer una ventana negra con texto blanco donde el prompt termina en \texttt{>}.
+
+\subsection{Programas obligatorios}
+
+Estos cinco programas son indispensables. Instale cada uno usando el instalador oficial (evite descargar de sitios terceros).
+
+\begin{xltabular}{\textwidth}{@{}p{3.2cm}p{4cm}X@{}}
+\toprule
+\textbf{Programa} & \textbf{Versi\'on} & \textbf{Sirve para\ldots} \\
+\midrule
+Docker Desktop & 4.30 o superior & Ejecutar los dos motores PostgreSQL como \emph{contenedores}, sin instalar PostgreSQL en su computadora. Descarga oficial: \url{https://www.docker.com/products/docker-desktop/}. \\
+\midrule
+JDK Temurin & 21 (LTS) & Compilar y ejecutar la aplicaci\'on Java (Spring Boot) que consulta los dos motores. Se recomienda la distribuci\'on Eclipse Temurin: \url{https://adoptium.net/temurin/releases/}. \\
+\midrule
+IntelliJ IDEA & 2024.1 Community o superior & Escribir el c\'odigo Java, generar el proyecto Spring Boot y consultar visualmente las bases de datos desde su ventana \emph{Database}. Descarga oficial: \url{https://www.jetbrains.com/idea/download/}. La edici\'on Community es gratuita y suficiente. \\
+\midrule
+Postman & Versi\'on actual & Enviar peticiones HTTP (\texttt{GET}, \texttt{POST}, etc.) a la aplicaci\'on Spring Boot para verificar que las consultas distribuidas responden correctamente. Descarga oficial: \url{https://www.postman.com/downloads/}. \\
+\midrule
+VS Code o Notepad++ & Cualquiera & Editor de texto plano para crear los archivos \texttt{.yml} y \texttt{.sql} sin que Windows los ``ayude'' agregando caracteres invisibles. \textbf{No use Word ni WordPad}: agregan caracteres invisibles que rompen los scripts~\cite{PostgreSQL16Docs}. \\
+\bottomrule
+\end{xltabular}
+
+\subsection{Programa opcional pero recomendado}
+
+\begin{xltabular}{\textwidth}{@{}p{3.2cm}p{4cm}X@{}}
+\toprule
+\textbf{Programa} & \textbf{Versi\'on} & \textbf{Sirve para\ldots} \\
+\midrule
+pgAdmin 4 & 8.x o superior & Ver el contenido de PostgreSQL con una interfaz gr\'afica separada de IntelliJ. Descarga: \url{https://www.pgadmin.org/download/}. \'Util si prefiere una herramienta dedicada a bases de datos; si le basta el panel Database de IntelliJ, puede omitirlo. \\
+\bottomrule
+\end{xltabular}
+
+\subsection{Verificaci\'on r\'apida del ambiente}
+
+Antes de continuar, abra \texttt{cmd.exe} y ejecute los siguientes comandos, uno por uno. Cada uno debe imprimir una versi\'on; si alguno responde \texttt{'xxx' no se reconoce como un comando} entonces el programa correspondiente no est\'a instalado o falta agregar su carpeta al \texttt{PATH}.
+
+\begin{lstlisting}[style=bashstyle,caption={Verificaci\'on del ambiente en cmd.exe}]
+docker --version
+docker compose version
+java -version
+\end{lstlisting}
+
+\begin{verifbox}
+Debe obtener respuestas similares a:
+
+\begin{lstlisting}[style=plainstyle]
+Docker version 24.x.x, build xxxxxxx
+Docker Compose version v2.x.x
+openjdk version "21.x.x" ...
+\end{lstlisting}
+
+Los n\'umeros pueden ser distintos; lo importante es que las tres l\'ineas devuelvan una versi\'on.
+\end{verifbox}
+
+\begin{errorbox}
+\textbf{Docker Desktop no arranca o est\'a en ``Docker starting\ldots'' eterno.} Cierre Docker Desktop, verifique en el \emph{Administrador de tareas} que no queden procesos \texttt{Docker*} corriendo, y vuelva a abrirlo como Administrador. En Windows~11, aseg\'urese de tener habilitado el \emph{Windows Subsystem for Linux~2} (WSL~2): abra \texttt{cmd.exe} como Administrador y ejecute \texttt{wsl --install}.
+
+\textbf{\texttt{java} no se reconoce como comando.} La variable \texttt{PATH} no incluye la carpeta \texttt{bin} del JDK. En Windows: \emph{Configuraci\'on} $\rightarrow$ \emph{Sistema} $\rightarrow$ \emph{Acerca de} $\rightarrow$ \emph{Configuraci\'on avanzada del sistema} $\rightarrow$ \emph{Variables de entorno} $\rightarrow$ edite \texttt{PATH} y a\~nada la ruta \texttt{C:\textbackslash Program Files\textbackslash Eclipse Adoptium\textbackslash jdk-21\ldots\textbackslash bin}. Cierre \texttt{cmd.exe} y \'abralo de nuevo.
+\end{errorbox}
+
+\clearpage
+% ============================================================
+\section{El caso: Banco del Austro en modo prototipo}
+% ============================================================
+
+\subsection{La historia}
+
+El Banco del Austro es una entidad financiera ecuatoriana con oficinas en cinco ciudades: Cuenca (sede central), Quito, Guayaquil, Loja y Machala. La direcci\'on plantea el siguiente problema:
+
+\begin{itemize}[leftmargin=1.2em]
+    \item Cada oficina consulta constantemente los saldos de \emph{sus propios} clientes y esas consultas deben responder en menos de 200~ms.
+    \item Las transferencias entre cuentas deben ser exactas: si el motor cae en mitad de una transferencia, o se transfiri\'o correctamente o no se transfiri\'o nada; no puede quedar la mitad. Esto es la propiedad \emph{ACID}~\cite[cap.~10]{Gray1993Transaction}.
+    \item Si la oficina de Loja pierde la conexi\'on con Cuenca por unas horas, las oficinas restantes deben seguir operando con sus clientes locales.
+    \item Los datos de clientes son de acceso compartido: cualquier oficina debe poder ver a cualquier titular.
+    \item Los datos transaccionales pertenecen a la oficina donde se originaron y casi siempre se consultan localmente.
+\end{itemize}
+
+\subsection{Del problema real al prototipo did\'actico}
+
+En un sistema real de un banco se usar\'ian cinco nodos, comunicaci\'on cifrada, replicaci\'on \'active-active\' y un producto como CockroachDB o PostgreSQL~+~Citus~\cite{VanSteen2023DS,Sadalage2013NoSQL}. Todo eso queda para pr\'acticas posteriores. En \'esta se reduce el problema a lo m\'inimo did\'actico:
+
+\begin{itemize}[leftmargin=1.2em]
+    \item Solo dos sedes: \textbf{Cuenca} y \textbf{Quito}.
+    \item Solo tres tablas: \texttt{clientes}, \texttt{cuentas}, \texttt{transacciones}.
+    \item Una \'unica aplicaci\'on Spring Boot que decide, a partir del n\'umero de cuenta, en qu\'e nodo consultar.
+    \item Fragmentaci\'on horizontal expl\'icita: cada nodo almacena solo los datos que ``le tocan'' seg\'un su ciudad de origen.
+\end{itemize}
+
+\subsection{Convenci\'on de prefijos}
+
+Para que el enrutador de la aplicaci\'on pueda saber, sin ir a la base, en qu\'e sede est\'a cada cuenta, se adopta la siguiente convenci\'on de \emph{codificaci\'on} del n\'umero de cuenta:
+
+\begin{itemize}[leftmargin=1.2em]
+    \item Las cuentas de la oficina de Cuenca empiezan con \texttt{22}. Ejemplo: \texttt{2201000001}.
+    \item Las cuentas de la oficina de Quito empiezan con \texttt{17}. Ejemplo: \texttt{1701000001}.
+\end{itemize}
+
+\begin{notabox}
+Los prefijos \texttt{22} y \texttt{17} corresponden a los primeros d\'igitos de la c\'edula ecuatoriana asociada a las provincias del Azuay (Cuenca) y Pichincha (Quito). Se usan por su valor mnemot\'ecnico; en producci\'on el enrutamiento se implementar\'ia con una tabla de directorio o con \emph{hashing consistente}, no ley\'endose del propio dato.
+\end{notabox}
+
+\subsection{Estrategia de distribuci\'on por tabla}
+
+La siguiente tabla es el \emph{plan de fragmentaci\'on} que se va a implementar. Es la decisi\'on de dise\~no m\'as importante de la pr\'actica; el resto son pasos t\'ecnicos para llevarla a cabo.
+
+\begin{xltabular}{\textwidth}{@{}p{2.7cm}p{2.7cm}X@{}}
+\toprule
+\textbf{Tabla} & \textbf{Estrategia} & \textbf{Explicaci\'on} \\
+\midrule
+\texttt{clientes}       & Replicada        & Copia completa en Cuenca y en Quito. Todos los titulares se ven desde cualquier oficina. \\
+\texttt{cuentas}        & Fragmentada horizontalmente por oficina & Las cuentas cuya \texttt{oficina} es \texttt{CUENCA} viven en el nodo Cuenca; las que tienen \texttt{QUITO} viven en el nodo Quito. Ninguna cuenta vive en los dos. \\
+\texttt{transacciones}  & Fragmentada horizontalmente por oficina & Cada transacci\'on se registra donde se origin\'o. Los movimientos ``cross-office'' se resolver\'an en una pr\'actica posterior con commit en dos fases~\cite{Gray1993Transaction}. \\
+\bottomrule
+\end{xltabular}
+
+\clearpage
+% ============================================================
+\section{Crear la estructura de carpetas del proyecto}
+% ============================================================
+
+Antes de tocar Docker o IntelliJ, se prepara la carpeta donde van a vivir \emph{todos} los archivos de esta pr\'actica: los scripts SQL, el \texttt{docker-compose.yml} y luego el proyecto Java.
+
+\subsection{Decidir la carpeta ra\'iz}
+
+Se recomienda crear la carpeta ra\'iz en la ra\'iz de la unidad \texttt{C:} para que la ruta sea corta y no colisione con espacios (los espacios en rutas causan errores en Docker):
+
+\begin{lstlisting}[style=bashstyle]
+C:\uteq\banco-austro
+\end{lstlisting}
+
+\begin{errorbox}
+\textbf{No use rutas con espacios ni con acentos}, como \texttt{C:\textbackslash Users\textbackslash Juan P\'erez\textbackslash Escritorio\textbackslash Pr\'acticas}. Docker Desktop las acepta a veces, pero al montar vol\'umenes o carpetas dentro de contenedores puede fallar con mensajes crípticos. Cree la carpeta en \texttt{C:\textbackslash uteq\textbackslash} y ya.
+\end{errorbox}
+
+\subsection{Crear las carpetas desde \texttt{cmd.exe}}
+
+Abra \texttt{cmd.exe} y ejecute:
+
+\begin{lstlisting}[style=bashstyle,caption={Crear la ra\'iz y las dos subcarpetas de scripts SQL}]
+mkdir C:\uteq
+mkdir C:\uteq\banco-austro
+cd C:\uteq\banco-austro
+mkdir sql-cuenca
+mkdir sql-quito
+\end{lstlisting}
+
+Si la carpeta \texttt{C:\textbackslash uteq} ya existe porque la us\'o en pr\'acticas anteriores, ignore ese primer \texttt{mkdir}; Windows le dir\'a que ya existe y no pasa nada.
+
+\subsection{Estructura esperada}
+
+Al finalizar esta secci\'on la carpeta debe verse as\'i:
+
+\begin{lstlisting}[style=plainstyle,caption={Estructura inicial del proyecto}]
+C:\uteq\banco-austro\
+    +-- sql-cuenca\      (aqui iran los scripts SQL del nodo Cuenca)
+    +-- sql-quito\       (aqui iran los scripts SQL del nodo Quito)
+\end{lstlisting}
+
+Puede verificarlo desde el Explorador de Windows o desde \texttt{cmd.exe} con el comando \texttt{dir}:
+
+\begin{lstlisting}[style=bashstyle]
+cd C:\uteq\banco-austro
+dir
+\end{lstlisting}
+
+Debe listar dos entradas de tipo \texttt{<DIR>}: \texttt{sql-cuenca} y \texttt{sql-quito}.
+
+\subsection{\'?Qu\'e va a ir en cada carpeta?}
+
+\begin{xltabular}{\textwidth}{@{}p{5.2cm}X@{}}
+\toprule
+\textbf{Carpeta} & \textbf{Contendr\'a\ldots} \\
+\midrule
+\texttt{C:\textbackslash uteq\textbackslash banco-austro\textbackslash} & Un archivo llamado \texttt{docker-compose.yml} que le dir\'a a Docker c\'omo levantar los dos motores PostgreSQL. Adem\'as, m\'as adelante, la carpeta del proyecto Java. \\
+\texttt{sql-cuenca\textbackslash} & Dos archivos \texttt{.sql}: uno con las tablas del nodo Cuenca y otro con los datos de prueba de Cuenca. PostgreSQL los ejecutar\'a autom\'aticamente al arrancar. \\
+\texttt{sql-quito\textbackslash} & Lo an\'alogo para el nodo Quito. \\
+\bottomrule
+\end{xltabular}
+
+\clearpage
+% ============================================================
+\section{Levantar los motores PostgreSQL con Docker}
+% ============================================================
+
+\subsection{Repaso r\'apido de conceptos}
+
+\begin{conceptobox}{una ``imagen'' de Docker?}
+Una \textbf{imagen} es una plantilla congelada de software: contiene el sistema operativo m\'inimo, PostgreSQL~16 preinstalado y toda su configuraci\'on por defecto. La imagen oficial se llama \texttt{postgres:16-alpine} y se descarga desde \emph{Docker Hub}. La versi\'on \texttt{alpine} es una variante peque\~na (unos 250~MB) basada en la distribuci\'on Alpine Linux.
+\end{conceptobox}
+
+\begin{conceptobox}{un ``contenedor''?}
+Un \textbf{contenedor} es una instancia \emph{en ejecuci\'on} de una imagen. Si la imagen es una plantilla, el contenedor es la ``m\'aquina virtual peque\~na'' que est\'a corriendo. En esta pr\'actica se crean \textbf{dos contenedores} a partir de la \emph{misma} imagen \texttt{postgres:16-alpine}, cada uno con su propio nombre, su propia base de datos y su propio puerto.
+\end{conceptobox}
+
+\begin{conceptobox}{un ``volumen''?}
+Un \textbf{volumen} es un espacio de disco que Docker administra para que los datos del contenedor \emph{sobrevivan} aunque el contenedor se elimine. Sin volumen, cuando se hace \texttt{docker compose down} se pierden todos los datos. En esta pr\'actica se define un volumen por sede: \texttt{vol-cuenca} y \texttt{vol-quito}.
+\end{conceptobox}
+
+\begin{conceptobox}{\texttt{docker-compose.yml}?}
+Es un archivo de texto plano con extensi\'on \texttt{.yml} (formato YAML) donde se declara \emph{qu\'e contenedores levantar juntos, con qu\'e imagen, qu\'e puertos, qu\'e vol\'umenes y qu\'e red compartir}. Docker lee este archivo y crea todo con un solo comando. YAML es sensible a la indentaci\'on: dos espacios por nivel, sin tabuladores; si mezcla espacios y tabuladores, Docker rechaza el archivo~\cite{DockerCompose2024}.
+\end{conceptobox}
+
+\subsection{Crear el archivo \texttt{docker-compose.yml}}
+
+\begin{pasobox}{Paso 4.1 --- Abrir VS Code (o Notepad++) en la carpeta del proyecto}
+Abra VS Code. Vaya al men\'u \emph{File} $\rightarrow$ \emph{Open Folder\ldots} y seleccione \texttt{C:\textbackslash uteq\textbackslash banco-austro}. En el panel izquierdo (\emph{Explorer}) deben aparecer las dos subcarpetas \texttt{sql-cuenca} y \texttt{sql-quito}.
+
+Pulse el bot\'on de nuevo archivo (\emph{New File}), llame al archivo exactamente \texttt{docker-compose.yml} y pulse \emph{Enter}.
+\end{pasobox}
+
+\begin{errorbox}
+Windows a veces oculta las extensiones. Si al guardar aparece \texttt{docker-compose.yml.txt} entonces Windows a\~nadi\'o \texttt{.txt}. Para evitarlo: en el Explorador de Windows abra \emph{Vista} $\rightarrow$ marque \emph{Extensiones de archivos}. As\'i podr\'a verificar la extensi\'on real y renombrar si hace falta.
+\end{errorbox}
+
+\begin{pasobox}{Paso 4.2 --- Escribir el contenido del \texttt{docker-compose.yml}}
+Copie el siguiente contenido exactamente. Respete los espacios (dos espacios por nivel de indentaci\'on) y no use tabuladores.
+
+\begin{lstlisting}[style=yamlstyle,caption={C:\textbackslash uteq\textbackslash banco-austro\textbackslash docker-compose.yml}]
+services:
+
+  db-cuenca:
+    image: postgres:16-alpine
+    container_name: banco-cuenca
+    environment:
+      POSTGRES_DB: banco_cuenca
+      POSTGRES_USER: banco
+      POSTGRES_PASSWORD: banco123
+    ports:
+      - "5432:5432"
+    volumes:
+      - vol-cuenca:/var/lib/postgresql/data
+      - ./sql-cuenca:/docker-entrypoint-initdb.d
+    networks:
+      - bda-net
+
+  db-quito:
+    image: postgres:16-alpine
+    container_name: banco-quito
+    environment:
+      POSTGRES_DB: banco_quito
+      POSTGRES_USER: banco
+      POSTGRES_PASSWORD: banco123
+    ports:
+      - "5433:5432"
+    volumes:
+      - vol-quito:/var/lib/postgresql/data
+      - ./sql-quito:/docker-entrypoint-initdb.d
+    networks:
+      - bda-net
+
+networks:
+  bda-net:
+    driver: bridge
+
+volumes:
+  vol-cuenca:
+  vol-quito:
+\end{lstlisting}
+\end{pasobox}
+
+\subsection{L\'inea por l\'inea: qu\'e significa cada bloque}
+
+\begin{xltabular}{\textwidth}{@{}p{5.2cm}X@{}}
+\toprule
+\textbf{L\'inea o bloque} & \textbf{Explicaci\'on} \\
+\midrule
+\texttt{services:}                 & Bloque donde se declaran los contenedores. Cada entrada bajo \texttt{services} es un contenedor. \\
+\texttt{db-cuenca:}                & Nombre l\'ogico del primer servicio. Puede llamarse como quiera; se usa para referenciarlo internamente. \\
+\texttt{image: postgres:16-alpine} & Imagen que Docker descargar\'a de Docker Hub la primera vez. \\
+\texttt{container\_name:}          & Nombre real del contenedor. Aparece as\'i en \texttt{docker ps} y en Docker Desktop. \\
+\texttt{environment:}              & Variables de entorno que la imagen oficial de PostgreSQL usa para inicializarse: nombre de la base, usuario y contrase\~na~\cite{PostgreSQL16Docs}. \\
+\texttt{ports:}                    & Mapeo puerto host $\rightarrow$ puerto contenedor. El motor escucha internamente en 5432; Cuenca se expone en 5432 y Quito en 5433 para no chocar entre s\'i. \\
+\texttt{volumes:} (primera l\'inea) & Los datos que PostgreSQL escribe en \texttt{/var/lib/postgresql/data} se persisten en el volumen \texttt{vol-cuenca}. \\
+\texttt{volumes:} (segunda l\'inea) & Monta la carpeta local \texttt{sql-cuenca} dentro de la carpeta especial \texttt{docker-entrypoint-initdb.d} del contenedor. \emph{Cualquier archivo \texttt{.sql} que quede all\'i se ejecuta autom\'aticamente al primer arranque de la base}~\cite{PostgreSQL16Docs}. \\
+\texttt{networks: bda-net}         & Ambos contenedores se conectan a la misma red Docker; podr\'ian resolverse por nombre entre s\'i (aunque en esta pr\'actica el acceso ser\'a siempre desde el host). \\
+\bottomrule
+\end{xltabular}
+
+\clearpage
+% ============================================================
+\section{Crear las tablas y datos de prueba}
+% ============================================================
+
+\subsection{Repaso r\'apido de conceptos}
+
+\begin{conceptobox}{un script ``DDL''?}
+DDL significa \emph{Data Definition Language}. Son las sentencias SQL que \emph{definen la estructura}: \texttt{CREATE TABLE}, \texttt{CREATE INDEX}, \texttt{ALTER TABLE}. No manejan datos, solo describen el esquema.
+\end{conceptobox}
+
+\begin{conceptobox}{un script ``DML''?}
+DML significa \emph{Data Manipulation Language}. Son las sentencias que \emph{trabajan con datos}: \texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE}, \texttt{SELECT}. En esta pr\'actica el DDL crea las tablas vac\'ias y el DML inserta las filas iniciales.
+\end{conceptobox}
+
+\begin{conceptobox}{el mecanismo \texttt{docker-entry\-point-initdb.d}?}
+Es una carpeta especial dentro de la imagen oficial de PostgreSQL. Al \emph{primer} arranque de un contenedor, PostgreSQL revisa esa carpeta y ejecuta todos los archivos \texttt{.sql} que encuentre, en orden alfab\'etico. Por eso se van a nombrar los scripts con prefijo num\'erico: \texttt{01\_schema.sql} se ejecuta antes que \texttt{02\_datos.sql}. En arranques posteriores esta ejecuci\'on \textbf{no se repite}: solo pasa la primera vez, cuando el volumen de datos est\'a vac\'io~\cite{PostgreSQL16Docs}.
+\end{conceptobox}
+
+\subsection{Crear los scripts del nodo Cuenca}
+
+\begin{pasobox}{Paso 5.1 --- Crear \texttt{01\_schema.sql} de Cuenca}
+En VS Code, con la carpeta \texttt{banco-austro} abierta, haga clic derecho sobre la carpeta \texttt{sql-cuenca} y elija \emph{New File}. Nombre el archivo exactamente \texttt{01\_schema.sql} y presione \emph{Enter}. Copie el siguiente contenido:
+
+\begin{lstlisting}[style=sqlstyle,caption={sql-cuenca/01\_schema.sql}]
+-- Esquema del nodo Cuenca (sede central)
+-- Fragmento horizontal: filas con oficina = 'CUENCA'
+
+CREATE TABLE IF NOT EXISTS clientes (
+    id          BIGSERIAL PRIMARY KEY,
+    cedula      VARCHAR(10) UNIQUE NOT NULL,
+    nombre      VARCHAR(120) NOT NULL,
+    ciudad      VARCHAR(60)  NOT NULL,
+    creado_en   TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS cuentas (
+    id          BIGSERIAL PRIMARY KEY,
+    numero      VARCHAR(20) UNIQUE NOT NULL,
+    cliente_id  BIGINT      NOT NULL REFERENCES clientes(id),
+    saldo       NUMERIC(15,2) NOT NULL DEFAULT 0.00
+                CHECK (saldo >= 0),
+    oficina     VARCHAR(20) NOT NULL CHECK (oficina = 'CUENCA'),
+    abierta_en  TIMESTAMP   NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS transacciones (
+    id           BIGSERIAL PRIMARY KEY,
+    cuenta_orig  VARCHAR(20) NOT NULL,
+    cuenta_dest  VARCHAR(20) NOT NULL,
+    monto        NUMERIC(15,2) NOT NULL CHECK (monto > 0),
+    fecha        TIMESTAMP   NOT NULL DEFAULT NOW(),
+    estado       VARCHAR(20) NOT NULL DEFAULT 'COMPLETADA',
+    oficina      VARCHAR(20) NOT NULL CHECK (oficina = 'CUENCA')
+);
+
+CREATE INDEX idx_cuentas_cliente     ON cuentas(cliente_id);
+CREATE INDEX idx_transacciones_orig  ON transacciones(cuenta_orig);
+CREATE INDEX idx_transacciones_fecha ON transacciones(fecha);
+\end{lstlisting}
+\end{pasobox}
+
+\begin{notabox}
+Fije la atenci\'on en la restricci\'on \texttt{CHECK (oficina = 'CUENCA')}. \'Esta es la traducci\'on a SQL del \emph{predicado del fragmento horizontal}. Si m\'as adelante un desarrollador intenta insertar una fila con \texttt{oficina = 'QUITO'} en el nodo Cuenca, PostgreSQL la rechaza autom\'aticamente y la regla de disjunci\'on de la fragmentaci\'on queda protegida a nivel de motor~\cite[cap.~3]{Ozsu2020Principles}.
+\end{notabox}
+
+\begin{pasobox}{Paso 5.2 --- Crear \texttt{02\_datos.sql} de Cuenca}
+En la misma carpeta \texttt{sql-cuenca}, cree un nuevo archivo llamado \texttt{02\_datos.sql} y pegue lo siguiente:
+
+\begin{lstlisting}[style=sqlstyle,caption={sql-cuenca/02\_datos.sql}]
+-- Datos iniciales del nodo Cuenca
+
+INSERT INTO clientes (cedula, nombre, ciudad) VALUES
+    ('0101234567', 'Mario Vintimilla',    'Cuenca'),
+    ('0107654321', 'Sofia Vasquez',       'Cuenca'),
+    ('0103456789', 'Andres Cordero',      'Cuenca');
+
+INSERT INTO cuentas (numero, cliente_id, saldo, oficina) VALUES
+    ('2201000001', 1, 15000.00, 'CUENCA'),
+    ('2201000002', 2,  4200.50, 'CUENCA'),
+    ('2201000003', 3,   850.75, 'CUENCA');
+
+INSERT INTO transacciones (cuenta_orig, cuenta_dest, monto, oficina) VALUES
+    ('2201000001', '2201000002',  500.00, 'CUENCA'),
+    ('2201000002', '2201000003',  120.25, 'CUENCA');
+\end{lstlisting}
+\end{pasobox}
+
+\subsection{Crear los scripts del nodo Quito}
+
+\begin{pasobox}{Paso 5.3 --- Scripts del nodo Quito}
+De la misma forma, en la carpeta \texttt{sql-quito} cree los archivos \texttt{01\_schema.sql} y \texttt{02\_datos.sql}. El esquema es id\'entico al de Cuenca salvo que las restricciones \texttt{CHECK} referencian a \texttt{'QUITO'}; los datos son otros.
+
+\begin{lstlisting}[style=sqlstyle,caption={sql-quito/01\_schema.sql}]
+-- Esquema del nodo Quito
+-- Fragmento horizontal: filas con oficina = 'QUITO'
+
+CREATE TABLE IF NOT EXISTS clientes (
+    id          BIGSERIAL PRIMARY KEY,
+    cedula      VARCHAR(10) UNIQUE NOT NULL,
+    nombre      VARCHAR(120) NOT NULL,
+    ciudad      VARCHAR(60)  NOT NULL,
+    creado_en   TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS cuentas (
+    id          BIGSERIAL PRIMARY KEY,
+    numero      VARCHAR(20) UNIQUE NOT NULL,
+    cliente_id  BIGINT      NOT NULL REFERENCES clientes(id),
+    saldo       NUMERIC(15,2) NOT NULL DEFAULT 0.00
+                CHECK (saldo >= 0),
+    oficina     VARCHAR(20) NOT NULL CHECK (oficina = 'QUITO'),
+    abierta_en  TIMESTAMP   NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS transacciones (
+    id           BIGSERIAL PRIMARY KEY,
+    cuenta_orig  VARCHAR(20) NOT NULL,
+    cuenta_dest  VARCHAR(20) NOT NULL,
+    monto        NUMERIC(15,2) NOT NULL CHECK (monto > 0),
+    fecha        TIMESTAMP   NOT NULL DEFAULT NOW(),
+    estado       VARCHAR(20) NOT NULL DEFAULT 'COMPLETADA',
+    oficina      VARCHAR(20) NOT NULL CHECK (oficina = 'QUITO')
+);
+
+CREATE INDEX idx_cuentas_cliente     ON cuentas(cliente_id);
+CREATE INDEX idx_transacciones_orig  ON transacciones(cuenta_orig);
+CREATE INDEX idx_transacciones_fecha ON transacciones(fecha);
+\end{lstlisting}
+
+\begin{lstlisting}[style=sqlstyle,caption={sql-quito/02\_datos.sql}]
+-- Datos iniciales del nodo Quito
+
+INSERT INTO clientes (cedula, nombre, ciudad) VALUES
+    ('1701234567', 'Pedro Jimenez',   'Quito'),
+    ('1709876543', 'Luisa Paredes',   'Quito'),
+    ('1704567890', 'Carla Espinoza',  'Quito');
+
+INSERT INTO cuentas (numero, cliente_id, saldo, oficina) VALUES
+    ('1701000001', 1, 8000.00, 'QUITO'),
+    ('1701000002', 2, 2500.00, 'QUITO'),
+    ('1701000003', 3,  975.40, 'QUITO');
+
+INSERT INTO transacciones (cuenta_orig, cuenta_dest, monto, oficina) VALUES
+    ('1701000001', '1701000002', 300.00, 'QUITO'),
+    ('1701000003', '1701000001',  75.00, 'QUITO');
+\end{lstlisting}
+\end{pasobox}
+
+\subsection{Estructura del proyecto en este punto}
+
+\begin{lstlisting}[style=plainstyle,caption={C:\textbackslash uteq\textbackslash banco-austro tras crear todos los scripts}]
+C:\uteq\banco-austro\
+    +-- docker-compose.yml
+    +-- sql-cuenca\
+    |     +-- 01_schema.sql
+    |     +-- 02_datos.sql
+    +-- sql-quito\
+          +-- 01_schema.sql
+          +-- 02_datos.sql
+\end{lstlisting}
+
+\clearpage
+% ============================================================
+\section{Levantar los contenedores por primera vez}
+% ============================================================
+
+\begin{pasobox}{Paso 6.1 --- Asegurarse de que Docker Desktop est\'a corriendo}
+Abra Docker Desktop desde el men\'u de Inicio. Espere a que el \'icono en la barra de tareas quede en verde (o a que la ventana muestre ``Docker Desktop is running''). Sin Docker Desktop corriendo, todos los comandos siguientes fallan con \texttt{error during connect}.
+\end{pasobox}
+
+\begin{pasobox}{Paso 6.2 --- Ejecutar \texttt{docker compose up}}
+En \texttt{cmd.exe}, cambie a la carpeta del proyecto y levante los servicios:
+
+\begin{lstlisting}[style=bashstyle]
+cd C:\uteq\banco-austro
+docker compose up -d
+\end{lstlisting}
+
+La primera vez, Docker descarga la imagen \texttt{postgres:16-alpine} (unos 250~MB). Espere el mensaje similar a:
+
+\begin{lstlisting}[style=plainstyle]
+[+] Running 5/5
+ - Network banco-austro_bda-net       Created
+ - Volume "banco-austro_vol-cuenca"   Created
+ - Volume "banco-austro_vol-quito"    Created
+ - Container banco-cuenca             Started
+ - Container banco-quito              Started
+\end{lstlisting}
+\end{pasobox}
+
+\begin{conceptobox}{la bandera \texttt{-d}?}
+\texttt{-d} significa \emph{detached}: Docker levanta los servicios \emph{en segundo plano} y le devuelve el control de la consola. Sin \texttt{-d}, la consola queda ocupada mostrando los logs de los contenedores y hay que abrir otra ventana para trabajar.
+\end{conceptobox}
+
+\begin{pasobox}{Paso 6.3 --- Verificar los contenedores en la l\'inea de comandos}
+Todav\'ia en \texttt{cmd.exe}, ejecute:
+
+\begin{lstlisting}[style=bashstyle]
+docker compose ps
+\end{lstlisting}
+
+Debe listar los dos contenedores en estado \texttt{running} y con los puertos \texttt{0.0.0.0:5432->5432/tcp} y \texttt{0.0.0.0:5433->5432/tcp}.
+\end{pasobox}
+
+\begin{pasobox}{Paso 6.4 --- Verificar los logs de inicializaci\'on}
+Muestre las \'ultimas l\'ineas del log de cada contenedor:
+
+\begin{lstlisting}[style=bashstyle]
+docker logs banco-cuenca --tail 30
+docker logs banco-quito --tail 30
+\end{lstlisting}
+
+En cada uno debe aparecer que los scripts se ejecutaron y que la base est\'a lista.
+\end{pasobox}
+
+\begin{verifbox}
+En los logs debe encontrar l\'ineas parecidas a las siguientes:
+
+\begin{lstlisting}[style=plainstyle]
+running /docker-entrypoint-initdb.d/01_schema.sql
+running /docker-entrypoint-initdb.d/02_datos.sql
+database system is ready to accept connections
+\end{lstlisting}
+
+Si esas tres l\'ineas aparecen, los scripts SQL se ejecutaron correctamente y el motor est\'a en pie escuchando. Repita para ambos contenedores.
+\end{verifbox}
+
+\begin{pasobox}{Paso 6.5 --- Verificar los contenedores en Docker Desktop (interfaz gr\'afica)}
+Abra la ventana de Docker Desktop. En el men\'u lateral izquierdo, seleccione \emph{Containers}. Debe ver un grupo llamado \texttt{banco-austro} con dos entradas: \texttt{banco-cuenca} y \texttt{banco-quito}, ambas con estado \emph{Running} (punto verde).
+
+Haga clic en cualquiera de los dos contenedores y luego en la pesta\~na \emph{Logs} para inspeccionar visualmente lo mismo que se vio con \texttt{docker logs}. La pesta\~na \emph{Terminal} le da una \emph{shell} dentro del contenedor si necesita entrar manualmente~\cite{DockerCompose2024}.
+\end{pasobox}
+
+\begin{errorbox}
+\textbf{Error \texttt{Bind for 0.0.0.0:5432 failed: port is already allocated}.} El puerto 5432 ya est\'a en uso, seguramente porque tiene una instalaci\'on local de PostgreSQL corriendo. Dos alternativas: (a)~detener el servicio local de PostgreSQL desde \emph{Servicios de Windows}; o (b)~editar \texttt{docker-compose.yml} y cambiar \texttt{"5432:5432"} por \texttt{"5442:5432"} y \texttt{"5433:5432"} por \texttt{"5443:5432"}. Si toma la opci\'on (b), recuerde luego usar 5442/5443 en los pasos siguientes.
+
+\textbf{Error \texttt{yaml: line X: mapping values are not allowed here}.} Su archivo \texttt{docker-compose.yml} tiene un tabulador o una indentaci\'on inconsistente. \'Abralo en VS Code y verifique que use exactamente dos espacios por nivel; ning\'un tabulador.
+\end{errorbox}
+
+\clearpage
+% ============================================================
+\section{Verificar los datos con pgAdmin (opci\'on gr\'afica)}
+% ============================================================
+
+Antes de escribir una sola l\'inea de c\'odigo Java conviene comprobar, con una herramienta gr\'afica de bases de datos, que los dos motores contienen exactamente el fragmento que deber\'ian. Se muestran dos alternativas equivalentes: pgAdmin~4 (herramienta dedicada) o el panel Database de IntelliJ IDEA (integrado en el IDE).
+
+\subsection{Configurar pgAdmin 4}
+
+\begin{pasobox}{Paso 7.1 --- Abrir pgAdmin y crear dos servidores}
+Abra pgAdmin~4. Se abrir\'a en su navegador (\texttt{http://127.0.0.1:PUERTO}). En el panel izquierdo, haga clic derecho sobre \emph{Servers} $\rightarrow$ \emph{Register} $\rightarrow$ \emph{Server\ldots}. Complete la primera conexi\'on con los siguientes datos y pulse \emph{Save}:
+
+\begin{xltabular}{\textwidth}{@{}p{4cm}X@{}}
+\toprule
+\textbf{Pesta\~na General}  & Name: \texttt{Banco Austro -- Cuenca} \\
+\midrule
+\textbf{Pesta\~na Connection} & Host name/address: \texttt{localhost} \\
+                            & Port: \texttt{5432} \\
+                            & Maintenance database: \texttt{banco\_cuenca} \\
+                            & Username: \texttt{banco} \\
+                            & Password: \texttt{banco123} \\
+                            & Save password: marcado \\
+\bottomrule
+\end{xltabular}
+
+Repita el mismo proceso para el segundo servidor, con nombre \texttt{Banco Austro -- Quito}, puerto \texttt{5433} y base \texttt{banco\_quito}.
+\end{pasobox}
+
+\begin{pasobox}{Paso 7.2 --- Navegar hasta las tablas}
+En el panel izquierdo, expanda \emph{Servers} $\rightarrow$ \emph{Banco Austro -- Cuenca} $\rightarrow$ \emph{Databases} $\rightarrow$ \emph{banco\_cuenca} $\rightarrow$ \emph{Schemas} $\rightarrow$ \emph{public} $\rightarrow$ \emph{Tables}. Debe ver tres tablas: \texttt{clientes}, \texttt{cuentas} y \texttt{transacciones}. Repita en el servidor de Quito.
+\end{pasobox}
+
+\begin{pasobox}{Paso 7.3 --- Consultar los fragmentos}
+En pgAdmin, con el servidor de Cuenca seleccionado, abra el editor de consultas: bot\'on \emph{Query Tool} (\'icono con un rayo). Escriba y ejecute (bot\'on de \emph{play}, o tecla \emph{F5}):
+
+\begin{lstlisting}[style=sqlstyle]
+SELECT c.numero, cl.nombre, c.saldo, c.oficina
+FROM cuentas c
+JOIN clientes cl ON cl.id = c.cliente_id
+ORDER BY c.numero;
+\end{lstlisting}
+
+Debe obtener tres filas: las cuentas \texttt{2201000001}, \texttt{2201000002} y \texttt{2201000003}, con sus titulares. Cambie al servidor de Quito y ejecute la misma consulta: obtendr\'a otras tres filas, las que empiezan con \texttt{17}.
+\end{pasobox}
+
+\begin{verifbox}
+La \emph{regla de disjunci\'on} de la fragmentaci\'on se verifica emp\'iricamente cuando se comprueba que ninguna cuenta est\'a en los dos nodos al mismo tiempo. La \emph{regla de completitud} se verifica sumando: 3 filas en Cuenca~+~3 filas en Quito~=~6 filas en la relaci\'on l\'ogica completa. Esta comprobaci\'on num\'erica corresponde al teorema de reconstrucci\'on de Özsu y Valduriez~\cite[cap.~3]{Ozsu2020Principles}.
+\end{verifbox}
+
+\subsection{Alternativa: panel Database de IntelliJ IDEA}
+
+\begin{pasobox}{Paso 7.4 --- Panel Database de IntelliJ}
+En IntelliJ IDEA, abra la vista \emph{Database} desde \emph{View} $\rightarrow$ \emph{Tool Windows} $\rightarrow$ \emph{Database}. Pulse el \'icono \emph{+} $\rightarrow$ \emph{Data Source} $\rightarrow$ \emph{PostgreSQL} y configure dos fuentes con los mismos par\'ametros de la tabla anterior. Pulse \emph{Test Connection}; deben responder \emph{Successful}. Si es la primera vez, IntelliJ le pedir\'a descargar el \emph{driver JDBC}; acepte y espere unos segundos.
+
+Desde aqu\'i puede ejecutar las mismas consultas de verificaci\'on: bot\'on derecho sobre la conexi\'on $\rightarrow$ \emph{New} $\rightarrow$ \emph{Query Console}.
+\end{pasobox}
+
+\clearpage
+% ============================================================
+\section{Crear el proyecto Spring Boot}
+% ============================================================
+
+\subsection{Repaso r\'apido de conceptos}
+
+\begin{conceptobox}{Spring Boot?}
+\textbf{Spring Boot} es un \emph{framework} de Java que se encarga de la parte tediosa de arrancar una aplicaci\'on de servidor: configura un servidor web embebido (Tomcat), lee la configuraci\'on, conecta a bases de datos, expone endpoints REST y publica m\'etricas, sin que usted tenga que escribirlo. En esta pr\'actica se usa Spring Boot~3.x sobre Java~21 (LTS)~\cite{SpringBoot2024}.
+\end{conceptobox}
+
+\begin{conceptobox}{Spring Initializr?}
+Es un generador oficial de proyectos Spring Boot. Recibe los par\'ametros (Java, Maven, dependencias) y devuelve un ZIP con la estructura completa. IntelliJ IDEA lo tiene integrado en el asistente \emph{New Project}.
+\end{conceptobox}
+
+\begin{conceptobox}{un ``DataSource''?}
+Un \texttt{DataSource} es el objeto Java que representa una conexi\'on (o pool de conexiones) a una base de datos. En esta pr\'actica se necesitan \textbf{dos} \texttt{DataSource}: uno hacia \texttt{banco\_cuenca} y otro hacia \texttt{banco\_quito}. \'Este es el punto exacto donde se materializa la ``distribuci\'on'' en el c\'odigo cliente.
+\end{conceptobox}
+
+\subsection{Generar el proyecto}
+
+\begin{pasobox}{Paso 8.1 --- New Project en IntelliJ}
+Abra IntelliJ IDEA. En la pantalla de bienvenida pulse \emph{New Project}. En el panel izquierdo elija \emph{Spring Boot} (o \emph{Spring Initializr} seg\'un la versi\'on). Complete el asistente con:
+
+\begin{itemize}[leftmargin=1.2em]
+    \item Name: \texttt{banco-austro}
+    \item Location: \texttt{C:\textbackslash uteq\textbackslash banco-austro}
+    \item Language: Java
+    \item Type: Maven
+    \item Group: \texttt{ec.edu.uteq}
+    \item Artifact: \texttt{banco-austro}
+    \item Package name: \texttt{ec.edu.uteq.bancoaustro}
+    \item JDK: 21 (Temurin)
+    \item Java: 21
+    \item Packaging: Jar
+\end{itemize}
+
+Pulse \emph{Next}.
+\end{pasobox}
+
+\begin{pasobox}{Paso 8.2 --- Elegir Spring Boot y dependencias}
+En la siguiente pantalla:
+
+\begin{itemize}[leftmargin=1.2em]
+    \item Spring Boot: la \'ultima estable 3.3.x o 3.4.x
+    \item Dependencies: marque estas tres:
+    \begin{itemize}
+        \item \emph{Spring Web} (para exponer endpoints REST)
+        \item \emph{JDBC API} (para conectarse a la base con \texttt{JdbcTemplate})
+        \item \emph{PostgreSQL Driver} (para que Java hable con PostgreSQL)
+    \end{itemize}
+\end{itemize}
+
+Pulse \emph{Create}. IntelliJ descargar\'a las dependencias de Maven y abrir\'a el proyecto. Espere a que el indicador de fondo diga que la indexaci\'on termin\'o.
+\end{pasobox}
+
+\subsection{Estructura del proyecto que se genera}
+
+\begin{lstlisting}[style=plainstyle,caption={Estructura Maven t\'ipica de Spring Boot}]
+banco-austro\
+    +-- pom.xml                                (dependencias Maven)
+    +-- src\
+    |    +-- main\
+    |    |    +-- java\ec\edu\uteq\bancoaustro\
+    |    |    |    +-- BancoAustroApplication.java    (clase principal)
+    |    |    +-- resources\
+    |    |         +-- application.properties         (configuracion)
+    |    +-- test\
+    |         +-- java\ec\edu\uteq\bancoaustro\
+    |              +-- BancoAustroApplicationTests.java
+    +-- (Docker files ya existentes)
+    +-- (sql-cuenca, sql-quito ya existentes)
+\end{lstlisting}
+
+\begin{notabox}
+Es importante que el proyecto se cree \emph{dentro} de \texttt{C:\textbackslash uteq\textbackslash banco-austro}, junto al \texttt{docker-compose.yml} y las carpetas \texttt{sql-cuenca} y \texttt{sql-quito}. As\'i toda la pr\'actica queda autocontenida.
+\end{notabox}
+
+\subsection{Cambiar \texttt{application.properties} por \texttt{application.yml}}
+
+Por comodidad de lectura y consistencia con lo que hicimos con Docker, se convierte el archivo de configuraci\'on al formato YAML.
+
+\begin{pasobox}{Paso 8.3 --- Renombrar y editar}
+En el panel de proyecto, expanda \texttt{src/main/resources}. Clic derecho sobre \texttt{application.properties} $\rightarrow$ \emph{Refactor} $\rightarrow$ \emph{Rename} $\rightarrow$ p\'ongale de nombre \texttt{application.yml}. Reemplace su contenido por:
+
+\begin{lstlisting}[style=yamlstyle,caption={src/main/resources/application.yml}]
+server:
+  port: 8080
+
+spring:
+  application:
+    name: banco-austro
+
+datasources:
+  cuenca:
+    url: jdbc:postgresql://localhost:5432/banco_cuenca
+    username: banco
+    password: banco123
+    driver-class-name: org.postgresql.Driver
+  quito:
+    url: jdbc:postgresql://localhost:5433/banco_quito
+    username: banco
+    password: banco123
+    driver-class-name: org.postgresql.Driver
+\end{lstlisting}
+\end{pasobox}
+
+\begin{conceptobox}{cada l\'inea de esta configuraci\'on?}
+\texttt{server.port: 8080} indica que la aplicaci\'on Spring Boot escuchar\'a peticiones HTTP en el puerto 8080 de la m\'aquina local. La secci\'on \texttt{datasources.cuenca} declara \emph{d\'onde vive} el nodo Cuenca (\texttt{localhost:5432}) y qu\'e credenciales usar; \texttt{datasources.quito} hace lo propio para Quito. \texttt{jdbc:postgresql://\ldots} es la sintaxis est\'andar de una URL JDBC para PostgreSQL~\cite{PostgreSQL16Docs}.
+\end{conceptobox}
+
+\clearpage
+% ============================================================
+\section{Escribir el c\'odigo Java de la aplicaci\'on}
+% ============================================================
+
+\subsection{Organizar los paquetes}
+
+Se van a crear tres paquetes dentro de \texttt{ec.edu.uteq.bancoaustro}:
+
+\begin{itemize}[leftmargin=1.2em]
+    \item \texttt{config}: contiene la clase que declara los dos \texttt{DataSource}.
+    \item \texttt{service}: contiene la l\'ogica de enrutamiento distribuido.
+    \item \texttt{controller}: contiene los endpoints REST.
+\end{itemize}
+
+\begin{pasobox}{Paso 9.1 --- Crear los tres paquetes}
+En el panel del proyecto, expanda \texttt{src/main/java/ec/edu/uteq/bancoaustro}. Clic derecho sobre el paquete \texttt{bancoaustro} $\rightarrow$ \emph{New} $\rightarrow$ \emph{Package}, y escriba \texttt{config}. Repita para \texttt{service} y para \texttt{controller}.
+\end{pasobox}
+
+\subsection{Clase de configuraci\'on de dos \texttt{DataSource}}
+
+\begin{pasobox}{Paso 9.2 --- Crear \texttt{DataSourceConfig.java}}
+Dentro del paquete \texttt{config}, clic derecho $\rightarrow$ \emph{New} $\rightarrow$ \emph{Java Class} $\rightarrow$ nombre \texttt{DataSourceConfig}. Reemplace el contenido por:
+
+\begin{lstlisting}[style=javastyle,caption={config/DataSourceConfig.java}]
+package ec.edu.uteq.bancoaustro.config;
+
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class DataSourceConfig {
+
+    @Value("${datasources.cuenca.url}")
+    private String cuencaUrl;
+    @Value("${datasources.cuenca.username}")
+    private String cuencaUser;
+    @Value("${datasources.cuenca.password}")
+    private String cuencaPass;
+
+    @Value("${datasources.quito.url}")
+    private String quitoUrl;
+    @Value("${datasources.quito.username}")
+    private String quitoUser;
+    @Value("${datasources.quito.password}")
+    private String quitoPass;
+
+    @Bean(name = "dsCuenca")
+    public DataSource dsCuenca() {
+        return DataSourceBuilder.create()
+            .url(cuencaUrl)
+            .username(cuencaUser)
+            .password(cuencaPass)
+            .driverClassName("org.postgresql.Driver")
+            .build();
+    }
+
+    @Bean(name = "dsQuito")
+    public DataSource dsQuito() {
+        return DataSourceBuilder.create()
+            .url(quitoUrl)
+            .username(quitoUser)
+            .password(quitoPass)
+            .driverClassName("org.postgresql.Driver")
+            .build();
+    }
+}
+\end{lstlisting}
+\end{pasobox}
+
+\begin{conceptobox}{esta clase, en simple?}
+La anotaci\'on \texttt{@Configuration} le dice a Spring que la clase declara objetos gestionados. Cada m\'etodo con \texttt{@Bean} le entrega un objeto a Spring para que lo use cuando alguien pida \emph{ese} tipo. En este caso se crean dos \texttt{DataSource} y se identifican con nombres distintos (\texttt{"dsCuenca"} y \texttt{"dsQuito"}) para poder pedirlos por su nombre en otras clases con \texttt{@Qualifier}~\cite{SpringBoot2024}.
+\end{conceptobox}
+
+\subsection{Servicio de consulta distribuida}
+
+\begin{pasobox}{Paso 9.3 --- Crear \texttt{ConsultaDistribuidaService.java}}
+En el paquete \texttt{service}, cree la clase \texttt{ConsultaDistribuidaService} con este contenido:
+
+\begin{lstlisting}[style=javastyle,caption={service/ConsultaDistribuidaService.java}]
+package ec.edu.uteq.bancoaustro.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ConsultaDistribuidaService {
+
+    private final JdbcTemplate jdbcCuenca;
+    private final JdbcTemplate jdbcQuito;
+
+    public ConsultaDistribuidaService(
+            @Qualifier("dsCuenca") DataSource dsCuenca,
+            @Qualifier("dsQuito")  DataSource dsQuito) {
+        this.jdbcCuenca = new JdbcTemplate(dsCuenca);
+        this.jdbcQuito  = new JdbcTemplate(dsQuito);
+    }
+
+    public Map<String, Object> consultarSaldo(String numero) {
+        JdbcTemplate destino = enrutar(numero);
+        String sql = "SELECT numero, saldo, oficina "
+                   + "FROM cuentas WHERE numero = ?";
+        List<Map<String, Object>> filas =
+                destino.queryForList(sql, numero);
+        if (filas.isEmpty()) {
+            return Map.of(
+                "error", "Cuenta no encontrada",
+                "numero", numero);
+        }
+        return filas.get(0);
+    }
+
+    public List<Map<String, Object>> listarTodosLosClientes() {
+        String sql = "SELECT cedula, nombre, ciudad FROM clientes";
+        List<Map<String, Object>> union = new ArrayList<>();
+        union.addAll(jdbcCuenca.queryForList(sql));
+        union.addAll(jdbcQuito.queryForList(sql));
+        return union;
+    }
+
+    private JdbcTemplate enrutar(String numero) {
+        if (numero == null || numero.length() < 2) {
+            throw new IllegalArgumentException(
+                "Numero de cuenta invalido: " + numero);
+        }
+        String prefijo = numero.substring(0, 2);
+        return switch (prefijo) {
+            case "22" -> jdbcCuenca;
+            case "17" -> jdbcQuito;
+            default   -> throw new IllegalArgumentException(
+                "Prefijo de oficina no reconocido: " + prefijo);
+        };
+    }
+}
+\end{lstlisting}
+\end{pasobox}
+
+\begin{conceptobox}{esta clase, en simple?}
+El m\'etodo \texttt{enrutar} mira los dos primeros d\'igitos del n\'umero de cuenta y decide en qu\'e nodo consultar; \'esta es la implementaci\'on de la \emph{transparencia de fragmentaci\'on}: el cliente HTTP nunca sabe cu\'antos nodos hay~\cite[cap.~1]{Ozsu2020Principles}. El m\'etodo \texttt{listarTodosLosClientes} ilustra la \emph{operaci\'on de uni\'on} sobre fragmentos: se hace \texttt{SELECT} en los dos nodos y se concatenan las filas. Como \texttt{clientes} est\'a replicada, en producci\'on esta uni\'on producir\'ia duplicados y ser\'ia necesario un \texttt{DISTINCT} o consultar solo a un nodo; se deja as\'i intencionalmente para exponer la discusi\'on en clase.
+\end{conceptobox}
+
+\subsection{Controlador REST}
+
+\begin{pasobox}{Paso 9.4 --- Crear \texttt{BancoController.java}}
+En el paquete \texttt{controller}, cree la clase \texttt{BancoController} con este contenido:
+
+\begin{lstlisting}[style=javastyle,caption={controller/BancoController.java}]
+package ec.edu.uteq.bancoaustro.controller;
+
+import java.util.List;
+import java.util.Map;
+import ec.edu.uteq.bancoaustro.service.ConsultaDistribuidaService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/banco")
+public class BancoController {
+
+    private final ConsultaDistribuidaService service;
+
+    public BancoController(ConsultaDistribuidaService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/saldo/{numero}")
+    public Map<String, Object> saldo(@PathVariable String numero) {
+        return service.consultarSaldo(numero);
+    }
+
+    @GetMapping("/clientes")
+    public List<Map<String, Object>> clientes() {
+        return service.listarTodosLosClientes();
+    }
+}
+\end{lstlisting}
+\end{pasobox}
+
+\subsection{Estructura del proyecto Java en este punto}
+
+\begin{lstlisting}[style=plainstyle,caption={C\'odigo del proyecto Spring Boot}]
+src\main\java\ec\edu\uteq\bancoaustro\
+    +-- BancoAustroApplication.java   (generado por Spring Initializr)
+    +-- config\
+    |     +-- DataSourceConfig.java
+    +-- service\
+    |     +-- ConsultaDistribuidaService.java
+    +-- controller\
+          +-- BancoController.java
+\end{lstlisting}
+
+\clearpage
+% ============================================================
+\section{Ejecutar y probar la aplicaci\'on}
+% ============================================================
+
+\subsection{Levantar la aplicaci\'on Spring Boot}
+
+\begin{pasobox}{Paso 10.1 --- Ejecutar desde IntelliJ}
+En el panel del proyecto, abra la clase \texttt{BancoAustroApplication.java}. Haga clic en el tri\'angulo verde que aparece a la izquierda del nombre de la clase, o al lado del m\'etodo \texttt{main}, y elija \emph{Run 'BancoAustroApplication'}. Tambi\'en funciona el atajo \emph{Shift+F10}.
+
+En la parte inferior aparecer\'a la consola de ejecuci\'on con logs de Spring Boot. Espere a la l\'inea:
+
+\begin{lstlisting}[style=plainstyle]
+Tomcat started on port(s): 8080 (http)
+Started BancoAustroApplication in X.XXX seconds
+\end{lstlisting}
+
+Mientras esa l\'inea no aparezca, la aplicaci\'on todav\'ia no est\'a lista para recibir peticiones.
+\end{pasobox}
+
+\begin{errorbox}
+\textbf{Fallo de conexi\'on \texttt{Connection to localhost:5432 refused}.} La aplicaci\'on Java no puede alcanzar al motor Cuenca. Compruebe con \texttt{docker compose ps} que ambos contenedores est\'an corriendo. Si no lo est\'an, levante con \texttt{docker compose up -d}.
+
+\textbf{\texttt{Could not resolve placeholder 'datasources.cuenca.url'}.} El archivo \texttt{application.yml} tiene un error de indentaci\'on o est\'a mal nombrado. Verifique el nombre exacto y que la indentaci\'on use dos espacios por nivel.
+
+\textbf{Error de compilaci\'on en \texttt{switch}.} La sintaxis \texttt{switch (\ldots) -\textgreater{}} requiere Java~14 o superior; verifique en \emph{File} $\rightarrow$ \emph{Project Structure} que el proyecto est\'a configurado con SDK~21 y \emph{Language level}~21.
+\end{errorbox}
+
+\subsection{Probar los endpoints con Postman}
+
+\begin{pasobox}{Paso 10.2 --- Primera petici\'on GET en Postman}
+Abra Postman. En la parte superior de la pesta\~na sin t\'itulo, seleccione el m\'etodo \texttt{GET} en el desplegable de la izquierda y escriba la URL:
+
+\begin{lstlisting}[style=plainstyle]
+http://localhost:8080/api/banco/saldo/2201000001
+\end{lstlisting}
+
+Pulse el bot\'on azul \emph{Send}. En el panel inferior de la respuesta debe recibir un JSON similar a:
+
+\begin{lstlisting}[style=plainstyle]
+{
+    "numero": "2201000001",
+    "saldo": 15000.00,
+    "oficina": "CUENCA"
+}
+\end{lstlisting}
+
+La cuenta empieza con \texttt{22}, entonces la aplicaci\'on la busc\'o en el nodo Cuenca. Si el JSON responde \texttt{"oficina": "CUENCA"}, la ruta fue correcta.
+\end{pasobox}
+
+\begin{pasobox}{Paso 10.3 --- Segunda petici\'on: consultar el nodo Quito}
+Cambie la URL a:
+
+\begin{lstlisting}[style=plainstyle]
+http://localhost:8080/api/banco/saldo/1701000001
+\end{lstlisting}
+
+Pulse \emph{Send}. Ahora la respuesta debe ser:
+
+\begin{lstlisting}[style=plainstyle]
+{
+    "numero": "1701000001",
+    "saldo": 8000.00,
+    "oficina": "QUITO"
+}
+\end{lstlisting}
+
+El prefijo \texttt{17} enrut\'o al nodo Quito.
+\end{pasobox}
+
+\begin{pasobox}{Paso 10.4 --- Tercera petici\'on: uni\'on de los dos nodos}
+Cambie la URL a:
+
+\begin{lstlisting}[style=plainstyle]
+http://localhost:8080/api/banco/clientes
+\end{lstlisting}
+
+Debe recibir un arreglo JSON con \textbf{seis} entradas: los tres clientes de Cuenca seguidos de los tres clientes de Quito. \'Esta es la operaci\'on de \emph{uni\'on} sobre fragmentos.
+\end{pasobox}
+
+\subsection{Alternativa: probar con el navegador o con curl}
+
+\begin{pasobox}{Paso 10.5 --- Con el navegador}
+Como las tres peticiones son \texttt{GET} p\'ublicas, tambi\'en funcionan pegando la URL en la barra de direcciones de Chrome, Edge o Firefox. Los navegadores modernos formatean autom\'aticamente el JSON de respuesta.
+\end{pasobox}
+
+\begin{pasobox}{Paso 10.6 --- Con \texttt{curl.exe} en \texttt{cmd.exe}}
+En Windows~10~+ existe el ejecutable \texttt{curl.exe} preinstalado. Abra \texttt{cmd.exe} y ejecute:
+
+\begin{lstlisting}[style=bashstyle]
+curl.exe http://localhost:8080/api/banco/saldo/2201000001
+curl.exe http://localhost:8080/api/banco/saldo/1701000001
+curl.exe http://localhost:8080/api/banco/clientes
+\end{lstlisting}
+\end{pasobox}
+
+\begin{verifbox}
+La pr\'actica es \emph{correcta} cuando las tres peticiones responden \emph{sin cambiar una sola l\'inea de c\'odigo cliente}, aunque los datos residan en dos motores fisicamente separados. En eso consiste la \textbf{transparencia de ubicaci\'on} en una base de datos distribuida~\cite[cap.~1]{Ozsu2020Principles}.
+\end{verifbox}
+
+\clearpage
+% ============================================================
+\section{Prueba de tolerancia a fallos}
+% ============================================================
+
+Uno de los cinco requisitos del caso era: ``si una oficina se cae, las dem\'as siguen operando''. Se comprueba emp\'iricamente.
+
+\begin{pasobox}{Paso 11.1 --- Detener el nodo Quito}
+Con la aplicaci\'on Spring Boot todav\'ia corriendo, abra un nuevo \texttt{cmd.exe} y ejecute:
+
+\begin{lstlisting}[style=bashstyle]
+docker stop banco-quito
+docker compose ps
+\end{lstlisting}
+
+El listado debe mostrar a \texttt{banco-cuenca} como \texttt{running} y a \texttt{banco-quito} como \texttt{exited}. En Docker Desktop, el punto verde de Quito pasar\'a a gris.
+\end{pasobox}
+
+\begin{pasobox}{Paso 11.2 --- Verificar la degradaci\'on selectiva}
+Regrese a Postman y vuelva a lanzar las peticiones:
+
+\begin{itemize}[leftmargin=1.2em]
+    \item \texttt{GET /api/banco/saldo/2201000001} $\rightarrow$ \textbf{sigue respondiendo correctamente} porque la cuenta est\'a en Cuenca, que sigue viva.
+    \item \texttt{GET /api/banco/saldo/1701000001} $\rightarrow$ \textbf{falla} con un error de conexi\'on al puerto 5433. La aplicaci\'on no sabe c\'omo llegar a Quito.
+    \item \texttt{GET /api/banco/clientes} $\rightarrow$ \textbf{falla} porque el m\'etodo actual intenta consultar los dos nodos y no captura el error del nodo ca\'ido.
+\end{itemize}
+\end{pasobox}
+
+\begin{notabox}
+Esta ca\'ida selectiva es exactamente lo que en una pr\'actica posterior se resuelve con un \emph{Circuit Breaker}: cuando un nodo falla, el patr\'on detecta la falla, ``abre el circuito'' y responde con un fallback (por ejemplo, ``cuenta temporalmente inaccesible'') sin bloquear al usuario~\cite{Newman2021Microservices}. El requisito de que ``las dem\'as sedes sigan operando'' se cumple: aunque \texttt{/clientes} falle, la consulta de saldos de cuentas de Cuenca sigue funcionando.
+\end{notabox}
+
+\begin{pasobox}{Paso 11.3 --- Reactivar el nodo Quito}
+En \texttt{cmd.exe}:
+
+\begin{lstlisting}[style=bashstyle]
+docker start banco-quito
+docker compose ps
+\end{lstlisting}
+
+Espere unos segundos hasta que Quito quede \texttt{running} nuevamente. Repita las tres peticiones en Postman: las tres deben responder como al inicio.
+\end{pasobox}
+
+% ============================================================
+\section{Detener y limpiar el ambiente}
+% ============================================================
+
+Al terminar el laboratorio conviene liberar recursos.
+
+\begin{pasobox}{Paso 12.1 --- Detener la aplicaci\'on Java}
+En IntelliJ, en la ventana \emph{Run}, pulse el bot\'on rojo del cuadrado (\emph{Stop}). La aplicaci\'on Spring Boot deja de escuchar en el puerto 8080.
+\end{pasobox}
+
+\begin{pasobox}{Paso 12.2 --- Detener los contenedores conservando los datos}
+Desde \texttt{cmd.exe} en la carpeta del proyecto:
+
+\begin{lstlisting}[style=bashstyle]
+cd C:\uteq\banco-austro
+docker compose down
+\end{lstlisting}
+
+Este comando \emph{para y elimina} los contenedores, pero \textbf{conserva los vol\'umenes}. La pr\'oxima vez que ejecute \texttt{docker compose up -d}, los datos seguir\'an ah\'i (los scripts \texttt{01\_schema.sql} y \texttt{02\_datos.sql} \emph{no} se vuelven a ejecutar).
+\end{pasobox}
+
+\begin{pasobox}{Paso 12.3 --- Limpieza completa (opcional)}
+Si quiere reiniciar todo desde cero para volver a probar los scripts:
+
+\begin{lstlisting}[style=bashstyle]
+docker compose down -v
+\end{lstlisting}
+
+La bandera \texttt{-v} elimina tambi\'en los vol\'umenes: los datos se pierden y, al volver a levantar los contenedores, los scripts se ejecutar\'an de nuevo desde el principio.
+\end{pasobox}
+
+\clearpage
+% ============================================================
+\section{Cierre: qu\'e se logr\'o y qu\'e queda pendiente}
+% ============================================================
+
+\subsection{Propiedades verificadas}
+
+Al completar los doce pasos, el prototipo evidencia estas propiedades cl\'asicas de una BDD~\cite{Ozsu2020Principles,Kleppmann2017DDIA}:
+
+\begin{itemize}[leftmargin=1.2em]
+    \item \textbf{Transparencia de fragmentaci\'on}: el cliente HTTP interact\'ua con un endpoint \'unico y desconoce cu\'antos nodos existen.
+    \item \textbf{Transparencia de ubicaci\'on}: el n\'umero de cuenta no revela d\'onde vive el dato desde el punto de vista del usuario; solo el enrutador interno lo interpreta.
+    \item \textbf{Fragmentaci\'on horizontal completa, reconstruible y disjunta}: garantizada por las restricciones \texttt{CHECK (oficina = \ldots)} en cada nodo y por la convenci\'on de prefijos.
+    \item \textbf{Autonom\'ia local}: cada nodo procesa sus consultas locales aunque el otro nodo est\'e ca\'ido.
+    \item \textbf{Consistencia con degradaci\'on de disponibilidad}: coherente con el posicionamiento CP en el an\'alisis CAP~\cite{Brewer2012CAPtwelve} y con el modelo PACELC~\cite{Abadi2012PACELC}.
+\end{itemize}
+
+\subsection{Qu\'e queda pendiente para pr\'oximas pr\'acticas}
+
+Este prototipo es did\'actico. En un banco real har\'ia falta agregar, al menos:
+
+\begin{itemize}[leftmargin=1.2em]
+    \item \textbf{Commit en dos fases} (2PC) para transferencias entre cuentas de distinta sede~\cite{Gray1993Transaction}.
+    \item \textbf{Circuit Breaker} en la aplicaci\'on Spring Boot para que la ca\'ida de un nodo no propague errores a los endpoints que no lo necesitan~\cite{Newman2021Microservices}.
+    \item \textbf{Replicaci\'on l\'ogica} activa entre los dos motores para la tabla \texttt{clientes}, evitando la escritura duplicada manual~\cite{PostgreSQL16Docs}.
+    \item \textbf{Migraci\'on a un producto nativo distribuido} (CockroachDB, PostgreSQL~+~Citus, Google Spanner) para observar c\'omo el motor asume por s\'i mismo la fragmentaci\'on y el consenso~\cite{VanSteen2023DS,Sadalage2013NoSQL}.
+    \item \textbf{Reloj l\'ogico} para ordenar transacciones cross-site sin depender del reloj de pared~\cite{Lamport1978Time}.
+\end{itemize}
+
+\subsection{Ejercicios propuestos}
+
+\begin{enumerate}[leftmargin=1.5em]
+    \item Agregar el nodo \textbf{Guayaquil} con prefijo \texttt{09}. Extender \texttt{docker-compose.yml}, crear la carpeta \texttt{sql-guayaquil}, extender \texttt{DataSourceConfig} y a\~nadir el \texttt{case "09"} en el enrutador.
+    \item Implementar un endpoint \texttt{POST /api/banco/transferencia} que reciba \texttt{origen}, \texttt{destino} y \texttt{monto}, y que actualice el saldo en el nodo correspondiente. Manejar el caso de origen y destino en distinta sede.
+    \item A\~nadir un \emph{fallback} al m\'etodo \texttt{listarTodosLosClientes}: si un nodo est\'a ca\'ido, retornar solo los clientes disponibles con una advertencia en la respuesta.
+    \item Discutir en clase: \'?por qu\'e la tabla \texttt{clientes} est\'a replicada y no fragmentada? \'?Qu\'e cambiar\'ia si Banco del Austro creciera a un mill\'on de titulares?
+\end{enumerate}
+
+% ============================================================
+\subsection{Glosario final}
+
+\begin{xltabular}{\textwidth}{@{}p{3.5cm}X@{}}
+\toprule
+\textbf{T\'ermino} & \textbf{Definici\'on operacional} \\
+\midrule
+Sede         & Ubicaci\'on l\'ogica de una copia del motor con parte del dato; en el prototipo se implementa una sede como un contenedor Docker. \\
+Nodo         & Instancia individual del motor de base de datos que participa en el sistema distribuido. \\
+Fragmento    & Subconjunto de filas o columnas de una tabla que reside en un nodo espec\'ifico. \\
+R\'eplica    & Copia completa de una tabla presente en m\'as de un nodo. \\
+Contenedor   & Instancia en ejecuci\'on de una imagen Docker. \\
+Volumen      & Espacio de disco que persiste datos m\'as all\'a de la vida del contenedor. \\
+Fragmentaci\'on horizontal & Divisi\'on de una tabla por filas seg\'un un predicado, como \texttt{oficina~=~'CUENCA'}. \\
+Transparencia de fragmentaci\'on & El cliente no necesita saber que la tabla est\'a partida en varios nodos. \\
+Transparencia de ubicaci\'on & El cliente no necesita saber en qu\'e nodo vive cada dato. \\
+Autonom\'ia local & Capacidad de un nodo de seguir operando cuando otros nodos caen. \\
+DDL          & \emph{Data Definition Language}: \texttt{CREATE}, \texttt{ALTER}, \texttt{DROP}. \\
+DML          & \emph{Data Manipulation Language}: \texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE}, \texttt{SELECT}. \\
+\bottomrule
+\end{xltabular}
+
+% ============================================================
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

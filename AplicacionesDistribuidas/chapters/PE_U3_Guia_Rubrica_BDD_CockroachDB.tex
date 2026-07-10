@@ -1,0 +1,836 @@
+\documentclass[11pt,a4paper]{article}
+
+%============================================================
+% GA-SUM-03 / PE-U3 -- Practica Experimental Unidad 3
+% Implementacion y Verificacion de un Cluster de BDD
+% Aplicaciones Distribuidas (ISR-701) -- Periodo 2026-2027 PPA
+% Documento combinado: GUIA (consigna) + RUBRICA de evaluacion
+% Facultad de Ciencias de la Computacion -- UTEQ
+%============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amssymb}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{lastpage}
+\usepackage[backend=biber,style=ieee,sorting=nyt]{biblatex}
+\usepackage[hidelinks]{hyperref}
+
+%------------------------------------------------------------
+% Bibliografia verificada (referencias de alto impacto, PE-U3)
+%------------------------------------------------------------
+\begin{filecontents*}{references_PE_U3.bib}
+    @book{OzsuValduriez2020,
+        author    = {{\"O}zsu, M. Tamer and Valduriez, Patrick},
+        title     = {Principles of Distributed Database Systems},
+        edition   = {4},
+        publisher = {Springer},
+        year      = {2020},
+        address   = {Cham, Switzerland},
+        doi       = {10.1007/978-3-030-26253-2},
+        isbn      = {978-3-030-26252-5}
+    }
+    @book{Kleppmann2017,
+        author    = {Kleppmann, Martin},
+        title     = {Designing Data-Intensive Applications},
+        publisher = {O'Reilly Media},
+        year      = {2017},
+        address   = {Sebastopol, CA, USA},
+        isbn      = {978-1-4493-7332-0}
+    }
+    @article{Brewer2012CAP12,
+        author  = {Brewer, Eric},
+        title   = {{CAP} Twelve Years Later: How the ``Rules'' Have Changed},
+        journal = {Computer},
+        volume  = {45},
+        number  = {2},
+        pages   = {23--29},
+        year    = {2012},
+        doi     = {10.1109/MC.2012.37}
+    }
+    @article{Abadi2012PACELC,
+        author  = {Abadi, Daniel J.},
+        title   = {Consistency Tradeoffs in Modern Distributed Database System Design: {CAP} is Only Part of the Story},
+        journal = {Computer},
+        volume  = {45},
+        number  = {2},
+        pages   = {37--42},
+        year    = {2012},
+        doi     = {10.1109/MC.2012.33}
+    }
+    @article{GilbertLynch2002CAP,
+        author  = {Gilbert, Seth and Lynch, Nancy},
+        title   = {{Brewer}'s Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services},
+        journal = {ACM SIGACT News},
+        volume  = {33},
+        number  = {2},
+        pages   = {51--59},
+        year    = {2002},
+        doi     = {10.1145/564585.564601}
+    }
+    @inproceedings{OngaroOusterhout2014Raft,
+        author    = {Ongaro, Diego and Ousterhout, John},
+        title     = {In Search of an Understandable Consensus Algorithm},
+        booktitle = {Proceedings of the 2014 USENIX Annual Technical Conference (USENIX ATC '14)},
+        pages     = {305--319},
+        year      = {2014},
+        address   = {Philadelphia, PA, USA},
+        publisher = {USENIX Association},
+        isbn      = {978-1-931971-10-2}
+    }
+    @inproceedings{Taft2020CockroachDB,
+        author    = {Taft, Rebecca and Sharif, Irfan and Matei, Andrei and VanBenschoten, Nathan and Lewis, Jordan and Grieger, Tobias and Niemi, Kai and Woods, Andy and Birzin, Anne and Poss, Raphael and Bardea, Paul and Ranade, Amruta and Darnell, Ben and Gruneir, Bram and Jaffray, Justin and Zhang, Lucy and Mattis, Peter},
+        title     = {{CockroachDB}: The Resilient Geo-Distributed {SQL} Database},
+        booktitle = {Proceedings of the 2020 ACM SIGMOD International Conference on Management of Data (SIGMOD '20)},
+        pages     = {1493--1509},
+        year      = {2020},
+        address   = {Portland, OR, USA},
+        publisher = {ACM},
+        doi       = {10.1145/3318464.3386134}
+    }
+    @article{Corbett2013Spanner,
+        author  = {Corbett, James C. and Dean, Jeffrey and Epstein, Michael and Fikes, Andrew and Frost, Christopher and Furman, J. J. and Ghemawat, Sanjay and Gubarev, Andrey and Heiser, Christopher and Hochschild, Peter and others},
+        title   = {Spanner: {Google}'s Globally Distributed Database},
+        journal = {ACM Transactions on Computer Systems},
+        volume  = {31},
+        number  = {3},
+        eid     = {8},
+        pages   = {1--22},
+        year    = {2013},
+        doi     = {10.1145/2491245}
+    }
+    @inproceedings{DeCandia2007Dynamo,
+        author    = {DeCandia, Giuseppe and Hastorun, Deniz and Jampani, Madan and Kakulapati, Gunavardhan and Lakshman, Avinash and Pilchin, Alex and Sivasubramanian, Swaminathan and Vosshall, Peter and Vogels, Werner},
+        title     = {Dynamo: {Amazon}'s Highly Available Key-value Store},
+        booktitle = {Proceedings of the 21st ACM SIGOPS Symposium on Operating Systems Principles (SOSP '07)},
+        pages     = {205--220},
+        year      = {2007},
+        address   = {Stevenson, WA, USA},
+        publisher = {ACM},
+        doi       = {10.1145/1294261.1294281}
+    }
+    @article{ViottiVukolic2016Consistency,
+        author  = {Viotti, Paolo and Vukoli{\'c}, Marko},
+        title   = {Consistency in Non-Transactional Distributed Storage Systems},
+        journal = {ACM Computing Surveys},
+        volume  = {49},
+        number  = {1},
+        eid     = {19},
+        pages   = {1--34},
+        year    = {2016},
+        doi     = {10.1145/2926965}
+    }
+    @book{VanSteenTanenbaum2023DS,
+        author    = {van Steen, Maarten and Tanenbaum, Andrew S.},
+        title     = {Distributed Systems},
+        edition   = {4},
+        publisher = {Maarten van Steen},
+        year      = {2023},
+        address   = {Maastricht, The Netherlands},
+        isbn      = {978-90-815406-3-6}
+    }
+\end{filecontents*}
+\addbibresource{references_PE_U3.bib}
+
+%------------------------------------------------------------
+% Paleta institucional UTEQ
+%------------------------------------------------------------
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqGray}{HTML}{5A6470}
+\definecolor{uteqSoft}{HTML}{EAF1F9}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=uteqBlue,
+    urlcolor=uteqMid,
+    citecolor=uteqTeal
+}
+
+%------------------------------------------------------------
+% Ajustes tipograficos para absorber overfull de tabularx
+%------------------------------------------------------------
+\setlength{\emergencystretch}{3em}
+\setlength{\tabcolsep}{4pt}
+\hfuzz=20pt
+
+%------------------------------------------------------------
+% Estilo de listings con soporte UTF-8 (literate)
+%------------------------------------------------------------
+\lstdefinestyle{uteqcode}{
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{uteqBlue}\bfseries,
+    commentstyle=\color{uteqGray}\itshape,
+    stringstyle=\color{uteqGreen},
+    numberstyle=\tiny\color{uteqGray},
+    numbers=left,
+    numbersep=6pt,
+    frame=single,
+    rulecolor=\color{uteqGray},
+    breaklines=true,
+    columns=fullflexible,
+    keepspaces=true,
+    tabsize=2,
+    showstringspaces=false,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=%
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1 {¿}{{?`}}1 {¡}{{!`}}1
+}
+\lstset{style=uteqcode}
+
+%------------------------------------------------------------
+% Encabezado y pie de pagina
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\textcolor{uteqBlue}{\textbf{GA-SUM-03 / PE-U3}} -- Cl\'uster BDD (CockroachDB)}
+\fancyhead[R]{\footnotesize Aplicaciones Distribuidas (ISR-701)}
+\fancyfoot[L]{\footnotesize Per\'iodo 2026--2027 PPA \quad Prof. Guerrero Ulloa G.C.}
+\fancyfoot[R]{\footnotesize P\'agina \thepage\ de \pageref{LastPage}}
+
+%------------------------------------------------------------
+% Cajas institucionales
+%------------------------------------------------------------
+\newtcolorbox{uteqbox}[2][]{%
+    colback=uteqSoft,
+    colframe=uteqBlue,
+    fonttitle=\bfseries\color{white},
+    coltitle=white,
+    title={#2},
+    boxrule=0.8pt,
+    arc=2pt,
+    left=6pt,right=6pt,top=6pt,bottom=6pt,
+    #1
+}
+
+\newtcolorbox{uteqwarn}[2][]{%
+    colback=uteqSoft!60!white,
+    colframe=uteqAmber,
+    fonttitle=\bfseries,
+    coltitle=uteqBlue,
+    title={#2},
+    boxrule=0.8pt,
+    arc=2pt,
+    left=6pt,right=6pt,top=6pt,bottom=6pt,
+    #1
+}
+
+%------------------------------------------------------------
+% Titulos de seccion
+%------------------------------------------------------------
+\titleformat{\section}
+    {\color{uteqBlue}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}
+    {\color{uteqMid}\large\bfseries}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}
+    {\color{uteqTeal}\normalsize\bfseries}{\thesubsubsection}{0.4em}{}
+
+%============================================================
+\begin{document}
+
+%------------------------------------------------------------
+% Portada institucional
+%------------------------------------------------------------
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+    {\Large\bfseries\color{uteqBlue}
+        UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO
+    }\\[0.2cm]
+    {\large\color{uteqBlue}
+        Facultad de Ciencias de la Computaci\'on
+    }\\[0.1cm]
+    {\normalsize Carrera de Ingenier\'ia de Software}\\[1.2cm]
+
+    \begin{uteqbox}[width=\linewidth]{Instrumento de evaluaci\'on}
+        \centering
+        \Large\bfseries GU\'IA DE PR\'ACTICA EXPERIMENTAL Y R\'UBRICA DE EVALUACI\'ON\\[0.3cm]
+        \normalsize
+        \textbf{GA-SUM-03 / PE-U3 -- Pr\'actica Experimental Unidad 3}\\
+        \textit{Implementaci\'on y Verificaci\'on de un Cl\'uster de Base de Datos Distribuida con CockroachDB aplicado al PFC}
+    \end{uteqbox}
+
+    \vspace{0.8cm}
+    \begin{tabular}{rl}
+        \textbf{Asignatura:} & Aplicaciones Distribuidas (ISR-701)\\
+        \textbf{Unidad:} & Unidad 3 -- Bases de Datos Distribuidas\\
+        \textbf{Modalidad:} & Grupal (equipos de 3--4 integrantes)\\
+        \textbf{Car\'acter:} & Sumativa\\
+        \textbf{Calificaci\'on:} & 0--100 puntos\\
+        \textbf{Semana de entrega:} & Semana 11\\
+        \textbf{Duraci\'on:} & 9 horas (3 h laboratorio + 6 h aut\'onomas)\\
+        \textbf{Per\'iodo acad\'emico:} & 2026--2027 PPA\\
+        \textbf{Docente responsable:} & Gleiston C. Guerrero-Ulloa, M.Sc.\\
+    \end{tabular}
+
+    \vspace{1.0cm}
+    \begin{uteqwarn}[width=\linewidth]{Piso de evaluaci\'on (no negociable)}
+        \small\justifying
+        La ausencia de cualquier indicador o criterio establecido en la r\'ubrica se califica con CERO (0) en ese criterio, sin excepciones. La calificaci\'on es siempre definitiva y se emite sobre la evidencia disponible al momento del cierre de la entrega. No se aceptan entregas parciales, provisionales ni ampliaciones fuera del plazo publicado en el LMS.
+    \end{uteqwarn}
+
+    \vfill
+    {\small Documento v1.0 -- Fecha de emisi\'on: 29-04-2026}
+\end{titlepage}
+
+%============================================================
+% PARTE A -- GUIA DE LA PRACTICA
+%============================================================
+\section*{PARTE A -- GU\'IA DE LA PR\'ACTICA EXPERIMENTAL}
+\addcontentsline{toc}{section}{PARTE A -- Gu\'ia de la Pr\'actica Experimental}
+
+\section{Datos generales de la pr\'actica}
+
+\begin{tabularx}{\linewidth}{|>{\bfseries\color{uteqBlue}}l|>{\RaggedRight\arraybackslash}X|}
+    \hline
+    C\'odigo de actividad & GA-SUM-03 / PE-U3\\ \hline
+    Asignatura & Aplicaciones Distribuidas (ISR-701)\\ \hline
+    Unidad & Unidad 3 -- Bases de Datos Distribuidas\\ \hline
+    Tipo de gu\'ia & Pr\'actica Experimental\\ \hline
+    Tipo de aprendizaje & Resoluci\'on de problemas pr\'acticos\\ \hline
+    Modalidad & Grupal (equipos de 3--4 integrantes)\\ \hline
+    Car\'acter & Sumativa\\ \hline
+    Semana de entrega & Semana 11\\ \hline
+    Ubicaci\'on & Interna -- FCC-LAB-TIC-201, Campus Central\\ \hline
+    Duraci\'on & 9 horas (3 h laboratorio + 6 h aut\'onomas)\\ \hline
+    Entregables & Repositorio GitHub + Documento LaTeX (.tex y .pdf) + Video de tolerancia a fallos\\ \hline
+\end{tabularx}
+
+\section{Resultado de aprendizaje}
+
+Implementa soluciones de computaci\'on paralela y distribuida empleando tecnolog\'ias de procesamiento concurrente y plataformas de computaci\'on en la nube, evaluando su rendimiento e impacto.
+
+\section{Tema y contexto de la pr\'actica}
+
+Configuraci\'on de un cl\'uster de base de datos distribuida de tres nodos con CockroachDB en contenedores Docker, implementaci\'on de la estrategia de fragmentaci\'on y replicaci\'on aplicada al Proyecto Fin de Curso (PFC), verificaci\'on de tolerancia a fallos mediante el algoritmo de consenso Raft \parencite{OngaroOusterhout2014Raft,Taft2020CockroachDB}, y an\'alisis comparativo de rendimiento distribuido frente a nodo \'unico.
+
+\subsection{Selecci\'on obligatoria del PFC de referencia}
+
+Los equipos que rinden esta pr\'actica se conforman de forma independiente de los equipos que desarrollan los PFC del per\'iodo. En consecuencia, sus integrantes pueden pertenecer a distintos PFC. Es obligatorio que el equipo, en consenso, elija \textbf{uno y solo uno} de los cuatro PFC del per\'iodo como dominio de referencia para toda la pr\'actica y declare expl\'icitamente esa elecci\'on en la portada del entregable.
+
+\begin{uteqbox}[width=\linewidth]{Dominio PFC de referencia (elegir uno)}
+\small\justifying
+Los cuatro dominios PFC vigentes en el per\'iodo 2026--2027 PPA son:
+\begin{itemize}[nosep,leftmargin=1.2em]
+    \item \textbf{AGLS} -- TiendaTech: plataforma de comercio electr\'onico de hardware con asistente de compatibilidad.
+    \item \textbf{BCEL} -- SGA Escuela Provincias Unidas: sistema de gesti\'on acad\'emica.
+    \item \textbf{FUVV} -- Laboratorios Inform\'aticos: reserva y monitoreo distribuido de laboratorios.
+    \item \textbf{ACC} -- Soporte T\'ecnico ISP: gesti\'on de tickets de soporte t\'ecnico.
+\end{itemize}
+La portada del entregable debe consignar: (a) c\'odigo del PFC elegido; (b) t\'itulo del sistema; (c) integrantes del equipo con su PFC de origen; y (d) breve justificaci\'on (m\'aximo 100 palabras) de la elecci\'on, indicando por qu\'e el dominio elegido es apropiado para ejercitar fragmentaci\'on y replicaci\'on en un cl\'uster de tres nodos.
+\end{uteqbox}
+
+\section{Objetivos de la pr\'actica}
+
+\subsection*{Objetivo general}
+
+Implementar, configurar y verificar un cl\'uster funcional de base de datos distribuida de tres nodos aplicado al esquema de datos del PFC elegido, demostrando transparencia de fragmentaci\'on y replicaci\'on, comportamiento ante fallos de nodos y recuperaci\'on autom\'atica mediante consenso Raft.
+
+\subsection*{Objetivos espec\'ificos}
+
+\begin{enumerate}[leftmargin=1.6em]
+    \item Configurar un cl\'uster CockroachDB de tres nodos en contenedores Docker con replicaci\'on autom\'atica entre r\'eplicas.
+    \item Implementar el esquema de datos del PFC de referencia con la estrategia de fragmentaci\'on dise\~nada previamente en la asignatura.
+    \item Demostrar experimentalmente la tolerancia a fallos deteniendo un nodo y verificando que el sistema contin\'ua operando correctamente por qu\'orum Raft.
+    \item Medir y comparar cuantitativamente el rendimiento de consultas representativas del PFC en el cl\'uster frente a una instancia de nodo \'unico.
+    \item Redactar y compilar un documento LaTeX de calidad acad\'emica que integre fundamento te\'orico verificado, evidencia experimental y an\'alisis cr\'itico de resultados.
+\end{enumerate}
+
+\section{Fundamento te\'orico requerido}
+
+\begin{uteqwarn}[width=\linewidth]{Requisito bibliogr\'afico obligatorio}
+\small\justifying
+El fundamento te\'orico se redacta en LaTeX, con m\'inimo 300 palabras por subtema. \textbf{Cada afirmaci\'on no trivial (definici\'on, propiedad, teorema, comparaci\'on, cifra o afirmaci\'on de rendimiento) debe estar respaldada por al menos DOS referencias acad\'emicas de alto impacto} con DOI o ISBN verificable. Las definiciones formales de fragmentaci\'on deben incluir notaci\'on de \'algebra relacional en entornos matem\'aticos LaTeX (\texttt{equation}, \texttt{align}). El uso de blogs, wikis o sitios comerciales como fuente principal se penaliza en D6 (Redacci\'on y referencias).
+\end{uteqwarn}
+
+\subsection{Fundamentos y arquitecturas de bases de datos distribuidas}
+
+Desarrollar en profundidad: (a) definici\'on formal de base de datos distribuida (BDD) y de sistema de gesti\'on de BDD; (b) los 12 objetivos de dise\~no de Date; (c) arquitecturas de referencia (cliente-servidor, colaborativa, middleware); (d) las ocho formas de transparencia (fragmentaci\'on, replicaci\'on, ubicaci\'on, acceso, concurrencia, fallos, escalabilidad, evoluci\'on); (e) diferencia entre BDD homog\'eneas y heterog\'eneas. Los conceptos deben conectarse expl\'icitamente con el dominio del PFC elegido. Referencias m\'inimas: \parencite{OzsuValduriez2020,Kleppmann2017}.
+
+\subsection{Fragmentaci\'on y replicaci\'on de datos}
+
+Desarrollar: (a) definici\'on formal de fragmentaci\'on con las tres condiciones de correcci\'on (completitud, reconstrucci\'on, disjunci\'on para fragmentaci\'on horizontal); (b) fragmentaci\'on horizontal primaria y derivada expresada con \'algebra relacional (operadores $\sigma$ de selecci\'on y $\ltimes$ de semi-junta); (c) fragmentaci\'on vertical con an\'alisis de afinidad de atributos; (d) fragmentaci\'on mixta o h\'ibrida; (e) replicaci\'on s\'incrona vs. as\'incrona con an\'alisis de trade-offs de latencia, consistencia y disponibilidad. Referencias m\'inimas: \parencite{OzsuValduriez2020,Kleppmann2017,ViottiVukolic2016Consistency}.
+
+Se recuerda que la fragmentaci\'on horizontal primaria de una relaci\'on $R$ mediante un predicado $p_i$ se define formalmente como $R_i = \sigma_{p_i}(R)$, cumpli\'endose las tres condiciones:
+\begin{equation}
+    \bigcup_{i=1}^{n} R_i = R \quad \text{(completitud)}, \qquad
+    R_i \cap R_j = \emptyset \;\;\forall i \neq j \quad \text{(disjunci\'on)}.
+\end{equation}
+
+\subsection{Control de concurrencia distribuido y consenso}
+
+Desarrollar: (a) problema de concurrencia en BDD; (b) protocolo de bloqueo en dos fases (2PL) distribuido y estricto (S2PL); (c) detecci\'on de deadlock distribuido con grafos wait-for; (d) protocolo de commit en dos fases (2PC) con an\'alisis de escenarios de fallo del coordinador; (e) protocolo 3PC; (f) algoritmo de consenso Raft: liderazgo, elecci\'on de l\'ider, replicaci\'on de log y garant\'ias de seguridad. Referencias m\'inimas: \parencite{OzsuValduriez2020,VanSteenTanenbaum2023DS,OngaroOusterhout2014Raft}.
+
+\subsection{Consistencia, disponibilidad, PACELC y sistemas NewSQL/NoSQL}
+
+Desarrollar: (a) teorema CAP y su formalizaci\'on \parencite{GilbertLynch2002CAP}; (b) reinterpretaci\'on moderna de Brewer \parencite{Brewer2012CAP12}; (c) modelo PACELC \parencite{Abadi2012PACELC} y su implicaci\'on para BDD geo-distribuidas; (d) espectro de modelos de consistencia \parencite{ViottiVukolic2016Consistency}; (e) modelo de aislamiento serializable de CockroachDB \parencite{Taft2020CockroachDB}; (f) modelos NoSQL (documental, clave-valor, columnar, grafos) representados por Dynamo \parencite{DeCandia2007Dynamo} y Spanner \parencite{Corbett2013Spanner}; (g) an\'alisis comparativo CockroachDB vs. MongoDB vs. Cassandra en el eje C/A/L. Cada afirmaci\'on cuantitativa (por ejemplo, latencia, disponibilidad anual, throughput) debe citar la fuente primaria.
+
+\section{Materiales, equipos e insumos}
+
+\subsection{Software}
+
+\begin{itemize}[nosep,leftmargin=1.6em]
+    \item Docker Desktop 4.x con Docker Compose Plugin.
+    \item CockroachDB v23.1 o superior (imagen \texttt{cockroachdb/cockroach}).
+    \item Python 3.10+ con librer\'ias \texttt{psycopg2-binary}, \texttt{faker}, \texttt{pandas}, \texttt{matplotlib}.
+    \item Cliente SQL visual DBeaver 24.x o TablePlus (opcional pero recomendado).
+    \item TeX Live 2023+ o Overleaf con paquetes \texttt{biblatex}, \texttt{booktabs}, \texttt{listings}, \texttt{tikz}, \texttt{pgfplots}.
+    \item Git 2.x y cuenta institucional en GitHub.
+\end{itemize}
+
+\subsection{Equipos}
+
+\begin{itemize}[nosep,leftmargin=1.6em]
+    \item Computador por integrante con procesador i5/Ryzen 5 o superior, memoria RAM $\geq$ 16 GB (con 8 GB se debe limitar la memoria por contenedor mediante \texttt{mem\_limit: 512m}) y $\geq$ 40 GB libres en disco para vol\'umenes Docker.
+    \item Conexi\'on estable a Internet para la descarga de im\'agenes Docker y documentaci\'on oficial.
+\end{itemize}
+
+\section{Procedimiento}
+
+\subsection*{Paso 1 -- Levantamiento del cl\'uster CockroachDB (peso 15 pts en la r\'ubrica)}
+
+{\sloppy
+Crear un archivo \texttt{docker-compose.yml} con tres servicios: \texttt{crdb-node1} (puertos 26257/8080), \texttt{crdb-node2} (26258/8081) y \texttt{crdb-node3} (26259/8082), interconectados por la red \texttt{roach-net} de tipo bridge. Inicializar el cl\'uster con \texttt{docker exec -it crdb-node1 ./cockroach init --insecure} y verificar el estado con \texttt{./cockroach node status --insecure}: los tres nodos deben reportar \texttt{is\_live=true}. Capturar el dashboard de CockroachDB en \texttt{http://localhost:8080} mostrando los tres nodos activos e incluir la captura como figura en el documento LaTeX con \texttt{\textbackslash caption} y \texttt{\textbackslash label}.
+\par}
+
+\subsection*{Paso 2 -- Implementaci\'on del esquema del PFC (peso 20 pts)}
+
+Conectarse por SQL: \texttt{docker exec -it crdb-node1 ./cockroach sql --insecure}. Crear la base de datos y las tablas del PFC elegido con m\'inimo tres tablas relacionadas (por ejemplo, para AGLS: \texttt{productos}, \texttt{pedidos}, \texttt{clientes}). Insertar un m\'inimo de 10\,000 registros distribuidos con un script Python que use \texttt{psycopg2} y \texttt{faker}. Aplicar la estrategia de fragmentaci\'on dise\~nada previamente en la asignatura mediante \texttt{PARTITION BY LIST} o \texttt{PARTITION BY RANGE} sobre la tabla principal, seg\'un corresponda al dominio. Verificar la distribuci\'on mediante \texttt{SHOW RANGES FROM TABLE tabla\_principal;} y documentar los rangos como tabla \texttt{booktabs} en el informe.
+
+\subsection*{Paso 3 -- Verificaci\'on de tolerancia a fallos (peso 20 pts)}
+
+Registrar una consulta base: \texttt{SELECT COUNT(*) FROM tabla\_principal;} con su resultado y tiempo de ejecuci\'on. Detener el segundo nodo con \texttt{docker stop crdb-node2}. Ejecutar inmediatamente la misma consulta: debe responder correctamente por qu\'orum Raft (2 de 3 nodos vivos) \parencite{OngaroOusterhout2014Raft,Taft2020CockroachDB}. Esperar 30 segundos y ejecutar de nuevo \texttt{SHOW RANGES} para documentar la redistribuci\'on de rangos. Reiniciar el nodo con \texttt{docker start crdb-node2} y medir el tiempo de reintegraci\'on al cl\'uster.
+
+\begin{uteqwarn}[width=\linewidth]{Requisito de evidencia audiovisual}
+\small\justifying
+Es obligatorio grabar un video de pantalla continuo (m\'inimo 2 minutos, m\'aximo 5 minutos) durante toda la prueba de tolerancia a fallos, mostrando: (a) estado inicial con tres nodos vivos; (b) parada del nodo; (c) ejecuci\'on exitosa de la consulta mientras el nodo est\'a detenido; (d) reintegraci\'on del nodo. El video debe subirse al repositorio en la carpeta \texttt{evidencia/} o enlazarse (YouTube/Drive con permiso de lectura al docente).
+\end{uteqwarn}
+
+\subsection*{Paso 4 -- Medici\'on de rendimiento (peso 15 pts)}
+
+Definir cinco consultas SQL representativas del dominio del PFC (por ejemplo: un \texttt{JOIN} entre dos tablas, un \texttt{GROUP BY} agregado, una consulta puntual por clave primaria, una consulta de rango con \texttt{WHERE}, y una consulta con subconsulta correlacionada). Ejecutar cada consulta con \texttt{EXPLAIN ANALYZE} en el cl\'uster de tres nodos y registrar el tiempo. Levantar posteriormente una instancia \'unica con \texttt{cockroach start-single-node --insecure} y repetir las mediciones. Construir una tabla \texttt{booktabs} con las columnas: consulta, tiempo cl\'uster (ms), tiempo nodo \'unico (ms), factor de mejora, e interpretaci\'on cualitativa. Analizar en prosa las diferencias observadas y su relaci\'on con el plan de ejecuci\'on.
+
+\subsection*{Paso 5 -- Documento LaTeX y entregables (peso 30 pts distribuidos en D3, D4, D5, D6)}
+
+Redactar y compilar el documento en LaTeX cumpliendo los siguientes requisitos verificables:
+
+\begin{itemize}[nosep,leftmargin=1.6em]
+    \item Estructura de art\'iculo t\'ecnico: portada institucional, resumen, introducci\'on, fundamento te\'orico, procedimiento aplicado, resultados, an\'alisis cr\'itico, conclusiones, bibliograf\'ia.
+    \item Extensi\'on m\'inima de 12 p\'aginas de contenido (sin contar portada, \'indice ni bibliograf\'ia).
+    \item Configuraci\'on Docker en \texttt{lstlisting} con \texttt{language=yaml}; sentencias SQL en \texttt{lstlisting} con \texttt{language=SQL}; ambos con \texttt{caption} y \texttt{label}.
+    \item Capturas del dashboard de CockroachDB como figuras con \texttt{\textbackslash caption}, \texttt{\textbackslash label} y referencia cruzada en el texto.
+    \item Tabla \texttt{booktabs} de rendimiento con las cinco consultas.
+    \item Diagrama de secuencia UML del comportamiento Raft durante la ca\'ida del nodo (elaboraci\'on propia, no captura externa).
+    \item Bibliograf\'ia gestionada con \texttt{biblatex} estilo IEEE y $\geq$ 8 referencias verificadas, de las cuales $\geq$ 6 con DOI o ISBN.
+    \item Compilaci\'on limpia con \texttt{pdflatex} sin errores. Advertencias de \texttt{overfull hbox} son penalizables.
+    \item Declaraci\'on obligatoria de uso de IA generativa al final del documento (herramienta, prop\'osito y secciones asistidas).
+\end{itemize}
+
+\section{Entregables y forma de entrega}
+
+En el LMS (SGA) los estudiantes suben \textbf{\'unicamente} los datos informativos del entregable y la URL del repositorio: no se sube ZIP ni archivos individuales. Todo el resto vive en el repositorio.
+
+\begin{uteqbox}[width=\linewidth]{Contenido del env\'io al LMS (\'unico documento breve)}
+\small\justifying
+El equipo sube al LMS un archivo PDF de una p\'agina (\texttt{PE-U3\_[CodigoEquipo]\_[PFC].pdf}) con:
+\begin{itemize}[nosep,leftmargin=1.2em]
+    \item C\'odigo del equipo, integrantes con su PFC de origen y rol asumido.
+    \item C\'odigo y t\'itulo del PFC de referencia elegido.
+    \item \textbf{URL del repositorio p\'ublico de GitHub} en una sola l\'inea. Debe caber \'integra en un solo rengl\'on (no fraccionada en varias l\'ineas): se recomienda un nombre corto para el repositorio (por ejemplo \texttt{pe-u3-crdb-\{equipo\}}).
+    \item Declaraci\'on de uso de IA generativa (herramienta, prop\'osito y secciones asistidas).
+\end{itemize}
+Cualquier otro contenido (informe LaTeX + PDF compilado, docker-compose, scripts, SQL, evidencia audiovisual, capturas, datos brutos y CSV de resultados) reside \'unicamente en el repositorio. El docente clona el repositorio y eval\'ua desde all\'i.
+\end{uteqbox}
+
+Estructura m\'inima obligatoria del repositorio:
+
+\begin{lstlisting}[language=bash,caption={Estructura del repositorio de entrega},label={lst:estructura}]
+pe-u3-crdb-[equipo]/
+|-- README.md                (descripcion, instrucciones, integrantes, PFC de referencia)
+|-- docker-compose.yml       (definicion del cluster de 3 nodos)
+|-- sql/
+|   |-- 01_schema.sql        (creacion de BD y tablas)
+|   |-- 02_partitions.sql    (estrategia de fragmentacion)
+|   `-- 03_queries.sql       (5 consultas de rendimiento)
+|-- scripts/
+|   |-- seed_data.py         (insercion >= 10000 registros)
+|   `-- run_benchmark.py     (medicion cluster vs nodo unico)
+|-- docs/
+|   |-- PE_U3_Informe.tex    (documento LaTeX fuente)
+|   |-- PE_U3_Informe.pdf    (documento compilado)
+|   `-- references.bib       (bibliografia biblatex)
+|-- evidencia/
+|   |-- dashboard.png        (captura con 3 nodos activos)
+|   |-- video_tolerancia.mp4 (o enlace en README)
+|   `-- resultados.csv       (mediciones brutas de rendimiento)
+`-- LICENSE
+\end{lstlisting}
+
+\begin{uteqwarn}[width=\linewidth]{Repositorio inaccesible o inexistente $\Rightarrow$ nota cero}
+\small\justifying
+El repositorio es el \'unico canal por el que llega el trabajo al docente: todos los entregables f\'isicos (c\'odigo, documento, evidencia, video) residen all\'i. Si el docente no puede acceder (repositorio inexistente, privado sin permiso concedido, URL rota o mal transcrita), no hay evidencia que evaluar y la \textbf{calificaci\'on final del equipo es CERO}. El equipo debe verificar antes del cierre que la URL abre correctamente en modo an\'onimo y que el repositorio es p\'ublico.
+\end{uteqwarn}
+
+\section{Anexo -- Preguntas de an\'alisis obligatorias}
+
+Las siguientes cuatro preguntas deben responderse en el documento LaTeX en una secci\'on espec\'ifica denominada ``Preguntas de an\'alisis'', con al menos 200 palabras cada una y citando referencias del \texttt{.bib}:
+
+\begin{enumerate}[leftmargin=1.6em]
+    \item CockroachDB utiliza el algoritmo Raft \parencite{OngaroOusterhout2014Raft}. Explique c\'omo garantiza consistencia cuando un nodo falla, con referencia a los conceptos de qu\'orum, l\'ider y log de transacciones replicado.
+    \item Compare el modelo de consistencia de CockroachDB (serializable) \parencite{Taft2020CockroachDB} con el modelo de consistencia eventual de Apache Cassandra \parencite{DeCandia2007Dynamo}. ¿Cu\'al elegir\'ia para el PFC seleccionado y por qu\'e? Justifique en t\'erminos del modelo PACELC \parencite{Abadi2012PACELC}.
+    \item ¿C\'omo implementar\'ia fragmentaci\'on horizontal expl\'icita con \texttt{PARTITION BY RANGE} o \texttt{PARTITION BY LIST} en CockroachDB para la tabla principal del PFC? Dise\~ne y justifique la estrategia con la clave de partici\'on elegida.
+    \item Si el PFC requiere transacciones multi-tabla en diferentes nodos, ¿c\'omo garantiza CockroachDB la atomicidad? Explique el protocolo de commit interno con referencia al algoritmo de Raft \parencite{OngaroOusterhout2014Raft,Taft2020CockroachDB}.
+\end{enumerate}
+
+%============================================================
+% PARTE B -- RUBRICA DE EVALUACION
+%============================================================
+\newpage
+\section*{PARTE B -- R\'UBRICA DE EVALUACI\'ON}
+\addcontentsline{toc}{section}{PARTE B -- R\'ubrica de Evaluaci\'on}
+
+\section{Marco de evaluaci\'on}
+
+Esta r\'ubrica eval\'ua la Pr\'actica Experimental de la Unidad 3 con car\'acter sumativo y grupal. La calificaci\'on se emite sobre 100 puntos a partir de seis dimensiones y quince criterios. Cada criterio se valora en cinco niveles: Sobresaliente (4), Satisfactorio (3), En desarrollo (2), Insuficiente (1) y Ausente (0). Los puntos obtenidos por criterio se calculan como $\mathrm{Nivel} \times (\mathrm{Peso} / 4)$, donde el peso est\'a expresado en porcentaje sobre 100. La calificaci\'on final es la suma de puntos obtenidos en todos los criterios menos las penalizaciones aplicables.
+
+\subsection{Escala de calificaci\'on}
+
+\begin{tabularx}{\linewidth}{|c|>{\RaggedRight\arraybackslash}X|c|}
+    \toprule
+    \rowcolor{uteqSoft}
+    \textbf{Nivel} & \textbf{Descripci\'on general} & \textbf{Equivalencia}\\
+    \midrule
+    4 -- Sobresaliente & Cumple todos los requisitos con calidad acad\'emica publicable: implementaci\'on completa y verificada, documento impecable, an\'alisis profundo. & 90--100 / 100\\
+    \midrule
+    3 -- Satisfactorio & Cumple los requisitos con calidad acad\'emica s\'olida; deficiencias menores en documento, an\'alisis o profundidad. & 75--89 / 100\\
+    \midrule
+    2 -- En desarrollo & Cumple parcialmente; requiere mejoras sustanciales en implementaci\'on, an\'alisis o documentaci\'on. & 60--74 / 100\\
+    \midrule
+    1 -- Insuficiente & No alcanza los est\'andares m\'inimos: implementaci\'on incompleta o documento deficiente. & 40--59 / 100\\
+    \midrule
+    0 -- Ausente & No entregado, plagio verificado o el criterio no se desarrolla. & $<$ 40 / 100\\
+    \bottomrule
+\end{tabularx}
+
+\subsection{Condiciones obligatorias de aprobaci\'on}
+
+\begin{tabularx}{\linewidth}{|>{\bfseries\color{uteqBlue}}l|>{\RaggedRight\arraybackslash}X|c|}
+    \toprule
+    \rowcolor{uteqSoft}
+    \textbf{Condici\'on} & \textbf{Verificaci\'on} & \textbf{Efecto}\\
+    \midrule
+    Compilaci\'on LaTeX & El docente ejecuta \texttt{pdflatex} y \texttt{biber} sobre el \texttt{.tex} entregado. & Si no compila: D4 = 0\\
+    \midrule
+    Cl\'uster funcional & El docente ejecuta \texttt{docker compose up} y verifica \texttt{./cockroach node status}. & Si no levanta: D1 = 0\\
+    \midrule
+    Repositorio accesible & El docente accede a la URL de GitHub y clona el repositorio con \texttt{git ls-remote HEAD}. & Si es inaccesible: \textbf{Nota final = 0}\\
+    \midrule
+    URL en una sola l\'inea & La URL del repositorio en el env\'io al LMS ocupa un solo rengl\'on. & Si no cabe en una l\'inea: 5.1 = 0\\
+    \midrule
+    Selecci\'on PFC declarada & Portada del entregable indica PFC de referencia y justificaci\'on. & Si no se declara: D2.1 = 0\\
+    \midrule
+    Video de tolerancia a fallos & Video de $\geq$ 2 min mostrando la prueba completa, presente en el repositorio. & Si falta: 2.4 = 0\\
+    \bottomrule
+\end{tabularx}
+
+\subsection{Penalizaciones espec\'ificas}
+
+\begin{itemize}[nosep,leftmargin=1.6em]
+    \item Ausencia de la declaraci\'on de uso de IA generativa: $-3$ puntos sobre el total.
+    \item Cada DOI inv\'alido o que no resuelve al art\'iculo citado: $-0{,}5$ puntos, hasta un m\'aximo de $-5$ puntos.
+    \item \textbf{Uso de formato APA en lugar de IEEE en las referencias: Criterio 4.3 = 0.} No se admite formato distinto de IEEE porque as\'i lo exige la asignatura de forma expl\'icita.
+    \item \textbf{Repositorio inaccesible o inexistente: Nota final = 0} (el repositorio es el \'unico canal de entrega de todos los artefactos evaluables).
+    \item URL del repositorio fraccionada en varias l\'ineas en el env\'io al LMS: Criterio 5.1 = 0.
+    \item Documento por debajo de 12 p\'aginas de contenido: nivel m\'aximo 2 en D4.
+    \item Referencias de editoriales depredadoras (por ejemplo EJCSIT/EAJournals): nivel m\'aximo 1 en D4.3 y anotaci\'on de integridad acad\'emica.
+\end{itemize}
+
+%------------------------------------------------------------
+% Rubrica landscape
+%------------------------------------------------------------
+\begin{landscape}
+\section{Matriz de dimensiones y criterios}
+\footnotesize
+
+\begin{xltabular}{\linewidth}{|>{\bfseries\color{uteqBlue}}p{3.4cm}|c|X|X|X|X|X|}
+    \toprule
+    \rowcolor{uteqSoft}
+    \textbf{Criterio} & \textbf{Peso} & \textbf{4 -- Sobresaliente} & \textbf{3 -- Satisfactorio} & \textbf{2 -- En desarrollo} & \textbf{1 -- Insuficiente} & \textbf{0 -- Ausente}\\
+    \midrule
+    \endfirsthead
+
+    \rowcolor{uteqSoft}
+    \textbf{Criterio} & \textbf{Peso} & \textbf{4 -- Sobresaliente} & \textbf{3 -- Satisfactorio} & \textbf{2 -- En desarrollo} & \textbf{1 -- Insuficiente} & \textbf{0 -- Ausente}\\
+    \midrule
+    \endhead
+
+    \multicolumn{7}{r}{\textit{Contin\'ua en la siguiente p\'agina}}\\
+    \endfoot
+
+    \endlastfoot
+
+    \multicolumn{7}{|l|}{\cellcolor{uteqBlue!15}\textbf{D1 -- IMPLEMENTACI\'ON DEL CL\'USTER (15\%)}}\\
+    \midrule
+    1.1 Docker Compose de 3 nodos & 7\% &
+    \texttt{docker-compose.yml} con 3 nodos, red \texttt{bridge}, puertos correctos, \texttt{mem\_limit}, \texttt{healthcheck} y vol\'umenes persistentes. Levanta con un solo comando. &
+    Tres nodos funcionales con configuraci\'on correcta; falta \texttt{healthcheck} o vol\'umenes. &
+    Tres nodos levantan pero con errores menores en red o puertos. &
+    Solo 1--2 nodos operativos o red mal configurada. &
+    No entregado o cl\'uster no funcional.\\
+    \midrule
+    1.2 Inicializaci\'on y verificaci\'on & 5\% &
+    Cl\'uster inicializado con \texttt{cockroach init}; salida de \texttt{node status} adjunta con los 3 nodos en \texttt{is\_live=true}. Captura del dashboard incluida. &
+    Inicializaci\'on correcta, verificaci\'on parcial o captura de baja calidad. &
+    Verificaci\'on superficial; captura ausente. &
+    Sin evidencia de verificaci\'on. &
+    No entregado.\\
+    \midrule
+    1.3 Documentaci\'on de la configuraci\'on & 3\% &
+    Configuraci\'on Docker en \texttt{lstlisting} con \texttt{caption}, comentada l\'inea a l\'inea, y justificaci\'on t\'ecnica de cada par\'ametro. &
+    Configuraci\'on en \texttt{lstlisting} con comentarios b\'asicos. &
+    Configuraci\'on presente pero como texto plano. &
+    Configuraci\'on incompleta o incoherente. &
+    No entregado.\\
+    \midrule
+
+    \multicolumn{7}{|l|}{\cellcolor{uteqBlue!15}\textbf{D2 -- APLICACI\'ON AL PFC Y FRAGMENTACI\'ON (20\%)}}\\
+    \midrule
+    2.1 Selecci\'on y justificaci\'on del PFC & 3\% &
+    Portada declara PFC elegido; integrantes con su PFC de origen; justificaci\'on t\'ecnica de la elecci\'on ($\geq$ 100 palabras) referida al dominio y al ejercicio de fragmentaci\'on. &
+    PFC declarado con justificaci\'on breve pero pertinente. &
+    PFC declarado sin justificaci\'on t\'ecnica. &
+    PFC declarado de forma ambigua. &
+    Sin declaraci\'on de PFC.\\
+    \midrule
+    2.2 Esquema de datos y carga inicial & 7\% &
+    Esquema del PFC con $\geq$ 3 tablas relacionadas, \texttt{PK}, \texttt{FK} y \texttt{CHECK}; $\geq$ 10\,000 registros insertados con script Python reproducible; verificaci\'on con \texttt{SHOW RANGES}. &
+    Esquema correcto con $\geq$ 3 tablas y $\geq$ 10\,000 registros; verificaci\'on parcial de rangos. &
+    Esquema con 2 tablas o menos de 10\,000 registros. &
+    Esquema m\'inimo, carga incompleta. &
+    Sin esquema ni datos.\\
+    \midrule
+    2.3 Fragmentaci\'on horizontal aplicada & 7\% &
+    \texttt{PARTITION BY LIST/RANGE} aplicada a la tabla principal con clave t\'ecnicamente justificada; distribuci\'on de rangos verificada y documentada con tabla \texttt{booktabs}; \'algebra relacional presente en el fundamento. &
+    Fragmentaci\'on aplicada correctamente con evidencia; justificaci\'on breve. &
+    Fragmentaci\'on superficial sin verificaci\'on de distribuci\'on. &
+    Solo se menciona la fragmentaci\'on sin implementarla. &
+    Sin fragmentaci\'on aplicada.\\
+    \midrule
+    2.4 Tolerancia a fallos y video & 3\% &
+    Prueba completa documentada paso a paso; video de $\geq$ 2 minutos incluido en el repositorio; \texttt{SHOW RANGES} antes y despu\'es; tiempo de reintegraci\'on medido. &
+    Prueba correcta con video m\'as breve o evidencia parcial. &
+    Prueba parcial o video de baja calidad. &
+    Prueba mencionada sin evidencia audiovisual. &
+    Sin video ni prueba.\\
+    \midrule
+
+    \multicolumn{7}{|l|}{\cellcolor{uteqBlue!15}\textbf{D3 -- FUNDAMENTO TE\'ORICO Y AN\'ALISIS CR\'ITICO (20\%)}}\\
+    \midrule
+    3.1 Cobertura de los 4 subtemas de U3 & 8\% &
+    Los 4 subtemas del fundamento te\'orico se desarrollan con $\geq$ 300 palabras cada uno; cada afirmaci\'on no trivial respaldada por $\geq$ 2 referencias con DOI; \'algebra relacional en entornos matem\'aticos LaTeX. &
+    Los 4 subtemas presentes, con 1--2 afirmaciones sin doble referencia. &
+    3 subtemas presentes o varios subtemas con una sola referencia. &
+    Cobertura m\'inima, sin doble referencia. &
+    Sin fundamento te\'orico.\\
+    \midrule
+    3.2 Preguntas de an\'alisis obligatorias & 6\% &
+    Las 4 preguntas del Anexo se responden con $\geq$ 200 palabras cada una, aplicando conceptos al PFC y citando referencias del \texttt{.bib}. &
+    Las 4 preguntas respondidas con extensi\'on adecuada; alguna sin cita expl\'icita. &
+    3 preguntas respondidas o extensi\'on insuficiente. &
+    Respuestas superficiales sin fundamento. &
+    Sin secci\'on de an\'alisis.\\
+    \midrule
+    3.3 An\'alisis comparativo de rendimiento & 6\% &
+    Tabla \texttt{booktabs} con 5 consultas, tiempos cl\'uster vs. nodo \'unico, factor de mejora e interpretaci\'on cualitativa; an\'alisis referenciado al plan de \texttt{EXPLAIN ANALYZE}. &
+    Tabla completa con an\'alisis breve. &
+    Tabla con 3--4 consultas; an\'alisis superficial. &
+    Solo tabla sin an\'alisis. &
+    Sin comparaci\'on.\\
+    \midrule
+
+    \multicolumn{7}{|l|}{\cellcolor{uteqBlue!15}\textbf{D4 -- CALIDAD ACAD\'EMICA DEL DOCUMENTO LaTeX (20\%)}}\\
+    \midrule
+    4.1 Estructura y compilaci\'on & 7\% &
+    Documento con estructura de art\'iculo t\'ecnico completo; $\geq$ 12 p\'aginas de contenido; compila con \texttt{pdflatex} sin errores ni \texttt{overfull hbox}. &
+    Estructura completa; compila con advertencias menores. &
+    Estructura b\'asica; compila con correcciones. &
+    Estructura deficiente; no compila directamente. &
+    Sin documento LaTeX o no compila.\\
+    \midrule
+    4.2 Figuras, tablas, c\'odigo y ecuaciones & 7\% &
+    Todas las figuras con \texttt{caption}, \texttt{label} y \texttt{ref}; tablas con \texttt{booktabs}; c\'odigo con \texttt{lstlisting} y \texttt{literate} UTF-8; ecuaciones en \texttt{align}/\texttt{equation}; diagrama UML propio. &
+    Convenciones seguidas con 1--2 elementos sin \texttt{label}. &
+    Convenciones parciales; algunas capturas sin \texttt{caption}. &
+    Sin convenciones LaTeX correctas. &
+    Sin figuras ni tablas formales.\\
+    \midrule
+    4.3 Referencias con \texttt{biblatex} IEEE & 6\% &
+    \texttt{biblatex} estilo IEEE; $\geq$ 8 referencias, $\geq$ 6 con DOI o ISBN verificable; todas citadas en contexto; ninguna referencia de relleno; formato IEEE aplicado a la totalidad de las citas. &
+    7--8 referencias con la mayor\'ia con DOI; alguna cita d\'ebil; formato IEEE consistente. &
+    5--6 referencias con verificaci\'on parcial; formato IEEE con inconsistencias. &
+    $<$ 5 referencias o formato no IEEE en varias entradas. &
+    Sin bibliograf\'ia formal, formato distinto de IEEE (por ejemplo APA) o bibliograf\'ia gestionada fuera de \texttt{biblatex}.\\
+    \midrule
+
+    \multicolumn{7}{|l|}{\cellcolor{uteqBlue!15}\textbf{D5 -- REPOSITORIO Y COLABORACI\'ON (15\%)}}\\
+    \midrule
+    5.1 Estructura del repositorio GitHub y URL & 5\% &
+    Repositorio p\'ublico con la estructura del Listado 1 completa; \texttt{README.md} descriptivo; \texttt{LICENSE}; \texttt{.gitignore} adecuado; URL corta que cabe en una sola l\'inea en el env\'io al LMS. &
+    Estructura correcta con carencias menores; URL en una l\'inea. &
+    Estructura parcial; carpetas ausentes o URL fraccionada en el env\'io. &
+    Repositorio desordenado. &
+    Sin repositorio, URL rota o repositorio privado.\\
+    \midrule
+    5.2 Colaboraci\'on Git verificable & 5\% &
+    Cada integrante con $\geq$ 3 commits significativos en distintas fechas y ramas; historia coherente; sin commits masivos de \'ultimo minuto. &
+    Cada integrante con $\geq$ 2 commits; historia razonable. &
+    Colaboraci\'on desigual; un integrante con solo 1 commit. &
+    Colaboraci\'on concentrada en 1--2 personas. &
+    Sin evidencia de colaboraci\'on.\\
+    \midrule
+    5.3 Reproducibilidad end-to-end & 5\% &
+    \texttt{README.md} permite reproducir todo el experimento en $\leq$ 15 minutos desde clonar hasta obtener resultados; comandos exactos, versiones fijadas. &
+    Reproducible con ajustes menores. &
+    Reproducible con esfuerzo significativo. &
+    Instrucciones incompletas. &
+    No reproducible.\\
+    \midrule
+
+    \multicolumn{7}{|l|}{\cellcolor{uteqBlue!15}\textbf{D6 -- REDACCI\'ON CIENT\'IFICA, \'ETICA E IA (10\%)}}\\
+    \midrule
+    6.1 Precisi\'on terminol\'ogica y redacci\'on & 4\% &
+    Terminolog\'ia t\'ecnica precisa; ausencia de errores gramaticales; tiempos verbales consistentes; estilo acad\'emico impersonal. &
+    Terminolog\'ia correcta con 2--3 imprecisiones menores. &
+    Terminolog\'ia inconsistente. &
+    Errores gramaticales que dificultan la lectura. &
+    Texto no acad\'emico.\\
+    \midrule
+    6.2 Declaraci\'on de uso de IA generativa & 3\% &
+    Declaraci\'on expl\'icita al final del documento indicando herramienta, prop\'osito y secciones asistidas; conforme a lineamientos de la asignatura. &
+    Declaraci\'on presente pero incompleta. &
+    Declaraci\'on gen\'erica sin detalle. &
+    Menci\'on marginal. &
+    Sin declaraci\'on.\\
+    \midrule
+    6.3 Conclusiones individuales & 3\% &
+    Cada integrante presenta conclusi\'on individual de $\geq$ 150 palabras, con aprendizaje t\'ecnico espec\'ifico y conexi\'on con el PFC de referencia. &
+    Conclusiones individuales presentes; alguna $<$ 150 palabras. &
+    Conclusiones grupales sin individualizaci\'on. &
+    Conclusiones m\'inimas. &
+    Sin conclusiones.\\
+    \bottomrule
+\end{xltabular}
+
+\end{landscape}
+
+%------------------------------------------------------------
+% Formula, hoja de puntuacion y retroalimentacion
+%------------------------------------------------------------
+\section{F\'ormula de c\'alculo}
+
+Para cada uno de los quince criterios se aplica:
+\begin{equation}
+    \mathrm{Pts.\ obtenidos}_i \;=\; \mathrm{Nivel}_i \;\times\; \frac{\mathrm{Peso}_i(\%)}{4}
+\end{equation}
+La calificaci\'on final del equipo se obtiene como:
+\begin{equation}
+    \mathrm{Nota\ final}\;(/100) \;=\; \sum_{i=1}^{15} \mathrm{Pts.\ obtenidos}_i \;-\; \mathrm{Penalizaciones}
+\end{equation}
+donde $\mathrm{Nivel}_i \in \{0,1,2,3,4\}$ y $\sum \mathrm{Peso}_i = 100$.
+
+\section{Hoja de puntuaci\'on del evaluador}
+
+\begin{tabularx}{\linewidth}{|>{\bfseries\color{uteqBlue}}p{5.4cm}|c|c|c|>{\RaggedRight\arraybackslash}X|}
+    \toprule
+    \rowcolor{uteqSoft}
+    \textbf{Criterio} & \textbf{Nivel (0--4)} & \textbf{Peso \%} & \textbf{Pts. obtd.} & \textbf{Observaci\'on del evaluador}\\
+    \midrule
+    \multicolumn{5}{|l|}{\cellcolor{uteqBlue!10}\textbf{D1 -- Implementaci\'on del cl\'uster (15\%)}}\\
+    \midrule
+    1.1 Docker Compose de 3 nodos & \_\_\_ & 7 & \_\_\_\_ & \\ \midrule
+    1.2 Inicializaci\'on y verificaci\'on & \_\_\_ & 5 & \_\_\_\_ & \\ \midrule
+    1.3 Documentaci\'on de la configuraci\'on & \_\_\_ & 3 & \_\_\_\_ & \\ \midrule
+    \multicolumn{5}{|l|}{\cellcolor{uteqBlue!10}\textbf{D2 -- Aplicaci\'on al PFC y fragmentaci\'on (20\%)}}\\
+    \midrule
+    2.1 Selecci\'on y justificaci\'on del PFC & \_\_\_ & 3 & \_\_\_\_ & \\ \midrule
+    2.2 Esquema de datos y carga inicial & \_\_\_ & 7 & \_\_\_\_ & \\ \midrule
+    2.3 Fragmentaci\'on horizontal aplicada & \_\_\_ & 7 & \_\_\_\_ & \\ \midrule
+    2.4 Tolerancia a fallos y video & \_\_\_ & 3 & \_\_\_\_ & \\ \midrule
+    \multicolumn{5}{|l|}{\cellcolor{uteqBlue!10}\textbf{D3 -- Fundamento te\'orico y an\'alisis (20\%)}}\\
+    \midrule
+    3.1 Cobertura de los 4 subtemas & \_\_\_ & 8 & \_\_\_\_ & \\ \midrule
+    3.2 Preguntas de an\'alisis obligatorias & \_\_\_ & 6 & \_\_\_\_ & \\ \midrule
+    3.3 An\'alisis comparativo de rendimiento & \_\_\_ & 6 & \_\_\_\_ & \\ \midrule
+    \multicolumn{5}{|l|}{\cellcolor{uteqBlue!10}\textbf{D4 -- Documento LaTeX (20\%)}}\\
+    \midrule
+    4.1 Estructura y compilaci\'on & \_\_\_ & 7 & \_\_\_\_ & \\ \midrule
+    4.2 Figuras, tablas, c\'odigo, ecuaciones & \_\_\_ & 7 & \_\_\_\_ & \\ \midrule
+    4.3 Referencias \texttt{biblatex} IEEE & \_\_\_ & 6 & \_\_\_\_ & \\ \midrule
+    \multicolumn{5}{|l|}{\cellcolor{uteqBlue!10}\textbf{D5 -- Repositorio y colaboraci\'on (15\%)}}\\
+    \midrule
+    5.1 Estructura del repositorio y URL & \_\_\_ & 5 & \_\_\_\_ & \\ \midrule
+    5.2 Colaboraci\'on Git verificable & \_\_\_ & 5 & \_\_\_\_ & \\ \midrule
+    5.3 Reproducibilidad end-to-end & \_\_\_ & 5 & \_\_\_\_ & \\ \midrule
+    \multicolumn{5}{|l|}{\cellcolor{uteqBlue!10}\textbf{D6 -- Redacci\'on, \'etica e IA (10\%)}}\\
+    \midrule
+    6.1 Precisi\'on terminol\'ogica & \_\_\_ & 4 & \_\_\_\_ & \\ \midrule
+    6.2 Declaraci\'on de uso de IA & \_\_\_ & 3 & \_\_\_\_ & \\ \midrule
+    6.3 Conclusiones individuales & \_\_\_ & 3 & \_\_\_\_ & \\ \midrule
+    \multicolumn{2}{|r|}{\textbf{Subtotal}} & \textbf{100} & \_\_\_\_ & \\ \midrule
+    \multicolumn{2}{|r|}{Penalizaciones aplicadas} & --- & --\_\_\_ & (detallar cu\'ales)\\ \midrule
+    \multicolumn{2}{|r|}{\textbf{CALIFICACI\'ON FINAL (sobre 100)}} & \multicolumn{2}{c|}{\textbf{\_\_\_\_\_ / 100}} & Firma: \dotfill\\
+    \bottomrule
+\end{tabularx}
+
+\section{Retroalimentaci\'on estructurada}
+
+\begin{tabularx}{\linewidth}{|>{\bfseries\color{uteqBlue}}p{4.8cm}|>{\RaggedRight\arraybackslash}X|}
+    \toprule
+    Fortalezas destacadas & \\ \midrule
+    \'Areas de mejora prioritarias & \\ \midrule
+    Recomendaciones para la siguiente entrega (E4 del PFC) & \\ \midrule
+    Observaciones sobre integridad acad\'emica & \\
+    \bottomrule
+\end{tabularx}
+
+%============================================================
+% Bibliografia
+%============================================================
+\newpage
+\printbibliography[title={Bibliograf\'ia de referencia}]
+
+\vspace{1.2cm}
+\begin{center}
+    \rule{6cm}{0.5pt}\\
+    \small
+    \textbf{Gleiston C. Guerrero-Ulloa, M.Sc.}\\
+    Docente responsable -- Aplicaciones Distribuidas (ISR-701)\\
+    Facultad de Ciencias de la Computaci\'on -- UTEQ\\
+    Per\'iodo acad\'emico 2026--2027 PPA
+\end{center}
+
+\end{document}
