@@ -1,0 +1,413 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{microtype}
+\usepackage{geometry}
+	\geometry{margin=2.5cm}
+\usepackage{xcolor}
+	\definecolor{ngred}{HTML}{DD0031}
+	\definecolor{ngdark}{HTML}{1A1A2E}
+	\definecolor{codebg}{HTML}{F6F8FA}
+	\definecolor{codecomment}{HTML}{6A737D}
+	\definecolor{codekw}{HTML}{D73A49}
+	\definecolor{codestr}{HTML}{032F62}
+	\definecolor{codetype}{HTML}{6F42C1}
+	\definecolor{gris}{HTML}{4A4A4A}
+\usepackage{listings}
+\usepackage{tcolorbox}
+	\tcbuselibrary{skins,breakable}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage[hidelinks]{hyperref}
+	\hypersetup{colorlinks=true,linkcolor=ngred,urlcolor=ngred,citecolor=ngdark}
+\usepackage[backend=biber,style=numeric-comp,sorting=none]{biblatex}
+	\addbibresource{referencias-angular.bib}
+
+% ---------- Estilo de listados para TypeScript / Angular ----------
+\lstdefinelanguage{Angular}{
+	morekeywords={import,from,export,class,interface,extends,implements,public,private,protected,readonly,const,let,return,new,this,async,await,of,as,type,void,null,undefined,true,false,if,else,for,inject,signal,computed},
+	morekeywords=[2]{Component,Injectable,Service,HttpClient,httpResource,provideHttpClient,withInterceptors,Observable,signal,inject,bootstrapApplication,ApplicationConfig},
+	sensitive=true,
+	morecomment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]",
+	morestring=[b]',
+	morestring=[b]`
+}
+\lstset{
+	language=Angular,
+	backgroundcolor=\color{codebg},
+	basicstyle=\ttfamily\footnotesize\color{ngdark},
+	keywordstyle=\color{codekw}\bfseries,
+	keywordstyle=[2]\color{codetype}\bfseries,
+	commentstyle=\color{codecomment}\itshape,
+	stringstyle=\color{codestr},
+	numbers=left,
+	numberstyle=\tiny\color{gris},
+	numbersep=8pt,
+	showstringspaces=false,
+	breaklines=true,
+	breakatwhitespace=false,
+	frame=single,
+	rulecolor=\color{gris!30},
+	framexleftmargin=6pt,
+	tabsize=2,
+	captionpos=b,
+	xleftmargin=14pt,
+	literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {Ñ}{{\~N}}1
+}
+
+% ---------- Caja de "concepto" ----------
+\newtcolorbox{concepto}[1]{
+	breakable, enhanced, colback=ngred!4, colframe=ngred!70,
+	fonttitle=\bfseries\color{white}, coltitle=white,
+	title={#1}, boxrule=0.6pt, arc=2pt, left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+\newtcolorbox{nota}{
+	breakable, enhanced, colback=ngdark!4, colframe=ngdark!55,
+	boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+
+\newcommand{\code}[1]{{\ttfamily\color{ngdark}#1}}
+
+\title{\vspace{-1.2cm}\textbf{\color{ngred}Guía de Práctica}\\[2pt]
+	\Large Consumo de \emph{Web Services} REST con Angular 22}
+\author{Aplicaciones Web \textbar{} Ingeniería de Software \textbar{} UTEQ}
+\date{Angular 22 \textbullet{} Node.js $\geq$ 22 \textbullet{} TypeScript 6 \textbullet{} julio de 2026}
+
+\begin{document}
+\maketitle
+
+\begin{nota}
+	\textbf{Coherencia de versiones.} Esta guía está escrita íntegramente para \textbf{Angular 22}, la versión estable publicada el 3 de junio de 2026, que exige \textbf{Node.js 22 o superior} y \textbf{TypeScript 6}, e incorpora como estables las API de datos basadas en señales (\code{httpResource}) y el \code{HttpClient} sobre \emph{Fetch} de forma predeterminada~\cite{angularv22,angularversions,angularhttp}. Todos los ejemplos usan componentes \emph{standalone}, inyección con \code{inject()} y arquitectura \emph{zoneless}, que son el modelo recomendado por el equipo de Angular en 2026.
+\end{nota}
+
+\section{Objetivos}
+
+El objetivo general de esta práctica es que el estudiante consuma un \emph{Web Service} REST desde una aplicación Angular 22, distinguiendo cuándo emplear la API reactiva basada en señales y cuándo el cliente HTTP tradicional, y resolviendo correctamente las restricciones de origen cruzado (CORS).
+
+De forma específica, al finalizar la práctica el estudiante será capaz de: explicar con sus palabras qué es una API REST y cómo se mapea a los métodos HTTP; configurar el cliente HTTP de Angular en una aplicación \emph{standalone}; implementar un servicio que realice las cuatro operaciones básicas (leer, crear, actualizar y eliminar); mostrar datos en la interfaz con \code{httpResource} y señales; manejar errores de red y de servidor; y diagnosticar y resolver un bloqueo por CORS mediante un \emph{proxy} de desarrollo.
+
+\section{Prerrequisitos y preparación del entorno}
+
+Antes de empezar verifique que su equipo cumple la línea base de versiones, pues Angular 22 no funciona con Node.js 20 ni con TypeScript anterior a la 6~\cite{angularversions}.
+
+\begin{lstlisting}[caption={Verificación e instalación del entorno.},label={lst:entorno}]
+# 1. Comprobar la versión de Node (debe ser 22 o superior).
+node --version        # p. ej. v22.14.0  (Node 20 ya NO es compatible)
+
+# 2. Instalar/actualizar la CLI de Angular de forma global.
+npm install -g @angular/cli@22
+
+# 3. Confirmar la versión de la CLI y del framework.
+ng version            # @angular/core y @angular/cli deben coincidir en 22.x
+
+# 4. Crear un proyecto nuevo (standalone y zoneless por defecto en v22).
+ng new consumo-rest --style=css --ssr=false
+cd consumo-rest
+
+# 5. Levantar el servidor de desarrollo.
+ng serve -o           # abre http://localhost:4200 en el navegador
+\end{lstlisting}
+
+\begin{nota}
+	La opción \code{-o} de \code{ng serve} (\emph{open}) abre automáticamente el navegador. El servidor de desarrollo recompila y recarga la página ante cada cambio guardado (\emph{live reload}); no es un servidor de producción.
+\end{nota}
+
+\section{Marco conceptual: cada término que usará}
+
+Esta sección define, uno por uno, los conceptos que aparecen en el código. Léala aunque ya conozca algunos términos, porque la práctica los usa con precisión.
+
+\subsection{Web Service, API y REST}
+
+Un \emph{Web Service} es un componente de software accesible por la red que ofrece funcionalidad a otras aplicaciones mediante un contrato bien definido. Una \emph{API} (\emph{Application Programming Interface}, interfaz de programación de aplicaciones) es ese contrato: el conjunto de operaciones que el servicio expone y las reglas para invocarlas.
+
+\begin{concepto}{REST (Representational State Transfer)}
+	REST es un \emph{estilo arquitectónico} para sistemas distribuidos definido por Roy Fielding en su tesis doctoral de 2000~\cite{fielding2000rest}. No es un protocolo ni una biblioteca, sino un conjunto de restricciones: arquitectura cliente--servidor, comunicación \emph{sin estado} (cada petición contiene toda la información necesaria), interfaz uniforme y manipulación de \emph{recursos} a través de sus representaciones. Una API que respeta estas restricciones se denomina \emph{RESTful}.
+\end{concepto}
+
+En REST, cada entidad relevante es un \emph{recurso} identificado por una URL. Al camino que apunta a un recurso o a una colección se le llama \emph{endpoint} (punto de acceso). Por ejemplo, \code{/api/productos} identifica la colección de productos y \code{/api/productos/7} identifica el producto cuyo identificador es 7.
+
+\subsection{HTTP: métodos y códigos de estado}
+
+REST se apoya en HTTP, cuyo significado y semántica están normalizados en el RFC~9110~\cite{rfc9110}. La operación que se desea realizar sobre un recurso se expresa con el \emph{método} (o \emph{verbo}) HTTP.
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+	\toprule
+	\textbf{Operación} & \textbf{Método HTTP} & \textbf{Endpoint típico} & \textbf{Significado} \\
+	\midrule
+	Leer (todos)   & \code{GET}    & \code{/api/productos}    & Obtener la colección \\
+	Leer (uno)     & \code{GET}    & \code{/api/productos/7}  & Obtener un recurso \\
+	Crear          & \code{POST}   & \code{/api/productos}    & Añadir un recurso nuevo \\
+	Actualizar     & \code{PUT}    & \code{/api/productos/7}  & Reemplazar un recurso \\
+	Modificar      & \code{PATCH}  & \code{/api/productos/7}  & Cambiar parte de un recurso \\
+	Eliminar       & \code{DELETE} & \code{/api/productos/7}  & Borrar un recurso \\
+	\bottomrule
+\end{tabular}
+\end{center}
+
+La respuesta incluye un \emph{código de estado} de tres dígitos que indica el resultado~\cite{rfc9110}: los de la familia \code{2xx} señalan éxito (\code{200 OK}, \code{201 Created}, \code{204 No Content}); los \code{4xx} indican un error del cliente (\code{400 Bad Request}, \code{401 Unauthorized}, \code{403 Forbidden}, \code{404 Not Found}); y los \code{5xx} un error del servidor (\code{500 Internal Server Error}). Su código deberá reaccionar de forma distinta según esta familia.
+
+\subsection{JSON: el formato de intercambio}
+
+Los datos viajan habitualmente en \emph{JSON} (\emph{JavaScript Object Notation}), un formato de texto ligero para representar objetos y listas, normalizado en el RFC~8259~\cite{rfc8259}. Angular convierte automáticamente el JSON de la respuesta en objetos de TypeScript, por lo que usted trabajará con objetos tipados y no con cadenas de texto.
+
+\subsection{Origen y CORS}
+
+Aquí aparece el concepto que más problemas causa en la práctica, así que conviene entenderlo bien.
+
+\begin{concepto}{Origen (\emph{origin}) y política del mismo origen}
+	El \emph{origen} de una página es la combinación de \textbf{esquema + dominio + puerto} (por ejemplo, \code{http://localhost:4200}). Por seguridad, los navegadores aplican la \emph{política del mismo origen} (\emph{same-origin policy}): el JavaScript de una página solo puede leer libremente respuestas que provengan de su mismo origen. Si su aplicación corre en \code{localhost:4200} y la API en \code{localhost:8080}, son \textbf{orígenes distintos} (difieren en el puerto).
+\end{concepto}
+
+\begin{concepto}{CORS (Cross-Origin Resource Sharing)}
+	CORS es el mecanismo, basado en cabeceras HTTP, que permite a un servidor \textbf{autorizar} explícitamente que páginas de otros orígenes lean sus respuestas~\cite{mdncors,whatwgfetch}. El servidor concede el permiso enviando la cabecera \code{Access-Control-Allow-Origin}. Si esa cabecera falta, el navegador \textbf{bloquea} la lectura de la respuesta y muestra el conocido error de CORS en la consola, aunque el servidor haya respondido correctamente.
+\end{concepto}
+
+Para peticiones que pueden tener efectos secundarios (como \code{PUT} o \code{DELETE}, o \code{POST} con ciertas cabeceras), el navegador envía primero una petición \emph{preflight} con el método \code{OPTIONS} para preguntar al servidor si la operación está permitida; solo si el servidor responde afirmativamente se envía la petición real~\cite{mdncors}. Es fundamental comprender que \textbf{CORS se resuelve en el servidor}: el cliente no puede «saltárselo». En desarrollo, sin embargo, se usa un \emph{proxy} para evitarlo, como se explica en el paso~7.
+
+\subsection{Angular moderno: las piezas que intervienen}
+
+Angular 22 favorece un modelo \emph{standalone} (sin \code{NgModule}), reactividad con \emph{señales} y ejecución \emph{zoneless}~\cite{angularv22}. Los términos que verá en el código son:
+
+\begin{description}[leftmargin=1.2cm,style=nextline]
+	\item[\code{HttpClient}] El servicio de Angular para realizar peticiones HTTP. Desde la v22 usa la API \emph{Fetch} del navegador de forma predeterminada~\cite{angularhttp}.
+	\item[\code{provideHttpClient()}] La función que registra \code{HttpClient} en la configuración de la aplicación para poder inyectarlo.
+	\item[\code{inject()}] La función que obtiene una dependencia (por ejemplo, \code{HttpClient}) sin declararla en el constructor.
+	\item[\code{Observable}] Un flujo de datos asíncrono de la biblioteca RxJS; \code{HttpClient} devuelve observables a los que uno se «suscribe».
+	\item[\code{signal}] Un contenedor reactivo de un valor que notifica a la vista cuando cambia; es la base de la reactividad en Angular 2026.
+	\item[\code{httpResource()}] Una API estable en v22 que realiza una petición GET y expone su resultado como señales de estado (\code{value}, \code{isLoading}, \code{error}); reacciona automáticamente cuando cambian sus dependencias~\cite{angularhttpresource}.
+\end{description}
+
+\begin{nota}
+	\textbf{Regla práctica de la propia documentación:} use \code{httpResource} para \textbf{lecturas} (GET) que deben reflejarse en la interfaz, y use \code{HttpClient} directamente para \textbf{mutaciones} (POST, PUT, PATCH, DELETE)~\cite{angularhttpresource}.
+\end{nota}
+
+\section{Desarrollo paso a paso}
+
+\subsection*{Paso 1. Registrar el cliente HTTP}
+
+En una aplicación \emph{standalone}, la configuración global vive en \code{app.config.ts}. Allí se registra el cliente HTTP con \code{provideHttpClient()}.
+
+\begin{lstlisting}[caption={\texttt{src/app/app.config.ts} --- registro del cliente HTTP.},label={lst:config}]
+import { ApplicationConfig } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+
+// La configuración de la aplicación es un objeto de proveedores (providers).
+export const appConfig: ApplicationConfig = {
+  providers: [
+    // Registra HttpClient para poder inyectarlo en servicios y componentes.
+    // En Angular 22 no hace falta withFetch(): Fetch ya es el backend por defecto.
+    provideHttpClient()
+  ]
+};
+\end{lstlisting}
+
+\subsection*{Paso 2. Definir el modelo de datos}
+
+Se declara una \emph{interfaz} de TypeScript que describe la forma del recurso. Tipar la respuesta evita errores y habilita el autocompletado.
+
+\begin{lstlisting}[caption={\texttt{src/app/producto.model.ts} --- contrato de datos.},label={lst:modelo}]
+// Una interfaz describe la "forma" del objeto JSON que devuelve la API.
+// No genera código en tiempo de ejecución: solo sirve para el compilador.
+export interface Producto {
+  id: number;
+  nombre: string;
+  precio: number;
+  disponible: boolean;
+}
+\end{lstlisting}
+
+\subsection*{Paso 3. Crear el servicio REST (las cuatro operaciones)}
+
+La lógica de acceso a la API se encapsula en un \emph{servicio}, no en el componente. Así el componente se mantiene simple y la lógica es reutilizable y testeable.
+
+\begin{lstlisting}[caption={\texttt{src/app/producto.service.ts} --- servicio con GET/POST/PUT/DELETE.},label={lst:servicio}]
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Producto } from './producto.model';
+
+// @Injectable con providedIn:'root' crea UNA sola instancia para toda la app.
+@Injectable({ providedIn: 'root' })
+export class ProductoService {
+
+  // URL base del recurso. Es relativa para que funcione con el proxy (paso 7).
+  private readonly base = '/api/productos';
+
+  // inject() obtiene HttpClient sin necesitar un constructor.
+  private readonly http = inject(HttpClient);
+
+  // GET colección: devuelve un Observable con un arreglo de productos.
+  // El <Producto[]> le dice a Angular el tipo esperado de la respuesta JSON.
+  listar(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(this.base);
+  }
+
+  // GET por id: obtiene un único recurso.
+  obtener(id: number): Observable<Producto> {
+    return this.http.get<Producto>(`${this.base}/${id}`);
+  }
+
+  // POST: crea un recurso. El segundo argumento es el cuerpo (body) enviado.
+  // Angular serializa el objeto a JSON automáticamente.
+  crear(p: Omit<Producto, 'id'>): Observable<Producto> {
+    return this.http.post<Producto>(this.base, p);
+  }
+
+  // PUT: reemplaza por completo el recurso identificado por id.
+  actualizar(id: number, p: Producto): Observable<Producto> {
+    return this.http.put<Producto>(`${this.base}/${id}`, p);
+  }
+
+  // DELETE: elimina el recurso. Suele responder 204 No Content (sin cuerpo).
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.base}/${id}`);
+  }
+}
+\end{lstlisting}
+
+\begin{nota}
+	\code{Omit<Producto, 'id'>} es un tipo de TypeScript que representa un producto \textbf{sin} el campo \code{id}, útil al crear, porque el identificador lo asigna el servidor.
+\end{nota}
+
+\subsection*{Paso 4. Mostrar datos con \texttt{httpResource} y señales (lectura)}
+
+Para leer y mostrar la colección se usa \code{httpResource}, que lanza la petición y expone su estado como señales: así la plantilla reacciona sola a la carga, al éxito y al error, sin suscripciones manuales.
+
+\begin{lstlisting}[caption={\texttt{src/app/lista-productos.component.ts} --- lectura reactiva con señales.},label={lst:lista}]
+import { Component, signal } from '@angular/core';
+import { httpResource } from '@angular/common/http';
+import { Producto } from './producto.model';
+
+@Component({
+  selector: 'app-lista-productos',
+  // Plantilla con la nueva sintaxis de control de flujo (@if / @for).
+  template: `
+    @if (productos.isLoading()) {
+      <p>Cargando...</p>                          <!-- estado de carga -->
+    } @else if (productos.error()) {
+      <p>Error al cargar los productos.</p>       <!-- estado de error -->
+    } @else {
+      <ul>
+        @for (p of productos.value(); track p.id) {
+          <li>{{ p.nombre }} — {{ p.precio | currency }}</li>
+        }
+      </ul>
+    }
+  `
+})
+export class ListaProductosComponent {
+  // httpResource realiza el GET y devuelve señales de estado.
+  // La función se re-evalúa si alguna señal interna cambia (reactividad).
+  productos = httpResource<Producto[]>(() => '/api/productos');
+}
+\end{lstlisting}
+
+\begin{nota}
+	\code{isLoading()}, \code{error()} y \code{value()} son \textbf{señales}: se invocan como funciones (con paréntesis) y la vista se actualiza automáticamente cuando su valor cambia. El \code{track p.id} del \code{@for} identifica cada elemento para que Angular redibuje solo lo necesario.
+\end{nota}
+
+\subsection*{Paso 5. Ejecutar una mutación (creación) con \texttt{HttpClient}}
+
+Las operaciones que cambian datos se hacen con el servicio del paso~3. Como \code{HttpClient} devuelve un \code{Observable}, hay que \emph{suscribirse} para que la petición se ejecute realmente.
+
+\begin{lstlisting}[caption={Fragmento de componente --- crear un producto.},label={lst:crear}]
+import { Component, inject } from '@angular/core';
+import { ProductoService } from './producto.service';
+
+@Component({ /* ... */ })
+export class NuevoProductoComponent {
+  private readonly servicio = inject(ProductoService);
+
+  guardar(): void {
+    const nuevo = { nombre: 'Teclado', precio: 25.9, disponible: true };
+
+    // subscribe() DISPARA la petición. Sin él, el Observable no se ejecuta.
+    this.servicio.crear(nuevo).subscribe({
+      next: (creado) => console.log('Creado con id', creado.id), // 201 Created
+      error: (e)     => console.error('No se pudo crear:', e.status)
+    });
+  }
+}
+\end{lstlisting}
+
+\subsection*{Paso 6. Manejo de errores}
+
+Conviene centralizar el tratamiento de errores. El objeto de error de Angular (\code{HttpErrorResponse}) trae el código de estado en \code{status}, lo que permite reaccionar según la familia \code{4xx} o \code{5xx}~\cite{rfc9110}.
+
+\begin{lstlisting}[caption={Manejo de errores con el operador catchError de RxJS.},label={lst:errores}]
+import { catchError, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+
+listarSeguro() {
+  return this.http.get<Producto[]>(this.base).pipe(
+    // pipe() encadena operadores; catchError intercepta el fallo.
+    catchError((err: HttpErrorResponse) => {
+      if (err.status === 0)        console.error('Sin red o bloqueo CORS');
+      else if (err.status === 404) console.error('Recurso no encontrado');
+      else if (err.status >= 500)  console.error('Error del servidor');
+      // Re-emite el error para que quien se suscriba pueda reaccionar.
+      return throwError(() => err);
+    })
+  );
+}
+\end{lstlisting}
+
+\begin{nota}
+	Un \code{status} igual a \code{0} es la señal típica de un \textbf{bloqueo por CORS} o de ausencia de red: el navegador impidió leer la respuesta antes de que llegara un código real. Es el error que resolverá en el paso siguiente.
+\end{nota}
+
+\subsection*{Paso 7. Resolver CORS en desarrollo con un \emph{proxy}}
+
+Durante el desarrollo, la aplicación (\code{localhost:4200}) y la API (por ejemplo, \code{localhost:8080}) tienen orígenes distintos, por lo que el navegador bloquea la lectura si el servidor no envía las cabeceras CORS~\cite{mdncors}. La solución limpia en desarrollo es un \emph{proxy}: la CLI de Angular reenvía a la API todas las peticiones que empiezan por \code{/api}, de modo que, para el navegador, todo procede del mismo origen \code{localhost:4200} y no hay CORS que resolver.
+
+\begin{lstlisting}[caption={\texttt{proxy.conf.json} --- redirige /api hacia la API real.},label={lst:proxy}]
+{
+  "/api": {
+    "target": "http://localhost:8080",  // dirección real de la API
+    "secure": false,                     // permite destinos sin HTTPS válido
+    "changeOrigin": true                 // ajusta la cabecera Host al destino
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Arrancar el servidor con el proxy.},label={lst:proxyrun}]
+ng serve --proxy-config proxy.conf.json
+\end{lstlisting}
+
+\begin{concepto}{CORS en producción}
+	El \emph{proxy} es una comodidad de desarrollo, \textbf{no} una solución de producción. En producción, el servidor de la API debe habilitar CORS de forma explícita (enviando \code{Access-Control-Allow-Origin} con el origen autorizado) o bien servir el \emph{frontend} y la API bajo el mismo origen~\cite{mdncors,whatwgfetch}. Nunca desactive la seguridad del navegador para «resolver» un CORS.
+\end{concepto}
+
+\section{Buenas prácticas}
+
+Mantenga toda la lógica HTTP dentro de servicios y nunca en los componentes; use rutas relativas (\code{/api/...}) para que el proxy funcione y para no fijar el dominio en el código; tipe siempre las respuestas con interfaces; prefiera \code{httpResource} para lecturas que alimentan la vista y \code{HttpClient} para mutaciones; y trate los errores por familia de código de estado en lugar de suponer que la petición siempre tiene éxito.
+
+\section{Actividad entregable}
+
+Construya una pequeña aplicación Angular 22 que consuma una API REST pública o propia y que permita: (a)~listar una colección con \code{httpResource}, mostrando los estados de carga y error; (b)~crear un recurso con \code{POST}; (c)~eliminar un recurso con \code{DELETE} y refrescar la lista; y (d)~funcionar con un \code{proxy.conf.json} correctamente configurado. Entregue el repositorio con un \code{README} que indique las versiones de Node y Angular usadas (evidenciando \code{ng version}) y una captura del error de CORS antes de aplicar el proxy junto con la vista ya funcionando después de aplicarlo.
+
+\begin{center}
+\begin{tabular}{@{}p{6.5cm}c@{}}
+	\toprule
+	\textbf{Criterio de evaluación} & \textbf{Puntos} \\
+	\midrule
+	Configuración correcta del cliente HTTP y del proxy & 2.0 \\
+	Servicio con las operaciones GET/POST/DELETE tipadas & 3.0 \\
+	Lectura reactiva con \code{httpResource} (estados carga/error) & 2.5 \\
+	Manejo de errores por código de estado & 1.5 \\
+	Evidencia de diagnóstico y resolución del CORS & 1.0 \\
+	\midrule
+	\textbf{Total} & \textbf{10.0} \\
+	\bottomrule
+\end{tabular}
+\end{center}
+
+\printbibliography[title={Referencias}]
+
+\end{document}
