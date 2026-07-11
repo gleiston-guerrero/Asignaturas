@@ -171,6 +171,7 @@ Copyright (c) The PHP Group
 \vspace{2pt}
 Por navegador, crea un archivo con una sola instrucción que muestra toda la configuración de PHP; es útil para confirmar extensiones (como \texttt{pdo\_pgsql}).
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{htdocs/\allowbreak{}info.\allowbreak{}php  (carpeta servida por Apache)}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[info.php]
 \begin{lstlisting}[style=php]
 <?php
@@ -218,6 +219,7 @@ En esta sección recorrerás la base de PHP: cómo se escribe un script, cómo s
 \subsection{Estructura de un script y las etiquetas \textless{}?php ?\textgreater{}}
 El código PHP se escribe entre las etiquetas de apertura \texttt{\textless{}?\allowbreak{}php} y de cierre \texttt{?\allowbreak{}\textgreater{}}. Todo lo que esté fuera de ellas se envía al navegador tal cual (texto o HTML); todo lo que esté dentro se ejecuta. En archivos que son solo PHP, se recomienda omitir la etiqueta de cierre final para evitar espacios accidentales en la salida.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}primer\_script.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Primer script]
 \begin{lstlisting}[style=php]
 <?php
@@ -233,30 +235,43 @@ echo 'Hola, mundo';   // imprime texto
 La instrucción \texttt{echo} muestra texto. Cada sentencia termina en punto y coma (\texttt{;\allowbreak{}}). Mezclar HTML y PHP es habitual, pero más adelante verás por qué conviene separarlos en proyectos serios.
 
 \subsection{Variables, tipos y constantes}
-Una variable empieza por \texttt{\$} y no se declara con un tipo: PHP infiere el tipo del valor que le asignas (tipado dinámico). Aun así, PHP 8 permite y recomienda declarar tipos en funciones y propiedades para evitar errores. Los tipos básicos son enteros, flotantes, cadenas, booleanos, arrays, objetos y \texttt{null}.
+En PHP toda variable empieza por \texttt{\$} y \textbf{no se declara con un tipo delante}: escribir \texttt{int x;\allowbreak{}} (como en Java o C) no es válido en PHP. Solo asignas un valor y PHP deduce el tipo a partir de él. Esto se llama \textbf{tipado dinámico}, y significa además que una misma variable puede cambiar de tipo si le asignas otro valor.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}variables.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Variables y tipos]
 \begin{lstlisting}[style=php]
 <?php
-$nombre  = 'Ana';        // string
-$edad    = 21;           // int
-$nota    = 8.5;          // float
-$activo  = true;         // bool
-$nada    = null;         // null
+// En Java o C escribirias:  int x;  x = 5;
+// En PHP NO se pone el tipo delante: la variable lleva $ y
+// toma el tipo del valor que le asignes.
+$x = 5;            // PHP infiere: int
+$x = 'hola';       // ahora es string (el tipo puede cambiar)
 
-var_dump($edad);         // muestra tipo y valor: int(21)
-echo gettype($nota);     // 'double'
+$nombre = 'Ana';   // string
+$edad   = 21;      // int
+$nota   = 8.5;     // float
+$activo = true;    // bool
+$nada   = null;    // null
+
+var_dump($edad);     // int(21)   -> muestra tipo y valor
+echo gettype($nota); // 'double'  (asi llama PHP al float)
 
 const IVA = 0.15;        // constante (no cambia)
 define('SITIO', 'UTEQ'); // otra forma de constante
 \end{lstlisting}
 \end{cajacodigo}
 \vspace{2pt}
-Usa \texttt{var\_dump()} para inspeccionar una variable cuando algo no funcione: te dice su tipo y su contenido, lo que ahorra muchísimo tiempo de depuración. Las constantes, por convención, se escriben en mayúsculas.
+Que no haga falta declarar el tipo \textbf{no significa que PHP no tenga tipos}: sí los tiene (entero, flotante, cadena, booleano, array, objeto y \texttt{null}), pero el tipo pertenece al \textbf{valor}, no a la variable. Por eso la misma \texttt{\$x} pudo ser primero un entero y luego una cadena. Para ver el tipo real de algo usa \texttt{var\_dump()} o \texttt{gettype()}; observa que PHP llama \texttt{double} a los flotantes.
+
+\begin{cajatip}{¿Y el «int x;» de Java o C?}
+En PHP las variables sueltas nunca llevan el tipo delante. Aun así, el tipado existe y se \textbf{declara} en tres lugares concretos (y conviene usarlo): en los \textbf{parámetros y el retorno de las funciones} (apartado 3.7); en las \textbf{propiedades de una clase} ---\texttt{private int \$edad;\allowbreak{}}, desde PHP 7.4, lo más parecido a tu \texttt{int x;\allowbreak{}}, pero con \texttt{\$} y dentro de la clase---; y activando el \textbf{modo estricto} con \texttt{declare(strict\_types=\allowbreak{}1);\allowbreak{}} (apartado 3.8).\par
+\end{cajatip}
+Consejo práctico: usa \texttt{var\_dump()} para inspeccionar una variable cuando algo no funcione; te dice su tipo y su contenido, y ahorra muchísimo tiempo de depuración. Las constantes, por convención, se escriben en mayúsculas.
 
 \subsection{Cadenas: comillas simples vs dobles e interpolación}
 La diferencia entre comillas en PHP es idéntica en espíritu a la de Perl y es fuente de errores: las comillas dobles interpolan variables y secuencias de escape; las simples no. Esto importa especialmente con datos que contienen el símbolo \texttt{\$}, como ciertas contraseñas.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}cadenas.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Comillas e interpolacion]
 \begin{lstlisting}[style=php]
 <?php
@@ -302,6 +317,7 @@ La regla de oro: usa \texttt{=\allowbreak{}=\allowbreak{}=\allowbreak{}} y \text
 \subsection{Estructuras de control}
 Las estructuras de control deciden qué se ejecuta y cuántas veces. PHP ofrece las clásicas (\texttt{if}, \texttt{switch}, \texttt{for}, \texttt{while}, \texttt{foreach}) y, desde PHP 8, la expresión \texttt{match}, más segura que \texttt{switch} porque compara de forma estricta y devuelve un valor.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}control.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Condicionales y match]
 \begin{lstlisting}[style=php]
 <?php
@@ -324,6 +340,7 @@ echo $letra;
 \end{lstlisting}
 \end{cajacodigo}
 \vspace{2pt}
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}bucles.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Bucles]
 \begin{lstlisting}[style=php]
 <?php
@@ -343,6 +360,7 @@ foreach ($colores as $c) {
 \subsection{Arrays}
 El array es la estructura de datos más versátil de PHP: sirve como lista (índices numéricos) y como diccionario (claves de texto). Puede anidarse para representar datos complejos, como una fila de una tabla o una lista de filas.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}arrays.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Arrays]
 \begin{lstlisting}[style=php]
 <?php
@@ -373,6 +391,7 @@ Familiarízate con las funciones de array (\texttt{count}, \texttt{sort}, \textt
 \subsection{Funciones}
 Una función agrupa código reutilizable. En PHP 8 deberías declarar los tipos de los parámetros y del valor de retorno: el código se vuelve más claro y los errores se detectan antes. Existen también las funciones flecha, una sintaxis breve para funciones de una sola expresión.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}funciones.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Funciones tipadas y flecha]
 \begin{lstlisting}[style=php]
 <?php
@@ -398,6 +417,7 @@ Una buena función hace una sola cosa y la hace bien. Si una función crece dema
 \subsection{Tipado estricto}
 Por defecto, PHP convierte tipos de forma automática al llamar funciones. Si añades \texttt{declare(strict\_types=\allowbreak{}1);\allowbreak{}} como primera instrucción del archivo, PHP exige que los tipos coincidan exactamente, lo que evita conversiones silenciosas peligrosas. Es una práctica profesional muy recomendable.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}tipado.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Tipado estricto]
 \begin{lstlisting}[style=php]
 <?php
@@ -429,6 +449,7 @@ Pon en práctica los fundamentos:
 \begin{cajatip}{Solución del ejercicio 5 (promedio)}
 Una posible solución:\par
 \end{cajatip}
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}promedio.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Solución 3.9.5]
 \begin{lstlisting}[style=php]
 <?php
@@ -463,6 +484,7 @@ PHP pone los datos de la petición a tu disposición en unos arrays especiales l
 \subsection{Procesamiento de formularios (GET vs POST)}
 Un formulario HTML envía sus datos a un script PHP mediante GET o POST. Usa GET para consultas que se pueden repetir y compartir por URL (como una búsqueda); usa POST para acciones que modifican datos o que no deben quedar en la URL (como un registro o un inicio de sesión).
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}web/\allowbreak{}formulario.\allowbreak{}php  y  practica/\allowbreak{}web/\allowbreak{}procesar.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Formulario y procesamiento (POST)]
 \begin{lstlisting}[style=php]
 <!-- formulario.php : el formulario -->
@@ -482,6 +504,7 @@ Observa el operador \texttt{?\allowbreak{}?\allowbreak{}}: si la clave no existe
 \subsection{Validación y saneamiento de la entrada}
 Nunca confíes en los datos que llegan del navegador: pueden venir vacíos, mal formados o ser maliciosos. Valida (comprueba que cumplen las reglas) y sanea (elimina lo que sobra) en el servidor. PHP ofrece \texttt{filter\_var} con filtros listos para los casos más comunes.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}web/\allowbreak{}validar.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Validar con filter\_var]
 \begin{lstlisting}[style=php]
 <?php
@@ -514,6 +537,7 @@ La validación del navegador (atributos como \texttt{required}) es solo comodida
 \subsection{Escapado de la salida (anti-XSS)}
 El reverso de validar la entrada es escapar la salida. Si imprimes datos del usuario directamente en el HTML, un atacante podría inyectar etiquetas \texttt{\textless{}script\textgreater{}} y ejecutar código en el navegador de otras personas: es el ataque XSS (Cross-Site Scripting). La defensa es convertir los caracteres especiales en entidades con \texttt{htmlspecialchars}.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}web/\allowbreak{}escapar.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Escapar siempre la salida]
 \begin{lstlisting}[style=php]
 <?php
@@ -533,6 +557,7 @@ Aplica \texttt{htmlspecialchars} a TODO dato que provenga del usuario o de la ba
 \subsection{Generar HTML5 semántico desde PHP}
 PHP intercala lógica y HTML con naturalidad. Para que el resultado sea profesional, genera HTML5 semántico (con \texttt{header}, \texttt{nav}, \texttt{main}, \texttt{article}, \texttt{footer}) y separa, en lo posible, el cálculo de la presentación. Una técnica limpia es preparar los datos arriba y «pintar» abajo.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}web/\allowbreak{}pagina.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Datos arriba --- presentacion abajo]
 \begin{lstlisting}[style=php]
 <?php
@@ -595,6 +620,7 @@ La constante mágica \texttt{\_\_DIR\_\_} contiene la ruta de la carpeta del arc
 \subsection{Espacios de nombres (namespaces)}
 Cuando un proyecto tiene muchas clases, los nombres pueden chocar. Los espacios de nombres organizan el código en «carpetas lógicas» y evitan colisiones, igual que los paquetes en Java. Se declaran al inicio del archivo y se importan con \texttt{use}.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{src/\allowbreak{}Modelo/\allowbreak{}Estudiante.\allowbreak{}php  e  index.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Namespaces]
 \begin{lstlisting}[style=php]
 <?php
@@ -617,6 +643,7 @@ $e = new Estudiante('Ana', 'ana@uteq.edu.ec');
 \subsection{Composer y el autoload PSR-4}
 Composer es el gestor de dependencias de PHP (equivale a npm en Node o a Maven en Java). Además de instalar librerías de terceros, genera un «autoloader» que carga tus clases automáticamente al usarlas, siguiendo el estándar PSR-4, sin necesidad de \texttt{require} por cada clase.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{composer.\allowbreak{}json  (raiz del proyecto)}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[composer.json (autoload PSR-4)]
 \begin{lstlisting}[style=markup]
 {
@@ -636,6 +663,7 @@ Tras definirlo, ejecutas \texttt{composer dump-autoload} y, en tu \texttt{index.
 \subsection{Manejo de errores y excepciones}
 Los programas fallan: un archivo no existe, la base de datos no responde, un dato es inválido. PHP moderno gestiona estos casos con excepciones, que se lanzan con \texttt{throw} y se capturan con \texttt{try/\allowbreak{}catch}. Así separas el flujo normal del manejo de errores y evitas que el programa se caiga de forma descontrolada.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}org/\allowbreak{}errores.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[try / catch]
 \begin{lstlisting}[style=php]
 <?php
@@ -676,6 +704,7 @@ La programación orientada a objetos (OOP) organiza el código en torno a «obje
 \subsection{Clases, propiedades y métodos}
 Una clase es un molde que define qué datos (propiedades) y qué acciones (métodos) tendrán sus objetos. De una clase se crean instancias con \texttt{new}. Dentro de los métodos, \texttt{\$this} se refiere al objeto actual.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}poo/\allowbreak{}cuenta.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Clase basica]
 \begin{lstlisting}[style=php]
 <?php
@@ -703,6 +732,7 @@ La visibilidad (\texttt{public}, \texttt{private}, \texttt{protected}) controla 
 \subsection{Constructores y promoción de propiedades}
 El constructor (\texttt{\_\_construct}) se ejecuta al crear el objeto y sirve para inicializarlo. PHP 8 introdujo la «promoción de propiedades en el constructor»: declarar y asignar las propiedades directamente en los parámetros, lo que reduce muchísimo el código repetitivo.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}poo/\allowbreak{}estudiante.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Constructor con promocion (PHP 8)]
 \begin{lstlisting}[style=php]
 <?php
@@ -726,6 +756,7 @@ echo $e->ficha();
 \subsection{Herencia, interfaces, clases abstractas y traits}
 La OOP permite reutilizar y organizar comportamiento de varias maneras. La herencia (\texttt{extends}) crea una clase a partir de otra; las interfaces (\texttt{interface}/\texttt{implements}) definen un contrato que las clases deben cumplir; las clases abstractas mezclan ambas ideas; y los traits permiten compartir métodos entre clases no relacionadas.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}poo/\allowbreak{}figuras.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Interfaz y herencia]
 \begin{lstlisting}[style=php]
 <?php
@@ -759,6 +790,7 @@ Este ejemplo muestra el polimorfismo: distintos objetos responden al mismo méto
 \subsection{Enumeraciones (enums)}
 Desde PHP 8.1, las enumeraciones representan un conjunto fijo de valores posibles, como los estados de un pedido o los roles de un usuario. Sustituyen con ventaja a las constantes sueltas, porque el tipo garantiza que solo se usen valores válidos.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}poo/\allowbreak{}estado.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Enum (PHP 8.1)]
 \begin{lstlisting}[style=php]
 <?php
@@ -782,6 +814,7 @@ echo describir(Estado::Activo);
 \subsection{Inyección de dependencias (concepto)}
 Un objeto suele necesitar otros para trabajar (por ejemplo, un repositorio necesita una conexión a la base de datos). La inyección de dependencias consiste en pasarle esas colaboraciones desde fuera (normalmente por el constructor) en lugar de crearlas dentro. Así el código es más flexible y mucho más fácil de probar.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}poo/\allowbreak{}repositorio.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Inyeccion por constructor]
 \begin{lstlisting}[style=php]
 <?php
@@ -816,6 +849,7 @@ Como HTTP no recuerda al usuario entre peticiones, necesitamos un mecanismo para
 \subsection{Cookies}
 Una cookie es un pequeño dato que el servidor pide al navegador que guarde y reenvíe en las siguientes peticiones. Sirve, por ejemplo, para recordar una preferencia. Se crean con \texttt{setcookie} antes de enviar cualquier salida y se leen desde la superglobal \texttt{\$\_COOKIE}.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}sesiones/\allowbreak{}cookies.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Cookies]
 \begin{lstlisting}[style=php]
 <?php
@@ -831,6 +865,7 @@ echo "Tema actual: $tema";
 \subsection{Sesiones}
 La sesión es el mecanismo principal para mantener el estado. A diferencia de la cookie, los datos se guardan en el servidor y el navegador solo conserva un identificador. Se inicia con \texttt{session\_start()} (antes de cualquier salida) y se accede mediante la superglobal \texttt{\$\_SESSION}.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}sesiones/\allowbreak{}sesion.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Sesiones]
 \begin{lstlisting}[style=php]
 <?php
@@ -851,6 +886,7 @@ echo 'Hola, ' . htmlspecialchars($_SESSION['usuario'] ?? 'invitado');
 \subsection{Autenticación básica: un inicio de sesión seguro}
 Con sesiones y el hash de contraseñas puedes implementar un inicio de sesión. La regla esencial es: las contraseñas NUNCA se guardan en texto plano. Se almacena un «hash» generado con \texttt{password\_hash} (que usa BCrypt o Argon2) y se comprueba con \texttt{password\_verify}.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}sesiones/\allowbreak{}login.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Login con hash de contrasena]
 \begin{lstlisting}[style=php]
 <?php
@@ -908,6 +944,7 @@ PDO ofrece una interfaz común para distintos motores y, lo más importante, sop
 \subsection{La conexión}
 Para conectar necesitas un DSN (Data Source Name) que describe el motor, el host, el puerto y la base, más el usuario y la contraseña. Conviene configurar PDO para que lance excepciones ante los errores y para que devuelva las filas como arrays asociativos. Usaremos la misma base PostgreSQL de la guía de Perl.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}pdo/\allowbreak{}db.\allowbreak{}php  (igual que config/\allowbreak{}db.\allowbreak{}php del proyecto)}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Conexion con PDO (config/db.php)]
 \begin{lstlisting}[style=php]
 <?php
@@ -1033,9 +1070,21 @@ crud_php/
 \end{lstlisting}
 \end{cajacodigo}
 \vspace{2pt}
+\textbf{Cómo funciona el proyecto.} Todo entra por un único punto: \texttt{index.\allowbreak{}php}. Ese archivo primero incluye la conexión (\texttt{require config/\allowbreak{}db.\allowbreak{}php}), luego decide qué hacer según la petición y, al final, genera el HTML. La conexión vive aparte para no repetir credenciales y poder cambiarlas en un solo lugar. El recorrido de una petición es siempre el mismo:
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item El navegador pide \texttt{index.\allowbreak{}php} (al abrir la página, enviar el formulario o pulsar «Eliminar»).
+\item Si la petición es \textbf{POST}, valida los datos, inserta el estudiante y \textbf{redirige} a \texttt{index.\allowbreak{}php} (patrón PRG: recargar no reenvía el formulario).
+\item Si llega \texttt{?\allowbreak{}eliminar=\allowbreak{}ID} por \textbf{GET}, borra ese registro y vuelve a redirigir.
+\item En cualquier otro caso, consulta la lista de estudiantes y la muestra en una tabla.
+\item Cada dato se inserta con sentencias preparadas y se muestra escapado con \texttt{htmlspecialchars} (anti-inyección y anti-XSS).
+\end{enumerate}
+Así, con solo dos archivos —\texttt{config/\allowbreak{}db.\allowbreak{}php} e \texttt{index.\allowbreak{}php}— tienes una aplicación CRUD completa, segura y fácil de seguir. En los apartados 9.2 a 9.5 se detalla cada parte.
+
 \subsection{El esquema de la base}
 La tabla es la misma de la guía de Perl, de modo que puedes reutilizar la base \texttt{appweb2026ppa}. Ejecuta este SQL en psql o pgAdmin (o deja que lo cree tu propio script).
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{crud\_php/\allowbreak{}schema.\allowbreak{}sql}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[schema.sql]
 \begin{lstlisting}[style=sql]
 CREATE TABLE IF NOT EXISTS estudiantes (
@@ -1051,6 +1100,7 @@ CREATE TABLE IF NOT EXISTS estudiantes (
 \subsection{La conexión}
 Reutilizamos la conexión PDO de la sección 8, en su propio archivo, para incluirla donde haga falta. Tener la conexión en un solo lugar evita repetir credenciales y facilita los cambios.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{crud\_php/\allowbreak{}config/\allowbreak{}db.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[config/db.php]
 \begin{lstlisting}[style=php]
 <?php
@@ -1070,6 +1120,7 @@ try {
 \subsection{El punto de entrada: lógica}
 El archivo \texttt{index.\allowbreak{}php} hace tres cosas: si llega un POST, da de alta y redirige (PRG); si llega \texttt{?\allowbreak{}eliminar=\allowbreak{}ID}, borra y redirige; en cualquier otro caso, muestra el formulario y el listado. Primero, la parte de lógica, arriba del HTML.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{crud\_php/\allowbreak{}index.\allowbreak{}php  (parte superior:\allowbreak{} la logica)}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[index.php (lógica)]
 \begin{lstlisting}[style=php]
 <?php
@@ -1108,6 +1159,7 @@ $estudiantes = $pdo->query(
 \subsection{El punto de entrada: presentación}
 Debajo de la lógica va el HTML5, que «pinta» el formulario de alta y la tabla de estudiantes. Cada dato del usuario se muestra con \texttt{htmlspecialchars} para evitar XSS. Observa la sintaxis alternativa del \texttt{foreach} para mantener el HTML legible.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{crud\_php/\allowbreak{}index.\allowbreak{}php  (parte inferior:\allowbreak{} la presentacion)}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[index.php (HTML)]
 \begin{lstlisting}[style=php]
 <!DOCTYPE html>
@@ -1226,6 +1278,7 @@ Para aplicaciones grandes, los frameworks aportan estructura y resuelven lo repe
 \subsection{Pruebas con PHPUnit}
 Las pruebas automatizadas verifican que tu código hace lo que debe y que sigue funcionando tras los cambios. PHPUnit es el estándar en PHP. Empieza por probar tus funciones y clases puras (como una \texttt{Calculadora}), que son las más fáciles de testear.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{tests/\allowbreak{}CalculadoraTest.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Prueba con PHPUnit (idea)]
 \begin{lstlisting}[style=php]
 <?php
@@ -1296,6 +1349,7 @@ Observa el matiz: en Laravel todo está listo desde el inicio; en Symfony decide
 \subsection{Comparativa 2: una ruta y un controlador}
 El enrutamiento asocia una URL con un método de un controlador, que es el equivalente a lo que en el proyecto integrador hacías con \texttt{if (\$\_SERVER['REQUEST\_METHOD'] .\allowbreak{}.\allowbreak{}.\allowbreak{})}. Laravel define las rutas en un archivo central; Symfony las declara como atributos sobre el propio método.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{routes/\allowbreak{}web.\allowbreak{}php  y  app/\allowbreak{}Http/\allowbreak{}Controllers/\allowbreak{}EstudianteController.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Laravel --- ruta y controlador]
 \begin{lstlisting}[style=php]
 <?php
@@ -1315,6 +1369,7 @@ class EstudianteController extends Controller {
 \end{lstlisting}
 \end{cajacodigo}
 \vspace{2pt}
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{src/\allowbreak{}Controller/\allowbreak{}EstudianteController.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Symfony --- ruta y controlador]
 \begin{lstlisting}[style=php]
 <?php
@@ -1341,6 +1396,7 @@ En ambos, el resultado es el mismo: la URL \texttt{/\allowbreak{}estudiantes} ej
 \subsection{Comparativa 3: el modelo y el acceso a datos (ORM)}
 Aquí está una de las mayores diferencias de estilo. Ambos usan un ORM para no escribir SQL, pero con enfoques distintos: Laravel usa Eloquent, basado en el patrón Active Record (el propio objeto sabe guardarse); Symfony usa Doctrine, basado en Data Mapper (un gestor aparte se encarga de persistir los objetos).
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{app/\allowbreak{}Models/\allowbreak{}Estudiante.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Laravel --- modelo Eloquent (Active Record)]
 \begin{lstlisting}[style=php]
 <?php
@@ -1360,6 +1416,7 @@ $e->delete();                            // eliminar
 \end{lstlisting}
 \end{cajacodigo}
 \vspace{2pt}
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{src/\allowbreak{}Entity/\allowbreak{}Estudiante.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Symfony --- entidad Doctrine (Data Mapper)]
 \begin{lstlisting}[style=php]
 <?php
@@ -1386,6 +1443,7 @@ $em->remove($e); $em->flush();     // eliminar
 \subsection{Comparativa 4: las plantillas (vistas)}
 Para generar HTML, cada framework trae su motor de plantillas: Blade en Laravel y Twig en Symfony. La gran ventaja frente al HTML incrustado que viste en el proyecto integrador es que \textbf{ambos escapan la salida por defecto}: la defensa anti-XSS deja de ser una tarea manual y pasa a ser automática.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{resources/\allowbreak{}views/\allowbreak{}estudiantes/\allowbreak{}index.\allowbreak{}blade.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Laravel --- plantilla Blade]
 \begin{lstlisting}[style=markup]
 {{-- resources/views/estudiantes/index.blade.php --}}
@@ -1398,6 +1456,7 @@ Para generar HTML, cada framework trae su motor de plantillas: Blade en Laravel 
 \end{lstlisting}
 \end{cajacodigo}
 \vspace{2pt}
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{templates/\allowbreak{}estudiantes/\allowbreak{}index.\allowbreak{}html.\allowbreak{}twig}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Symfony --- plantilla Twig]
 \begin{lstlisting}[style=markup]
 {# templates/estudiantes/index.html.twig #}
@@ -1427,6 +1486,7 @@ Estudiante::create($datos);   // solo se llega aqui si es valido
 \end{lstlisting}
 \end{cajacodigo}
 \vspace{2pt}
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{src/\allowbreak{}Entity/\allowbreak{}Estudiante.\allowbreak{}php  (atributos de validacion)}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Symfony --- validacion por atributos]
 \begin{lstlisting}[style=php]
 <?php
@@ -1567,6 +1627,7 @@ Aquí tienes soluciones comentadas de algunos ejercicios del banco para que cont
 \subsection{Vocales en una cadena (básico 12.1.2)}
 Recorremos la cadena y contamos los caracteres que son vocales. Convertimos a minúsculas para no distinguir mayúsculas.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}soluciones/\allowbreak{}vocales.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Solución: contar vocales]
 \begin{lstlisting}[style=php]
 <?php
@@ -1587,6 +1648,7 @@ echo contarVocales('Murcielago');   // 5
 \subsection{Pares con array\_filter (básico 12.1.4)}
 \texttt{array\_filter} conserva los elementos para los que la función devuelve verdadero. Usamos una función flecha que comprueba el resto de la división entre dos.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}soluciones/\allowbreak{}pares.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Solución: números pares]
 \begin{lstlisting}[style=php]
 <?php
@@ -1599,6 +1661,7 @@ print_r(array_values($pares));   // [2, 4, 6]
 \subsection{API JSON de estudiantes (avanzado 12.3.1)}
 Una API devuelve datos en lugar de HTML. Consultamos con PDO, fijamos la cabecera de tipo JSON y codificamos el array con \texttt{json\_encode}.
 
+{\small\color{phpazulo}\textbf{Crear en:}~}\texttt{practica/\allowbreak{}soluciones/\allowbreak{}api.\allowbreak{}php}\par\nobreak\vspace{-1pt}
 \begin{cajacodigo}[Solución: API JSON]
 \begin{lstlisting}[style=php]
 <?php

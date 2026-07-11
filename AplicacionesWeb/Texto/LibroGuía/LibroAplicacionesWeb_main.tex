@@ -1,0 +1,494 @@
+% =====================================================================
+%  APLICACIONES WEB --- LIBRO COMPENDIO v4
+%  Universidad Tecnica Estatal de Quevedo (UTEQ)
+%  Facultad de Ciencias de la Computacion y Diseno Digital
+%  Ingenieria de Software  ---  5to Nivel  ---  PPA 2026-2027
+%
+%  Docente: Dr. Gleiston Ciceron Guerrero Ulloa, Ph.D.
+%  Proyecto conductor: BiblioUTEQ (Sistema de Gestion de Biblioteca)
+%
+%  Compilacion:
+%     pdflatex main.tex
+%     bibtex   main
+%     pdflatex main.tex
+%     pdflatex main.tex
+% =====================================================================
+\documentclass[11pt,a4paper,twoside,openright]{book}
+
+% ---------- Codificacion y tipografias ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage{microtype}
+\usepackage{ragged2e}
+
+% ---------- Geometria y tablas ----------
+\usepackage[a4paper,inner=2.5cm,outer=2.2cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+% ---------- Graficos y color ----------
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc,shadows}
+
+% ---------- Cajas y listados ----------
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins,breakable,listings,xparse}
+
+% ---------- Titulos, cabeceras y enlaces ----------
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{epigraph}
+\usepackage[hidelinks,pdfusetitle]{hyperref}
+\usepackage{xurl}
+\usepackage{bookmark}
+\usepackage{caption}
+\usepackage{csquotes}
+
+% ---------- Metadatos del PDF ----------
+\hypersetup{%
+    pdftitle    = {Aplicaciones Web --- Compendio (UTEQ, PPA 2026-2027)},
+    pdfauthor   = {Gleiston Ciceron Guerrero Ulloa, Ph.D.},
+    pdfsubject  = {Ingenieria de Software - Aplicaciones Web},
+    pdfkeywords = {aplicaciones web, HTML5, CSS3, JavaScript, PHP, Java,
+                   Spring Boot, ASP.NET Core, JWT, PostgreSQL, Angular,
+                   UTEQ, BiblioUTEQ}
+}
+
+% =====================================================================
+%  PALETA INSTITUCIONAL UTEQ + PALETAS DE CONTENIDO
+% =====================================================================
+\definecolor{uteqverde}{HTML}{006633}
+\definecolor{uteqverdeo}{HTML}{0B3D24}
+\definecolor{uteqoro}{HTML}{B8860B}
+\definecolor{uteqgold}{HTML}{CC9900}
+\definecolor{verdeclaro}{HTML}{E3F0E8}
+\definecolor{goldclaro}{HTML}{FBF2D9}
+\definecolor{grisfila}{HTML}{F4F6F5}
+\definecolor{textogris}{HTML}{383A42}
+\definecolor{tinta}{HTML}{1F2933}
+
+% Paleta secundaria (cajas de contenido)
+\definecolor{codbg}{HTML}{F5F6F5}
+\definecolor{numlin}{HTML}{AAAAAA}
+\definecolor{kw}{HTML}{0057AE}
+\definecolor{str}{HTML}{C41A16}
+\definecolor{com}{HTML}{717171}
+\definecolor{tipbg}{HTML}{EAF2EC}
+\definecolor{warnbg}{HTML}{FBF0D8}
+\definecolor{dangerbg}{HTML}{FBE9E7}
+\definecolor{probbg}{HTML}{FCF3E8}
+\definecolor{defibg}{HTML}{ECEEF7}
+\definecolor{ejembg}{HTML}{ECF4FC}
+\definecolor{ejerbg}{HTML}{F4EEF7}
+\definecolor{histbg}{HTML}{FAF6EC}
+
+% =====================================================================
+%  ESTILOS DE LISTADOS DE CODIGO
+%  Regla anti-bug: no incluir backgroundcolor en style; el color de
+%  fondo lo controla la caja tcolorbox contenedora.
+% =====================================================================
+\lstset{%
+    basicstyle       = \footnotesize\ttfamily\color{tinta},
+    keywordstyle     = \color{kw}\bfseries,
+    stringstyle      = \color{str},
+    commentstyle     = \color{com}\itshape,
+    numberstyle      = \tiny\color{numlin},
+    numbers          = left,
+    numbersep        = 7pt,
+    showstringspaces = false,
+    breaklines       = true,
+    breakatwhitespace= false,
+    breakindent      = 14pt,
+    columns          = fullflexible,
+    keepspaces       = true,
+    upquote          = true,
+    tabsize          = 4,
+    frame            = none,
+    literate         = {\_}{{\char`\_}}{1}
+}
+
+\lstdefinestyle{java}{language=Java,
+    morekeywords={var,record,sealed,permits,yield,requires,exports,module,non-sealed}}
+\lstdefinestyle{sql}{language=SQL,
+    morekeywords={SERIAL,VARCHAR,TIMESTAMP,DEFAULT,NOW,BOOLEAN,IDENTITY,
+                  REFERENCES,GENERATED,ALWAYS,UNIQUE,NUMERIC,DATE,TEXT}}
+\lstdefinestyle{xml}{language=XML}
+\lstdefinestyle{html}{language=HTML}
+\lstdefinestyle{css}{language=CSS}
+\lstdefinestyle{php}{language=PHP,
+    morekeywords={declare,strict_types,namespace,use,readonly,enum,mixed}}
+\lstdefinestyle{perl}{language=Perl}
+\lstdefinestyle{csharp}{language=[Sharp]C,
+    morekeywords={var,async,await,record,init,nameof,using,namespace}}
+\lstdefinestyle{python}{language=Python,
+    morekeywords={match,case,None,True,False,async,await}}
+\lstdefinestyle{typescript}{language=Java,
+    morekeywords={interface,type,enum,let,const,readonly,implements,extends,
+                  export,import,from,as,any,unknown,never,null,undefined,
+                  Promise,async,await}}
+\lstdefinestyle{javascript}{language=Java,
+    morekeywords={let,const,async,await,of,in,export,import,from,default,
+                  null,undefined,typeof,instanceof}}
+\lstdefinestyle{shell}{language=bash,
+    morekeywords={docker,git,npm,mvn,pdflatex,psql,curl,ng,dotnet,composer}}
+\lstdefinestyle{markup}{}
+
+% =====================================================================
+%  CAJAS TCOLORBOX  (breakable en el libro para bloques largos)
+% =====================================================================
+
+% ---------- Caja de codigo (envuelve lstlisting) ----------
+\newtcolorbox{cajacodigo}[1][]{%
+    enhanced, breakable,
+    skin first        = enhancedfirst,
+    skin middle       = enhancedmiddle,
+    skin last         = enhancedlast,
+    colback           = codbg,
+    colframe          = uteqverde!55,
+    boxrule           = 0.4pt,
+    arc               = 2pt,
+    left              = 4pt, right = 6pt,
+    top               = 3pt, bottom= 3pt,
+    boxsep            = 2pt,
+    title             = #1,
+    colbacktitle      = uteqverde,
+    coltitle          = white,
+    fonttitle         = \bfseries\small,
+    attach boxed title to top left = {xshift=6pt,yshift=-2pt},
+    boxed title style = {colback=uteqverde, arc=1pt}
+}
+
+% ---------- Caja de problema ----------
+\newtcolorbox{cajaproblema}[1]{%
+    enhanced, breakable,
+    skin first        = enhancedfirst,
+    skin middle       = enhancedmiddle,
+    skin last         = enhancedlast,
+    colback           = probbg,
+    colframe          = uteqoro!70,
+    boxrule           = 0.8pt,
+    arc               = 2pt,
+    left              = 10pt, right = 8pt,
+    top               = 6pt, bottom = 6pt,
+    fonttitle         = \bfseries,
+    title             = #1,
+    coltitle          = white,
+    attach boxed title to top left = {xshift=8pt,yshift=-3pt},
+    boxed title style = {colback=uteqoro,arc=1pt}
+}
+
+% ---------- Caja de definicion ----------
+\newtcolorbox{cajadefinicion}[1]{%
+    enhanced, breakable,
+    skin first        = enhancedfirst,
+    skin middle       = enhancedmiddle,
+    skin last         = enhancedlast,
+    colback           = defibg,
+    colframe          = defibg,
+    borderline west   = {3pt}{0pt}{uteqverdeo},
+    left              = 10pt, right = 8pt,
+    top               = 6pt, bottom = 6pt,
+    fonttitle         = \bfseries\color{uteqverdeo},
+    title             = #1,
+    coltitle          = uteqverdeo
+}
+
+% ---------- Caja de ejemplo ----------
+\newtcolorbox{cajaejemplo}[1]{%
+    enhanced, breakable,
+    skin first        = enhancedfirst,
+    skin middle       = enhancedmiddle,
+    skin last         = enhancedlast,
+    colback           = ejembg,
+    colframe          = ejembg,
+    borderline west   = {3pt}{0pt}{kw},
+    left              = 10pt, right = 8pt,
+    top               = 6pt, bottom = 6pt,
+    fonttitle         = \bfseries\color{kw},
+    title             = #1,
+    coltitle          = kw
+}
+
+% ---------- Caja de ejercicio ----------
+\newtcolorbox{cajaejercicio}[1]{%
+    enhanced, breakable,
+    skin first        = enhancedfirst,
+    skin middle       = enhancedmiddle,
+    skin last         = enhancedlast,
+    colback           = ejerbg,
+    colframe          = ejerbg,
+    borderline west   = {3pt}{0pt}{Purple},
+    left              = 10pt, right = 8pt,
+    top               = 6pt, bottom = 6pt,
+    fonttitle         = \bfseries\color{Purple},
+    title             = #1,
+    coltitle          = Purple
+}
+
+% ---------- Caja de historia (contexto historico) ----------
+\newtcolorbox{cajahistoria}[1]{%
+    enhanced, breakable,
+    skin first        = enhancedfirst,
+    skin middle       = enhancedmiddle,
+    skin last         = enhancedlast,
+    colback           = histbg,
+    colframe          = histbg,
+    borderline west   = {3pt}{0pt}{uteqoro},
+    left              = 10pt, right = 8pt,
+    top               = 6pt, bottom = 6pt,
+    fonttitle         = \bfseries\color{uteqverdeo},
+    title             = #1,
+    coltitle          = uteqverdeo
+}
+
+% ---------- Caja de aviso corto (tip) ----------
+\newtcolorbox{cajatip}[1]{%
+    enhanced, breakable=false,
+    colback           = tipbg,
+    colframe          = tipbg,
+    borderline west   = {3pt}{0pt}{uteqverde},
+    left              = 10pt, right = 8pt,
+    top               = 6pt, bottom = 6pt,
+    fonttitle         = \bfseries\color{uteqverde},
+    title             = #1,
+    coltitle          = uteqverde
+}
+
+% ---------- Caja de advertencia ----------
+\newtcolorbox{cajawarn}[1]{%
+    enhanced, breakable=false,
+    colback           = warnbg,
+    colframe          = warnbg,
+    borderline west   = {3pt}{0pt}{uteqoro},
+    left              = 10pt, right = 8pt,
+    top               = 6pt, bottom = 6pt,
+    fonttitle         = \bfseries\color{uteqoro},
+    title             = #1,
+    coltitle          = uteqoro
+}
+
+% ---------- Caja de peligro ----------
+\newtcolorbox{cajadanger}[1]{%
+    enhanced, breakable=false,
+    colback           = dangerbg,
+    colframe          = dangerbg,
+    borderline west   = {3pt}{0pt}{red!60!black},
+    left              = 10pt, right = 8pt,
+    top               = 6pt, bottom = 6pt,
+    fonttitle         = \bfseries\color{red!60!black},
+    title             = #1,
+    coltitle          = red!60!black
+}
+
+% =====================================================================
+%  FORMATO DE TITULOS  (parte, capitulo, seccion, subseccion...)
+% =====================================================================
+\titleformat{\part}[display]
+    {\normalfont\Huge\bfseries\filcenter\color{uteqverde}}
+    {\partname~\thepart}
+    {20pt}
+    {\Huge}
+
+\titleformat{\chapter}[display]
+    {\normalfont\Huge\bfseries\color{uteqverde}}
+    {\filleft\Large\MakeUppercase{\chaptertitlename}~\thechapter}
+    {1ex}
+    {\titlerule\vspace{1ex}\filright}
+
+\titleformat{\section}
+    {\color{uteqverde}\Large\bfseries}
+    {\thesection}{0.6em}{}
+\titleformat{\subsection}
+    {\color{uteqverdeo}\large\bfseries}
+    {\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}
+    {\color{tinta}\normalsize\bfseries}
+    {\thesubsubsection}{0.6em}{}
+
+% Caption de tablas y figuras
+\captionsetup[table]{name=Tabla,labelfont=bf,textfont=it,skip=4pt}
+\captionsetup[figure]{name=Figura,labelfont=bf,textfont=it,skip=4pt}
+
+% =====================================================================
+%  ENCABEZADO Y PIE  (fancyhdr, style book)
+% =====================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\footnotesize\color{textogris}\nouppercase{\leftmark}}
+\fancyhead[RO]{\footnotesize\color{textogris}\nouppercase{\rightmark}}
+\fancyfoot[LE,RO]{\footnotesize\color{textogris}\thepage}
+\fancyfoot[RE,LO]{\footnotesize\color{textogris}Aplicaciones Web --- UTEQ}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{%
+    \fancyhf{}
+    \fancyfoot[LE,RO]{\footnotesize\color{textogris}\thepage}
+    \fancyfoot[RE,LO]{\footnotesize\color{textogris}Aplicaciones Web --- UTEQ}
+    \renewcommand{\headrulewidth}{0pt}
+}
+
+% =====================================================================
+%  MICROTIPOGRAFIA Y ESPACIADO
+% =====================================================================
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\raggedbottom
+\renewcommand{\arraystretch}{1.20}
+\setlength{\tabcolsep}{4pt}
+
+% =====================================================================
+%  COMANDOS UTILES DEL LIBRO
+% =====================================================================
+% \ruta{org.uteq.biblioteq.services.LibroService.java} --> comentario corto
+\newcommand{\ruta}[1]{%
+    {\small\color{uteqverdeo}\textbf{Crear en:}~}\texttt{#1}\par\nobreak\vspace{-1pt}%
+}
+
+% \termino{palabra} --> resalta un termino tecnico en el flujo del texto
+\newcommand{\termino}[1]{\textbf{\textcolor{uteqverdeo}{#1}}}
+
+% \codigo{Clase} --> monoespaciado con quiebre para nombres largos
+\newcommand{\codigo}[1]{\texttt{\allowbreak{}#1}}
+
+% Numeracion de listados por capitulo
+\renewcommand{\lstlistingname}{Listado}
+\renewcommand{\lstlistlistingname}{Lista de listados}
+
+% =====================================================================
+%  BIBLIOGRAFIA
+% =====================================================================
+\usepackage[backend=bibtex,style=numeric,sorting=none,maxbibnames=99]{biblatex}
+\addbibresource{Proyecto.bib}
+
+% =====================================================================
+%  INICIO DEL DOCUMENTO
+% =====================================================================
+\begin{document}
+\color{textogris}
+
+% ---------- PORTADA ----------
+\pagestyle{empty}
+\begin{titlepage}
+    \vspace*{0.8cm}
+    \begin{center}
+        {\color{uteqverde}\bfseries\Large UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}\\[4pt]
+        {\color{textogris}\small Facultad de Ciencias de la Computaci\'on y Dise\~no Digital}\\[2pt]
+        {\color{textogris}\small Ingenier\'ia de Software}\\[3cm]
+
+        {\color{tinta}\bfseries\fontsize{40}{44}\selectfont Aplicaciones Web}\\[8pt]
+        {\color{uteqoro}\rule{0.7\linewidth}{2.4pt}}\\[16pt]
+
+        {\color{uteqverdeo}\Large\itshape del navegador al servidor,\\[2pt]
+        del prototipo al despliegue}\\[3cm]
+
+        {\color{textogris}\normalsize
+            Un compendio construido alrededor de un proyecto real:\\[2pt]
+            \textbf{BiblioUTEQ} --- Sistema de Gesti\'on de Biblioteca Universitaria}\\[3.4cm]
+    \end{center}
+
+    \begin{flushleft}
+        \textbf{Autor:} \, Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[3pt]
+        \textbf{Asignatura:} \, Aplicaciones Web \, (5.\textsuperscript{to} nivel, 190 h, 5 cr\'editos)\\[3pt]
+        \textbf{Per\'iodo:} \, PPA 2026--2027\\[3pt]
+        \textbf{Versi\'on:} \, 4.0 \, (compendio modular, 4 unidades)
+    \end{flushleft}
+    \vfill
+    \begin{center}
+        {\color{textogris}\small Quevedo --- Los R\'ios --- Ecuador}
+    \end{center}
+\end{titlepage}
+\cleardoublepage
+
+% ---------- COLOFON EDITORIAL / LICENCIA ----------
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{flushleft}\small\color{textogris}
+    \textbf{Aplicaciones Web} --- Compendio para Ingenier\'ia de Software (UTEQ).\par
+    Copyright \copyright~2026 Gleiston Cicer\'on Guerrero Ulloa. Todos los derechos reservados para fines editoriales; distribuci\'on interna con fines docentes en la Universidad T\'ecnica Estatal de Quevedo.\par
+    Las marcas comerciales mencionadas (Java, Spring, Angular, PostgreSQL, entre otras) pertenecen a sus respectivos titulares y se citan con prop\'osito acad\'emico.\par
+    \vspace{4pt}
+    Compuesto en \LaTeX{} con la clase \texttt{book}, listados con \texttt{listings} y cajas tem\'aticas con \texttt{tcolorbox}. Bibliograf\'ia gestionada con Bib\LaTeX{}.\par
+\end{flushleft}
+\vspace*{\fill}
+\cleardoublepage
+
+% ---------- PROLOGO ----------
+\pagestyle{plain}
+\pagenumbering{roman}
+\chapter*{Pr\'ologo}
+\addcontentsline{toc}{chapter}{Pr\'ologo}
+
+\epigraph{«Ense\~nar a construir es ense\~nar a decidir; la web es el terreno donde las decisiones son visibles al instante.»}{--- \textit{Nota del autor}}
+
+Este libro naci\'o de una necesidad concreta del aula. Durante varios per\'iodos, el aprendiz de Ingenier\'ia de Software transitaba por HTML5, CSS3 y JavaScript en cuatro semanas, saltaba a un lenguaje del servidor sin puente conceptual, y llegaba al proyecto final sin un hilo que conectara todo lo estudiado. El material estaba ah\'i, disperso en gu\'ias sueltas; faltaba un tejido que lo uniera.
+
+El compendio que el lector tiene entre manos ofrece ese tejido en dos direcciones. Primero, un \termino{proyecto conductor} ---BiblioUTEQ, un sistema de gesti\'on de biblioteca universitaria--- atraviesa las cuatro unidades: la Unidad I dise\~na su interfaz, la Unidad II construye su servidor, la Unidad III lo pone a hablar con la base de datos siguiendo patrones, y la Unidad IV lo integra en una arquitectura completa que se despliega en Docker y se defiende como Proyecto de Fin de Curso (PFC). Cada cap\'itulo agrega piezas al mismo repositorio; nada queda hu\'erfano.
+
+Segundo, cada tema se presenta con el mismo m\'etodo pr\'actico: primero se plantea el problema concreto que se va a resolver ---por qu\'e le duele al desarrollador, qu\'e s\'intoma manifiesta---; despu\'es se explica la t\'ecnica que lo resuelve, con la referencia bibliogr\'afica que la respalda; despu\'es se muestra un ejemplo peque\~no pero completo con su c\'odigo, y al final se explica c\'omo esa pieza encaja en BiblioUTEQ. La caja de \textit{Problema} abre; la caja de \textit{Definici\'on} explica; el \textit{Listado} muestra; el texto siguiente cierra explicando c\'omo se resolvi\'o.
+
+Al cierre de cada unidad, una \termino{gu\'ia de entrega del PFC} indica exactamente qu\'e piezas debe subir el equipo al repositorio de GitHub, con qu\'e \'etiqueta Git, en qu\'e formato, y bajo qu\'e r\'ubrica ser\'a evaluado. Las entregas est\'an dise\~nadas para acumular evidencia con la robustez requerida por revistas cient\'ificas de alto impacto, sin distraer con esa meta al equipo que las produce; para el aprendiz, el objetivo declarado es entregar un sistema que funciona, y esa es la \'unica meta visible.
+
+\vspace{6pt}
+\begin{flushright}
+    \itshape Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[2pt]
+    Quevedo, julio de 2026
+\end{flushright}
+\cleardoublepage
+
+% ---------- TABLAS DE CONTENIDO, FIGURAS Y LISTADOS ----------
+\pdfbookmark[0]{Contenido}{toc}
+\tableofcontents
+\cleardoublepage
+
+\listoffigures
+\cleardoublepage
+
+\listoftables
+\cleardoublepage
+
+\lstlistoflistings
+\cleardoublepage
+
+% =====================================================================
+%  CUERPO DEL LIBRO
+% =====================================================================
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ---------- UNIDAD 0: Encuadre y proyecto conductor ----------
+\input{libro_unidad_0}
+
+% ---------- UNIDAD I: Fundamentos del cliente web ----------
+\input{libro_unidad_1}
+
+% ---------- UNIDAD II: Tecnologias del lado del servidor ----------
+\input{libro_unidad_2}
+
+% ---------- UNIDAD III: Datos y patrones arquitectonicos ----------
+\input{libro_unidad_3}
+
+% ---------- UNIDAD IV: MVC, servicios web y despliegue ----------
+\input{libro_unidad_4}
+
+% =====================================================================
+%  BIBLIOGRAFIA
+% =====================================================================
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliograf\'ia}
+\printbibliography[heading=bibnumbered,title={Bibliograf\'ia}]
+
+\end{document}

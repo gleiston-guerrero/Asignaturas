@@ -1,0 +1,312 @@
+\documentclass[11pt,a4paper]{article}
+\input{preamble_ingreq}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textcolor{uteqverde}{Ingenier\'ia de Requisitos --- Cuarto nivel --- PPA 2026-2027}}
+\rhead{\footnotesize\textcolor{uteqverde}{PFC --- Gu\'ia de la Entrega Final}}
+\rfoot{\thepage}
+\lfoot{\footnotesize UTEQ --- FCCDD --- Software}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\hypersetup{
+    pdftitle={Guia de la Entrega Final del PFC --- Ingenieria de Requisitos},
+    pdfauthor={Dr. Gleiston Guerrero Ulloa},
+    pdfsubject={Entrega Final del Proyecto Fin de Curso},
+    pdfkeywords={PFC, Ingenieria de Requisitos, INCOSE, FAIR, Zenodo, ORCID, publicacion JCR, UTEQ}
+}
+
+\begin{document}
+
+\begin{center}
+    \vspace*{1.2cm}
+    {\Large\bfseries\textcolor{uteqverde}{UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}}\\[4pt]
+    {\large Facultad de Ciencias de la Computaci\'on y Dise\~no Digital}\\[2pt]
+    {\large Carrera de Ingenier\'ia de Software}\\[22pt]
+
+    {\LARGE\bfseries Gu\'ia de la Entrega Final del}\\[6pt]
+    {\LARGE\bfseries Proyecto Fin de Curso (PFC)}\\[16pt]
+
+    {\large Ingenier\'ia de Requisitos --- Cuarto nivel}\\[2pt]
+    {\large Per\'iodo Acad\'emico Presencial 2026-2027}\\[22pt]
+
+    \begin{tcolorbox}[colback=uteqverde!8,colframe=uteqverde,arc=3pt,
+                      width=0.88\textwidth,boxrule=0.8pt]
+        \centering
+        \textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[2pt]
+        \texttt{gguerrero@uteq.edu.ec}\\[6pt]
+        \textbf{Etiqueta objetivo:} \texttt{v1.0.0}\\[2pt]
+        \textbf{Fecha de cierre:} viernes de la semana 16\\[2pt]
+        \textbf{Continua desde:} Entrega 3 (\texttt{v0.8.0-rc}, semana 12)\\[2pt]
+        \textbf{Referencia de calidad:} \texttt{IngReq-Modelo.pdf} completo (109 p\'aginas)
+    \end{tcolorbox}
+
+    \vfill
+    {\small Quevedo --- Los R\'ios --- Ecuador}\\[2pt]
+    {\small 2026}
+\end{center}
+
+\newpage
+\tableofcontents
+\newpage
+
+% =====================================================================
+%  1. NATURALEZA
+% =====================================================================
+\section{Naturaleza y ubicaci\'on temporal de la Entrega Final}
+
+La Entrega Final es el cierre del Proyecto Fin de Curso. Se cierra el viernes de la semana 16 con la etiqueta \texttt{v1.0.0} sobre el repositorio p\'ublico del equipo. Este hito consolida el trabajo de las tres entregas previas en un artefacto \emph{estable, publicable y verificable por terceros sin comunicaci\'on con los autores originales}. La estabilidad se garantiza mediante m\'etricas cuantitativas de calidad de requisitos calculadas conforme al INCOSE Guide to Writing Requirements v4~\cite{incose2023requirements}; la publicabilidad se garantiza mediante los est\'andares FAIR de gesti\'on de datos de investigaci\'on~\cite{wilkinson2016fair}; y la verificabilidad se garantiza mediante los est\'andares emp\'iricos de investigaci\'on en ingenier\'ia del software formulados por Ralph y otros~\cite{ralph2021empirical}.
+
+Esta entrega adem\'as prepara al equipo para una eventual publicaci\'on en revistas de alto impacto (JCR Q1 o Q2) o en conferencias de la disciplina. Aunque el env\'io a una revista particular es una decisi\'on del equipo y del docente en conjunto y no forma parte estricta de la evaluaci\'on, el PFC debe quedar en un estado que \emph{permita} esa acci\'on con las m\'inimas fricciones posibles. Los objetivos de revista compatibles con el tipo de trabajo producido incluyen \emph{Requirements Engineering Journal} (Springer), \emph{IEEE Transactions on Software Engineering} (TSE), \emph{ACM Transactions on Software Engineering and Methodology} (TOSEM) y \emph{Empirical Software Engineering} (Springer).
+
+\begin{cajadefinicion}{Cinco pilares de la Entrega Final}
+\begin{enumerate}
+    \item \textbf{Estabilidad}: documento acad\'emico integrado \texttt{v1.0.0} sin observaciones pendientes.
+    \item \textbf{Calidad medida}: m\'etricas INCOSE v4 aplicadas al conjunto y a los requisitos individuales.
+    \item \textbf{Reproducibilidad}: cualquier lector puede reconstruir el proceso de elicitaci\'on y an\'alisis desde el repositorio.
+    \item \textbf{FAIR y \emph{deposit}}: DOI Zenodo por separado para software y dataset, ORCID de todos los autores, CITATION.cff v1.2.0.
+    \item \textbf{Defensa oral p\'ublica}: presentaci\'on ante docente, pares y \emph{stakeholders} entrevistados.
+\end{enumerate}
+\end{cajadefinicion}
+
+% =====================================================================
+%  2. BLOQUE A --- CONSOLIDACION
+% =====================================================================
+\section{Bloque A --- Consolidaci\'on del documento acad\'emico}
+
+\subsection{Estructura IMRaD estable}
+
+El documento acad\'emico integrado (\texttt{docs/entregas/documento-academico/main.tex}) alcanza en esta entrega su versi\'on estable. La estructura IMRaD es la misma que la de la Entrega 3, pero con las siguientes exigencias adicionales:
+
+\begin{itemize}
+    \item \textbf{Resumen estable}: revisado por un tercero fuera del equipo (por ejemplo, un docente distinto al Product Owner institucional).
+    \item \textbf{Resumen en ingl\'es}: no traducci\'on autom\'atica; deber\'a haber pasado revisi\'on cr\'itica de al menos un lector angl\'ofono o un docente del \'area de ingl\'es t\'ecnico.
+    \item \textbf{Discusi\'on ampliada}: la secci\'on de \emph{Resultados y Discusi\'on} debe contener un apartado espec\'ifico de discusi\'on que compare los hallazgos del equipo con los del estado del arte, y que declare las amenazas a la validez de la investigaci\'on (validez de constructo, interna, externa y de conclusi\'on) siguiendo los est\'andares emp\'iricos de Ralph y otros~\cite{ralph2021empirical}.
+    \item \textbf{Conclusiones y trabajo futuro}: secci\'on nueva a\~nadida al final del cuerpo, antes de las referencias.
+    \item \textbf{Total de p\'aginas}: entre setenta y ciento veinte p\'aginas (el proyecto modelo tiene 109).
+\end{itemize}
+
+\subsection{Estabilizaci\'on de referencias bibliogr\'aficas}
+
+Todas las citas del documento deben resolver a la fuente primaria. El comando de verificaci\'on autom\'atica es:
+
+\begin{lstlisting}
+grep -oE '\\cite\{[^}]+\}' main.tex | grep -oE '\{[^}]+\}' | tr -d '{}' | tr ',' '\n' | sort -u > citas-usadas.txt
+grep -E '^@[a-zA-Z]+\{' IngReq.bib | sed -E 's/^@[a-zA-Z]+\{([^,]+),.*/\1/' | sort -u > entradas-bib.txt
+comm -23 citas-usadas.txt entradas-bib.txt   # citas sin entrada bib (deben ser 0)
+comm -13 citas-usadas.txt entradas-bib.txt   # entradas bib no citadas (advertencia)
+\end{lstlisting}
+
+Este script se ejecutar\'a en cada \emph{push} desde \texttt{.github/workflows/ci-latex.yml} y su salida no vac\'ia en la primera l\'inea (citas sin entrada) provocar\'a el fallo del \emph{build} y la reducci\'on autom\'atica de un nivel en el criterio C1.
+
+% =====================================================================
+%  3. BLOQUE B --- METRICAS INCOSE v4
+% =====================================================================
+\section{Bloque B --- M\'etricas INCOSE v4 de calidad de requisitos}
+
+Cada requisito individual del sistema debe evaluarse contra las quince caracter\'isticas de calidad definidas por INCOSE en su cuarta versi\'on: \emph{necesario, apropiado, no ambiguo, completo, singular, factible, verificable, correcto, conforme, expresado positivamente, apto para la abstracci\'on, consistente, comparable, modificable} y \emph{permitido}. La aplicaci\'on de estas caracter\'isticas se hace sobre los enunciados individuales y sobre el conjunto agregado de requisitos, produciendo una matriz de conformidad que ser\'a el instrumento primario de esta entrega.
+
+\subsection{M\'etricas sobre requisitos individuales}
+
+Para cada requisito (RF, RNF, RI, RU, RP) se produce una fila en la matriz con quince columnas (una por caracter\'istica) y una columna final de porcentaje agregado. El equipo debe conseguir que al menos el ochenta por ciento de los requisitos tenga trece o m\'as caracter\'isticas verificadas como cumplidas, y que ning\'un requisito tenga menos de diez caracter\'isticas cumplidas. Los requisitos que no cumplan este piso deben corregirse antes del cierre \texttt{v1.0.0}.
+
+La caracter\'istica \emph{no ambiguo} se auditar\'a con un procedimiento espec\'ifico: dos revisores independientes (dos integrantes distintos del equipo) leer\'an el requisito y describir\'an, por escrito, su interpretaci\'on. Si las interpretaciones difieren en cualquier aspecto sustantivo, el requisito no cumple con \emph{no ambiguo}.
+
+\subsection{M\'etricas sobre el conjunto de requisitos}
+
+El conjunto agregado debe medirse contra las nueve caracter\'isticas de conjunto definidas por INCOSE v4: \emph{completo (como conjunto), consistente, factible (como conjunto), comprensible, cubierto por casos de prueba, modificable, conforme, sin duplicaci\'on} y \emph{sin conflicto}. El equipo demostrar\'a que cada caracter\'istica se cumple mediante evidencia en el repositorio (por ejemplo, la ausencia de conflictos se demuestra con una matriz cruzada de requisitos donde cada intersecci\'on est\'a clasificada como \emph{independiente}, \emph{complementaria}, \emph{redundante} o \emph{en conflicto}, y no debe haber ninguna en conflicto sin justificaci\'on).
+
+\begin{cajaentregable}{Entregable B.1 --- Matriz de m\'etricas INCOSE v4}
+Archivo obligatorio: \texttt{docs/requisitos/metricas/INCOSE-INDIVIDUAL.tex} + PDF. Debe contener la matriz de conformidad de los requisitos individuales frente a las quince caracter\'isticas, con el porcentaje agregado por requisito y por caracter\'istica.
+
+Archivo obligatorio: \texttt{docs/requisitos/metricas/INCOSE-CONJUNTO.tex} + PDF. Debe contener la evaluaci\'on del conjunto frente a las nueve caracter\'isticas, con evidencia expl\'icita por caracter\'istica.
+
+Archivo obligatorio: \texttt{docs/requisitos/metricas/RESUMEN.md}: informe ejecutivo de las m\'etricas y de las acciones correctivas aplicadas.
+\end{cajaentregable}
+
+% =====================================================================
+%  4. BLOQUE C --- FAIR Y DEPOSITO
+% =====================================================================
+\section{Bloque C --- FAIR, dep\'osito Zenodo, ORCID y CITATION.cff}
+
+Los principios FAIR (\emph{Findable, Accessible, Interoperable, Reusable}) formulados por Wilkinson y otros en 2016 son el est\'andar de facto para la publicaci\'on de datos y \emph{software} de investigaci\'on~\cite{wilkinson2016fair}. El equipo aplicar\'a los principios a su repositorio con las siguientes acciones concretas.
+
+\subsection{DOI Zenodo separado para software y dataset}
+
+El repositorio se depositar\'a en Zenodo (\url{https://zenodo.org}) con integraci\'on Git-Zenodo previamente configurada. Se producir\'an dos depositos separados con dos DOI distintos: uno para el \emph{software y documentaci\'on} (el repositorio entero excepto los datos crudos) y otro para el \emph{dataset} (respuestas de encuesta anonimizadas, res\'umenes de entrevista y matrices de trazabilidad). Ambos DOI se citan en el CITATION.cff y en el CHANGELOG.md.
+
+\subsection{ORCID de todos los autores}
+
+Cada integrante del equipo obtendr\'a un iD ORCID (\url{https://orcid.org}) v\'alido y lo ingresar\'a en el archivo CITATION.cff en formato \texttt{orcid: https://orcid.org/0000-0000-0000-0000}. El docente tambi\'en aparecer\'a como autor con su ORCID institucional.
+
+\subsection{CITATION.cff v1.2.0}
+
+El archivo \texttt{CITATION.cff} en la ra\'iz del repositorio debe cumplir con la especificaci\'on v1.2.0 del \emph{Citation File Format} (\url{https://citation-file-format.github.io}). El archivo declarar\'a: t\'itulo del proyecto, autores con ORCID, versi\'on (\texttt{1.0.0}), fecha (formato ISO 8601), tipo (software), DOI Zenodo del software, DOI Zenodo del dataset, palabras clave, licencia (recomendada: MIT o CC BY 4.0) y \emph{preferred citation} en formato \emph{article} para citaci\'on acad\'emica.
+
+\subsection{Checklist FAIR verificado}
+
+Se producir\'a un archivo \texttt{FAIR-CHECKLIST.md} en \texttt{docs/entregas/} donde se declarar\'a el cumplimiento de cada uno de los quince principios FAIR (F1-F4, A1-A2, I1-I3, R1). Cada \emph{item} debe tener \emph{s\'i} o \emph{no} y una l\'inea de evidencia (por ejemplo, ``F1: los archivos tienen DOI Zenodo persistente''; ``A1: el repositorio es p\'ublico bajo licencia MIT'').
+
+\begin{cajaentregable}{Entregable C.1 --- FAIR y dep\'osito}
+Archivos obligatorios:
+\begin{itemize}
+    \item \texttt{CITATION.cff}: v\'alido contra la especificaci\'on v1.2.0.
+    \item \texttt{FAIR-CHECKLIST.md}: quince \emph{items} evaluados con evidencia.
+    \item Dos DOI Zenodo activos (software y dataset), referenciados en CITATION.cff y en el CHANGELOG.
+    \item ORCID v\'alido para cada integrante del equipo, y para el docente.
+\end{itemize}
+\end{cajaentregable}
+
+% =====================================================================
+%  5. BLOQUE D --- ESTANDARES EMPIRICOS
+% =====================================================================
+\section{Bloque D --- Est\'andares emp\'iricos ACM SIGSOFT (Ralph y otros, 2021)}
+
+Los \emph{Empirical Standards for Software Engineering Research} formulados por Ralph y otros y adoptados por ACM SIGSOFT proveen los criterios que las revistas de alto impacto usan para valorar la calidad metodol\'ogica de un trabajo emp\'irico en ingenier\'ia del software~\cite{ralph2021empirical}. El PFC del equipo se autoevaluar\'a contra el est\'andar \emph{General} y contra los est\'andares espec\'ificos aplicables: \emph{Case Study}, \emph{Interview Study}, \emph{Survey}, o \emph{Requirements Study} (la elecci\'on depende del \'enfasis metodol\'ogico del equipo).
+
+Se producir\'a un archivo \texttt{docs/entregas/EMPIRICAL-STANDARDS.md} donde, para cada \emph{item} del est\'andar aplicable, se declarar\'a el cumplimiento con evidencia expl\'icita en el repositorio. El equipo debe alcanzar al menos el ochenta por ciento de conformidad en el est\'andar \emph{General} y al menos el setenta por ciento en cada est\'andar espec\'ifico aplicable.
+
+\begin{cajaconcepto}{Amenazas a la validez}
+El est\'andar exige la declaraci\'on expl\'icita de las amenazas a la validez del trabajo. El equipo declarar\'a al menos:
+\begin{itemize}
+    \item \textbf{Validez de constructo}: en qu\'e medida los instrumentos de elicitaci\'on midieron lo que se pretend\'ia medir.
+    \item \textbf{Validez interna}: en qu\'e medida las relaciones causales inferidas est\'an libres de sesgo de selecci\'on, sesgo de entrevistador y otros efectos confusores.
+    \item \textbf{Validez externa}: en qu\'e medida los hallazgos son generalizables m\'as all\'a de la UTEQ o de la organizaci\'on elegida.
+    \item \textbf{Validez de conclusi\'on}: en qu\'e medida las conclusiones se derivan v\'alidamente de los datos recolectados.
+\end{itemize}
+\end{cajaconcepto}
+
+\begin{cajaentregable}{Entregable D.1 --- Est\'andares emp\'iricos}
+Archivo obligatorio: \texttt{docs/entregas/EMPIRICAL-STANDARDS.md}: checklist Ralph y otros aplicado con evidencia. Debe incluir la secci\'on de amenazas a la validez, tambi\'en referenciada en la discusi\'on del documento acad\'emico integrado.
+\end{cajaentregable}
+
+% =====================================================================
+%  6. BLOQUE E --- ESTRUCTURA DEL REPOSITORIO
+% =====================================================================
+\section{Estructura del repositorio al cierre de la Entrega Final}
+
+\begin{cajarepo}{Estructura de \'arbol acumulada al final de la Entrega Final}
+\begin{lstlisting}
+pfc-<nombre-corto>/
++-- README.md
++-- CHANGELOG.md   (con todas las secciones de Entregas 1 a 4)
++-- CITATION.cff   (v1.2.0)
++-- LICENSE        (MIT o CC BY 4.0)
++-- FAIR-CHECKLIST.md
++-- EMPIRICAL-STANDARDS.md
++-- docs/
+|   +-- entregas/
+|   |   +-- documento-academico/
+|   |       +-- main.tex
+|   |       +-- DocumentoAcademico-v1.0.0.pdf
+|   +-- requisitos/
+|   |   +-- (todo lo acumulado desde Entrega 1)
+|   |   +-- metricas/
+|   |       +-- INCOSE-INDIVIDUAL.tex + PDF
+|   |       +-- INCOSE-CONJUNTO.tex + PDF
+|   |       +-- RESUMEN.md
+|   +-- arquitectura/          (todo lo acumulado desde Entrega 3)
+|   +-- adr/                   (con ADR-006-decisiones-finales.md)
+|   +-- observaciones/
+|       +-- OBSERVACIONES.md   (TODAS resueltas o diferidas con justificacion)
++-- assets/                    (todo lo acumulado)
++-- scripts/
+|   +-- verificar-citas.sh
+|   +-- generar-metricas-incose.py
++-- .github/
+    +-- workflows/
+        +-- ci-latex.yml
+        +-- ci-metricas.yml
+\end{lstlisting}
+\end{cajarepo}
+
+% =====================================================================
+%  7. RUBRICA
+% =====================================================================
+\section{R\'ubrica de evaluaci\'on de la Entrega Final}
+
+\begin{longtable}{|L{4.2cm}|C{0.9cm}|L{3.3cm}|L{2.4cm}|L{2.4cm}|L{1.6cm}|}
+\hline
+\rowcolor{uteqverde!25}
+\textbf{Criterio} & \textbf{Peso} & \textbf{Excelente (100\,\%)} & \textbf{Bueno (75\,\%)} & \textbf{En desarrollo (50\,\%)} & \textbf{Insuf. (25\,\%)}\\ \hline
+\endhead
+
+\textbf{C0. Continuidad total} & 5\,\% & \emph{Todas} las OBS de Entregas 1--3 resueltas o diferidas. & Una o dos OBS abiertas menores. & Tres o cuatro. & Cinco o m\'as.\\ \hline
+\rowcolor{grisfila}
+\textbf{C1. Documento acad\'emico estable} & 20\,\% & IMRaD completo 70--120 p\'aginas; resumen en espa\~nol e ingl\'es; secci\'on de discusi\'on con amenazas a la validez; citas verificadas por script CI. & IMRaD completo con detalles menores omitidos. & IMRaD con secciones ausentes. & Documento fragmentado o no compilable.\\ \hline
+\textbf{C2. M\'etricas INCOSE individuales} & 15\,\% & $\geq$ 80\,\% de RF con $\geq 13/15$ caracter\'isticas cumplidas; ning\'un requisito con $< 10$. & 70--79\,\% cumple techo; ninguno bajo piso. & 60--69\,\%. & $<$ 60\,\%.\\ \hline
+\rowcolor{grisfila}
+\textbf{C3. M\'etricas INCOSE conjunto} & 10\,\% & 9/9 caracter\'isticas de conjunto verificadas con evidencia. & 7--8/9. & 5--6/9. & $\leq 4/9$.\\ \hline
+\textbf{C4. FAIR y dep\'osito} & 15\,\% & Dos DOI Zenodo activos; ORCID de todos; CITATION.cff v1.2.0 v\'alido; FAIR checklist 15/15. & CITATION.cff y DOI presentes; alg\'un ORCID faltante; FAIR $\geq 12/15$. & CITATION.cff parcial; solo un DOI. & Sin dep\'osito Zenodo o sin CITATION.cff.\\ \hline
+\rowcolor{grisfila}
+\textbf{C5. Est\'andares emp\'iricos} & 10\,\% & $\geq$ 80\,\% conformidad con General + $\geq$ 70\,\% con al menos un espec\'ifico; amenazas a la validez declaradas. & 70--79\,\% + espec\'ifico. & 60--69\,\% General. & $<$ 60\,\% o sin espec\'ifico.\\ \hline
+\textbf{C6. Reproducibilidad del proceso} & 10\,\% & Un tercero reconstruye el proceso de elicitaci\'on y an\'alisis desde el repositorio con las instrucciones del README. & Reproducci\'on parcial. & Instrucciones incompletas. & No reproducible.\\ \hline
+\rowcolor{grisfila}
+\textbf{C7. Defensa oral p\'ublica} & 10\,\% & Defensa de 45\,min con participaci\'on equilibrada, respuesta a todas las preguntas, evidencia del repositorio en vivo. & Defensa completa con detalles menores. & Defensa parcial. & Defensa fallida o ausencias.\\ \hline
+\textbf{C8. Organizaci\'on del repositorio y autor\'ia} & 5\,\% & Estructura completa, tag \texttt{v1.0.0}, $\geq 15$ commits por integrante, CI verde. & Estructura completa, autor\'ia parcialmente desbalanceada. & Estructura parcial. & Estructura incompleta o sin tag.\\ \hline
+\end{longtable}
+
+\begin{cajacritica}{Criterio de veto de la Entrega Final}
+El docente aplica un veto autom\'atico a cualquier PFC que en el cierre presente: (a) un requisito citado como \emph{Alta} prioridad sin ninguna evidencia en las entrevistas o encuestas; (b) uso de datos ficticios sin declaraci\'on expl\'icita; (c) plagio de otro PFC o del proyecto modelo; (d) CITATION.cff inv\'alido contra la especificaci\'on v1.2.0. El veto impide la calificaci\'on aprobatoria y obliga a una entrega correctiva en la semana 17.
+\end{cajacritica}
+
+% =====================================================================
+%  8. DEFENSA
+% =====================================================================
+\section{Defensa oral p\'ublica}
+
+La defensa oral se realiza durante la semana 17 en modalidad p\'ublica, con audiencia abierta a: docentes de la carrera, estudiantes de niveles inferiores y de niveles superiores, \emph{stakeholders} entrevistados y familiares del equipo. La defensa dura cuarenta y cinco minutos con estructura:
+
+\begin{itemize}
+    \item Cinco minutos: contexto, problema, brecha y objetivo del PFC.
+    \item Diez minutos: recorrido por la especificaci\'on Volere y su priorizaci\'on.
+    \item Diez minutos: recorrido por los diagramas UML y de an\'alisis.
+    \item Cinco minutos: hallazgos de la validaci\'on con \emph{stakeholders}.
+    \item Cinco minutos: m\'etricas INCOSE, FAIR y est\'andares emp\'iricos alcanzados.
+    \item Cinco minutos: conclusiones, contribuci\'on y trabajo futuro.
+    \item Cinco minutos: preguntas del docente, de dos equipos evaluadores pares y de la audiencia.
+\end{itemize}
+
+Cada integrante debe hablar al menos siete minutos. La defensa incorpora una demostraci\'on en vivo del repositorio (recorrido por el \'arbol, apertura del PDF integrado, apertura del CITATION.cff, exhibici\'on de los DOI Zenodo con enlace clicable). No se aceptan di\'apositivas que muestren capturas del repositorio: si el equipo quiere hablar del repositorio, debe hacerlo abriendo el repositorio.
+
+% =====================================================================
+%  9. REVISTAS OBJETIVO Y CONFERENCIAS
+% =====================================================================
+\section{Revistas objetivo y conferencias sugeridas}
+
+Aunque el env\'io a revista o conferencia no forma parte estricta de la evaluaci\'on, la Entrega Final debe quedar en estado publicable. Las siguientes son opciones compatibles con el trabajo producido:
+
+\begin{itemize}
+    \item \textbf{Revistas JCR (art\'iculo completo)}: \emph{Requirements Engineering Journal} (Springer, Q2), \emph{IEEE Transactions on Software Engineering} (Q1), \emph{ACM Transactions on Software Engineering and Methodology} (Q1), \emph{Empirical Software Engineering} (Springer, Q1), \emph{Journal of Systems and Software} (Elsevier, Q1).
+    \item \textbf{Conferencias (art\'iculo completo o \emph{short paper})}: \emph{IEEE International Requirements Engineering Conference (RE)}, \emph{International Conference on Software Engineering (ICSE)}, \emph{ACM/IEEE International Symposium on Empirical Software Engineering and Measurement (ESEM)}, \emph{International Conference on Evaluation and Assessment in Software Engineering (EASE)}.
+    \item \textbf{Datos abiertos}: \emph{Scientific Data} (Nature), \emph{Data in Brief} (Elsevier), \emph{PLOS ONE} para el paper de \emph{data descriptor}.
+\end{itemize}
+
+\begin{cajaconcepto}{Criterio de decisi\'on entre revista y conferencia}
+Los PFC con estudio de caso profundo, m\'ultiples \emph{stakeholders} y validaci\'on completa se prestan mejor a revistas. Los PFC con contribuci\'on met\'odica clara y resultados novedosos pero limitados en profundidad se prestan mejor a conferencias como RE, ESEM o EASE.
+\end{cajaconcepto}
+
+% =====================================================================
+%  10. CIERRE
+% =====================================================================
+\section{Cierre del PFC}
+
+El cierre del PFC se produce con la etiqueta \texttt{v1.0.0} sobre el \emph{commit} final. El comando canonico:
+
+\begin{lstlisting}
+git tag -a v1.0.0 -m "Entrega Final - 2026-10-25 - <Apellidos>" && git push origin v1.0.0
+\end{lstlisting}
+
+El equipo publicar\'a en \texttt{README.md} un enlace directo a la etiqueta \texttt{v1.0.0}, al PDF del documento acad\'emico, a los dos DOI Zenodo y a la grabaci\'on p\'ublica de la defensa (si se autoriza).
+
+Se recomienda al equipo, si no lo ha hecho antes, iniciar durante la semana 17 el proceso de escritura de un art\'iculo derivado del PFC, tomando el documento acad\'emico integrado como material base y compact\'andolo al formato exigido por la revista o conferencia elegida. El docente ofrecer\'a acompa\~namiento en la elecci\'on de la revista y en la primera revisi\'on del manuscrito derivado, si el equipo lo solicita expl\'icitamente por correo institucional antes del cierre del per\'iodo acad\'emico.
+
+Con este cierre finaliza el Proyecto Fin de Curso de la asignatura \emph{Ingenier\'ia de Requisitos} del cuarto nivel de la carrera de Ingenier\'ia de Software de la Universidad T\'ecnica Estatal de Quevedo.
+
+% =====================================================================
+%  BIBLIOGRAFIA
+% =====================================================================
+\bibliographystyle{IEEEtran}
+\bibliography{IngReq}
+
+\end{document}

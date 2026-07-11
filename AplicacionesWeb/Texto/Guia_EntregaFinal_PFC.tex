@@ -1,0 +1,841 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{parskip}
+
+\usepackage[table]{xcolor}
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{grisfila}{RGB}{245,245,245}
+\definecolor{goldclaro}{RGB}{252,245,220}
+\definecolor{verdeclaro}{RGB}{235,247,238}
+\definecolor{textogris}{RGB}{60,60,60}
+\definecolor{nivelaus}{RGB}{176,42,42}
+\definecolor{codebg}{RGB}{248,248,248}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{cajadefinicion}[1]{
+    colback=uteqverde!5,
+    colframe=uteqverde,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajaentregable}[1]{
+    colback=uteqdorado!8,
+    colframe=uteqdorado!80!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajacritica}[1]{
+    colback=red!5,
+    colframe=red!70!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajarepo}[1]{
+    colback=blue!4,
+    colframe=blue!60!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajaestudio}[1]{
+    colback=violet!4,
+    colframe=violet!70!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    breaklines=true,
+    columns=fullflexible,
+    keepspaces=true
+}
+
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\usepackage{enumitem}\setlist{itemsep=2pt,topsep=2pt}
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textcolor{uteqverde}{Aplicaciones Web --- Quinto nivel --- PPA 2026-2027}}
+\rhead{\footnotesize\textcolor{uteqverde}{PFC --- Gu\'{i}a de la Entrega Final}}
+\rfoot{\thepage}
+\lfoot{\footnotesize UTEQ --- FCI --- Software}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\hypersetup{
+    pdftitle={Gu\'{i}a de la Entrega Final del PFC --- Aplicaciones Web},
+    pdfauthor={Dr. Gleiston Guerrero Ulloa},
+    pdfsubject={Cuarta Entrega (Entrega Final) del Proyecto Fin de Curso},
+    pdfkeywords={PFC, Entrega Final, v1.0.0, reproducibilidad, evidencia emp\'{i}rica, est\'{a}ndares de reporte, UTEQ}
+}
+
+\begin{document}
+
+% =====================================================================
+%  PORTADA
+% =====================================================================
+\begin{center}
+    \vspace*{1.2cm}
+    {\Large\bfseries\textcolor{uteqverde}{UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}}\\[4pt]
+    {\large Facultad de Ciencias de la Computacion y Dise\~{n}o Digital}\\[2pt]
+    {\large Carrera de Ingenier\'{i}a de Software}\\[24pt]
+
+    {\LARGE\bfseries Gu\'{i}a de la Cuarta Entrega}\\[4pt]
+    {\LARGE\bfseries (Entrega Final) del}\\[4pt]
+    {\LARGE\bfseries Proyecto Fin de Curso (PFC)}\\[16pt]
+
+    {\large Aplicaciones Web --- Quinto nivel}\\[2pt]
+    {\large Periodo Acad\'{e}mico Presencial 2026-2027}\\[22pt]
+
+    \begin{tcolorbox}[colback=uteqverde!8,colframe=uteqverde,arc=3pt,
+                      width=0.88\textwidth,boxrule=0.8pt]
+        \centering
+        \textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[2pt]
+        \texttt{gguerrero@uteq.edu.ec}\\[6pt]
+        \textbf{Etiqueta objetivo de esta entrega:} \texttt{v1.0.0}\\[2pt]
+        \textbf{Fecha de cierre:} viernes 17 de agosto de 2026 (semana 17)\\[2pt]
+        \textbf{Precede a:} Defensa oral del PFC (semana 17)\\[2pt]
+        \textbf{Continua desde:} Entrega 3 (\texttt{v0.9.0-rc}, 24 de julio),\\ Entrega 1B (\texttt{v0.7.0}, semana del 14 de junio) y\\ Entrega 1A (\texttt{v0.3.0}, semana del 4 de junio)
+    \end{tcolorbox}
+
+    \vfill
+
+    {\small Quevedo --- Los Rios --- Ecuador}\\[2pt]
+    {\small 2026}
+\end{center}
+
+\newpage
+
+% =====================================================================
+%  1. NATURALEZA
+% =====================================================================
+\section{Naturaleza y ubicacion temporal de la Entrega Final}
+
+La Cuarta Entrega es la \emph{Entrega Final} del Proyecto Fin de Curso. Cierra el ciclo iniciado en la Entrega 1A (semana del 4 de junio de 2026), donde se consolido el corpus de ingenier\'{i}a de requisitos y la arquitectura preliminar; continuado en la Entrega 1B (semana del 14 de junio, \texttt{v0.7.0}) donde se produjo el primer m\'{o}dulo funcional con autenticaci\'{o}n JWT y CRUD sobre Spring Data JPA; y elevado al estado de candidato a estable en la Entrega 3 (24 de julio, \texttt{v0.9.0-rc}) con reproducibilidad autom\'{a}tica, evidencia emp\'{i}rica preliminar, trazabilidad end-to-end e ingenier\'{i}a de requisitos formalizada seg\'{u}n ISO/IEC/IEEE 29148:2018~\cite{iso29148,ralph2021empirical}. La Entrega Final cierra el 17 de agosto de 2026, semana 17 del calendario acad\'{e}mico, y precede a la defensa oral de la misma semana.
+
+Con la Entrega Final el equipo produce simultaneamente tres artefactos indisociables. Primero, el \emph{sistema software} en su versi\'{o}n estable \texttt{v1.0.0}, con la aplicaci\'{o}n web completa (backend Java 21 LTS con Spring Boot 3.2.x, frontend Angular 17+, base de datos PostgreSQL 16 con migraciones Flyway, cache Redis 7 y orquestacion Docker Compose), con toda la evidencia emp\'{i}rica cuantitativa y reproducible que respalda cada una de sus propiedades, y \textbf{desplegado en un ambiente accesible publicamente} durante el periodo de defensa. Segundo, el \emph{documento tecnico academico final del PFC}, redactado con el rigor, la estructura y la trazabilidad exigidos por la comunidad cient\'{i}fica internacional en ingenier\'{i}a de software y en ingenier\'{i}a de requisitos~\cite{ralph2021empirical,washizaki2024swebok,iso29148,pohl2010requirements,wiegers2013software}. Tercero, el \emph{paquete de datos, materiales y metadatos} que hace al conjunto verificable, reproducible y reutilizable por cualquier tercero sin comunicaci\'{o}n adicional con los autores~\cite{wilkinson2016fair,sandve2013ten,peng2011reproducible,acm2020artifact}.
+
+La Entrega Final no es una repeticion ampliada de la Entrega 3. Su naturaleza es cualitativamente distinta. Mientras la Entrega 3 verifica que el sistema es tecnicamente reutilizable por un tercero, la Entrega Final verifica que todo el trabajo del equipo esta narrado, argumentado y documentado siguiendo las mismas convenciones que un lector experto de una revista cient\'{i}fica de alto impacto espera encontrar en un articulo original de investigaci\'{o}n aplicada. La diferencia entre ambas es la diferencia entre entregar un artefacto que funciona y entregar un artefacto que ademas \emph{explica por que funciona, con que evidencia, bajo que condiciones, con que amenazas a la validez y en que se distingue de lo publicado previamente} sobre problemas equivalentes~\cite{hevner2004design,peffers2007design,ralph2021empirical}.
+
+Por esta raz\'{o}n, la Entrega Final consolida un cuarto componente indisociable: la \emph{aplicacion integra de todas las observaciones acumuladas} en las tres entregas previas. Cada observaci\'{o}n recibida en los informes de retroalimentaci\'{o}n de las Entregas 1A, 1B y 3 debe estar resuelta y su resoluci\'{o}n trazable en el historial de commits, con referencia expl\'{i}cita en la bitacora \texttt{docs/observaciones/OBSERVACIONES.md}. Esta bitacora acumulativa es la evidencia primaria de que el equipo produce software acad\'{e}mico maduro y no una simple sucesion de entregables aislados.
+
+La lista siguiente resume el arco completo de las cuatro entregas del PFC para situar visualmente la Entrega Final.
+
+\begin{cajadefinicion}{Arco completo de entregas del PFC (calendario acad\'{e}mico 2026)}
+    \begin{itemize}
+        \item \textbf{Entrega 1A} (semana del 4 de junio, \texttt{v0.3.0}): consolidaci\'{o}n del corpus de ingenier\'{i}a de requisitos (SRS conforme a ISO/IEC/IEEE 29148:2018, casos de uso, historias de usuario, requisitos no funcionales), dise\~{n}o arquitect\'{o}nico C4 nivel 1 y 2, seleccion y justificaci\'{o}n de la pila, esqueleto ejecutable con Docker~\cite{iso29148,cockburn2001writing,cohn2004user,brown2023c4}.
+        \item \textbf{Entrega 1B} (semana del 14 de junio, \texttt{v0.7.0}): primer m\'{o}dulo funcional. Modulo de autenticaci\'{o}n stateless con JWT (jjwt 0.12, cookie \texttt{HttpOnly + Secure + SameSite=Strict}), CRUD completo de al menos una entidad principal con Spring Data JPA sobre PostgreSQL 16, migraciones Flyway 9.x, cache Redis 7 para blacklist de JTI revocados, Springdoc OpenAPI 2.x, Angular 17+ con interceptor JWT, docker-compose con healthcheck, m\'{i}nimo cinco pruebas JUnit 5 + MockMvc verdes~\cite{jones2015jwt,rfc7807,walls2022spring,owasp2021top10}.
+        \item \textbf{Entrega 3} (24 de julio, \texttt{v0.9.0-rc}): aplicaci\'{o}n de observaciones acumuladas, consolidaci\'{o}n de la ingenier\'{i}a de requisitos con SRS ISO/IEC/IEEE 29148:2018, reproducibilidad autom\'{a}tica, evidencia emp\'{i}rica cuantitativa preliminar, trazabilidad end-to-end completa y publicabilidad del artefacto (FAIR, DOI Zenodo, CITATION.cff, CRediT)~\cite{iso29148,wilkinson2016fair,acm2020artifact}.
+        \item \textbf{Entrega Final} (17 de agosto, semana 17, \emph{esta guia}, \texttt{v1.0.0}): sistema estable con cobertura JaCoCo $\geq 70$\,\%, k6 y Lighthouse dentro de umbrales, auditor\'{i}a completa de los seis controles OWASP m\'{i}nimos, puesta en producci\'{o}n en ambiente accesible, documento acad\'{e}mico final con estructura IMRaD ampliada e ingenier\'{i}a de requisitos culminada, paquete de datos con DOI propio, y sistema listo para archivo permanente~\cite{owasp2021top10,ortega2022securecoding,ralph2021empirical}.
+    \end{itemize}
+\end{cajadefinicion}
+
+% =====================================================================
+%  2. REQUISITOS
+% =====================================================================
+\section{Requisitos ineludibles de la Entrega Final}
+
+Los requisitos que siguen se organizan en siete bloques (A a G). El equipo cierra los siete bloques al mismo tiempo. La Entrega Final no admite entregas parciales: la ausencia \'{i}ntegra de un bloque impide la evaluaci\'{o}n del conjunto.
+
+\subsection{Bloque 0 --- Aplicacion integra de las observaciones acumuladas}
+
+Antes de abordar los bloques t\'{e}cnicos de la Entrega Final, el equipo cierra la deuda de calidad acumulada durante las tres entregas anteriores. Este bloque no es opcional y su verificaci\'{o}n es previa a la calificaci\'{o}n de cualquier otro bloque.
+
+\begin{cajaentregable}{0.1 --- Bitacora acumulativa de observaciones y su resoluci\'{o}n}
+    \begin{itemize}
+        \item El archivo \texttt{docs/observaciones/OBSERVACIONES.md}, iniciado en la Entrega 3, se completa con las observaciones recibidas en el informe de retroalimentaci\'{o}n de la propia Entrega 3, siempre con c\'{o}digo \'{u}nico continuando la numeracion (\texttt{OBS-XX}, \texttt{OBS-XY}, \ldots).
+        \item Para cada observaci\'{o}n se declara: fuente (Entrega 1A, 1B o 3), criterio de la r\'{u}brica afectado, texto \'{i}ntegro de la observaci\'{o}n, decisi\'{o}n del equipo, y el o los commits en los que la resoluci\'{o}n quedo aplicada, con el hash corto. Los mensajes de commit referencian el c\'{o}digo (\texttt{OBS-XX}).
+        \item El repositorio conserva las etiquetas \texttt{v0.7.0}, \texttt{v0.7.1} y \texttt{v0.9.0-rc} intactas como fotograf\'{i}a de cada entrega, y coloca la etiqueta \texttt{v1.0.0} sobre el commit final de la Entrega Final, con firma opcional GPG.
+        \item El documento acad\'{e}mico final incluye, en su Anexo A, la tabla completa de observaciones acumuladas con el porcentaje total resuelto por entrega y las razones de las no resueltas si las hubiera.
+    \end{itemize}
+\end{cajaentregable}
+
+\subsection{Bloque A --- Cierre del producto software v1.0.0}
+
+El sistema debe alcanzar el estado estable declarado en el planteamiento original del PFC. Los requisitos se organizan en dos apartados: A.1 recoge las propiedades funcionales y de calidad heredadas de las Entregas 2 y 3, y A.2 consolida la estrategia de acceso a datos con la evidencia emp\'{i}rica cuantitativa que la Entrega Final exige.
+
+\subsubsection*{A.1 --- Propiedades funcionales y de calidad}
+
+\begin{itemize}
+    \item Todos los requisitos de las Entregas 2 y 3 operativos, sin regresiones.
+    \item Cobertura JaCoCo (\emph{lines} y \emph{branches}) igual o superior al 70\,\% en los m\'{o}dulos de dominio, servicios y controladores de la API. El reporte HTML y XML se archiva en \texttt{docs/mediciones/jacoco/} con fecha \texttt{ISO 8601}~\cite{washizaki2024swebok}.
+    \item Prueba de carga con k6 en configuraci\'{o}n \texttt{50 VUs} durante \texttt{30 s}, con al menos cinco corridas independientes archivadas, contra el \emph{endpoint} de listado protegido. Se cumple el umbral \texttt{p95 $\leq 200$\,ms} con cache caliente y \texttt{p95 $\leq 500$\,ms} con cache frio, sin errores HTTP $\geq 500$~\cite{iso25010,ortega2022securecoding}.
+    \item Auditoria Lighthouse con al menos tres corridas por perfil (\emph{mobile}, \emph{desktop}); umbrales cumplidos: \emph{Performance} $\geq 80$, \emph{Accessibility} $\geq 90$, \emph{Best practices} $\geq 90$, \emph{SEO} $\geq 90$.
+    \item Los seis controles OWASP m\'{i}nimos verificados con evidencia reproducible y, adicionalmente, un escaneo autom\'{a}tico con una herramienta libre reconocida (por ejemplo \emph{OWASP ZAP} en modo \emph{baseline scan}), cuyo reporte HTML se archiva en \texttt{docs/mediciones/sec/zap/}~\cite{owasp2021top10}.
+    \item Etiqueta Git \texttt{v1.0.0} colocada sobre el commit de cierre, con firma opcional GPG. La imagen Docker publicada en \emph{GitHub Container Registry} con \emph{tag} \texttt{v1.0.0} y su \emph{digest} \texttt{sha256} declarado en el \texttt{README}.
+    \item El pipeline de CI (GitHub Actions) muestra al menos tres ejecuciones consecutivas exitosas con \emph{badge passing} en el \texttt{README}.
+\end{itemize}
+
+\subsubsection*{A.2 --- Consolidaci\'{o}n de la estrategia h\'{i}brida de acceso a datos}
+
+La Entrega Final consolida y evidencia emp\'{i}ricamente la estrategia h\'{i}brida de acceso a datos introducida en la Tercera Entrega. La separacion entre los CRUD elementales sobre entidades JPA y las operaciones adicionales encapsuladas en procedimientos almacenados o funciones SQL, definida en el apartado A.2 de la Gu\'{i}a de la Entrega 3, permanece integramente vigente y se refuerza con requisitos cuantitativos y de trazabilidad propios de la versi\'{o}n estable~\cite{demichiel2013jpa21,springdata2025procedures,fowler2002patterns}. La legitimidad t\'{e}cnica de este enfoque h\'{i}brido esta respaldada por la norma OWASP para prevencion de inyecci\'{o}n SQL, que reconoce ambos mecanismos (ORM parametrizado y procedimientos almacenados correctamente parametrizados) como defensas primarias equivalentes~\cite{owaspsqlicheatsheet}.
+
+\begin{cajarepo}{A.2.1 --- Umbral cuantitativo m\'{i}nimo de procedimientos almacenados}
+    \begin{itemize}
+        \item El sistema \texttt{v1.0.0} debe contener al menos \textbf{seis procedimientos almacenados o funciones SQL} versionados en \texttt{db/procs/}, uno por cada categor\'{i}a funcional del apartado A.2.2 de la Gu\'{i}a de la Entrega 3 (consultas multi-tabla, c\'{a}lculos agregados, reportes, actualizaciones masivas, validaciones cruzadas y generaci\'{o}n de codigos secuenciales). Si el dominio del PFC no requiere alguna de las categor\'{i}as, el equipo justifica la ausencia en el cap\'{i}tulo de Dise\~{n}o del documento acad\'{e}mico.
+        \item Cada procedimiento y funci\'{o}n se invoca desde c\'{o}digo Java o del lenguaje elegido mediante los mecanismos formales de la especificaci\'{o}n JPA 2.1 (\texttt{@Procedure} sobre m\'{e}todo de repositorio Spring Data o \texttt{@NamedStoredProcedureQuery} sobre entidad); queda prohibido invocarlos mediante concatenacion de cadenas en \texttt{createNativeQuery(\ldots)}~\cite{demichiel2013jpa21,springdata2025procedures}.
+        \item El catalogo \texttt{docs/basedatos/CATALOGO-SP.md} lista todos los procedimientos y funciones con nombre, categor\'{i}a funcional, prop\'{o}sito, par\'{a}metros de entrada y salida con tipo y modo (\texttt{IN}, \texttt{OUT}, \texttt{INOUT}), cursores devueltos y tablas afectadas.
+    \end{itemize}
+\end{cajarepo}
+
+\begin{cajarepo}{A.2.2 --- ADR-006 y trazabilidad en la matriz}
+    \begin{itemize}
+        \item El repositorio contiene un ADR-006 formal siguiendo la plantilla de Nygard con t\'{i}tulo \emph{Estrategia de acceso a datos: separacion CRUD/SP}, que documenta la decisi\'{o}n, sus alternativas descartadas (todo en ORM, todo en SP, patron CQRS expl\'{i}cito) y sus consecuencias~\cite{nygard2011adr}.
+        \item La matriz de trazabilidad de \texttt{docs/trazabilidad/matriz.csv} incluye una columna adicional \texttt{tipo\_acceso} con valores \texttt{CRUD-ORM} o \texttt{SP} para cada requisito funcional; cada fila trazada a un procedimiento almacenado referencia el archivo SQL correspondiente en \texttt{db/procs/}.
+    \end{itemize}
+\end{cajarepo}
+
+\begin{cajarepo}{A.2.3 --- Evidencia de auditor\'{i}a autom\'{a}tica sobre concatenacion}
+    \begin{itemize}
+        \item El pipeline de CI ejecuta una regla est\'{a}tica que rechaza cualquier concatenacion sospechosa en el c\'{o}digo fuente. Para pilas Java se acepta un \emph{spotbugs} con \emph{find-sec-bugs} configurado con la regla \texttt{SQL\_NONCONSTANT\_STRING\_PASSED\_TO\_EXECUTE} y sus variantes, o un analizador equivalente en la pila elegida. El reporte de la \'{u}ltima ejecuci\'{o}n se archiva en \texttt{docs/mediciones/sec/static-analysis/}.
+        \item El pipeline ejecuta ademas una revisi\'{o}n autom\'{a}tica de los archivos \texttt{db/procs/*.sql} que rechaza el uso de \texttt{EXECUTE IMMEDIATE}, \texttt{sp\_executesql} o equivalentes con expresiones construidas por concatenacion. La regla se implementa como \emph{shell script} versionado bajo \texttt{scripts/audit-sql-dynamic.sh}.
+    \end{itemize}
+\end{cajarepo}
+
+\subsubsection*{A.3 --- Culminacion de la ingenier\'{i}a de requisitos}
+
+La ingenier\'{i}a de requisitos consolidada en la Entrega 3 se cierra en la Entrega Final con la validaci\'{o}n final del SRS contra el sistema entregado. El proceso completo debe seguir las cuatro fases clasicas de la ingenier\'{i}a de requisitos identificadas por Pohl (elicitacion, negociaci\'{o}n, documentaci\'{o}n y validaci\'{o}n) y por Wiegers y Beatty (desarrollo y gesti\'{o}n), y debe cumplir estrictamente con los procesos de ciclo de vida definidos en la norma \emph{ISO/IEC/IEEE 29148:2018}~\cite{iso29148,pohl2010requirements,wiegers2013software}.
+
+\begin{cajaentregable}{A.3.1 --- SRS final validado}
+    \begin{itemize}
+        \item El SRS de la Entrega 3 se actualiza a \texttt{docs/requisitos/SRS-v1.0.0.pdf}, con la firma de aprobacion (fisica o electronica) del docente-director. La versi\'{o}n anterior queda archivada en \texttt{docs/requisitos/historico/}.
+        \item Todos los requisitos con prioridad \emph{Must} estan en estado \texttt{verificado} en la matriz de trazabilidad. Los requisitos \emph{Should} estan en estado \texttt{implementado} o \texttt{verificado}. Los requisitos \emph{Could} pueden permanecer en estado \texttt{pendiente}, siempre justificados en el cap\'{i}tulo de trabajo futuro del documento acad\'{e}mico.
+        \item Cada requisito individual satisface las nueve caracter\'{i}sticas de calidad para \emph{requisitos individuales} de INCOSE v4 (C1--C9): \emph{Necessary}, \emph{Appropriate}, \emph{Unambiguous}, \emph{Complete}, \emph{Singular}, \emph{Feasible}, \emph{Verifiable}, \emph{Correct} y \emph{Conforming}. El conjunto completo satisface las seis caracter\'{i}sticas de calidad para \emph{conjuntos de requisitos} (C10--C15): \emph{Complete}, \emph{Consistent}, \emph{Feasible}, \emph{Comprehensible}, \emph{Able to be validated} y \emph{Correct}. El equipo aporta como anexo del documento acad\'{e}mico la lista de verificaci\'{o}n INCOSE completa~\cite{incose2023requirements}.
+        \item El equipo declara m\'{e}tricas de calidad de requisitos: n\'{u}mero total de requisitos, distribucion por tipo, porcentaje verificado, n\'{u}mero de cambios registrados en \texttt{docs/requisitos/CHANGELOG-REQ.md}, y tasa de estabilidad de requisitos calculada como uno menos la raz\'{o}n entre requisitos modificados y requisitos totales.
+    \end{itemize}
+\end{cajaentregable}
+
+\begin{cajaentregable}{A.3.2 --- Historias de usuario y casos de uso finales}
+    \begin{itemize}
+        \item El conjunto final de historias de usuario, en formato Connextra con criterios INVEST y acceptance criteria en Gherkin, se archiva bajo \texttt{docs/requisitos/historias/}. Cada historia esta trazada al menos a una prueba automatizada de aceptacion~\cite{cohn2004user}.
+        \item El conjunto final de casos de uso, en la plantilla de Cockburn niveles 1--4, se archiva bajo \texttt{docs/requisitos/casos-de-uso/}. Cada caso esta trazado a un flujo del diagrama de secuencia y a al menos una prueba de integracion~\cite{cockburn2001writing}.
+    \end{itemize}
+\end{cajaentregable}
+
+\subsubsection*{A.4 --- Puesta en producci\'{o}n del sistema}
+
+El sistema \texttt{v1.0.0} debe estar desplegado en un ambiente publicamente accesible durante toda la semana de defensa, para que el tribunal pueda verificarlo en tiempo real durante la evaluaci\'{o}n oral y para que un revisor externo pueda validar las propiedades reportadas.
+
+\begin{cajaentregable}{A.4.1 --- Ambiente de producci\'{o}n accesible}
+    \begin{itemize}
+        \item El sistema esta desplegado en al menos uno de los siguientes tipos de ambiente: (i) un \emph{Virtual Private Server} (VPS) con dominio DNS asignado; (ii) un proveedor de contenedores gratuito o acad\'{e}mico (Fly.io, Railway, Render, Vercel para el frontend); (iii) un proveedor \emph{cloud} con cuenta gratuita o de estudiante (Oracle Cloud Free Tier, AWS Free Tier, Google Cloud Free Tier); (iv) un servidor institucional facilitado por la UTEQ; o (v) una combinaci\'{o}n equivalente. En cualquier caso, la URL publica esta declarada en el \texttt{README} y en la portada del PDF final.
+        \item El sistema en producci\'{o}n sirve el frontend por HTTPS con certificado valido de una autoridad reconocida (por ejemplo Let's Encrypt), sin advertencias de seguridad del navegador. El endpoint de la API responde por HTTPS con el mismo certificado o con uno propio equivalente.
+        \item El endpoint \texttt{/actuator/health} devuelve estado \texttt{UP} en todos los componentes registrados (base de datos, Redis, sistema de archivos si aplica).
+        \item Existe un usuario \emph{demo} preconfigurado, con credenciales publicadas en el \texttt{README}, para que el tribunal pueda iniciar sesion sin necesidad de registrar una cuenta.
+        \item El acceso al sistema en producci\'{o}n se garantiza al menos desde el commit de tag \texttt{v1.0.0} hasta 30 d\'{i}as despu\'{e}s de la defensa.
+    \end{itemize}
+\end{cajaentregable}
+
+\begin{cajaentregable}{A.4.2 --- Documentaci\'{o}n del despliegue}
+    \begin{itemize}
+        \item El archivo \texttt{docs/despliegue/DEPLOYMENT.md} describe el proveedor, los recursos consumidos (CPU, RAM, disco), la topologia de red simplificada, las variables de entorno de producci\'{o}n (sin valores sensibles), y el procedimiento paso a paso para reproducir el despliegue.
+        \item El archivo \texttt{docs/despliegue/RUNBOOK.md} contiene el manual de operaci\'{o}n b\'{a}sica: procedimiento de arranque y apagado ordenado, procedimiento de rotacion de secretos (JWT, contrasenas de base de datos), procedimiento de rotacion de contenedores por actualizaciones de seguridad, y procedimiento de restauracion desde respaldo.
+        \item El archivo \texttt{docs/despliegue/BACKUP.md} describe la estrategia de respaldo: frecuencia, destino, retencion, procedimiento de restauracion y prueba periodica de restauracion documentada. Como m\'{i}nimo, se conserva un respaldo diario de la base de datos durante los treinta d\'{i}as posteriores a la defensa.
+        \item El repositorio incluye un ADR-007 sobre la estrategia de despliegue elegida (aunque los otros seis ADR ya cubren la mayor parte de las decisiones, esta es lo suficientemente relevante para tener su propio decisi\'{o}n record).
+    \end{itemize}
+\end{cajaentregable}
+
+\subsection{Bloque B --- Documento tecnico academico final del PFC}
+
+Este bloque es el que caracteriza a la Entrega Final y la distingue de las entregas previas. El equipo redacta un documento t\'{e}cnico acad\'{e}mico completo (35--60 p\'{a}ginas de contenido, sin contar anexos), en formato PDF, siguiendo el patron IMRaD (\emph{Introduction, Methods, Results and Discussion}) ampliado con las declaraciones obligatorias que hoy exigen las revistas cient\'{i}ficas de alto impacto en ingenier\'{i}a de software y disciplinas afines~\cite{ralph2021empirical,simera2010catalogue,page2021prisma}. La estructura de secciones que se detalla a continuaci\'{o}n es \emph{obligatoria}. La ausencia de cualquier secci\'{o}n o su tratamiento superficial se penaliza directamente en la r\'{u}brica.
+
+\subsubsection*{B.1 --- Portada institucional}
+
+Portada UTEQ con el t\'{i}tulo del PFC, nombres completos de los integrantes con su afiliacion (UTEQ, FCI, Carrera de Software), identificador ORCID de cada integrante (obligatorio; obtener registro gratuito en \texttt{orcid.org}), nombre y correo del docente-director, semestre y periodo acad\'{e}mico, fecha de cierre, etiqueta \texttt{v1.0.0} y \emph{commit hash} corto del cierre, y DOI persistente del artefacto en Zenodo~\cite{haak2012orcid,druskat2021cff,smith2016software}.
+
+\subsubsection*{B.2 --- Resumen estructurado en espanol e ingles}
+
+Dos res\'{u}menes de 200 a 250 palabras cada uno, con estructura obligatoria en cinco elementos: \emph{Contexto y problema, Objetivo, Metodos, Resultados principales, Conclusiones}. Un tercero debe poder decidir con solo este resumen si el trabajo le interesa. Sigue a cada resumen una lista de cinco a ocho \emph{palabras clave} controladas: al menos tres deben coincidir con t\'{e}rminos aceptados por el \emph{ACM Computing Classification System 2012} o por la taxonomia \emph{IEEE Thesaurus}. La versi\'{o}n en ingles no es una traduccion literal: se redacta de forma nativa en ingles t\'{e}cnico correcto.
+
+\subsubsection*{B.3 --- Indices y lista de siglas}
+
+Indice general, \'{i}ndice de figuras, \'{i}ndice de tablas, \'{i}ndice de listados de c\'{o}digo, y lista de siglas y acronimos con expansion completa en su primera aparicion.
+
+\subsubsection*{B.4 --- Cap\'{i}tulo 1: Introduccion}
+
+Contiene cinco subsecciones obligatorias.
+
+\begin{itemize}
+    \item \emph{Contexto y motivacion}: descripci\'{o}n del problema real que resuelve el sistema, con datos cuantitativos que dimensionen su magnitud (poblacion afectada, tiempo o costo actual del problema, etc.). Se aportan al menos tres referencias que sustenten cuantitativamente el problema.
+    \item \emph{Preguntas de investigacion}: dos a cuatro preguntas de investigaci\'{o}n (RQ1, RQ2, \ldots) formuladas en interrogativas cerradas y medibles. Estas preguntas guian el resto del documento.
+    \item \emph{Objetivo general y objetivos especificos}: un objetivo general y tres a cinco espec\'{i}ficos formulados con verbo en infinitivo. Cada objetivo espec\'{i}fico se traza contra al menos una pregunta de investigaci\'{o}n.
+    \item \emph{Contribuciones}: lista numerada de las contribuciones concretas del trabajo (por ejemplo: un sistema de \ldots, una evaluaci\'{o}n emp\'{i}rica de \ldots, un conjunto de datos publico con DOI, un paquete reproducible). Cada contribuci\'{o}n se traza a un componente concreto del repositorio~\cite{peffers2007design}.
+    \item \emph{Organizacion del documento}: parrafo \'{u}nico que anuncia lo que trata cada cap\'{i}tulo posterior.
+\end{itemize}
+
+\subsubsection*{B.5 --- Cap\'{i}tulo 2: Marco te\'{o}rico}
+
+Presentacion de los fundamentos conceptuales estrictamente necesarios para comprender el trabajo. No es un compendio general de teor\'{i}a de aplicaciones web. Se limita a: fundamentos de ingenier\'{i}a de requisitos seg\'{u}n ISO/IEC/IEEE 29148:2018 y el marco de Pohl, con enfasis en el proceso de elicitacion, an\'{a}lisis, especificaci\'{o}n y validaci\'{o}n~\cite{iso29148,pohl2010requirements,wiegers2013software}; caracter\'{i}sticas de calidad de un requisito bien formado seg\'{u}n INCOSE v4~\cite{incose2023requirements}; historias de usuario y casos de uso como t\'{e}cnicas complementarias de especificaci\'{o}n~\cite{cohn2004user,cockburn2001writing}; modelo arquitect\'{o}nico C4 y su justificaci\'{o}n~\cite{brown2023c4}; caracter\'{i}sticas de calidad de ISO/IEC 25010 relevantes al proyecto~\cite{iso25010}; principios REST~\cite{fielding2000rest}; esquema de autenticaci\'{o}n elegido y su fundamento (JWT seg\'{u}n RFC 7519, con las razones para colocarlo en cookie \emph{HttpOnly})~\cite{jones2015jwt}; controles OWASP Top 10 abordados~\cite{owasp2021top10,ortega2022securecoding}; patrones de acceso a datos y modelos de consistencia relevantes~\cite{kleppmann2017designing,bass2021software,richards2020fundamentals}; y todas las nociones adicionales que el equipo requiera. Cada concepto invocado se cita a una fuente autoritativa.
+
+\subsubsection*{B.6 --- Cap\'{i}tulo 3: Trabajos relacionados}
+
+Busqueda estructurada de trabajos previos sobre problemas comparables al del PFC. La busqueda se documenta siguiendo los principios de una revisi\'{o}n sistem\'{a}tica adaptada a la escala del PFC. Se sigue la orientacion metodologica de Kitchenham y Charters, con la reduccion natural correspondiente a un PFC, y se reporta con la disciplina de PRISMA 2020~\cite{kitchenham2007guidelines,page2021prisma}. En particular:
+
+\begin{itemize}
+    \item Se declara la estrategia de busqueda: bases de datos consultadas (por ejemplo IEEE Xplore, ACM Digital Library, Scopus, ScienceDirect, Springer Link), cadena de busqueda con operadores booleanos y sinonimos, ventana temporal, criterios de inclusion y exclusion.
+    \item Se presenta un diagrama de flujo estilo PRISMA 2020 con el n\'{u}mero de registros identificados, cribados, elegibles e incluidos, y las razones de exclusion~\cite{page2021prisma}.
+    \item Se sintetizan los trabajos incluidos en una \emph{tabla comparativa} con columnas: referencia, ano, dominio, pila tecnol\'{o}gica, patrones arquitectonicos, evaluaci\'{o}n emp\'{i}rica reportada, limitaciones declaradas y diferencia frente a este trabajo. La tabla contiene un m\'{i}nimo de ocho filas.
+    \item Se cierra el cap\'{i}tulo con un parrafo de \emph{brecha identificada} (\emph{research gap}) donde se expl\'{i}cita en que aporta el trabajo del PFC respecto de lo publicado.
+\end{itemize}
+
+\subsubsection*{B.6bis --- Cap\'{i}tulo 4: Ingenier\'{i}a de requisitos}
+
+Este cap\'{i}tulo es propio y obligatorio del documento acad\'{e}mico del PFC, y no debe fusionarse con el cap\'{i}tulo de dise\~{n}o. Documenta el proceso completo de ingenier\'{i}a de requisitos que llevo a la especificaci\'{o}n vigente en la versi\'{o}n \texttt{v1.0.0}, con la disciplina y las plantillas de la norma \emph{ISO/IEC/IEEE 29148:2018} y del marco de Pohl~\cite{iso29148,pohl2010requirements}. El cap\'{i}tulo contiene:
+
+\begin{itemize}
+    \item \emph{Contexto y stakeholders}: identificacion de todos los interesados (usuarios finales, patrocinador, mantenedor, regulador, competidor, etc.) siguiendo la t\'{e}cnica de \emph{stakeholder onion} de Alexander o equivalente~\cite{robertson2012mastering,wiegers2013software}.
+    \item \emph{Tecnicas de elicitacion aplicadas}: se declaran expl\'{i}citamente las t\'{e}cnicas usadas (entrevistas semi-estructuradas, observaci\'{o}n, prototipado, workshops, an\'{a}lisis de documentos, cuestionarios) con evidencia archivada bajo \texttt{docs/requisitos/elicitacion/} (notas, guiones de entrevista, prototipos de baja fidelidad).
+    \item \emph{Requisitos funcionales y no funcionales} categorizados y priorizados MoSCoW, siguiendo el patron sintactico \texttt{[condition] [subject] shall [action] [object] [constraint]} de ISO/IEC/IEEE 29148:2018 y las 42 reglas de INCOSE v4 para redaccion de enunciados~\cite{iso29148,incose2023requirements}.
+    \item \emph{Modelado de casos de uso y de historias de usuario}: diagrama de casos de uso UML de alto nivel, plantilla de Cockburn para los tres a cinco casos cr\'{i}ticos y backlog de historias en formato Connextra con Gherkin acceptance criteria~\cite{cockburn2001writing,cohn2004user}.
+    \item \emph{Validacion de requisitos}: procedimiento aplicado (revisiones estructuradas, walkthroughs, prototipado evolutivo, criterios de aceptacion medidos contra pruebas automatizadas) y resultado de la validaci\'{o}n final~\cite{pohl2010requirements,wiegers2013software}.
+    \item \emph{Gestion del cambio de requisitos}: bitacora \texttt{docs/requisitos/CHANGELOG-REQ.md}, m\'{e}tricas de estabilidad (tasa de cambio, tasa de eliminaci\'{o}n, tasa de agregacion) medidas entre Entrega 1A y Entrega Final.
+    \item \emph{Metricas de calidad de requisitos}: n\'{u}mero total, distribucion por prioridad MoSCoW, distribucion por tipo (funcional, no funcional, restrictivo, de interfaz), porcentaje verificado, cobertura de trazabilidad hacia c\'{o}digo y pruebas.
+\end{itemize}
+
+Este cap\'{i}tulo justifica que el PFC no es un ejercicio de desarrollo sin especificaci\'{o}n previa, sino un artefacto disciplinado con corpus de requisitos verificable, valorable como evidencia primaria en revistas cient\'{i}ficas dedicadas a la ingenier\'{i}a de requisitos, como \emph{Requirements Engineering} de Springer y como \emph{Empirical Software Engineering} en la secci\'{o}n correspondiente~\cite{iso29148,ralph2021empirical}.
+
+\subsubsection*{B.7 --- Cap\'{i}tulo 5: Materiales y m\'{e}todos}
+
+Se declara con precisi\'{o}n el enfoque metodologico del trabajo. Se adopta la metodolog\'{i}a de \emph{Design Science Research} de Peffers, articulada con los criterios de calidad de Hevner y con los est\'{a}ndares emp\'{i}ricos de la comunidad~\cite{peffers2007design,hevner2004design,ralph2021empirical}. Seg\'{u}n el tipo de evidencia emp\'{i}rica que el trabajo aporta (estudio de caso \'{u}nico, evaluaci\'{o}n emp\'{i}rica de rendimiento, evaluaci\'{o}n de usabilidad), se acoge ademas la orientacion metodologica correspondiente: Runeson y H\"ost para estudio de caso, Wohlin et al. para experimento controlado, Baltes y Ralph para el reporte del muestreo~\cite{runeson2009case,wohlin2012experimentation,baltes2022sampling}.
+
+El cap\'{i}tulo describe:
+
+\begin{itemize}
+    \item Enfoque metodologico global (DSR de Peffers en seis actividades) y su instanciacion concreta.
+    \item Instrumentos de medici\'{o}n: SUS de Brooke con los diez items originales sin modificacion~\cite{brooke1996sus}, k6 con \emph{script} versionado, Lighthouse con configuraci\'{o}n \texttt{lighthouserc.js}, JaCoCo con umbrales, herramienta OWASP ZAP.
+    \item Enfoque de m\'{e}tricas: se declara que las m\'{e}tricas del sistema estan alineadas con un \emph{Goal-Question-Metric} expl\'{i}cito~\cite{basili1994gqm}. Se presenta al menos un GQM completo (una meta, sus preguntas y sus m\'{e}tricas).
+    \item Poblacion, muestreo y participantes: se declara la poblacion objetivo, la t\'{e}cnica de muestreo aplicada y sus limitaciones, siguiendo Baltes y Ralph~\cite{baltes2022sampling}. Se justifica el tamano de muestra elegido.
+    \item Protocolo experimental replicable: cada bloque de evaluaci\'{o}n (rendimiento, seguridad, usabilidad, cobertura, accesibilidad) se describe con precisi\'{o}n suficiente para que un tercero pueda reproducirlo.
+    \item An\'{a}lisis estadistico: se declaran de antemano los estadisticos que se calculan (media, mediana, desviaci\'{o}n tipica, percentiles \texttt{p50, p90, p95, p99}, intervalos de confianza al 95\,\%, tests inferenciales aplicables, tamanos de efecto).
+    \item Determinismo y semillas: se declaran las semillas aleatorias usadas y las versiones exactas de las herramientas.
+\end{itemize}
+
+\subsubsection*{B.8 --- Cap\'{i}tulo 6: Dise\~{n}o del sistema y arquitectura}
+
+Diagramas C4 en niveles 1, 2 y 3, generados desde el c\'{o}digo fuente Structurizr DSL versionado en el repositorio. Las seis ADRs se resumen en el cap\'{i}tulo (una por subsecci\'{o}n) siguiendo la plantilla de Nygard, cubriendo los seis temas obligatorios del apartado D del Bloque D: eleccion de la pila principal, esquema de autenticaci\'{o}n, gestor de base de datos, estrategia de cache, estrategia de despliegue y estrategia de acceso a datos (ADR-006, separacion entre CRUD elementales sobre entidades ORM y operaciones adicionales encapsuladas en procedimientos almacenados o funciones SQL)~\cite{nygard2011adr,brown2023c4,demichiel2013jpa21}. Se incluye la tabla de atributos de calidad ISO/IEC 25010 con prioridad, escenario y estrategia; y la matriz de trazabilidad \emph{requisito $\rightarrow$ modulo $\rightarrow$ endpoint $\rightarrow$ prueba $\rightarrow$ evidencia}, ahora con la columna adicional \texttt{tipo\_acceso} que distingue accesos \texttt{CRUD-ORM} de accesos \texttt{SP}~\cite{iso25010}.
+
+\subsubsection*{B.9 --- Cap\'{i}tulo 7: Implementaci\'{o}n}
+
+Se describe con precisi\'{o}n suficiente lo distintivo de la implementaci\'{o}n: decisiones cr\'{i}ticas de c\'{o}digo (esquema de configuraci\'{o}n, aislamiento de capas, manejo de errores globales, esquemas de \emph{caching}, mecanismo de seguridad de la pila elegida, patrones concretos usados en el \emph{frontend}). Se dedica ademas una subsecci\'{o}n breve a la estrategia h\'{i}brida de acceso a datos, con al menos un listado de un procedimiento almacenado o funci\'{o}n SQL representativo tomado de \texttt{db/procs/}, y el listado del m\'{e}todo de repositorio que lo invoca mediante \texttt{@Procedure} o \texttt{@NamedStoredProcedureQuery}, siguiendo el contrato de la especificaci\'{o}n JPA 2.1 y su implementaci\'{o}n en Spring Data JPA~\cite{demichiel2013jpa21,springdata2025procedures}. No se transcriben archivos completos; se remite al repositorio para el detalle. En total se ilustra con tres a seis listados de c\'{o}digo pequenos y significativos, cada uno con su caption y su etiqueta, y todos referenciados desde el texto.
+
+\subsubsection*{B.10 --- Cap\'{i}tulo 8: Evaluaci\'{o}n emp\'{i}rica y resultados}
+
+Presentacion sistem\'{a}tica de los resultados obtenidos en cada bloque de evaluaci\'{o}n, siempre con: \emph{(i)} pregunta de investigaci\'{o}n asociada; \emph{(ii)} m\'{e}trica reportada; \emph{(iii)} datos crudos y su ubicaci\'{o}n en el repositorio; \emph{(iv)} estadistica descriptiva con media, desviaci\'{o}n tipica e intervalo de confianza al 95\,\%; y \emph{(v)} interpretacion textual del resultado.
+
+Requisitos m\'{i}nimos en cada bloque:
+
+\begin{itemize}
+    \item \emph{Rendimiento (k6)}: cinco corridas independientes; tabla con \texttt{p50, p90, p95, p99, media, DT, IC 95\,\%, throughput}. Grafico de barras con IC 95\,\% para \texttt{p95} en escenarios cache-frio y cache-caliente. Test inferencial (por ejemplo Wilcoxon de muestras pareadas) para la diferencia entre ambos escenarios, con tamano de efecto (por ejemplo \emph{Cliff delta})~\cite{wohlin2012experimentation}.
+    \item \emph{Seguridad (OWASP + ZAP)}: tabla con los seis controles OWASP y su estado (aprobado / hallazgo menor / hallazgo mayor), y resumen del reporte ZAP con conteo por severidad~\cite{owasp2021top10}.
+    \item \emph{Usabilidad (SUS)}: N $\geq 15$ participantes con perfil declarado (edad, sexo, experiencia web, dispositivo). Puntuacion SUS media, DT e IC 95\,\%; interpretacion seg\'{u}n escala adjetival documentada en la literatura de SUS~\cite{brooke1996sus}. Diagrama de caja de las puntuaciones.
+    \item \emph{Cobertura (JaCoCo)}: tabla por m\'{o}dulo con cobertura de \emph{lines} y \emph{branches}; gr\'{a}fico de barras.
+    \item \emph{Calidad web (Lighthouse)}: tabla con las cuatro categor\'{i}as (Performance, Accessibility, Best practices, SEO) en perfiles \emph{mobile} y \emph{desktop}; media y DT sobre las tres corridas por perfil.
+\end{itemize}
+
+Todos los gr\'{a}ficos son vectoriales (SVG o PDF), generados desde los datos crudos por \emph{scripts} versionados; su c\'{o}digo fuente se referencia en el propio caption. Todas las paletas de color son accesibles a personas con daltonismo (por ejemplo \emph{viridis} o \emph{Okabe-Ito}).
+
+\subsubsection*{B.11 --- Cap\'{i}tulo 9: Discusion}
+
+Interpretacion cr\'{i}tica de los resultados. Se responde una a una a cada pregunta de investigaci\'{o}n planteada en el Cap\'{i}tulo 1, con evidencia concreta del Cap\'{i}tulo 7. Se compara el desempeno del sistema frente a los trabajos relacionados del Cap\'{i}tulo 3 usando la misma tabla comparativa ampliada con los propios resultados. Se discuten hallazgos inesperados si los hubo. Se identifican implicaciones pr\'{a}cticas para el dominio del problema.
+
+\subsubsection*{B.12 --- Cap\'{i}tulo 10: Amenazas a la validez}
+
+An\'{a}lisis expl\'{i}cito de amenazas a la validez seg\'{u}n las cuatro categor\'{i}as reconocidas en ingenier\'{i}a de software emp\'{i}rica: validez de \emph{constructo}, validez \emph{interna}, validez \emph{externa} y validez de \emph{conclusion}~\cite{wohlin2012experimentation,runeson2009case}. Para cada amenaza identificada se declara la mitigacion aplicada. En particular, se aborda el sesgo de muestreo (siguiendo Baltes y Ralph) para la componente de usabilidad~\cite{baltes2022sampling}. Este cap\'{i}tulo es imprescindible.
+
+\subsubsection*{B.13 --- Cap\'{i}tulo 11: Trabajo futuro}
+
+Tres a cinco lineas de trabajo futuro concretas, cada una en un parrafo dedicado, con justificaci\'{o}n de por que quedaron fuera del alcance actual y como se abordarian.
+
+\subsubsection*{B.14 --- Cap\'{i}tulo 12: Conclusiones}
+
+Sintesis final de una a dos p\'{a}ginas. Se responden brevemente las preguntas de investigaci\'{o}n y se recapitulan las contribuciones enumeradas en la introduccion, con las evidencias concretas del Cap\'{i}tulo 7.
+
+\subsubsection*{B.15 --- Declaraciones obligatorias}
+
+Al final del cuerpo del documento y antes de las referencias, con secci\'{o}n propia claramente etiquetada, se incluyen las declaraciones que hoy exigen las principales revistas y que consolidan la trazabilidad del trabajo~\cite{simera2010catalogue,niso2022credit,druskat2021cff}.
+
+\begin{itemize}
+    \item \emph{Declaracion de disponibilidad de codigo}: URL del repositorio publico, etiqueta \texttt{v1.0.0}, DOI Zenodo del software.
+    \item \emph{Declaracion de disponibilidad de datos}: DOI del \emph{dataset} depositado en Zenodo (separado del software), licencia \emph{Creative Commons Attribution 4.0} o equivalente, y ubicaci\'{o}n de los datos crudos en el repositorio.
+    \item \emph{Declaracion de disponibilidad de materiales}: colecciones Postman, \emph{scripts} k6, \texttt{lighthouserc.js}, cuadernos de an\'{a}lisis, protocolo SUS, plantilla de consentimiento.
+    \item \emph{Declaracion etica}: participantes en pruebas de usabilidad, consentimiento informado, tratamiento y anonimizacion de datos.
+    \item \emph{Contribuciones de autores segun CRediT}: asignacion expl\'{i}cita de los catorce roles de la taxonomia CRediT a cada integrante del equipo~\cite{niso2022credit}.
+    \item \emph{Declaracion de conflictos de interes}: los autores declaran ausencia de conflictos, o los declaran expl\'{i}citamente.
+    \item \emph{Declaracion de financiamiento}: fuentes de financiamiento, incluida la ausencia de las mismas.
+    \item \emph{Declaracion de uso de asistentes de inteligencia artificial}: si el equipo utilizo asistentes generativos en cualquier fase del trabajo, se declara la herramienta, la versi\'{o}n, el prop\'{o}sito y la secci\'{o}n en que se uso.
+    \item \emph{Agradecimientos}: reconocimiento a personas o instituciones que colaboraron sin figurar como autores.
+\end{itemize}
+
+\subsubsection*{B.16 --- Referencias y estilo}
+
+Bibliografia con un m\'{i}nimo de \textbf{30 referencias} distintas, todas verificadas contra sus fuentes primarias. Al menos veinte de ellas son de alto impacto: articulos en revistas indexadas en \emph{Scopus} o \emph{Journal Citation Reports} (JCR) con cuartil Q1 o Q2, o articulos en actas de las principales conferencias del area (ICSE, FSE, ASE, MSR, EASE, ESEM). Toda referencia se cita en el cuerpo del documento; ninguna aparece solo en la lista final. El estilo de citas y referencias es APA septima edicion o IEEE, consistente en todo el documento. Cada cita respalda una afirmaci\'{o}n no trivial concreta.
+
+\subsubsection*{B.17 --- Anexos}
+
+En anexos se incluyen: cadena de busqueda completa del Cap\'{i}tulo 3; protocolo detallado del ensayo SUS con las diez preguntas y la escala; capturas de la ejecuci\'{o}n del pipeline CI con las tres corridas verdes; \emph{checklist} completada del est\'{a}ndar emp\'{i}rico correspondiente de Ralph et al.\ 2021 seg\'{u}n el tipo de estudio predominante~\cite{ralph2021empirical}; y matriz de trazabilidad completa.
+
+\subsection{Bloque C --- Evidencia empirica ampliada con analisis estadistico riguroso}
+
+Todo dato bruto que sustenta una figura o tabla del documento reposa en el repositorio bajo \texttt{docs/mediciones/} y se transforma en la figura o tabla mediante un \emph{script} versionado bajo \texttt{scripts/}. La regla es exigente: no hay gr\'{a}fico ni n\'{u}mero en el documento que no sea regenerable con un solo comando desde los datos crudos, garantizando la reproducibilidad computacional en el sentido estricto de la comunidad cient\'{i}fica~\cite{peng2011reproducible,sandve2013ten}. Esto habilita el nivel mas alto de reconocimiento en el modelo de badges de la ACM~\cite{acm2020artifact}.
+
+\begin{cajaestudio}{Requisitos estadisticos por bloque}
+    \begin{itemize}
+        \item Todas las mediciones cuantitativas presentan media, desviaci\'{o}n tipica e intervalo de confianza al 95\,\%. Se prefieren intervalos de confianza sobre valores $p$ como forma primaria de reporte.
+        \item Cuando se comparan dos condiciones (por ejemplo, cache frio vs cache caliente), se reporta un test inferencial apropiado no parametrico por defecto (Wilcoxon, Mann-Whitney), acompanado siempre de tamano de efecto (por ejemplo \emph{Cliff delta}, \emph{r} de rangos, \emph{Cohen d}).
+        \item Cuando se hacen comparaciones multiples, se declara y aplica la correcci\'{o}n correspondiente (por ejemplo Holm o Benjamini-Hochberg) y se documenta la decisi\'{o}n.
+        \item Los gr\'{a}ficos usan paletas accesibles a personas con daltonismo. Cada gr\'{a}fico tiene su script fuente referenciado en el \emph{caption}.
+        \item Las tablas usan lineas de \texttt{booktabs} (o equivalente en Word); no usan lineas verticales.
+    \end{itemize}
+\end{cajaestudio}
+
+\subsection{Bloque D --- Reproducibilidad absoluta y publicabilidad del artefacto}
+
+La Entrega Final debe cumplir los criterios que la ACM identifica como \emph{Artifacts Available + Artifacts Evaluated (Reusable) + Results Reproduced}, en su pol\'{i}tica vigente desde 2020~\cite{acm2020artifact}. La lista siguiente concreta los requisitos que ese estado impone.
+
+\begin{cajarepo}{D.1 --- Reproduccion end-to-end en un solo comando}
+    \begin{itemize}
+        \item Objetivo \texttt{make all} que, desde una clonacion limpia, ejecuta la secuencia completa: levantar contenedores, aplicar semillas, ejecutar pruebas, correr benchmarks, generar reportes, compilar el PDF del documento final. Si el comando termina con c\'{o}digo cero, todo esta reproducido.
+        \item Imagen Docker publicada en \emph{GitHub Container Registry} con \emph{tag} \texttt{v1.0.0}; el \emph{digest} \texttt{sha256} se declara en tres lugares (README, CITATION.cff, portada del PDF) y coincide entre los tres.
+        \item Cuadernos ejecutables (\emph{Jupyter} o \emph{RMarkdown}) con salidas archivadas: al abrir un cuaderno se ve el \'{u}ltimo run que produjo los n\'{u}meros del documento.
+    \end{itemize}
+\end{cajarepo}
+
+\begin{cajarepo}{D.2 --- Entorno declarado con precisi\'{o}n}
+    \begin{itemize}
+        \item Version exacta de Docker, docker-compose, sistema operativo del contenedor, JDK, Node.js, Angular CLI y de cada herramienta usada, capturadas en \texttt{docs/entorno/versions.txt} generado por el pipeline y actualizado con cada release.
+        \item Semillas aleatorias declaradas en cada script y en el \texttt{README}.
+    \end{itemize}
+\end{cajarepo}
+
+\begin{cajarepo}{D.3 --- Archivo permanente y metadatos completos}
+    \begin{itemize}
+        \item Deposito en Zenodo del repositorio en el estado \texttt{v1.0.0}, obteniendo el DOI del software.
+        \item Deposito en Zenodo del \emph{dataset} de mediciones (perf, sec, sus, lighthouse, jacoco) en un registro separado con su propio DOI y su propia licencia (por ejemplo CC BY 4.0), siguiendo el principio de citacion independiente de software y datos~\cite{smith2016software,druskat2021cff}.
+        \item \texttt{CITATION.cff} v1.2.0 con todos los campos: \texttt{cff-version, message, title, authors} (con ORCID de cada autor), \texttt{version, date-released, license, repository-code, doi, keywords, preferred-citation}~\cite{druskat2021cff,haak2012orcid}.
+    \end{itemize}
+\end{cajarepo}
+
+\subsection{Bloque E --- Cumplimiento de estandares de reporte}
+
+El equipo declara y evidencia el cumplimiento con los est\'{a}ndares de reporte pertinentes.
+
+\begin{itemize}
+    \item \emph{Estandar principal:} el est\'{a}ndar emp\'{i}rico ACM SIGSOFT correspondiente al tipo de estudio predominante del PFC (por ejemplo \emph{Case Study, Controlled Experiment, Engineering Research, Data Science}). El \emph{checklist} correspondiente se completa item por item y se archiva como anexo del documento y como \texttt{docs/checklists/ralph2021-<estandar>.md} en el repositorio~\cite{ralph2021empirical}.
+    \item \emph{Estandar complementario:} si el trabajo incluye una revisi\'{o}n de trabajos relacionados con procedimiento expl\'{i}cito, se completa el \emph{checklist} PRISMA 2020 y se archiva como \texttt{docs/checklists/prisma2020.md}~\cite{page2021prisma}. Si el trabajo es un estudio de caso, se documenta con los criterios de Runeson y H\"ost~\cite{runeson2009case}. Si es un experimento controlado, con los de Wohlin et al.~\cite{wohlin2012experimentation}.
+    \item \emph{Directrices FAIR:} el paquete completo (software + datos + metadatos) cumple los cuatro principios F, A, I, R con checklist propio archivado en \texttt{docs/checklists/fair.md}~\cite{wilkinson2016fair}.
+\end{itemize}
+
+\subsection{Bloque F --- Paquete de datos, materiales y metadatos}
+
+Se documenta y publica de manera separada el paquete de datos, respetando el principio de citacion independiente de software y datos~\cite{smith2016software}. En el repositorio, la estructura \texttt{docs/mediciones/} contiene los datos crudos; la estructura \texttt{scripts/} contiene el c\'{o}digo de an\'{a}lisis; los resultados agregados se generan al ejecutar el pipeline y no se comitean fijos, salvo para permitir la comparacion con las corridas de referencia.
+
+Se actualiza el \texttt{DATA-DICTIONARY.md} cubriendo el 100\,\% de las variables presentes en los archivos crudos, con nombre, tipo, unidad, rango y significado. Se a\~{n}ade un archivo \texttt{DATA-PROVENANCE.md} que describe, para cada tabla y figura del documento, exactamente que archivo crudo la origina, que script la produce y en que \emph{commit hash} se genero por \'{u}ltima vez.
+
+\subsection{Bloque G --- Etica, consentimiento y disclosure}
+
+El bloque F de la Entrega 3 se conserva y se amplia. En particular:
+
+\begin{itemize}
+    \item Los formularios de consentimiento firmados por los participantes SUS se archivan fuera del repositorio publico, en un lugar declarado en \texttt{docs/etica/ETHICS.md} (por ejemplo \emph{Google Drive} institucional del equipo, con acceso restringido al docente). Sus codigos anonimos \texttt{P01, P02, \ldots} aparecen en los datos crudos.
+    \item Se declara en el documento final si algun asistente de IA generativa se utilizo, en que fase, con que prop\'{o}sito y con que revisi\'{o}n posterior por parte del equipo.
+    \item Se declara la ausencia de conflictos de interes y de financiamiento externo, o se declaran expl\'{i}citamente en caso contrario.
+\end{itemize}
+
+% =====================================================================
+%  3. ESTRUCTURA DE REPOSITORIO
+% =====================================================================
+\section{Estructura obligatoria del repositorio para la Entrega Final}
+
+La estructura de la Entrega 3 se conserva y se amplia con los artefactos espec\'{i}ficos de la Entrega Final. El arbol siguiente refleja el estado del repositorio en el tag \texttt{v1.0.0}.
+
+\begin{lstlisting}[caption={Estructura minima del repositorio para la Entrega Final}]
+.
+|-- README.md                    # badges (CI, licencia, DOI software,
+|                                # DOI dataset), arranque, credenciales
+|-- LICENSE                      # OSI-approved (MIT o Apache-2.0)
+|-- CITATION.cff                 # 1.2.0 completo con ORCID y DOI
+|-- CONTRIBUTORS.md              # roles CRediT explicitos por integrante
+|-- CHANGELOG.md                 # Keep-a-Changelog con v1.0.0
+|-- Makefile                     # objetivos up down test bench audit
+|                                # docs all clean
+|-- docker-compose.yml           # digests sha256 pinados
+|-- .env.example
+|-- .gitignore
+|-- backend/                     # Spring Boot 3.2.x (Java 21 LTS)
+|-- frontend/                    # Angular 17+
+|-- db/
+|   |-- schema.sql
+|   |-- seed.sql
+|   `-- procs/                   # sp_*.sql y fn_*.sql versionados
+|                                # (minimo 6, uno por categoria)
+|-- database/migrations/         # migraciones Flyway V1__, V2__, R__
+|-- docs/
+|   |-- informe-final.pdf        # documento academico completo
+|   |-- informe-final.tex        # fuente LaTeX del documento
+|   |-- refs.bib                 # bibliografia >=30 refs verificadas
+|   |-- requisitos/
+|   |   |-- SRS-v1.0.0.pdf       # SRS final firmado ISO/IEC/IEEE 29148
+|   |   |-- SRS-v1.0.0.tex       # fuente LaTeX del SRS
+|   |   |-- historias/           # historias INVEST + Gherkin
+|   |   |-- casos-de-uso/        # plantilla Cockburn niveles 1..4
+|   |   |-- elicitacion/         # evidencia de entrevistas y workshops
+|   |   |-- CHANGELOG-REQ.md     # bitacora de cambios de requisitos
+|   |   `-- historico/           # SRS-v0.3.0.pdf, SRS-v0.7.0.pdf, ...
+|   |-- observaciones/
+|   |   `-- OBSERVACIONES.md     # bitacora acumulada 1A + 1B + 3
+|   |-- adr/                     # 7 ADRs plantilla Nygard (incl.
+|   |                            # ADR-006 acceso a datos CRUD/SP y
+|   |                            # ADR-007 estrategia de despliegue)
+|   |-- basedatos/
+|   |   `-- CATALOGO-SP.md       # catalogo completo de SPs y funciones
+|   |-- arquitectura/            # Structurizr DSL + PNG C4 L1..L3
+|   |-- despliegue/
+|   |   |-- DEPLOYMENT.md        # topologia, proveedor, recursos
+|   |   |-- RUNBOOK.md           # operacion basica, rotacion de secretos
+|   |   `-- BACKUP.md            # respaldo y restauracion
+|   |-- mediciones/
+|   |   |-- perf/                # k6 >=5 corridas independientes
+|   |   |-- sec/
+|   |   |   |-- owasp/           # curl reproducible por control
+|   |   |   |-- zap/             # reporte HTML+XML ZAP baseline
+|   |   |   `-- static-analysis/ # reporte find-sec-bugs o equivalente
+|   |   |-- sus/                 # SUS raw csv N>=15
+|   |   |-- lighthouse/          # JSON lhci por perfil mobile+desktop
+|   |   |-- jacoco/              # report.xml + report.html
+|   |   |-- DATA-DICTIONARY.md
+|   |   `-- DATA-PROVENANCE.md
+|   |-- trazabilidad/
+|   |   `-- matriz.csv           # req -> historia -> caso uso -> modulo
+|   |                            #    -> endpoint -> prueba ->
+|   |                            #    tipo_acceso -> evidencia -> estado
+|   |-- etica/
+|   |   |-- ETHICS.md
+|   |   |-- consentimientos/plantilla.md
+|   |   `-- ai-disclosure.md     # uso de IA generativa (si aplica)
+|   |-- entorno/
+|   |   `-- versions.txt         # docker, jdk, node, angular, k6, ...
+|   |-- checklists/
+|   |   |-- ralph2021-<estandar>.md
+|   |   |-- prisma2020.md        # si aplica
+|   |   |-- runeson2009-case.md  # si aplica
+|   |   |-- wohlin2012-exp.md    # si aplica
+|   |   |-- incose2023-req.md    # 15 caracteristicas + 42 reglas
+|   |   `-- fair.md
+|   |-- postman/coleccion.json
+|   `-- VERSIONING.md
+|-- k6/                          # scripts + opts.js
+|-- lighthouserc.js
+|-- scripts/                     # analisis con seed fija (Python o R)
+|   |-- perf-analysis.ipynb      # cuaderno con salidas ejecutadas
+|   |-- sus-analysis.ipynb
+|   |-- validate-traceability.sh # rechaza requisitos sin trazabilidad
+|   |-- audit-sql-dynamic.sh     # rechaza SQL dinamico en db/procs/*
+|   `-- gen-figuras.py
+`-- .github/workflows/           # CI: test+bench+audit+ZAP+lhci+docs
+\end{lstlisting}
+
+% =====================================================================
+%  4. ENTREGABLES
+% =====================================================================
+\section{Entregables consolidados de la Entrega Final}
+
+El equipo entrega, a traves del repositorio Git publico y del formulario institucional del SGA:
+
+\begin{enumerate}
+    \item Repositorio Git publico con \emph{tag} exactamente igual a \texttt{v1.0.0} y \emph{commit hash} corto declarado en la portada del PDF final.
+    \item DOI persistente del software y DOI persistente del \emph{dataset} (dos DOIs distintos, ambos en Zenodo).
+    \item PDF del documento acad\'{e}mico final del PFC (35--60 p\'{a}ginas de contenido sin contar anexos) en \texttt{docs/informe-final.pdf}, con el c\'{o}digo LaTeX fuente y su \texttt{.bib} en la misma carpeta.
+    \item Coleccion Postman actualizada con al menos 25 peticiones cubriendo casos de exito, validaci\'{o}n, autorizacion y no encontrado.
+    \item Cuadernos de an\'{a}lisis Jupyter (o R Markdown) con salidas ejecutadas y visibles al abrir el archivo.
+    \item Video corto (5--7 minutos) demostrando \texttt{make all} desde una clonacion limpia y mostrando los reportes generados. El video se aloja enlazado desde el \texttt{README}.
+    \item \emph{Slides} para la defensa oral de la semana 17 (esta gu\'{i}a no cubre la defensa; ella se rige por la gu\'{i}a espec\'{i}fica de la semana 17).
+\end{enumerate}
+
+% =====================================================================
+%  5. RUBRICA
+% =====================================================================
+\section{Rubrica de evaluacion de la Entrega Final}
+
+La r\'{u}brica de la Entrega Final pondera diecisiete criterios agrupados en tres ejes: eje del \emph{producto software} (criterios P0--P5, 35\,\%); eje del \emph{documento tecnico academico} (criterios D0R y D1--D6, 40\,\%); y eje del \emph{paquete de reproducibilidad, datos y publicabilidad} (criterios R1--R4, 25\,\%). Cada criterio se evalua con cinco niveles: \emph{Excelente} $= 100$\,\%, \emph{Satisfactorio} $= 75$\,\%, \emph{En desarrollo} $= 50$\,\%, \emph{Insuficiente} $= 25$\,\%, \emph{Ausente} $= 0$\,\%.
+
+\subsection{Formula de calificacion}
+
+\begin{center}
+$\displaystyle \text{Nota}_{100} \;=\; \sum_{i=1}^{17} \bigl(\text{peso}_{i} \times \text{nivel}_{i}\bigr) \qquad \text{Nota}_{10} \;=\; \frac{\text{Nota}_{100}}{10}$
+\end{center}
+
+\subsection{Rubrica detallada}
+
+{
+\footnotesize
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|L{2.9cm}|C{0.9cm}|L{2.5cm}|L{2.5cm}|L{2.5cm}|L{2.3cm}|}
+\hline
+\rowcolor{uteqverde!85}
+{\color{white}\textbf{Criterio}} &
+{\color{white}\textbf{Peso}} &
+{\color{white}\textbf{Excelente (100\,\%)}} &
+{\color{white}\textbf{Satisfactorio (75\,\%)}} &
+{\color{white}\textbf{En desarrollo (50\,\%)}} &
+{\color{white}\textbf{Insuficiente (25\,\%)}} \\
+\hline
+\endfirsthead
+
+\hline
+\rowcolor{uteqverde!85}
+{\color{white}\textbf{Criterio}} &
+{\color{white}\textbf{Peso}} &
+{\color{white}\textbf{Excelente (100\,\%)}} &
+{\color{white}\textbf{Satisfactorio (75\,\%)}} &
+{\color{white}\textbf{En desarrollo (50\,\%)}} &
+{\color{white}\textbf{Insuficiente (25\,\%)}} \\
+\hline
+\endhead
+
+% ================== EJE PRODUCTO SOFTWARE ==================
+\rowcolor{uteqdorado!25}
+\multicolumn{6}{|c|}{\textbf{EJE 1 --- PRODUCTO SOFTWARE (35\,\%)}}\\ \hline
+
+% -- P0 --
+\textbf{P0. Aplicacion de observaciones acumuladas} (Bloque 0) &
+\centering 5\,\% &
+\texttt{docs/observaciones/OBSERVACIONES.md} completo con el 100\,\% de observaciones cerradas de las tres entregas anteriores (1A, 1B y 3); cada observaci\'{o}n trazable a commit; tags \texttt{v0.7.1} y \texttt{v1.0.0} colocados correctamente; anexo A del documento acad\'{e}mico con la tabla-resumen. &
+$\geq 85$\,\% de observaciones cerradas con trazabilidad correcta. &
+Entre $70$\,\% y $85$\,\% de observaciones cerradas o trazabilidad parcial. &
+Menos del $70$\,\% cerradas o bitacora ausente. \\
+\rowcolor{grisfila}
+
+% -- P1 --
+\textbf{P1. Cierre funcional, cobertura y estrategia de acceso a datos} &
+\centering 7\,\% &
+Todos los requisitos operativos; JaCoCo lines+branches $\geq 70$\,\% en dominio, servicios y controladores; CI con tres corridas verdes consecutivas; $\geq 6$ procedimientos almacenados en \texttt{db/procs/} invocados con \texttt{@Procedure} o \texttt{@NamedStoredProcedureQuery}, catalogados en \texttt{docs/basedatos/CATALOGO-SP.md} y trazados en la matriz con columna \texttt{tipo\_acceso}. &
+Cobertura $\geq 65$\,\% en dos de tres capas; CI con al menos una corrida verde; $\geq 4$ procedimientos almacenados catalogados. &
+Cobertura entre $50$ y $65$\,\%; CI con corridas rojas recientes; $\geq 2$ procedimientos almacenados catalogados. &
+Cobertura $< 50$\,\%, CI sin corridas verdes, o menos de dos procedimientos almacenados pese a existir operaciones adicionales a los CRUD elementales. \\
+\rowcolor{grisfila}
+
+% -- P2 --
+\textbf{P2. Rendimiento con evidencia estadistica} &
+\centering 6\,\% &
+$\geq 5$ corridas k6 con \texttt{p95 $\leq 200$\,ms} caliente y \texttt{$\leq 500$\,ms} frio; IC 95\,\% reportados; test inferencial y tamano de efecto. &
+$\geq 3$ corridas con umbrales cumplidos y estadistica descriptiva completa. &
+$\geq 3$ corridas pero un umbral incumplido. &
+$< 3$ corridas o umbrales sin evidencia. \\
+
+% -- P3 --
+\textbf{P3. Seguridad OWASP + ZAP + auditoria de acceso a datos} &
+\centering 7\,\% &
+Seis controles OWASP evidenciados con curl reproducible; reporte ZAP baseline sin hallazgos altos; cabeceras HSTS, CSP, X-Frame-Options, XCTO presentes; an\'{a}lisis est\'{a}tico find-sec-bugs (o equivalente) sin hallazgos altos sobre concatenacion SQL; script \texttt{audit-sql-dynamic.sh} sin hallazgos en \texttt{db/procs/}. &
+Cinco controles OWASP y ZAP sin hallazgos altos; an\'{a}lisis est\'{a}tico presente con hallazgos menores documentados. &
+Cuatro controles OWASP evidenciados; an\'{a}lisis est\'{a}tico parcial. &
+Tres o menos controles evidenciados; sin an\'{a}lisis est\'{a}tico. \\
+\rowcolor{grisfila}
+
+% -- P4 --
+\textbf{P4. Calidad web Lighthouse} &
+\centering 5\,\% &
+Performance $\geq 80$, Accessibility $\geq 90$, Best Practices $\geq 90$, SEO $\geq 90$ en perfiles mobile y desktop, con $\geq 3$ corridas por perfil. &
+Tres de las cuatro categor\'{i}as cumplen en ambos perfiles. &
+Dos categor\'{i}as cumplen; corridas \'{u}nicas. &
+Umbrales incumplidos en la mayoria. \\
+\rowcolor{grisfila}
+
+% -- P5 --
+\textbf{P5. Puesta en produccion accesible} (Bloque A.4) &
+\centering 5\,\% &
+Sistema desplegado en URL publica con HTTPS y certificado valido; \texttt{/actuator/health} en \texttt{UP}; usuario demo funcional; \texttt{DEPLOYMENT.md}, \texttt{RUNBOOK.md} y \texttt{BACKUP.md} completos; ADR-007 sobre estrategia de despliegue. &
+Sistema desplegado con HTTPS; documentaci\'{o}n b\'{a}sica de despliegue presente; runbook o backup parcial. &
+Sistema desplegado sin HTTPS o con advertencias de certificado; documentaci\'{o}n superficial. &
+No hay despliegue publicamente accesible o el sistema no responde. \\
+
+% ================== EJE DOCUMENTO ACADEMICO ==================
+\rowcolor{uteqdorado!25}
+\multicolumn{6}{|c|}{\textbf{EJE 2 --- DOCUMENTO TECNICO ACADEMICO (40\,\%)}}\\ \hline
+
+% -- D0R --
+\textbf{D0R. Culminacion de la ingenieria de requisitos} (Bloque A.3) &
+\centering 8\,\% &
+SRS final \texttt{docs/requisitos/SRS-v1.0.0.pdf} firmado por el docente-director; 100\,\% de \emph{Must} verificados; historias y casos de uso finales trazados a pruebas; m\'{e}tricas de calidad de requisitos reportadas; cada requisito individual satisface las nueve caracter\'{i}sticas INCOSE v4 (C1--C9) y el conjunto satisface las seis caracter\'{i}sticas de conjunto (C10--C15); bit\'{a}cora de cambios \texttt{CHANGELOG-REQ.md} continua. &
+$\geq 90$\,\% de \emph{Must} verificados; m\'{e}tricas reportadas parcialmente; una a dos caracter\'{i}sticas INCOSE incumplidas de forma menor. &
+$\geq 75$\,\% de \emph{Must} verificados; m\'{e}tricas reportadas de forma superficial; varias caracter\'{i}sticas INCOSE incumplidas. &
+SRS ausente, no firmado, o menos del $75$\,\% de \emph{Must} verificados. \\
+\rowcolor{grisfila}
+
+% -- D1 --
+\textbf{D1. Estructura IMRaD, secciones obligatorias y capitulo de RE} &
+\centering 6\,\% &
+Todas las 18 subsecciones obligatorias del Bloque B presentes y de calidad acad\'{e}mica (incluye el cap\'{i}tulo B.6bis dedicado a la ingenier\'{i}a de requisitos); resumen estructurado bilingue con palabras clave controladas. &
+Una subsecci\'{o}n faltante o tratada superficialmente. &
+Dos subsecciones faltante; resumen no estructurado. &
+Tres o mas subsecciones faltante. \\
+
+% -- D2 --
+\textbf{D2. Trabajos relacionados y brecha} &
+\centering 5\,\% &
+Estrategia de busqueda declarada; diagrama PRISMA 2020; tabla comparativa con $\geq 8$ trabajos; brecha expl\'{i}cita. &
+Estrategia y tabla presentes; diagrama parcial. &
+Trabajos citados pero sin estrategia estructurada. &
+Ausencia de estrategia y de brecha. \\
+
+% -- D3 --
+\textbf{D3. Metodologia y protocolo experimental} &
+\centering 7\,\% &
+DSR Peffers instanciada; GQM presentado; muestreo justificado seg\'{u}n Baltes y Ralph; estadistica declarada a priori; semillas y versiones capturadas. &
+DSR instanciada; GQM parcial; muestreo declarado sin justificaci\'{o}n completa. &
+Metodologia mencionada pero sin instanciacion clara. &
+Metodologia ausente o generica. \\
+\rowcolor{grisfila}
+
+% -- D4 --
+\textbf{D4. Analisis estadistico riguroso} &
+\centering 6\,\% &
+Media, DT, IC 95\,\% en todas las tablas; tests inferenciales con tamano de efecto donde aplique; correcci\'{o}n multiple documentada; SUS con N $\geq 15$. &
+IC 95\,\% en la mayoria de tablas; tests presentes en algunos casos; SUS con N $\geq 10$. &
+Solo estadistica descriptiva b\'{a}sica; SUS con N $< 10$. &
+Sin estadistica formal o SUS ausente. \\
+
+% -- D5 --
+\textbf{D5. Amenazas a la validez y discusion critica} &
+\centering 4\,\% &
+Cuatro categor\'{i}as (constructo, interna, externa, conclusion) tratadas con mitigacion expl\'{i}cita; discusion responde una a una las RQs. &
+Tres categor\'{i}as tratadas con mitigacion; discusion responde la mayoria de RQs. &
+Dos categor\'{i}as tratadas; discusion superficial. &
+Amenazas ausentes o superficiales. \\
+\rowcolor{grisfila}
+
+% -- D6 --
+\textbf{D6. Bibliografia y calidad de citas} &
+\centering 4\,\% &
+$\geq 30$ referencias distintas y verificadas; $\geq 20$ de alto impacto (JCR Q1--Q2, ICSE, FSE, ASE, MSR, EASE, ESEM); todas citadas en el cuerpo; APA 7 o IEEE consistente. &
+$\geq 25$ referencias con $\geq 15$ de alto impacto. &
+$\geq 20$ referencias con menos de 10 de alto impacto. &
+$< 20$ referencias o referencias fabricadas/no verificables. \\
+
+% ================== EJE PAQUETE REPRODUCIBILIDAD ==================
+\rowcolor{uteqdorado!25}
+\multicolumn{6}{|c|}{\textbf{EJE 3 --- REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25\,\%)}}\\ \hline
+
+% -- R1 --
+\textbf{R1. Reproduccion end-to-end en un solo comando} &
+\centering 8\,\% &
+\texttt{make all} regenera desde datos crudos hasta el PDF final sin intervencion; cuadernos con salidas ejecutadas; imagen Docker con digest declarado en 3 lugares. &
+\texttt{make all} regenera con una variable adicional documentada. &
+Regeneracion parcial requiriendo pasos manuales. &
+No hay regeneracion autom\'{a}tica. \\
+\rowcolor{grisfila}
+
+% -- R2 --
+\textbf{R2. Datos con DOI, diccionario y provenance} &
+\centering 6\,\% &
+Dataset con DOI Zenodo separado del software y licencia CC BY 4.0; \texttt{DATA-DICTIONARY.md} 100\,\%; \texttt{DATA-PROVENANCE.md} traza cada tabla y figura al commit y script que la genera. &
+Dataset con DOI; diccionario $\geq 80$\,\%; provenance parcial. &
+Dataset publicado sin DOI; diccionario parcial. &
+Sin DOI del dataset; diccionario ausente. \\
+
+% -- R3 --
+\textbf{R3. Metadatos, CRediT y ORCID} &
+\centering 6\,\% &
+\texttt{CITATION.cff} 1.2.0 completo con ORCID de todos los autores y DOI; \texttt{CONTRIBUTORS.md} con roles CRediT explicitos; declaraciones obligatorias completas. &
+CITATION.cff completo; roles CRediT parciales; falta una declaraci\'{o}n. &
+CITATION.cff m\'{i}nimo; ORCID solo de algunos autores. &
+Sin ORCID o sin CRediT. \\
+\rowcolor{grisfila}
+
+% -- R4 --
+\textbf{R4. Cumplimiento de estandares de reporte} &
+\centering 5\,\% &
+Checklist Ralph et al.\ 2021 del est\'{a}ndar principal completado item por item; checklist FAIR completo; checklist secundario seg\'{u}n tipo de estudio. &
+Checklist principal completado; secundario parcial. &
+Un checklist parcial. &
+Sin checklists. \\
+
+\hline
+\rowcolor{goldclaro}
+\multicolumn{2}{|r|}{\textbf{Total ponderado}} &
+\multicolumn{4}{l|}{\textbf{100\,\%} \quad \footnotesize Nota${}_{100} = \sum (\text{peso}_i \times \text{nivel}_i)$ \; \textbar\; Nota${}_{10} = \text{Nota}_{100}/10$} \\
+\hline
+\end{longtable}
+}
+
+\subsection{Reglas transversales de calificacion}
+
+\begin{cajacritica}{Reglas transversales que aplican a todos los criterios}
+    \begin{enumerate}
+        \item \textbf{El repositorio Git es la fuente de verdad}. La evidencia verificada directamente en el repositorio se distingue siempre de la inferida del PDF o de capturas.
+        \item Los criterios del Eje 1 (P1--P4) y del Eje 3 (R1--R4) se califican \emph{Ausente} ($0$\,\%) cuando no existe repositorio publico accesible o cuando el tag \texttt{v1.0.0} no existe o no coincide con el declarado en la portada del PDF.
+        \item Si \texttt{make all} falla desde una clonacion limpia siguiendo estrictamente el README, el criterio R1 se califica autom\'{a}ticamente \emph{Insuficiente} ($25$\,\%) o menos, independientemente del resto.
+        \item Si el DOI del software declarado en el PDF no resuelve al tag \texttt{v1.0.0} en Zenodo, el criterio R3 no supera \emph{En desarrollo} ($50$\,\%).
+        \item Si el documento acad\'{e}mico no incluye la secci\'{o}n de \emph{Amenazas a la validez} (D5), el criterio D5 se califica \emph{Ausente} ($0$\,\%).
+        \item Cualquier referencia bibliografica fabricada, con datos inconsistentes o no verificable contra su fuente primaria descuenta un $25$\,\% del criterio D6 por cada instancia detectada.
+        \item Cualquier evidencia de concatenacion de entrada de usuario en JPQL, HQL, SQL nativo o dentro de un procedimiento almacenado, y cualquier uso de SQL din\'{a}mico construido por concatenacion (\texttt{EXECUTE IMMEDIATE}, \texttt{sp\_executesql} o equivalentes), califica autom\'{a}ticamente el criterio P1 como \emph{Insuficiente} ($25$\,\%) y el criterio P3 como \emph{Insuficiente} ($25$\,\%) o menos, independientemente del resto de la evidencia~\cite{owaspsqlicheatsheet,owasp2021top10}.
+        \item Si la URL publica declarada en el \texttt{README} no responde en el momento de la evaluaci\'{o}n, o el certificado HTTPS produce advertencias del navegador, el criterio P5 se califica autom\'{a}ticamente \emph{Insuficiente} ($25$\,\%) o menos.
+        \item Si el SRS declarado en \texttt{docs/requisitos/SRS-v1.0.0.pdf} no contiene la aprobacion del docente-director, o no cumple la plantilla de ISO/IEC/IEEE 29148:2018, el criterio D0R se limita a \emph{En desarrollo} ($50$\,\%) como maximo~\cite{iso29148}.
+        \item Si la aplicaci\'{o}n de observaciones acumuladas de las Entregas 1A, 1B y 3 no supera el $70$\,\%, el criterio P0 se califica \emph{Insuficiente} ($25$\,\%) y toda la Entrega Final se marca como \emph{con deuda de calidad} en el reporte al SGA.
+        \item Si el pipeline CI muestra corridas rojas en los \'{u}ltimos siete d\'{i}as previos a la fecha de cierre declarada, el criterio P1 no supera \emph{En desarrollo} ($50$\,\%).
+        \item Cualquier commit posterior al corte declarado en la portada del PDF se ignora para efectos de calificaci\'{o}n, sin que ello penalice al equipo.
+        \item El documento acad\'{e}mico debe estar redactado por los integrantes del equipo. Si se detecta reutilizacion no declarada de texto de otras fuentes por encima de umbrales academicos razonables, el criterio D6 se califica \emph{Insuficiente} y se activa el protocolo institucional correspondiente.
+    \end{enumerate}
+\end{cajacritica}
+
+% =====================================================================
+%  6. RELACION CON LA DEFENSA
+% =====================================================================
+\section{Articulacion con la defensa oral (semana 17)}
+
+La Entrega Final es la base sobre la cual el tribunal preparara sus preguntas durante la defensa oral de la semana 17. En consecuencia, la calidad del documento acad\'{e}mico y del paquete de reproducibilidad determina en gran medida la fluidez del equipo durante la defensa. Se recomienda que cada integrante lea integramente el documento antes de la defensa, incluidas las secciones que no redacto directamente, y que el equipo prepare la demostracion en vivo bajo la disciplina de \texttt{make all}: si esa demostracion falla, el tribunal notara inmediatamente la fragilidad del artefacto. La preparacion espec\'{i}fica de la defensa (guion de presentaci\'{o}n, distribucion de tiempos, gesti\'{o}n de preguntas) se rige por la gu\'{i}a de la semana 17 y por el banco de preguntas frecuentes del tribunal, que se conserva del ciclo anterior de la asignatura.
+
+% =====================================================================
+%  REFERENCIAS
+% =====================================================================
+\bibliographystyle{plain}
+\bibliography{Entrega4}
+
+\end{document}

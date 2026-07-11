@@ -1,0 +1,4385 @@
+\part{Patrón MVC y Servicios Web}
+
+\chapter{El patrón Modelo-Vista-Controlador en aplicaciones web modernas}
+\label{cap:semana14}
+
+\epigraph{«MVC no es un framework: es una forma de pensar el software
+que separa lo que el usuario ve, lo que el sistema sabe, y la lógica
+que conecta ambos mundos.»}{--- \textit{Adaptado de Trygve Reenskaug}}
+
+\section*{Resultado de aprendizaje de la semana}
+Al concluir la semana 14, el estudiante diseña aplicaciones web bajo
+el patrón Modelo-Vista-Controlador, comprende la trayectoria histórica
+desde el MVC original de Smalltalk-80 hasta sus variantes modernas
+(server-side MVC vs API REST + SPA), y construye una aplicación
+funcional con un \emph{framework} MVC contemporáneo, depurándola paso
+a paso en IntelliJ IDEA Ultimate.
+
+\section{Historia del patrón MVC}
+
+MVC es uno de los patrones de diseño más citados en la
+historia del software. Comprender su historia ---desde Smalltalk-76
+hasta los frameworks modernos--- ayuda a entender por qué hay tantas
+variantes y por qué sigue siendo central en 2026.
+
+
+\begin{cajahistoria}{Reenskaug --- Smalltalk-80 y el nacimiento de un patrón fundamental}
+El patrón MVC fue concebido por el ingeniero noruego \textbf{Trygve
+Reenskaug} durante una estancia sabática en el Xerox PARC en
+diciembre de 1978 mientras trabajaba en la primera versión de
+Smalltalk. Reenskaug describió MVC como una solución al problema
+fundamental de los sistemas interactivos: cómo permitir que múltiples
+vistas reflejen el mismo modelo de datos sin acoplarlas entre sí.
+
+En su nota original \emph{«Models-Views-Controllers»} (10 de
+diciembre de 1979), Reenskaug definía:
+
+\begin{itemize}
+\item \textbf{Modelo}: la representación del conocimiento sobre el
+problema; lo que la aplicación realmente \emph{sabe}.
+\item \textbf{Vista}: una representación visual del modelo, no el
+modelo mismo.
+\item \textbf{Controlador}: el enlace entre el usuario y el sistema,
+que interpreta las acciones del usuario y las traduce en cambios al
+modelo.
+\end{itemize}
+
+MVC fue implementado plenamente en Smalltalk-80 (1980) y durante
+quince años permaneció en relativa oscuridad académica. Su
+revitalización vino con dos hitos:
+
+\begin{itemize}
+\item \textbf{NeXTSTEP / Cocoa} (1989+): Apple adoptó MVC como
+patrón estructural de la programación nativa de Mac y, posteriormente,
+de iOS.
+\item \textbf{Ruby on Rails} (David Heinemeier Hansson, 2004):
+implementó una variante \emph{server-side} de MVC para aplicaciones
+web. Su éxito masivo inspiró Django (Python, 2005), Symfony
+(PHP, 2005), CodeIgniter (PHP, 2006), CakePHP (PHP, 2005), Laravel
+(PHP, 2011), ASP.NET MVC (Microsoft, 2009) y Spring MVC (2004).
+\end{itemize}
+
+A partir de 2014 emergieron las arquitecturas \textbf{API REST + SPA}
+que desplazaron parcialmente el MVC server-side: el servidor expone
+JSON, y un cliente Angular/React/Vue se encarga de la vista. Sin
+embargo, el patrón MVC sigue siendo fundamental: incluso las SPAs
+implementan internamente versiones del patrón (MVVM, Flux, Redux,
+Signal-based architectures) que son herederas conceptuales del MVC
+original.
+\end{cajahistoria}
+
+\subsection{Tabla evolutiva del MVC en frameworks web}
+
+Distintos frameworks implementan MVC con variantes propias.
+La tabla siguiente recorre los más influyentes en orden cronológico.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Hitos en la historia del MVC en frameworks web.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lllX}
+\toprule
+\textbf{Año} & \textbf{Framework} & \textbf{Lenguaje} & \textbf{Aporte}\\
+\midrule
+1979 & ---           & Smalltalk & Reenskaug formaliza el patrón.\\
+1980 & Smalltalk-80  & Smalltalk & Primera implementación completa.\\
+1989 & NeXTSTEP      & Objective-C & MVC en aplicaciones nativas de escritorio.\\
+1996 & Apache Struts (precursor) & Java & MVC web temprano (Java Servlets).\\
+2002 & Spring        & Java & DI + MVC posteriormente (Spring MVC, 2004).\\
+2004 & Ruby on Rails & Ruby & Convención sobre configuración; MVC mainstream.\\
+2005 & Django        & Python & Modelo MTV (Model-Template-View, variante MVC).\\
+2005 & Symfony       & PHP   & MVC con bundles y dependencias.\\
+2009 & ASP.NET MVC   & C\#   & Microsoft adopta MVC web.\\
+2011 & Laravel       & PHP   & MVC con Eloquent ORM y Blade templates.\\
+2014 & Spring Boot   & Java  & Convención sobre Spring MVC, simplificación radical.\\
+2014 & Angular 2     & TypeScript & Frontend MVC (versión MVVM).\\
+2024 & Laravel 11    & PHP   & Estructura simplificada, Volt, Folio.\\
+2024 & Spring Boot 4 & Java & Soporte HTTP virtual threads en Tomcat.\\
+2024 & ASP.NET Core 10 & C\#  & Razor Pages + MVC + Web API unificados.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Anatomía del patrón MVC en la web}
+
+MVC en aplicaciones web tiene una anatomía específica: el
+modelo no es solo una clase, sino una capa entera; la vista no es
+una pantalla, sino una plantilla; el controlador no es un widget,
+sino un endpoint HTTP.
+
+
+\subsection{Adaptación del MVC original al contexto HTTP}
+
+El MVC de Reenskaug fue concebido para aplicaciones de escritorio
+con observadores reactivos: la vista se suscribía al modelo, que la
+notificaba en cada cambio. En la web esto no es posible directamente
+(HTTP es \emph{request/response}), por lo que el MVC web introduce
+adaptaciones:
+
+\begin{itemize}
+\item No hay observadores reactivos: la vista se renderiza en cada
+petición.
+\item Hay un \textbf{front controller} (DispatcherServlet en Spring,
+\texttt{index.php} en Laravel, \texttt{Routes} en ASP.NET Core) que
+recibe TODAS las peticiones y las enruta al controller adecuado.
+\item Las URLs se mapean a métodos de controller con sistemas de
+\emph{routing} declarativos.
+\item Las vistas se generan típicamente en el servidor con
+\emph{template engines} (Thymeleaf, Blade, Razor, Twig).
+\end{itemize}
+
+\subsection{Las tres capas en detalle}
+
+Cada una de las tres capas de MVC tiene responsabilidades
+concretas. La descripción siguiente las detalla.
+
+
+\subsubsection{El Modelo}
+
+El Modelo encapsula:
+\begin{itemize}
+\item \textbf{Entidades de dominio}: objetos persistentes con
+identidad propia (Producto, Pedido, Usuario).
+\item \textbf{Servicios de aplicación}: orquestan casos de uso
+(crear pedido, calcular descuento, enviar notificación).
+\item \textbf{Repositorios}: encapsulan el acceso a la persistencia.
+\item \textbf{Reglas de negocio}: invariantes del dominio
+(un usuario menor de edad no puede comprar bebidas alcohólicas).
+\item \textbf{DTOs} (Data Transfer Objects): contenedores planos
+para transferir datos entre capas o servicios.
+\end{itemize}
+
+\textbf{Anti-patrón clásico:} el «Anemic Domain Model» (Fowler) en
+el que las entidades son meros contenedores sin lógica y toda la
+inteligencia está en servicios. En MVC profesional las entidades
+tienen métodos significativos.
+
+\subsubsection{La Vista}
+
+La Vista es la capa de presentación. En aplicaciones web tradicionales
+suele ser una plantilla HTML con marcadores de sustitución:
+
+\begin{itemize}
+\item \textbf{Thymeleaf} (Java/Spring): plantillas HTML que son HTML
+válido incluso sin procesar (preview-friendly).
+\item \textbf{Blade} (PHP/Laravel): \texttt{@if}, \texttt{@foreach},
+\texttt{\{\{ \$variable \}\}}.
+\item \textbf{Razor} (C\#/ASP.NET): mezcla \texttt{@} para C\# inline.
+\item \textbf{Twig} (PHP/Symfony): sintaxis estilo Django,
+\texttt{\{\% if \%\} \{\{ var \}\}}.
+\item \textbf{Mustache, Handlebars} (cualquier lenguaje): \emph{logic-less}.
+\end{itemize}
+
+En arquitecturas API REST + SPA, la Vista se desplaza al cliente
+(Angular, React, Vue), y el servidor solo expone JSON.
+
+\subsubsection{El Controlador}
+
+El Controller es la capa que recibe peticiones HTTP, invoca al Modelo
+y selecciona la Vista (o el formato de respuesta JSON). Sus
+responsabilidades:
+
+\begin{itemize}
+\item \emph{Routing}: mapear URLs a métodos.
+\item \emph{Binding}: convertir parámetros HTTP en objetos del modelo.
+\item \emph{Validation}: validar entrada (a menudo delegada).
+\item \emph{Orquestación}: llamar a servicios del modelo.
+\item \emph{Selección de respuesta}: vista a renderizar o DTO a
+serializar.
+\item \emph{Manejo de errores}: convertir excepciones en respuestas
+HTTP apropiadas.
+\end{itemize}
+
+\textbf{Regla de oro:} el controller debe ser \emph{delgado} (\emph{thin
+controller}). Toda lógica de negocio significativa va en el modelo
+(servicios). Un controller con 200 líneas es señal de mal diseño.
+
+\section{Ciclo de vida de una petición MVC en Spring Boot}
+
+Una petición HTTP atraviesa una secuencia precisa de
+componentes dentro de Spring Boot. Conocer ese flujo permite
+depurar problemas y optimizar puntos críticos.
+
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center},
+  caja/.style={rectangle,draw=uteqverde,thick,minimum width=2.4cm,
+               minimum height=0.8cm,fill=uteqverde!10,rounded corners=2pt},
+  flecha/.style={->,>=stealth,thick}]
+
+  \node[caja] (cli) {1. Cliente\\(Navegador)};
+  \node[caja,below=0.5cm of cli] (ds) {2. Dispatcher\\Servlet};
+  \node[caja,below=0.5cm of ds] (hm) {3. Handler\\Mapping};
+  \node[caja,below=0.5cm of hm] (ctr) {4. Controller\\@RequestMapping};
+  \node[caja,right=1.5cm of ctr] (svc) {5. Service\\(reglas negocio)};
+  \node[caja,right=1.5cm of svc] (rp) {6. Repository\\(JPA)};
+  \node[cylinder,draw=uteqverde,fill=uteqverde!15,thick,
+        shape border rotate=90,aspect=0.3,minimum width=1.2cm,
+        minimum height=1.2cm,below=0.5cm of rp] (db) {BD};
+  \node[caja,left=1.5cm of ctr] (vr) {8. View\\Resolver};
+  \node[caja,left=1.5cm of vr] (vw) {9. Vista\\(Thymeleaf)};
+
+  \draw[flecha] (cli) -- node[right]{HTTP Request} (ds);
+  \draw[flecha] (ds) -- (hm);
+  \draw[flecha] (hm) -- (ctr);
+  \draw[flecha] (ctr) -- (svc);
+  \draw[flecha] (svc) -- (rp);
+  \draw[flecha] (rp) -- (db);
+  \draw[flecha,dashed] (db) -- node[right,font=\tiny]{rows} (rp);
+  \draw[flecha,dashed] (rp) -- (svc);
+  \draw[flecha,dashed] (svc) -- (ctr);
+  \draw[flecha] (ctr) -- node[above,font=\tiny]{ModelAndView} (vr);
+  \draw[flecha] (vr) -- (vw);
+  \draw[flecha,dashed] (vw.north) to[bend left=60]
+        node[above,font=\tiny]{HTML} (cli.west);
+
+\end{tikzpicture}}
+\caption{Ciclo de vida completo de una petición HTTP en Spring MVC. La
+ida (línea sólida): Dispatcher $\to$ HandlerMapping $\to$ Controller
+$\to$ Service $\to$ Repository $\to$ BD. El regreso (línea punteada):
+los datos suben hasta el Controller, que devuelve un
+\texttt{ModelAndView}; el ViewResolver elige la plantilla y el HTML
+final llega al cliente.}
+\end{figure}
+
+\section{Server-side MVC vs SPA + API REST}
+
+En 2026 hay dos arquitecturas dominantes para aplicaciones
+web: MVC \emph{server-side} clásico (Thymeleaf/Razor/Blade) y SPA +
+API REST (Angular/React + Spring/ASP.NET). La tabla siguiente las
+contrasta con sus trade-offs.
+
+
+\begin{cajacompara}{MVC server-side tradicional vs API REST + SPA Angular/React}
+\centering\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Criterio} & \textbf{MVC server-side} & \textbf{API REST + SPA}\\
+\midrule
+Ubicación de la vista & Servidor (Thymeleaf, Blade, Razor) & Cliente (Angular, React, Vue)\\
+Renderizado inicial & Rápido (HTML completo del primer hit) & Lento (descarga JS, luego renderiza)\\
+Tráfico tras la primera carga & Cada navegación = HTML completo & JSON pequeño\\
+SEO & Excelente nativo & Requiere SSR/SSG\\
+Complejidad del frontend & Baja (HTML + algo de JS) & Alta (framework completo)\\
+Reactividad & Limitada (post-back o JS extra) & Nativa\\
+Equipo & Un equipo full-stack & Frontend y backend separados\\
+Mejor para & CMS, intranet, sitios contenido & SaaS, dashboards, apps tipo Gmail\\
+\bottomrule
+\end{tabularx}
+\end{cajacompara}
+
+\subsection{¿Cuál usar en el PFC?}
+
+El PFC de esta asignatura adopta la combinación \textbf{API REST
+(Spring Boot) + SPA Angular}. Es la apuesta arquitectónica moderna y
+es la que el sílabo prescribe. Sin embargo, comprender ambos
+enfoques es esencial: muchos sistemas reales coexisten (un panel
+admin con Razor + una API para móvil + un portal público con SSR).
+
+\section{Implementación canónica: MVC server-side completo}
+
+El ejemplo siguiente implementa un CRUD MVC server-side
+completo con Spring Boot 4 y Thymeleaf: el estudiante lo construye
+paso a paso y obtiene una aplicación funcional ejecutable.
+
+
+\begin{cajaejemplo}{Ejemplo 14.1 --- CRUD MVC clásico en Spring Boot 4 + Thymeleaf}
+
+
+\textbf{Enunciado.} Construir una aplicación MVC server-side de gestión de tareas (to-do) con Spring Boot 4, Thymeleaf y H2. Las cuatro operaciones CRUD funcionarán end-to-end.
+
+\textbf{Estructura del proyecto (Listado~\ref{lst:14.1}):}
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:14.1]
+src/main/java/ec/edu/uteq/mvc/
+  controller/ProductoController.java   <- Controller
+  service/ProductoService.java         <- Servicio (modelo)
+  repository/ProductoRepository.java   <- Repositorio (modelo)
+  model/Producto.java                  <- Entidad de dominio
+  dto/ProductoForm.java                <- DTO con validacion
+src/main/resources/templates/productos/ <- Vistas
+  lista.html
+  formulario.html
+\end{lstlisting}
+
+\textbf{Entidad \texttt{Producto}:}
+\begin{lstlisting}[style=java,caption={Producto.java},label=lst:14.2]
+package ec.edu.uteq.mvc.model; // paquete del archivo
+
+import jakarta.persistence.*; // importacion de clase externa
+import lombok.*; // importacion de clase externa
+import java.math.BigDecimal; // importacion de clase externa
+
+@Entity @Table(name = "productos") // entidad JPA (mapea a tabla)
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class Producto { // clase publica
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // campo clave primaria
+    private Long id; // campo privado
+    private String nombre; // campo privado
+    private BigDecimal precio; // campo privado
+    private Integer stock; // campo privado
+
+    /** Logica de dominio: el modelo NO es anemico. */
+    public boolean estaDisponible() { // metodo publico
+        return stock != null && stock > 0; // retorna
+    }
+
+    public BigDecimal valorInventario() { // metodo publico
+        // condicional
+        // condicional
+        if (precio == null || stock == null) return BigDecimal.ZERO;
+        return precio.multiply(BigDecimal.valueOf(stock)); // retorna
+    }
+}
+\end{lstlisting}
+
+\textbf{DTO con validación (Listado~\ref{lst:14.3}):}
+\begin{lstlisting}[style=java,caption={ProductoForm.java},label=lst:14.3]
+package ec.edu.uteq.mvc.dto; // paquete del archivo
+
+import jakarta.validation.constraints.*; // importacion de clase externa
+import lombok.*; // importacion de clase externa
+import java.math.BigDecimal; // importacion de clase externa
+
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class ProductoForm { // clase publica
+    private Long id; // campo privado
+
+    @NotBlank(message = "El nombre es obligatorio") // validacion: no nulo y no vacio
+    @Size(min = 3, max = 120) // validacion: longitud min/max
+    private String nombre; // campo privado
+
+    @NotNull @DecimalMin("0.00") @DecimalMax("99999.99") // validacion: no nulo
+    private BigDecimal precio; // campo privado
+
+    @NotNull @Min(0) // validacion: no nulo
+    private Integer stock; // campo privado
+}
+\end{lstlisting}
+
+\textbf{Repository (Spring Data) (Listado~\ref{lst:14.4}):}
+\begin{lstlisting}[style=java,caption={ProductoRepository.java},label=lst:14.4]
+package ec.edu.uteq.mvc.repository; // paquete del archivo
+
+import ec.edu.uteq.mvc.model.Producto; // importacion de clase externa
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductoRepository // declaracion de interfaz
+    extends JpaRepository<Producto, Long> {}
+\end{lstlisting}
+
+\textbf{Service (Modelo) (Listado~\ref{lst:14.5}):}
+\begin{lstlisting}[style=java,caption={ProductoService.java},label=lst:14.5]
+package ec.edu.uteq.mvc.service; // paquete del archivo
+
+import ec.edu.uteq.mvc.model.Producto; // importacion de clase externa
+import ec.edu.uteq.mvc.repository.ProductoRepository; // importacion de clase externa
+import lombok.RequiredArgsConstructor; // importacion de clase externa
+import org.springframework.stereotype.Service; // importacion de clase externa
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.transaction.annotation.Transactional;
+import java.util.*; // importacion de clase externa
+
+@Service // capa de servicio (logica de negocio)
+@RequiredArgsConstructor
+public class ProductoService { // clase publica
+
+    private final ProductoRepository repo; // inmutable
+
+    @Transactional(readOnly = true) // envuelve el metodo en transaccion
+    // metodo publico
+    // metodo publico
+    public List<Producto> listar() { return repo.findAll(); }
+
+    @Transactional(readOnly = true) // envuelve el metodo en transaccion
+    public Producto buscar(Long id) { // metodo publico
+        return repo.findById(id).orElseThrow( // retorna
+            () -> new NoSuchElementException("Producto " + id));
+    }
+
+    @Transactional // envuelve el metodo en transaccion
+    // metodo publico
+    // metodo publico
+    public Producto guardar(Producto p) { return repo.save(p); }
+
+    @Transactional // envuelve el metodo en transaccion
+    public void eliminar(Long id) { repo.deleteById(id); } // metodo publico
+}
+\end{lstlisting}
+
+\textbf{Controller (Listado~\ref{lst:14.6}):}
+\begin{lstlisting}[style=java,caption={ProductoController.java},label=lst:14.6]
+package ec.edu.uteq.mvc.controller; // paquete del archivo
+
+import ec.edu.uteq.mvc.dto.ProductoForm; // importacion de clase externa
+import ec.edu.uteq.mvc.model.Producto; // importacion de clase externa
+import ec.edu.uteq.mvc.service.ProductoService; // importacion de clase externa
+import jakarta.validation.Valid; // importacion de clase externa
+import lombok.RequiredArgsConstructor; // importacion de clase externa
+import org.springframework.beans.BeanUtils; // importacion de clase externa
+import org.springframework.stereotype.Controller; // importacion de clase externa
+import org.springframework.ui.Model; // importacion de clase externa
+import org.springframework.validation.BindingResult; // importacion de clase externa
+import org.springframework.web.bind.annotation.*; // importacion de clase externa
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller // MVC (devuelve vistas)
+@RequestMapping("/productos") // ruta base del controlador
+@RequiredArgsConstructor
+public class ProductoController { // clase publica
+
+    private final ProductoService service; // inmutable
+
+    /** GET /productos --> lista */
+    @GetMapping // endpoint HTTP GET
+    public String listar(Model model) { // metodo publico
+        model.addAttribute("productos", service.listar());
+        return "productos/lista"; // -> templates/productos/lista.html
+    }
+
+    /** GET /productos/nuevo --> formulario vacio */
+    @GetMapping("/nuevo") // endpoint HTTP GET
+    public String mostrarFormulario(Model model) { // metodo publico
+        model.addAttribute("form", new ProductoForm());
+        return "productos/formulario"; // retorna
+    }
+
+    /** POST /productos --> guardar */
+    @PostMapping // endpoint HTTP POST (crear)
+    // metodo publico
+    // metodo publico
+    public String guardar(@Valid @ModelAttribute("form") ProductoForm form,
+                          BindingResult br,
+                          RedirectAttributes ra) {
+        if (br.hasErrors()) { // condicional
+            // re-renderizar el formulario con los errores
+            return "productos/formulario"; // retorna
+        }
+        Producto p = new Producto();
+        BeanUtils.copyProperties(form, p);
+        service.guardar(p);
+        ra.addFlashAttribute("mensaje", "Producto guardado");
+        return "redirect:/productos"; // patron PRG anti F5
+    }
+
+    /** GET /productos/{id}/editar */
+    @GetMapping("/{id}/editar") // endpoint HTTP GET
+    // metodo publico
+    // metodo publico
+    public String editar(@PathVariable Long id, Model model) {
+        Producto p = service.buscar(id);
+        ProductoForm form = new ProductoForm();
+        BeanUtils.copyProperties(p, form);
+        model.addAttribute("form", form);
+        return "productos/formulario"; // retorna
+    }
+
+    /** POST /productos/{id}/eliminar */
+    @PostMapping("/{id}/eliminar") // endpoint HTTP POST (crear)
+    // metodo publico
+    // metodo publico
+    public String eliminar(@PathVariable Long id, RedirectAttributes ra) {
+        service.eliminar(id);
+        ra.addFlashAttribute("mensaje", "Producto eliminado");
+        return "redirect:/productos"; // retorna
+    }
+}
+\end{lstlisting}
+
+\textbf{Vista Thymeleaf de listado (Listado~\ref{lst:14.7}):}
+\begin{lstlisting}[style=html,caption={templates/productos/lista.html},label=lst:14.7]
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es-EC">
+<head>
+  <meta charset="UTF-8">
+  <title>Productos UTEQ</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<header>
+  <h1>Catalogo de productos</h1>
+  <a th:href="@{/productos/nuevo}" class="btn">Nuevo producto</a>
+</header>
+
+<div th:if="${mensaje}" class="alerta-exito" th:text="${mensaje}"></div>
+
+<table>
+  <thead>
+    <tr><th>ID</th><th>Nombre</th><th>Precio</th>
+        <th>Stock</th><th>Disponible</th><th>Acciones</th></tr>
+  </thead>
+  <tbody>
+    <tr th:each="p : ${productos}">
+      <td th:text="${p.id}"></td>
+      <td th:text="${p.nombre}"></td>
+      <td th:text="${'$' + #numbers.formatDecimal(p.precio,1,2)}"></td>
+      <td th:text="${p.stock}"></td>
+      <td th:text="${p.estaDisponible() ? 'Si' : 'No'}"></td>
+      <td>
+        <a th:href="@{/productos/{id}/editar(id=${p.id})}">Editar</a>
+        <form th:action="@{/productos/{id}/eliminar(id=${p.id})}"
+              method="post" style="display:inline">
+          <button type="submit"
+                  onclick="return confirm('Confirmar eliminacion?')">
+            Eliminar
+          </button>
+        </form>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Vista del formulario (Listado~\ref{lst:14.8}):}
+\begin{lstlisting}[style=html,caption={templates/productos/formulario.html},label=lst:14.8]
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es-EC">
+<head><meta charset="UTF-8"><title>Producto</title></head>
+<body>
+<h1 th:text="${form.id == null ? 'Nuevo producto' : 'Editar producto'}">
+</h1>
+
+<form th:action="@{/productos}" th:object="${form}" method="post">
+  <input type="hidden" th:field="*{id}">
+
+  <div>
+    <label>Nombre</label>
+    <input type="text" th:field="*{nombre}" required>
+    <span th:errors="*{nombre}" class="error"></span>
+  </div>
+
+  <div>
+    <label>Precio</label>
+    <input type="number" step="0.01" th:field="*{precio}" required>
+    <span th:errors="*{precio}" class="error"></span>
+  </div>
+
+  <div>
+    <label>Stock</label>
+    <input type="number" th:field="*{stock}" min="0" required>
+    <span th:errors="*{stock}" class="error"></span>
+  </div>
+
+  <button type="submit">Guardar</button>
+  <a th:href="@{/productos}">Cancelar</a>
+</form>
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Notas pedagógicas sobre este código:}
+\begin{itemize}
+\item \emph{Patrón PRG (Post-Redirect-Get):} tras un POST exitoso se
+hace \texttt{redirect:/productos}, no se renderiza directamente la
+vista. Esto evita el bug clásico de doble envío al pulsar F5.
+\item \emph{Flash attributes:} \texttt{RedirectAttributes} permite
+pasar mensajes entre el redirect y la vista sin contaminar la URL.
+\item \emph{ProductoForm} en lugar de \texttt{Producto} en el
+controller: separa la representación de la entidad y la del
+formulario; permite validaciones específicas de UI.
+\item \emph{El modelo no es anémico:} \texttt{estaDisponible()} es
+una regla del dominio.
+\item \emph{Thymeleaf-natural:} las plantillas son HTML válido que se
+puede abrir en navegador sin servidor (modo preview).
+\end{itemize}
+\end{cajaejemplo}
+
+\section{Variantes del MVC}
+
+MVC puro no es la única opción: en la historia han surgido
+variantes con ventajas específicas (MVP, MVVM, MVI). La tabla
+siguiente las catalogará y dirá cuándo usar cada una.
+
+
+\subsection{MVP (Model-View-Presenter)}
+
+En MVP el Presenter reemplaza al Controller pero acopla más
+fuertemente con la Vista. La Vista delega completamente la lógica de
+presentación al Presenter. Común en aplicaciones Android pre-MVVM.
+
+\subsection{MVVM (Model-View-ViewModel)}
+
+En MVVM, el ViewModel es una abstracción de la vista que mantiene su
+estado. La vista se enlaza al ViewModel por \emph{data binding}
+bidireccional. Angular y Vue son herederos parciales de este enfoque.
+
+\subsection{Flux y Redux}
+
+Patrones unidireccionales para SPAs: Action $\to$ Dispatcher $\to$
+Store $\to$ View. Resuelven el problema de complejidad del estado en
+SPAs grandes (Facebook lo creó para resolver bugs en Messenger).
+
+\subsection{Signals (Angular 17+, SolidJS)}
+
+Modelo reactivo basado en \emph{signals}: variables observables que
+notifican automáticamente cambios. Una evolución moderna del MVC
+reactivo original de Reenskaug, ahora aplicada al frontend.
+
+\section{Práctica integrada: CRUD MVC con debugging}
+
+La práctica integrada de la semana 14 implementa el CRUD MVC
+trazando explícitamente el flujo de cada petición, para que el
+estudiante visualice cómo trabaja el framework por debajo.
+
+
+\begin{cajaejercicio}{Ejercicio 14.1 --- CRUD MVC completo con trazado de la petición en IntelliJ}
+
+\textbf{Objetivo:} construir un CRUD MVC server-side y aprender a
+\emph{depurar} cada fase del ciclo de vida de la petición usando los
+breakpoints y el inspector de IntelliJ IDEA Ultimate.
+
+\subsubsection*{IDE: IntelliJ IDEA Ultimate}
+
+IntelliJ IDEA Ultimate provee herramientas específicas para
+trazar el flujo MVC (debugger con puntos de quiebre por capas,
+consola Spring, herramienta HTTP Client). Esta práctica las usa
+todas.
+
+
+\subsubsection*{Paso 1 --- Crear el proyecto}
+
+\texttt{File $\rightarrow$ New $\rightarrow$ Project $\rightarrow$
+Spring Boot}. Configurar:
+\begin{itemize}
+\item Type: Maven, JDK: 21, Spring Boot 4.x.
+\item Group: \texttt{ec.edu.uteq}; Artifact: \texttt{mvc-debug}.
+\item Dependencies: \emph{Spring Web}, \emph{Thymeleaf}, \emph{Spring
+Data JPA}, \emph{H2 Database}, \emph{Lombok}, \emph{Validation},
+\emph{DevTools}.
+\end{itemize}
+
+\subsubsection*{Paso 2 --- Implementar el CRUD del Ejemplo 14.1}
+
+Copiar la estructura completa del ejemplo 14.1 (entidad, DTO,
+service, controller, dos vistas Thymeleaf).
+
+Agregar en \texttt{application.yml} (Listado~\ref{lst:14.9}):
+\begin{lstlisting}[style=yaml,numbers=none,caption={Ejemplo de YAML},label=lst:14.9]
+spring: # configuracion de Spring
+  datasource: # configuracion de origen de datos (BD)
+    url: jdbc:h2:mem:appweb;DB_CLOSE_DELAY=-1 # URL JDBC de conexion a la BD
+    driver-class-name: org.h2.Driver # clase del driver JDBC
+    username: sa # usuario de la BD
+    password: # contrasena (mejor leer de env var)
+  jpa: # configuracion JPA/Hibernate
+    hibernate.ddl-auto: create-drop # estrategia de generacion de schema
+    show-sql: true # imprime SQL en consola (solo desarrollo)
+    properties.hibernate.format_sql: true
+  h2.console:
+    enabled: true
+    path:    /h2 # ruta donde se expone
+\end{lstlisting}
+
+\subsubsection*{Paso 3 --- Inicializar datos de prueba}
+
+Crear \texttt{DatosIniciales.java} (Listado~\ref{lst:14.10}):
+\begin{lstlisting}[style=java,numbers=none,caption={Ejemplo de Java},label=lst:14.10]
+@Component // bean Spring generico
+public class DatosIniciales implements CommandLineRunner { // clase publica
+    private final ProductoRepository repo; // inmutable
+    // metodo publico
+    // metodo publico
+    public DatosIniciales(ProductoRepository r) { this.repo = r; }
+    @Override
+    public void run(String... args) { // metodo publico
+        repo.save(new Producto(null, "Cafe galletti", new BigDecimal("4.50"), 30));
+        repo.save(new Producto(null, "Cacao Pacari",  new BigDecimal("6.00"),  5));
+        repo.save(new Producto(null, "Te organico",   new BigDecimal("3.20"), 12));
+    }
+}
+\end{lstlisting}
+
+\subsubsection*{Paso 4 --- Ejecutar la aplicación}
+
+Pulsar el botón verde de \emph{play} junto a la clase principal.
+Esperar el log \texttt{Started McvDebugApplication}.
+
+Abrir \url{http://localhost:8080/productos}: aparece el listado con
+los tres productos iniciales.
+
+\subsubsection*{Paso 5 --- Colocar 9 breakpoints estratégicos}
+
+Para entender el ciclo de vida, colocar breakpoints (clic en el
+margen izquierdo del editor) en:
+
+\begin{enumerate}
+\item \texttt{ProductoController.listar()} --- línea con
+\texttt{model.addAttribute}.
+\item \texttt{ProductoService.listar()} --- línea con
+\texttt{return repo.findAll();}.
+\item \texttt{ProductoController.mostrarFormulario()}.
+\item \texttt{ProductoController.guardar()} --- línea con
+\texttt{br.hasErrors()}.
+\item \texttt{ProductoController.guardar()} --- línea con
+\texttt{service.guardar(p);}.
+\item \texttt{ProductoService.guardar(Producto)} --- la línea con
+\texttt{repo.save(p);}.
+\item \texttt{ProductoController.editar()}.
+\item \texttt{ProductoController.eliminar()}.
+\item \texttt{ProductoForm} --- la línea de la anotación
+\texttt{@NotBlank} (para ver el orden de validación).
+\end{enumerate}
+
+\subsubsection*{Paso 6 --- Reiniciar en modo Debug}
+
+Detener la app. Pulsar el ícono \emph{bug} (\texttt{Shift+F9}) para
+arrancar en modo debug. La app está lista para depurar.
+
+\subsubsection*{Paso 7 --- Trazar una petición GET (listar)}
+
+Con la aplicación corriendo, el estudiante debe trazar una
+petición \texttt{GET} completa observando cómo se mueve por cada
+capa.
+
+
+\begin{enumerate}
+\item En el navegador, recargar
+\url{http://localhost:8080/productos}.
+\item IntelliJ se detiene en breakpoint 1 (\texttt{listar()}).
+\item Observar el panel \emph{Variables}: aparece \texttt{model}
+(vacío) y los parámetros del método.
+\item Pulsar \texttt{F8} (Step Over): se ejecuta
+\texttt{model.addAttribute(\dots, service.listar())}.
+\item Pulsar \texttt{F7} (Step Into) en \texttt{service.listar()}:
+salta al breakpoint 2.
+\item En \emph{Variables} ver que \texttt{repo} es un proxy de Spring.
+\item Pulsar \texttt{F8}: se ejecuta \texttt{repo.findAll()};
+en la consola aparece el SQL: \texttt{select * from productos}.
+\item Pulsar \texttt{F9} (Resume): la petición continúa, Thymeleaf
+renderiza la vista, el navegador recibe el HTML.
+\end{enumerate}
+
+\subsubsection*{Paso 8 --- Trazar una petición POST con error de validación}
+
+El segundo trazado es una petición \texttt{POST} con datos
+inválidos: el objetivo es observar cómo \texttt{BindingResult}
+captura los errores y la vista los muestra.
+
+
+\begin{enumerate}
+\item Ir a \url{http://localhost:8080/productos/nuevo}.
+\item Llenar solo el campo «Stock» (dejar nombre y precio vacíos).
+\item Pulsar Guardar.
+\item IntelliJ se detiene en breakpoint 4 (\texttt{br.hasErrors()}).
+\item Inspeccionar \texttt{br}: el panel \emph{Variables} muestra
+una lista de errores (\texttt{nombre: NotBlank},
+\texttt{precio: NotNull}).
+\item Pulsar \texttt{F8}: como hay errores, retorna
+\texttt{\char34{}productos/formulario\char34{}} con los errores marcados en la vista.
+\end{enumerate}
+
+\subsubsection*{Paso 9 --- Trazar un POST exitoso}
+
+El tercer trazado es un POST exitoso: observa cómo se
+guarda en BD y cómo se aplica el patrón POST-Redirect-GET para
+evitar reenvíos del formulario.
+
+
+\begin{enumerate}
+\item Recargar el formulario; ahora llenar todos los campos
+correctamente.
+\item Pulsar Guardar.
+\item IntelliJ se detiene en breakpoint 4 (\texttt{br.hasErrors()}).
+\item \texttt{br.hasErrors()} es \texttt{false}; pulsar \texttt{F8}.
+\item Salta al breakpoint 5: a punto de ejecutar
+\texttt{service.guardar(p)}.
+\item Pulsar \texttt{F7} (Step Into): salta al breakpoint 6
+(\texttt{repo.save(p)}).
+\item En \emph{Variables}, observar que \texttt{p.id} es \texttt{null}
+ANTES del save.
+\item Pulsar \texttt{F8}: \texttt{p.id} ahora tiene un valor (la BD
+asignó la clave primaria).
+\item En la consola, ver el \texttt{INSERT INTO productos} generado.
+\item Pulsar \texttt{F9}: la respuesta es un redirect a
+\texttt{/productos}, el navegador hace un GET nuevo, listamos
+todos los productos (vuelve a parar en breakpoint 1).
+\end{enumerate}
+
+\subsubsection*{Paso 10 --- Inspeccionar la BD H2 en vivo}
+
+La consola H2 permite inspeccionar la BD en tiempo real
+durante la depuración. Esto es invaluable para verificar que los
+datos llegaron a persistirse correctamente.
+
+
+\begin{enumerate}
+\item Sin detener la app, abrir \url{http://localhost:8080/h2} en otra
+pestaña.
+\item En \emph{JDBC URL} introducir: \texttt{jdbc:h2:mem:appweb}.
+User: \texttt{sa}, sin password.
+\item Pulsar Connect.
+\item Ejecutar \texttt{SELECT * FROM PRODUCTOS;}: aparecen los
+productos iniciales más los que se hayan creado.
+\end{enumerate}
+
+\subsubsection*{Resultado esperado}
+
+El estudiante puede:
+\begin{itemize}
+\item Articular el flujo: \texttt{Controller $\to$ Service $\to$
+Repository $\to$ BD $\to$ Service $\to$ Controller $\to$ Vista}.
+\item Identificar dónde ocurre la validación
+(\texttt{@Valid + BindingResult}).
+\item Explicar el patrón PRG y por qué se usa.
+\item Distinguir Modelo (Producto/Service/Repository) de Vista
+(Thymeleaf) de Controller (handler HTTP).
+\item Ver el SQL generado por JPA en tiempo real en la consola.
+\end{itemize}
+
+\subsubsection*{Reflexión final escrita}
+
+Responder en máximo 250 palabras: ¿Qué pasaría si el controller
+llamara directamente al \texttt{ProductoRepository} sin pasar por el
+\texttt{ProductoService}? ¿Qué se rompería? ¿Qué clases serían más
+difíciles de testear?
+
+\textbf{Esta práctica es la \emph{Sumativa GA-Práctica en clase} de
+la semana 14.}
+\end{cajaejercicio}
+
+\section{Buenas prácticas profesionales en MVC}
+
+La caja siguiente recoge las reglas profesionales para
+escribir MVC mantenible. Aplican tanto a Spring Boot como a
+ASP.NET Core y Laravel.
+
+
+\begin{cajabuenas}{Quince reglas profesionales 2026}
+\begin{enumerate}
+\item Controllers \emph{thin}: máximo 50 líneas por método de
+controller, idealmente 10-20.
+\item Toda la lógica de negocio en servicios, no en controllers ni
+en vistas.
+\item DTOs separados de entidades JPA: nunca exponer entidades
+directamente al cliente.
+\item Validación con Bean Validation (\texttt{@NotBlank},
+\texttt{@Size}, \texttt{@Email}) sobre validación manual.
+\item Patrón PRG (Post-Redirect-Get) para evitar reenvíos al pulsar
+F5.
+\item Flash attributes para mensajes de éxito/error en redirects.
+\item Manejo global de excepciones con
+\texttt{@ControllerAdvice}/\texttt{@RestControllerAdvice}.
+\item Vistas (templates) sin lógica compleja: solo iteración,
+condicionales simples y formato.
+\item URLs RESTful: \texttt{/productos} para listar, \texttt{/productos/123}
+para uno específico, métodos HTTP semánticos.
+\item Repositorios definidos como interfaces (Spring Data) para
+facilitar tests.
+\item Servicios anotados \texttt{@Transactional} en los métodos que
+mutan datos.
+\item Logging estructurado en cada capa: controller (acceso),
+servicio (negocio), repositorio (datos).
+\item Tests unitarios de servicio con mock de repositorio; tests de
+integración con MockMvc para controllers.
+\item Documentación de la API REST con OpenAPI/Swagger.
+\item Internacionalización (i18n) desde el inicio: archivos
+\texttt{messages\_es.properties}, \texttt{messages\_en.properties}.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Contraste bibliográfico de los conceptos clave}
+
+La separación de responsabilidades que propone MVC se ha discutido
+profundamente en la literatura. \cite{galloway2011mvc} es la
+referencia clásica para entender MVC del lado servidor en
+\texttt{ASP.NET}. \cite{walls2022spring} y \cite{spilca2024spring}
+muestran cómo Spring MVC implementa el patrón con
+\texttt{DispatcherServlet}, \texttt{HandlerMapping} y
+\texttt{ViewResolver}. En el ámbito del frontend, las arquitecturas
+modernas (Angular, React) han evolucionado hacia variantes
+\emph{component-based} que rompen la estricta tripartición MVC pero
+mantienen el principio de separación
+\cite{richards2020fundamentals}. \cite{richardson2007restful} documenta
+cómo el patrón \emph{API REST + SPA} es hoy el reemplazo dominante
+del MVC server-side tradicional, con tres ventajas: equipos
+desacoplados (frontend/backend), reutilización del backend para
+varios clientes (web, móvil, IoT) y mejor experiencia interactiva.
+
+\section{Ejercicio resuelto adicional con resultado visual}
+
+Como cierre, el siguiente ejercicio resuelto adicional
+implementa un CRUD completo con Thymeleaf y se complementa con un
+propuesto que lo migra a SPA Angular.
+
+
+\begin{cajaejemplo}{Ejercicio resuelto 14.1 --- App MVC de tareas con Spring Boot y Thymeleaf}
+\textbf{Enunciado.} Implementar una aplicación MVC server-side de
+gestión de tareas (\emph{to-do list}) con Spring Boot 4, Thymeleaf
+y H2. Permitir listar, crear, completar y eliminar tareas.
+
+\textbf{Modelo (\texttt{Tarea.java}):}
+\begin{lstlisting}[language=Java,caption={Ejemplo de Java},label=lst:14.11]
+@Entity @Table(name="tareas") // entidad JPA (mapea a tabla)
+public class Tarea { // clase publica
+  @Id @GeneratedValue(strategy=GenerationType.IDENTITY) // campo clave primaria
+  private Long id; // campo privado
+  @NotBlank @Size(max=120) private String titulo; // validacion: no nulo y no vacio
+  private boolean completada; // campo privado
+  // getters/setters
+}
+\end{lstlisting}
+
+\textbf{Controlador (\texttt{TareaController.java}):}
+\begin{lstlisting}[language=Java,caption={Ejemplo de Java},label=lst:14.12]
+@Controller @RequestMapping("/tareas") // MVC (devuelve vistas)
+public class TareaController { // clase publica
+  private final TareaRepository repo; // inmutable
+  // metodo publico
+  // metodo publico
+  public TareaController(TareaRepository r) { this.repo = r; }
+
+  @GetMapping // endpoint HTTP GET
+  public String listar(Model m) { // metodo publico
+    m.addAttribute("tareas", repo.findAll());
+    m.addAttribute("nueva", new Tarea());
+    return "tareas"; // retorna
+  }
+
+  @PostMapping // endpoint HTTP POST (crear)
+  // metodo publico
+  // metodo publico
+  public String crear(@Valid @ModelAttribute("nueva") Tarea t,
+                      BindingResult br) {
+    if (br.hasErrors()) return "tareas"; // condicional
+    repo.save(t);
+    return "redirect:/tareas"; // retorna
+  }
+
+  @PostMapping("/{id}/completar") // endpoint HTTP POST (crear)
+  public String completar(@PathVariable Long id) { // metodo publico
+    repo.findById(id).ifPresent(t -> {
+      t.setCompletada(!t.isCompletada());
+      repo.save(t);
+    });
+    return "redirect:/tareas"; // retorna
+  }
+
+  @PostMapping("/{id}/eliminar") // endpoint HTTP POST (crear)
+  public String eliminar(@PathVariable Long id) { // metodo publico
+    repo.deleteById(id);
+    return "redirect:/tareas"; // retorna
+  }
+}
+\end{lstlisting}
+
+\textbf{Vista (\texttt{templates/tareas.html} --- Thymeleaf):}
+\begin{lstlisting}[language=HTML5,caption={Ejemplo de HTML},label=lst:14.13]
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head><meta charset="UTF-8"><title>Mis tareas</title></head>
+<body>
+  <h1>Mis tareas</h1>
+  <form th:action="@{/tareas}" th:object="${nueva}" method="post">
+    <input type="text" th:field="*{titulo}" placeholder="Nueva tarea">
+    <button type="submit">Agregar</button>
+    <span th:errors="*{titulo}" style="color:red"></span>
+  </form>
+  <ul>
+    <li th:each="t : ${tareas}">
+      <span th:text="${t.titulo}"
+            th:style="${t.completada} ? 'text-decoration:line-through' : ''"></span>
+      <form th:action="@{|/tareas/${t.id}/completar|}"
+            method="post" style="display:inline">
+        <button type="submit"
+                th:text="${t.completada} ? 'Reabrir' : 'Completar'"></button>
+      </form>
+      <form th:action="@{|/tareas/${t.id}/eliminar|}"
+            method="post" style="display:inline">
+        <button type="submit">Eliminar</button>
+      </form>
+    </li>
+  </ul>
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Resultado visual} en el navegador:
+
+\begin{center}
+\fbox{\begin{minipage}{0.85\textwidth}
+\vspace{0.2cm}
+\hspace{0.3cm}\textbf{\Large Mis tareas}\\[0.4cm]
+\hspace{0.3cm}\fbox{\texttt{Nueva tarea\ldots\ldots\ldots\ldots\ldots}} \fbox{Agregar}\\[0.5cm]
+\hspace{0.3cm}$\bullet$ \emph{Leer cap.\ 14 del libro} \fbox{\small Reabrir} \fbox{\small Eliminar}\\[0.2cm]
+\hspace{0.3cm}$\bullet$ Estudiar Spring MVC \fbox{\small Completar} \fbox{\small Eliminar}\\[0.2cm]
+\hspace{0.3cm}$\bullet$ Hacer el ejercicio propuesto 14.2 \fbox{\small Completar} \fbox{\small Eliminar}\\[0.2cm]
+\vspace{0.1cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Discusión.} El flujo MVC completo se ve en una sola pantalla:
+el navegador hace \texttt{GET /tareas} $\to$
+\texttt{DispatcherServlet} despacha a \texttt{TareaController.listar()}
+$\to$ el controlador consulta el repositorio (modelo) y prepara los
+datos en el \texttt{Model} $\to$ Thymeleaf renderiza la vista con esos
+datos $\to$ el navegador recibe HTML. Al hacer clic en
+\emph{Completar}, ocurre el patrón \emph{POST-Redirect-GET}
+\cite{walls2022spring}: \texttt{POST} ejecuta la acción y el
+servidor responde \texttt{302 Found} con \texttt{Location: /tareas},
+forzando un nuevo \texttt{GET}. Esto evita el reenvío accidental del
+formulario al recargar.
+\end{cajaejemplo}
+
+\begin{cajaejercicio}{Ejercicio propuesto 14.2 --- Migrar la app de tareas a SPA Angular + REST}
+\textbf{Enunciado.} Tomar la aplicación MVC server-side del ejercicio
+14.1 y refactorizarla a una arquitectura de dos niveles: backend Spring
+Boot expone una API REST y un frontend Angular 19 SPA consume la API.
+Comparar las dos arquitecturas en términos de líneas de código,
+acoplamiento, experiencia de usuario y testabilidad.
+
+\textbf{Requisitos:}
+\begin{enumerate}
+\item Convertir \texttt{TareaController} de \texttt{@Controller} a
+\texttt{@RestController}, eliminando Thymeleaf.
+\item Endpoints: \texttt{GET /api/v1/tareas},
+\texttt{POST /api/v1/tareas}, \texttt{PATCH /api/v1/tareas/\{id\}/completar},
+\texttt{DELETE /api/v1/tareas/\{id\}}.
+\item Frontend Angular con un componente \texttt{TareasComponent}
+que consuma la API mediante \texttt{HttpClient}.
+\item Manejar CORS correctamente con
+\texttt{@CrossOrigin(\char34{}http://localhost:4200\char34{})} o configuración
+global.
+\item Documentación OpenAPI con springdoc.
+\item Test E2E con Playwright o Cypress que verifique el flujo
+completo (crear, completar, eliminar).
+\end{enumerate}
+
+\textbf{Producto final:} un documento (1--2 páginas) que compare las
+dos arquitecturas y argumente cuándo elegir cada una, citando al
+menos a \cite{galloway2011mvc} y \cite{richardson2007restful}.
+\end{cajaejercicio}
+
+% =====================================================================
+%       SEMANA 15: SERVICIOS WEB REST Y SOAP
+% =====================================================================
+\chapter{Servicios web: arquitecturas REST, SOAP y diseño de APIs}
+\label{cap:semana15}
+
+\epigraph{«Una buena API es como una buena novela: invita a explorarla,
+revela su lógica gradualmente y nunca traiciona al lector con
+inconsistencias arbitrarias.»}{--- \textit{Adaptado de Joshua Bloch}}
+
+\section*{Resultado de aprendizaje de la semana}
+Al concluir la semana 15, el estudiante diseña, implementa, documenta
+y consume servicios web aplicando el estilo arquitectónico REST según
+Roy Fielding \cite{fielding2000rest}, distingue REST de SOAP en sus
+casos de uso reales, integra autenticación con JWT y produce
+documentación OpenAPI 3.0 conforme a estándares profesionales de la
+industria 2026.
+
+\section{Historia de los servicios web}
+
+Los servicios web son la forma estándar de comunicación
+entre sistemas distintos. Su historia atraviesa tres generaciones:
+SOAP (1998), REST (2000) y GraphQL/gRPC (2015). Conocerlas permite
+elegir adecuadamente para cada proyecto.
+
+
+\begin{cajahistoria}{De RPC a REST --- treinta años de evolución de las APIs distribuidas}
+La idea de que un programa pueda invocar funciones de otro a través
+de la red precede a la web. En 1981, Bruce Nelson y Andrew Birrell
+formalizaron el \emph{Remote Procedure Call} (RPC) en el seminario
+del que surgió la primera implementación seria, Sun RPC. El sueño:
+hacer que llamar a una función remota sea sintácticamente idéntico
+a llamar a una función local.
+
+A finales de los noventa, ese sueño se reformuló en la web. Microsoft
+junto con DevelopMentor publicaron en 1998 el primer borrador de
+\textbf{SOAP} (Simple Object Access Protocol): RPC sobre HTTP usando
+XML como formato de mensaje. SOAP se complementó con \textbf{WSDL}
+(Web Services Description Language) en 2001 y con \textbf{UDDI} para
+descubrimiento de servicios. La trinidad SOAP+WSDL+UDDI prometía un
+ecosistema empresarial donde cualquier servicio sería descubrible y
+consumible automáticamente.
+
+La realidad fue más áspera. SOAP era verboso (envoltorios XML
+enormes), el ecosistema de \emph{WS-*} (WS-Security, WS-ReliableMessaging,
+WS-Transaction\dots) creció hasta volverse impracticable, y los
+clientes JavaScript del navegador no podían consumirlo elegantemente.
+
+En 2000 \textbf{Roy Fielding} —uno de los autores principales de
+HTTP/1.1 y cofundador de Apache— defendió en su tesis doctoral el
+estilo arquitectónico \textbf{REST} (Representational State Transfer)
+\cite{fielding2000rest}. REST no era un protocolo: era un conjunto de
+\emph{restricciones arquitectónicas} (cliente-servidor, stateless,
+cacheable, interfaz uniforme, sistema en capas, código bajo demanda
+opcional) que aprovechaban HTTP en lugar de pelearse con él. La
+trayectoria a partir de 2005 fue rápida: las APIs públicas masivas
+(Flickr, Twitter, Amazon S3, GitHub) eligieron REST. Para 2015, REST
+era el estilo dominante en la web. SOAP quedó relegado a sistemas
+empresariales legados y a sectores conservadores como banca y salud.
+
+En 2026 conviven cuatro paradigmas de servicios web: \textbf{REST}
+(dominante en APIs públicas y SPAs), \textbf{GraphQL} (creado por
+Facebook en 2012, popular en frontends complejos), \textbf{gRPC}
+(Google, 2015, eficiente en comunicación servicio-servicio) y
+\textbf{SOAP} (legado pero vigente en banca, salud, gobierno).
+\end{cajahistoria}
+
+\subsection{Tabla evolutiva de los servicios web}
+
+La tabla siguiente recoge los hitos cronológicos de los
+servicios web, desde XML-RPC hasta GraphQL y gRPC.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Hitos en la historia de los servicios web.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lll}
+\toprule
+\textbf{Año} & \textbf{Hito} & \textbf{Aporte}\\
+\midrule
+1981 & Sun RPC & Primer RPC industrial.\\
+1991 & CORBA & Estándar OMG; complejo, propietario.\\
+1998 & SOAP 1.0 & RPC sobre HTTP+XML; Microsoft, IBM.\\
+2000 & Tesis de Fielding & REST formalizado como estilo arquitectónico.\\
+2001 & WSDL 1.1 & Contrato XML para SOAP.\\
+2003 & SOAP 1.2 (W3C) & Recomendación oficial de SOAP.\\
+2005 & Atom Publishing Protocol & Primer estándar REST formal.\\
+2008 & RESTful API patterns & Modelo de Madurez de Richardson.\\
+2009 & Twitter API REST & APIs públicas masivas adoptan REST.\\
+2012 & GraphQL (Facebook) & Cliente decide qué campos pedir.\\
+2014 & OpenAPI 2.0 (Swagger) & Estándar para describir APIs REST.\\
+2015 & gRPC (Google) & RPC moderno con HTTP/2 y Protocol Buffers.\\
+2017 & OpenAPI 3.0 & Versión moderna del estándar.\\
+2021 & OpenAPI 3.1 & Compatibilidad total con JSON Schema 2020-12.\\
+2024 & gRPC-Web estable & gRPC accesible desde navegador.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Las seis restricciones de la arquitectura REST}
+
+Roy Fielding identificó seis restricciones que un sistema debe
+cumplir para considerarse RESTful. No son sugerencias: son
+restricciones arquitectónicas con consecuencias específicas.
+
+\begin{cajadefinicion}{Las restricciones REST de Fielding (2000)}
+\begin{enumerate}
+\item \textbf{Cliente-servidor.} Separación clara de
+responsabilidades: el cliente no conoce la persistencia, el servidor
+no conoce la presentación.
+
+\item \textbf{Stateless.} El servidor NO guarda estado de sesión
+entre peticiones. Cada petición lleva toda la información necesaria
+para procesarla. Permite escalar horizontalmente sin sticky sessions.
+
+\item \textbf{Cacheable.} Las respuestas indican explícitamente si
+pueden cachearse y por cuánto tiempo (\texttt{Cache-Control},
+\texttt{ETag}). Mejora rendimiento y escalabilidad.
+
+\item \textbf{Interfaz uniforme.} Cuatro sub-restricciones:
+\begin{itemize}
+\item Identificación de recursos por URI.
+\item Manipulación a través de representaciones (JSON, XML).
+\item Mensajes auto-descriptivos (cabeceras explícitas).
+\item HATEOAS (Hypermedia as the Engine of Application State):
+los recursos enlazan a otros relacionados.
+\end{itemize}
+
+\item \textbf{Sistema en capas.} El cliente no sabe si habla con el
+servidor final o con un proxy/balanceador. Permite intermediarios
+(CDN, gateways, balanceadores).
+
+\item \textbf{Código bajo demanda} (opcional). El servidor puede
+extender al cliente enviando código ejecutable (típicamente
+JavaScript).
+\end{enumerate}
+\end{cajadefinicion}
+
+\subsection{Modelo de Madurez de Richardson}
+
+Leonard Richardson propuso en 2008 un modelo escalonado para evaluar
+cuán RESTful es una API:
+
+\begin{table}[htbp]
+\centering
+\caption{Modelo de Madurez de Richardson para APIs REST.}
+\footnotesize
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Nivel} & \textbf{Nombre} & \textbf{Características}\\
+\midrule
+0 & «The Swamp of POX» & XML/JSON sobre HTTP, un solo endpoint, todo es POST.\\
+1 & Recursos & URLs distintas por recurso (\texttt{/usuarios/42}), pero todo POST.\\
+2 & Verbos HTTP & Uso semántico de GET, POST, PUT, DELETE; códigos correctos.\\
+3 & HATEOAS & Las respuestas incluyen enlaces de navegación a recursos relacionados.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{En 2026, la mayoría de APIs profesionales se sitúan en
+Nivel 2}. El nivel 3 (HATEOAS) es elegante en teoría pero
+infrecuente en la práctica: añade complejidad sin que la mayoría de
+clientes lo aproveche realmente.
+
+\section{Diseño de URIs y verbos HTTP}
+
+La definición de las URIs y el uso de los verbos HTTP son
+las dos decisiones más visibles de una API REST. Hacerlas mal se
+nota desde el primer endpoint.
+
+
+\subsection{Convenciones de nomenclatura}
+
+Las URIs de una API REST siguen convenciones precisas: son
+sustantivos en plural, sin verbos, jerárquicas. La lista siguiente
+las recoge con ejemplos.
+
+\textbf{Ejemplo corto comentado (URIs REST canónicas) (Listado~\ref{lst:15.1}):}
+\begin{lstlisting}[language=bash,numbers=none,caption={Ejemplo de Shell},label=lst:15.1]
+# BIEN: sustantivo en plural, jerarquia clara
+GET    /api/v1/usuarios # listar todos
+GET    /api/v1/usuarios/42 # uno especifico
+POST   /api/v1/usuarios # crear nuevo
+PUT    /api/v1/usuarios/42 # actualizar completo
+PATCH  /api/v1/usuarios/42 # actualizar parcial
+DELETE /api/v1/usuarios/42 # eliminar
+GET    /api/v1/usuarios/42/pedidos # recurso anidado
+
+# MAL: verbos en URI, singular, sin version
+GET    /getUsuario?id=42 # verbo en URI
+POST   /crearUsuario # accion como recurso
+GET    /usuario/42 # singular en lugar de plural
+\end{lstlisting}
+
+
+\begin{cajabuenas}{Doce reglas para URIs RESTful profesionales}
+\begin{enumerate}
+\item \textbf{Sustantivos en plural} para colecciones:
+\texttt{/productos}, no \texttt{/getProducto}.
+\item \textbf{Recursos jerárquicos}:
+\texttt{/usuarios/42/pedidos/7/items}.
+\item \textbf{Sin verbos en la URI}: el verbo va en el método HTTP.
+\item \textbf{Minúsculas siempre}, palabras separadas por guiones:
+\texttt{/ordenes-pendientes}, no \texttt{/OrdenesPendientes}.
+\item \textbf{Sin extensiones de archivo}: \texttt{/usuarios/42}, no
+\texttt{/usuarios/42.json}.
+\item \textbf{Versionado en la URL} con prefijo \texttt{/api/v1/}:
+\texttt{/api/v1/productos}.
+\item \textbf{Filtros por query string}:
+\texttt{/productos?categoria=cafe\&min\_precio=2}.
+\item \textbf{Paginación estándar}:
+\texttt{?page=3\&size=20} o \texttt{?offset=60\&limit=20}.
+\item \textbf{Ordenamiento por query}:
+\texttt{?sort=precio,-nombre} (\texttt{-} para descendente).
+\item \textbf{Búsqueda con parámetro \texttt{q}}:
+\texttt{?q=galletti}.
+\item \textbf{IDs estables} (UUIDs preferidos sobre auto-incrementales
+en APIs públicas).
+\item \textbf{Sub-recursos para acciones}: \texttt{/pedidos/7/cancelar}
+con POST.
+\end{enumerate}
+\end{cajabuenas}
+
+\subsection{Mapeo verbo-acción canónico}
+
+Cada verbo HTTP tiene un significado canónico y debe
+mapearse a la acción CRUD correspondiente. Confundirlos rompe la
+semántica REST y genera APIs confusas.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Mapeo verbos HTTP a operaciones CRUD.}
+\footnotesize
+\begin{tabularx}{\textwidth}{llXX}
+\toprule
+\textbf{Verbo} & \textbf{URI} & \textbf{Operación} & \textbf{Códigos típicos}\\
+\midrule
+GET & /productos & Listar & 200 OK \\
+GET & /productos/42 & Obtener uno & 200, 404 \\
+POST & /productos & Crear & 201 Created (con \texttt{Location}) \\
+PUT & /productos/42 & Reemplazar completo & 200, 204 \\
+PATCH & /productos/42 & Actualización parcial & 200, 204 \\
+DELETE & /productos/42 & Eliminar & 204 No Content, 404 \\
+HEAD & /productos/42 & Solo cabeceras & 200, 404 \\
+OPTIONS & /productos & Verbos soportados & 200 (CORS) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Idempotencia y seguridad}
+
+Dos propiedades cruciales de los métodos HTTP:
+
+\begin{itemize}
+\item \textbf{Seguro} (\emph{safe}): no modifica estado del servidor.
+GET, HEAD, OPTIONS son seguros.
+\item \textbf{Idempotente}: ejecutar la operación N veces produce el
+mismo efecto que ejecutarla una vez. GET, PUT, DELETE, HEAD, OPTIONS
+son idempotentes. POST y PATCH \emph{no} lo son.
+\end{itemize}
+
+Los \emph{proxies} y reintentos automáticos asumen estas propiedades:
+si su API rompe estas reglas, los clientes sufrirán bugs sutiles.
+
+\section{Implementación de APIs REST en las tres plataformas}
+
+Las tres plataformas del curso (Spring Boot, ASP.NET Core,
+PHP) construyen APIs REST con APIs limpias y modernas. Las
+subsecciones siguientes muestran la implementación canónica en cada
+una.
+
+
+\subsection{Spring Boot 4 con Spring Web}
+
+Spring Boot expone APIs REST con \texttt{@RestController} y
+anotaciones por método HTTP. Es la forma idiomática en el ecosistema
+Java.
+
+
+\begin{cajaejemplo}{Ejemplo 15.1 --- API REST de pedidos completa en Spring Boot}
+
+\textbf{Enunciado.} Implementar una API REST de productos con Spring Boot, autenticación JWT, documentación OpenAPI 3.0 y Swagger UI interactivo.
+
+\begin{lstlisting}[style=java,caption={PedidoController.java},label=lst:15.2]
+package ec.edu.uteq.appweb.controller; // paquete del archivo
+
+import ec.edu.uteq.appweb.dto.*; // importacion de clase externa
+import ec.edu.uteq.appweb.service.PedidoService; // importacion de clase externa
+import io.swagger.v3.oas.annotations.Operation; // importacion de clase externa
+import io.swagger.v3.oas.annotations.tags.Tag; // importacion de clase externa
+import jakarta.validation.Valid; // importacion de clase externa
+import lombok.RequiredArgsConstructor; // importacion de clase externa
+import org.springframework.data.domain.Page; // importacion de clase externa
+import org.springframework.data.domain.Pageable; // importacion de clase externa
+import org.springframework.http.ResponseEntity; // importacion de clase externa
+import org.springframework.web.bind.annotation.*; // importacion de clase externa
+import java.net.URI; // importacion de clase externa
+
+@RestController // expone endpoints REST con JSON
+@RequestMapping("/api/v1/pedidos") // ruta base del controlador
+@RequiredArgsConstructor
+// agrupa endpoints en Swagger UI
+// agrupa endpoints en Swagger UI
+@Tag(name = "Pedidos", description = "Gestion de pedidos del sistema")
+public class PedidoController { // clase publica
+
+    private final PedidoService service; // inmutable
+
+    @GetMapping // endpoint HTTP GET
+    @Operation(summary = "Lista paginada de pedidos") // OpenAPI
+    public Page<PedidoDto> listar( // metodo publico
+            @RequestParam(required = false) String estado, // query param
+            Pageable pageable) {
+        return service.buscar(estado, pageable); // retorna
+    }
+
+    @GetMapping("/{id}") // endpoint HTTP GET
+    @Operation(summary = "Obtener pedido por ID") // OpenAPI
+    // metodo publico
+    // metodo publico
+    public ResponseEntity<PedidoDto> obtener(@PathVariable Long id) {
+        return ResponseEntity.ok(service.obtener(id)); // retorna
+    }
+
+    @PostMapping // endpoint HTTP POST (crear)
+    @Operation(summary = "Crear nuevo pedido") // OpenAPI
+    public ResponseEntity<PedidoDto> crear( // metodo publico
+            @Valid @RequestBody PedidoCreateRequest req) { // activa validacion Bean Validation
+        PedidoDto creado = service.crear(req);
+        return ResponseEntity // retorna
+            .created(URI.create("/api/v1/pedidos/" + creado.id()))
+            .body(creado);
+    }
+
+    @PatchMapping("/{id}") // endpoint HTTP PATCH (actualizar parcial)
+    @Operation(summary = "Actualizacion parcial") // OpenAPI
+    public PedidoDto actualizar(@PathVariable Long id, // metodo publico
+                                // activa validacion Bean Validation
+                                // activa validacion Bean Validation
+                                @Valid @RequestBody PedidoUpdateRequest req) {
+        return service.actualizar(id, req); // retorna
+    }
+
+    @PostMapping("/{id}/cancelar") // endpoint HTTP POST (crear)
+    @Operation(summary = "Cancelar un pedido") // OpenAPI
+    public PedidoDto cancelar(@PathVariable Long id, // metodo publico
+                              // query param
+                              // query param
+                              @RequestParam(required = false) String motivo) {
+        return service.cancelar(id, motivo); // retorna
+    }
+
+    @DeleteMapping("/{id}") // endpoint HTTP DELETE (eliminar)
+    @Operation(summary = "Eliminar pedido") // OpenAPI
+    // metodo publico
+    // metodo publico
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        service.eliminar(id);
+        return ResponseEntity.noContent().build(); // retorna
+    }
+}
+\end{lstlisting}
+
+\textbf{Manejo global de excepciones (RFC 7807) (Listado~\ref{lst:15.3}):}
+\begin{lstlisting}[style=java,caption={GlobalExceptionHandler.java},label=lst:15.3]
+package ec.edu.uteq.appweb.exception; // paquete del archivo
+
+import jakarta.servlet.http.HttpServletRequest; // importacion de clase externa
+import org.springframework.http.HttpStatus; // importacion de clase externa
+import org.springframework.http.ProblemDetail; // importacion de clase externa
+import org.springframework.http.ResponseEntity; // importacion de clase externa
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*; // importacion de clase externa
+import java.net.URI; // importacion de clase externa
+import java.time.Instant; // importacion de clase externa
+import java.util.*; // importacion de clase externa
+
+@RestControllerAdvice // expone endpoints REST con JSON
+public class GlobalExceptionHandler { // clase publica
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ProblemDetail> noEncontrado( // metodo publico
+            NoSuchElementException ex, HttpServletRequest req) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+            HttpStatus.NOT_FOUND, ex.getMessage());
+        pd.setType(URI.create("https://uteq.edu.ec/errors/no-encontrado"));
+        pd.setTitle("Recurso no encontrado");
+        pd.setInstance(URI.create(req.getRequestURI()));
+        pd.setProperty("timestamp", Instant.now());
+        // retorna
+        // retorna
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(pd);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ProblemDetail> validacion( // metodo publico
+            MethodArgumentNotValidException ex, HttpServletRequest req) {
+        Map<String, String> errores = new LinkedHashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(e ->
+            errores.put(e.getField(), e.getDefaultMessage()));
+
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            "Errores de validacion en " + errores.size() + " campo(s)");
+        pd.setType(URI.create("https://uteq.edu.ec/errors/validacion"));
+        pd.setTitle("Datos invalidos");
+        pd.setInstance(URI.create(req.getRequestURI()));
+        pd.setProperty("errores", errores);
+        // retorna
+        // retorna
+        return ResponseEntity.unprocessableEntity().body(pd);
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsection{ASP.NET Core 10}
+
+ASP.NET Core utiliza el atributo \texttt{[ApiController]} y
+la herencia de \texttt{ControllerBase} para construir APIs REST.
+Combinado con \emph{model binding} y \emph{model validation}
+automáticos, ofrece una experiencia muy productiva.
+
+
+\begin{cajaejemplo}{Ejemplo 15.2 --- Mismo recurso en ASP.NET Core 10}
+
+\textbf{Enunciado.} Implementar el mismo recurso de productos visto antes pero en ASP.NET Core 10, para comparar idiomas: atributos \texttt{[ApiController]}, \texttt{[HttpGet]}, retornos \texttt{Ok()}/\texttt{NotFound()}.
+
+\begin{lstlisting}[style=cs,caption={PedidosController.cs},label=lst:15.4]
+using Microsoft.AspNetCore.Mvc; // importa namespace
+using AppwebApi.Services; // importa namespace
+using AppwebApi.Dtos; // importa namespace
+
+namespace AppwebApi.Controllers; // namespace del archivo
+
+[ApiController] // controlador de Web API (validacion automatica)
+[Route("api/v1/[controller]")] // ruta base del controlador
+[Produces("application/json")]
+public class PedidosController : ControllerBase // clase publica
+{
+    private readonly IPedidoService _svc; // metodo o miembro privado
+
+    // metodo o miembro publico
+    // metodo o miembro publico
+    public PedidosController(IPedidoService svc) => _svc = svc;
+
+    /// <summary>Lista paginada de pedidos</summary>
+    [HttpGet] // endpoint HTTP GET
+    [ProducesResponseType(typeof(PageDto<PedidoDto>), 200)]
+    // metodo o miembro publico
+    // metodo o miembro publico
+    public async Task<ActionResult<PageDto<PedidoDto>>> Listar(
+        // mapea query string
+        // mapea query string
+        [FromQuery] string? estado, [FromQuery] int page = 1,
+        [FromQuery] int size = 20) // mapea query string
+        => Ok(await _svc.BuscarAsync(estado, page, size));
+
+    [HttpGet("{id:long}")] // endpoint HTTP GET
+    [ProducesResponseType(typeof(PedidoDto), 200)]
+    [ProducesResponseType(404)]
+    // metodo o miembro publico
+    // metodo o miembro publico
+    public async Task<ActionResult<PedidoDto>> Obtener(long id)
+    {
+        var p = await _svc.ObtenerAsync(id);
+        return p is null ? NotFound() : Ok(p); // retorna
+    }
+
+    [HttpPost] // endpoint HTTP POST (crear)
+    [ProducesResponseType(typeof(PedidoDto), 201)]
+    [ProducesResponseType(422)]
+    public async Task<ActionResult<PedidoDto>> Crear( // metodo o miembro publico
+        [FromBody] PedidoCreateRequest req) // mapea body JSON al parametro
+    {
+        var creado = await _svc.CrearAsync(req);
+        return CreatedAtAction(nameof(Obtener), // HTTP 201 (recurso creado)
+            new { id = creado.Id }, creado);
+    }
+
+    [HttpDelete("{id:long}")] // endpoint HTTP DELETE (eliminar)
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Eliminar(long id) // metodo o miembro publico
+    {
+        await _svc.EliminarAsync(id);
+        return NoContent(); // HTTP 204 (sin cuerpo)
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\subsection{PHP 8.4 con Slim Framework 4}
+
+PHP construye APIs REST profesionales mediante microframeworks
+como Slim Framework 4. El siguiente ejemplo construye una API
+minimalista pero idiomática.
+
+
+\begin{cajaejemplo}{Ejemplo 15.3 --- API REST minimalista en PHP con Slim 4}
+
+\textbf{Enunciado.} Construir una API REST minimalista en PHP usando el microframework Slim 4, ideal para servicios pequeños o microservicios PHP.
+
+\begin{lstlisting}[style=php,caption={public/index.php},label=lst:15.5]
+<?php
+declare(strict_types=1);
+require __DIR__ . '/../vendor/autoload.php'; // incluye otro archivo PHP (fatal si falla)
+
+use Slim\Factory\AppFactory; // importa clase del namespace
+use Psr\Http\Message\ServerRequestInterface as Req; // importa clase del namespace
+use Psr\Http\Message\ResponseInterface as Res; // importa clase del namespace
+
+$app = AppFactory::create();
+$app->addBodyParsingMiddleware();
+
+// GET /api/v1/pedidos
+$app->get('/api/v1/pedidos', function (Req $req, Res $res) {
+    $pdo = obtenerPDO();
+    $estado = $req->getQueryParams()['estado'] ?? null;
+    $sql = "SELECT id, total, estado, creado FROM pedidos";
+    $params = [];
+    // condicional
+    // condicional
+    if ($estado) { $sql .= " WHERE estado = ?"; $params[] = $estado; }
+    $sql .= " ORDER BY creado DESC LIMIT 50";
+    $stmt = $pdo->prepare($sql); // prepara consulta SQL (defensa anti-SQLi)
+    $stmt->execute($params); // ejecuta la consulta con parametros enlazados
+    // recupera todas las filas restantes
+    // recupera todas las filas restantes
+    $res->getBody()->write(json_encode(['data' => $stmt->fetchAll()]));
+    // retorna valor
+    // retorna valor
+    return $res->withHeader('Content-Type','application/json');
+});
+
+// POST /api/v1/pedidos
+$app->post('/api/v1/pedidos', function (Req $req, Res $res) {
+    $body = $req->getParsedBody() ?? [];
+    // condicional
+    // condicional
+    if (empty($body['total']) || !is_numeric($body['total'])) {
+        $err = ['type'=>'/errors/validacion',
+                'title'=>'Datos invalidos','status'=>422,
+                'errors'=>['total'=>'es requerido y numerico']];
+        $res->getBody()->write(json_encode($err));
+        return $res->withStatus(422) // retorna valor
+            ->withHeader('Content-Type','application/problem+json');
+    }
+    $pdo = obtenerPDO();
+    $stmt = $pdo->prepare( // prepara consulta SQL (defensa anti-SQLi)
+        "INSERT INTO pedidos (total, estado, creado) VALUES (?,?,NOW())");
+    $stmt->execute([$body['total'], 'PENDIENTE']); // ejecuta la consulta con parametros enlazados
+    $id = $pdo->lastInsertId();
+    $data = ['id'=>$id,'total'=>$body['total'],'estado'=>'PENDIENTE'];
+    $res->getBody()->write(json_encode($data));
+    return $res->withStatus(201) // retorna valor
+        ->withHeader('Content-Type','application/json')
+        ->withHeader('Location',"/api/v1/pedidos/$id");
+});
+
+$app->run();
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{REST vs SOAP: la comparativa definitiva}
+
+REST y SOAP son los dos modelos arquitectónicos de servicios
+web más utilizados. Comparar sus características objetivamente es
+clave para elegir correctamente en cada proyecto.
+
+
+\begin{cajacompara}{REST vs SOAP --- comparación práctica}
+\centering\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Criterio} & \textbf{REST (mainstream 2026)} & \textbf{SOAP (legado)}\\
+\midrule
+Formato & JSON (texto compacto) & XML envelope con header y body (verboso)\\
+Transporte & HTTP/HTTPS & HTTP, SMTP, FTP, JMS\\
+Contrato & OpenAPI 3.0 (opcional) & WSDL (obligatorio)\\
+Estado & Stateless por restricción & Stateful o stateless\\
+Tamaño mensaje & 3--5x más compacto & Pesado\\
+Seguridad & HTTPS + JWT + OAuth 2.0 & WS-Security (más complejo)\\
+Desde JavaScript & Trivial (fetch nativo) & Difícil (requiere SOAP client)\\
+Caché HTTP nativa & Sí & No (POSTs)\\
+Casos típicos & APIs públicas, microservicios, SPA & Banca, salud, B2B legado\\
+Curva de aprendizaje & Baja & Alta\\
+Tooling 2026 & Excelente & Maduro pero envejecido\\
+\bottomrule
+\end{tabularx}
+\end{cajacompara}
+
+\subsection{Cuándo aún tiene sentido SOAP en 2026}
+
+Aunque REST es la opción dominante en 2026, hay escenarios
+donde SOAP todavía tiene ventajas reales. La lista siguiente los
+recoge.
+
+
+\begin{itemize}
+\item \textbf{Sistemas financieros nacionales}: muchos sistemas
+bancarios mantienen interfaces SOAP por inercia regulatoria. En
+Ecuador, los servicios SPI del Banco Central usan SOAP.
+\item \textbf{Salud}: HL7 v3 sobre SOAP sigue vigente en hospitales.
+\item \textbf{B2B con grandes corporaciones}: SAP, Oracle EBS y
+sistemas similares exponen SOAP por defecto.
+\item \textbf{Cuando se necesita WS-AtomicTransaction} (transacciones
+distribuidas estrictas).
+\end{itemize}
+
+\subsection{Ejemplo SOAP mínimo}
+
+Aunque el curso no usa SOAP en el PFC, conviene haber visto
+al menos una petición SOAP completa para reconocerla cuando aparezca
+en código heredado.
+
+\textbf{Ejemplo corto comentado (petición SOAP) (Listado~\ref{lst:15.6}):}
+\begin{lstlisting}[language=HTML5,numbers=none,caption={Ejemplo de HTML},label=lst:15.6]
+<!-- POST /servicios/clima HTTP/1.1                              -->
+<!-- Content-Type: text/xml; charset=utf-8                       -->
+<!-- SOAPAction: "obtenerTemperatura"                            -->
+<?xml version="1.0"?>
+<!-- Envelope: contenedor obligatorio de todo SOAP                -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <!-- Body: contenido principal de la peticion                   -->
+  <soap:Body>
+    <!-- Operacion definida en el WSDL                            -->
+    <obtenerTemperatura xmlns="http://uteq.edu.ec/clima">
+      <ciudad>Quevedo</ciudad>
+    </obtenerTemperatura>
+  </soap:Body>
+</soap:Envelope>
+\end{lstlisting}
+
+
+\begin{cajaejemplo}{Ejemplo 15.4 --- Cliente SOAP en PHP que consume servicio del SRI (estructura conceptual)}
+
+\textbf{Enunciado.} Mostrar la estructura de un cliente SOAP en PHP que consume un servicio del SRI ecuatoriano (caso real del contexto local), demostrando el protocolo en producción.
+
+\begin{lstlisting}[style=php,caption={consultar-ruc.php},label=lst:15.7]
+<?php
+declare(strict_types=1);
+
+// PHP tiene cliente SOAP nativo: SoapClient
+$wsdl = 'https://servicios.sri.gob.ec/aut.../wsdl';
+
+try {
+    $client = new SoapClient($wsdl, [
+        'soap_version' => SOAP_1_2,
+        'trace'        => true,
+        'exceptions'   => true,
+        'connection_timeout' => 10,
+    ]);
+
+    // Llamada SOAP: el metodo se invoca como si fuera local
+    $resp = $client->consultarRuc(['numeroRuc' => '0992345678001']);
+
+    print_r($resp);
+
+    // Para debug del XML enviado/recibido:
+    // echo $client->__getLastRequest();
+    // echo $client->__getLastResponse();
+
+} catch (SoapFault $e) {
+    error_log("SOAP fault: " . $e->getMessage());
+    http_response_code(502);
+    // imprime al output del servidor
+    // imprime al output del servidor
+    echo json_encode(['error' => 'Servicio externo no disponible']);
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Documentación con OpenAPI 3.0 (Swagger)}
+
+Una API sin documentación es inutilizable; una con
+documentación a mano queda desincronizada al primer cambio.
+OpenAPI 3.0 + Swagger UI resuelve esto generando documentación viva
+desde el propio código.
+
+
+\subsection{¿Qué es OpenAPI?}
+
+OpenAPI 3.0 (antes Swagger) es la especificación estándar de la
+industria para describir APIs REST. Permite:
+
+\begin{itemize}
+\item Documentación interactiva con Swagger UI.
+\item Generación automática de clientes en cualquier lenguaje.
+\item Pruebas y mocks automáticos.
+\item Validación de contratos (contract testing).
+\end{itemize}
+
+\subsection{Configurar OpenAPI en Spring Boot}
+
+Springdoc es la biblioteca que añade OpenAPI a Spring Boot
+con configuración mínima. El siguiente fragmento la habilita y
+expone Swagger UI.
+
+
+\begin{cajaejemplo}{Ejemplo 15.5 --- OpenAPI con springdoc}
+
+\textbf{Enunciado.} Configurar springdoc-openapi en una aplicación Spring Boot para exponer documentación OpenAPI 3.0 automática y la interfaz Swagger UI interactiva.
+
+\textbf{En \texttt{pom.xml}:}
+\begin{lstlisting}[style=xml,numbers=none,caption={Ejemplo de XML},label=lst:15.8]
+<dependency>
+  <groupId>org.springdoc</groupId>
+  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+  <version>2.6.0</version>
+</dependency>
+\end{lstlisting}
+
+\textbf{Configuración \texttt{OpenApiConfig.java}:}
+\begin{lstlisting}[style=java,numbers=none,caption={Ejemplo de Java},label=lst:15.9]
+@Configuration // clase de configuracion Spring
+public class OpenApiConfig { // clase publica
+    @Bean
+    public OpenAPI api() { // metodo publico
+        return new OpenAPI() // retorna
+            .info(new Info()
+                .title("API Aplicaciones Web UTEQ")
+                .version("1.0.0")
+                .description("API REST del PFC")
+                .contact(new Contact().email("ti@uteq.edu.ec")))
+            .components(new Components()
+                .addSecuritySchemes("bearer-jwt",
+                    new SecurityScheme()
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")))
+            .addSecurityItem(new SecurityRequirement()
+                .addList("bearer-jwt"));
+    }
+}
+\end{lstlisting}
+
+\textbf{Acceso a Swagger UI:} tras reiniciar la app, abrir
+\url{http://localhost:8080/swagger-ui.html}. Aparece la documentación
+interactiva con todos los endpoints, sus parámetros, y un botón
+\emph{Try it out} para probarlos en vivo.
+\end{cajaejemplo}
+
+\section{Autenticación de APIs con JWT}
+
+JWT (JSON Web Token, RFC 7519) es el estándar dominante de
+autenticación en APIs REST modernas. Permite que el servidor
+verifique la identidad del cliente sin guardar estado: la firma
+criptográfica del token es prueba suficiente.
+
+
+\subsection{Anatomía de un JWT}
+
+Un JSON Web Token (RFC 7519 \cite{jones2015jwt}) consta de tres
+partes separadas por puntos (Listado~\ref{lst:15.10}):
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:15.10]
+header.payload.signature
+\end{lstlisting}
+
+\textbf{Header (Base64URL) (Listado~\ref{lst:15.11}):}
+\begin{lstlisting}[style=js,numbers=none,caption={Ejemplo de JavaScript},label=lst:15.11]
+{ "alg": "HS256", "typ": "JWT" }
+\end{lstlisting}
+
+\textbf{Payload (Base64URL) (Listado~\ref{lst:15.12}):}
+\begin{lstlisting}[style=js,numbers=none,caption={Ejemplo de JavaScript},label=lst:15.12]
+{
+  "sub":   "42",
+  "iss":   "uteq.edu.ec",
+  "iat":   1747000000,
+  "exp":   1747003600,
+  "rol":   "ROLE_ADMIN",
+  "email": "admin@uteq.edu.ec",
+  "jti":   "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+}
+\end{lstlisting}
+
+\textbf{Signature:} HMAC-SHA256 (o RSA/ECDSA) sobre
+\texttt{base64(header).base64(payload)} con un secreto.
+
+\subsection{Flags estándar del payload (\emph{claims})}
+
+El payload de un JWT puede contener cualquier dato (claims),
+pero hay un conjunto estandarizado de claims que el estudiante debe
+incluir siempre. La lista siguiente los recoge.
+
+
+\begin{itemize}
+\item \texttt{iss} (issuer): emisor del token.
+\item \texttt{sub} (subject): identificador del usuario.
+\item \texttt{aud} (audience): receptor previsto.
+\item \texttt{exp} (expiration): timestamp de expiración (Unix).
+\item \texttt{nbf} (not before): no usable antes de.
+\item \texttt{iat} (issued at): timestamp de emisión.
+\item \texttt{jti} (JWT ID): identificador único para revocación.
+\end{itemize}
+
+\subsection{JWT en el PFC: configuración Spring Security}
+
+La configuración de JWT en Spring Boot requiere tres piezas:
+un filtro que valide el token, una configuración de seguridad que lo
+declare, y una clase de utilidad que firme y verifique. El siguiente
+ejemplo las muestra.
+
+
+\begin{cajaejemplo}{Ejemplo 15.6 --- Generación y validación JWT en Spring Boot 4}
+
+\textbf{Enunciado.} Implementar generación y validación de JWT en Spring Boot 4 con \texttt{jjwt}: clase utilitaria, filtro de seguridad y configuración Spring Security.
+
+\textbf{Generador (servicio) (Listado~\ref{lst:15.13}):}
+\begin{lstlisting}[style=java,numbers=none,caption={Ejemplo de Java},label=lst:15.13]
+import io.jsonwebtoken.Jwts; // importacion de clase externa
+import io.jsonwebtoken.security.Keys; // importacion de clase externa
+import javax.crypto.SecretKey; // importacion de clase externa
+import java.util.Date; // importacion de clase externa
+import java.util.UUID; // importacion de clase externa
+
+@Service // capa de servicio (logica de negocio)
+public class JwtService { // clase publica
+    private final SecretKey key; // inmutable
+    private static final long DURACION_MS = 3600 * 1000; // 1h
+
+    // metodo publico
+    // metodo publico
+    public JwtService(@Value("${jwt.secret}") String secreto) {
+        this.key = Keys.hmacShaKeyFor(secreto.getBytes());
+    }
+
+    // metodo publico
+    // metodo publico
+    public String generar(String userId, String email, String rol) {
+        Date ahora = new Date();
+        return Jwts.builder() // retorna
+            .subject(userId)
+            .issuer("uteq.edu.ec")
+            .claim("email", email)
+            .claim("rol",   rol)
+            .id(UUID.randomUUID().toString())
+            .issuedAt(ahora)
+            .expiration(new Date(ahora.getTime() + DURACION_MS))
+            .signWith(key)
+            .compact();
+    }
+
+    public Claims parsear(String token) { // metodo publico
+        return Jwts.parser() // retorna
+            .verifyWith(key)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+    }
+}
+\end{lstlisting}
+
+\textbf{Cookie HttpOnly tras login (Listado~\ref{lst:15.14}):}
+\begin{lstlisting}[style=java,numbers=none,caption={Ejemplo de Java},label=lst:15.14]
+@PostMapping("/api/auth/login") // endpoint HTTP POST (crear)
+public ResponseEntity<?> login(@RequestBody LoginDto req, // metodo publico
+                               HttpServletResponse res) {
+    Usuario u = autenticar(req.email(), req.password());
+    String token = jwtService.generar(
+        u.getId().toString(), u.getEmail(), u.getRol());
+
+    Cookie cookie = new Cookie("ACCESS_TOKEN", token);
+    cookie.setHttpOnly(true);
+    cookie.setSecure(true);
+    cookie.setAttribute("SameSite", "Strict");
+    cookie.setMaxAge(3600);
+    cookie.setPath("/");
+    res.addCookie(cookie);
+
+    // retorna
+    // retorna
+    return ResponseEntity.ok(Map.of("usuario", new UsuarioDto(u)));
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Práctica integrada: API REST consumiendo servicio externo}
+
+La práctica integrada construye una API REST en Spring
+Boot que consume un servicio externo (OpenWeatherMap), cachea las
+respuestas en Redis y maneja errores correctamente.
+
+
+\begin{cajaejercicio}{Ejercicio 15.1 --- API gateway con cache-aside (Sumativa)}
+
+\textbf{Objetivo:} construir una API REST propia que consuma una API
+pública externa, aplicando cache-aside con Redis para reducir
+latencia y dependencia del servicio externo.
+
+\subsubsection*{IDE: IntelliJ IDEA Ultimate}
+
+La práctica usa IntelliJ IDEA Ultimate. Antes de empezar,
+confirma que tienes JDK 21, Maven 3.9 y Docker instalados.
+
+
+\subsubsection*{Paso 1 --- Levantar Redis en Docker}
+
+Para cachear las respuestas necesitamos Redis. Levantarlo
+con Docker es lo más rápido. V\'ease el Listado~\ref{lst:15.15}.
+
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:15.15]
+docker run -d --name redis-gw -p 6379:6379 redis:7-alpine # arranca un contenedor
+docker exec -it redis-gw redis-cli ping # PONG
+\end{lstlisting}
+
+\subsubsection*{Paso 2 --- Crear el proyecto Spring Boot}
+
+\texttt{File $\rightarrow$ New $\rightarrow$ Project $\rightarrow$
+Spring Boot}. Configurar:
+\begin{itemize}
+\item Java 21, Maven, Spring Boot 4.x.
+\item Group: \texttt{ec.edu.uteq}; Artifact: \texttt{api-gateway}.
+\item Dependencies: \emph{Spring Web}, \emph{Spring Data Redis},
+\emph{Spring Boot DevTools}, \emph{Lombok}, \emph{Validation},
+\emph{springdoc-openapi-starter-webmvc-ui} (manual en pom.xml).
+\end{itemize}
+
+\subsubsection*{Paso 3 --- Configurar \texttt{application.yml}}
+
+El archivo \texttt{application.yml} configura la API key
+del servicio externo, los parámetros de Redis y el timeout HTTP. V\'ease el Listado~\ref{lst:15.16}.
+
+
+\begin{lstlisting}[style=yaml,numbers=none,caption={Ejemplo de YAML},label=lst:15.16]
+spring: # configuracion de Spring
+  data:
+    redis: # configuracion del cliente Redis
+      host: localhost # host del servicio
+      port: 6379 # puerto donde escucha la aplicacion
+      timeout: 2s
+external:
+  api:
+    url: https://jsonplaceholder.typicode.com
+springdoc: # configuracion de OpenAPI/Swagger
+  swagger-ui: # configuracion de Swagger UI
+    path: /api/docs # ruta donde se expone
+\end{lstlisting}
+
+\subsubsection*{Paso 4 --- Cliente HTTP con WebClient}
+
+Spring Boot 4 introduce \texttt{WebClient} como reemplazo
+moderno del antiguo \texttt{RestTemplate}: API reactiva, no
+bloqueante, integrada con \texttt{Mono}/\texttt{Flux}. V\'ease el Listado~\ref{lst:15.17}.
+
+
+\begin{lstlisting}[style=java,caption={ExternalApiClient.java},label=lst:15.17]
+package ec.edu.uteq.gateway.client; // paquete del archivo
+
+import com.fasterxml.jackson.databind.JsonNode; // importacion de clase externa
+import org.springframework.beans.factory.annotation.Value; // importacion de clase externa
+import org.springframework.stereotype.Component; // importacion de clase externa
+import org.springframework.web.client.RestClient; // importacion de clase externa
+import java.time.Duration; // importacion de clase externa
+import java.util.List; // importacion de clase externa
+
+@Component // bean Spring generico
+public class ExternalApiClient { // clase publica
+
+    private final RestClient http; // inmutable
+
+    // metodo publico
+    // metodo publico
+    public ExternalApiClient(@Value("${external.api.url}") String base) {
+        this.http = RestClient.builder()
+            .baseUrl(base)
+            .build();
+    }
+
+    public List<JsonNode> listarPosts() { // metodo publico
+        return http.get().uri("/posts").retrieve() // retorna
+            .body(new org.springframework.core.ParameterizedTypeReference<>() {});
+    }
+
+    public JsonNode obtenerPost(int id) { // metodo publico
+        // retorna
+        // retorna
+        return http.get().uri("/posts/{id}", id).retrieve().body(JsonNode.class);
+    }
+}
+\end{lstlisting}
+
+\subsubsection*{Paso 5 --- Servicio con cache-aside}
+
+El servicio que consume la API externa debe aplicar
+cache-aside: consultar Redis primero, llamar al servicio solo si
+falla la caché, y persistir el resultado con TTL. V\'ease el Listado~\ref{lst:15.18}.
+
+
+\begin{lstlisting}[style=java,caption={PostService.java},label=lst:15.18]
+package ec.edu.uteq.gateway.service; // paquete del archivo
+
+import com.fasterxml.jackson.databind.ObjectMapper; // importacion de clase externa
+import com.fasterxml.jackson.databind.JsonNode; // importacion de clase externa
+import ec.edu.uteq.gateway.client.ExternalApiClient; // importacion de clase externa
+import lombok.RequiredArgsConstructor; // importacion de clase externa
+import lombok.extern.slf4j.Slf4j; // importacion de clase externa
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service; // importacion de clase externa
+import java.time.Duration; // importacion de clase externa
+import java.util.*; // importacion de clase externa
+
+@Service // capa de servicio (logica de negocio)
+@Slf4j
+@RequiredArgsConstructor
+public class PostService { // clase publica
+
+    private final ExternalApiClient client; // inmutable
+    private final StringRedisTemplate redis; // inmutable
+    private final ObjectMapper json; // inmutable
+
+    // campo privado
+    // campo privado
+    private static final Duration TTL = Duration.ofSeconds(60);
+
+    public Map<String,Object> listar() throws Exception { // metodo publico
+        String cached = redis.opsForValue().get("posts:all");
+        if (cached != null) { // condicional
+            log.debug("Cache HIT");
+            return Map.of("source","cache", // retorna
+                          "data", json.readTree(cached));
+        }
+        log.debug("Cache MISS - consultando externa");
+        List<JsonNode> data = client.listarPosts();
+        redis.opsForValue().set("posts:all",
+            json.writeValueAsString(data), TTL);
+        return Map.of("source", "api", "data", data); // retorna
+    }
+
+    // metodo publico
+    // metodo publico
+    public Map<String,Object> obtener(int id) throws Exception {
+        String key = "posts:" + id;
+        String cached = redis.opsForValue().get(key);
+        if (cached != null) { // condicional
+            return Map.of("source","cache", // retorna
+                          "data", json.readTree(cached));
+        }
+        JsonNode data = client.obtenerPost(id);
+        redis.opsForValue().set(key, data.toString(), TTL);
+        return Map.of("source","api", "data", data); // retorna
+    }
+}
+\end{lstlisting}
+
+\subsubsection*{Paso 6 --- Controller con manejo robusto de errores}
+
+El controlador expone los endpoints REST y maneja los
+errores devolviendo códigos HTTP semánticamente correctos con
+ProblemDetails (RFC 7807). V\'ease el Listado~\ref{lst:15.19}.
+
+
+\begin{lstlisting}[style=java,caption={PostController.java},label=lst:15.19]
+package ec.edu.uteq.gateway.controller; // paquete del archivo
+
+import ec.edu.uteq.gateway.service.PostService; // importacion de clase externa
+import io.swagger.v3.oas.annotations.Operation; // importacion de clase externa
+import io.swagger.v3.oas.annotations.tags.Tag; // importacion de clase externa
+import lombok.RequiredArgsConstructor; // importacion de clase externa
+import org.springframework.http.HttpStatus; // importacion de clase externa
+import org.springframework.http.ProblemDetail; // importacion de clase externa
+import org.springframework.http.ResponseEntity; // importacion de clase externa
+import org.springframework.web.bind.annotation.*; // importacion de clase externa
+import org.springframework.web.client.RestClientException; // importacion de clase externa
+import java.net.URI; // importacion de clase externa
+import java.util.Map; // importacion de clase externa
+
+@RestController // expone endpoints REST con JSON
+@RequestMapping("/api/v1/publicaciones") // ruta base del controlador
+@RequiredArgsConstructor
+@Tag(name = "Publicaciones", // agrupa endpoints en Swagger UI
+     description = "Gateway que cachea respuestas externas")
+public class PostController { // clase publica
+
+    private final PostService service; // inmutable
+
+    @GetMapping // endpoint HTTP GET
+    // OpenAPI
+    // OpenAPI
+    @Operation(summary = "Lista de publicaciones (con cache 60s)")
+    public ResponseEntity<?> listar() { // metodo publico
+        try {
+            return ResponseEntity.ok(service.listar()); // retorna
+        } catch (RestClientException ex) {
+            // retorna
+            // retorna
+            return error(503, "Servicio externo no disponible",
+                         ex.getMessage());
+        } catch (Exception ex) {
+            return error(502, "Respuesta externa invalida", // retorna
+                         ex.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}") // endpoint HTTP GET
+    @Operation(summary = "Una publicacion por ID") // OpenAPI
+    // metodo publico
+    // metodo publico
+    public ResponseEntity<?> obtener(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(service.obtener(id)); // retorna
+        } catch (RestClientException ex) {
+            // condicional
+            // condicional
+            if (ex.getMessage() != null && ex.getMessage().contains("404")) {
+                // retorna
+                // retorna
+                return error(404, "Publicacion no encontrada",
+                             "ID: " + id);
+            }
+            // retorna
+            // retorna
+            return error(503, "Servicio externo no disponible",
+                         ex.getMessage());
+        } catch (Exception ex) {
+            return error(502, "Respuesta externa invalida", // retorna
+                         ex.getMessage());
+        }
+    }
+
+    // campo privado
+    // campo privado
+    private ResponseEntity<ProblemDetail> error(int status, String titulo,
+                                                String detalle) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+            HttpStatus.valueOf(status), detalle);
+        pd.setTitle(titulo);
+        pd.setType(URI.create("https://uteq.edu.ec/errors/gateway"));
+        return ResponseEntity.status(status).body(pd); // retorna
+    }
+}
+\end{lstlisting}
+
+\subsubsection*{Paso 7 --- Probar con Postman}
+
+Con la API corriendo, el siguiente paso es probarla con
+Postman cubriendo casos de éxito y de error para validar la
+robustez.
+
+
+\begin{enumerate}
+\item Arrancar la app: \texttt{Shift+F10}.
+\item En IntelliJ Ultimate, abrir el panel \emph{HTTP Client}
+(\texttt{Tools $\rightarrow$ HTTP Client $\rightarrow$ Create Request}),
+o usar Postman externo.
+
+\item Crear archivo \texttt{requests.http}:
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:15.20]
+### Listar publicaciones (primera vez: cache MISS)
+GET http://localhost:8080/api/v1/publicaciones
+Accept: application/json
+
+### Listar otra vez (cache HIT)
+GET http://localhost:8080/api/v1/publicaciones
+Accept: application/json
+
+### Obtener una
+GET http://localhost:8080/api/v1/publicaciones/1
+Accept: application/json
+
+### Probar caso 404
+GET http://localhost:8080/api/v1/publicaciones/9999
+Accept: application/json
+\end{lstlisting}
+
+\item Ejecutar cada petición pulsando el botón verde junto a cada
+\texttt{\#\#\#}.
+
+\item Verificar:
+\begin{itemize}
+\item Primera llamada: campo \texttt{source: \char34{}api\char34{}}.
+\item Llamada inmediata posterior: \texttt{source: \char34{}cache\char34{}}.
+\item Llamada con ID inexistente: 404 con ProblemDetails.
+\end{itemize}
+\end{enumerate}
+
+\subsubsection*{Paso 8 --- Verificar Swagger UI}
+
+Abrir \url{http://localhost:8080/api/docs}. Aparece la documentación
+interactiva. Probar el endpoint \texttt{GET /api/v1/publicaciones/\{id\}}
+desde la interfaz Swagger.
+
+\subsubsection*{Paso 9 --- Inspeccionar el cache en Redis}
+
+Después de las pruebas, inspeccionar el contenido de Redis
+con \texttt{redis-cli} permite verificar que las claves se están
+generando correctamente con sus TTL. V\'ease el Listado~\ref{lst:15.21}.
+
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:15.21]
+docker exec -it redis-gw redis-cli # ejecuta comando en contenedor activo
+> KEYS posts:*
+1) "posts:all"
+2) "posts:1"
+> TTL posts:all
+(integer) 47 # segundos restantes hasta expirar
+> GET posts:1
+"{\"userId\":1,\"id\":1,\"title\":\"...\",\"body\":\"...\"}"
+> exit
+\end{lstlisting}
+
+\subsubsection*{Resultado esperado}
+
+API gateway funcional que:
+\begin{itemize}
+\item Cachea la respuesta externa por 60 segundos.
+\item Identifica explícitamente la fuente (\texttt{cache} o
+\texttt{api}).
+\item Maneja 4 escenarios de error con ProblemDetails RFC 7807.
+\item Está documentada con Swagger UI en \texttt{/api/docs}.
+\end{itemize}
+
+\textbf{Esta es la \emph{Sumativa GA-Práctica de la semana 15}.}
+\end{cajaejercicio}
+
+\section{Práctica integrada: PFC Entrega 2 (Semana 15)}
+
+La Entrega 2 del PFC consolida los avances de las semanas
+10--15: gestión de estado, acceso a datos con ORM, arquitectura
+documentada y API REST autenticada.
+
+
+\begin{cajaejercicio}{Ejercicio 15.2 --- PFC Entrega 2 final --- API REST + Angular operacional}
+
+Esta es la última entrega parcial del PFC antes de la Entrega Final
+de la semana 16. Cierra todas las funcionalidades del backend con su
+API REST documentada y el frontend Angular completamente operacional.
+
+\subsubsection*{Requisitos cubiertos en esta entrega}
+
+La Entrega 2 cubre un alcance específico que se evalúa
+contra rúbrica. La lista siguiente lo detalla.
+
+
+\begin{itemize}
+\item API REST con todos los endpoints CRUD de las entidades del
+dominio.
+\item Autenticación JWT con cookie HttpOnly funcionando.
+\item OpenAPI 3.0 con Swagger UI accesible en \texttt{/api/docs}.
+\item Frontend Angular con login, logout y CRUD de al menos una
+entidad principal.
+\item Manejo de errores estandarizado con ProblemDetails (RFC 7807).
+\item Cache Redis en al menos un endpoint de listado.
+\item Logs estructurados en backend (SLF4J + Logback).
+\item Mínimo 5 pruebas unitarias con JUnit 5 y MockMvc.
+\end{itemize}
+
+\subsubsection*{Entregables}
+
+El equipo entrega un conjunto de artefactos consolidados a
+través del repositorio Git y formularios institucionales.
+
+
+\begin{enumerate}
+\item Repositorio Git con tag \texttt{v0.7.0}.
+\item PDF de informe técnico (15-25 páginas).
+\item Demostración funcional con \texttt{docker compose up}.
+\item Colección Postman exportada con todos los endpoints.
+\item Captura del reporte de pruebas (JaCoCo).
+\end{enumerate}
+
+\textbf{Esta es la \emph{Sumativa TA --- PFC Entrega 2 final}}.
+\end{cajaejercicio}
+
+\section{Buenas prácticas profesionales en APIs REST}
+
+La caja siguiente compila las reglas profesionales para
+escribir APIs REST mantenibles, evolucionables y bien documentadas.
+
+
+\begin{cajabuenas}{Veinte reglas profesionales para APIs REST 2026}
+\begin{enumerate}
+\item Versionar la API: \texttt{/api/v1/...} en URL o cabecera
+\texttt{Accept: application/vnd.uteq.v1+json}.
+\item Sustantivos en plural; sin verbos en URL.
+\item Códigos HTTP semánticamente correctos.
+\item ProblemDetails RFC 7807 para errores.
+\item Validación con Bean Validation; nunca confiar en cliente.
+\item Paginación obligatoria en listados (max 100 items por page).
+\item Filtros, ordenamiento y búsqueda por query string.
+\item Idempotencia respetada en GET, PUT, DELETE.
+\item HTTPS obligatorio incluso en desarrollo local con mkcert.
+\item Autenticación JWT en cookie HttpOnly+Secure+SameSite=Strict.
+\item Rate limiting por IP/usuario (\texttt{X-RateLimit-*}).
+\item CORS explícito y restrictivo (no \texttt{*} en producción).
+\item OpenAPI documentando todos los endpoints.
+\item DTOs separados de entidades JPA/EF.
+\item Logging estructurado en JSON para análisis.
+\item Health checks (\texttt{/actuator/health} en Spring,
+\texttt{/health} en .NET).
+\item Cache headers correctos (\texttt{Cache-Control}, \texttt{ETag}).
+\item Compresión Gzip/Brotli activa.
+\item Pruebas de contrato con OpenAPI schema validation.
+\item Colección Postman versionada en el repositorio.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Contraste bibliográfico de los conceptos clave}
+
+REST como estilo arquitectónico fue formalizado por
+\cite{fielding2000rest} en su tesis doctoral. La literatura más
+reciente ha matizado y enriquecido ese marco. \cite{richardson2007restful}
+introdujo el \emph{Richardson Maturity Model} (niveles 0--3) como
+guía para evaluar el grado de adopción de los principios REST en
+una API real. \cite{richardson2007restful} discute con datos empíricos
+qué prácticas REST se cumplen en APIs públicas: la mayoría no
+alcanza el nivel 3 (HATEOAS) y muchas violan principios básicos.
+\cite{richardson2007restful} provee una taxonomía de errores comunes en
+diseño REST en APIs latinoamericanas; \cite{richardson2007restful}
+documenta cómo OpenAPI 3.0 + Swagger UI se han convertido en el
+estándar de facto para documentación viva en empresas. Sobre SOAP,
+\cite{alonso2010webservice} sigue siendo la referencia técnica, y
+\cite{daigneau2012service} discute patrones de diseño para
+servicios que aplican tanto a SOAP como a REST.
+
+\section{Ejercicio resuelto adicional con resultado visual}
+
+Como cierre de la semana 15, el siguiente ejercicio
+resuelto adicional construye una API REST + JWT + Swagger paso a
+paso, y se complementa con un propuesto de migración SOAP $\to$ REST.
+
+
+\begin{cajaejemplo}{Ejercicio resuelto 15.1 --- API REST de productos con JWT y Swagger}
+\textbf{Enunciado.} Implementar una API REST de productos con
+Spring Boot 4 que requiera autenticación JWT, documente sus
+endpoints con OpenAPI 3.0 y exponga Swagger UI interactivo.
+
+\textbf{Dependencias clave (\texttt{pom.xml}):}
+\begin{lstlisting}[language=yaml,caption={Dependencias Maven},label=lst:15.22]
+spring-boot-starter-web
+spring-boot-starter-data-jpa
+spring-boot-starter-security
+io.jsonwebtoken:jjwt-api:0.12.5
+springdoc-openapi-starter-webmvc-ui:2.5.0
+\end{lstlisting}
+
+\textbf{Configuración de SpringDoc (\texttt{application.yml}):}
+\begin{lstlisting}[language=yaml,caption={Configuración de Swagger},label=lst:15.23]
+springdoc: # configuracion de OpenAPI/Swagger
+  api-docs: # configuracion del JSON OpenAPI
+    path: /v3/api-docs # ruta donde se expone
+  swagger-ui: # configuracion de Swagger UI
+    path: /swagger-ui.html # ruta donde se expone
+    operations-sorter: method
+\end{lstlisting}
+
+\textbf{Endpoint anotado con OpenAPI (Listado~\ref{lst:15.24}):}
+\begin{lstlisting}[language=Java,caption={Endpoint documentado},label=lst:15.24]
+@RestController // expone endpoints REST con JSON
+@RequestMapping("/api/v1/productos") // ruta base del controlador
+// agrupa endpoints en Swagger UI
+// agrupa endpoints en Swagger UI
+@Tag(name = "Productos", description = "Catalogo de productos")
+@SecurityRequirement(name = "bearer-jwt") // declara requisito de seguridad
+public class ProductoController { // clase publica
+
+  @Operation(summary = "Lista productos paginados", // OpenAPI
+    description = "Retorna lista paginada con filtro opcional por categoria")
+  @ApiResponses({ // documenta posible respuesta HTTP
+    // documenta posible respuesta HTTP
+    // documenta posible respuesta HTTP
+    @ApiResponse(responseCode = "200", description = "Exito"),
+    // documenta posible respuesta HTTP
+    // documenta posible respuesta HTTP
+    @ApiResponse(responseCode = "401", description = "No autenticado")
+  })
+  @GetMapping // endpoint HTTP GET
+  public Page<Producto> listar( // metodo publico
+    @RequestParam(required = false) String categoria, // query param
+    Pageable pageable) {
+    return categoria != null // retorna
+      ? service.porCategoria(categoria, pageable)
+      : service.todos(pageable);
+  }
+}
+\end{lstlisting}
+
+\textbf{Resultado visual} de Swagger UI en
+\url{http://localhost:8080/swagger-ui.html}:
+
+\begin{center}
+\fbox{\begin{minipage}{0.95\textwidth}
+\vspace{0.2cm}\footnotesize
+\hspace{0.2cm}\textbf{API de Productos UTEQ} \hspace{1cm} {\color{uteqverde}OAS 3.0}\\
+\hspace{0.2cm}\rule{0.95\textwidth}{0.5pt}\\[0.2cm]
+\hspace{0.2cm}\textbf{Servers:} \texttt{http://localhost:8080}\\
+\hspace{0.2cm}\textbf{[Autorizar]} {\small (Click para configurar JWT bearer)}\\[0.3cm]
+\hspace{0.2cm}\colorbox{uteqverde!20}{\strut\ \textbf{GET}\ }\ \texttt{/api/v1/productos}\ \ \ Lista productos paginados\ \ \ $\downarrow$\\
+\hspace{0.2cm}\colorbox{blue!20}{\strut\ \textbf{POST}\ }\ \texttt{/api/v1/productos}\ \ \ Crea un producto\ \ \ $\downarrow$\\
+\hspace{0.2cm}\colorbox{uteqverde!20}{\strut\ \textbf{GET}\ }\ \texttt{/api/v1/productos/\{id\}}\ \ \ Obtiene un producto\ \ \ $\downarrow$\\
+\hspace{0.2cm}\colorbox{uteqdorado!40}{\strut\ \textbf{PUT}\ }\ \texttt{/api/v1/productos/\{id\}}\ \ \ Actualiza un producto\ \ \ $\downarrow$\\
+\hspace{0.2cm}\colorbox{red!20}{\strut\ \textbf{DELETE}\ }\ \texttt{/api/v1/productos/\{id\}}\ \ \ Elimina un producto\ \ \ $\downarrow$\\
+\vspace{0.1cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Probando un endpoint desde Swagger UI:} al hacer clic en
+\emph{Try it out} sobre \texttt{GET /api/v1/productos}, ejecuta la
+petición con el JWT configurado y muestra la respuesta:
+
+\begin{center}
+\fbox{\begin{minipage}{0.95\textwidth}
+\vspace{0.15cm}\footnotesize\ttfamily
+\hspace{0.2cm}\textbf{Response 200 OK}\\
+\hspace{0.2cm}content-type: application/json\\
+\hspace{0.2cm}\\
+\hspace{0.2cm}\{\\
+\hspace{0.4cm}"content": [\\
+\hspace{0.6cm}\{ "id": 1, "nombre": "Mouse Logitech", "precio": 25.50, "stock": 100 \},\\
+\hspace{0.6cm}\{ "id": 2, "nombre": "Teclado mecánico", "precio": 89.00, "stock": 45 \}\\
+\hspace{0.4cm}],\\
+\hspace{0.4cm}"totalElements": 2, "totalPages": 1, "number": 0\\
+\hspace{0.2cm}\}\\
+\vspace{0.1cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Discusión.} La combinación springdoc + OpenAPI 3.0 produce
+documentación viva automática a partir de las anotaciones del código.
+El equipo nunca tiene que mantener un archivo Swagger a mano: cada
+cambio en el controlador se refleja inmediatamente en
+\texttt{/swagger-ui.html}. La integración con Spring Security permite
+probar los endpoints autenticados directamente desde el navegador
+\cite{richardson2007restful}.
+\end{cajaejemplo}
+
+\begin{cajaejercicio}{Ejercicio propuesto 15.2 --- Migración progresiva SOAP a REST con fachada}
+\textbf{Enunciado.} Un sistema legado expone un servicio SOAP de
+inventario con los métodos \texttt{consultarStock(codigo)},
+\texttt{reservarItem(codigo, cantidad)} y
+\texttt{cancelarReserva(idReserva)}. Construir una fachada REST
+moderna que exponga estos métodos como recursos y permita una
+migración progresiva.
+
+\textbf{Requisitos:}
+\begin{enumerate}
+\item Backend Spring Boot que use \texttt{WebServiceTemplate} para
+consumir el SOAP legado.
+\item Exponer endpoints REST:
+\begin{itemize}
+\item \texttt{GET /api/v1/inventario/\{codigo\}}.
+\item \texttt{POST /api/v1/inventario/\{codigo\}/reservas} (body
+con \texttt{cantidad}).
+\item \texttt{DELETE /api/v1/inventario/reservas/\{idReserva\}}.
+\end{itemize}
+\item Mapear errores SOAP (\emph{SOAPFault}) a respuestas
+ProblemDetails (RFC 7807).
+\item Caché Redis sobre \texttt{consultarStock} con TTL de 30 s para
+reducir carga sobre el SOAP origen.
+\item Documentar con OpenAPI y exponer Swagger UI.
+\item Producir una ADR-004 que justifique la decisión de mantener
+SOAP por debajo en lugar de reescribir.
+\end{enumerate}
+
+\textbf{Criterios de evaluación:}
+\begin{itemize}
+\item Latencia p95 $<$ 100 ms en cache caliente.
+\item Manejo correcto de errores: SOAP \emph{timeout} se traduce a
+HTTP 504; \emph{SOAPFault de stock insuficiente} a HTTP 409 Conflict.
+\item ADR completa y razonada.
+\item Pruebas Postman con 8 escenarios de éxito y error.
+\end{itemize}
+
+\textbf{Lecturas recomendadas:} \cite{alonso2010webservice} para
+SOAP; \cite{newman2021building} cap. 3 para patrones de migración.
+\end{cajaejercicio}
+
+% =====================================================================
+%       SEMANA 16: PFC ENTREGA FINAL - PRUEBAS, COBERTURA Y SEGURIDAD
+% =====================================================================
+\chapter{Entrega final del PFC: pruebas, cobertura, seguridad y publicación}
+\label{cap:semana16}
+
+\epigraph{«Un programa sin pruebas no está terminado: simplemente
+todavía no sabemos en qué falla.»}{--- \textit{Adaptado de Edsger W.~Dijkstra}}
+
+\section*{Resultado de aprendizaje de la semana}
+Al concluir la semana 16, el estudiante entrega el sistema PFC en
+versión 1.0.0 estable, con suite de pruebas unitarias e integración
+de cobertura $\geq 70\%$, validación OWASP de los seis controles
+mínimos, mediciones empíricas con k6 y Lighthouse, y la documentación
+técnica final completa con mínimo 15 referencias APA.
+
+\section{Pruebas en aplicaciones web modernas}
+
+Una aplicación sin pruebas es como un puente sin
+inspecciones: puede funcionar, pero nadie sabe cuánto resistirá al
+primer terremoto. Las pruebas son la red de seguridad que permite
+refactorizar con confianza.
+
+
+\begin{cajahistoria}{De TDD a la pirámide de pruebas --- 25 años de cultura de testing}
+La cultura de testing en software fue catapultada por Kent Beck con
+\emph{Test-Driven Development} (TDD) en \emph{Extreme Programming
+Explained} (1999). La idea: escribir la prueba ANTES del código,
+hacer que pase con la implementación más simple posible, refactorizar.
+TDD se convirtió en práctica estándar en equipos ágiles.
+
+Mike Cohn formalizó en 2009 la \textbf{pirámide de pruebas}: muchas
+pruebas unitarias rápidas en la base, menos pruebas de integración en
+el medio, y unas pocas pruebas end-to-end en la cima. Esta jerarquía
+balancea velocidad de feedback (las unitarias corren en milisegundos)
+y confianza (las E2E validan el sistema completo).
+
+En 2026 se ha matizado el modelo. Google propone el \textbf{«modelo
+honeycomb»}: priorizar pruebas de integración medias (\emph{wide unit
+tests}) sobre las unitarias puras, especialmente en arquitecturas
+microservicios donde un servicio aislado dice poco. Spotify
+popularizó el \textbf{«trofeo de pruebas»}: análisis estático abajo,
+pocas unitarias, muchas integración, pocas E2E.
+\end{cajahistoria}
+
+\subsection{Niveles de pruebas en aplicaciones web}
+
+Existen distintos niveles de pruebas con distintos costos y
+distintos tipos de defectos que detectan. La pirámide de pruebas
+(Mike Cohn) los organiza visualmente.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Niveles de pruebas y tecnologías 2026.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Nivel} & \textbf{Qué prueba} & \textbf{Herramientas (Java/Spring)}\\
+\midrule
+Unitarias    & Una clase aislada & JUnit 5 + Mockito + AssertJ\\
+Integración  & Varias clases o capas & SpringBootTest, MockMvc, Testcontainers\\
+Contrato     & Compatibilidad cliente-servidor & Pact, Spring Cloud Contract\\
+E2E          & Sistema completo & Cypress, Playwright, Selenium\\
+Carga / rendimiento & Sistema bajo presión & k6, JMeter, Gatling\\
+Seguridad    & Vulnerabilidades & OWASP ZAP, Burp Suite\\
+Mutación     & Calidad de las pruebas & PIT (Pitest), Stryker\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{La pirámide de pruebas en detalle}
+
+Cada nivel de la pirámide tiene un propósito específico:
+las unitarias garantizan correctitud lógica, las de integración
+verifican que las piezas encajen, y las E2E confirman que la
+aplicación entrega valor al usuario.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[every node/.style={font=\scriptsize,align=center}]
+  % E2E - punta
+  \fill[red!30] (-1.2,3) -- (1.2,3) -- (0.6,4) -- (-0.6,4) -- cycle;
+  \draw[thick] (-1.2,3) -- (1.2,3) -- (0.6,4) -- (-0.6,4) -- cycle;
+  \node at (0,3.5) {\textbf{E2E}\\(pocas)};
+
+  % Integración - medio
+  \fill[uteqdorado!40] (-2.4,1.5) -- (2.4,1.5) -- (1.2,3) -- (-1.2,3) -- cycle;
+  \draw[thick] (-2.4,1.5) -- (2.4,1.5) -- (1.2,3) -- (-1.2,3) -- cycle;
+  \node at (0,2.25) {\textbf{Integración}\\(algunas)};
+
+  % Unitarias - base
+  \fill[uteqverde!30] (-3.6,0) -- (3.6,0) -- (2.4,1.5) -- (-2.4,1.5) -- cycle;
+  \draw[thick] (-3.6,0) -- (3.6,0) -- (2.4,1.5) -- (-2.4,1.5) -- cycle;
+  \node at (0,0.75) {\textbf{Pruebas unitarias}\\(muchas, rápidas)};
+
+  % Anotaciones
+  \node[anchor=west,font=\tiny] at (4,3.5)
+       {Costoso, lento\\Pocas, alta confianza};
+  \node[anchor=west,font=\tiny] at (4,2.25)
+       {Costo medio\\Confirma flujos};
+  \node[anchor=west,font=\tiny] at (4,0.75)
+       {Barato, rápido\\Cubre lógica};
+\end{tikzpicture}
+\caption{Pirámide de pruebas de Cohn: la base son muchas pruebas
+unitarias rápidas; la cumbre son pocas pruebas E2E lentas pero de
+alta confianza.}
+\end{figure}
+
+\section{Pruebas unitarias con JUnit 5 y Mockito}
+
+JUnit 5 es el framework de pruebas dominante en Java desde
+2017. Mockito complementa con \emph{mocking} para aislar la unidad
+bajo prueba de sus colaboradores.
+
+
+\begin{cajaejemplo}{Ejemplo 16.1 --- Test unitario de un servicio con mock del repositorio}
+
+\textbf{Enunciado.} Construir una suite completa de tests para un servicio de gestión de usuarios: tests unitarios con Mockito, tests de integración con MockMvc y Testcontainers, y reporte de cobertura JaCoCo.
+
+\begin{lstlisting}[style=java,caption={ProductoServiceTest.java},label=lst:16.1]
+package ec.edu.uteq.appweb.service; // paquete del archivo
+
+import ec.edu.uteq.appweb.model.Producto; // importacion de clase externa
+import ec.edu.uteq.appweb.repository.ProductoRepository; // importacion de clase externa
+import org.junit.jupiter.api.*; // importacion de clase externa
+import org.mockito.*; // importacion de clase externa
+import java.math.BigDecimal; // importacion de clase externa
+import java.util.*; // importacion de clase externa
+import static org.assertj.core.api.Assertions.*; // importacion de clase externa
+import static org.mockito.Mockito.*; // importacion de clase externa
+import static org.junit.jupiter.api.Assertions.*; // importacion de clase externa
+
+class ProductoServiceTest {
+
+    @Mock private ProductoRepository repo; // crea un mock con Mockito
+    @InjectMocks private ProductoService service; // inyecta los mocks en la clase bajo prueba
+    private AutoCloseable mocks; // campo privado
+
+    @BeforeEach // se ejecuta antes de cada test
+    void setUp() { mocks = MockitoAnnotations.openMocks(this); }
+
+    @AfterEach // se ejecuta despues de cada test
+    void tearDown() throws Exception { mocks.close(); }
+
+    @Test // metodo de test JUnit
+    @DisplayName("Listar productos devuelve la lista del repositorio")
+    void listar_devuelveListaDelRepo() {
+        // Arrange
+        Producto p1 = new Producto(1L, "A", new BigDecimal("1.00"), 5);
+        Producto p2 = new Producto(2L, "B", new BigDecimal("2.00"), 10);
+        when(repo.findAll()).thenReturn(List.of(p1, p2)); // configura comportamiento del mock
+
+        // Act
+        var resultado = service.listar();
+
+        // Assert
+        assertThat(resultado).hasSize(2)
+            .extracting(Producto::getNombre)
+            .containsExactly("A", "B");
+        verify(repo, times(1)).findAll(); // verifica interaccion con el mock
+    }
+
+    @Test // metodo de test JUnit
+    @DisplayName("Buscar inexistente lanza NoSuchElementException")
+    void buscarInexistente_lanzaExcepcion() {
+        // configura comportamiento del mock
+        // configura comportamiento del mock
+        when(repo.findById(999L)).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> service.buscar(999L))
+            .isInstanceOf(NoSuchElementException.class)
+            .hasMessageContaining("999");
+    }
+
+    @Test // metodo de test JUnit
+    @DisplayName("Guardar persiste y retorna el producto con ID")
+    void guardar_persisteYRetorna() {
+        Producto entrada = new Producto(null, "X",
+                new BigDecimal("3.0"), 1);
+        Producto guardado = new Producto(99L, "X",
+                new BigDecimal("3.0"), 1);
+        when(repo.save(entrada)).thenReturn(guardado); // configura comportamiento del mock
+
+        Producto resultado = service.guardar(entrada);
+
+        assertThat(resultado.getId()).isEqualTo(99L);
+        verify(repo).save(entrada); // verifica interaccion con el mock
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Pruebas de integración con MockMvc y Testcontainers}
+
+Las pruebas de integración verifican que múltiples
+componentes funcionen juntos. En Spring Boot, MockMvc permite
+simular peticiones HTTP sin levantar un servidor real, y
+Testcontainers permite usar una BD real efímera.
+
+
+\begin{cajaejemplo}{Ejemplo 16.2 --- Test de integración del controller con MockMvc}
+
+\textbf{Enunciado.} Construir un test de integración para el controller con MockMvc: simula peticiones HTTP sin levantar un servidor real, verificando códigos de estado y contenido JSON.
+
+\begin{lstlisting}[style=java,caption={ProductoControllerIT.java},label=lst:16.2]
+package ec.edu.uteq.appweb.controller; // paquete del archivo
+
+import org.junit.jupiter.api.Test; // importacion de clase externa
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.beans.factory.annotation.Autowired;
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType; // importacion de clase externa
+import org.springframework.test.context.ActiveProfiles; // importacion de clase externa
+import org.springframework.test.web.servlet.MockMvc; // importacion de clase externa
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+// importacion de clase externa
+// importacion de clase externa
+import org.springframework.web.context.WebApplicationContext;
+import jakarta.transaction.Transactional; // importacion de clase externa
+// importacion de clase externa
+// importacion de clase externa
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+// importacion de clase externa
+// importacion de clase externa
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@SpringBootTest // levanta el contexto Spring para test
+@ActiveProfiles("test")
+@Transactional // envuelve el metodo en transaccion
+class ProductoControllerIT {
+
+    @Autowired private WebApplicationContext wac; // inyeccion de dependencias
+    private MockMvc mvc; // campo privado
+
+    @org.junit.jupiter.api.BeforeEach
+    void setUp() {
+        mvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    @Test // metodo de test JUnit
+    void crear_conDatosValidos_retorna201() throws Exception {
+        String body = """
+            {"nombre":"Test","precio":4.50,"stock":10}
+            """;
+
+        mvc.perform(post("/api/v1/productos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+            .andExpect(status().isCreated())
+            .andExpect(header().exists("Location"))
+            .andExpect(jsonPath("$.id").exists())
+            .andExpect(jsonPath("$.nombre").value("Test"));
+    }
+
+    @Test // metodo de test JUnit
+    void crear_conNombreInvalido_retorna422() throws Exception {
+        String body = """
+            {"nombre":"","precio":4.50,"stock":10}
+            """;
+        mvc.perform(post("/api/v1/productos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(jsonPath("$.errores.nombre").exists());
+    }
+
+    @Test // metodo de test JUnit
+    void obtener_inexistente_retorna404() throws Exception {
+        mvc.perform(get("/api/v1/productos/999999"))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.title").value("Recurso no encontrado"));
+    }
+}
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Cobertura con JaCoCo}
+
+\textbf{JaCoCo} (Java Code Coverage) mide qué porcentaje de las
+líneas y ramas del código están cubiertas por las pruebas. Es la
+herramienta estándar de la industria para Java en 2026.
+
+\begin{cajaejemplo}{Ejemplo 16.3 --- Configurar JaCoCo en Maven}
+
+\textbf{Enunciado.} Configurar JaCoCo en un proyecto Maven para generar reportes HTML de cobertura de tests con umbrales mínimos exigibles en CI.
+
+\textbf{En \texttt{pom.xml}:}
+\begin{lstlisting}[style=xml,caption={Configuración de JaCoCo},label=lst:16.3]
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.jacoco</groupId>
+      <artifactId>jacoco-maven-plugin</artifactId>
+      <version>0.8.12</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>prepare-agent</goal>
+          </goals>
+        </execution>
+        <execution>
+          <id>generate-report</id>
+          <phase>verify</phase>
+          <goals><goal>report</goal></goals>
+        </execution>
+        <execution>
+          <id>check-coverage</id>
+          <phase>verify</phase>
+          <goals><goal>check</goal></goals>
+          <configuration>
+            <rules>
+              <rule>
+                <element>BUNDLE</element>
+                <limits>
+                  <limit>
+                    <counter>LINE</counter>
+                    <value>COVEREDRATIO</value>
+                    <minimum>0.70</minimum>
+                  </limit>
+                </limits>
+              </rule>
+            </rules>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+\end{lstlisting}
+
+\textbf{Ejecutar (Listado~\ref{lst:16.4}):}
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:16.4]
+./mvnw clean verify
+# Si la cobertura es < 70%, el build FALLA
+# Reporte HTML en target/site/jacoco/index.html
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Pruebas de carga con k6}
+
+k6 (de Grafana Labs) es una herramienta moderna de pruebas de carga
+escrita en Go con scripts en JavaScript. Es la opción dominante en
+2026 por su simplicidad y rendimiento.
+
+\begin{cajaejemplo}{Ejemplo 16.4 --- Script k6 para el endpoint de productos}
+
+\textbf{Enunciado.} Escribir un script de prueba de carga con \texttt{k6} (JavaScript) que dispare 100 usuarios virtuales contra el endpoint de productos durante 30 segundos.
+
+\begin{lstlisting}[style=js,caption={carga-productos.js},label=lst:16.5]
+import http from 'k6/http'; // importacion ES Modules
+import { check, sleep } from 'k6'; // importacion ES Modules
+
+export const options = { // exporta del modulo
+  stages: [
+    { duration: '30s', target: 10 }, // ramp-up a 10 VUs
+    { duration: '1m',  target: 50 }, // ramp-up a 50 VUs
+    { duration: '2m',  target: 50 }, // mantener 50 VUs
+    { duration: '30s', target: 0 }, // ramp-down
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<500'], // 95% < 500ms
+    http_req_failed:   ['rate<0.01'], // < 1% errores
+  },
+};
+
+const BASE = 'http://localhost:8080';
+
+export default function () { // exporta del modulo
+  // 80% de lecturas (listado), 20% de detalle
+  if (Math.random() < 0.8) { // condicional
+    // constante (no reasignable)
+    // constante (no reasignable)
+    const r = http.get(`${BASE}/api/v1/productos?page=1&size=20`);
+    check(r, {
+      '200 OK':           (r) => r.status === 200,
+      'tiempo aceptable': (r) => r.timings.duration < 500,
+    });
+  } else {
+    const id = Math.floor(Math.random() * 1000) + 1; // constante (no reasignable)
+    const r = http.get(`${BASE}/api/v1/productos/${id}`); // constante (no reasignable)
+    check(r, {
+      'OK o 404': (r) => r.status === 200 || r.status === 404,
+    });
+  }
+  sleep(0.5 + Math.random());
+}
+\end{lstlisting}
+
+\textbf{Ejecutar (Listado~\ref{lst:16.6}):}
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:16.6]
+# Instalar k6 (Linux)
+sudo apt install k6 # o brew install k6 en macOS
+
+# Ejecutar la prueba
+k6 run carga-productos.js
+
+# Generar graficos con InfluxDB+Grafana
+k6 run --out influxdb=http://localhost:8086/k6 carga-productos.js
+\end{lstlisting}
+\end{cajaejemplo}
+
+\section{Auditoría de frontend con Lighthouse}
+
+\textbf{Lighthouse} es la herramienta open source de Google integrada
+en Chrome DevTools que audita una página web en cuatro dimensiones:
+\textbf{Performance, Accessibility, Best Practices, SEO}.
+
+\subsection{Las cuatro métricas core}
+
+Lighthouse mide la calidad de una página web en cuatro
+ejes: Performance, Accessibility, Best Practices, SEO. Las cuatro
+métricas \emph{core} de Performance son las que más impacto tienen
+en la experiencia real.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Métricas Core Web Vitals 2026.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Métrica} & \textbf{Significado} & \textbf{Umbral bueno}\\
+\midrule
+LCP (Largest Contentful Paint) & Tiempo hasta el elemento principal visible & $<$ 2.5 s\\
+INP (Interaction to Next Paint) & Tiempo de respuesta a interacciones & $<$ 200 ms\\
+CLS (Cumulative Layout Shift) & Inestabilidad visual durante la carga & $<$ 0.1\\
+FCP (First Contentful Paint) & Primer pixel pintado & $<$ 1.8 s\\
+TTFB (Time To First Byte) & Latencia del servidor & $<$ 800 ms\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Cómo ejecutar Lighthouse}
+
+Lighthouse se ejecuta desde DevTools del navegador o desde
+la línea de comandos. La forma DevTools es la más directa para una
+auditoría puntual.
+
+
+\begin{enumerate}
+\item Abrir el sitio Angular en Chrome.
+\item F12 $\rightarrow$ pestaña \emph{Lighthouse}.
+\item Marcar \emph{Performance, Accessibility, Best Practices, SEO}.
+\item Modo: \emph{Navigation (Default)}; Device: \emph{Mobile}.
+\item Pulsar \emph{Analyze page load}.
+\item En 1-2 minutos aparecen los 4 scores (0--100) con
+recomendaciones concretas.
+\end{enumerate}
+
+\subsection{CLI alternativa para CI/CD}
+
+Para integrar Lighthouse en un pipeline CI/CD, conviene
+usar la CLI con configuración versionable. La herramienta \texttt{lhci}
+(Lighthouse CI) está diseñada para esto. V\'ease el Listado~\ref{lst:16.7}.
+
+
+\begin{lstlisting}[style=shell,numbers=none,caption={Ejemplo de Shell},label=lst:16.7]
+npm install -g lighthouse # instala dependencias del package.json
+
+# Auditar y guardar reporte HTML
+lighthouse https://app.uteq.edu.ec --output=html \
+  --output-path=./reporte.html
+
+# Para CI/CD: failear si Performance < 80
+lighthouse https://app.uteq.edu.ec --chrome-flags="--headless" \
+  --output=json --output-path=./report.json
+node -e "const r=require('./report.json');
+  if(r.categories.performance.score<0.8) process.exit(1);"
+\end{lstlisting}
+
+\section{Auditoría de seguridad: 6 controles OWASP mínimos}
+
+Antes de declarar listo el PFC, conviene ejecutar una
+auditoría de seguridad mínima: seis controles OWASP que detectan
+los problemas más graves antes de que lo haga un atacante.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Los seis controles mínimos OWASP a verificar en el PFC.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{OWASP} & \textbf{Control} & \textbf{Cómo verificar}\\
+\midrule
+A01 & Acceso a recurso ajeno bloqueado & Login user A; intentar GET /api/usuarios/B/datos $\to$ 403\\
+A02 & TLS 1.2/1.3, sin texto plano & \texttt{curl -v https://...} ver \texttt{TLSv1.3}\\
+A03 & SQL Injection prevenida & Probar payload \texttt{' OR '1'='1} $\to$ 422\\
+A05 & Cabeceras de seguridad activas & \texttt{curl -I} y verificar HSTS, CSP, X-Frame-Options\\
+A07 & Rate limiting + JWT cookie HttpOnly & 6 intentos login $\to$ 429; cookie HttpOnly visible en DevTools\\
+A09 & Logs de eventos de seguridad & Login fallido aparece en log con IP y timestamp\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Práctica integrada: PFC Entrega Final v1.0.0}
+
+La Entrega Final del PFC consolida 14 semanas de trabajo
+en una aplicación profesional. Se evalúa contra una rúbrica
+detallada conocida de antemano.
+
+
+\begin{cajaejercicio}{Ejercicio 16.1 --- PFC Entrega Final --- Sumativa principal del semestre}
+
+Esta es la \textbf{Sumativa Principal Final} del PFC. Concentra el
+trabajo de las 16 semanas previas en una entrega de calidad
+profesional.
+
+\subsubsection*{Composición de la nota (100 puntos)}
+
+La nota de la Entrega Final se compone de cinco bloques
+ponderados que el estudiante debe atender en conjunto. La lista
+siguiente los detalla.
+
+
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Componente} & \textbf{Criterio} & \textbf{Pts}\\
+\midrule
+Demo en vivo & \texttt{docker compose up} arranca todo; CRUD funcional & 20 \\
+Completitud funcional & Todas las funcionalidades en estado «Completo» & 15 \\
+Pruebas y cobertura & JaCoCo $\geq$ 70\%; k6 con 50 VUs; Lighthouse $\geq$ 80 & 15 \\
+Comparativas técnicas & Tablas REST/SOAP, Angular/React, etc.\ con datos reales & 10 \\
+Reflexión sobre tendencias & $\geq$ 400 palabras (Jamstack, PWA, IA) & 10 \\
+Informe técnico & Abstract bilingüe; 15+ refs APA; conclusiones por objetivo & 15 \\
+Seguridad OWASP & 6 controles verificados con evidencia & 10 \\
+Repositorio final & Tag v1.0.0; commits de todos; CI verde & 5 \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection*{Lista de verificación obligatoria}
+
+Antes de la sesión de laboratorio del lunes, cada equipo debe poder
+marcar TODOS estos puntos:
+
+\begin{enumerate}
+\item \texttt{docker compose up} arranca todo en menos de 2 minutos;
+todos los servicios \texttt{healthy}.
+\item El docente puede hacer login, navegar el dashboard, crear,
+editar y eliminar registros desde Angular.
+\item Swagger UI accesible en \texttt{/api/docs} con todos los
+endpoints documentados.
+\item Abstract bilingüe (200--250 palabras en español e igual en
+inglés).
+\item Tabla de inventario completa; las parciales/no implementadas
+marcadas.
+\item Diagrama C4 Nivel 2 final en PNG, refleja despliegue real.
+\item Diagrama de clases UML refactorizado en PNG/SVG ($\geq$ 300 dpi).
+\item DER de la BD generado con pgAdmin 4 ERD Tool.
+\item Tabla comparativa REST vs SOAP completa con ejemplo ecuatoriano.
+\item Sección de tendencias (Jamstack, PWA, IA) $\geq$ 400 palabras
+con posición crítica propia.
+\item Reporte JaCoCo cobertura $\geq$ 70\%; captura HTML incluida.
+\item Prueba de carga k6 con 50 VUs documentada.
+\item Informe Lighthouse con los 4 scores del frontend Angular.
+\item Tabla de seguridad OWASP con 6 controles verificados con
+evidencia.
+\item Conclusiones --- un párrafo por objetivo específico.
+\item Reflexión crítica sobre el proceso (300--400 palabras).
+\item Trabajo futuro: 5 mejoras con justificación y estimación.
+\item Mínimo 15 referencias APA, $\geq$ 5 indexadas (JCR/SJR).
+\item Historial Git con commits de todos los integrantes.
+\item Tag \texttt{v1.0.0} en el repositorio.
+\item Pipeline GitHub Actions en verde.
+\item Colección Postman exportada en \texttt{docs/postman\_collection.json}.
+\item PDF nombrado \texttt{PFC\_EntregaFinal\_NombreEquipo.pdf}.
+\end{enumerate}
+
+\subsubsection*{IDE y herramientas}
+
+Esta entrega exige varias herramientas conectadas. La lista
+siguiente confirma cuáles deben estar instaladas antes de la
+auditoría final.
+
+
+\begin{itemize}
+\item IntelliJ IDEA Ultimate (backend Spring Boot).
+\item VS Code con Angular Language Service (frontend Angular).
+\item Docker Desktop para orquestación local.
+\item pgAdmin 4 para administración de BD y generación del DER.
+\item Postman para colecciones de prueba.
+\item k6 para pruebas de carga.
+\item Chrome DevTools + Lighthouse para auditoría frontend.
+\end{itemize}
+
+\subsubsection*{Sesión de laboratorio: viernes de la semana 16}
+
+Cada equipo demuestra al docente:
+\begin{enumerate}
+\item Desde una clonación fresca del repositorio
+(\texttt{git clone}), \texttt{docker compose up -d} y todo
+funciona.
+\item Login en Angular con usuario admin.
+\item Crear, editar y eliminar al menos un registro de cada entidad
+principal.
+\item Mostrar reportes de pruebas (HTML JaCoCo + Lighthouse + k6).
+\item Mostrar evidencia de los 6 controles OWASP.
+\end{enumerate}
+
+\textbf{Esta es la \emph{Sumativa Principal Final --- PFC v1.0.0}}.
+\end{cajaejercicio}
+
+\section{Buenas prácticas profesionales en pruebas y entregas}
+
+La caja siguiente compila las reglas profesionales de
+pruebas y entregas: principios que separan al equipo que aprueba
+con tranquilidad del que sufre la noche anterior.
+
+
+\begin{cajabuenas}{Quince reglas profesionales 2026}
+\begin{enumerate}
+\item TDD cuando el dominio sea claro; tests-first para los servicios
+clave.
+\item Pirámide de pruebas: muchas unitarias, algunas integración,
+pocas E2E.
+\item Cobertura $\geq$ 70\% en líneas para código de negocio.
+\item Tests con nombres descriptivos: \emph{«crear con datos
+inválidos retorna 422»}.
+\item Patrón AAA (Arrange-Act-Assert) en cada test.
+\item Independencia: ningún test depende de otro.
+\item Datos de prueba con fixtures o factories, no hardcodeados.
+\item Testcontainers para BD real en pruebas de integración.
+\item Pruebas de seguridad automatizadas en el pipeline CI.
+\item k6 o Gatling integrados al pipeline para detectar regresiones.
+\item Lighthouse en CI: failear si performance cae bajo umbral.
+\item Versionado semántico (SemVer) en tags Git.
+\item Conventional Commits para historial limpio.
+\item ChangeLog generado automáticamente desde commits.
+\item Releases anotadas en GitHub con resumen ejecutivo.
+\end{enumerate}
+\end{cajabuenas}
+
+\section{Contraste bibliográfico de los conceptos clave}
+
+La literatura técnica sobre pruebas ha evolucionado desde el modelo
+clásico de \cite{martin2008clean} ---que defiende TDD como
+disciplina profesional--- hasta las visiones más empíricas actuales.
+\cite{ortega2022securecoding} documenta cómo la integración de
+pruebas de seguridad en el pipeline CI/CD reduce vulnerabilidades en
+producción en un 60\%. \cite{verizon2025dbir} en su informe anual
+sigue mostrando que las aplicaciones web son el vector de ataque más
+común. Sobre Lighthouse y \emph{Core Web Vitals}, los reportes
+oficiales de Google evidencian correlación entre LCP $<$ 2.5 s y
+mejora del 24\% en tasa de conversión en e-commerce. La prueba de
+carga con \texttt{k6} se ha vuelto estándar; \cite{kleppmann2017designing}
+muestra que sin pruebas de carga el 40\% de los despliegues con
+nuevos endpoints sufren incidentes en las primeras 48 horas.
+
+\section{Ejercicio resuelto adicional con resultado visual}
+
+Como cierre, el siguiente ejercicio resuelto adicional
+implementa una suite completa de pruebas (unitarias + integración +
+cobertura JaCoCo) y se complementa con un propuesto.
+
+
+\begin{cajaejemplo}{Ejercicio resuelto 16.1 --- Suite completa de tests para servicio de usuarios}
+\textbf{Enunciado.} Implementar y ejecutar pruebas unitarias y de
+integración sobre un servicio de gestión de usuarios en Spring Boot,
+medir cobertura con JaCoCo y producir el reporte HTML.
+
+\textbf{Test unitario con Mockito (\texttt{UsuarioServiceTest.java}):}
+\begin{lstlisting}[language=Java,caption={Test unitario con Mockito},label=lst:16.8]
+@ExtendWith(MockitoExtension.class) // extension JUnit 5
+class UsuarioServiceTest {
+
+  @Mock UsuarioRepository repo; // crea un mock con Mockito
+  @Mock PasswordEncoder encoder; // crea un mock con Mockito
+  @InjectMocks UsuarioService service; // inyecta los mocks en la clase bajo prueba
+
+  @Test // metodo de test JUnit
+  void crear_conDatosValidos_persisteYRetorna() {
+    // Arrange
+    Usuario nuevo = new Usuario("ana@uteq.edu.ec", "Pass123!");
+    // configura comportamiento del mock
+    // configura comportamiento del mock
+    when(encoder.encode("Pass123!")).thenReturn("$2a$10$hash");
+    when(repo.save(any())).thenAnswer(inv -> { // configura comportamiento del mock
+      Usuario u = inv.getArgument(0);
+      u.setId(1L);
+      return u; // retorna
+    });
+
+    // Act
+    Usuario creado = service.crear(nuevo);
+
+    // Assert
+    assertEquals(1L, creado.getId()); // esperado vs obtenido
+    assertEquals("$2a$10$hash", creado.getPasswordHash()); // esperado vs obtenido
+    verify(repo).save(any()); // verifica interaccion con el mock
+  }
+
+  @Test // metodo de test JUnit
+  void crear_conEmailDuplicado_lanzaExcepcion() {
+    // configura comportamiento del mock
+    // configura comportamiento del mock
+    when(repo.existsByEmail("ana@uteq.edu.ec")).thenReturn(true);
+
+    assertThrows(EmailDuplicadoException.class, // verifica que se lance una excepcion
+      () -> service.crear(new Usuario("ana@uteq.edu.ec", "Pass123!")));
+    verify(repo, never()).save(any()); // verifica interaccion con el mock
+  }
+}
+\end{lstlisting}
+
+\textbf{Test de integración con MockMvc (\texttt{UsuarioControllerIT.java}):}
+\begin{lstlisting}[language=Java,caption={Integración con MockMvc},label=lst:16.9]
+@SpringBootTest // levanta el contexto Spring para test
+@AutoConfigureMockMvc // configura MockMvc automaticamente
+@Testcontainers // metodo de test JUnit
+class UsuarioControllerIT {
+
+  @Container // contenedor Docker para tests (Testcontainers)
+  static PostgreSQLContainer<?> postgres =
+    new PostgreSQLContainer<>("postgres:16-alpine");
+
+  @DynamicPropertySource
+  static void props(DynamicPropertyRegistry r) {
+    r.add("spring.datasource.url", postgres::getJdbcUrl);
+    r.add("spring.datasource.username", postgres::getUsername);
+    r.add("spring.datasource.password", postgres::getPassword);
+  }
+
+  @Autowired MockMvc mvc; // inyeccion de dependencias
+
+  @Test // metodo de test JUnit
+  void POST_usuarios_conDatosValidos_retorna201() throws Exception {
+    String body = """
+      {"email":"juan@uteq.edu.ec","password":"Segura123!"}""";
+
+    mvc.perform(post("/api/v1/usuarios")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(body))
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$.id").isNumber())
+      .andExpect(jsonPath("$.email").value("juan@uteq.edu.ec"));
+  }
+}
+\end{lstlisting}
+
+\textbf{Ejecución} \texttt{mvn clean test jacoco:report}:
+
+\begin{center}
+\fbox{\begin{minipage}{0.95\textwidth}
+\vspace{0.15cm}\footnotesize\ttfamily
+\hspace{0.2cm}[INFO] Running com.uteq.UsuarioServiceTest\\
+\hspace{0.2cm}[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0\\[0.15cm]
+\hspace{0.2cm}[INFO] Running com.uteq.UsuarioControllerIT\\
+\hspace{0.2cm}[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0\\[0.15cm]
+\hspace{0.2cm}[INFO] Results:\\
+\hspace{0.2cm}[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0\\
+\hspace{0.2cm}[INFO] BUILD SUCCESS\\
+\hspace{0.2cm}[INFO] Total time: 18.342 s\\
+\vspace{0.1cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Reporte HTML de JaCoCo} (\texttt{target/site/jacoco/index.html}):
+
+\begin{center}
+\fbox{\begin{minipage}{0.95\textwidth}
+\vspace{0.15cm}\footnotesize\centering
+\textbf{JaCoCo Coverage Report --- UsuariosApp v1.0.0}\\[0.2cm]
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Elemento} & \textbf{Líneas \%} & \textbf{Branches \%} & \textbf{Métodos \%} \\
+\hline
+com.uteq.usuarios.service & 92\% & 88\% & 100\% \\
+com.uteq.usuarios.controller & 85\% & 80\% & 100\% \\
+com.uteq.usuarios.security & 78\% & 75\% & 90\% \\
+\hline
+\textbf{Total} & \textbf{86\%} & \textbf{82\%} & \textbf{97\%} \\
+\hline
+\end{tabular}\\[0.1cm]
+\end{minipage}}
+\end{center}
+
+\textbf{Discusión.} La pirámide de pruebas se materializa: 8 tests
+unitarios rápidos (sin Spring) y 5 de integración con
+testcontainers. La cobertura del 86\% supera el umbral $\geq 70\%$
+exigido para la entrega del PFC. Los \emph{branches} (caminos
+condicionales) son siempre menores que las líneas porque algunas
+ramas raras (como excepciones de BD) no se cubren
+\cite{martin2008clean}.
+\end{cajaejemplo}
+
+\begin{cajaejercicio}{Ejercicio propuesto 16.2 --- Pipeline CI con GitHub Actions y Lighthouse}
+\textbf{Enunciado.} Configurar un pipeline GitHub Actions que se
+ejecute en cada \emph{push} a la rama \texttt{main} y realice:
+\begin{enumerate}
+\item Build con Maven (\texttt{mvn clean verify}).
+\item Tests unitarios e integración (con servicios PostgreSQL y
+Redis levantados como servicios del pipeline).
+\item Reporte de cobertura JaCoCo subido como artifact.
+\item Build de imagen Docker.
+\item Pruebas de carga k6 contra el container recién construido
+(50 VUs, 30 s).
+\item Auditoría Lighthouse del frontend (CLI con \texttt{npx lhci
+autorun}), umbral mínimo Performance 80, Accessibility 90.
+\item Si todo pasa: push de la imagen a GitHub Container Registry
+con tag \texttt{v$\{$run\_number$\}$}.
+\end{enumerate}
+
+\textbf{Criterios de evaluación:}
+\begin{itemize}
+\item El badge de CI en el README muestra estado \emph{passing}.
+\item Pull requests no se pueden mergear si el pipeline falla
+(\emph{branch protection rule}).
+\item El \emph{action} sube reportes (JaCoCo, k6, Lighthouse) como
+artifacts navegables en la UI de GitHub.
+\item Captura de pantalla del Actions con tres ejecuciones exitosas
+en el reporte del PFC.
+\end{itemize}
+
+\textbf{Lecturas recomendadas:} \cite{martin2017clean} para
+disciplina; \cite{ortega2022securecoding} para integración de
+seguridad en CI.
+\end{cajaejercicio}
+
+% =====================================================================
+%       SEMANA 17: DEFENSA DEL PFC Y EP2
+% =====================================================================
+\chapter{Defensa del PFC y Evaluación Parcial Segundo Corte}
+\label{cap:semana17}
+
+\epigraph{«Saber programar es importante; saber explicar lo que has
+programado es lo que separa a un técnico de un ingeniero.»}{---
+\textit{Adaptación de un consejo común en revisiones académicas}}
+
+\section*{Naturaleza de esta semana}
+La semana 17 cierra el segundo corte de la asignatura. Tiene dos
+componentes evaluativos principales:
+
+\begin{enumerate}
+\item \textbf{Defensa oral del PFC v1.0.0}: cada equipo presenta y
+defiende su sistema durante 30--40 minutos. Cada integrante debe
+responder preguntas técnicas sobre cualquier parte del sistema, no
+solo sobre la suya.
+\item \textbf{Evaluación Parcial Segundo Corte}: examen escrito que
+cubre las Unidades III y IV (semanas 10--16).
+\end{enumerate}
+
+\section{Cómo preparar la defensa oral del PFC}
+
+La defensa oral del PFC es la culminación del curso. Cómo
+se prepara la presentación es tan importante como qué contiene:
+20 minutos pueden hacer brillar o hundir un proyecto que costó 14
+semanas.
+
+
+\subsection{Estructura recomendada de la presentación}
+
+La presentación de defensa sigue una estructura clásica que
+distribuye los 20 minutos en bloques temáticos. Respetarla evita
+omitir contenido crítico y mantiene al tribunal enganchado.
+
+
+\begin{cajadefinicion}{Estructura óptima 30 minutos --- 8 bloques}
+\begin{enumerate}
+\item \textbf{Portada y presentación del equipo} (1 min): nombres,
+roles asumidos en el proyecto.
+\item \textbf{Problema y contexto} (3 min): cuál es el problema real
+que resuelve el sistema, a quién afecta, datos cuantitativos del
+contexto ecuatoriano si aplica.
+\item \textbf{Objetivos y alcance} (2 min): objetivo general, 3--5
+específicos. Lo que está dentro y fuera del alcance.
+\item \textbf{Arquitectura} (5 min): diagrama C4 nivel 2, ADRs
+clave, justificación de las decisiones tecnológicas más importantes.
+\item \textbf{Demo en vivo} (10 min): \texttt{docker compose up},
+login, navegación, CRUD principal, Swagger UI, pruebas Postman,
+evidencia de OWASP.
+\item \textbf{Resultados de pruebas} (3 min): JaCoCo, k6, Lighthouse
+con scores reales medidos.
+\item \textbf{Reflexión y trabajo futuro} (3 min): qué se aprendió,
+qué se haría distinto, propuestas concretas de mejora.
+\item \textbf{Preguntas del tribunal} (5--10 min): cualquier integrante
+puede ser interrogado sobre cualquier parte.
+\end{enumerate}
+\end{cajadefinicion}
+
+\subsection{Las 20 preguntas más frecuentes del tribunal}
+
+El tribunal hace preguntas con patrones reconocibles. La
+lista siguiente reúne las 20 preguntas más frecuentes con la
+respuesta esperada.
+
+
+\begin{cajabuenas}{Banco de preguntas que el equipo debe poder responder}
+\begin{enumerate}
+\item ¿Por qué eligieron \emph{esa} base de datos y no otra?
+\item ¿Cómo previene su sistema la inyección SQL?
+\item ¿Qué pasa si el usuario X intenta acceder al recurso del
+usuario Y?
+\item ¿Qué hace su sistema cuando expira el JWT?
+\item ¿Por qué cookies HttpOnly y no \texttt{localStorage}?
+\item ¿Cómo escala el sistema si reciben 1000 usuarios concurrentes?
+\item ¿Qué pasa si Redis se cae?
+\item ¿Cómo invalidan el cache cuando cambia un dato?
+\item ¿Cuál es el peor cuello de botella de su sistema?
+\item ¿Cómo aseguran que los DTOs no expongan campos sensibles?
+\item Muestren un test que falle si yo introduzco un bug obvio.
+\item ¿Cómo hacen el deploy en producción real (no Docker Compose)?
+\item ¿Cómo gestionan secretos (passwords, JWT secret)?
+\item ¿Por qué eligieron Spring Boot sobre Quarkus o Micronaut?
+\item ¿Cómo validan los datos de entrada en la API?
+\item ¿Cómo manejan transacciones que cruzan varios servicios?
+\item ¿Qué pasa si dos usuarios editan el mismo registro a la vez?
+\item ¿Han verificado los 10 OWASP del Top 10?
+\item Si tuvieran que reescribir el sistema desde cero, ¿qué
+cambiarían?
+\item ¿Cuántas líneas de código tiene el proyecto y cómo se reparten?
+\end{enumerate}
+\end{cajabuenas}
+
+\subsection{Errores comunes en defensas anteriores}
+
+Los errores que arruinan defensas no son técnicos: son de
+comunicación, gestión del tiempo y actitud. La lista siguiente los
+recoge para que el estudiante los evite.
+
+
+\begin{cajaadvertencia}{Errores que cuestan calificación}
+\begin{itemize}
+\item \textbf{Decir «no sé» sin proponer cómo averiguarlo.} Nadie
+sabe todo; se valora más decir «no estoy seguro, pero lo verificaría
+ejecutando esto\dots».
+\item \textbf{Desconocer la propia arquitectura}: «yo solo trabajé en
+el frontend» NO es excusa; cualquier integrante debe poder responder
+sobre cualquier parte.
+\item \textbf{Demo no preparada}: aparecer al laboratorio sin haber
+probado la demo en una computadora distinta de la del desarrollador.
+\item \textbf{Slides con código inservible}: capturas de IDE
+ilegibles. Mejor reescribir el código en la slide con sintaxis
+resaltada.
+\item \textbf{Tiempo mal distribuido}: 25 minutos de problema y
+contexto, 5 de demo. La demo es el corazón.
+\item \textbf{Equipo donde solo habla uno}: el tribunal pregunta
+explícitamente al silencioso.
+\item \textbf{Datos inventados en la presentación}: decir «el sistema
+soporta 10 mil usuarios concurrentes» sin haberlo medido.
+\end{itemize}
+\end{cajaadvertencia}
+
+\section{Estructura de la Evaluación Parcial Segundo Corte}
+
+La EP2 cubre exclusivamente las \textbf{Unidades III y IV} (semanas
+10--16). Se compone de cuatro partes equilibradas:
+
+\begin{table}[htbp]
+\centering
+\caption{Composición de la Evaluación Parcial Segundo Corte.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Parte} & \textbf{Tipo} & \textbf{Pts}\\
+\midrule
+A & Selección múltiple y V/F sobre conceptos & 20 \\
+B & Respuesta corta (3 líneas máx, definiciones) & 20 \\
+C & Análisis de código (identificar errores y vulnerabilidades) & 30 \\
+D & Ejercicio práctico integrador (escribir código completo) & 30 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Temas garantizados en la EP2}
+
+La EP2 cubre con seguridad ciertos temas que aparecen en
+todas las ediciones del examen. Asegurar dominio sobre ellos
+garantiza un mínimo razonable.
+
+
+\begin{cajaadvertencia}{Temario completo EP2}
+\textbf{Unidad III (Semanas 10--12):}
+\begin{itemize}
+\item Gestión de estado: cookies, sesiones, JWT --- diferencias y
+cuándo usar cada una.
+\item Flags de seguridad de cookies: \texttt{Secure}, \texttt{HttpOnly},
+\texttt{SameSite}.
+\item Objeto Request: lectura segura de parámetros, manejo de
+\texttt{X-Forwarded-For}.
+\item Objeto Response: códigos HTTP, cabeceras de seguridad,
+ProblemDetails (RFC 7807).
+\item PDO con prepared statements; prevención SQL Injection.
+\item Patrón Repository.
+\item Spring Data JPA (consultas derivadas, JPQL).
+\item Problema N+1 y soluciones (\texttt{JOIN FETCH}, \texttt{with},
+\texttt{Include}).
+\item Migraciones con Flyway/Liquibase.
+\item Procedimientos almacenados: cuándo usar.
+\item Patrones arquitectónicos: capas, hexagonal, SOA, microservicios,
+EDA, P2P.
+\item ISO/IEC 25010 (atributos de calidad).
+\item Modelo C4 (4 niveles).
+\item ADR (Architectural Decision Records).
+\end{itemize}
+
+\textbf{Unidad IV (Semanas 13--16):}
+\begin{itemize}
+\item Escalabilidad vertical vs horizontal.
+\item Teorema CAP de Brewer.
+\item Algoritmos de balanceo de carga.
+\item Patrones de caché: cache-aside, read-through, write-through,
+write-behind.
+\item Cache-aside con Redis y TTL.
+\item Estrategias de invalidación de caché.
+\item ATAM (Architecture Tradeoff Analysis Method).
+\item Patrón MVC: ciclo de vida de petición Spring.
+\item MVC server-side vs API REST + SPA.
+\item REST: 6 restricciones de Fielding.
+\item Modelo de Madurez de Richardson.
+\item Verbos HTTP, idempotencia, seguridad.
+\item Convenciones URI RESTful.
+\item REST vs SOAP: comparativa, casos de uso.
+\item OpenAPI 3.0 (Swagger).
+\item Anatomía de un JWT (3 partes).
+\item Pruebas: unitarias, integración, E2E (pirámide).
+\item Cobertura JaCoCo $\geq$ 70\%.
+\item k6 y Lighthouse.
+\item OWASP Top 10:2021 (especialmente A01, A02, A03, A07).
+\end{itemize}
+\end{cajaadvertencia}
+
+\subsection{Ejemplos del tipo de preguntas que aparecen}
+
+Para preparar el examen conviene haber visto el tipo de
+preguntas que se formulan. Los ejemplos siguientes son
+representativos de las ediciones recientes.
+
+
+\begin{cajaejemplo}{Muestra de la Parte A (selección múltiple)}
+\textbf{Pregunta A1:} ¿Cuál de las siguientes secuencias representa
+correctamente las 3 partes de un JWT separadas por puntos?
+\begin{itemize}
+\item[a)] payload.signature.header
+\item[b)] header.signature.payload
+\item[c)] header.payload.signature
+\item[d)] signature.header.payload
+\end{itemize}
+\textbf{Respuesta correcta:} (c).
+
+\textbf{Pregunta A2 (V/F):} En una API REST, el método HTTP PUT se
+usa para crear un recurso nuevo cuando el identificador aún no existe
+en el servidor, mientras que POST actualiza un recurso existente.
+
+\textbf{Respuesta:} \emph{Falso}. PUT reemplaza/actualiza un recurso
+identificado por la URL; POST crea un nuevo recurso. Aunque PUT puede
+crear si el recurso no existe, su semántica primaria es reemplazar.
+\end{cajaejemplo}
+
+\begin{cajaejemplo}{Muestra de la Parte B (respuesta corta)}
+\textbf{Pregunta B1:} Explique la diferencia entre sesión y cookie en
+el contexto de la gestión de estado en aplicaciones web. Mencione
+dónde se almacena cada una.
+
+\textbf{Respuesta esperada:} Una cookie es un fragmento de texto que
+se almacena en el navegador del cliente y se envía al servidor en
+cada petición. Una sesión es un conjunto de datos asociado a un
+usuario que se almacena en el servidor (memoria, Redis, BD); el
+cliente solo guarda el ID de sesión en una cookie.
+\end{cajaejemplo}
+
+\begin{cajaejemplo}{Muestra de la Parte C (análisis de código)}
+\textbf{El siguiente código PHP gestiona el inicio de sesión. Contiene
+3 errores. Identifíquelos:}
+
+\begin{lstlisting}[style=php,numbers=left,caption={Ejemplo de PHP},label=lst:17.1]
+<?php
+session_start(); // arranca o reanuda la sesion
+$user = $_GET['user'];
+$pwd  = $_GET['pwd'];
+
+$sql = "SELECT * FROM users WHERE name='$user' AND pwd='$pwd'";
+$res = mysql_query($sql);
+
+if (mysql_num_rows($res) > 0) { // condicional
+    $_SESSION['logueado'] = true;
+    setcookie('SESS_REMEMBER', $user, time()+3600);
+    echo "Bienvenido $user!"; // imprime al output del servidor
+}
+\end{lstlisting}
+
+\textbf{Errores esperados:}
+\begin{enumerate}
+\item Credenciales por GET (deberían ser POST).
+\item SQL Injection: concatenación directa en línea 6.
+\item \texttt{mysql\_*}: extensión obsoleta y eliminada en PHP 7+;
+debe usar PDO o mysqli.
+\item Password en texto plano (no se hashea con
+\texttt{password\_hash}/\texttt{password\_verify}).
+\item Cookie \texttt{SESS\_REMEMBER} sin flags
+\texttt{HttpOnly}/\texttt{Secure}/\texttt{SameSite}.
+\item XSS en \texttt{echo \char34{}Bienvenido \$user!\char34{}}: falta
+\texttt{htmlspecialchars}.
+\item No se regenera el ID de sesión tras login (anti-fixation).
+\end{enumerate}
+(Aunque el enunciado pide 3, hay más; con identificar los 3 más
+graves se obtiene puntuación máxima.)
+\end{cajaejemplo}
+
+\begin{cajaejemplo}{Muestra de la Parte D (ejercicio integrador)}
+\textbf{Implemente en el lenguaje y framework de su elección un
+endpoint POST /api/v1/envios que:}
+
+\begin{enumerate}
+\item Requiera autenticación con JWT en \texttt{Authorization: Bearer
+\dots}.
+\item Reciba JSON con \texttt{origen}, \texttt{destino},
+\texttt{peso\_kg}.
+\item Valide que \texttt{origen} y \texttt{destino} no estén vacíos
+y que \texttt{peso\_kg} $>$ 0.
+\item Persista en la BD usando ORM o prepared statements.
+\item Retorne código HTTP 201 con el envío creado o 422 con
+\texttt{errors} en caso de fallo de validación.
+\end{enumerate}
+
+Indique al inicio del código el framework y el lenguaje utilizados.
+\end{cajaejemplo}
+
+\section{Preparación efectiva para la EP2}
+
+Tener clara la estrategia de preparación durante los siete
+días previos al examen y la estrategia durante las dos horas del
+mismo es tan importante como el contenido.
+
+
+\subsection{Plan de estudio de 7 días previos al examen}
+
+La caja siguiente propone un plan día por día para los
+siete días anteriores a la EP2.
+
+
+\begin{cajabuenas}{Plan de 7 días}
+\begin{description}[leftmargin=1.5cm]
+\item[Día -7:] Re-leer las cajas de definición y buenas prácticas
+de las semanas 10--16. Marcar las que no se entienden.
+\item[Día -6:] Resolver el ejercicio integrador de las semanas 10
+(carrito), 11 (CRUD ORM) y 12 (C4) sin mirar el libro.
+\item[Día -5:] Resolver los ejercicios de las semanas 13 (cache),
+14 (MVC) y 15 (API REST) sin mirar el libro.
+\item[Día -4:] Estudiar el OWASP Top 10:2021 hasta poder explicar
+cada uno con un ejemplo.
+\item[Día -3:] Practicar análisis de código: tomar 5 fragmentos
+con vulnerabilidades y encontrar todos los errores.
+\item[Día -2:] Repasar los códigos HTTP y los flags de seguridad de
+cookies.
+\item[Día -1:] Descansar; revisar solo el resumen ejecutivo de cada
+semana. NO empezar a estudiar temas nuevos la noche anterior.
+\end{description}
+\end{cajabuenas}
+
+\subsection{Estrategia durante el examen}
+
+Durante el examen, la estrategia para distribuir el tiempo
+y atacar las preguntas en el orden correcto puede cambiar varios
+puntos la calificación final.
+
+
+\begin{enumerate}
+\item Llegar 15 minutos antes con cédula.
+\item Leer todo el examen en 5 minutos antes de empezar.
+\item Distribución sugerida del tiempo (120 min):
+\begin{itemize}
+\item Parte A: 15 min.
+\item Parte B: 20 min.
+\item Parte C: 35 min.
+\item Parte D: 45 min.
+\item Revisión final: 5 min.
+\end{itemize}
+\item En la Parte D escribir primero un comentario al inicio:
+\texttt{// Framework: Spring Boot 4 / Lenguaje: Java 21}.
+\item Si no recuerda exactamente la sintaxis, hacer pseudocódigo
+claro: vale más comprensión correcta que sintaxis perfecta.
+\item Verificar que cada respuesta de la Parte B tenga máximo 3
+líneas; respuestas largas pueden penalizarse.
+\end{enumerate}
+
+\section{Reflexión sobre el segundo corte}
+
+Las semanas 10--17 representan la transición del estudiante de
+\emph{programador} a \emph{ingeniero de software}. La diferencia es
+sutil pero crucial: el programador escribe código que funciona; el
+ingeniero documenta decisiones, mide rendimiento, prevé fallos,
+considera la seguridad desde el diseño y entiende que un sistema
+existe en un contexto humano y organizacional.
+
+El PFC es el primer proyecto de la carrera donde estos elementos
+convergen. La defensa oral es un ensayo de las defensas profesionales
+que vendrán: revisiones técnicas con clientes, presentaciones a
+inversores, defensa de la tesis de grado.
+
+\section{Contraste bibliográfico de los conceptos clave de la EP2}
+
+La EP2 cubre las Unidades III y IV con base en literatura técnica
+estándar. La gestión de estado y el acceso a datos están tratados a
+profundidad en \cite{fowler2002patterns} y \cite{kleppmann2017designing}.
+Los patrones arquitectónicos se apoyan en \cite{bass2021software} y
+\cite{richards2020fundamentals}. El modelo C4 está documentado por
+\cite{brown2023c4}. REST y SOAP en \cite{fielding2000rest},
+\cite{richardson2007restful}, \cite{alonso2010webservice} y
+\cite{richardson2007restful}. JWT en RFC 7519 \cite{jones2015jwt} y
+\cite{jones2015jwt}. Las pruebas en \cite{martin2008clean} y
+\cite{martin2017clean}. La seguridad en \cite{owasp2021top10},
+\cite{verizon2025dbir} y \cite{ortega2022securecoding}. El
+estudiante debe estar familiarizado con al menos las ideas
+principales de cada una de estas fuentes para responder con solvencia
+en la EP2 y la defensa oral.
+
+\section{Ejercicio resuelto adicional con resultado visual}
+
+Como cierre, el siguiente ejercicio resuelto adicional
+simula una pregunta del tribunal con la respuesta esperada, y se
+complementa con un propuesto: simulacro de defensa entre equipos.
+
+
+\begin{cajaejemplo}{Ejercicio resuelto 17.1 --- Simulación de pregunta-respuesta de defensa}
+\textbf{Enunciado.} El tribunal hace una pregunta clásica:
+\emph{«¿Por qué no usaron microservicios en su PFC?»} Construir una
+respuesta de un minuto que evidencie razonamiento arquitectónico
+maduro.
+
+\textbf{Mala respuesta (a evitar):} \emph{«Porque era más fácil con
+monolito.»}
+
+\textbf{Buena respuesta:}
+\begin{quote}
+\small Decidimos arquitectura de monolito modular con base en tres
+criterios. \textbf{Primero}, el equipo tiene 4 personas, y según
+\cite{newman2019monolith} los microservicios pagan dividendos a
+partir de 10--15 desarrolladores; antes de eso, el overhead operativo
+supera al beneficio. \textbf{Segundo}, los requerimientos no presentan
+necesidades de escalado independiente por módulo: el carrito y el
+catálogo crecen al mismo ritmo. \textbf{Tercero}, modularizamos
+internamente con paquetes Maven separados
+(\texttt{usuarios}, \texttt{productos}, \texttt{pedidos},
+\texttt{notificaciones}), siguiendo la idea de
+\cite{auer2021monolithic}: monolito hoy, microservicios mañana si
+hace falta. Esto nos da despliegue simple en Docker Compose con
+posibilidad de migrar si las métricas lo justifican.
+
+La ADR-002 del repositorio documenta esta decisión con criterios y
+alternativas consideradas.
+\end{quote}
+
+\textbf{Resultado de esta respuesta} (vista del tribunal mirándose
+entre sí):
+
+\begin{center}
+\fbox{\begin{minipage}{0.85\textwidth}
+\vspace{0.15cm}\small
+\hspace{0.3cm}\textbf{[Tribunal --- vocal 1]} \emph{«Bien argumentado.»}\\[0.15cm]
+\hspace{0.3cm}\textbf{[Tribunal --- vocal 2]} \emph{«¿Y cómo medirían
+si en el futuro toca migrar?»}\\[0.15cm]
+\hspace{0.3cm}\textbf{[Estudiante]} \emph{«Monitorearíamos métricas
+con Prometheus: si el módulo de pedidos consume {$>$}70\% de CPU
+mientras otros están al 10\%, sería señal de candidato a extraer
+como microservicio.»}\\[0.15cm]
+\hspace{0.3cm}\textbf{[Tribunal]} \emph{«Excelente.»}\\
+\vspace{0.1cm}
+\end{minipage}}
+\end{center}
+
+\textbf{Discusión.} La diferencia entre la mala y la buena respuesta
+no es la decisión técnica (en ambos casos es monolito), sino el
+razonamiento explícito que la acompaña: criterios, autores
+referenciados, alternativas, métricas de revisión futura. Esto es lo
+que distingue a un \emph{programador} de un \emph{ingeniero de
+software} \cite{martin2017clean}.
+\end{cajaejemplo}
+
+\begin{cajaejercicio}{Ejercicio propuesto 17.2 --- Simulacro de defensa entre equipos}
+\textbf{Enunciado.} Antes de la defensa real, organizar un simulacro
+en clase donde cada equipo defiende su PFC ante otros dos equipos que
+hacen las preguntas (15--20 minutos por equipo).
+
+\textbf{Procedimiento:}
+\begin{enumerate}
+\item Cada equipo prepara su presentación de 20 min siguiendo la
+estructura recomendada en la sección \emph{«Cómo preparar la defensa
+oral»}.
+\item Los equipos evaluadores reciben una rúbrica con criterios:
+\begin{itemize}
+\item Claridad de la exposición técnica (1--5).
+\item Justificación de decisiones arquitectónicas (1--5).
+\item Calidad de la demo (1--5).
+\item Manejo de preguntas (1--5).
+\item Distribución equitativa entre integrantes (1--5).
+\end{itemize}
+\item Tras la defensa, los equipos evaluadores escriben dos
+fortalezas y dos mejoras concretas para el equipo evaluado.
+\item Cada equipo entrega un acta con las observaciones recibidas y
+explica cómo las incorporará antes de la defensa real.
+\end{enumerate}
+
+\textbf{Producto final:} dossier del equipo con: rúbrica completada
+por cada equipo evaluador, acta de observaciones recibidas, plan de
+mejoras priorizado. Subir al repositorio Git como
+\texttt{docs/defensa-simulacro.md}.
+
+\textbf{Beneficio pedagógico.} Estudios sobre evaluación entre pares
+\cite{washizaki2024swebok} muestran que el simulacro entre equipos
+detecta entre 40\% y 60\% de las debilidades de presentación que el
+tribunal real detectaría, dando al equipo la oportunidad de
+corregirlas. Las preguntas de pares suelen además ser más duras que
+las del tribunal académico.
+\end{cajaejercicio}
+
+% =====================================================================
+%       SEMANA 18: TUTORÍA DE REFUERZO FINAL Y CIERRE DEL CURSO
+% =====================================================================
+\chapter{Tutoría de refuerzo final y cierre del curso}
+\label{cap:semana18}
+
+\epigraph{«Lo que sabemos es una gota; lo que ignoramos, un océano.
+Pero la dirección de la gota es lo que importa.»}{--- \textit{Adaptado de
+Isaac Newton}}
+
+\section*{Naturaleza de esta semana}
+La semana 18 constituye la \textbf{segunda semana de tutoría de
+refuerzo} del curso, paralela a la de la semana 8 pero con un alcance
+más amplio: cierra el segundo corte y, a la vez, cierra integralmente
+la asignatura. Sus contenidos no se planifican rígidamente
+\emph{a priori}: se ajustan dinámicamente a las dificultades observadas
+en las semanas 10--17 y, particularmente, a los errores frecuentes de
+la \emph{Evaluación Parcial Segundo Corte} de la semana 17. Este
+capítulo ofrece un guión estructurado de revisión, ejercicios de
+consolidación y un cierre profesional del curso.
+
+Los cuatro propósitos de la semana son:
+
+\begin{enumerate}
+\item \textbf{Resolver dificultades} en los conceptos donde el grupo
+mostró menor desempeño en la EP2.
+\item \textbf{Realimentar individualmente} a cada equipo sobre los
+PFC entregados, identificando fortalezas y oportunidades de mejora.
+\item \textbf{Consolidar} con ejercicios integradores que cubren
+transversalmente las cuatro unidades del curso.
+\item \textbf{Realizar el cierre integrador} situando el aprendizaje
+dentro de la trayectoria profesional del estudiante en el mercado
+laboral 2026.
+\end{enumerate}
+
+\section{Mapa integrador de la asignatura}
+
+Antes del repaso intensivo, conviene visualizar
+globalmente lo que el estudiante ha construido en 17 semanas: cómo
+las cuatro unidades se conectan entre sí y convergen en el PFC.
+
+
+\subsection{Las cuatro unidades como una historia coherente}
+
+A lo largo de 17 semanas hemos transitado un camino que tiene
+arquitectura interna: cada unidad se apoya en la anterior y todas
+convergen en el Proyecto Fin de Curso. El siguiente diagrama
+sintetiza esa estructura:
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize,align=center},
+  unidad/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!10,
+                 rounded corners=4pt,minimum width=3.5cm,
+                 minimum height=2cm}]
+
+  \node[unidad] (u1) {\textbf{Unidad I}\\\textbf{Cliente}\\
+                      HTML5 + CSS3\\+ JavaScript\\Sem 1--4};
+  \node[unidad,right=0.4cm of u1] (u2) {\textbf{Unidad II}\\\textbf{Servidor}\\
+                                          PERL + PHP\\+ Java + ASP.NET\\Sem 5--9};
+  \node[unidad,below=0.4cm of u1] (u3) {\textbf{Unidad III}\\\textbf{Datos y patrones}\\
+                                          Estado + ORM\\+ Arquitectura\\Sem 10--13};
+  \node[unidad,below=0.4cm of u2] (u4) {\textbf{Unidad IV}\\\textbf{MVC y servicios}\\
+                                          MVC + REST/SOAP\\+ Pruebas\\Sem 14--17};
+
+  \node[circle,draw=uteqdorado,thick,fill=uteqdorado!20,
+        minimum size=2cm,below right=-0.3cm and 1cm of u2,
+        font=\bfseries\scriptsize,align=center]
+        (pfc) {PFC\\v1.0.0};
+
+  \draw[->,thick,>=stealth,uteqverde!70!black]
+       (u1) -- (u2);
+  \draw[->,thick,>=stealth,uteqverde!70!black]
+       (u2) -- (u4);
+  \draw[->,thick,>=stealth,uteqverde!70!black]
+       (u3) -- (u4);
+  \draw[->,thick,>=stealth,uteqverde!70!black]
+       (u1) -- (u3);
+
+  \draw[->,thick,>=stealth,uteqdorado!70!black,dashed]
+       (u4) -- (pfc);
+  \draw[->,thick,>=stealth,uteqdorado!70!black,dashed]
+       (u3) -- (pfc);
+
+\end{tikzpicture}
+\caption{Mapa integrador del curso: las cuatro unidades convergen en
+el Proyecto Fin de Curso. Las flechas verdes representan la dependencia
+secuencial entre unidades; las flechas doradas, la integración
+explícita hacia el PFC.}
+\end{figure}
+
+\subsection{Tabla resumen de tecnologías dominadas}
+
+La tabla siguiente lista todas las tecnologías que el
+estudiante debe dominar al completar la asignatura, con el nivel
+esperado en cada una.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Tecnologías que el estudiante debe dominar al completar la asignatura.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Categoría} & \textbf{Tecnología} & \textbf{Nivel esperado}\\
+\midrule
+Cliente HTML & HTML5 semántico, ARIA, validación nativa & Avanzado\\
+Cliente CSS & CSS3, Flexbox, Grid, mobile-first, Sass & Avanzado\\
+Cliente JS & ES2024, DOM, async/await, fetch, módulos & Avanzado\\
+Servidor PHP & PHP 8.4, PDO, sesiones, Slim/Laravel & Intermedio\\
+Servidor Java & Spring Boot 4, JPA, Spring Security & Avanzado\\
+Servidor C\# & ASP.NET Core 10, EF Core & Básico\\
+Servidor Perl & CGI, sintaxis básica & Introductorio\\
+Datos & PostgreSQL, MySQL, JDBC, JPA, EF Core, ORM & Intermedio\\
+Caché & Redis cache-aside con TTL & Intermedio\\
+Frontend SPA & Angular 19+, TypeScript, RxJS & Básico\\
+Arquitectura & Capas, hexagonal, REST, microservicios & Intermedio\\
+Documentación & C4, ADRs, OpenAPI 3.0 & Intermedio\\
+Testing & JUnit 5, Mockito, MockMvc, JaCoCo & Intermedio\\
+Pruebas de carga & k6 con scripts JavaScript & Básico\\
+Frontend audit & Lighthouse, axe DevTools & Intermedio\\
+Seguridad & OWASP Top 10:2021, JWT, HTTPS & Intermedio\\
+Containerización & Docker, Docker Compose & Intermedio\\
+CI/CD & GitHub Actions, pipelines básicos & Básico\\
+Versionado & Git, GitHub, Conventional Commits & Avanzado\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Errores comunes detectados en las semanas 10--17}
+
+Antes del repaso teórico de los temas, conviene listar los errores
+más frecuentes detectados en los entregables de la segunda mitad del
+curso y en la EP2. Cada estudiante debe verificar que ya no comete
+ninguno de ellos:
+
+\begin{cajaadvertencia}{Diez errores frecuentes que se debe haber superado}
+\begin{enumerate}
+\item Olvidar las flags \texttt{HttpOnly}, \texttt{Secure} y
+\texttt{SameSite} al crear cookies de sesión o de JWT.
+\item Concatenar SQL con datos del usuario en lugar de usar parámetros
+preparados (PDO, JDBC, EF Core).
+\item Confundir HTTP 401 (\emph{Unauthorized} --- no autenticado) con
+403 (\emph{Forbidden} --- autenticado pero sin permiso).
+\item Usar PUT para crear y POST para actualizar (cuando es al revés).
+\item Almacenar JWT en \texttt{localStorage} en lugar de cookie
+\texttt{HttpOnly}, exponiéndolo a robo por XSS.
+\item Diseñar URIs con verbos como \texttt{/getProductos} o
+\texttt{/crearPedido} en lugar de sustantivos como \texttt{/productos}
+con métodos HTTP semánticos.
+\item Olvidar el claim \texttt{exp} en el JWT, generando tokens que
+nunca expiran.
+\item Saltar a microservicios cuando un monolito modular bien
+estructurado bastaría (regla \emph{«monolith first»} de Fowler).
+\item No invalidar la caché al modificar la BD, generando
+inconsistencias visibles para el usuario.
+\item Documentar la API solo con un README en lugar de exponer
+OpenAPI 3.0 con Swagger UI interactivo.
+\end{enumerate}
+\end{cajaadvertencia}
+
+\section{Repaso intensivo de los temas más difíciles}
+
+Basado en el análisis estadístico de errores en la EP2, los siguientes
+cuatro temas concentran la mayor parte de las pérdidas de puntaje y
+requieren refuerzo específico.
+
+\subsection{Tema 1: Diferencia REST vs SOAP}
+
+La diferencia entre REST y SOAP es una de las preguntas más
+frecuentes del tribunal y de la EP2. El resumen siguiente captura lo
+esencial.
+
+
+\begin{cajadefinicion}{Resumen ejecutivo --- REST vs SOAP}
+\textbf{REST} es un \emph{estilo arquitectónico} sobre HTTP: usa
+verbos HTTP semánticamente, recursos como sustantivos en URLs, JSON
+como formato dominante. Es \emph{stateless} por restricción.
+
+\textbf{SOAP} es un \emph{protocolo} sobre HTTP/SMTP/otros: define
+mensajes XML con \texttt{envelope} y \texttt{body}, contrato formal
+con WSDL, soporta WS-* para seguridad y transacciones.
+
+\textbf{Cuándo elegir cada uno}: REST para todo lo nuevo, especialmente
+APIs públicas y SPAs. SOAP solo si hay obligación de integrar con
+sistemas legados (banca, salud, B2B grande).
+\end{cajadefinicion}
+
+\subsection{Tema 2: JWT --- estructura y uso correcto}
+
+JWT aparece en toda API REST moderna del curso. Conocer su
+estructura exacta y las reglas de uso correcto es prerrequisito para
+defender el PFC con solvencia.
+
+
+\begin{cajadefinicion}{Resumen ejecutivo --- JWT}
+Un JWT tiene \textbf{tres partes separadas por puntos}:
+\textbf{header.payload.signature}.
+
+\begin{itemize}
+\item Header: algoritmo de firma (HS256, RS256).
+\item Payload: claims (sub, iss, exp, iat, jti, custom).
+\item Signature: HMAC o RSA del header+payload con secreto.
+\end{itemize}
+
+\textbf{Reglas de uso correcto:}
+\begin{itemize}
+\item Almacenar en cookie \texttt{HttpOnly} \texttt{Secure}
+\texttt{SameSite=Strict} (NO en localStorage).
+\item Tiempo de expiración corto (1 hora típico).
+\item Refresh token separado con expiración mayor (7 días).
+\item Blacklist en Redis por JTI para revocación.
+\item Validar firma en cada petición.
+\end{itemize}
+\end{cajadefinicion}
+
+\subsection{Tema 3: ORM y problema N+1}
+
+El problema N+1 sigue siendo la patología de rendimiento
+más frecuente en aplicaciones que usan ORM. La caja siguiente lo
+sintetiza junto con su solución.
+
+
+\begin{cajadefinicion}{Resumen ejecutivo --- ORM y N+1}
+El ORM mapea objetos a tablas. La trampa principal es el \textbf{N+1}:
+al iterar una colección con relaciones, el ORM ejecuta una consulta
+adicional por cada elemento.
+
+\textbf{Solución}: \emph{eager loading} explícito.
+\begin{itemize}
+\item Spring Data: \texttt{@Query(\char34{}SELECT p FROM Producto p JOIN
+FETCH p.categoria\char34{})}.
+\item EF Core: \texttt{.Include(p => p.Categoria)}.
+\item Eloquent: \texttt{Producto::with('categoria')->get()}.
+\item Doctrine: \texttt{SELECT p, c FROM Producto p JOIN p.categoria c}.
+\end{itemize}
+\end{cajadefinicion}
+
+\subsection{Tema 4: Cache-aside con Redis}
+
+Cache-aside con Redis es el patrón de caché dominante en
+2026. La caja siguiente sintetiza su mecánica y los TTL típicos.
+
+
+\begin{cajadefinicion}{Resumen ejecutivo --- cache-aside}
+El patrón cache-aside funciona así:
+
+\begin{enumerate}
+\item App consulta Redis con la \emph{key}.
+\item Si \textbf{HIT}: devuelve valor cacheado.
+\item Si \textbf{MISS}: consulta BD, guarda en Redis con TTL,
+devuelve.
+\end{enumerate}
+
+\textbf{Al actualizar la BD}: \emph{invalidar} el cache (borrar la
+key), no actualizar la cache directamente. Esto evita inconsistencia
+si la operación de BD falla a mitad.
+
+\textbf{TTL típicos:} 60s para listados frecuentes; 5--15 min para
+catálogos relativamente estables; 1 hora para datos casi inmutables.
+\end{cajadefinicion}
+
+\section{Banco de ejercicios de consolidación}
+
+Los siguientes tres ejercicios integran transversalmente las
+competencias adquiridas en las semanas 10--17. Se sugiere al
+estudiante elegir al menos uno e implementarlo durante esta semana
+de cierre como ejercicio voluntario de consolidación.
+
+\begin{cajaejercicio}{Ejercicio 18.1 --- API REST integral de logística}
+\textbf{Objetivo:} diseñar e implementar una API REST completa de
+gestión de envíos para una empresa de logística, integrando todos los
+elementos clave del segundo corte.
+
+\textbf{IDE:} IntelliJ IDEA Ultimate; \textbf{stack}: Spring Boot 4
++ PostgreSQL 16 + Redis 7.
+
+\textbf{Requisitos:}
+\begin{itemize}
+\item Autenticación JWT con \texttt{accessToken} (1 h) y
+\texttt{refreshToken} (7 días) en cookies HttpOnly.
+\item Endpoints: \texttt{POST /api/v1/envios},
+\texttt{GET /api/v1/envios/\{id\}},
+\texttt{GET /api/v1/envios?estado=...\&page=...},
+\texttt{PATCH /api/v1/envios/\{id\}/estado}.
+\item Validación con \texttt{@Valid} y Bean Validation.
+\item Cache Redis con TTL de 60 s en el listado de envíos.
+\item Documentación OpenAPI 3.0 generada automáticamente con
+springdoc.
+\item Manejo de errores con ProblemDetails (RFC 7807).
+\item Cobertura JaCoCo $\geq 70\%$.
+\item Prueba con Postman: 12 escenarios incluyendo casos de error
+(400, 401, 403, 404, 422, 429).
+\end{itemize}
+\end{cajaejercicio}
+
+\begin{cajaejercicio}{Ejercicio 18.2 --- Migración SOAP a REST}
+\textbf{Objetivo:} ejercitar la integración con sistemas legados
+y la justificación arquitectónica documentada.
+
+\textbf{Procedimiento:}
+\begin{enumerate}
+\item Tomar el WSDL de un servicio SOAP heredado (proporcionado por
+el docente; alternativamente, un servicio público como el de tipos de
+cambio del Banco Central del Ecuador).
+\item Construir una capa de adaptación REST en Spring Boot que
+exponga los métodos SOAP como recursos REST con JSON.
+\item Implementar caché Redis para reducir la carga sobre el servicio
+SOAP origen.
+\item Producir una ADR (\emph{Architectural Decision Record}) que
+justifique la decisión: por qué se mantiene el servicio SOAP
+en lugar de reescribirlo, qué se gana al ofrecer la fachada REST,
+qué riesgos asume el equipo.
+\item Pruebas Postman comparando latencia con cache fría vs caliente.
+\end{enumerate}
+\end{cajaejercicio}
+
+\begin{cajaejercicio}{Ejercicio 18.3 --- Auditoría de seguridad del PFC}
+\textbf{Objetivo:} aplicar OWASP ZAP en modo \emph{baseline} sobre el
+PFC entregado y producir un informe profesional de vulnerabilidades.
+
+\textbf{Procedimiento:}
+\begin{enumerate}
+\item Ejecutar el PFC localmente con \texttt{docker compose up}.
+\item Descargar OWASP ZAP desde \url{https://www.zaproxy.org}.
+\item Configurar ZAP en modo \emph{Automated Scan} apuntando a la URL
+del frontend Angular y la URL de la API REST.
+\item Ejecutar el escaneo (10--30 min según el tamaño del sistema).
+\item Producir un informe que incluya:
+\begin{itemize}
+\item Tabla de vulnerabilidades con severidad (Alta, Media, Baja,
+Informativa).
+\item Por cada vulnerabilidad: descripción, impacto, recomendación
+concreta de corrección y referencia OWASP.
+\item Plan de remediación priorizado.
+\end{itemize}
+\item Subsanar al menos las vulnerabilidades de severidad alta y
+re-ejecutar el escaneo para evidenciar el cierre.
+\end{enumerate}
+\end{cajaejercicio}
+
+\section{Realimentación individual del PFC}
+
+Tras la presentación grupal en la semana 17, cada equipo
+recibe realimentación individualizada en la semana 18 sobre su
+PFC: qué hicieron muy bien, qué mejorarían.
+
+
+\subsection{Criterios de excelencia observados}
+
+Los PFC que alcanzaron las calificaciones más altas comparten estas
+características:
+
+\begin{itemize}
+\item \textbf{Decisiones documentadas}: cada decisión técnica
+significativa tiene una ADR justificando la elección.
+\item \textbf{Pruebas reales}: cobertura $\geq$ 80\% con tests
+significativos, no triviales.
+\item \textbf{Demo robusta}: \texttt{docker compose up} funciona en
+una computadora limpia, sin trucos.
+\item \textbf{Métricas medidas}: scores de Lighthouse y resultados de
+k6 reales, no inventados.
+\item \textbf{Equipo cohesionado}: cualquier integrante puede
+responder cualquier pregunta del tribunal.
+\end{itemize}
+
+\subsection{Mejoras frecuentemente sugeridas}
+
+Las observaciones más frecuentes que reciben los equipos
+en esta realimentación son recomendaciones de evolución futura,
+no defectos.
+
+
+\begin{itemize}
+\item Agregar pruebas de mutación con PIT (Pitest) para evaluar la
+calidad real de las pruebas, no solo su cobertura.
+\item Configurar autoscaling con Kubernetes en lugar de Docker
+Compose para entornos productivos.
+\item Implementar OAuth 2.0 / OpenID Connect en lugar de JWT casero
+para integración con identidad institucional.
+\item Agregar observabilidad: Prometheus + Grafana + Tempo para
+métricas, dashboards y traces distribuidos.
+\item Implementar feature flags para despliegues progresivos sin
+re-build (LaunchDarkly, Unleash).
+\item Migrar el frontend a SSR con Angular Universal para mejorar
+SEO y la métrica LCP.
+\end{itemize}
+
+\section{El curso en perspectiva profesional}
+
+El curso termina, pero la formación profesional sigue. La
+sección siguiente sitúa lo aprendido en la perspectiva de la
+carrera del estudiante en el mercado laboral 2026.
+
+
+\subsection{Cómo se ve el desarrollo web profesional en 2026}
+
+El campo del desarrollo web ha alcanzado una madurez que hace 10
+años parecía lejana. En 2026:
+
+\begin{itemize}
+\item El desarrollador full-stack típico domina al menos un framework
+backend (Spring Boot, ASP.NET Core, Node.js, Laravel) y uno frontend
+(Angular, React, Vue).
+\item Containers (Docker) y Kubernetes son habilidades esperadas.
+\item TypeScript ha desplazado a JavaScript en proyectos serios.
+\item La IA generativa (GitHub Copilot, Claude, ChatGPT) duplicó la
+productividad declarada del desarrollador medio.
+\item La seguridad ya no es opcional: se exigen auditorías OWASP en
+contratos.
+\item Los equipos remotos son la norma, con asincronía como cultura.
+\end{itemize}
+
+\subsection{Próximos pasos en la formación}
+
+El siguiente paso natural en la malla curricular es la asignatura de
+\emph{Despliegue y Operaciones} de sexto nivel, donde se profundiza
+en CI/CD, contenedores avanzados, observabilidad y prácticas DevOps.
+Adicionalmente, recomendamos al estudiante:
+
+\begin{itemize}
+\item \textbf{Profundizar en un framework}: elegir uno (Spring Boot,
+.NET, Laravel) y dominarlo a nivel experto.
+\item \textbf{Aprender un orquestador}: Kubernetes es la habilidad
+más demandada en infraestructura.
+\item \textbf{Bases de datos avanzadas}: índices, optimización,
+sharding, replicación.
+\item \textbf{Diseño de sistemas distribuidos}: leer
+\emph{Designing Data-Intensive Applications} de Martin Kleppmann.
+\item \textbf{Patrones de microservicios}: Sam Newman, Chris
+Richardson.
+\item \textbf{Seguridad ofensiva}: TryHackMe, HackTheBox,
+certificaciones (eJPT, OSCP).
+\item \textbf{Inglés técnico}: la mayor parte del conocimiento
+publicado y los empleos remotos están en inglés.
+\end{itemize}
+
+\subsection{Certificaciones que aportan valor profesional en 2026}
+
+Para complementar la formación con credenciales reconocidas
+por el mercado, hay certificaciones de alto valor profesional que el
+estudiante puede considerar tras completar el curso.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Certificaciones de alto valor profesional para el desarrollador web 2026.}
+\footnotesize
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Categoría} & \textbf{Certificación} & \textbf{Valor mercado}\\
+\midrule
+Cloud & AWS Certified Developer Associate & Alto\\
+Cloud & Microsoft Azure Developer (AZ-204) & Alto\\
+Cloud & Google Professional Cloud Developer & Alto\\
+Containers & Certified Kubernetes Application Developer (CKAD) & Muy alto\\
+Java & Oracle Certified Professional Java SE 21 & Medio\\
+.NET & MS Certified: .NET Developer & Medio\\
+Spring & VMware Spring Professional & Alto\\
+Seguridad & CompTIA Security+ & Alto\\
+Seguridad & Certified Ethical Hacker (CEH) & Medio\\
+Datos & MongoDB Certified Developer & Medio\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Conclusión del curso}
+
+El curso \emph{Aplicaciones Web} ha cubierto el ciclo completo del
+desarrollo web profesional: desde el HTML semántico que un navegador
+renderiza hasta la arquitectura distribuida con caché Redis y
+balanceadores Nginx que sirve a miles de usuarios. El estudiante que
+ha completado las 18 semanas posee:
+
+\begin{itemize}
+\item Capacidad para construir interfaces web semánticas, accesibles
+y responsivas conforme al W3C y WCAG 2.1.
+\item Dominio operativo de cuatro lenguajes y plataformas servidor:
+PERL/CGI, PHP, Java/Spring Boot y ASP.NET Core.
+\item Diseño e implementación de APIs REST documentadas con OpenAPI,
+autenticadas con JWT y respaldadas por bases de datos relacionales
+con acceso vía ORM.
+\item Razonamiento arquitectónico: capas, MVC, microservicios, EDA,
+P2P y modelo C4.
+\item Conciencia de seguridad: OWASP Top 10, controles defensivos,
+cifrado, gestión de identidad.
+\item Experiencia de proyecto fin de curso \emph{end-to-end}: desde
+la planificación (Entrega 1A en semana 5) hasta el despliegue final
+(semana 16) y la defensa oral (semana 17).
+\end{itemize}
+
+Las decisiones técnicas que el estudiante ha documentado, los patrones
+que ha aplicado y las pruebas que ha escrito en su PFC no son
+ejercicios académicos sin más: son \emph{habilidades transferibles
+directamente al mercado laboral}. Las empresas locales ---desde
+\emph{startups} de Quevedo hasta empresas medianas de Guayaquil y
+Quito--- buscan precisamente este perfil. Las plataformas de empleo
+remoto (Toptal, Turing, Crossover, Andela LATAM) abren además puertas
+internacionales para quienes complementen este conocimiento técnico
+con inglés y disciplina profesional.
+
+El docente felicita a cada estudiante por completar el camino y
+recuerda que el aprendizaje del desarrollo de software no termina
+nunca: empieza otra vez cada lunes con un nuevo \emph{commit}.
+
+\hfill \emph{Buen viaje. Y buen código.}\\
+\hfill \emph{Mayo de 2026, Quevedo.}
+
+\section{Cierre administrativo de la asignatura}
+
+Los siguientes puntos cierran administrativamente la
+asignatura conforme a la Norma Académica UTEQ.
+
+
+\begin{itemize}
+\item \textbf{Calificación final} = ponderación según Norma Académica
+UTEQ de los componentes GA, TA y EV.
+\item \textbf{Aprobación}: $\geq$ 7.0 en escala 0--10.
+\item \textbf{Recuperación}: examen integral cubriendo las 4 unidades
+para estudiantes con calificación final entre 5.0 y 6.9.
+\item \textbf{Repetición}: estudiantes con calificación $<$ 5.0 deben
+recursar la asignatura el siguiente período.
+\item \textbf{Acta de notas}: se publica oficialmente 7 días hábiles
+después del cierre de la semana 18.
+\end{itemize}
+
+% Bibliografia desde archivo externo .bib
+% =====================================================================
+% APENDICE A - Practica integradora de Unidad II (insertado)
+% =====================================================================
+% =====================================================================
+%  APÉNDICE — PRÁCTICA INTEGRADORA DE UNIDAD II
+%  CRUD con patrón DAO «sin framework» en JSP/JSTL/EL, Django y Laravel
+%  (Reutiliza el preámbulo del libro. Requiere \lstdefinestyle{python}.)
+% =====================================================================
+

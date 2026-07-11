@@ -1,0 +1,404 @@
+% =====================================================================
+%  LIBRO ACADÉMICO: APLICACIONES WEB - EDICIÓN AMPLIADA
+%  Aplicaciones Web --- Compendio por capitulos (main.tex)
+% =====================================================================
+\documentclass[11pt,a4paper,openany]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{parskip}
+
+\usepackage{xcolor}
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{codeborder}{RGB}{180,180,180}
+\definecolor{codekey}{RGB}{0,0,180}
+\definecolor{codestr}{RGB}{163,21,21}
+\definecolor{codecom}{RGB}{0,128,0}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,backgrounds,calc}
+\usetikzlibrary{babel}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{breakable,skins,listings}
+
+\newtcolorbox{cajadefinicion}[1]{colback=uteqverde!5,colframe=uteqverde,
+  fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaejemplo}[1]{colback=uteqdorado!8,colframe=uteqdorado!80!black,
+  fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaejercicio}[1]{colback=blue!4,colframe=blue!60!black,
+  fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaadvertencia}[1]{colback=red!5,colframe=red!70!black,
+  fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajahistoria}[1]{colback=blue!3,colframe=blue!50!black,
+  fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajabuenas}[1]{colback=green!4,colframe=uteqverde!90!black,
+  fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+
+\usepackage{listings}
+\lstdefinelanguage{HTML5}{language=HTML,sensitive=true,
+  morekeywords={article,header,nav,section,footer,aside,figure,figcaption,
+    main,picture,video,audio,canvas,svg,details,summary,dialog,
+    DOCTYPE,html,head,body,meta,link,title,div,span,form,input,
+    label,button,select,option,textarea,table,thead,tbody,tr,th,td,
+    p,a,img,ul,ol,li,h1,h2,h3,h4,h5,h6,script,style,em,strong,
+    template,slot,source,track,output,progress,meter,datalist,
+    fieldset,legend,time,mark,abbr,address,blockquote,cite,code,kbd}}
+\lstdefinelanguage{JavaScript}{
+  keywords={break,case,catch,continue,debugger,default,delete,do,else,
+    finally,for,function,if,in,instanceof,new,return,switch,this,throw,
+    try,typeof,var,void,while,with,let,const,of,yield,async,await,
+    class,extends,super,static,import,export,from,as,true,false,null,
+    undefined},
+  ndkeywords={Array,Boolean,Date,Error,Function,JSON,Math,Number,Object,
+    Promise,RegExp,String,Symbol,console,document,window,fetch,Map,Set,
+    WeakMap,WeakSet,Proxy,Reflect},
+  sensitive=true,comment=[l]{//},morecomment=[s]{/*}{*/},
+  morestring=[b]',morestring=[b]",morestring=[b]`}
+\lstdefinelanguage{PHP}{
+  keywords={abstract,and,array,as,break,callable,case,catch,class,clone,
+    const,continue,declare,default,do,echo,else,elseif,empty,enddeclare,
+    endfor,endforeach,endif,endswitch,endwhile,enum,extends,final,
+    finally,fn,for,foreach,function,global,goto,if,implements,include,
+    include_once,instanceof,insteadof,interface,isset,list,match,
+    namespace,new,null,or,print,private,protected,public,readonly,
+    require,require_once,return,self,static,switch,throw,trait,true,
+    false,try,unset,use,var,while,xor,yield,parent},
+  sensitive=true,comment=[l]{//},morecomment=[l]{\#},
+  morecomment=[s]{/*}{*/},morestring=[b]',morestring=[b]"}
+\lstdefinelanguage{Perl5}{
+  keywords={my,our,local,sub,if,elsif,else,unless,while,until,for,
+    foreach,do,last,next,redo,return,use,no,require,package,qw,q,qq,
+    defined,undef,eq,ne,lt,gt,le,ge,and,or,not,xor,print,printf,die,
+    warn,exit},
+  sensitive=true,comment=[l]{\#},morestring=[b]',morestring=[b]"}
+
+\lstdefinestyle{codigobase}{basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{codebg},frame=single,rulecolor=\color{codeborder},
+  numbers=left,numberstyle=\tiny\color{gray},numbersep=8pt,stepnumber=1,
+  breaklines=true,breakatwhitespace=true,showstringspaces=false,tabsize=2,
+  keywordstyle=\color{codekey}\bfseries,stringstyle=\color{codestr},
+  commentstyle=\color{codecom}\itshape,captionpos=b,
+  xleftmargin=12pt,xrightmargin=4pt}
+\lstdefinestyle{html}{style=codigobase,language=HTML5}
+\lstdefinestyle{sass}{style=codigobase,
+  morekeywords={include,extend,mixin,function,return,if,else,each,for,while,
+  import,use,forward,debug,warn,error,at-root,content,
+  background,color,padding,border-radius,font-size,margin,
+  display,grid,flex,box-sizing}}
+\lstdefinestyle{css}{style=codigobase,
+  morekeywords={body,margin,padding,color,background,font-family,
+  display,grid,flex,position,absolute,relative,fixed,width,height,
+  border,border-radius,box-sizing,content-box,border-box,font-size,
+  line-height,grid-template-columns,grid-template-rows,grid-template-areas,
+  gap,justify-content,align-items,flex-direction,min-width,max-width,
+  repeat,transition,transform,animation,important,root,var,calc,clamp,
+  minmax,sticky,inherit,initial,unset,revert}}
+\lstdefinestyle{js}{style=codigobase,language=JavaScript}
+\lstdefinestyle{php}{style=codigobase,language=PHP}
+\lstdefinestyle{java}{style=codigobase,language=Java}
+\lstdefinestyle{perl}{style=codigobase,language=Perl5}
+\lstdefinestyle{shell}{style=codigobase,language=bash}
+\lstdefinestyle{xml}{style=codigobase,language=XML}
+\lstdefinestyle{sql}{style=codigobase,language=SQL}
+\lstdefinestyle{python}{style=codigobase,language=Python}
+
+\usepackage{array}\usepackage{booktabs}\usepackage{longtable}
+\usepackage{tabularx}\usepackage{multirow}
+
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=uteqverde,citecolor=uteqverde,
+  urlcolor=uteqdorado!70!black,
+  pdftitle={Aplicaciones Web --- Compendio (UTEQ)},
+  pdfauthor={UTEQ - Ingenieria de Software}}
+
+\usepackage{enumitem}\setlist{itemsep=2pt,topsep=2pt}
+\usepackage{epigraph}\setlength{\epigraphwidth}{0.7\textwidth}
+
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\Huge\bfseries\color{uteqverde}}
+  {\filleft\Large Capítulo \thechapter}
+  {1ex}{\titlerule\vspace{1ex}\filright}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{uteqverde}}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{uteqverde!85!black}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{uteqdorado!90!black}}{\thesubsubsection}{1em}{}
+
+% --- Formato de las divisiones de Unidad (\part) en colores UTEQ ---
+\titleformat{\part}[display]
+  {\normalfont\centering\bfseries\color{uteqverde}}
+  {\Huge\color{uteqdorado}Unidad \thepart}
+  {1.2ex}{\Huge}
+\titlespacing*{\part}{0pt}{0pt}{2.5cm}
+
+% --- Etiqueta en español para el índice de listados de código ---
+\renewcommand{\lstlistlistingname}{Índice de listados de código}
+\renewcommand{\lstlistingname}{Listado}
+
+% --- Ensanchar el campo de número de página en TOC/LoF/LoT/LoL ---
+% (evita desbordes con números de página de tres dígitos)
+\makeatletter
+\renewcommand{\@pnumwidth}{2.3em}
+\renewcommand{\@tocrmarg}{3.2em}
+% Ensanchar las cajas de numeración del índice para números de
+% sección/subsección de dos dígitos (p. ej. 12.10, 15.12).
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{3.0em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{4.5em}{3.8em}}
+\renewcommand*\l@subsubsection{\@dottedtocline{3}{8.3em}{4.7em}}
+% Índices de figuras, tablas y listados: ensanchar la caja del número
+% para floats de dos dígitos (p. ej. 10.16, 12.10).
+\renewcommand*\l@figure{\@dottedtocline{1}{1.5em}{3.2em}}
+\let\l@table\l@figure
+\renewcommand*\l@lstlisting{\@dottedtocline{1}{1.5em}{3.2em}}
+\makeatother
+
+% Definicion del lenguaje C# para listings (semana 7 ASP.NET)
+\lstdefinelanguage{CSharp}{sensitive=true,
+  morekeywords={abstract,as,async,await,base,bool,break,byte,case,catch,char,checked,class,const,continue,decimal,default,delegate,do,double,else,enum,event,explicit,extern,false,finally,fixed,float,for,foreach,goto,if,implicit,in,int,interface,internal,is,lock,long,namespace,new,null,object,operator,out,override,params,private,protected,public,readonly,record,ref,return,sbyte,sealed,short,sizeof,stackalloc,static,string,struct,switch,this,throw,true,try,typeof,uint,ulong,unchecked,unsafe,ushort,using,var,virtual,void,volatile,when,where,while,yield},
+  morecomment=[l]{//},morecomment=[s]{/*}{*/},morestring=[b]"}
+\lstdefinestyle{cs}{style=codigobase,language=CSharp}
+
+% =====================================================================
+% Modificaciones del preámbulo para semanas 10-18 (Parte 2)
+% =====================================================================
+
+% --- Nuevas bibliotecas TikZ para diagramas arquitectónicos ---
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.symbols}
+\usetikzlibrary{shadows}
+\usetikzlibrary{matrix}
+\usetikzlibrary{decorations.markings}
+
+% --- Soporte para imágenes H ---
+\usepackage{float}
+
+% --- Soporte para \sout (texto tachado) ---
+% \usepackage[normalem]{ulem} (no disponible)
+
+% --- Soporte para \citet, \citep ---
+% \usepackage{natbib} (no disponible)
+
+% --- Nuevo entorno: caja de decisión arquitectónica (ADR) ---
+\newtcolorbox{cajaadr}[1]{colback=violet!4,colframe=violet!70!black,
+  fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+
+% --- Nuevo entorno: caja de comparativa ---
+\newtcolorbox{cajacompara}[1]{colback=cyan!5,colframe=cyan!60!black,
+  fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+
+% --- Lenguaje YAML para configuraciones ---
+\lstdefinelanguage{yaml}{
+  keywords={true,false,null,yes,no,on,off},
+  sensitive=true,
+  comment=[l]{\#},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+% --- Lenguaje Dockerfile ---
+\lstdefinelanguage{dockerfile}{
+  keywords={FROM,RUN,CMD,LABEL,MAINTAINER,EXPOSE,ENV,ADD,COPY,
+    ENTRYPOINT,VOLUME,USER,WORKDIR,ARG,ONBUILD,STOPSIGNAL,
+    HEALTHCHECK,SHELL,AS},
+  sensitive=true,
+  comment=[l]{\#},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+% --- Estilos de listing nuevos ---
+\lstdefinestyle{yaml}{style=codigobase,language=yaml,
+  keywordstyle=\color{codekey}\bfseries}
+\lstdefinestyle{docker}{style=codigobase,language=dockerfile,
+  keywordstyle=\color{codekey}\bfseries}
+
+% --- Comandos cortos para iconos C4 ---
+\newcommand{\cfourPerson}[3]{%
+  \node[circle,draw=blue!70!black,fill=blue!20,thick,
+        minimum size=0.7cm,font=\tiny] (#1) at #2 {};%
+  \node[below=0.05cm of #1,font=\scriptsize\bfseries,align=center] {#3};%
+}
+\newcommand{\cfourSystem}[3]{%
+  \node[rectangle,draw=blue!70!black,fill=blue!10,thick,rounded corners,
+        minimum width=2.5cm,minimum height=1.2cm,
+        font=\scriptsize\bfseries,align=center] (#1) at #2 {#3};%
+}
+\newcommand{\cfourContainer}[3]{%
+  \node[rectangle,draw=uteqverde!80!black,fill=uteqverde!15,thick,
+        rounded corners,minimum width=2.5cm,minimum height=1.2cm,
+        font=\scriptsize\bfseries,align=center] (#1) at #2 {#3};%
+}
+\newcommand{\cfourDb}[3]{%
+  \node[cylinder,draw=uteqverde!80!black,fill=uteqverde!15,thick,
+        shape border rotate=90,aspect=0.3,minimum width=1.4cm,
+        minimum height=1.5cm,font=\scriptsize\bfseries,align=center,
+        cylinder uses custom fill] (#1) at #2 {#3};%
+}
+
+\begin{document}
+
+\frontmatter
+
+% --------------------- Portada -------------------------------------
+\begin{titlepage}
+\centering\vspace*{1cm}
+{\color{uteqverde}\rule{\linewidth}{2pt}}\\[0.6cm]
+{\Huge\bfseries\color{uteqverde} APLICACIONES WEB}\\[0.4cm]
+{\Large\itshape Compendio de tecnologías web del lado del cliente y del servidor: historia, fundamentos, prácticas paso a paso y buenas prácticas profesionales}\\[0.3cm]
+{\color{uteqverde}\rule{\linewidth}{1pt}}\\[1.2cm]
+{\Large\bfseries Libro de texto académico}\\[0.3cm]
+{\large Edición en cuatro unidades --- Capítulos 1 a 18}\\[0.5cm]
+{\large Unidad I: \emph{Fundamentos y Diseño Web}}\\
+{\large Unidad II: \emph{Lenguajes, Frameworks y Seguridad del Servidor}}\\
+{\large Unidad III: \emph{Datos y Patrones Arquitectónicos}}\\
+{\large Unidad IV: \emph{Patrón MVC y Servicios Web}}\\[1.6cm]
+{\large\bfseries Universidad Técnica Estatal de Quevedo}\\
+{\large Facultad de Ciencias de la Computación}\\
+{\large Carrera de Ingeniería de Software (Rediseño)}\\[0.7cm]
+{\large\itshape Quinto nivel --- Período Académico 2026--2027 PPA}\\[1.5cm]
+{\large \textbf{Autor docente:} Dr. Gleiston Cicerón Guerrero Ulloa, Ph.D.}\\[1.8cm]
+{\color{uteqdorado}\rule{\linewidth}{2pt}}\\[0.4cm]
+{\large Quevedo, Los Ríos --- Ecuador}\\
+{\large Junio de 2026}
+\end{titlepage}
+
+\thispagestyle{empty}
+\vspace*{2cm}
+\noindent\textbf{APLICACIONES WEB --- Edición en cuatro unidades (Capítulos 1 a 18)}\\[0.3cm]
+\noindent Universidad Técnica Estatal de Quevedo, 2026.\\
+Facultad de Ciencias de la Computación.\\
+Carrera de Ingeniería de Software (Rediseño).\\[0.4cm]
+\noindent Esta obra reúne las cuatro unidades de la asignatura en un único
+volumen. Incorpora un tratamiento profundo de la historia del desarrollo
+web, fundamentos teóricos extensos, ejercicios paso a paso plenamente
+reproducibles en IntelliJ IDEA Ultimate ---y en Visual Studio Code para
+ASP.NET Core---, tablas comparativas de versiones de tecnologías y
+secciones dedicadas a buenas prácticas profesionales para cada tecnología
+abordada. Su contenido se ha alineado con el SWEBOK Guide v4.0
+\cite{washizaki2024swebok}, las directrices del W3C \cite{w3c2018wcag}, la
+guía OWASP Top 10:2021 \cite{owasp2021top10} y las especificaciones HTML
+Living Standard del WHATWG.\\[0.4cm]
+\noindent\textbf{Uso académico no comercial.} Se permite la reproducción
+total o parcial citando la fuente.
+\newpage
+
+\chapter*{Prefacio}
+\addcontentsline{toc}{chapter}{Prefacio}
+
+Este libro responde a una reflexión pedagógica concreta: el desarrollo web
+moderno no se domina memorizando sintaxis, se domina comprendiendo el
+\textbf{porqué histórico} de cada decisión técnica, las \textbf{razones
+científicas} detrás de cada práctica y los \textbf{caminos prácticos} que
+llevan del concepto al artefacto funcional.
+
+A diferencia de un manual de referencia, esta obra incorpora cuatro
+elementos pedagógicos sistemáticos en cada capítulo:
+
+\begin{enumerate}
+\item \textbf{Cajas de historia} que sitúan cada tecnología en su contexto
+histórico, mencionando autores, fechas, hitos y motivaciones originales que
+rara vez aparecen en los manuales técnicos pero que resultan indispensables
+para comprender por qué las cosas son como son.
+\item \textbf{Tablas de versiones} que documentan la evolución de cada
+tecnología con las mejoras sustantivas que cada revisión aportó.
+\item \textbf{Cajas de buenas prácticas} que destilan en pautas accionables
+el conocimiento profesional acumulado por la industria.
+\item \textbf{Ejercicios paso a paso ampliados} con instrucciones tan
+detalladas que cualquier estudiante puede reproducir el resultado exacto
+descrito en el texto. Cada paso explica \emph{qué} se hace, \emph{por qué}
+se hace y \emph{cómo verificar} que el resultado es correcto.
+\end{enumerate}
+
+El entorno de referencia es \textbf{IntelliJ IDEA Ultimate} para HTML5, CSS3,
+JavaScript moderno, Perl, PHP, Python/Django y Java/Spring Boot, y
+\textbf{Visual Studio Code} para ASP.NET Core con C\#, dado que el soporte de
+.NET no forma parte de IntelliJ IDEA. Todas las interfaces de usuario del
+libro se construyen con HTML5 semántico y CSS3, reutilizando una hoja de
+estilos base común (\texttt{estilos.css}) que se define en esta primera
+unidad; en los capítulos siguientes solo se muestran las reglas nuevas que
+cada ejercicio añade.
+
+\section*{Organización del libro}
+\addcontentsline{toc}{section}{Organización del libro}
+
+El libro se organiza en cuatro unidades que se corresponden con las cuatro
+unidades curriculares de la asignatura:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm}c}
+\toprule
+\textbf{Unidad} & \textbf{Capítulos} \\
+\midrule
+I --- Fundamentos y Diseño Web & 1--4 \\
+II --- Lenguajes, Frameworks y Seguridad del Servidor & 5--9 \\
+III --- Datos y Patrones Arquitectónicos & 10--13 \\
+IV --- Patrón MVC y Servicios Web & 14--18 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Cada capítulo combina, de forma sistemática, una contextualización
+histórica, el desarrollo teórico riguroso del tema, prácticas reproducibles
+y un bloque de buenas prácticas profesionales, además de los ejercicios y,
+donde corresponde, las evaluaciones parciales y los hitos del Proyecto Final
+de Curso (PFC).
+
+\hfill\textit{El autor docente.}\\
+\hfill Quevedo, junio de 2026.
+
+\tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
+
+\mainmatter
+
+% =====================================================================
+%  UNIDAD I --- Fundamentos y Diseño Web (Capítulos 1--4)
+% =====================================================================
+\input{units/appweb_unit_1}
+
+% =====================================================================
+% Referencia provisional al Cap. 7 (frameworks), que llega en la
+% siguiente entrega de la Unidad II. Se elimina al incorporar el Cap. 7.
+\makeatletter
+\@ifundefined{r@cap:frameworks}{\@namedef{r@cap:frameworks}{{7}{1}{}{}{}}}{}
+\makeatother
+
+\input{units/appweb_unit_2}   % Parte 1: Capitulos 5 y 6
+
+% Se reservan los capitulos 7, 8 y 9 (Unidad II - Parte 2, pendiente) para
+% que la Unidad III quede numerada 10-13. Esta linea se elimina al
+% incorporar los capitulos 7 a 9.
+\setcounter{chapter}{9}
+\input{units/appweb_unit_3}   % Capitulos 10 a 13 (Datos y Patrones)
+
+\input{units/appweb_unit_4}   % Capitulos 14 a 18 (MVC y Servicios Web)
+
+% =====================================================================
+
+\backmatter
+\bibliographystyle{plain}
+\bibliography{appweb}
+
+\end{document}

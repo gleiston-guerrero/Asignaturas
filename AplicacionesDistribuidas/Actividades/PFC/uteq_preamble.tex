@@ -1,0 +1,152 @@
+% =============================================================================
+% Preambulo UTEQ - Aplicaciones Distribuidas
+% Robusto contra overfull-hbox, colisiones de color y warnings de hyperref.
+% Compatible con pdflatex + bibtex (ieeetr).
+% =============================================================================
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage{microtype}
+
+% ---- Geometria conservadora (evita marginacion excesiva) --------------------
+\usepackage[a4paper,margin=2.4cm,headheight=15pt,footskip=1cm]{geometry}
+
+% ---- Manejo suave de justificacion (evita overfull hbox) --------------------
+\emergencystretch=3em
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+
+% ---- Colores institucionales UTEQ (nombres unicos, no colisionan) ----------
+\usepackage[table,dvipsnames]{xcolor}
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqGray}{HTML}{5A6470}
+\definecolor{uteqLight}{HTML}{EEF2F8}
+\definecolor{uteqSand}{HTML}{FAF3E6}
+\definecolor{uteqRose}{HTML}{FBE9E7}
+
+% ---- Empaquetados usuales ---------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{makecell}
+\usepackage{longtable}
+\usepackage{xltabular}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=3pt,parsep=0pt}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage[section]{placeins}
+
+\captionsetup[table]{labelfont=bf,font=small,skip=4pt}
+\captionsetup[figure]{labelfont=bf,font=small,skip=4pt}
+
+% ---- Encabezado y pie -------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\small\textcolor{uteqBlue}{UTEQ $\cdot$ Ingeniería de Software}}
+\fancyhead[R]{\small\textcolor{uteqGray}{Aplicaciones Distribuidas $\cdot$ ISR-701}}
+\fancyfoot[C]{\thepage}
+
+% ---- Titulos con color institucional ---------------------------------------
+\titleformat{\section}{\normalfont\Large\bfseries\color{uteqBlue}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{uteqMid}}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\color{uteqTeal}}{\thesubsubsection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.2em}{0.6em}
+\titlespacing*{\subsection}{0pt}{0.8em}{0.4em}
+\titlespacing*{\subsubsection}{0pt}{0.6em}{0.3em}
+
+% ---- Cuadros de texto -------------------------------------------------------
+\usepackage[most]{tcolorbox}
+\newtcolorbox{utqbox}[1][]{
+  enhanced,
+  colback=uteqLight,
+  colframe=uteqBlue,
+  boxrule=0.7pt,
+  arc=1.2mm,
+  left=6pt,right=6pt,top=4pt,bottom=4pt,
+  fonttitle=\bfseries\color{white},
+  coltitle=white,
+  colbacktitle=uteqBlue,
+  attach boxed title to top left={xshift=6pt,yshift=-2mm},
+  boxed title style={arc=1mm,colback=uteqBlue},
+  #1
+}
+\newtcolorbox{noteBox}[1][]{
+  enhanced,colback=uteqSand,colframe=uteqAmber,boxrule=0.6pt,arc=1mm,
+  left=6pt,right=6pt,top=3pt,bottom=3pt,#1
+}
+\newtcolorbox{critBox}[1][]{
+  enhanced,colback=uteqRose,colframe=uteqBlue,boxrule=0.6pt,arc=1mm,
+  left=6pt,right=6pt,top=3pt,bottom=3pt,#1
+}
+
+% ---- Codigo fuente (lstlisting) --------------------------------------------
+\usepackage{listings}
+
+% Definicion manual del lenguaje YAML para listings
+\lstdefinelanguage{yaml}{
+  keywords={true,false,null,yes,no,on,off},
+  keywordstyle=\color{uteqBlue}\bfseries,
+  sensitive=false,
+  comment=[l]{\#},
+  morecomment=[s]{---}{---},
+  commentstyle=\color{uteqGreen}\itshape,
+  stringstyle=\color{uteqAmber},
+  moredelim=[l][\color{uteqTeal}]{:},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstdefinestyle{utqcode}{
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\color{uteqBlue}\bfseries,
+  commentstyle=\color{uteqGreen}\itshape,
+  stringstyle=\color{uteqAmber},
+  numbers=left,
+  numberstyle=\tiny\color{uteqGray},
+  numbersep=6pt,
+  frame=single,
+  rulecolor=\color{uteqGray},
+  backgroundcolor=\color{uteqLight!45},
+  breaklines=true,
+  breakatwhitespace=true,
+  breakindent=8pt,
+  postbreak=\mbox{\textcolor{uteqAmber}{$\hookrightarrow$}\space},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  captionpos=b,
+  aboveskip=8pt,belowskip=8pt,
+  xleftmargin=10pt,xrightmargin=4pt,
+  tabsize=2,
+  extendedchars=true,
+  inputencoding=utf8,
+  literate=%
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
+    {¿}{{?`}}1 {¡}{{!`}}1
+}
+\lstset{style=utqcode}
+
+% ---- Enlaces (hyperref sin warnings de Unicode) ----------------------------
+\usepackage[hidelinks,pdfusetitle,unicode=true]{hyperref}
+\usepackage{url}
+
+% ---- Simbolos de check / cruz ----------------------------------------------
+\usepackage{pifont}
+\newcommand{\ok}{\textcolor{uteqGreen}{\ding{51}}}
+\newcommand{\ko}{\textcolor{red!70!black}{\ding{55}}}

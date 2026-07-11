@@ -1,0 +1,58 @@
+% =====================================================================
+%  Tabla comparativa del estado del arte
+%  Ubicacion: docs/requisitos/estado_arte/TABLA-COMPARATIVA.tex
+%  Uso: se puede incluir con \input desde el documento academico integrado.
+%  Reconstruida a partir de las Tablas 1 y 2 del proyecto modelo.
+% =====================================================================
+
+\documentclass[11pt,a4paper]{article}
+\input{../../entregas/preamble_ingreq}
+\geometry{landscape,a4paper,margin=1.8cm}
+
+\begin{document}
+
+\begin{table}[htbp]
+\centering
+\caption{S\'intesis de evidencia emp\'irica sobre tutor\'ias acad\'emicas (adaptado de Toaquiza et al., 2025).}
+\label{tab:sintesisempirica}
+\rowcolors{2}{grisfila}{white}
+\begin{tabularx}{\textwidth}{L{3.2cm}L{4.5cm}L{4cm}X}
+\toprule
+\rowcolor{uteqverde!25}
+\textbf{Contexto} & \textbf{Funciones documentadas} & \textbf{Limitaciones} & \textbf{Aplicabilidad al PFC}\\
+\midrule
+Universidades europeas (e-tutoring) --- Copaci \& Rusu (2015) & Planificaci\'on de encuentros, integraci\'on curricular, plataformas institucionales, formaci\'on docente & Falta de integraci\'on institucional, competencias digitales dispares & Integrar m\'odulo tutorial al SGA con capacitaci\'on previa\\
+\midrule
+Tutor\'ias disciplinares en Medicina (USP, Brasil) --- Bellodi \& Dolhnikoff (2021) & Seguimiento individual, desarrollo de h\'abitos, colaboraci\'on docente-estudiante & Carga administrativa, ausencia de registro centralizado & Uso de plataforma para registro y seguimiento formal\\
+\midrule
+Tutor\'ia entre pares (EE. UU.) --- Pugatch \& Wilson (2018) & Sesiones dirigidas por estudiantes capacitados, mejora de h\'abitos & Baja participaci\'on, falta de recordatorios e incentivos & Incorporar notificaciones y mecanismos de motivaci\'on\\
+\midrule
+Tutor\'ias en l\'inea con brechas tecnol\'ogicas --- Chemin \& Schneider (2025) & Reducci\'on de p\'erdida de aprendizaje 50\,\%, tutor\'ia remota & Falta de dispositivos, baja continuidad, preparaci\'on de tutores & Soporte tecnol\'ogico y roles claros\\
+\midrule
+UNISA (Sud\'africa) --- Mar\'e \& Mutezo (2021) & Asignaci\'on 1:200, sesiones s\'incronas y as\'incronas, roles diferenciados & Alta carga de coordinaci\'on, dependencia tecnol\'ogica & Modelo escalable para grandes cohortes y educaci\'on a distancia\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\vspace{0.7cm}
+
+\begin{table}[htbp]
+\centering
+\caption{Comparativa de plataformas y sistemas de gesti\'on de tutor\'ias (adaptado de Toaquiza et al., 2025).}
+\label{tab:comparativasistemas}
+\rowcolors{2}{grisfila}{white}
+\begin{tabularx}{\textwidth}{L{3cm}L{4cm}L{3.4cm}L{3cm}X}
+\toprule
+\rowcolor{uteqverde!25}
+\textbf{Sistema / Ref.} & \textbf{Funciones clave} & \textbf{Requisitos / Roles} & \textbf{Limitaciones} & \textbf{Aplicabilidad al PFC}\\
+\midrule
+Sistema Web EPIS-UNH --- Rojas et al. (2023) & Control de asistencia, registro de tutor\'ias, generaci\'on de reportes, comunicaci\'on tutor-estudiante & Roles diferenciados, acceso con credenciales institucionales & Dependencia de conectividad y compromiso docente & Base para formalizar registro y seguimiento presenciales y virtuales\\
+\midrule
+SCOOT (China) --- Zhang et al. (2023) & Organizaci\'on docente, emparejamiento flexible, registro de interacciones, pizarra compartida, audio & Disponibilidad docente fuera de horario, competencias digitales & Calidad variable de preguntas, limitada flexibilidad horaria & \'Util para tutor\'ias individuales personalizadas con trazabilidad\\
+\midrule
+UNISA e-tutoring --- Mar\'e \& Mutezo (2021) & Agenda, foros, mensajer\'ia interna, registro de asistencia, reportes institucionales & Capacitaci\'on espec\'ifica, roles diferenciados, 1 tutor por 200 estudiantes & Alta carga de coordinaci\'on, dependencia de plataforma institucional & Modelo escalable para grandes cohortes y modalidades a distancia\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\end{document}

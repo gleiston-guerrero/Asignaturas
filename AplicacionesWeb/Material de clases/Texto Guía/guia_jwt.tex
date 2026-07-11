@@ -126,7 +126,7 @@ El flujo completo tiene tres momentos. Primero el cliente envía usuario y contr
 Firmar garantiza \emph{integridad} y \emph{autenticidad} (nadie lo alteró y lo emitió nuestro servidor), pero no \emph{confidencialidad}: cualquiera puede leer el cuerpo. Por eso el token viaja siempre sobre HTTPS y no contiene contraseñas ni datos privados, solo el identificador del usuario y sus roles.\par
 \end{cajatip}
 
-\section{Paso 1 --- Dependencias y configuración}
+\section{Paso 1 --- Dependencias}
 \begin{cajaproblema}{Problema a resolver}
 El proyecto actual no tiene capacidad de seguridad ni de manejo de tokens. ¿Qué dependencias añadimos al \texttt{pom.xml}?\par
 \end{cajaproblema}
@@ -165,34 +165,16 @@ Añadimos dos cosas al \texttt{pom.xml} de la Semana 6: el \emph{starter} de seg
 Spring Boot 4 usa Jackson 3 (paquete \texttt{tools.\allowbreak{}jackson}). El módulo \texttt{jjwt-jackson} usa Jackson 2 (paquete \texttt{com.\allowbreak{}fasterxml.\allowbreak{}jackson}) solo de forma interna. Conviven sin conflicto porque sus paquetes raíz son distintos; JJWT trae su propia versión de Jackson 2 y no interfiere con la serialización de tu API. Si prefieres no tener Jackson 2 en el classpath, sustituye \texttt{jjwt-jackson} por \texttt{jjwt-gson}.\par
 \end{cajawarn}
 
-\subsection{El archivo application.properties}
-Toda la configuración del proyecto vive en un único archivo, \texttt{src/\allowbreak{}main/\allowbreak{}resources/\allowbreak{}application.\allowbreak{}properties}: la conexión a la base de datos, el comportamiento de JPA/Hibernate y, ahora, las claves del JWT. No hay un archivo aparte para la base de datos ni otro para la seguridad; Spring Boot lee este archivo al arrancar. Como alternativa equivalente puede usarse \texttt{application.yml} (las mismas claves en formato YAML, anidadas por puntos); en esta guía usamos \texttt{.properties}.
+Después definimos dos propiedades en \texttt{application.properties}: el secreto con el que se firman los tokens y su tiempo de vida. Para el algoritmo HS256 la clave debe medir al menos 32 bytes (256 bits); usa una cadena larga y aleatoria, y en producción léela de una variable de entorno, nunca del repositorio.
 
-El listado siguiente es el archivo completo del proyecto: incluye lo que ya tenías de la Semana 6 (origen de datos y JPA) más las dos claves nuevas del JWT al final. Para el algoritmo HS256 el secreto debe medir al menos 32 bytes; usa una cadena larga y aleatoria, y en producción léela de una variable de entorno, nunca del repositorio.
-
-\begin{cajacodigo}[src/main/resources/application.properties --- archivo completo]
+\begin{cajacodigo}[src/main/resources/application.properties --- claves de JWT]
 \begin{lstlisting}[style=markup]
-# --- Conexion a PostgreSQL ---
-spring.datasource.url=jdbc:postgresql://localhost:5432/appweb2026ppa
-spring.datasource.username=postgres
-spring.datasource.password=P@$7Gr3$QL
-spring.datasource.driver-class-name=org.postgresql.Driver
-
-# --- JPA / Hibernate ---
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-
-# --- Swagger / OpenAPI ---
-springdoc.swagger-ui.path=/swagger-ui.html
-
-# --- Seguridad: JWT ---
-app.jwt.secret=cambia-esta-clave-larga-y-aleatoria-de-32-bytes-minimo
+# Secreto de firma (>= 32 caracteres para HS256). En produccion: variable de entorno.
+app.jwt.secret=cambia-esta-clave-por-una-larga-y-aleatoria-de-32-bytes-minimo
+# Tiempo de vida del token en milisegundos (3600000 = 1 hora)
 app.jwt.expiration-ms=3600000
 \end{lstlisting}
 \end{cajacodigo}
-
-La clave \texttt{spring.\allowbreak{}jpa.\allowbreak{}hibernate.\allowbreak{}ddl-auto} es la que hace que no escribas SQL: Hibernate genera o actualiza las tablas a partir de tus clases \texttt{@Entity}, como detallamos en el Paso 2.
 
 \section{Paso 2 --- Usuario, roles y acceso a datos}
 \begin{cajaproblema}{Problema a resolver}
@@ -261,30 +243,22 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 \end{lstlisting}
 \end{cajacodigo}
 
-\subsection{Las tablas las crea Spring Boot, no tú}
-No escribimos sentencias \texttt{CREATE TABLE}. En el enfoque \emph{code-first} de JPA, las clases \texttt{@Entity} son la única fuente de verdad del esquema: al arrancar, Hibernate las inspecciona y crea o actualiza automáticamente las tablas en PostgreSQL. La entidad \texttt{Usuario} produce la tabla \texttt{usuario}; su colección de roles, anotada con \texttt{@ElementCollection} y \texttt{@CollectionTable}, produce la tabla secundaria \texttt{usuario\_rol} con su clave foránea. Si mañana añades un campo a la clase, basta con reiniciar la aplicación: la columna aparece sola.
+Con \texttt{spring.\allowbreak{}jpa.\allowbreak{}hibernate.\allowbreak{}ddl-auto=update}, Hibernate genera estas dos tablas la primera vez que arranca la aplicación.
 
-Quien gobierna este comportamiento es la propiedad \texttt{spring.\allowbreak{}jpa.\allowbreak{}hibernate.\allowbreak{}ddl-auto} de \texttt{application.properties}. La Tabla~\ref{tab:ddlauto} resume sus valores; para el desarrollo del proyecto usamos \texttt{update}.
-
-\begin{table}[h]
-\centering
-\caption{Valores de spring.jpa.hibernate.ddl-auto.}
-\label{tab:ddlauto}
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{>{\ttfamily}p{2.6cm} >{\raggedright\arraybackslash}p{11.4cm}}
-\rowcolor{jwebazul!12}
-\textnormal{\textbf{Valor}} & \textbf{Qué hace} \\
-update & Crea las tablas que faltan y añade columnas nuevas; conserva los datos. Recomendado en desarrollo. \\
-create & Borra y recrea el esquema en cada arranque; se pierden los datos. Útil para pruebas limpias. \\
-create-drop & Como create, pero además borra el esquema al apagar la aplicación. \\
-validate & No modifica nada; solo verifica que las tablas coincidan con las entidades y falla si no. \\
-none & Desactiva la gestión automática; el esquema se administra por fuera (por ejemplo con Flyway). \\
-\end{tabular}
-\end{table}
-
-\begin{cajatip}{Ver el SQL que genera Hibernate}
-Si quieres comprobar exactamente qué tablas crea, activa \texttt{spring.jpa.show-sql=true} y \texttt{spring.jpa.properties.hibernate.format\_sql=true}: el SQL aparece formateado en la consola al arrancar. Es solo para inspección; no tienes que ejecutarlo a mano.\par
-\end{cajatip}
+\begin{cajacodigo}[DDL que genera Hibernate]
+\begin{lstlisting}[style=sql]
+CREATE TABLE usuario (
+    id       BIGINT GENERATED ALWAYS AS IDENTITY,
+    username VARCHAR(60)  NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE usuario_rol (
+    usuario_id BIGINT NOT NULL REFERENCES usuario (id),
+    rol        VARCHAR(255)
+);
+\end{lstlisting}
+\end{cajacodigo}
 
 \section{Paso 3 --- UserDetailsService}
 \begin{cajaproblema}{Problema a resolver}
@@ -879,7 +853,7 @@ Antes de dar por terminada la integración de seguridad, confirma cada punto:
 \begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
 \item Dependencias \texttt{spring-boot-starter-security} y \texttt{jjwt} 0.13.0 en el \texttt{pom.xml}.
 \item Propiedades \texttt{app.jwt.secret} (>= 32 bytes) y \texttt{app.jwt.expiration-ms} definidas.
-\item Entidad \texttt{Usuario}, enumerado \texttt{Rol} y \texttt{UsuarioRepository} creados; tablas creadas automáticamente por Hibernate desde las \texttt{@Entity} (\texttt{ddl-auto=update}).
+\item Entidad \texttt{Usuario}, enumerado \texttt{Rol} y \texttt{UsuarioRepository} creados; tablas generadas por Hibernate.
 \item \texttt{UsuarioDetailsService} carga el usuario y mapea roles a \texttt{ROLE\_*}.
 \item Beans \texttt{PasswordEncoder} (BCrypt) y \texttt{AuthenticationManager} (\texttt{DaoAuthenticationProvider} + \texttt{ProviderManager}).
 \item \texttt{JwtService} emite y valida tokens con la API de JJWT 0.13.

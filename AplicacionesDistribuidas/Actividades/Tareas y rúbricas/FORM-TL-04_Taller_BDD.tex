@@ -1,0 +1,644 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+% FORM-TL-04 -- Taller -- Diseno de Esquema de Fragmentacion y Replicacion de BDD
+% Aplicaciones Distribuidas (ISR-701) -- Unidad 3
+% UTEQ -- Facultad de Ciencias de la Computacion y Diseno Digital
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm,top=2.4cm,bottom=2.4cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{xltabular}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{microtype}
+
+% ---------------- Paleta UTEQ ----------------
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqRed}{HTML}{C0392B}
+\definecolor{uteqLight}{HTML}{EAF1FB}
+\definecolor{uteqOff}{HTML}{F7F8FA}
+\definecolor{uteqGray}{HTML}{4A4A4A}
+
+\hypersetup{colorlinks=true, linkcolor=uteqBlue, urlcolor=uteqTeal, citecolor=uteqMid}
+
+% ---------------- Titulos ----------------
+\titleformat{\section}{\Large\bfseries\color{uteqBlue}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{uteqMid}}{\thesubsection}{0.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{uteqTeal}}{\thesubsubsection}{0.5em}{}
+
+% ---------------- Encabezado / pie ----------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{uteqGray}UTEQ -- ISR-701 -- Unidad 3 -- FORM-TL-04}
+\fancyfoot[R]{\footnotesize\color{uteqGray}\thepage}
+
+% ---------------- Cajas tematicas ----------------
+\newtcolorbox{cajaobjetivo}{enhanced, breakable, colback=uteqLight, colframe=uteqBlue,
+  boxrule=0.6pt, arc=2mm, left=3mm, right=3mm, top=2mm, bottom=2mm,
+  title={\bfseries\color{white}Objetivo}, coltitle=white, colbacktitle=uteqBlue,
+  fonttitle=\bfseries\sffamily}
+
+\newtcolorbox{cajadefinicion}[1]{enhanced, breakable, colback=uteqOff, colframe=uteqTeal,
+  boxrule=0.6pt, arc=2mm, left=3mm, right=3mm, top=2mm, bottom=2mm,
+  title={\bfseries\color{white}#1}, coltitle=white, colbacktitle=uteqTeal,
+  fonttitle=\bfseries\sffamily}
+
+\newtcolorbox{cajaalerta}[1]{enhanced, breakable, colback=yellow!8, colframe=uteqAmber,
+  boxrule=0.8pt, arc=2mm, left=3mm, right=3mm, top=2mm, bottom=2mm,
+  title={\bfseries\color{white}#1}, coltitle=white, colbacktitle=uteqAmber,
+  fonttitle=\bfseries\sffamily}
+
+\newtcolorbox{cajacritica}[1]{enhanced, breakable, colback=red!4, colframe=uteqRed,
+  boxrule=0.9pt, arc=2mm, left=3mm, right=3mm, top=2mm, bottom=2mm,
+  title={\bfseries\color{white}#1}, coltitle=white, colbacktitle=uteqRed,
+  fonttitle=\bfseries\sffamily}
+
+\newtcolorbox{cajaejemplo}[1]{enhanced, breakable, colback=uteqLight!50, colframe=uteqGreen,
+  boxrule=0.6pt, arc=2mm, left=3mm, right=3mm, top=2mm, bottom=2mm,
+  title={\bfseries\color{white}#1}, coltitle=white, colbacktitle=uteqGreen,
+  fonttitle=\bfseries\sffamily}
+
+% ---------------- Comandos auxiliares ----------------
+\newcommand{\codigo}[1]{\texttt{\textcolor{uteqBlue}{#1}}}
+
+\setlist{leftmargin=1.4em,topsep=2pt,itemsep=2pt}
+
+% ============================================================
+\begin{document}
+
+% ============================================================
+% PORTADA
+% ============================================================
+\begin{titlepage}
+\centering
+\vspace*{0.5cm}
+
+{\color{uteqBlue}\rule{\linewidth}{1.5pt}}\par
+\vspace{0.4cm}
+
+{\large\bfseries\color{uteqBlue} UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}\\[0.15cm]
+{\normalsize\color{uteqGray} Facultad de Ciencias de la Computacion y Diseno Digital}\\[0.05cm]
+{\normalsize\color{uteqGray} Carrera de Ingenieria de Software}\par
+\vspace{0.3cm}
+{\color{uteqBlue}\rule{\linewidth}{1.5pt}}\par
+
+\vspace{2.5cm}
+
+{\fontsize{14}{17}\selectfont\color{uteqTeal}\itshape Taller Formativo de la Unidad 3}\\[0.3cm]
+{\fontsize{14}{17}\selectfont\color{uteqGray} Codigo: \textbf{FORM-TL-04}}\par
+\vspace{1.2cm}
+
+{\fontsize{26}{30}\selectfont\bfseries\color{uteqBlue}
+Diseno de Esquema de Fragmentacion\\[0.2cm]
+y Replicacion de Bases de Datos\\[0.2cm]
+Distribuidas
+\par}
+
+\vspace{1.0cm}
+
+\begin{tcolorbox}[enhanced, colback=uteqLight, colframe=uteqBlue, boxrule=0.8pt, arc=3mm, width=0.85\textwidth, center]
+\centering\large
+\textbf{Asignatura:} Aplicaciones Distribuidas (ISR-701)\\[0.15cm]
+\textbf{Septimo nivel} \quad $\bullet$ \quad \textbf{Periodo Academico 2026 -- 2027}\\[0.15cm]
+\textbf{Modalidad:} Grupal (equipos de 3 a 4 estudiantes)\\[0.15cm]
+\textbf{Caracter:} Formativo \quad $\bullet$ \quad \textbf{Preparatorio para PE-U3}\\[0.15cm]
+\textbf{Semana programada:} 10
+\end{tcolorbox}
+
+\vfill
+
+{\large\bfseries\color{uteqGray} Docente:} {\large Ph.D. Gleiston C. Guerrero-Ulloa}\\[0.1cm]
+\href{mailto:gguerrero@uteq.edu.ec}{\color{uteqMid}\texttt{gguerrero@uteq.edu.ec}}\par
+
+\vspace{0.6cm}
+{\small\itshape\color{uteqGray} Quevedo -- Ecuador \quad $\bullet$ \quad Junio 2026}
+\end{titlepage}
+
+% ============================================================
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Identificacion del taller}
+
+\begin{tcolorbox}[enhanced, colback=uteqOff, colframe=uteqBlue, boxrule=0.6pt, arc=2mm]
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\linewidth}{@{}p{0.30\linewidth}X@{}}
+\textbf{Codigo del instrumento} & FORM-TL-04 \\
+\textbf{Tipo de instrumento} & Formativo -- Taller en aula con tutoria docente \\
+\textbf{Modalidad} & Grupal -- Equipos de 3 a 4 estudiantes \\
+\textbf{Unidad} & Unidad 3 -- Bases de Datos Distribuidas \\
+\textbf{Semana} & Semana 10 (cronograma maestro) \\
+\textbf{Duracion estimada} & 4 horas de trabajo autonomo + 1 sesion presencial de tutoria + 8 minutos de presentacion oral por equipo \\
+\textbf{Caracter} & Preparatorio para la Practica Experimental PE-U3 de la Semana 11 \\
+\textbf{Base del trabajo} & Modelo de datos del Proyecto Fin de Curso (PFC) de uno de los integrantes del equipo \\
+\textbf{Calificacion} & 0 a 10 puntos, segun la rubrica detallada en la Seccion \ref{sec:rubrica} \\
+\end{tabularx}
+\end{tcolorbox}
+
+\begin{cajaobjetivo}
+Aplicar los conceptos de fragmentacion horizontal, vertical y mixta; replicacion sincrona y asincrona; control de concurrencia distribuido y recuperacion ante fallos, al modelo de datos del Proyecto Fin de Curso (PFC) del equipo, produciendo una propuesta de arquitectura distribuida tecnicamente justificada y lista para ser implementada en la practica experimental PE-U3 de la Semana 11.
+\end{cajaobjetivo}
+
+\subsection{Resultados de aprendizaje esperados}
+
+Al finalizar este taller el estudiante sera capaz de:
+\begin{enumerate}[label=\textbf{RA\arabic*:}]
+\item Identificar requisitos no funcionales que motivan la distribucion fisica de los datos en una aplicacion concreta.
+\item Decidir y justificar formalmente el tipo de fragmentacion (horizontal, vertical o mixta) o replicacion aplicable a cada tabla del esquema.
+\item Construir un diagrama de arquitectura de Base de Datos Distribuida (BDD) que muestre nodos, fragmentos, replicas y flujos.
+\item Seleccionar mecanismos de control de concurrencia y de recuperacion ante fallos coherentes con la posicion CAP / PACELC del sistema.
+\item Comunicar oralmente el diseno en un tiempo acotado y responder a observaciones tecnicas del docente.
+\end{enumerate}
+
+\subsection{Equipos PFC activos y dominios disponibles}
+
+Los siguientes equipos cuentan con modelos de datos validados y pueden usarse como base del taller:
+
+\renewcommand{\arraystretch}{1.2}
+\begin{xltabular}{\linewidth}{@{}lXl@{}}
+\toprule
+\textbf{Equipo} & \textbf{Dominio del PFC} & \textbf{Naturaleza} \\
+\midrule
+\textbf{AGLS} & TiendaTech -- Plataforma de comercio electronico de hardware con asistente de compatibilidad apoyado por inteligencia artificial. & E-commerce \\
+\textbf{BCEL} & SGA Escuela Provincias Unidas -- Sistema de gestion academica para institucion educativa de nivel basico. & Academico \\
+\textbf{FUVV} & Laboratorios Informaticos -- Sistema distribuido de reserva y monitoreo de laboratorios de computacion. & Reservas / IoT \\
+\textbf{ACC} & Soporte Tecnico de Internet -- Sistema de gestion de tickets de un Proveedor de Servicios de Internet (ISP). & Tickets / CRM \\
+\bottomrule
+\end{xltabular}
+
+\vspace{0.3em}
+
+\begin{cajaalerta}{Regla de seleccion del modelo}
+Cada equipo debera trabajar sobre el modelo de datos PFC de uno de sus integrantes, escogido por consenso y declarado expresamente en la portada del informe escrito. No se admiten modelos de datos hipoteticos, ajenos al PFC o tomados de Internet: la pertinencia depende de que el caso sea real, conocido y defendible por el equipo.
+\end{cajaalerta}
+
+\newpage
+% ============================================================
+\section{Que deben desarrollar los estudiantes}
+
+El taller produce un \textbf{paquete de diseno} compuesto por un informe escrito, un diagrama de arquitectura y una presentacion oral. Las nueve secciones siguientes describen, una a una, los componentes que el equipo debe construir.
+
+% ------------------------------------------------------------
+\subsection{Componente 1 -- Identificacion del modelo de datos PFC}
+
+\begin{cajadefinicion}{Que se espera}
+Una descripcion completa del modelo de datos del PFC sobre el que se trabajara, incluyendo:
+\begin{itemize}
+\item Identidad del integrante propietario del modelo (nombre y rol en el equipo PFC original).
+\item Diagrama Entidad-Relacion (E-R) o esquema relacional con todas las tablas, atributos, claves primarias y claves foraneas.
+\item Estimacion cualitativa de volumen y frecuencia de acceso de cada tabla (alta, media, baja).
+\item Identificacion preliminar de tablas maestras, transaccionales y de log.
+\end{itemize}
+\end{cajadefinicion}
+
+El equipo debe presentar el modelo \textbf{tal como esta hoy en su PFC}, sin modificarlo para acomodar la distribucion. Modificar el modelo para conveniencia del ejercicio invalida la pertinencia del trabajo (la BDD debe ajustarse al PFC, no al reves).
+
+\begin{cajaejemplo}{Ejemplo aplicado al equipo AGLS -- TiendaTech}
+Tablas esperadas (no exhaustivas): \codigo{CLIENTES}, \codigo{PRODUCTOS}, \codigo{CATEGORIAS}, \codigo{PEDIDOS}, \codigo{LINEAS\_PEDIDO}, \codigo{PAGOS}, \codigo{INVENTARIO}, \codigo{RECOMENDACIONES\_IA}. Para cada una: cuantas filas estima por mes, cuantas lecturas por minuto en hora pico, si se actualiza con frecuencia.
+\end{cajaejemplo}
+
+% ------------------------------------------------------------
+\subsection{Componente 2 -- Requisitos no funcionales y analisis del dominio}
+
+\begin{cajadefinicion}{Que se espera}
+Una tabla de cinco a ocho requisitos no funcionales (RNF) del PFC, escritos como afirmaciones verificables, que motivan la decision de distribuir. Cada RNF debe incluir:
+\begin{itemize}
+\item Identificador (\codigo{RNF-01}, \codigo{RNF-02}, \ldots).
+\item Categoria (latencia, disponibilidad, consistencia, escalabilidad, integridad, seguridad).
+\item Enunciado verificable (con metrica cuando aplique).
+\item Implicacion preliminar para el diseno de la BDD.
+\end{itemize}
+\end{cajadefinicion}
+
+\begin{cajaejemplo}{Ejemplo aplicado al equipo FUVV -- Laboratorios Informaticos}
+\codigo{RNF-01} (Latencia, $<$ 300 ms): La consulta del estado de un laboratorio debe responder en menos de 300 ms desde la sede de cualquier facultad. \emph{Implicacion: el estado debe vivir localmente en cada sede, no en un servidor central.}
+
+\codigo{RNF-02} (Disponibilidad, 99,5\%): El sistema debe permitir reservas locales aunque la red WAN entre sedes este caida. \emph{Implicacion: autonomia local, replicacion configurable.}
+\end{cajaejemplo}
+
+% ------------------------------------------------------------
+\subsection{Componente 3 -- Analisis CAP y posicionamiento PACELC}
+
+\begin{cajadefinicion}{Que se espera}
+Una declaracion explicita y justificada de la posicion del sistema en el espacio CAP y en el modelo PACELC, con las siguientes piezas:
+\begin{itemize}
+\item Declaracion de la posicion CAP: \textbf{CP} o \textbf{AP}, descartando explicitamente CA.
+\item Declaracion de la posicion PACELC: \textbf{PC/EC}, \textbf{PC/EL}, \textbf{PA/EC} o \textbf{PA/EL}.
+\item Argumento de por que el dominio del PFC obliga a esta posicion (no es preferencia: es derivacion de los RNF).
+\item Identificacion del compromiso aceptado y de sus consecuencias practicas (que se sacrifica y cuando se notara).
+\end{itemize}
+\end{cajadefinicion}
+
+\begin{cajaalerta}{Sobre el espacio CA del triangulo}
+La zona \textbf{CA} (consistencia y disponibilidad sin tolerar particiones) no es una opcion valida para un sistema distribuido real. Un equipo que declare CA pierde el criterio C3.2 de la rubrica, porque significa que el equipo no ha entendido el teorema de Brewer.
+\end{cajaalerta}
+
+% ------------------------------------------------------------
+\subsection{Componente 4 -- Estrategia de distribucion tabla por tabla}
+
+\begin{cajadefinicion}{Que se espera}
+Una tabla maestra de distribucion que, para cada relacion del esquema, declare:
+\begin{itemize}
+\item Estrategia aplicada: \emph{fragmentacion horizontal}, \emph{fragmentacion vertical}, \emph{fragmentacion mixta}, \emph{replicacion completa}, \emph{replicacion parcial} o \emph{centralizada}.
+\item Predicado o proyeccion formal en algebra relacional cuando exista fragmentacion.
+\item Asignacion concreta a nodos del sistema (en que sitio fisico vivira).
+\item Justificacion de la decision en una a tres lineas, derivada de los RNF y del analisis CAP.
+\end{itemize}
+\end{cajadefinicion}
+
+\subsubsection{Formato sugerido de la tabla maestra}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{xltabular}{\linewidth}{@{}lp{0.20\linewidth}p{0.27\linewidth}p{0.18\linewidth}X@{}}
+\toprule
+\textbf{Tabla} & \textbf{Estrategia} & \textbf{Predicado / Proyeccion} & \textbf{Nodos asignados} & \textbf{Justificacion} \\
+\midrule
+\codigo{CLIENTES} & Replicacion completa & --- & Sede1, Sede2, Sede3 & RNF-01: lectura inmediata desde cualquier sede; baja tasa de escritura. \\
+\codigo{RESERVAS} & Fragmentacion horizontal & $F_i = \sigma_{\text{sede}=i}(\text{RESERVAS})$ & 1 fragmento por sede & RNF-02: localidad de operacion, autonomia ante particion. \\
+\codigo{EMPLEADOS} & Fragmentacion vertical & $FV_1 = \pi_{\text{id,nombre,rol}}$; $FV_2 = \pi_{\text{id,salario,doc}}$ & RRHH, Nomina & RNF-06 (sensibilidad): separacion fisica de datos personales. \\
+\bottomrule
+\end{xltabular}
+
+\begin{cajacritica}{Errores frecuentes que penalizan la calidad}
+\begin{itemize}
+\item Usar \textbf{fragmentacion horizontal con predicados solapados} (viola la regla C3 de disjuncion).
+\item Hacer \textbf{fragmentacion vertical sin incluir la clave primaria} en todos los fragmentos (viola la regla C2 de reconstruccion).
+\item Replicar tablas \textbf{con alta tasa de escritura} (perdida de rendimiento; debe justificarse).
+\item Declarar fragmentacion sin escribir el \textbf{predicado formal} (operador $\sigma$ con condicion) o sin escribir la proyeccion ($\pi$ con atributos).
+\end{itemize}
+\end{cajacritica}
+
+% ------------------------------------------------------------
+\subsection{Componente 5 -- Verificacion de las tres reglas de correctitud}
+
+\begin{cajadefinicion}{Que se espera}
+Para cada tabla fragmentada, verificacion explicita y por escrito de las tres reglas de correctitud:
+\begin{itemize}
+\item \textbf{C1 -- Completitud:} todo dato de la relacion original esta en al menos un fragmento.
+\item \textbf{C2 -- Reconstruccion:} la relacion original se puede reconstruir con operadores del algebra relacional (UNION para horizontal, JOIN natural para vertical).
+\item \textbf{C3 -- Disjuncion:} en fragmentacion horizontal ningun dato aparece en dos fragmentos; en vertical solo la clave primaria se repite.
+\end{itemize}
+\end{cajadefinicion}
+
+Esta verificacion no es decorativa: es lo que distingue un diseno correcto de uno hipotetico. Una verificacion superficial o ausente baja el criterio C2.2 de la rubrica.
+
+% ------------------------------------------------------------
+\subsection{Componente 6 -- Diagrama de arquitectura distribuida}
+
+\begin{cajadefinicion}{Que se espera}
+Un diagrama elaborado en draw.io (\url{https://app.diagrams.net}) o herramienta equivalente (Excalidraw, Lucidchart, Mermaid) que muestre, con notacion clara:
+\begin{itemize}
+\item Los nodos fisicos o logicos del sistema (etiquetados con rol y ubicacion).
+\item Los fragmentos almacenados en cada nodo (etiquetados con la estrategia aplicada).
+\item Las replicas, con indicacion de la direccion de sincronizacion (sincrona o asincrona).
+\item El componente del catalogo distribuido y su estrategia (centralizado, replicado, parcial).
+\item Los flujos de consulta y de escritura entre nodos (lineas con etiqueta).
+\item La frontera del cliente (donde inicia la transparencia).
+\end{itemize}
+\end{cajadefinicion}
+
+\begin{cajaalerta}{Convenciones graficas obligatorias}
+\begin{itemize}
+\item Distinguir visualmente nodos productivos, replicas y catalogo (forma o color).
+\item Etiquetar cada linea con su tipo de comunicacion: \emph{sincrona}, \emph{asincrona}, \emph{eventual}.
+\item Incluir leyenda y titulo con autor (equipo) y fecha.
+\item Exportar como PNG o PDF de alta resolucion para incluir en el informe; ademas adjuntar el archivo fuente (\codigo{.drawio}, \codigo{.excalidraw} o equivalente).
+\end{itemize}
+\end{cajaalerta}
+
+\begin{cajaejemplo}{Sugerencia de elementos visuales}
+Use rectangulos con bordes gruesos para nodos productivos, rectangulos con borde discontinuo para replicas, hexagonos o cilindros para el catalogo. Use flechas continuas para sincronia, flechas discontinuas para asincronia, y flechas dobles para replicacion bidireccional.
+\end{cajaejemplo}
+
+% ------------------------------------------------------------
+\subsection{Componente 7 -- Estrategia de control de concurrencia}
+
+\begin{cajadefinicion}{Que se espera}
+Una declaracion del mecanismo de control de concurrencia adoptado y la razon de la eleccion:
+\begin{itemize}
+\item Mecanismo: \emph{Two-Phase Locking (2PL)}, \emph{2PL estricto}, \emph{Multi-Version Concurrency Control (MVCC)}, \emph{snapshot isolation}, \emph{quorum} (W+R$>$N) u otra variante reconocida.
+\item Mecanismo para transacciones distribuidas que cruzan nodos: \emph{Two-Phase Commit (2PC)}, \emph{Three-Phase Commit (3PC)}, \emph{consenso Raft} o equivalente.
+\item Estrategia frente a deadlocks distribuidos (ordenamiento global, timestamps Wait-Die / Wound-Wait, deteccion por grafo, timeout).
+\item Coherencia con la posicion CAP / PACELC declarada en el Componente 3.
+\end{itemize}
+\end{cajadefinicion}
+
+\begin{cajacritica}{Inconsistencias que penalizan la pertinencia}
+Declarar posicion \textbf{PC/EC} y luego adoptar \textbf{quorum eventualmente consistente} es una inconsistencia logica. Igualmente, declarar \textbf{PA/EL} y adoptar \textbf{2PC clasico} contradice la prioridad de disponibilidad. La rubrica penaliza explicitamente este tipo de incoherencia en el criterio C3.2.
+\end{cajacritica}
+
+% ------------------------------------------------------------
+\subsection{Componente 8 -- Plan de recuperacion ante fallos}
+
+\begin{cajadefinicion}{Que se espera}
+Un plan de recuperacion organizado en los seis mecanismos canonicos vistos en clase. Para cada uno, declarar si aplica al diseno y como:
+\begin{itemize}
+\item \textbf{Write-Ahead Log (WAL):} configuracion por nodo, tamano de log, politica de rotacion.
+\item \textbf{Checkpoints:} frecuencia y tipo (consistentes, difusos).
+\item \textbf{Logging del coordinador para 2PC:} ubicacion del log y politica de retencion.
+\item \textbf{Replicacion sincrona como mecanismo de failover:} cual replica asume el rol y como se promociona.
+\item \textbf{Snapshot + Point-In-Time Recovery (PITR):} frecuencia de snapshots, ventana de recuperacion.
+\item \textbf{Consenso (Raft / Paxos):} aplicable solo si el sistema lo usa nativamente (CockroachDB, etcd, MongoDB para elecciones).
+\end{itemize}
+\end{cajadefinicion}
+
+El plan debe contemplar al menos tres escenarios de falla y la respuesta esperada:
+\begin{enumerate}[label=\textbf{F\arabic*:}]
+\item Caida de un nodo no coordinador (el sistema debe seguir disponible para las operaciones que no involucran datos del nodo caido).
+\item Particion de red entre dos subconjuntos de nodos (cada subconjunto debe comportarse coherentemente con la posicion CAP declarada).
+\item Caida del coordinador durante la fase 2 de un 2PC (o equivalente: caida del lider Raft durante apend).
+\end{enumerate}
+
+% ------------------------------------------------------------
+\subsection{Componente 9 -- Presentacion oral (8 minutos)}
+
+\begin{cajadefinicion}{Que se espera}
+Una exposicion grupal de 8 minutos exactos, en la que cada integrante toma la palabra al menos una vez, organizada idealmente asi:
+\begin{itemize}
+\item \textbf{Minuto 1:} contexto y dominio del PFC; cual modelo se eligio y por que.
+\item \textbf{Minutos 2-3:} RNF clave y posicionamiento CAP / PACELC con justificacion.
+\item \textbf{Minutos 4-5:} estrategia de distribucion tabla por tabla, con la tabla maestra proyectada.
+\item \textbf{Minutos 6-7:} diagrama de arquitectura, control de concurrencia y plan de recuperacion.
+\item \textbf{Minuto 8:} cierre, compromisos asumidos y plan para la PE-U3.
+\end{itemize}
+Tras la presentacion, el docente entregara retroalimentacion tecnica de 3 a 5 minutos. El equipo debera incorporar los cambios solicitados \emph{antes} de la PE-U3 de la Semana 11.
+\end{cajadefinicion}
+
+\begin{cajaalerta}{Reglas de la presentacion}
+\begin{itemize}
+\item Tiempo total: 8 minutos. A los 8 minutos exactos se corta la presentacion; lo no expuesto no se evalua.
+\item Al menos un soporte visual (slides o el propio diagrama de arquitectura proyectado).
+\item Cada integrante interviene al menos una vez.
+\item El docente puede preguntar durante o al final; el silencio total ante una pregunta penaliza el criterio C4.3 de la rubrica.
+\end{itemize}
+\end{cajaalerta}
+
+% ------------------------------------------------------------
+\subsection{Componente 10 -- Declaracion de uso de inteligencia artificial}
+
+\begin{cajadefinicion}{Que se espera}
+Una seccion al final del informe escrito, de no menos de 80 palabras, que declare:
+\begin{itemize}
+\item Si se uso o no asistencia de IA (ChatGPT, Claude, Copilot, Gemini, NotebookLM u otra).
+\item Para que tareas concretas se uso (redaccion, diagrama, verificacion, busqueda bibliografica).
+\item Que herramienta se uso y con que prompt resumido (1-3 frases).
+\item Como se valido o reescribio el resultado para apropiarselo como equipo.
+\end{itemize}
+\end{cajadefinicion}
+
+La ausencia de esta declaracion descuenta directamente el criterio C1.6 de la rubrica (queda en cero). No declarar el uso real, si es detectado por el docente, sube el grado de penalizacion segun el reglamento academico vigente.
+
+\newpage
+% ============================================================
+\section{Entregables y formato}
+
+El equipo entrega un \textbf{paquete unico} compuesto por los siguientes archivos, nombrados como se indica y subidos al Aula Virtual antes del cierre del taller:
+
+\renewcommand{\arraystretch}{1.25}
+\begin{xltabular}{\linewidth}{@{}lXl@{}}
+\toprule
+\textbf{Codigo} & \textbf{Archivo} & \textbf{Formato} \\
+\midrule
+E1 & \codigo{FORM-TL-04\_\textless EQUIPO\textgreater\_Informe.pdf} -- Informe escrito principal con todos los componentes 1 a 8 y 10. & PDF \\
+E2 & \codigo{FORM-TL-04\_\textless EQUIPO\textgreater\_Diagrama.png} -- Diagrama de arquitectura BDD distribuida. & PNG (300 dpi) \\
+E3 & \codigo{FORM-TL-04\_\textless EQUIPO\textgreater\_Diagrama.drawio} -- Archivo fuente del diagrama. & .drawio / .excalidraw \\
+E4 & \codigo{FORM-TL-04\_\textless EQUIPO\textgreater\_Slides.pdf} -- Diapositivas de la presentacion oral. & PDF \\
+\bottomrule
+\end{xltabular}
+
+\vspace{0.3em}
+
+\begin{cajaalerta}{Reglas de entrega}
+\begin{itemize}
+\item Reemplazar \codigo{\textless EQUIPO\textgreater} por el identificador del equipo PFC: \codigo{AGLS}, \codigo{BCEL}, \codigo{FUVV} o \codigo{ACC}.
+\item Todos los entregables en un unico archivo comprimido \codigo{.zip} con el mismo prefijo.
+\item Cualquier archivo faltante penaliza la \textbf{Completitud} en la rubrica.
+\item El informe E1 debe llevar en la portada: nombres y matriculas de los integrantes, equipo PFC, integrante propietario del modelo y fecha.
+\end{itemize}
+\end{cajaalerta}
+
+% ============================================================
+\section{Cronograma del taller}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{xltabular}{\linewidth}{@{}lXl@{}}
+\toprule
+\textbf{Momento} & \textbf{Actividad} & \textbf{Duracion} \\
+\midrule
+T0 & Lectura individual del documento y revision del modelo PFC. & 1 h \\
+T1 & Trabajo en equipo: redaccion de Componentes 1-3 (modelo, RNF, CAP). & 1 h \\
+T2 & Trabajo en equipo: redaccion de Componentes 4-5 (tabla maestra de distribucion y reglas C1-C3). & 1,5 h \\
+T3 & Trabajo en equipo: elaboracion del diagrama en draw.io (Componente 6). & 1 h \\
+T4 & Trabajo en equipo: Componentes 7-8 (concurrencia y recuperacion) y declaracion de IA (Componente 10). & 1 h \\
+T5 & Sesion presencial: presentacion oral de 8 minutos por equipo + retroalimentacion del docente. & 12 min por equipo \\
+T6 & Incorporacion de retroalimentacion antes de la PE-U3 de la Semana 11. & A criterio del equipo \\
+\bottomrule
+\end{xltabular}
+
+\newpage
+% ============================================================
+\section{Rubrica de evaluacion}
+\label{sec:rubrica}
+
+\subsection{Principios de la evaluacion}
+
+\begin{cajacritica}{Regla central de la rubrica}
+\textbf{La ausencia de cualquier indicador en el entregable califica ese indicador con CERO.} Esto no es negociable: el docente no infiere, no completa, no asume. Lo que no esta verificable en el informe escrito, en el diagrama o en la presentacion oral, no existe a efectos de evaluacion.
+\end{cajacritica}
+
+\subsection{Estructura de la rubrica}
+
+La rubrica se organiza en \textbf{cuatro dimensiones} con pesos diferenciados:
+
+\renewcommand{\arraystretch}{1.25}
+\begin{xltabular}{\linewidth}{@{}llXl@{}}
+\toprule
+\textbf{Dim.} & \textbf{Nombre} & \textbf{Foco principal} & \textbf{Peso} \\
+\midrule
+\textbf{D1} & Completitud & Existencia y presencia de todos los componentes solicitados. & 25\% \\
+\textbf{D2} & Calidad & Correccion tecnica, rigor formal y nivel del trabajo entregado. & 30\% \\
+\textbf{D3} & Pertinencia & Coherencia con el dominio del PFC y entre decisiones de diseno. & 25\% \\
+\textbf{D4} & Claridad en la explicacion / justificacion & Argumentacion escrita y exposicion oral. & 20\% \\
+\bottomrule
+\end{xltabular}
+
+\subsection{Escala de niveles (0 -- 4)}
+
+Cada indicador se califica con un nivel de 0 a 4 segun la siguiente descripcion general. La nota final del taller se calcula con la formula:
+\[
+\text{Nota} = \frac{\sum_{i} (\text{peso}_i \times \text{nivel}_i)}{4} \times 10
+\]
+donde la sumatoria recorre los indicadores de las cuatro dimensiones, y cada peso esta expresado como fraccion (la suma de pesos de los indicadores dentro de cada dimension equivale al peso total de esa dimension).
+
+\renewcommand{\arraystretch}{1.3}
+\begin{xltabular}{\linewidth}{@{}clX@{}}
+\toprule
+\textbf{Nivel} & \textbf{Etiqueta} & \textbf{Descriptor general} \\
+\midrule
+\textbf{4} & Excelente & Cumple plenamente con evidencia clara y suficiente; supera lo minimo solicitado. \\
+\textbf{3} & Bueno & Cumple en lo esencial; presenta omisiones menores o imprecisiones puntuales que no comprometen la idea principal. \\
+\textbf{2} & Aceptable & Cumple parcialmente; omisiones notables o errores que afectan la utilidad del entregable pero permiten reconocer el intento. \\
+\textbf{1} & Insuficiente & Cumple solo formalmente; el contenido es vago, generico o con errores graves. \\
+\textbf{0} & Ausente / no verificable & \textbf{El indicador no aparece en el entregable o aparece de forma que no se puede verificar tecnicamente.} \\
+\bottomrule
+\end{xltabular}
+
+\newpage
+\subsection{Dimension 1 -- Completitud (peso total: 25\%)}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{xltabular}{\linewidth}{@{}lp{0.36\linewidth}Xl@{}}
+\toprule
+\textbf{Cod.} & \textbf{Indicador} & \textbf{Que se verifica} & \textbf{Peso} \\
+\midrule
+\textbf{C1.1} & Identificacion del modelo PFC & El informe presenta el modelo E-R o esquema relacional del PFC del integrante seleccionado, con tablas, atributos, claves y relaciones. & 4\% \\
+\textbf{C1.2} & Requisitos no funcionales documentados & Aparecen entre 5 y 8 RNF identificados, categorizados y con metrica verificable cuando aplica. & 3\% \\
+\textbf{C1.3} & Tabla maestra de distribucion completa & Todas las tablas del esquema aparecen en la tabla maestra con su estrategia declarada. & 5\% \\
+\textbf{C1.4} & Diagrama de arquitectura entregado & Existe el archivo de diagrama en formato exportado e incluye el archivo fuente. & 4\% \\
+\textbf{C1.5} & Plan de recuperacion presentado & Aparecen los seis mecanismos canonicos discutidos (cada uno con \emph{aplica} o \emph{no aplica} justificado) y al menos tres escenarios de falla. & 4\% \\
+\textbf{C1.6} & Declaracion de uso de inteligencia artificial & La seccion de declaracion existe, no esta vacia, identifica herramienta y prompt resumido. & 2\% \\
+\textbf{C1.7} & Slides de la presentacion entregados & Existe el archivo \codigo{.pdf} con las diapositivas usadas en la exposicion oral. & 3\% \\
+\bottomrule
+\end{xltabular}
+
+\subsection{Dimension 2 -- Calidad (peso total: 30\%)}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{xltabular}{\linewidth}{@{}lp{0.36\linewidth}Xl@{}}
+\toprule
+\textbf{Cod.} & \textbf{Indicador} & \textbf{Que se verifica} & \textbf{Peso} \\
+\midrule
+\textbf{C2.1} & Formalismo del algebra relacional & Los predicados de fragmentacion horizontal se escriben con $\sigma$ y condicion logica; las proyecciones verticales con $\pi$ y conjunto de atributos; sin ambiguedad. & 6\% \\
+\textbf{C2.2} & Verificacion de C1, C2, C3 & Para cada tabla fragmentada se verifican explicita y correctamente las tres reglas de correctitud (completitud, reconstruccion, disjuncion). & 6\% \\
+\textbf{C2.3} & Calidad grafica del diagrama & El diagrama es legible, tiene leyenda, titulo, etiquetas en flechas; distingue tipos de nodos y de sincronizacion; alcanza estandar profesional. & 6\% \\
+\textbf{C2.4} & Especificidad del control de concurrencia & El mecanismo de concurrencia esta nombrado con su denominacion canonica (2PL estricto, MVCC, etc.), no como descripcion vaga. & 4\% \\
+\textbf{C2.5} & Especificidad del plan de recuperacion & Los mecanismos del plan estan parametrizados (frecuencia de checkpoint, ventana PITR, ubicacion del log) y no son enunciados genericos. & 4\% \\
+\textbf{C2.6} & Redaccion academica del informe & El informe esta libre de errores graves de ortografia y sintaxis; usa terminologia tecnica correcta; tiene estructura clara. & 4\% \\
+\bottomrule
+\end{xltabular}
+
+\subsection{Dimension 3 -- Pertinencia (peso total: 25\%)}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{xltabular}{\linewidth}{@{}lp{0.36\linewidth}Xl@{}}
+\toprule
+\textbf{Cod.} & \textbf{Indicador} & \textbf{Que se verifica} & \textbf{Peso} \\
+\midrule
+\textbf{C3.1} & Modelo PFC autentico y reconocible & El modelo de datos es del PFC declarado del integrante, no inventado ni modificado para conveniencia del ejercicio; los integrantes pueden defenderlo. & 5\% \\
+\textbf{C3.2} & Coherencia entre CAP / PACELC y mecanismos & La posicion CAP / PACELC es consistente con el mecanismo de concurrencia, con la estrategia de replicacion y con el plan de recuperacion. & 6\% \\
+\textbf{C3.3} & Pertinencia de la fragmentacion por tabla & La eleccion de fragmentacion horizontal, vertical o mixta para cada tabla esta motivada por el patron de acceso real del PFC, no por gusto del equipo. & 5\% \\
+\textbf{C3.4} & Pertinencia de la replicacion & Las tablas declaradas como replicadas son efectivamente de lectura intensiva y baja escritura; o se justifica por que se replica una tabla de alta escritura. & 4\% \\
+\textbf{C3.5} & Viabilidad tecnologica & Las tecnologias propuestas (PostgreSQL, CockroachDB, MongoDB, Cassandra, etc.) son viables para el dominio y para el equipo, no aspiracionales sin soporte. & 5\% \\
+\bottomrule
+\end{xltabular}
+
+\subsection{Dimension 4 -- Claridad en la explicacion / justificacion (peso total: 20\%)}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{xltabular}{\linewidth}{@{}lp{0.36\linewidth}Xl@{}}
+\toprule
+\textbf{Cod.} & \textbf{Indicador} & \textbf{Que se verifica} & \textbf{Peso} \\
+\midrule
+\textbf{C4.1} & Justificacion de cada decision de fragmentacion & En la tabla maestra cada decision tiene justificacion derivada de los RNF o del analisis CAP, no descripcion sin causa. & 5\% \\
+\textbf{C4.2} & Claridad de la exposicion oral & La presentacion se entiende, sigue la estructura sugerida, respeta el tiempo de 8 minutos y los integrantes hablan con propiedad. & 6\% \\
+\textbf{C4.3} & Respuesta a preguntas tecnicas & Ante preguntas del docente el equipo responde con argumentos del propio diseno, no con generalidades; aun si la respuesta es matizada o admite incertidumbre, es articulada. & 5\% \\
+\textbf{C4.4} & Participacion equilibrada & Todos los integrantes intervienen en la exposicion al menos una vez con contenido tecnico, no solo introducciones o agradecimientos. & 4\% \\
+\bottomrule
+\end{xltabular}
+
+\subsection{Calculo de la nota final}
+
+Considerando los pesos como porcentajes en base 100, la formula operativa para esta rubrica es:
+
+\[
+\text{Nota} = \frac{\sum_{i=1}^{n} \left( p_i \times l_i \right)}{4 \times 100} \times 10
+\]
+donde $p_i$ es el peso porcentual del indicador $i$ (en numero entero, por ejemplo 6 para C2.1), $l_i$ es el nivel obtenido por ese indicador (0 a 4) y $n$ es el numero total de indicadores. La suma de pesos $\sum p_i = 100$.
+
+\begin{cajaejemplo}{Ejemplo de calculo}
+Un equipo obtiene nivel \textbf{4} en C1.1 (peso 4) y nivel \textbf{2} en C2.1 (peso 6). Aporte parcial: $(4 \times 4) + (6 \times 2) = 16 + 12 = 28$. Si esos son los unicos dos indicadores evaluados, la nota seria $28 / (4 \times 100) \times 10 = 0{,}70$. La nota real surge de sumar la contribucion de los 22 indicadores.
+\end{cajaejemplo}
+
+\begin{cajacritica}{Penalizaciones automaticas adicionales}
+\begin{itemize}
+\item Modelo de datos PFC ajeno al equipo o claramente modificado para conveniencia del ejercicio: C3.1 queda en \textbf{0} de manera definitiva.
+\item Diagrama no entregado o ilegible (resolucion baja, sin leyenda, sin etiquetas): C1.4 queda en \textbf{0} y C2.3 maximo en nivel \textbf{1}.
+\item Presentacion oral no realizada por el equipo en la fecha asignada: todos los indicadores de la Dimension 4 quedan en \textbf{0}.
+\item Declaracion de uso de IA ausente o vacia: C1.6 queda en \textbf{0}. Declaracion falsa (uso detectado y no declarado) puede activar el procedimiento academico institucional.
+\end{itemize}
+\end{cajacritica}
+
+\newpage
+% ============================================================
+\section{Checklist de autoevaluacion previo a la entrega}
+
+Antes de subir el paquete al Aula Virtual, marque cada item; si alguno queda sin marcar, devuelva el trabajo al equipo:
+
+\renewcommand{\arraystretch}{1.3}
+\begin{xltabular}{\linewidth}{@{}cXc@{}}
+\toprule
+\textbf{\#} & \textbf{Item a verificar} & \textbf{Listo} \\
+\midrule
+1 & El modelo de datos PFC aparece completo en el informe (tablas, atributos, claves). & $\Box$ \\
+2 & Hay entre 5 y 8 RNF redactados como afirmaciones verificables. & $\Box$ \\
+3 & Se declara explicitamente la posicion CAP y la PACELC con justificacion. & $\Box$ \\
+4 & La tabla maestra de distribucion cubre todas las tablas del esquema sin excepcion. & $\Box$ \\
+5 & Cada decision de fragmentacion incluye su predicado formal ($\sigma$ con condicion o $\pi$ con atributos). & $\Box$ \\
+6 & Se verifican las tres reglas de correctitud (C1, C2, C3) para cada tabla fragmentada. & $\Box$ \\
+7 & El diagrama incluye nodos, fragmentos, replicas, catalogo, leyenda y titulo. & $\Box$ \\
+8 & El archivo fuente del diagrama (\codigo{.drawio} o equivalente) esta adjunto. & $\Box$ \\
+9 & El mecanismo de control de concurrencia tiene nombre canonico (no descripcion vaga). & $\Box$ \\
+10 & El plan de recuperacion considera los seis mecanismos y al menos tres escenarios de falla. & $\Box$ \\
+11 & Existe la declaracion de uso de IA, no esta vacia y nombra herramienta y prompt. & $\Box$ \\
+12 & Las diapositivas de la presentacion estan exportadas como PDF. & $\Box$ \\
+13 & Los archivos siguen la convencion de nombres con el prefijo \codigo{FORM-TL-04\_\textless EQUIPO\textgreater\_}. & $\Box$ \\
+14 & El informe principal lleva portada con nombres, equipo, integrante propietario y fecha. & $\Box$ \\
+15 & El zip final agrupa los cuatro entregables (E1 a E4). & $\Box$ \\
+\bottomrule
+\end{xltabular}
+
+% ============================================================
+\section{Referencias}
+
+\begin{enumerate}[label={[\arabic*]}]
+\item M. T. Ozsu and P. Valduriez, \textit{Principles of Distributed Database Systems}, 4th ed. Cham: Springer, 2020. doi: \href{https://doi.org/10.1007/978-3-030-26253-2}{10.1007/978-3-030-26253-2}.
+
+\item M. Kleppmann, \textit{Designing Data-Intensive Applications}. Sebastopol, CA: O'Reilly Media, 2017. ISBN: 978-1-4493-7332-0.
+
+\item E. Brewer, ``CAP twelve years later: How the rules have changed,'' \textit{IEEE Computer}, vol. 45, no. 2, pp. 23--29, Feb. 2012. doi: \href{https://doi.org/10.1109/MC.2012.37}{10.1109/MC.2012.37}.
+
+\item D. J. Abadi, ``Consistency tradeoffs in modern distributed database system design: CAP is only part of the story,'' \textit{IEEE Computer}, vol. 45, no. 2, pp. 37--42, Feb. 2012. doi: \href{https://doi.org/10.1109/MC.2012.33}{10.1109/MC.2012.33}.
+
+\item D. Ongaro and J. Ousterhout, ``In search of an understandable consensus algorithm,'' in \textit{Proc. USENIX Annual Technical Conference (ATC)}, Philadelphia, PA, Jun. 2014, pp. 305--319. ISBN: 978-1-931971-10-2.
+
+\item M. van Steen and A. S. Tanenbaum, \textit{Distributed Systems}, 4th ed. Maarten van Steen, 2025. ISBN: 978-90-815406-3-6.
+
+\end{enumerate}
+
+\vspace{1cm}
+\begin{center}
+\color{uteqGray}\itshape\small Documento elaborado por la catedra de Aplicaciones Distribuidas (ISR-701). UTEQ. 2026.
+\end{center}
+
+\end{document}

@@ -1,0 +1,55 @@
+% =====================================================================
+%  Vista conceptual del sistema (Figura 1 tipo modelo)
+%  Ubicacion: assets/figuras/vista-conceptual.tex
+%  Ejemplo aplicado al Sistema de Gestion de Tutorias Academicas.
+% =====================================================================
+
+\documentclass[11pt,a4paper]{article}
+\input{../../docs/entregas/preamble_ingreq}
+
+\begin{document}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    every node/.style={font=\small,align=center},
+    actor/.style={draw,circle,minimum size=1.4cm,fill=uteqverde!20,thick},
+    modulo/.style={draw,rectangle,rounded corners=3pt,minimum width=2.7cm,minimum height=1cm,fill=uteqdorado!25,thick},
+    externo/.style={draw,rectangle,minimum width=2cm,minimum height=1cm,fill=blue!8,thick,dashed},
+    sistema/.style={draw,rectangle,rounded corners=6pt,minimum width=10cm,minimum height=6cm,fill=verdeclaro,thick},
+    lineamodulo/.style={-Latex,thick,uteqverde!70!black},
+]
+
+% Sistema central
+\node[sistema] (sistema) at (0,0)
+    {\vspace{-5cm}\textbf{\Large SISTEMA DE GESTI\'ON DE}\\ \textbf{\Large TUTOR\'IAS ACAD\'EMICAS}};
+
+% Modulos internos
+\node[modulo] (modA) at (-3, 1.2) {M\'odulo de\\solicitud};
+\node[modulo] (modB) at ( 0, 1.2) {M\'odulo de\\disponibilidad};
+\node[modulo] (modC) at ( 3, 1.2) {M\'odulo de\\notificaci\'on};
+\node[modulo] (modD) at (-1.5,-0.5) {M\'odulo de\\registro};
+\node[modulo] (modE) at ( 1.5,-0.5) {M\'odulo de\\reportes};
+\node[modulo] (modF) at ( 0,-1.9) {M\'odulo de\\integraci\'on SGA};
+
+% Actores externos
+\node[actor] (est) at (-6.5, 2.5) {Estudiante};
+\node[actor] (doc) at ( 6.5, 2.5) {Docente};
+\node[actor] (coord) at (0, 4.2) {Coordinaci\'on\\acad\'emica};
+
+% Sistema externo SGA
+\node[externo] (sga) at (0,-4) {SGA UTEQ};
+
+% Flechas actores <-> sistema
+\draw[lineamodulo] (est) -- (modA.west);
+\draw[lineamodulo] (doc) -- (modB.east);
+\draw[lineamodulo] (coord) -- (modE.north);
+\draw[lineamodulo,dashed] (sga) -- (modF.south);
+
+\end{tikzpicture}
+\caption{Vista conceptual del sistema propuesto de gesti\'on de tutor\'ias acad\'emicas
+(adaptado de la Figura~1 del proyecto modelo).}
+\label{fig:vistaconceptual}
+\end{figure}
+
+\end{document}

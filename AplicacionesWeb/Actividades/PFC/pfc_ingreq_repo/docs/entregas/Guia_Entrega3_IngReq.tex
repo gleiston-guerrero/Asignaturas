@@ -1,0 +1,332 @@
+\documentclass[11pt,a4paper]{article}
+\input{preamble_ingreq}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textcolor{uteqverde}{Ingenier\'ia de Requisitos --- Cuarto nivel --- PPA 2026-2027}}
+\rhead{\footnotesize\textcolor{uteqverde}{PFC --- Gu\'ia de la Tercera Entrega}}
+\rfoot{\thepage}
+\lfoot{\footnotesize UTEQ --- FCCDD --- Software}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\hypersetup{
+    pdftitle={Guia de la Tercera Entrega del PFC --- Ingenieria de Requisitos},
+    pdfauthor={Dr. Gleiston Guerrero Ulloa},
+    pdfsubject={Tercera Entrega del Proyecto Fin de Curso},
+    pdfkeywords={PFC, Ingenieria de Requisitos, UML, casos de uso, i*, SysML, validacion, UTEQ}
+}
+
+\begin{document}
+
+\begin{center}
+    \vspace*{1.2cm}
+    {\Large\bfseries\textcolor{uteqverde}{UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}}\\[4pt]
+    {\large Facultad de Ciencias de la Computaci\'on y Dise\~no Digital}\\[2pt]
+    {\large Carrera de Ingenier\'ia de Software}\\[22pt]
+
+    {\LARGE\bfseries Gu\'ia de la Tercera Entrega del}\\[6pt]
+    {\LARGE\bfseries Proyecto Fin de Curso (PFC)}\\[16pt]
+
+    {\large Ingenier\'ia de Requisitos --- Cuarto nivel}\\[2pt]
+    {\large Per\'iodo Acad\'emico Presencial 2026-2027}\\[22pt]
+
+    \begin{tcolorbox}[colback=uteqverde!8,colframe=uteqverde,arc=3pt,
+                      width=0.88\textwidth,boxrule=0.8pt]
+        \centering
+        \textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[2pt]
+        \texttt{gguerrero@uteq.edu.ec}\\[6pt]
+        \textbf{Etiqueta objetivo:} \texttt{v0.8.0-rc}\\[2pt]
+        \textbf{Fecha de cierre:} viernes de la semana 12\\[2pt]
+        \textbf{Continua desde:} Entrega 2 (\texttt{v0.5.0}, semana 8)\\[2pt]
+        \textbf{Precede a:} Entrega Final (\texttt{v1.0.0}, semana 16)\\[2pt]
+        \textbf{Referencia de calidad:} \texttt{IngReq-Modelo.pdf} secciones 5.5, 5.6 y Anexo E
+    \end{tcolorbox}
+
+    \vfill
+    {\small Quevedo --- Los R\'ios --- Ecuador}\\[2pt]
+    {\small 2026}
+\end{center}
+
+\newpage
+\tableofcontents
+\newpage
+
+% =====================================================================
+%  1. NATURALEZA
+% =====================================================================
+\section{Naturaleza y ubicaci\'on temporal de la Tercera Entrega}
+
+La Tercera Entrega es el hito de modelado y validaci\'on intermedia del PFC. Convierte la especificaci\'on Volere de la Entrega 2 en modelos gr\'aficos verificables y ejecuta una segunda ronda de validaci\'on con \emph{stakeholders} para confirmar la pertinencia, claridad y completitud del an\'alisis. Se cierra el viernes de la semana 12 con la etiqueta \texttt{v0.8.0-rc} (\emph{release candidate}) sobre el repositorio p\'ublico del equipo.
+
+La entrega pivota entre dos disciplinas complementarias. Por un lado, el modelado UML (\emph{Unified Modeling Language}) codificado por Booch, Rumbaugh y Jacobson~\cite{booch2005uml} y explicado did\'acticamente por Fowler~\cite{fowler2018uml} y Larman~\cite{larman2003uml}, que se emplea para describir el comportamiento, la estructura y la organizaci\'on l\'ogica y f\'isica del sistema propuesto. Por otro lado, los diagramas de an\'alisis de requisitos, que extienden UML para tratar expl\'icitamente los objetivos y dependencias de los actores: contexto (Kossiakoff~\cite{kossiakoff2011systems}, Robertson y Robertson~\cite{robertson2012mastering}), dependencia estrat\'egica del marco i* (Yu~\cite{yu1997istar}, Dardenne y van Lamsweerde~\cite{dardenne1993kaos}) y requisitos SysML (Hause~\cite{hause2006sysml}, Weilkiens~\cite{weilkiens2011sysml}).
+
+\begin{cajadefinicion}{Objetivos concretos de la Tercera Entrega}
+\begin{enumerate}
+    \item Producir los seis diagramas UML del proyecto modelo (casos de uso, clases, actividad, secuencia, componentes, despliegue), articulados por m\'odulo y con calidad tipogr\'afica.
+    \item Producir los tres diagramas de an\'alisis de requisitos (contexto, dependencia estrat\'egica i*, requisitos SysML).
+    \item Redactar los casos de uso detallados en plantilla Cockburn con niveles 1--4.
+    \item Ejecutar una segunda ronda de validaci\'on con \emph{stakeholders} y actualizar la especificaci\'on donde corresponda.
+    \item Producir la versi\'on \texttt{v0.8.0-rc} del documento acad\'emico integrado.
+\end{enumerate}
+\end{cajadefinicion}
+
+% =====================================================================
+%  2. BLOQUE A --- DIAGRAMAS UML
+% =====================================================================
+\section{Bloque A --- Modelado UML}
+
+\subsection{Herramienta y formato exigido}
+
+El equipo utilizar\'a \emph{Visual Paradigm Community Edition} o \emph{draw.io} para dise\~nar los diagramas. Los archivos nativos (\texttt{.vpp} o \texttt{.drawio}) deben versionarse en \texttt{assets/uml/} junto con la exportaci\'on en formato PNG con resoluci\'on m\'inima de 300 puntos por pulgada. Cada diagrama debe tener numeraci\'on \'unica, t\'itulo descriptivo y ser referenciado desde el texto del documento acad\'emico usando \texttt{\textbackslash ref}~\cite{fowler2018uml,larman2003uml}.
+
+\subsection{Diagrama de casos de uso}
+
+Los casos de uso describen las funcionalidades del sistema desde la perspectiva del usuario y estructuran la interacci\'on con los actores~\cite{cockburn2001usecases,fowler2018uml}. El equipo producir\'a al menos un diagrama de casos de uso general que abarque el sistema completo y un diagrama por m\'odulo funcional. El proyecto modelo aporta cinco diagramas: general, m\'odulo de gesti\'on de disponibilidad y preferencia, m\'odulo de gesti\'on de solicitud de tutor\'ia, m\'odulo de reportes y m\'odulo de registro y seguimiento (Figuras~2 a 6 del modelo).
+
+Cada caso de uso identificado ir\'a acompa\~nado de una ficha detallada en plantilla Cockburn, con los siguientes campos: nombre, actor principal, actores secundarios, precondiciones, postcondiciones, escenario principal (numerado paso a paso), escenarios alternativos y de excepci\'on, requisitos especiales de rendimiento o interfaz. El proyecto modelo dedica su Anexo E a estas fichas.
+
+\begin{cajaentregable}{Entregable A.1 --- Casos de uso}
+Archivos obligatorios:
+\begin{itemize}
+    \item \texttt{assets/uml/casos-uso/} con archivos \texttt{.vpp} o \texttt{.drawio} y sus exportaciones PNG.
+    \item \texttt{docs/arquitectura/uml/CASOS-USO.md}: descripci\'on textual y referencia a cada diagrama.
+    \item \texttt{docs/arquitectura/uml/CASOS-USO-DETALLADOS.tex}: fichas Cockburn compilables a PDF (m\'inimo doce casos de uso detallados).
+\end{itemize}
+\end{cajaentregable}
+
+\subsection{Diagrama de clases (nivel de an\'alisis)}
+
+El diagrama de clases representa las entidades del dominio, sus atributos, sus relaciones y su multiplicidad. En esta entrega el equipo produce el diagrama a \emph{nivel de an\'alisis}, no de dise\~no: no se anotan tipos primitivos de lenguaje espec\'ifico ni implementaciones; el objetivo es reflejar el modelo del dominio~\cite{fowler2018uml,larman2003uml}. Se identificar\'an al menos ocho clases relevantes con al menos tres atributos cada una, y las relaciones se etiquetar\'an correctamente (asociaci\'on, agregaci\'on, composici\'on, herencia, dependencia).
+
+\subsection{Diagramas de actividad}
+
+Los diagramas de actividad representan flujos de trabajo y comportamientos concurrentes. Se producir\'a un diagrama de actividad general y uno por m\'odulo funcional (an\'alogo al modelo que aporta cinco: general, gesti\'on de disponibilidad y preferencias, reportes e integraci\'on, gesti\'on de solicitud, registro y seguimiento). Los diagramas deben incluir \emph{swimlanes} para separar responsabilidades de actores, y usar correctamente los nodos de decisi\'on (rombo), de fork y de join~\cite{ahmad2019activity,paech1999activity}.
+
+\subsection{Diagrama de secuencia}
+
+El diagrama de secuencia representa las interacciones ordenadas en el tiempo entre actores y objetos del sistema. El equipo producir\'a al menos cuatro diagramas de secuencia correspondientes a los flujos m\'as cr\'iticos identificados en los casos de uso (por ejemplo el flujo principal del caso de uso m\'as usado). El proyecto modelo no reporta expl\'icitamente diagramas de secuencia en su Secci\'on~5.5 (por decisi\'on de sus autores), pero esta gu\'ia s\'i los exige para elevar la calidad t\'ecnica del PFC del equipo.
+
+\subsection{Diagrama de componentes}
+
+El diagrama de componentes describe la organizaci\'on l\'ogica del sistema en m\'odulos software con interfaces expl\'icitas. Se producir\'a al menos un diagrama de componentes que muestre la separaci\'on entre presentaci\'on, l\'ogica de negocio, acceso a datos y componentes externos (por ejemplo integraci\'on con SGA, canal de notificaci\'on WhatsApp, canal de correo electr\'onico). El proyecto modelo aporta uno (Figura~12 del modelo).
+
+\subsection{Diagrama de despliegue}
+
+El diagrama de despliegue muestra la organizaci\'on f\'isica del sistema: nodos de hardware, servidores y su conexi\'on. Es un diagrama a nivel conceptual: no se exige nombres de proveedores ni marcas espec\'ificas. Se identificar\'an los nodos m\'inimos: cliente web, servidor de aplicaciones, servidor de base de datos, servidor de notificaciones y cualquier sistema externo integrado. El proyecto modelo aporta uno (Figura~13 del modelo).
+
+\begin{cajaentregable}{Entregable A.2 --- Diagramas UML completos}
+Archivos obligatorios en \texttt{assets/uml/} y sus documentaciones en \texttt{docs/arquitectura/uml/}:
+\begin{itemize}
+    \item Casos de uso: general + $\geq 4$ por m\'odulo.
+    \item Clases: al menos ocho clases con relaciones.
+    \item Actividad: general + $\geq 4$ por m\'odulo.
+    \item Secuencia: $\geq 4$ para flujos cr\'iticos.
+    \item Componentes: al menos uno completo.
+    \item Despliegue: al menos uno completo.
+\end{itemize}
+\end{cajaentregable}
+
+% =====================================================================
+%  3. BLOQUE B --- DIAGRAMAS DE ANALISIS
+% =====================================================================
+\section{Bloque B --- Diagramas de an\'alisis de requisitos}
+
+\subsection{Diagrama de contexto}
+
+El diagrama de contexto define los l\'imites del sistema y lo representa como una entidad \'unica que interact\'ua con su entorno mediante flujos de datos~\cite{kossiakoff2011systems,robertson2012mastering}. Se producir\'a un diagrama de contexto donde el sistema aparece como una caja central, rodeado de todos los actores externos (usuarios, sistemas externos, reguladores) y los flujos de informaci\'on entre ellos y el sistema.
+
+\subsection{Diagrama de dependencia estrat\'egica (marco i*)}
+
+El diagrama de dependencia estrat\'egica del marco i*~\cite{yu1997istar,dardenne1993kaos} captura el ``porqu\'e'' de los requisitos al modelar c\'omo un actor depende de otro para lograr un objetivo, completar una tarea o acceder a un recurso. Se producir\'a al menos un diagrama SD (\emph{Strategic Dependency}) con todos los actores del sistema y sus dependencias mutuas.
+
+\begin{cajaconcepto}{Elementos b\'asicos del diagrama i* SD}
+\begin{itemize}
+    \item \textbf{Actor} (c\'irculo con nombre): entidad con intencionalidad, capaz de perseguir objetivos.
+    \item \textbf{Depender / Dependee}: el actor que necesita algo (Depender) y el actor del que depende (Dependee).
+    \item \textbf{Depend\'encia de objetivo} (\'ovalo): un actor depende de otro para lograr una meta declarativa.
+    \item \textbf{Dependencia de tarea} (hex\'agono): un actor depende de otro para ejecutar una tarea concreta.
+    \item \textbf{Dependencia de recurso} (rect\'angulo): un actor depende de otro para obtener un recurso f\'isico o de informaci\'on.
+    \item \textbf{Dependencia de \emph{softgoal}} (\'ovalo con l\'inea ondulada): objetivo cualitativo sin criterio claro de logro (por ejemplo ``satisfacci\'on del usuario'').
+\end{itemize}
+\end{cajaconcepto}
+
+\subsection{Diagrama de requisitos SysML}
+
+El diagrama de requisitos de SysML aborda las deficiencias de UML para el modelado expl\'icito de requisitos: permite jerarquizar los requisitos, relacionarlos mediante \emph{derive}, \emph{verify}, \emph{copy}, \emph{trace} y \emph{refine}, y trazarlos hasta sus fuentes y sus verificaciones~\cite{hause2006sysml,weilkiens2011sysml}. Se producir\'a al menos un diagrama SysML con los requisitos principales del sistema y sus relaciones jerarquicas. Cada requisito representado como una caja debe usar el estereotipo \texttt{<<requirement>>} con los campos \emph{id} y \emph{text}.
+
+\begin{cajaentregable}{Entregable B.1 --- Diagramas de an\'alisis}
+Archivos obligatorios:
+\begin{itemize}
+    \item \texttt{assets/uml/analisis/contexto.png} + fuente.
+    \item \texttt{assets/uml/analisis/istar-sd.png} + fuente.
+    \item \texttt{assets/uml/analisis/sysml-req.png} + fuente.
+    \item \texttt{docs/arquitectura/analisis/README.md}: descripci\'on textual y referencia a cada diagrama.
+\end{itemize}
+\end{cajaentregable}
+
+% =====================================================================
+%  4. BLOQUE C --- VALIDACION CON STAKEHOLDERS
+% =====================================================================
+\section{Bloque C --- Validaci\'on de requisitos con \emph{stakeholders}}
+
+La validaci\'on de requisitos garantiza que las funcionalidades propuestas est\'an alineadas con las necesidades reales de los interesados y con los objetivos institucionales del sistema~\cite{sommerville2011software,wiegers2013software,dick2017requirements}. Una validaci\'on temprana evita errores costosos y mejora la calidad del producto final. El equipo aplicar\'a en esta entrega tres t\'ecnicas de validaci\'on complementarias.
+
+\subsection{Revisi\'on de requisitos (\emph{Requirement Reviews})}
+
+Se convocar\'a al menos una revisi\'on formal de requisitos con los mismos \emph{stakeholders} entrevistados en la Entrega 2. Durante la revisi\'on se les presentar\'a la especificaci\'on Volere y los diagramas UML relevantes. El objetivo es verificar completitud, consistencia y claridad de los enunciados. Los hallazgos se registrar\'an en \texttt{docs/requisitos/validacion/REVISION-<fecha>.md} con la lista de asistentes, los hallazgos crudos, la clasificaci\'on de cada hallazgo (correcci\'on, aclaraci\'on, adici\'on, eliminaci\'on) y las decisiones adoptadas por el equipo.
+
+\subsection{Prototipos de baja fidelidad}
+
+Se producir\'an prototipos de baja fidelidad (\emph{wireframes}) de al menos cuatro pantallas cr\'iticas identificadas en los casos de uso principales. Los prototipos se generar\'an en Figma o Excalidraw y se compartir\'an con los \emph{stakeholders} para retroalimentaci\'on. Los archivos se versionar\'an en \texttt{assets/prototipos/}. El objetivo del prototipado en esta fase es discutir la viabilidad y pertinencia de las funcionalidades, no producir un dise\~no visual final~\cite{sommerville2011software,pohl2010requirements}.
+
+\subsection{Actualizaci\'on de priorizaci\'on Kano}
+
+Con base en las conversaciones de validaci\'on, el equipo actualizar\'a su tabla Kano de la Entrega 2. Cualquier reclasificaci\'on debe justificarse en \texttt{docs/requisitos/priorizacion/KANO-v0.8.md} con el nombre del \emph{stakeholder} que motiv\'o el cambio y la fecha de la conversaci\'on.
+
+\begin{cajaentregable}{Entregable C.1 --- Validaci\'on con \emph{stakeholders}}
+Archivos obligatorios en \texttt{docs/requisitos/validacion/}:
+\begin{itemize}
+    \item \texttt{REVISION-<fecha>.md}: acta de la revisi\'on formal.
+    \item \texttt{HALLAZGOS.md}: tabla consolidada de hallazgos con estado.
+    \item \texttt{KANO-v0.8.md}: priorizaci\'on Kano actualizada con evidencia de conversaciones.
+    \item \texttt{assets/prototipos/}: wireframes de al menos cuatro pantallas cr\'iticas.
+\end{itemize}
+\end{cajaentregable}
+
+% =====================================================================
+%  5. BLOQUE D --- DOCUMENTO ACADEMICO INTEGRADO v0.8.0-rc
+% =====================================================================
+\section{Bloque D --- Documento acad\'emico integrado \texttt{v0.8.0-rc}}
+
+El equipo consolidar\'a todo el trabajo realizado desde la Entrega 1 en un \'unico documento acad\'emico compilable a PDF, con estructura IMRaD adaptada al proyecto:
+
+\begin{enumerate}
+    \item \textbf{Resumen} (m\'aximo 300 palabras, en espa\~nol e ingl\'es).
+    \item \textbf{Palabras clave} (entre cinco y ocho).
+    \item \textbf{Introducci\'on}: contexto, problema, objetivos, alcance, contribuci\'on esperada.
+    \item \textbf{Revisi\'on del estado del arte}: con la disciplina PRISMA 2020 (viene de la Entrega 1, con posibles actualizaciones).
+    \item \textbf{Sistema propuesto}: vista conceptual y m\'odulos (Entrega 1, actualizado).
+    \item \textbf{Metodolog\'ia}: enfoque h\'ibrido Scrum + Kanban + Volere, roles traspolados, elicitaci\'on, validaci\'on (Entregas 1 y 2, actualizadas).
+    \item \textbf{Resultados y Discusi\'on}: requisitos organizados por categor\'ia (Entrega 2), matriz de trazabilidad, historias de usuario, priorizaci\'on MoSCoW y Kano, diagramas UML, diagramas de an\'alisis (Entrega 3).
+    \item \textbf{Referencias}: en formato IEEE, todas verificadas.
+    \item \textbf{Anexos}: instrumentos de elicitaci\'on, res\'umenes de entrevistas, an\'alisis de encuestas, requisitos Volere completos, casos de uso detallados Cockburn.
+\end{enumerate}
+
+El documento se produce en LaTeX en \texttt{docs/entregas/documento-academico/main.tex} y se compila autom\'aticamente en la CI de GitHub Actions. El PDF resultante (\texttt{DocumentoAcademico-v0.8.0-rc.pdf}) debe tener entre cincuenta y cien p\'aginas; el proyecto modelo tiene 109 p\'aginas, con lo cual el equipo puede tomar esa longitud como techo razonable.
+
+\begin{cajaentregable}{Entregable D.1 --- Documento acad\'emico integrado}
+Archivo obligatorio: \texttt{docs/entregas/documento-academico/main.tex} + \texttt{DocumentoAcademico-v0.8.0-rc.pdf}. Todas las citas deben resolver a entradas verificadas en \texttt{IngReq.bib}. Todas las figuras y tablas deben referenciarse en el cuerpo con \texttt{\textbackslash ref}. Ninguna tabla ni figura debe quedar hu\'erfana.
+\end{cajaentregable}
+
+% =====================================================================
+%  6. ESTRUCTURA DEL REPOSITORIO
+% =====================================================================
+\section{Estructura del repositorio al cierre de la Tercera Entrega}
+
+\begin{cajarepo}{Estructura de \'arbol acumulada al final de la Entrega 3}
+\begin{lstlisting}
+pfc-<nombre-corto>/
++-- README.md
++-- CHANGELOG.md          (con seccion Entrega 3)
++-- CITATION.cff
++-- LICENSE
++-- docs/
+|   +-- entregas/
+|   |   +-- documento-academico/
+|   |       +-- main.tex
+|   |       +-- DocumentoAcademico-v0.8.0-rc.pdf
+|   +-- requisitos/       (todo lo de las Entregas 1 y 2, actualizado)
+|   |   +-- validacion/
+|   |       +-- REVISION-<fecha>.md
+|   |       +-- HALLAZGOS.md
+|   |       +-- KANO-v0.8.md
+|   +-- arquitectura/
+|   |   +-- uml/
+|   |   |   +-- CASOS-USO.md
+|   |   |   +-- CASOS-USO-DETALLADOS.tex
+|   |   |   +-- CLASES.md
+|   |   |   +-- ACTIVIDAD.md
+|   |   |   +-- SECUENCIA.md
+|   |   |   +-- COMPONENTES.md
+|   |   |   +-- DESPLIEGUE.md
+|   |   +-- analisis/
+|   |       +-- README.md   (contexto, i*, SysML)
+|   +-- adr/
+|   |   +-- ADR-001, ADR-002, ADR-003 (de Entregas anteriores)
+|   |   +-- ADR-004-decisiones-uml.md
+|   |   +-- ADR-005-decisiones-validacion.md
+|   +-- observaciones/
+|       +-- OBSERVACIONES.md
++-- assets/
+|   +-- uml/
+|   |   +-- casos-uso/, clases/, actividad/, secuencia/, componentes/, despliegue/
+|   |   +-- analisis/       (contexto.png, istar-sd.png, sysml-req.png + fuentes)
+|   +-- prototipos/
++-- scripts/
++-- .github/
+    +-- workflows/
+        +-- ci-latex.yml
+\end{lstlisting}
+\end{cajarepo}
+
+% =====================================================================
+%  7. RUBRICA
+% =====================================================================
+\section{R\'ubrica de evaluaci\'on de la Tercera Entrega}
+
+\begin{longtable}{|L{4.2cm}|C{0.9cm}|L{3.3cm}|L{2.4cm}|L{2.4cm}|L{1.6cm}|}
+\hline
+\rowcolor{uteqverde!25}
+\textbf{Criterio} & \textbf{Peso} & \textbf{Excelente (100\,\%)} & \textbf{Bueno (75\,\%)} & \textbf{En desarrollo (50\,\%)} & \textbf{Insuf. (25\,\%)}\\ \hline
+\endhead
+
+\textbf{C0. Continuidad y observaciones} & 5\,\% & Todas las OBS de Entregas 1 y 2 resueltas o diferidas con justificaci\'on. & Una o dos OBS abiertas menores. & Tres o cuatro abiertas. & Cinco o m\'as abiertas.\\ \hline
+\rowcolor{grisfila}
+\textbf{C1. Diagramas de casos de uso} & 12\,\% & General + $\geq 4$ por m\'odulo + $\geq 12$ fichas Cockburn detalladas. & General + 3 por m\'odulo + $\geq 8$ fichas. & General + 2 por m\'odulo. & Solo general o menos.\\ \hline
+\textbf{C2. Diagrama de clases} & 8\,\% & $\geq 8$ clases con atributos y relaciones correctas. & 6--7 clases correctas. & 4--5 clases o relaciones incompletas. & Menos de 4 o incorrecto.\\ \hline
+\rowcolor{grisfila}
+\textbf{C3. Diagramas de actividad} & 10\,\% & General + $\geq 4$ por m\'odulo con \emph{swimlanes}. & General + 3 por m\'odulo. & General + 1--2 por m\'odulo. & Solo general o menos.\\ \hline
+\textbf{C4. Diagramas de secuencia} & 8\,\% & $\geq 4$ diagramas de flujos cr\'iticos. & 2--3 diagramas. & 1 diagrama. & Ninguno.\\ \hline
+\rowcolor{grisfila}
+\textbf{C5. Diagramas de componentes y despliegue} & 7\,\% & Ambos presentes y correctos. & Ambos con detalles menores omitidos. & Uno de los dos. & Ninguno.\\ \hline
+\textbf{C6. Diagramas de an\'alisis (contexto, i*, SysML)} & 15\,\% & Tres presentes, correctos, referenciados en el texto. & Tres presentes con detalles menores omitidos. & Dos presentes. & Uno o ninguno.\\ \hline
+\rowcolor{grisfila}
+\textbf{C7. Validaci\'on con \emph{stakeholders}} & 15\,\% & Revisi\'on formal + prototipos + Kano actualizada con evidencia. & Dos t\'ecnicas aplicadas. & Una t\'ecnica aplicada. & Ninguna aplicada.\\ \hline
+\textbf{C8. Documento acad\'emico integrado} & 15\,\% & IMRaD completo, 50--100 p\'aginas, todas las citas verificadas, todas las figuras y tablas referenciadas. & IMRaD con secciones faltantes menores. & IMRaD con dos o m\'as secciones ausentes. & Documento fragmentado o sin compilar.\\ \hline
+\rowcolor{grisfila}
+\textbf{C9. Organizaci\'on del repositorio y autor\'ia} & 5\,\% & Estructura completa, tag \texttt{v0.8.0-rc}, $\geq 10$ commits por integrante, CI verde. & Estructura completa, autor\'ia parcialmente desbalanceada. & Estructura parcial. & Estructura incompleta o sin tag.\\ \hline
+\end{longtable}
+
+\begin{cajacritica}{Regla de calidad tipogr\'afica}
+Cualquier diagrama presentado como foto de pantalla del editor con margenes negros de fondo, escala incorrecta o texto ilegible ser\'a rechazado. El requerimiento t\'ipico es un PNG con al menos 300 DPI y con nombres de actores y objetos legibles a la escala de una p\'agina A4.
+\end{cajacritica}
+
+% =====================================================================
+%  8. DEFENSA
+% =====================================================================
+\section{Procedimiento de entrega y defensa oral parcial}
+
+Cierre en repositorio con la etiqueta \texttt{v0.8.0-rc}. La defensa oral parcial se realiza durante la semana 13 en cuarenta minutos con estructura:
+
+\begin{itemize}
+    \item Cinco minutos: recapitulaci\'on de Entregas 1 y 2 y observaciones resueltas.
+    \item Diez minutos: recorrido comentado de los diagramas UML por m\'odulo.
+    \item Diez minutos: recorrido comentado de los diagramas de an\'alisis (contexto, i*, SysML).
+    \item Diez minutos: presentaci\'on de la validaci\'on y de la priorizaci\'on Kano final.
+    \item Cinco minutos: preguntas del docente y de equipos evaluadores pares.
+\end{itemize}
+
+% =====================================================================
+%  9. AVISO SOBRE LA ENTREGA FINAL
+% =====================================================================
+\section{Aviso sobre la Entrega Final}
+
+La Entrega Final (semana 16, \texttt{v1.0.0}) es la versi\'on estable del documento acad\'emico, con m\'etricas de calidad de requisitos INCOSE calculadas y reportadas~\cite{incose2023requirements}, e insumos completos para publicaci\'on en revistas JCR (DOI Zenodo por separado para software y dataset, ORCID de todos los autores, CITATION.cff v1.2.0, checklist FAIR)~\cite{wilkinson2016fair,ralph2021empirical}. El equipo debe ir preparando desde ahora las cuentas ORCID y la organizaci\'on del \emph{deposit} en Zenodo.
+
+% =====================================================================
+%  BIBLIOGRAFIA
+% =====================================================================
+\bibliographystyle{IEEEtran}
+\bibliography{IngReq}
+
+\end{document}
