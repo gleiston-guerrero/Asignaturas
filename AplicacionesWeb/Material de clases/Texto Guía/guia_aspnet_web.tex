@@ -1,0 +1,1240 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+\renewcommand{\contentsname}{Contenido}
+\renewcommand{\tablename}{Tabla}
+
+% Paleta: morado .NET como acento principal, verde/oro UTEQ institucional, tema de codigo claro
+\definecolor{netmorado}{HTML}{512BD4}
+\definecolor{netmoradoo}{HTML}{3A1D9E}
+\definecolor{uteqverde}{HTML}{006633}
+\definecolor{uteqoro}{HTML}{CC9900}
+\definecolor{vscazul}{HTML}{007ACC}
+\definecolor{tinta}{HTML}{1F2933}
+\definecolor{codbg}{HTML}{F8F8F2}
+\definecolor{numlin}{HTML}{AAAAAA}
+\definecolor{kw}{HTML}{0057AE}
+\definecolor{str}{HTML}{C41A16}
+\definecolor{com}{HTML}{717171}
+\definecolor{ident}{HTML}{2D8000}
+\definecolor{tipbg}{HTML}{EEEAFB}
+\definecolor{warnbg}{HTML}{FBF0D8}
+\definecolor{dangerbg}{HTML}{FBE9E7}
+\definecolor{vscbg}{HTML}{E8F2FB}
+
+\lstset{
+  basicstyle=\footnotesize\ttfamily\color{tinta},
+  keywordstyle=\color{kw}\bfseries, stringstyle=\color{str},
+  commentstyle=\color{com}\itshape, numberstyle=\tiny\color{numlin},
+  identifierstyle=\color{ident}, numbers=left, numbersep=7pt, showstringspaces=false,
+  breaklines=true, breakatwhitespace=false, breakindent=14pt,
+  columns=fullflexible, keepspaces=true, upquote=true, tabsize=4, frame=none,
+}
+\lstdefinestyle{cs}{language=[Sharp]C,
+  morekeywords={var,record,async,await,using,namespace,global,record,init,required,nameof,with}}
+\lstdefinestyle{shell}{language=bash, keywordstyle=\color{tinta}}
+\lstdefinestyle{sql}{language=SQL, morekeywords={SERIAL,VARCHAR,TIMESTAMP,DEFAULT,NOW,BOOLEAN,IDENTITY,GENERATED,ALWAYS}}
+\lstdefinestyle{json}{language=, morestring=[b]", stringstyle=\color{str}}
+\lstdefinestyle{xml}{language=XML, morekeywords={Project,PropertyGroup,ItemGroup,PackageReference,TargetFramework,Nullable,ImplicitUsings}}
+
+\newtcolorbox{cajacodigo}[1][]{
+  enhanced, breakable=false, colback=codbg, colframe=netmorado!55, boxrule=0.4pt,
+  arc=2pt, left=4pt, right=6pt, top=3pt, bottom=3pt, boxsep=2pt,
+  title=#1, colbacktitle=netmorado, coltitle=white, fonttitle=\bfseries\small,
+  attach boxed title to top left={xshift=6pt,yshift=-2pt},
+  boxed title style={colback=netmorado, arc=1pt} }
+\newtcolorbox{cajatip}[1]{enhanced,breakable=false,colback=tipbg,colframe=tipbg,
+  borderline west={3pt}{0pt}{netmorado}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{netmorado}, title=#1, coltitle=netmorado}
+\newtcolorbox{cajavscode}[1]{enhanced,breakable=false,colback=vscbg,colframe=vscbg,
+  borderline west={3pt}{0pt}{vscazul}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{vscazul}, title=#1, coltitle=vscazul}
+\newtcolorbox{cajawarn}[1]{enhanced,breakable=false,colback=warnbg,colframe=warnbg,
+  borderline west={3pt}{0pt}{uteqoro}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{uteqoro}, title=#1, coltitle=uteqoro}
+\newtcolorbox{cajadanger}[1]{enhanced,breakable=false,colback=dangerbg,colframe=dangerbg,
+  borderline west={3pt}{0pt}{red!60!black}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{red!60!black}, title=#1, coltitle=red!60!black}
+
+\titleformat{\section}{\color{netmorado}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\color{netmoradoo}\large\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\color{tinta}\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\color{gray}Gu\'ia de ASP.NET Core con VS Code --- UTEQ}
+\fancyfoot[C]{\footnotesize\color{gray}P\'agina \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\parskip}{6pt}\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+
+% Macro de comando para inline
+\newcommand{\code}[1]{\texttt{#1}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{1.2cm}
+{\color{uteqverde}\bfseries\large UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}\\[2pt]
+{\color{gray} Facultad de Ciencias de la Computaci\'on y Dise\~no Digital $\cdot$ Ingenier\'ia de Software}\\[2.2cm]
+{\color{tinta}\bfseries\fontsize{30}{34}\selectfont Desarrollo de Aplicaciones Web}\\[6pt]
+{\color{netmorado}\bfseries\fontsize{30}{34}\selectfont con ASP.NET Core 10}\\[10pt]
+{\color{uteqoro}\rule{\linewidth}{2.2pt}}\\[10pt]
+{\itshape\large Gu\'ia completa del estudiante --- paso a paso con Visual Studio Code}\\[4pt]
+{\color{gray} Del primer \texttt{dotnet run} a una Web API CRUD segura con EF Core, PostgreSQL y JWT}\\[3cm]
+\begin{flushleft}
+\textbf{Asignatura:} Aplicaciones Web (5.\textsuperscript{o} semestre) --- Unidad II\\[3pt]
+\textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[3pt]
+\textbf{Per\'iodo:} PPA 2026--2027\\[3pt]
+\textbf{IDE de referencia:} Visual Studio Code + extensi\'on C\# Dev Kit
+\end{flushleft}
+\vfill
+{\color{gray}\small Versiones de referencia (.NET~10 LTS, C\#~14, ASP.NET Core~10, EF~Core~10, PostgreSQL~18): se detallan en la secci\'on 2.}
+\end{titlepage}
+\tableofcontents
+\clearpage
+\section{Introducción}
+ASP.NET Core es la plataforma web de Microsoft: multiplataforma, de código abierto y con uno de los mejores rendimientos del mercado. Con ella, y usando el lenguaje C\#, construirás desde un «Hola Mundo» de tres líneas hasta una API REST completa con base de datos, autenticación y documentación automática. Esta guía te lleva de cero a ese punto, explicando cada paso y proponiéndote ejercicios de todos los niveles para que practiques de verdad. A diferencia de otras guías del curso, aquí el IDE de referencia no es IntelliJ IDEA sino \textbf{Visual Studio Code}, porque es ligero, gratuito y el flujo de trabajo con la CLI de \texttt{dotnet} encaja perfectamente con él.
+
+La estructura es progresiva: primero preparas el entorno, luego repasas lo justo de C\# para la web, después construyes tu primer servicio, entiendes el \emph{pipeline} de \emph{middleware}, levantas una Web API REST, accedes a datos con Entity Framework Core y PostgreSQL, integras todo en un CRUD seguro y, por último, documentas y proteges tu API. Cada sección termina con ejercicios, y al final hay un banco de problemas por nivel con soluciones comentadas.
+
+\subsection{¿Qué es ASP.NET Core y por qué dominarlo?}
+ASP.NET Core es un \emph{framework} para construir aplicaciones y servicios web sobre la plataforma .NET. Microsoft lanzó el ASP.NET clásico en 2002 sobre el .NET Framework (solo Windows); en 2016 lo reescribió por completo como ASP.NET Core: modular, multiplataforma (Windows, Linux y macOS) y de código abierto. Desde .NET~5 (2020) la marca se unificó simplemente como «.NET», y la versión vigente en 2026 es \textbf{.NET~10}, una versión LTS (soporte de tres años) publicada en noviembre de 2025.
+
+Dominarlo te aporta tres ventajas concretas. Primera, empleabilidad: .NET es uno de los ecosistemas más demandados en la industria, sobre todo en banca, salud y sector público. Segunda, rendimiento y robustez: C\# es un lenguaje de tipado fuerte, y ASP.NET Core figura entre los \emph{frameworks} web más rápidos en pruebas independientes. Tercera, transferencia de conceptos: los patrones que aprenderás aquí (peticiones, inyección de dependencias, acceso a datos, seguridad) son los mismos que reaparecen en Spring Boot (Java) o en Laravel (PHP), de modo que cada tecnología refuerza a las demás.
+
+\subsection{C\# para quien ya sabe Java}
+Como en el curso ya dominas Java SE, la transición a C\# es suave: ambos son lenguajes de tipado estático, orientados a objetos y con sintaxis de llaves muy parecida. Las diferencias más visibles son los nombres en mayúscula inicial para métodos y propiedades (\texttt{PascalCase}), las \emph{propiedades} en lugar de \emph{getters}/\emph{setters} manuales, la palabra \texttt{var} para inferencia de tipos, los \emph{records} para datos inmutables y el operador \texttt{=>} para expresiones y \emph{lambdas}. A lo largo de la guía señalaremos estos puentes cuando aparezcan.
+
+\subsection{Cómo funciona ASP.NET Core en la web}
+Cuando un navegador o un cliente HTTP solicita una ruta de tu aplicación, la petición entra en un \textbf{pipeline} de componentes llamados \emph{middleware}: cada uno la inspecciona, la modifica o la deja pasar al siguiente, hasta llegar al código que tú escribiste (un \emph{endpoint}). Ese código produce una respuesta, normalmente HTML o JSON, que recorre el \emph{pipeline} en sentido inverso hasta el cliente. Entender este modelo de petición--respuesta y el orden del \emph{pipeline} es la clave para no perderse después.
+
+\subsection{Cómo usar esta guía y los niveles de los ejercicios}
+Lee cada sección, reproduce los ejemplos en tu propio entorno y, sobre todo, resuelve los ejercicios: programar se aprende programando. Te recomendamos teclear el código en lugar de copiarlo, porque así detectas detalles que de otro modo pasan inadvertidos. Los ejercicios están etiquetados por nivel para que puedas dosificarlos:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item \textbf{[Básico]} afianzan la sintaxis y los conceptos esenciales; deberías resolverlos justo después de leer la sección.
+\item \textbf{[Intermedio]} combinan varios conceptos y se acercan a problemas reales (rutas, modelos, validación, datos).
+\item \textbf{[Avanzado]} exigen diseño, acceso a datos y seguridad; son los más parecidos a lo que harás en un proyecto.
+\end{itemize}
+
+\section{Preparación del entorno de desarrollo}
+Antes de escribir una línea de código necesitas tres piezas: el \textbf{SDK de .NET~10}, el editor \textbf{Visual Studio Code} con sus extensiones de C\#, y un servidor \textbf{PostgreSQL~18} para las prácticas con datos. A continuación se instalan y verifican una por una.
+
+\subsection{Versiones de referencia de esta guía}
+Para que el código sea reproducible, todo está probado contra las siguientes versiones. Usa siempre versiones con soporte activo por motivos de seguridad.
+
+{\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.6cm} >{\raggedright\arraybackslash}p{9.8cm}}
+\rowcolor{netmorado}\textcolor{white}{\textbf{Componente}} & \textcolor{white}{\textbf{Versión de referencia (2026)}} \\
+\endfirsthead
+\rowcolor{netmorado}\textcolor{white}{\textbf{Componente}} & \textcolor{white}{\textbf{Versión de referencia (2026)}} \\
+\endhead
+SDK de .NET & .NET~10 (LTS), soporte hasta noviembre de 2028 \\ \hline
+Lenguaje & C\#~14 \\ \hline
+Framework web & ASP.NET Core~10 \\ \hline
+ORM & Entity Framework Core~10 \\ \hline
+Proveedor PostgreSQL & Npgsql.EntityFrameworkCore.PostgreSQL~10.0.x \\ \hline
+Base de datos & PostgreSQL~18 \\ \hline
+OpenAPI (documentación) & Microsoft.AspNetCore.OpenApi~10.0.x \\ \hline
+UI de la API & Scalar.AspNetCore~2.x \\ \hline
+Editor & Visual Studio Code (última estable) \\ \hline
+Extensión principal & C\# Dev Kit (incluye C\# y \emph{IntelliCode}) \\ \hline
+\end{longtable}}
+
+\begin{cajawarn}{Cambio importante en .NET 9/10: ya no viene Swagger por defecto}
+Si has visto tutoriales antiguos, sabrás que la plantilla \texttt{webapi} traía \emph{Swashbuckle/Swagger}. Desde .NET~9 esto cambió: la plantilla ahora usa el generador de OpenAPI \textbf{integrado} (\texttt{AddOpenApi}/\texttt{MapOpenApi}) y \emph{no} incluye ninguna interfaz visual. En esta guía añadiremos \textbf{Scalar} como UI moderna. Lo verás en detalle en la sección 9.\par
+\end{cajawarn}
+
+\subsection{Paso 1: instalar el SDK de .NET 10}
+El SDK (\emph{Software Development Kit}) incluye el compilador, las bibliotecas y la herramienta de línea de comandos \texttt{dotnet}, que es el centro de todo el flujo de trabajo. Descárgalo del sitio oficial de Microsoft e instálalo con las opciones por defecto.
+
+\begin{cajavscode}{Instalación del SDK}
+\textbf{1.} Entra en \texttt{https://dotnet.microsoft.com/download} y descarga el \emph{SDK} de .NET~10 (no el \emph{Runtime}: el SDK ya lo incluye).\\
+\textbf{2.} Ejecuta el instalador con las opciones predeterminadas.\\
+\textbf{3.} Cierra y vuelve a abrir cualquier terminal para que reconozca el comando \texttt{dotnet}.
+\end{cajavscode}
+\vspace{2pt}
+Verifica que quedó bien instalado consultando la versión y la lista de SDK disponibles.
+
+\begin{cajacodigo}[Verificar el SDK]
+\begin{lstlisting}[style=shell]
+dotnet --version
+# 10.0.x
+
+dotnet --list-sdks
+# 10.0.x [C:\Program Files\dotnet\sdk]
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Paso 2: instalar Visual Studio Code y las extensiones de C\#}
+Visual Studio Code (VS Code) es un editor gratuito y ligero. Para programar en C\# necesitas instalar una extensión: el \textbf{C\# Dev Kit}, que a su vez instala la extensión base de C\# y herramientas de productividad como el explorador de soluciones y el ejecutor de pruebas.
+
+\begin{cajavscode}{Instalar VS Code y C\# Dev Kit}
+\textbf{1.} Descarga VS Code de \texttt{https://code.visualstudio.com} e instálalo.\\
+\textbf{2.} Ábrelo y ve al panel de \emph{Extensiones} (icono de bloques en la barra lateral, o \texttt{Ctrl+Shift+X}).\\
+\textbf{3.} Busca \textbf{C\# Dev Kit} (publicado por Microsoft) y pulsa \emph{Install}. Se instalará junto con la extensión \emph{C\#} y \emph{IntelliCode}.\\
+\textbf{4.} Opcional pero recomendado: instala también \textbf{PostgreSQL} (de Microsoft o de Chris Kolkman) para inspeccionar la base de datos desde el propio editor.
+\end{cajavscode}
+\vspace{2pt}
+\begin{cajatip}{Recarga tras instalar}
+Si VS Code ya estaba abierto cuando instalaste el SDK, ciérralo del todo y vuelve a abrirlo. La extensión de C\# necesita encontrar el SDK en el \texttt{PATH} para activar el autocompletado y la depuración.\par
+\end{cajatip}
+
+\subsection{Paso 3: instalar PostgreSQL 18}
+Las prácticas con datos usan PostgreSQL, el mismo motor que el resto de las guías del curso. Si ya lo instalaste para la guía de Perl o PHP, puedes reutilizar esa instalación; solo necesitarás crear la base de datos del periodo.
+
+\begin{cajavscode}{Instalar y preparar PostgreSQL}
+\textbf{1.} Descarga PostgreSQL~18 de \texttt{https://www.postgresql.org/download} e instálalo. Anota la contraseña que asignes al usuario \texttt{postgres}.\\
+\textbf{2.} Durante la instalación se incluye \emph{pgAdmin}, una interfaz gráfica para administrar la base de datos.\\
+\textbf{3.} Verifica que el servicio quedó arrancado y escuchando en el puerto \texttt{5432}.
+\end{cajavscode}
+\vspace{2pt}
+Crea la base de datos del periodo y la tabla \texttt{estudiantes} que usaremos en el proyecto integrador. Puedes hacerlo desde \emph{pgAdmin} o desde la consola \texttt{psql}.
+
+\begin{cajacodigo}[Esquema base en PostgreSQL]
+\begin{lstlisting}[style=sql]
+-- Base de datos del periodo academico
+CREATE DATABASE appweb2026ppa;
+
+-- Conectarse a ella y crear la tabla base
+CREATE TABLE estudiantes (
+    id      INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre  VARCHAR(120) NOT NULL,
+    correo  VARCHAR(160) NOT NULL UNIQUE,
+    carrera VARCHAR(120) NOT NULL,
+    creado  TIMESTAMP NOT NULL DEFAULT NOW()
+);
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Identidad en vez de SERIAL}
+Desde PostgreSQL~10 se recomienda \texttt{GENERATED ALWAYS AS IDENTITY} en lugar del antiguo \texttt{SERIAL}: cumple el estándar SQL y es la opción que genera EF~Core por defecto. Por eso la usamos aquí.\par
+\end{cajatip}
+
+\subsection{Paso 4: comprobar todo el entorno con un proyecto de prueba}
+Antes de avanzar, confirma que las tres piezas conversan entre sí creando, compilando y ejecutando un proyecto vacío. Esto valida el SDK y el editor de una sola vez.
+
+\begin{cajacodigo}[Proyecto de prueba]
+\begin{lstlisting}[style=shell]
+# Crear una carpeta de trabajo y entrar en ella
+mkdir prueba-entorno
+cd prueba-entorno
+
+# Crear un proyecto web minimo y ejecutarlo
+dotnet new web
+dotnet run
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+La terminal mostrará una URL como \texttt{http://localhost:5xxx}. Ábrela en el navegador: deberías ver «Hello World!». Si llegaste hasta aquí, tu entorno está listo. Detén la aplicación con \texttt{Ctrl+C}.
+\section{Fundamentos de C\# para la web}
+No necesitas ser un experto en C\# para empezar, pero sí conocer media docena de construcciones que aparecerán en cada ejemplo. Como ya programas en Java, esta sección es un repaso rápido centrado en las diferencias.
+
+\subsection{Tipos, variables y propiedades}
+C\# es de tipado estático: cada variable tiene un tipo. Puedes declararlo explícitamente o dejar que el compilador lo infiera con \texttt{var}. Las clases exponen su estado mediante \emph{propiedades}, que son como \emph{getters}/\emph{setters} automáticos.
+
+\begin{cajacodigo}[Tipos y propiedades]
+\begin{lstlisting}[style=cs]
+int edad = 21;                 // tipo explicito
+var nombre = "Ada";            // inferido como string
+double promedio = 9.4;
+bool activo = true;
+
+// Una clase con propiedades (equivale a getter/setter de Java)
+public class Estudiante
+{
+    public int Id { get; set; }
+    public string Nombre { get; set; } = "";
+    public string Correo { get; set; } = "";
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Records: datos inmutables en una línea}
+Para objetos que solo transportan datos (los DTO que verás luego), C\# ofrece los \texttt{record}: declaran propiedades y comparación por valor automáticamente. Por ejemplo: \texttt{public record CrearEstudianteDto(string Nombre, string Correo, string Carrera);}\par
+\end{cajatip}
+
+\subsection{Métodos, lambdas y asincronía}
+Los métodos en C\# usan \texttt{PascalCase}. El operador \texttt{=>} define tanto cuerpos de método de una sola expresión como \emph{lambdas}. La asincronía se expresa con \texttt{async} y \texttt{await}, fundamentales en la web porque liberan el hilo mientras se espera la base de datos o la red.
+
+\begin{cajacodigo}[Métodos y asincronía]
+\begin{lstlisting}[style=cs]
+// Metodo de una sola expresion
+public int Doble(int n) => n * 2;
+
+// Lambda asignada a una variable
+Func<int, int> cuadrado = x => x * x;
+
+// Metodo asincrono: devuelve Task y usa await
+public async Task<string> LeerAsync()
+{
+    await Task.Delay(100);      // simula espera de E/S
+    return "listo";
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Colecciones y LINQ}
+Para listas usarás \texttt{List<T>}. LINQ (\emph{Language Integrated Query}) permite consultar colecciones con una sintaxis declarativa parecida a SQL; más adelante, EF~Core traducirá esas mismas consultas a SQL real contra PostgreSQL.
+
+\begin{cajacodigo}[Colecciones y LINQ]
+\begin{lstlisting}[style=cs]
+var nombres = new List<string> { "Ada", "Alan", "Grace" };
+
+// Filtrar y proyectar con LINQ
+var conA = nombres
+    .Where(n => n.StartsWith("A"))
+    .OrderBy(n => n)
+    .ToList();                  // ["Ada", "Alan"]
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Ejercicios — fundamentos}
+Resuélvelos en un proyecto de consola (\texttt{dotnet new console}) para practicar el lenguaje antes de pasar a la web.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Básico]} Declara tres variables (un \texttt{int}, un \texttt{string} y un \texttt{bool}) e imprímelas con \texttt{Console.WriteLine}.
+\item \textbf{[Básico]} Escribe un método \texttt{EsPar(int n)} que devuelva un \texttt{bool} usando \texttt{=>}.
+\item \textbf{[Intermedio]} Crea un \texttt{record Producto(string Nombre, decimal Precio)} y una lista; muestra el más caro con LINQ.
+\item \textbf{[Intermedio]} Dada una lista de números, devuelve solo los pares ordenados de mayor a menor con LINQ.
+\end{enumerate}
+
+\section{Primer proyecto web: Hola Mundo con Minimal API}
+Ya con el entorno listo, vamos a crear tu primera aplicación web «de verdad» y a entender cada archivo que genera la plantilla. Usaremos el modelo \textbf{Minimal API}, la forma más concisa de definir rutas en ASP.NET Core.
+
+\subsection{Crear y abrir el proyecto en VS Code}
+Todo proyecto .NET nace con la CLI. La crearemos desde la terminal y la abriremos en VS Code para trabajar con autocompletado y depuración.
+
+\begin{cajavscode}{Crear y abrir el proyecto}
+\textbf{1.} Abre una terminal en la carpeta donde guardas tus prácticas (por ejemplo \texttt{D:\textbackslash{}Repositorios\textbackslash{}UTEQ}).\\
+\textbf{2.} Ejecuta los comandos de creación (abajo).\\
+\textbf{3.} Abre la carpeta en VS Code con \texttt{code HolaWeb} o desde \emph{File $\rightarrow$ Open Folder}.\\
+\textbf{4.} La primera vez, VS Code preguntará si confías en la carpeta: acepta. La extensión de C\# cargará el proyecto.
+\end{cajavscode}
+
+\begin{cajacodigo}[Crear el proyecto]
+\begin{lstlisting}[style=shell]
+dotnet new web -o HolaWeb
+cd HolaWeb
+code .
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+La plantilla \texttt{web} crea el proyecto Minimal API más pequeño posible. Su estructura es la siguiente.
+
+\begin{cajacodigo}[Estructura creada por dotnet new web]
+\begin{lstlisting}[style=shell]
+HolaWeb/
+|-- Program.cs               (punto de entrada; aqui programas)
+|-- HolaWeb.csproj           (proyecto y dependencias NuGet)
+|-- appsettings.json         (configuracion de la app)
+|-- appsettings.Development.json
+`-- Properties/
+    `-- launchSettings.json   (perfiles de ejecucion y puertos)
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Anatomía del archivo de proyecto (.csproj)}
+El archivo \texttt{.csproj} describe el proyecto en XML: qué versión de .NET usa y qué paquetes necesita. Es el equivalente al \texttt{pom.xml} de Maven que conoces de Java.
+
+\begin{cajacodigo}[HolaWeb.csproj]
+\begin{lstlisting}[style=xml]
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+</Project>
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Dos ajustes merecen atención. \texttt{Nullable} activa el análisis de referencias nulas, que te avisa en tiempo de compilación de posibles \texttt{NullReferenceException}. \texttt{ImplicitUsings} importa automáticamente los \emph{namespaces} más comunes, de modo que no tengas que escribir \texttt{using System;} y similares en cada archivo.
+
+\subsection{El punto de entrada: Program.cs}
+Aquí vive tu código. La plantilla genera un \texttt{Program.cs} de pocas líneas que ya es una aplicación web funcional. Léelo con calma: cada línea importa.
+
+\begin{cajacodigo}[Program.cs --- generado por la plantilla]
+\begin{lstlisting}[style=cs]
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapGet("/", () => "Hello World!");
+
+app.Run();
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El \texttt{builder} configura la aplicación (servicios, configuración, \emph{logging}); \texttt{Build} la construye; \texttt{MapGet} registra un \emph{endpoint} que responde a peticiones GET en la ruta \texttt{/}; y \texttt{Run} arranca el servidor. La \emph{lambda} \texttt{() => "Hello World!"} es el manejador: lo que devuelve es la respuesta.
+
+\subsection{Ejecutar y depurar desde VS Code}
+Tienes dos formas de ejecutar: por terminal con \texttt{dotnet run}, o con el depurador integrado (tecla \texttt{F5}), que además te permite poner puntos de interrupción.
+
+\begin{cajavscode}{Ejecutar con el depurador}
+\textbf{1.} Abre \texttt{Program.cs}.\\
+\textbf{2.} Pulsa \texttt{F5}. Si VS Code pregunta el tipo de depuración, elige \emph{C\#}.\\
+\textbf{3.} Se compilará, arrancará el servidor y se abrirá el navegador en la URL del perfil.\\
+\textbf{4.} Para detener, pulsa el cuadrado rojo de la barra de depuración o \texttt{Shift+F5}.
+\end{cajavscode}
+\vspace{2pt}
+Modifica el saludo y vuelve a ejecutar para comprobar el ciclo completo. Cambia la \emph{lambda} para devolver HTML.
+
+\begin{cajacodigo}[Devolver HTML en vez de texto]
+\begin{lstlisting}[style=cs]
+app.MapGet("/", () => Results.Content(
+    "<!DOCTYPE html><html lang=\"es\"><head>" +
+    "<meta charset=\"UTF-8\"><title>Hola</title></head>" +
+    "<body><h1>Hola Mundo desde ASP.NET Core</h1></body></html>",
+    "text/html"));
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Puertos y launchSettings.json}
+Los puertos de desarrollo se definen en \texttt{Properties/launchSettings.json}. Allí verás perfiles \texttt{http} y \texttt{https} con sus URL. Puedes cambiar el puerto o pedir que el navegador se abra automáticamente en una ruta concreta (\texttt{launchUrl}).\par
+\end{cajatip}
+
+\subsection{Ejercicios — primer proyecto}
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Básico]} Añade un \emph{endpoint} GET \texttt{/saludo} que devuelva tu nombre.
+\item \textbf{[Básico]} Crea \texttt{/hora} que devuelva la fecha y hora actual con \texttt{DateTime.Now}.
+\item \textbf{[Intermedio]} Crea \texttt{/suma/\{a\}/\{b\}} que reciba dos enteros en la ruta y devuelva su suma.
+\item \textbf{[Intermedio]} Devuelve una página HTML con una lista de tres enlaces a tus otros \emph{endpoints}.
+\end{enumerate}
+\section{El modelo de hosting y el pipeline de middleware}
+Toda petición que llega a ASP.NET Core atraviesa una cadena de componentes llamada \emph{pipeline}. Cada componente es un \emph{middleware}: una pieza que recibe la petición, decide qué hacer (registrar, autenticar, redirigir, responder) y, normalmente, la pasa al siguiente. Entender este orden evita la mayoría de los errores de configuración.
+
+\subsection{Qué es un middleware y por qué importa el orden}
+Imagina el \emph{pipeline} como una serie de filtros en línea. La petición entra por el primero y avanza; la respuesta sale en sentido inverso. El orden en que registras los \emph{middleware} en \texttt{Program.cs} es el orden en que se ejecutan, y es significativo: por ejemplo, la autenticación debe ir antes que la autorización, y los archivos estáticos suelen ir al principio.
+
+\begin{cajacodigo}[Pipeline típico de una app web]
+\begin{lstlisting}[style=cs]
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/error");  // manejo de errores en produccion
+    app.UseHsts();                      // fuerza HTTPS en el navegador
+}
+
+app.UseHttpsRedirection();              // redirige http -> https
+app.UseStaticFiles();                   // sirve wwwroot/ (css, js, imagenes)
+app.UseRouting();                       // resuelve que endpoint atiende
+app.UseAuthentication();                // identifica al usuario (quien es)
+app.UseAuthorization();                 // decide si puede (tiene permiso)
+
+app.MapGet("/", () => "Hola");          // endpoints
+
+app.Run();
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajawarn}{Autenticación antes que autorización}
+\texttt{UseAuthentication} debe registrarse \emph{antes} que \texttt{UseAuthorization}. Primero se establece \emph{quién} es el usuario; solo después se evalúa \emph{si} tiene permiso. Invertir el orden hace que la autorización no encuentre la identidad y rechace todo.\par
+\end{cajawarn}
+
+\subsection{Inyección de dependencias incorporada}
+ASP.NET Core trae un contenedor de \textbf{inyección de dependencias} (DI) de serie. En lugar de crear tus servicios con \texttt{new} dentro de cada clase, los registras una vez en el \texttt{builder} y el \emph{framework} te los entrega donde los necesites. Esto desacopla el código y facilita las pruebas. Los servicios se registran con tres ciclos de vida: \texttt{Singleton} (una instancia para toda la app), \texttt{Scoped} (una por petición) y \texttt{Transient} (una nueva cada vez).
+
+\begin{cajacodigo}[Registrar y consumir un servicio]
+\begin{lstlisting}[style=cs]
+// 1) Declarar el contrato y su implementacion
+public interface ISaludador { string Saludar(string nombre); }
+public class Saludador : ISaludador
+{
+    public string Saludar(string nombre) => $"Hola, {nombre}!";
+}
+
+// 2) Registrar en el contenedor (Program.cs)
+builder.Services.AddScoped<ISaludador, Saludador>();
+
+// 3) Consumir: el framework lo inyecta como parametro del endpoint
+app.MapGet("/saludo/{nombre}", (string nombre, ISaludador svc) =>
+    svc.Saludar(nombre));
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Fíjate en la cadena interpolada \texttt{\$"Hola, \{nombre\}!"}: el prefijo \texttt{\$} permite insertar variables entre llaves dentro de la cadena, como en una plantilla.
+
+\section{Construir una Web API REST}
+Una \textbf{API REST} expone datos y operaciones a través de HTTP usando rutas y verbos (GET, POST, PUT, DELETE) y, normalmente, intercambia JSON. Es la base de cualquier \emph{backend} moderno que luego consume un \emph{frontend} (por ejemplo, en Angular). Veremos los dos estilos que ofrece ASP.NET Core: Minimal API y controladores.
+
+\subsection{Parámetros, rutas y resultados}
+Los \emph{endpoints} reciben datos de tres formas: en la ruta (\texttt{/estudiantes/\{id\}}), en la cadena de consulta (\texttt{?buscar=ada}) o en el cuerpo (un JSON). ASP.NET Core enlaza cada uno automáticamente al parámetro correspondiente del manejador. Para responder se usa la clase \texttt{Results}, que produce los códigos de estado HTTP adecuados.
+
+\begin{cajacodigo}[Enlace de parámetros y resultados]
+\begin{lstlisting}[style=cs]
+// Parametro de ruta
+app.MapGet("/estudiantes/{id:int}", (int id) =>
+    Results.Ok(new { id, nombre = "Ada" }));
+
+// Parametro de consulta (?buscar=...&pagina=...)
+app.MapGet("/buscar", (string? buscar, int pagina = 1) =>
+    Results.Ok(new { buscar, pagina }));
+
+// Cuerpo JSON enlazado a un record
+app.MapPost("/estudiantes", (CrearEstudianteDto dto) =>
+    Results.Created($"/estudiantes/1", dto));
+
+public record CrearEstudianteDto(string Nombre, string Correo, string Carrera);
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+La restricción \texttt{\{id:int\}} obliga a que el segmento sea un entero; si no lo es, ASP.NET Core responde 404 sin entrar a tu código. \texttt{Results.Ok} devuelve 200, \texttt{Results.Created} devuelve 201 con la cabecera \texttt{Location}, y \texttt{Results.NotFound} devuelve 404.
+
+\subsection{Agrupar endpoints relacionados}
+Cuando una entidad tiene varias operaciones, conviene agruparlas bajo un prefijo común con \texttt{MapGroup}. Esto reduce la repetición y permite aplicar configuración (como autorización) a todo el grupo de una vez.
+
+\begin{cajacodigo}[Agrupar con MapGroup]
+\begin{lstlisting}[style=cs]
+var grupo = app.MapGroup("/v1/estudiantes");
+
+grupo.MapGet("/", () => "lista");
+grupo.MapGet("/{id:int}", (int id) => $"detalle {id}");
+grupo.MapPost("/", (CrearEstudianteDto dto) => Results.Created("/", dto));
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{El estilo con controladores}
+Para APIs grandes, muchos equipos prefieren \textbf{controladores}: clases que agrupan acciones relacionadas y separan mejor las responsabilidades. Si vienes de Spring, los reconocerás de inmediato: equivalen a un \texttt{@RestController}. Se habilitan registrando \texttt{AddControllers} y mapeándolos con \texttt{MapControllers}.
+
+\begin{cajacodigo}[Un controlador REST]
+\begin{lstlisting}[style=cs]
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route("v1/[controller]")]            // -> /v1/estudiantes
+public class EstudiantesController : ControllerBase
+{
+    [HttpGet]
+    public IActionResult Listar() => Ok(new[] { "Ada", "Alan" });
+
+    [HttpGet("{id:int}")]
+    public IActionResult Detalle(int id) => Ok(new { id });
+
+    [HttpPost]
+    public IActionResult Crear([FromBody] CrearEstudianteDto dto)
+        => CreatedAtAction(nameof(Detalle), new { id = 1 }, dto);
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{¿Minimal API o controladores?}
+No hay una respuesta única. Las Minimal API son ideales para servicios pequeños y para aprender, porque todo está a la vista en \texttt{Program.cs}. Los controladores brillan en proyectos grandes, donde la organización por clases y los \emph{filtros} aportan estructura. En esta guía usamos Minimal API para el proyecto integrador por claridad.\par
+\end{cajatip}
+
+\subsection{Ejercicios — Web API}
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Básico]} Crea un \emph{endpoint} GET \texttt{/v1/ping} que devuelva \texttt{\{ "estado": "ok" \}} con \texttt{Results.Ok}.
+\item \textbf{[Intermedio]} Implementa \texttt{/v1/eco} que reciba un JSON con un campo \texttt{mensaje} y lo devuelva con la hora.
+\item \textbf{[Intermedio]} Agrupa con \texttt{MapGroup} cuatro \emph{endpoints} de una entidad «curso» (lista, detalle, crear, eliminar) que aún devuelvan datos simulados.
+\item \textbf{[Avanzado]} Reescribe esos cuatro \emph{endpoints} como un controlador con atributos \texttt{[HttpGet]}, \texttt{[HttpPost]} y \texttt{[HttpDelete]}.
+\end{enumerate}
+\section{Acceso a datos con Entity Framework Core y PostgreSQL}
+Las aplicaciones reales guardan y consultan datos en una base de datos. En .NET, la forma estándar de hacerlo es \textbf{Entity Framework Core} (EF~Core), un ORM (\emph{Object-Relational Mapper}): tú trabajas con objetos C\# y EF~Core traduce tus operaciones a SQL. Para PostgreSQL se usa el proveedor \textbf{Npgsql}. Es el equivalente, en el mundo .NET, a lo que JPA/Hibernate son en Java o Eloquent en Laravel.
+
+\subsection{Instalar los paquetes necesarios}
+EF~Core no viene en la plantilla web; se añade como paquetes NuGet. Necesitas el proveedor de PostgreSQL y, para trabajar con migraciones desde la terminal, la herramienta \texttt{dotnet-ef}.
+
+\begin{cajacodigo}[Añadir EF Core y Npgsql]
+\begin{lstlisting}[style=shell]
+# Proveedor de PostgreSQL para EF Core 10
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+
+# Herramientas de diseno (migraciones)
+dotnet add package Microsoft.EntityFrameworkCore.Design
+
+# Instalar la CLI de EF Core de forma global (una sola vez)
+dotnet tool install --global dotnet-ef
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Comprobar la herramienta}
+Tras instalar \texttt{dotnet-ef}, verifica con \texttt{dotnet ef --version}. Si la terminal no lo encuentra, cierra y reábrela para que tome el \texttt{PATH} de las herramientas globales.\par
+\end{cajatip}
+
+\subsection{El modelo y el DbContext}
+Un \textbf{modelo} es una clase C\# que representa una tabla; cada propiedad es una columna. El \textbf{DbContext} es la sesión con la base de datos: contiene un \texttt{DbSet<T>} por cada tabla y es a través de él que consultas y guardas.
+
+\begin{cajacodigo}[Modelo Estudiante y AppDbContext]
+\begin{lstlisting}[style=cs]
+using Microsoft.EntityFrameworkCore;
+
+// Modelo: una fila de la tabla estudiantes
+public class Estudiante
+{
+    public int Id { get; set; }
+    public string Nombre { get; set; } = "";
+    public string Correo { get; set; } = "";
+    public string Carrera { get; set; } = "";
+    public DateTime Creado { get; set; }
+}
+
+// Contexto: la sesion con la base de datos
+public class AppDbContext : DbContext
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options) { }
+
+    public DbSet<Estudiante> Estudiantes => Set<Estudiante>();
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{La cadena de conexión}
+La cadena de conexión describe cómo llegar a la base de datos. Se guarda en \texttt{appsettings.json} para no incrustarla en el código. Usamos la misma base \texttt{appweb2026ppa} del resto del curso.
+
+\begin{cajacodigo}[appsettings.json]
+\begin{lstlisting}[style=json]
+{
+  "ConnectionStrings": {
+    "Postgres": "Host=127.0.0.1;Port=5432;Database=appweb2026ppa;Username=postgres;Password=P@$7Gr3$QL"
+  },
+  "Logging": {
+    "LogLevel": { "Default": "Information", "Microsoft.AspNetCore": "Warning" }
+  }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajawarn}{Nunca subas contraseñas al repositorio}
+En un proyecto real, la contraseña no va en \texttt{appsettings.json} versionado, sino en \emph{User Secrets} (\texttt{dotnet user-secrets}) durante el desarrollo, o en variables de entorno en producción. Aquí la dejamos visible solo con fines didácticos y porque es la base local del curso.\par
+\end{cajawarn}
+
+\subsection{Registrar el DbContext en el contenedor}
+El \texttt{DbContext} se registra como un servicio con ciclo de vida \emph{Scoped} (uno por petición). Aquí le indicamos que use Npgsql con la cadena de conexión, y le decimos que apunte a PostgreSQL~18 para que aproveche sus características.
+
+\begin{cajacodigo}[Registrar EF Core en Program.cs]
+\begin{lstlisting}[style=cs]
+builder.Services.AddDbContext<AppDbContext>(opciones =>
+    opciones.UseNpgsql(
+        builder.Configuration.GetConnectionString("Postgres"),
+        npg => npg.SetPostgresVersion(18, 0)));
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Migraciones: del modelo a las tablas}
+Una \textbf{migración} es un archivo que describe los cambios de esquema (crear tablas, añadir columnas) de forma versionada. EF~Core las genera comparando tu modelo con el estado anterior, y luego las aplica a la base de datos. Es el flujo \emph{code-first}: la fuente de verdad es tu código C\#.
+
+\begin{cajacodigo}[Crear y aplicar la primera migración]
+\begin{lstlisting}[style=shell]
+# Genera el codigo de la migracion (carpeta Migrations/)
+dotnet ef migrations add Inicial
+
+# Aplica los cambios a la base de datos
+dotnet ef database update
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Si la tabla ya existe}
+Si creaste la tabla \texttt{estudiantes} a mano en la sección 2, EF~Core intentará crearla de nuevo y fallará. Para estos ejercicios, deja que EF~Core gestione el esquema: parte de una base vacía y aplica la migración, o usa una base distinta. Mantener una única fuente de verdad (el modelo) evita conflictos.\par
+\end{cajatip}
+
+\subsection{Consultar y guardar con LINQ}
+Con el \texttt{DbContext} inyectado, las operaciones CRUD se expresan con LINQ y métodos asíncronos. EF~Core las traduce a SQL parametrizado, lo que te protege de la inyección SQL de forma automática.
+
+\begin{cajacodigo}[CRUD con EF Core]
+\begin{lstlisting}[style=cs]
+// CREATE
+var nuevo = new Estudiante { Nombre = "Ada", Correo = "ada@uteq.edu.ec",
+                             Carrera = "Software", Creado = DateTime.UtcNow };
+db.Estudiantes.Add(nuevo);
+await db.SaveChangesAsync();
+
+// READ (todas, ordenadas)
+var lista = await db.Estudiantes.OrderBy(e => e.Id).ToListAsync();
+
+// READ (una por id)
+var uno = await db.Estudiantes.FindAsync(1);
+
+// UPDATE
+uno!.Correo = "ada.lovelace@uteq.edu.ec";
+await db.SaveChangesAsync();
+
+// DELETE
+db.Estudiantes.Remove(uno);
+await db.SaveChangesAsync();
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El sufijo \texttt{Async} y el \texttt{await} liberan el hilo mientras la base de datos responde, lo que permite atender más peticiones a la vez. Es la forma recomendada en la web.
+
+\subsection{Ejercicios — acceso a datos}
+Requieren PostgreSQL en marcha y la migración aplicada.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Intermedio]} Añade un \emph{endpoint} GET \texttt{/v1/estudiantes} que devuelva todos los estudiantes ordenados por nombre.
+\item \textbf{[Intermedio]} Inserta un estudiante de prueba al arrancar y comprueba en \emph{pgAdmin} que se guardó.
+\item \textbf{[Avanzado]} Implementa una búsqueda por carrera con \texttt{Where(e => e.Carrera == carrera)} recibida por \emph{query string}.
+\item \textbf{[Avanzado]} Crea un \emph{endpoint} de conteo por carrera con \texttt{GroupBy} y proyección a un objeto anónimo.
+\end{enumerate}
+\section{Proyecto integrador: CRUD de estudiantes}
+Es hora de unir todo lo aprendido en una API REST completa que crea, lee, actualiza y elimina estudiantes en PostgreSQL, con validación y respuestas HTTP correctas. Partimos de un proyecto nuevo para que tengas el flujo de principio a fin.
+
+\subsection{Crear el proyecto y añadir dependencias}
+Creamos un proyecto Minimal API limpio y le añadimos EF~Core, Npgsql y los paquetes de documentación que usaremos en la sección siguiente.
+
+\begin{cajacodigo}[Preparar el proyecto]
+\begin{lstlisting}[style=shell]
+dotnet new web -o ApiEstudiantes
+cd ApiEstudiantes
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.AspNetCore.OpenApi
+dotnet add package Scalar.AspNetCore
+code .
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Modelo, DTO y contexto}
+Separamos el \textbf{modelo} (lo que se guarda) de los \textbf{DTO} (\emph{Data Transfer Objects}: lo que entra y sale por la API). Así no expones tu tabla directamente y controlas qué campos acepta el cliente. Crea un archivo \texttt{Datos.cs}.
+
+\begin{cajacodigo}[Datos.cs --- modelo DTO y contexto]
+\begin{lstlisting}[style=cs]
+using Microsoft.EntityFrameworkCore;
+
+public class Estudiante
+{
+    public int Id { get; set; }
+    public string Nombre { get; set; } = "";
+    public string Correo { get; set; } = "";
+    public string Carrera { get; set; } = "";
+    public DateTime Creado { get; set; }
+}
+
+// Lo que el cliente envia al crear o actualizar
+public record EstudianteEntradaDto(string Nombre, string Correo, string Carrera);
+
+// Lo que la API devuelve
+public record EstudianteSalidaDto(int Id, string Nombre, string Correo,
+                                  string Carrera, DateTime Creado);
+
+public class AppDbContext(DbContextOptions<AppDbContext> options)
+    : DbContext(options)
+{
+    public DbSet<Estudiante> Estudiantes => Set<Estudiante>();
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Observa el uso de \texttt{record} y del constructor primario en la declaración del contexto: son azúcar sintáctico de C\# que reduce el código repetitivo respecto a Java, donde escribirías un constructor completo a mano.
+
+\subsection{Validación de la entrada}
+Antes de guardar, valida. Para un proyecto didáctico basta una función de validación que devuelva los errores encontrados; en proyectos grandes se usa la librería \emph{FluentValidation}. Añade esta función auxiliar.
+
+\begin{cajacodigo}[Validación sencilla]
+\begin{lstlisting}[style=cs]
+static Dictionary<string, string[]> Validar(EstudianteEntradaDto e)
+{
+    var errores = new Dictionary<string, string[]>();
+    if (string.IsNullOrWhiteSpace(e.Nombre))
+        errores["nombre"] = ["El nombre es obligatorio."];
+    if (string.IsNullOrWhiteSpace(e.Correo) || !e.Correo.Contains('@'))
+        errores["correo"] = ["El correo no es valido."];
+    if (string.IsNullOrWhiteSpace(e.Carrera))
+        errores["carrera"] = ["La carrera es obligatoria."];
+    return errores;
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{El Program.cs completo}
+Aquí está el corazón del proyecto: configuración de EF~Core, OpenAPI y los cinco \emph{endpoints} CRUD. Lo dividimos en dos partes para que sea legible. La primera parte configura los servicios y el \emph{pipeline}.
+
+\begin{cajacodigo}[Program.cs --- parte 1 de 2: configuración]
+\begin{lstlisting}[style=cs]
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(o =>
+    o.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"),
+                npg => npg.SetPostgresVersion(18, 0)));
+
+builder.Services.AddOpenApi();   // genera /openapi/v1.json
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();                 // expone el documento OpenAPI
+    app.MapScalarApiReference();      // UI interactiva en /scalar/v1
+}
+
+app.UseHttpsRedirection();
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+La segunda parte define los \emph{endpoints} agrupados bajo \texttt{/v1/estudiantes}. Cada uno recibe el \texttt{AppDbContext} por inyección de dependencias.
+
+\begin{cajacodigo}[Program.cs --- parte 2 de 2: endpoints CRUD]
+\begin{lstlisting}[style=cs]
+var grupo = app.MapGroup("/v1/estudiantes");
+
+// READ: lista completa
+grupo.MapGet("/", async (AppDbContext db) =>
+    await db.Estudiantes.OrderBy(e => e.Id)
+        .Select(e => new EstudianteSalidaDto(
+            e.Id, e.Nombre, e.Correo, e.Carrera, e.Creado))
+        .ToListAsync());
+
+// READ: uno por id
+grupo.MapGet("/{id:int}", async (int id, AppDbContext db) =>
+    await db.Estudiantes.FindAsync(id) is Estudiante e
+        ? Results.Ok(new EstudianteSalidaDto(
+              e.Id, e.Nombre, e.Correo, e.Carrera, e.Creado))
+        : Results.NotFound());
+
+// CREATE
+grupo.MapPost("/", async (EstudianteEntradaDto dto, AppDbContext db) =>
+{
+    var errores = Validar(dto);
+    if (errores.Count > 0) return Results.ValidationProblem(errores);
+
+    var e = new Estudiante { Nombre = dto.Nombre, Correo = dto.Correo,
+                             Carrera = dto.Carrera, Creado = DateTime.UtcNow };
+    db.Estudiantes.Add(e);
+    await db.SaveChangesAsync();
+    return Results.Created($"/v1/estudiantes/{e.Id}",
+        new EstudianteSalidaDto(e.Id, e.Nombre, e.Correo, e.Carrera, e.Creado));
+});
+
+// UPDATE
+grupo.MapPut("/{id:int}", async (int id, EstudianteEntradaDto dto,
+                                 AppDbContext db) =>
+{
+    var errores = Validar(dto);
+    if (errores.Count > 0) return Results.ValidationProblem(errores);
+
+    var e = await db.Estudiantes.FindAsync(id);
+    if (e is null) return Results.NotFound();
+
+    e.Nombre = dto.Nombre; e.Correo = dto.Correo; e.Carrera = dto.Carrera;
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+// DELETE
+grupo.MapDelete("/{id:int}", async (int id, AppDbContext db) =>
+{
+    var e = await db.Estudiantes.FindAsync(id);
+    if (e is null) return Results.NotFound();
+    db.Estudiantes.Remove(e);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+app.Run();
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Cada \emph{endpoint} devuelve el código HTTP correcto: 200 al leer, 201 al crear (con la cabecera \texttt{Location}), 204 al actualizar o borrar sin contenido, 404 cuando no existe y 400 con detalles cuando la validación falla. Esa precisión es lo que distingue una API profesional.
+
+\subsection{Migrar y ejecutar}
+Genera la migración, aplícala y arranca. Recuerda tener PostgreSQL en marcha y la cadena de conexión en \texttt{appsettings.json}.
+
+\begin{cajacodigo}[Poner en marcha el CRUD]
+\begin{lstlisting}[style=shell]
+dotnet ef migrations add Inicial
+dotnet ef database update
+dotnet run
+\end{lstlisting}
+\end{cajacodigo}
+
+\section{Documentar y probar la API con OpenAPI y Scalar}
+Una API sin documentación es difícil de usar. \textbf{OpenAPI} es un estándar que describe tu API en un documento JSON legible por máquinas; a partir de él, herramientas como \textbf{Scalar} generan una interfaz interactiva donde puedes ver y probar cada \emph{endpoint} sin escribir código cliente.
+
+\subsection{El cambio respecto a Swagger}
+Como adelantamos, desde .NET~9 la plantilla dejó de incluir \emph{Swashbuckle/Swagger}. Ahora el documento OpenAPI lo genera el paquete integrado \texttt{Microsoft.AspNetCore.OpenApi} mediante \texttt{AddOpenApi} y \texttt{MapOpenApi}, que publica el documento en \texttt{/openapi/v1.json}. Ese documento es solo datos: para una interfaz visual se añade una herramienta aparte. En esta guía usamos Scalar por su diseño moderno, su modo oscuro y su generador de ejemplos en varios lenguajes.
+
+\subsection{Ya está configurado: cómo abrirlo}
+En el \texttt{Program.cs} del proyecto integrador ya registraste \texttt{AddOpenApi}, \texttt{MapOpenApi} y \texttt{MapScalar\allowbreak{}ApiReference}. Con la aplicación en marcha, abre las dos URL siguientes.
+
+\begin{cajacodigo}[URLs de documentación]
+\begin{lstlisting}[style=shell]
+# Documento OpenAPI en JSON (lo consume cualquier herramienta)
+https://localhost:5xxx/openapi/v1.json
+
+# Interfaz interactiva de Scalar (probar endpoints desde el navegador)
+https://localhost:5xxx/scalar/v1
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajavscode}{Abrir Scalar al ejecutar}
+Para que el navegador abra Scalar automáticamente con \texttt{F5}, edita \texttt{Properties/launchSettings.json}: en el perfil \texttt{https}, pon \texttt{"launchBrowser": true} y \texttt{"launchUrl": "scalar/v1"}.
+\end{cajavscode}
+
+\subsection{Solo en desarrollo}
+Fíjate en que la documentación se monta dentro de \texttt{if (app.Environment.IsDevelopment())}. Exponer la interfaz de tu API en producción revela su estructura interna y es una mala práctica de seguridad. Mantenla restringida al entorno de desarrollo, como hace la plantilla.
+
+\subsection{Probar con la línea de comandos}
+Además de Scalar, puedes probar la API con \texttt{curl} o con la extensión \emph{REST Client} de VS Code. Aquí un ejemplo de creación con \texttt{curl}.
+
+\begin{cajacodigo}[Probar con curl]
+\begin{lstlisting}[style=shell]
+curl -X POST https://localhost:5xxx/v1/estudiantes ^
+  -H "Content-Type: application/json" ^
+  -d "{ \"nombre\": \"Ada\", \"correo\": \"ada@uteq.edu.ec\", \"carrera\": \"Software\" }"
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Ejercicios — documentación}
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Básico]} Abre Scalar y ejecuta el GET de lista; observa la respuesta y el código de estado.
+\item \textbf{[Intermedio]} Crea un estudiante desde Scalar y comprueba que devuelve 201 con la cabecera \texttt{Location}.
+\item \textbf{[Intermedio]} Provoca un 400 enviando un correo sin \texttt{@} y revisa el detalle de validación.
+\item \textbf{[Avanzado]} Cambia el título y la versión del documento OpenAPI con un \emph{document transformer} en \texttt{AddOpenApi}.
+\end{enumerate}
+\section{Seguridad en la API}
+Una API abierta a internet debe protegerse. Veremos tres pilares prácticos: autenticación con \textbf{JWT} (saber quién llama), \textbf{autorización} (decidir qué puede hacer) y \textbf{CORS} (controlar qué orígenes web pueden consumirla). Estos mecanismos son los mismos, conceptualmente, que en Spring Boot o Laravel.
+
+\subsection{Autenticación con JWT}
+Un JWT (\emph{JSON Web Token}) es una credencial firmada que el cliente envía en la cabecera \texttt{Authorization} de cada petición. El servidor verifica la firma y, si es válida, confía en los datos del \emph{token} (por ejemplo, el usuario y su rol). Para usarlo, añade el paquete de autenticación JWT y configúralo.
+
+\begin{cajacodigo}[Añadir y configurar JWT]
+\begin{lstlisting}[style=shell]
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+En \texttt{Program.cs}, registra la autenticación y la autorización, y añade los dos \emph{middleware} en el orden correcto.
+
+\begin{cajacodigo}[Configurar JWT en Program.cs]
+\begin{lstlisting}[style=cs]
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+var clave = builder.Configuration["Jwt:Clave"]!;   // secreto del servidor
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    {
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "uteq-appweb",
+            ValidAudience = "uteq-estudiantes",
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(clave))
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+// ... despues de var app = builder.Build();
+app.UseAuthentication();   // primero: quien es
+app.UseAuthorization();    // despues: si puede
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Para exigir un \emph{token} válido en un \emph{endpoint} o grupo, encadena \texttt{RequireAuthorization}. Las peticiones sin credencial válida recibirán 401 (no autenticado) o 403 (sin permiso).
+
+\begin{cajacodigo}[Proteger endpoints]
+\begin{lstlisting}[style=cs]
+// Todo el grupo exige autenticacion
+var grupo = app.MapGroup("/v1/estudiantes").RequireAuthorization();
+
+// Un endpoint publico de salud, sin proteccion
+app.MapGet("/salud", () => Results.Ok("ok"));
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajawarn}{El secreto no va en el código}
+La clave de firma (\texttt{Jwt:Clave}) debe ser larga y aleatoria, y guardarse fuera del código: en \emph{User Secrets} durante el desarrollo y en variables de entorno en producción. Si se filtra, cualquiera puede falsificar \emph{tokens}.\par
+\end{cajawarn}
+
+\subsection{CORS: quién puede llamar desde el navegador}
+CORS (\emph{Cross-Origin Resource Sharing}) controla qué sitios web, desde otro origen, pueden consumir tu API desde el navegador. Si tu \emph{frontend} en Angular corre en \texttt{http://localhost:4200} y tu API en otro puerto, necesitas autorizar ese origen explícitamente.
+
+\begin{cajacodigo}[Configurar CORS]
+\begin{lstlisting}[style=cs]
+builder.Services.AddCors(o => o.AddPolicy("frontend", p =>
+    p.WithOrigins("http://localhost:4200")
+     .AllowAnyHeader()
+     .AllowAnyMethod()));
+
+// despues de Build(), antes de los endpoints
+app.UseCors("frontend");
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajadanger}{No abras CORS a todo el mundo}
+Evita \texttt{AllowAnyOrigin} combinado con credenciales en producción: autoriza solo los orígenes que realmente consumen tu API. Una política demasiado permisiva expone tu \emph{backend} a sitios maliciosos.\par
+\end{cajadanger}
+
+\subsection{Buenas prácticas de seguridad}
+Más allá de JWT y CORS, recuerda estas reglas: usa siempre HTTPS (\texttt{UseHttpsRedirection}); valida toda entrada en el servidor; deja que EF~Core parametrice las consultas (nunca concatenes SQL a mano); no expongas la documentación en producción; y devuelve mensajes de error genéricos al cliente, registrando el detalle solo en los \emph{logs} del servidor.
+
+\section{Panorama: MVC y Razor Pages}
+Hasta aquí construimos una API que devuelve JSON. Pero ASP.NET Core también puede generar páginas HTML en el servidor con dos modelos clásicos. Conviene conocerlos aunque el proyecto del curso se centre en API + Angular.
+
+\subsection{MVC}
+En el patrón \textbf{MVC} (\emph{Model-View-Controller}), un \emph{controlador} recibe la petición, prepara un \emph{modelo} de datos y elige una \emph{vista} Razor (\texttt{.cshtml}) que lo renderiza a HTML. Es el modelo tradicional para aplicaciones con muchas páginas y formularios. Se habilita con \texttt{AddControllersWithViews} y \texttt{MapControllerRoute}.
+
+\subsection{Razor Pages}
+\textbf{Razor Pages} simplifica MVC para escenarios centrados en páginas: cada página combina la plantilla (\texttt{.cshtml}) y su lógica (\texttt{.cshtml.cs}, llamado \emph{PageModel}). Es muy productivo para formularios y paneles internos. Se habilita con \texttt{AddRazorPages} y \texttt{MapRazorPages}.
+
+\begin{cajatip}{¿Cuál usar en el proyecto del curso?}
+Para el Proyecto Final de Curso (Spring Boot + Angular), la pieza en ASP.NET Core equivalente sería una \textbf{Web API} (lo que construiste aquí), consumida por un \emph{frontend} en Angular. MVC y Razor Pages son útiles cuando el HTML se genera en el servidor, sin un \emph{frontend} separado.\par
+\end{cajatip}
+
+\section{Buenas prácticas y despliegue con Docker}
+Cerramos con dos temas que marcan la diferencia entre un ejercicio y un proyecto profesional: la organización del código y el empaquetado para despliegue.
+
+\subsection{Organización del código}
+A medida que el proyecto crece, separa responsabilidades en carpetas: \texttt{Models/} para las entidades, \texttt{Data/} para el \texttt{DbContext}, \texttt{Dtos/} para los objetos de transferencia, \texttt{Services/} para la lógica de negocio y \texttt{Endpoints/} (o \texttt{Controllers/}) para las rutas. Extrae la lógica de los \emph{endpoints} a servicios inyectables: deja los \emph{endpoints} delgados y prueba la lógica por separado.
+
+\subsection{Empaquetar con Docker}
+\textbf{Docker} empaqueta tu aplicación y sus dependencias en una imagen que corre igual en cualquier máquina. Un \texttt{Dockerfile} de varias etapas compila en una imagen con el SDK y ejecuta en una imagen ligera con solo el \emph{runtime}.
+
+\begin{cajacodigo}[Dockerfile multi-etapa]
+\begin{lstlisting}[style=shell]
+# Etapa de compilacion
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY . .
+RUN dotnet publish -c Release -o /app
+
+# Etapa de ejecucion (imagen ligera, solo runtime)
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT ["dotnet", "ApiEstudiantes.dll"]
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Publicar sin Docker}
+Si no usas contenedores, \texttt{dotnet publish -c Release} genera la aplicación lista para desplegar en una carpeta. El resultado se puede alojar tras un servidor inverso como Nginx, o en servicios en la nube que soportan .NET.\par
+\end{cajatip}
+
+\subsection{Ejercicios — seguridad y despliegue}
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item \textbf{[Intermedio]} Protege el grupo \texttt{/v1/estudiantes} con \texttt{RequireAuthorization} y verifica que sin \emph{token} responde 401.
+\item \textbf{[Intermedio]} Añade una política CORS que autorice \texttt{http://localhost:4200} y pruébala desde un \emph{fetch} en una página local.
+\item \textbf{[Avanzado]} Extrae la lógica del CRUD a un \texttt{EstudianteService} inyectable y deja los \emph{endpoints} delgados.
+\item \textbf{[Avanzado]} Escribe el \texttt{Dockerfile}, construye la imagen y ejecuta el contenedor conectándolo a tu PostgreSQL.
+\end{enumerate}
+\section{Banco de ejercicios por nivel}
+Este banco reúne ejercicios adicionales para practicar de forma intensiva. Están agrupados por nivel; al final hay soluciones comentadas de algunos de ellos. Resuélvelos en tu entorno y verifícalos con Scalar o \texttt{curl}.
+
+\subsection{Nivel básico}
+Afianzan el lenguaje, las rutas y las respuestas. Deberías resolver cada uno en pocos minutos.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item Crea un \emph{endpoint} GET \texttt{/v1/version} que devuelva \texttt{\{ "api": "estudiantes", "version": "1.0" \}}.
+\item Implementa \texttt{/v1/par/\{n:int\}} que devuelva si el número es par o impar.
+\item Devuelve la fecha actual en formato ISO con \texttt{DateTime.UtcNow}.
+\item Crea un \texttt{record Curso(int Id, string Nombre)} y un \emph{endpoint} que devuelva una lista fija de tres cursos.
+\item Añade \texttt{/v1/saludo} que reciba \texttt{?nombre=} y devuelva un saludo personalizado.
+\item Crea \texttt{/v1/mayuscula/\{texto\}} que devuelva el texto en mayúsculas.
+\end{enumerate}
+
+\subsection{Nivel intermedio}
+Combinan modelos, validación, EF~Core y documentación. Se parecen a tareas reales.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item Añade un modelo \texttt{Carrera} con su \texttt{DbSet}, su migración y un CRUD básico.
+\item Implementa paginación en el listado de estudiantes con \texttt{Skip} y \texttt{Take} y parámetros \texttt{pagina} y \texttt{tamano}.
+\item Valida que el correo sea único antes de crear, devolviendo 409 si ya existe.
+\item Crea una búsqueda por nombre con \texttt{Where(e => e.Nombre.Contains(texto))}.
+\item Devuelve un \texttt{ProblemDetails} estándar (RFC~9457) en los errores de validación.
+\item Añade ordenación configurable por \emph{query string} (\texttt{?orden=nombre} o \texttt{?orden=carrera}).
+\end{enumerate}
+
+\subsection{Nivel avanzado}
+Exigen diseño, seguridad y arquitectura. Son los más cercanos a un proyecto profesional.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item Implementa un \emph{endpoint} de \emph{login} que emita un JWT firmado y protege el CRUD con él.
+\item Añade roles (\texttt{admin}, \texttt{consulta}) y restringe el borrado solo a \texttt{admin} con políticas de autorización.
+\item Extrae toda la lógica a un \texttt{IEstudianteService} inyectable y escribe pruebas con \texttt{WebApplicationFactory}.
+\item Implementa relaciones: un estudiante pertenece a una carrera (clave foránea) y carga relacionada con \texttt{Include}.
+\item Añade \emph{logging} estructurado de cada operación y un \emph{middleware} global de manejo de errores.
+\item Empaqueta la API con Docker y orquéstala junto a PostgreSQL con \emph{docker compose}.
+\end{enumerate}
+
+\subsection{Proyectos propuestos}
+Para integrar todo en algo mayor, elige uno y desarróllalo por etapas, aplicando seguridad desde el inicio.
+
+\begin{enumerate}[leftmargin=1.7em,itemsep=3pt,topsep=2pt]
+\item API de biblioteca: libros, préstamos y socios, con validación de disponibilidad en transacciones.
+\item API de calificaciones: estudiantes, asignaturas y notas, con reportes por estudiante y por asignatura.
+\item API de reservas de aulas con validación de solapamiento de horarios.
+\item \emph{Backend} para una agenda institucional consumido por un \emph{frontend} en Angular.
+\end{enumerate}
+
+\section{Soluciones seleccionadas}
+Aquí tienes soluciones comentadas de algunos ejercicios para que contrastes tu enfoque. Casi siempre hay más de una solución válida; lo importante es que sea correcta, legible y segura.
+
+\subsection{Endpoint de versión (básico)}
+Devolvemos un objeto anónimo que ASP.NET Core serializa a JSON automáticamente.
+
+\begin{cajacodigo}[Solución: endpoint de versión]
+\begin{lstlisting}[style=cs]
+app.MapGet("/v1/version", () =>
+    Results.Ok(new { api = "estudiantes", version = "1.0" }));
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Paginación del listado (intermedio)}
+Usamos \texttt{Skip} y \texttt{Take} sobre la consulta. Calculamos el desplazamiento a partir del número de página y el tamaño.
+
+\begin{cajacodigo}[Solución: paginación]
+\begin{lstlisting}[style=cs]
+grupo.MapGet("/", async (AppDbContext db, int pagina = 1, int tamano = 10) =>
+{
+    if (pagina < 1) pagina = 1;
+    if (tamano < 1 || tamano > 100) tamano = 10;
+
+    var datos = await db.Estudiantes
+        .OrderBy(e => e.Id)
+        .Skip((pagina - 1) * tamano)
+        .Take(tamano)
+        .Select(e => new EstudianteSalidaDto(
+            e.Id, e.Nombre, e.Correo, e.Carrera, e.Creado))
+        .ToListAsync();
+
+    var total = await db.Estudiantes.CountAsync();
+    return Results.Ok(new { pagina, tamano, total, datos });
+});
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Correo único con 409 (intermedio)}
+Antes de crear, comprobamos si el correo ya existe con \texttt{AnyAsync}. Si existe, devolvemos 409 \emph{Conflict}.
+
+\begin{cajacodigo}[Solución: validar correo único]
+\begin{lstlisting}[style=cs]
+grupo.MapPost("/", async (EstudianteEntradaDto dto, AppDbContext db) =>
+{
+    var errores = Validar(dto);
+    if (errores.Count > 0) return Results.ValidationProblem(errores);
+
+    bool existe = await db.Estudiantes.AnyAsync(e => e.Correo == dto.Correo);
+    if (existe)
+        return Results.Conflict(new { mensaje = "El correo ya esta registrado." });
+
+    var e = new Estudiante { Nombre = dto.Nombre, Correo = dto.Correo,
+                             Carrera = dto.Carrera, Creado = DateTime.UtcNow };
+    db.Estudiantes.Add(e);
+    await db.SaveChangesAsync();
+    return Results.Created($"/v1/estudiantes/{e.Id}",
+        new EstudianteSalidaDto(e.Id, e.Nombre, e.Correo, e.Carrera, e.Creado));
+});
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Login que emite un JWT (avanzado)}
+Tras validar credenciales (aquí simplificadas), construimos un \emph{token} firmado con la clave del servidor y unos \emph{claims} básicos.
+
+\begin{cajacodigo}[Solución: emitir un JWT]
+\begin{lstlisting}[style=cs]
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+app.MapPost("/v1/login", (LoginDto dto, IConfiguration cfg) =>
+{
+    // En un proyecto real: verificar usuario y hash de la contrasena en BD
+    if (dto.Usuario != "admin" || dto.Clave != "secreto")
+        return Results.Unauthorized();
+
+    var clave = new SymmetricSecurityKey(
+        Encoding.UTF8.GetBytes(cfg["Jwt:Clave"]!));
+    var credenciales = new SigningCredentials(
+        clave, SecurityAlgorithms.HmacSha256);
+
+    var claims = new[]
+    {
+        new Claim(ClaimTypes.Name, dto.Usuario),
+        new Claim(ClaimTypes.Role, "admin")
+    };
+
+    var token = new JwtSecurityToken(
+        issuer: "uteq-appweb",
+        audience: "uteq-estudiantes",
+        claims: claims,
+        expires: DateTime.UtcNow.AddHours(2),
+        signingCredentials: credenciales);
+
+    var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+    return Results.Ok(new { token = jwt });
+});
+
+public record LoginDto(string Usuario, string Clave);
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Copia el \emph{token} devuelto y, en Scalar, pégalo en la opción de autenticación \emph{Bearer} para llamar a los \emph{endpoints} protegidos. Es la base de un \emph{backend} seguro que luego consume un \emph{frontend}.
+
+\section{Glosario de siglas y términos}
+Este glosario reúne las siglas y términos que aparecen en la guía, para consulta rápida durante el estudio.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{12.2cm}}
+\rowcolor{netmorado}\textcolor{white}{\textbf{Término}} & \textcolor{white}{\textbf{Significado}} \\
+\endfirsthead
+\rowcolor{netmorado}\textcolor{white}{\textbf{Término}} & \textcolor{white}{\textbf{Significado}} \\
+\endhead
+\ttfamily\color{netmorado}.NET & Plataforma de desarrollo de Microsoft (runtime, bibliotecas y herramientas). \\ \hline
+\ttfamily\color{netmorado}ASP.NET Core & Framework web de .NET, multiplataforma y de código abierto. \\ \hline
+\ttfamily\color{netmorado}C\# & Lenguaje principal de .NET, de tipado estático y orientado a objetos. \\ \hline
+\ttfamily\color{netmorado}SDK & Software Development Kit: compilador, bibliotecas y CLI \texttt{dotnet}. \\ \hline
+\ttfamily\color{netmorado}CLI & Command-Line Interface (la herramienta \texttt{dotnet}). \\ \hline
+\ttfamily\color{netmorado}Minimal API & Estilo conciso para definir rutas directamente en \texttt{Program.cs}. \\ \hline
+\ttfamily\color{netmorado}Middleware & Componente del \emph{pipeline} que procesa cada petición y respuesta. \\ \hline
+\ttfamily\color{netmorado}DI & Inyección de dependencias (\emph{Dependency Injection}). \\ \hline
+\ttfamily\color{netmorado}REST & Estilo de API basado en recursos, rutas y verbos HTTP. \\ \hline
+\ttfamily\color{netmorado}DTO & Data Transfer Object: objeto para entrada/salida de la API. \\ \hline
+\ttfamily\color{netmorado}EF Core & Entity Framework Core: el ORM de .NET. \\ \hline
+\ttfamily\color{netmorado}ORM & Object-Relational Mapper: mapea objetos a tablas. \\ \hline
+\ttfamily\color{netmorado}Npgsql & Proveedor de PostgreSQL para ADO.NET y EF~Core. \\ \hline
+\ttfamily\color{netmorado}DbContext & Sesión con la base de datos en EF~Core. \\ \hline
+\ttfamily\color{netmorado}Migración & Archivo versionado que describe cambios de esquema en EF~Core. \\ \hline
+\ttfamily\color{netmorado}LINQ & Language Integrated Query: consultas declarativas en C\#. \\ \hline
+\ttfamily\color{netmorado}OpenAPI & Estándar para describir APIs en un documento legible por máquinas. \\ \hline
+\ttfamily\color{netmorado}Scalar & Interfaz interactiva moderna para documentos OpenAPI. \\ \hline
+\ttfamily\color{netmorado}Swagger & Conjunto de herramientas OpenAPI; ya no viene por defecto desde .NET~9. \\ \hline
+\ttfamily\color{netmorado}JWT & JSON Web Token: credencial firmada para autenticación. \\ \hline
+\ttfamily\color{netmorado}CORS & Cross-Origin Resource Sharing: control de orígenes web permitidos. \\ \hline
+\ttfamily\color{netmorado}MVC & Model-View-Controller: patrón para generar HTML en el servidor. \\ \hline
+\ttfamily\color{netmorado}Razor Pages & Modelo de páginas (\texttt{.cshtml} + \emph{PageModel}) de ASP.NET Core. \\ \hline
+\ttfamily\color{netmorado}Docker & Empaqueta la aplicación y sus dependencias en una imagen portable. \\ \hline
+\end{longtable}}
+
+\section{Recursos y referencias}
+Para seguir aprendiendo y consultar dudas, estos son los recursos oficiales más fiables del ecosistema .NET. Todas las direcciones corresponden a documentación o repositorios verificados.
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item Documentación oficial de .NET: \textbf{learn.microsoft.com/dotnet}
+\item Documentación de ASP.NET Core~10: \textbf{learn.microsoft.com/aspnet/core}
+\item Descarga del SDK de .NET: \textbf{dotnet.microsoft.com/download}
+\item Entity Framework Core: \textbf{learn.microsoft.com/ef/core}
+\item Proveedor Npgsql para EF~Core: \textbf{npgsql.org/efcore}
+\item OpenAPI en ASP.NET Core: \textbf{learn.microsoft.com/aspnet/core/fundamentals/openapi}
+\item Scalar para .NET: \textbf{github.com/scalar/scalar}
+\item PostgreSQL: \textbf{postgresql.org/docs}
+\item Visual Studio Code para C\#: \textbf{code.visualstudio.com/docs/languages/csharp}
+\item Seguridad web (OWASP Top~10): \textbf{owasp.org/Top10}
+\end{itemize}
+
+Con esta guía y la práctica constante de los ejercicios, tendrás una base sólida para desarrollar APIs web con ASP.NET Core y para integrarlas, más adelante, con un \emph{frontend} en Angular en el Proyecto Final de Curso.
+
+\end{document}

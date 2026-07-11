@@ -1,0 +1,907 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{graphicx}\usepackage{listings}\usepackage[most]{tcolorbox}
+\usepackage{longtable}\usepackage{array}\usepackage{enumitem}
+\usepackage{fancyhdr}\usepackage{titlesec}\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\renewcommand{\contentsname}{Contenido}\renewcommand{\tablename}{Tabla}
+\definecolor{jwebazul}{HTML}{176B7A}\definecolor{jwebazulo}{HTML}{0E4A55}
+\definecolor{jweboro}{HTML}{C8651B}\definecolor{tinta}{HTML}{1F2933}
+\definecolor{codbg}{HTML}{F4F7F8}\definecolor{numlin}{HTML}{AAAAAA}
+\definecolor{kw}{HTML}{0057AE}\definecolor{str}{HTML}{C41A16}\definecolor{com}{HTML}{717171}
+\definecolor{tipbg}{HTML}{E7F0F2}\definecolor{warnbg}{HTML}{FBF0D8}\definecolor{dangerbg}{HTML}{FBE9E7}
+\definecolor{probbg}{HTML}{FCF3E8}
+\lstset{basicstyle=\footnotesize\ttfamily\color{tinta},keywordstyle=\color{kw}\bfseries,
+  stringstyle=\color{str},commentstyle=\color{com}\itshape,numberstyle=\tiny\color{numlin},
+  numbers=left,numbersep=7pt,showstringspaces=false,breaklines=true,breakatwhitespace=false,
+  breakindent=14pt,columns=fullflexible,keepspaces=true,upquote=true,tabsize=4,frame=none}
+\lstdefinestyle{java}{language=Java, morekeywords={var,record,sealed,permits,yield}}
+\lstdefinestyle{sql}{language=SQL, morekeywords={SERIAL,VARCHAR,TIMESTAMP,DEFAULT,NOW,BOOLEAN,IDENTITY,REFERENCES,GENERATED,ALWAYS,UNIQUE}}
+\lstdefinestyle{xml}{language=XML, morekeywords={}}
+\lstdefinestyle{markup}{}
+\newtcolorbox{cajacodigo}[1][]{enhanced, breakable=false, colback=codbg, colframe=jwebazul!55,
+  boxrule=0.4pt, arc=2pt, left=4pt, right=6pt, top=3pt, bottom=3pt, boxsep=2pt,
+  title=#1, colbacktitle=jwebazul, coltitle=white, fonttitle=\bfseries\small,
+  attach boxed title to top left={xshift=6pt,yshift=-2pt}, boxed title style={colback=jwebazul, arc=1pt}}
+\newtcolorbox{cajaproblema}[1]{enhanced,breakable=false,colback=probbg,colframe=jweboro!70,
+  boxrule=0.8pt, arc=2pt, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{jweboro}, title=#1, coltitle=jweboro,
+  attach boxed title to top left={xshift=8pt,yshift=-3pt},
+  boxed title style={colback=jweboro,arc=1pt}, coltitle=white}
+\newtcolorbox{cajatip}[1]{enhanced,breakable=false,colback=tipbg,colframe=tipbg,
+  borderline west={3pt}{0pt}{jwebazul}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{jwebazul}, title=#1, coltitle=jwebazul}
+\newtcolorbox{cajawarn}[1]{enhanced,breakable=false,colback=warnbg,colframe=warnbg,
+  borderline west={3pt}{0pt}{jweboro}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{jweboro}, title=#1, coltitle=jweboro}
+\newtcolorbox{cajadanger}[1]{enhanced,breakable=false,colback=dangerbg,colframe=dangerbg,
+  borderline west={3pt}{0pt}{red!60!black}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{red!60!black}, title=#1, coltitle=red!60!black}
+\titleformat{\section}{\color{jwebazul}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\color{jwebazulo}\large\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\color{tinta}\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\color{gray}Seguridad con Spring Security y JWT --- Aplicaciones Web (UTEQ)}
+\fancyfoot[C]{\footnotesize\color{gray}P\'agina \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\parskip}{6pt}\setlength{\parindent}{0pt}\setlength{\emergencystretch}{3em}
+\raggedbottom
+\begin{document}
+\begin{titlepage}
+\vspace*{1.1cm}
+{\color{jwebazul}\bfseries\large UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}\\[2pt]
+{\color{gray} Facultad de Ciencias de la Computaci\'on y Dise\~no Digital $\cdot$ Ingenier\'ia de Software}\\[2cm]
+{\color{tinta}\bfseries\fontsize{30}{34}\selectfont Seguridad en APIs REST}\\[6pt]
+{\color{jwebazul}\bfseries\fontsize{30}{34}\selectfont con Spring Security y JWT}\\[10pt]
+{\color{jweboro}\rule{\linewidth}{2.2pt}}\\[10pt]
+{\itshape\large Continuaci\'on del proyecto \texttt{appweb-api}: autenticaci\'on, roles y autorizaci\'on en una API REST sin estado}\\[4pt]
+{\color{gray} Spring Boot 4 $\cdot$ Spring Security 7 $\cdot$ JJWT 0.13 $\cdot$ PostgreSQL $\cdot$ BCrypt}\\[2.4cm]
+{\color{jwebazulo} A partir del CRUD REST de la Semana 6: a\~nadimos inicio de sesi\'on, emisi\'on y validaci\'on de tokens, y control de acceso por rol}\\[2cm]
+\begin{flushleft}
+\textbf{Asignatura:} Aplicaciones Web (5.\textsuperscript{o} semestre)\\[3pt]
+\textbf{Unidad:} II --- Lado del servidor y seguridad\\[3pt]
+\textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[3pt]
+\textbf{Per\'iodo:} PPA 2026--2027
+\end{flushleft}
+\vfill
+{\color{gray}\small Versiones de referencia verificadas a junio de 2026 (Spring Boot 4.1.0, Spring Security 7.1, JJWT 0.13.0, Java 25 LTS, PostgreSQL 18) en la secci\'on 2.}
+\end{titlepage}
+\tableofcontents
+\clearpage
+
+\section{Introducción}
+Esta guía retoma exactamente el proyecto que construiste en la Semana 6 ---la API REST \texttt{appweb-api} con Spring Boot, las entidades \texttt{Carrera}, \texttt{Estudiante}, \texttt{Perfil}, \texttt{Curso} e \texttt{Inscripcion}, y los controladores con los cinco verbos HTTP--- y le añade una capa de seguridad profesional. Hasta ahora cualquier cliente podía consumir cualquier endpoint; al terminar, la API exigirá un inicio de sesión, emitirá un token firmado y autorizará cada petición según el rol del usuario.
+
+El enfoque es el mismo de toda la asignatura: primero planteamos el problema concreto que vamos a resolver, después explicamos la técnica que lo resuelve y mostramos un ejemplo pequeño pero completo, y al final reunimos todas las piezas sobre el proyecto real. No se requiere ninguna librería ajena al ecosistema de Spring salvo una, JJWT, para construir y verificar los tokens.
+
+\begin{cajatip}{Qué vas a añadir al proyecto}
+Una entidad \texttt{Usuario} con sus roles, un \texttt{UserDetailsService} que la lee desde PostgreSQL, un codificador \texttt{BCrypt}, un servicio que emite y valida tokens JWT, un filtro que intercepta cada petición, una clase de configuración \texttt{SecurityConfig} y un \texttt{AuthController} con los endpoints de registro e inicio de sesión. Nada de lo ya construido se rompe: solo se protege.\par
+\end{cajatip}
+
+\subsection{Autenticación y autorización: dos preguntas distintas}
+Conviene separar dos conceptos que suelen confundirse. La \textbf{autenticación} responde a «¿quién eres?»: verifica la identidad del usuario comprobando sus credenciales (usuario y contraseña). La \textbf{autorización} responde a «¿qué puedes hacer?»: una vez identificado, decide si tiene permiso para ejecutar una acción concreta sobre un recurso. En esta guía resolvemos ambas: la autenticación al iniciar sesión, y la autorización en cada petición posterior según el rol.
+
+\subsection{Por qué JWT en una API REST}
+Una API REST es \textbf{sin estado} (stateless): el servidor no guarda una sesión en memoria entre una petición y la siguiente. Esto choca con el inicio de sesión tradicional basado en cookies de sesión, que sí guarda estado en el servidor. La solución estándar es el \textbf{token}: tras autenticarse una sola vez, el cliente recibe una credencial autocontenida que envía en cada petición; el servidor la valida sin necesidad de recordar nada. JWT (JSON Web Token) es el formato más extendido para ese token, y encaja de forma natural con una SPA en Angular que más adelante consumirá esta API.
+
+\section{Versiones de referencia}
+\begin{cajaproblema}{Problema a resolver}
+La seguridad es el área de Spring donde más cambian las APIs entre versiones. ¿Qué versiones exactas usamos y qué cambió respecto a tutoriales antiguos?\par
+\end{cajaproblema}
+El proyecto se construyó sobre Spring Boot 4.1, que arrastra Spring Framework 7, Jakarta EE 11 (paquetes \texttt{jakarta.*}) y, lo más importante para nosotros, Spring Security 7. Esta generación elimina APIs que llevaban años en desuso, por lo que mucho código que encontrarás en Internet ya no compila. La Tabla~\ref{tab:versiones} fija las versiones verificadas; los cambios de API se detallan en la sección 5.
+
+\begin{table}[h]
+\centering
+\caption{Versiones de referencia verificadas a junio de 2026.}
+\label{tab:versiones}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{>{\bfseries}p{4.2cm} p{4.0cm} p{5.4cm}}
+\rowcolor{jwebazul!12}
+\textnormal{\textbf{Componente}} & \textbf{Versión} & \textbf{Rol en la seguridad} \\
+Spring Boot & 4.1.0 & Orquesta el arranque y la autoconfiguración \\
+Spring Security & 7.1 & Filtros, autenticación y autorización \\
+Spring Framework & 7.0.7+ & Núcleo (DI, web MVC) \\
+JJWT (\texttt{io.jsonwebtoken}) & 0.13.0 & Construye y verifica los tokens \\
+Java & 25 LTS (o 21 LTS) & Lenguaje y máquina virtual \\
+PostgreSQL & 18 & Almacena usuarios y roles \\
+Jackson & 3 (en Spring) & Serializa JSON de la API \\
+\end{tabular}
+\end{table}
+
+\begin{cajawarn}{Spring Security 7 obliga al DSL de lambdas}
+En Spring Security 7 se eliminaron \texttt{authorizeRequests()}, el método \texttt{and()} para encadenar, y los emparejadores \texttt{antMatchers()} / \texttt{mvcMatchers()}. Ahora se usa \texttt{authorizeHttpRequests(...)} con lambdas y \texttt{requestMatchers(...)} (basado en \texttt{PathPattern} por defecto). Si copias código de un tutorial de Spring Security 5 o 6 con \texttt{.and()}, no compilará.\par
+\end{cajawarn}
+
+\section{Cómo funciona un JWT}
+\begin{cajaproblema}{Problema a resolver}
+El cliente debe demostrar su identidad en cada petición sin reenviar la contraseña y sin que el servidor guarde sesión. ¿Cómo es esa credencial por dentro?\par
+\end{cajaproblema}
+Un JWT es una cadena de texto compuesta por tres partes separadas por puntos: \texttt{cabecera.\allowbreak{}cuerpo.\allowbreak{}firma}. La \textbf{cabecera} (header) declara el algoritmo de firma; el \textbf{cuerpo} (payload) contiene las afirmaciones o «claims» (por ejemplo el nombre de usuario, los roles y la fecha de expiración); la \textbf{firma} se calcula con una clave secreta que solo conoce el servidor. Las dos primeras partes van codificadas en Base64URL ---no cifradas---, así que nunca deben llevar datos sensibles; lo que protege al token es la firma: si alguien altera el cuerpo, la firma deja de coincidir y el token se rechaza.
+
+El flujo completo tiene tres momentos. Primero el cliente envía usuario y contraseña al endpoint de inicio de sesión; si son correctos, el servidor responde con un token firmado. Después, en cada petición protegida, el cliente añade la cabecera \texttt{Authorization:\allowbreak{} Bearer\allowbreak{} <token>}. Finalmente el servidor verifica la firma y la expiración del token y, si todo está bien, atiende la petición con la identidad y los roles que vienen dentro. La Figura conceptual de la sección de pruebas muestra este intercambio con \texttt{cURL}.
+
+\begin{cajatip}{Token firmado --- no cifrado}
+Firmar garantiza \emph{integridad} y \emph{autenticidad} (nadie lo alteró y lo emitió nuestro servidor), pero no \emph{confidencialidad}: cualquiera puede leer el cuerpo. Por eso el token viaja siempre sobre HTTPS y no contiene contraseñas ni datos privados, solo el identificador del usuario y sus roles.\par
+\end{cajatip}
+
+\section{Paso 1 --- Dependencias y configuración}
+\begin{cajaproblema}{Problema a resolver}
+El proyecto actual no tiene capacidad de seguridad ni de manejo de tokens. ¿Qué dependencias añadimos al \texttt{pom.xml}?\par
+\end{cajaproblema}
+Añadimos dos cosas al \texttt{pom.xml} de la Semana 6: el \emph{starter} de seguridad de Spring Boot y las tres dependencias de JJWT (la API, la implementación en tiempo de ejecución y el módulo de serialización). En cuanto añadas \texttt{spring-boot-starter-security}, Spring protegerá \emph{todos} los endpoints por defecto; los iremos abriendo selectivamente en la sección 9.
+
+\begin{cajacodigo}[pom.xml --- dependencias nuevas]
+\begin{lstlisting}[style=xml]
+<!-- Spring Security -->
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+<!-- JSON Web Token (JJWT 0.13.0) -->
+<dependency>
+  <groupId>io.jsonwebtoken</groupId>
+  <artifactId>jjwt-api</artifactId>
+  <version>0.13.0</version>
+</dependency>
+<dependency>
+  <groupId>io.jsonwebtoken</groupId>
+  <artifactId>jjwt-impl</artifactId>
+  <version>0.13.0</version>
+  <scope>runtime</scope>
+</dependency>
+<dependency>
+  <groupId>io.jsonwebtoken</groupId>
+  <artifactId>jjwt-jackson</artifactId>
+  <version>0.13.0</version>
+  <scope>runtime</scope>
+</dependency>
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajawarn}{Convivencia de Jackson 2 y Jackson 3}
+Spring Boot 4 usa Jackson 3 (paquete \texttt{tools.\allowbreak{}jackson}). El módulo \texttt{jjwt-jackson} usa Jackson 2 (paquete \texttt{com.\allowbreak{}fasterxml.\allowbreak{}jackson}) solo de forma interna. Conviven sin conflicto porque sus paquetes raíz son distintos; JJWT trae su propia versión de Jackson 2 y no interfiere con la serialización de tu API. Si prefieres no tener Jackson 2 en el classpath, sustituye \texttt{jjwt-jackson} por \texttt{jjwt-gson}.\par
+\end{cajawarn}
+
+\subsection{El archivo application.properties}
+Toda la configuración del proyecto vive en un único archivo, \texttt{src/\allowbreak{}main/\allowbreak{}resources/\allowbreak{}application.\allowbreak{}properties}: la conexión a la base de datos, el comportamiento de JPA/Hibernate y, ahora, las claves del JWT. No hay un archivo aparte para la base de datos ni otro para la seguridad; Spring Boot lee este archivo al arrancar. Como alternativa equivalente puede usarse \texttt{application.yml} (las mismas claves en formato YAML, anidadas por puntos); en esta guía usamos \texttt{.properties}.
+
+El listado siguiente es el archivo completo del proyecto: incluye lo que ya tenías de la Semana 6 (origen de datos y JPA) más las dos claves nuevas del JWT al final. Para el algoritmo HS256 el secreto debe medir al menos 32 bytes; usa una cadena larga y aleatoria, y en producción léela de una variable de entorno, nunca del repositorio.
+
+\begin{cajacodigo}[src/main/resources/application.properties --- archivo completo]
+\begin{lstlisting}[style=markup]
+# --- Conexion a PostgreSQL ---
+spring.datasource.url=jdbc:postgresql://localhost:5432/appweb2026ppa
+spring.datasource.username=postgres
+spring.datasource.password=P@$7Gr3$QL
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# --- JPA / Hibernate ---
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# --- Swagger / OpenAPI ---
+springdoc.swagger-ui.path=/swagger-ui.html
+
+# --- Seguridad: JWT ---
+app.jwt.secret=cambia-esta-clave-larga-y-aleatoria-de-32-bytes-minimo
+app.jwt.expiration-ms=3600000
+\end{lstlisting}
+\end{cajacodigo}
+
+La clave \texttt{spring.\allowbreak{}jpa.\allowbreak{}hibernate.\allowbreak{}ddl-auto} es la que hace que no escribas SQL: Hibernate genera o actualiza las tablas a partir de tus clases \texttt{@Entity}, como detallamos en el Paso 2.
+
+\section{Paso 2 --- Usuario, roles y acceso a datos}
+\begin{cajaproblema}{Problema a resolver}
+Spring Security necesita saber qué usuarios existen, qué contraseña (cifrada) tienen y qué pueden hacer. ¿Cómo modelamos eso en el dominio del proyecto?\par
+\end{cajaproblema}
+Creamos una entidad \texttt{Usuario} en el paquete \texttt{model} y un enumerado \texttt{Rol}. La contraseña se guarda \emph{siempre} cifrada con BCrypt, nunca en claro. Los roles se modelan como una colección de valores del enumerado; Hibernate los almacena en una tabla secundaria \texttt{usuario\_rol}. Mantenemos el estilo de la Semana 6: anotaciones JPA y Lombok para los accesores.
+
+\begin{cajacodigo}[model/Rol.java]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.model;
+
+public enum Rol {
+    ADMIN, DOCENTE, ESTUDIANTE
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajacodigo}[model/Usuario.java]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import java.util.Set;
+
+@Entity
+@Table(name = "usuario")
+@Getter @Setter
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false, length = 60)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;            // hash BCrypt, nunca texto plano
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "usuario_rol",
+        joinColumns = @JoinColumn(name = "usuario_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol")
+    private Set<Rol> roles;
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+El repositorio es un \texttt{JpaRepository} con dos consultas derivadas: buscar por nombre de usuario (lo usará el \texttt{UserDetailsService}) y comprobar si un usuario ya existe (lo usará el registro).
+
+\begin{cajacodigo}[repository/UsuarioRepository.java]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.repository;
+
+import ec.edu.uteq.appwebapi.model.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
+
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+    Optional<Usuario> findByUsername(String username);
+    boolean existsByUsername(String username);
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\subsection{Las tablas las crea Spring Boot, no tú}
+No escribimos sentencias \texttt{CREATE TABLE}. En el enfoque \emph{code-first} de JPA, las clases \texttt{@Entity} son la única fuente de verdad del esquema: al arrancar, Hibernate las inspecciona y crea o actualiza automáticamente las tablas en PostgreSQL. La entidad \texttt{Usuario} produce la tabla \texttt{usuario}; su colección de roles, anotada con \texttt{@ElementCollection} y \texttt{@CollectionTable}, produce la tabla secundaria \texttt{usuario\_rol} con su clave foránea. Si mañana añades un campo a la clase, basta con reiniciar la aplicación: la columna aparece sola.
+
+Quien gobierna este comportamiento es la propiedad \texttt{spring.\allowbreak{}jpa.\allowbreak{}hibernate.\allowbreak{}ddl-auto} de \texttt{application.properties}. La Tabla~\ref{tab:ddlauto} resume sus valores; para el desarrollo del proyecto usamos \texttt{update}.
+
+\begin{table}[h]
+\centering
+\caption{Valores de spring.jpa.hibernate.ddl-auto.}
+\label{tab:ddlauto}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{>{\ttfamily}p{2.6cm} >{\raggedright\arraybackslash}p{11.4cm}}
+\rowcolor{jwebazul!12}
+\textnormal{\textbf{Valor}} & \textbf{Qué hace} \\
+update & Crea las tablas que faltan y añade columnas nuevas; conserva los datos. Recomendado en desarrollo. \\
+create & Borra y recrea el esquema en cada arranque; se pierden los datos. Útil para pruebas limpias. \\
+create-drop & Como create, pero además borra el esquema al apagar la aplicación. \\
+validate & No modifica nada; solo verifica que las tablas coincidan con las entidades y falla si no. \\
+none & Desactiva la gestión automática; el esquema se administra por fuera (por ejemplo con Flyway). \\
+\end{tabular}
+\end{table}
+
+\begin{cajatip}{Ver el SQL que genera Hibernate}
+Si quieres comprobar exactamente qué tablas crea, activa \texttt{spring.jpa.show-sql=true} y \texttt{spring.jpa.properties.hibernate.format\_sql=true}: el SQL aparece formateado en la consola al arrancar. Es solo para inspección; no tienes que ejecutarlo a mano.\par
+\end{cajatip}
+
+\section{Paso 3 --- UserDetailsService}
+\begin{cajaproblema}{Problema a resolver}
+Spring Security no sabe leer tu tabla \texttt{usuario}. ¿Cómo le enseñamos a cargar un usuario desde la base de datos?\par
+\end{cajaproblema}
+El contrato \texttt{UserDetailsService} tiene un solo método, \texttt{loadUserByUsername}, que Spring invoca durante la autenticación. Nuestra implementación busca el \texttt{Usuario} en el repositorio, traduce sus roles a autoridades de Spring (con el prefijo \texttt{ROLE\_}, que es la convención que esperan \texttt{hasRole(...)} y \texttt{@PreAuthorize}) y devuelve un \texttt{UserDetails} estándar.
+
+\begin{cajacodigo}[security/UsuarioDetailsService.java]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.security;
+
+import ec.edu.uteq.appwebapi.model.Usuario;
+import ec.edu.uteq.appwebapi.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class UsuarioDetailsService implements UserDetailsService {
+
+    private final UsuarioRepository repo;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        Usuario u = repo.findByUsername(username)
+            .orElseThrow(() ->
+                new UsernameNotFoundException("Usuario no encontrado: " + username));
+
+        var autoridades = u.getRoles().stream()
+            .map(r -> new SimpleGrantedAuthority("ROLE_" + r.name()))
+            .toList();
+
+        return User.builder()
+            .username(u.getUsername())
+            .password(u.getPassword())     // hash BCrypt ya almacenado
+            .authorities(autoridades)
+            .build();
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajatip}{El prefijo ROLE\_ es una convención}
+\texttt{hasRole("ADMIN")} comprueba internamente la autoridad \texttt{ROLE\_ADMIN}. Por eso al construir las autoridades anteponemos \texttt{ROLE\_} al nombre del enumerado. Si en cambio usaras \texttt{hasAuthority(...)}, deberías escribir el nombre completo de la autoridad sin que Spring añada el prefijo.\par
+\end{cajatip}
+
+\section{Paso 4 --- Codificador y AuthenticationManager}
+\begin{cajaproblema}{Problema a resolver}
+Las contraseñas no pueden guardarse en claro, y alguien debe orquestar la comprobación de credenciales. ¿Quién cifra y quién autentica?\par
+\end{cajaproblema}
+Necesitamos dos beans. El \texttt{PasswordEncoder} (usamos \texttt{BCryptPasswordEncoder}) cifra las contraseñas al registrar y las compara al iniciar sesión. El \texttt{AuthenticationManager} es quien realmente autentica; en Spring Security 7 lo construimos a partir de un \texttt{DaoAuthenticationProvider} ---que recibe nuestro \texttt{UserDetailsService} por constructor y el codificador por \emph{setter}--- envuelto en un \texttt{ProviderManager}. Este es el patrón oficial de la documentación de Spring Security 7.
+
+\begin{cajacodigo}[Beans de seguridad (dentro de SecurityConfig)]
+\begin{lstlisting}[style=java]
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+
+@Bean
+public AuthenticationManager authenticationManager(
+        UserDetailsService userDetailsService,
+        PasswordEncoder passwordEncoder) {
+    DaoAuthenticationProvider provider =
+        new DaoAuthenticationProvider(userDetailsService);
+    provider.setPasswordEncoder(passwordEncoder);
+    return new ProviderManager(provider);
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajawarn}{Constructor nuevo de DaoAuthenticationProvider}
+En Spring Security 7 el constructor sin argumentos con \texttt{setUserDetailsService(...)} está en desuso. La forma correcta y actual es \texttt{new DaoAuthenticationProvider(userDetailsService)} y, a continuación, \texttt{setPasswordEncoder(...)}. Mezclar el estilo antiguo con el nuevo es la causa más común del error «constructor cannot be applied».\par
+\end{cajawarn}
+
+\section{Paso 5 --- Servicio de tokens (JwtService)}
+\begin{cajaproblema}{Problema a resolver}
+Tras autenticar a un usuario hay que emitirle un token, y en cada petición hay que leerlo y validarlo. ¿Dónde concentramos esa lógica?\par
+\end{cajaproblema}
+Aislamos todo el manejo de JWT en un \texttt{JwtService}. Construye la clave de firma a partir del secreto, genera un token con el nombre de usuario como \emph{subject}, los roles como un \emph{claim} y una expiración; y, en sentido inverso, extrae el usuario de un token y comprueba su validez. Usamos la API moderna de JJWT 0.13: \texttt{Jwts.\allowbreak{}builder()} para emitir y \texttt{Jwts.\allowbreak{}parser().\allowbreak{}verifyWith(...).\allowbreak{}build().\allowbreak{}parseSignedClaims(...)} para verificar.
+
+\begin{cajacodigo}[security/JwtService.java --- parte 1: emisión]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.security;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.Date;
+
+@Service
+public class JwtService {
+
+    @Value("${app.jwt.secret}")
+    private String secret;
+
+    @Value("${app.jwt.expiration-ms}")
+    private long expiracionMs;
+
+    private SecretKey clave() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public String generarToken(UserDetails usuario) {
+        Instant ahora = Instant.now();
+        return Jwts.builder()
+            .subject(usuario.getUsername())
+            .claim("roles", usuario.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).toList())
+            .issuedAt(Date.from(ahora))
+            .expiration(Date.from(ahora.plusMillis(expiracionMs)))
+            .signWith(clave())
+            .compact();
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajacodigo}[security/JwtService.java --- parte 2: lectura y validación]
+\begin{lstlisting}[style=java]
+    public String extraerUsername(String token) {
+        return parsear(token).getSubject();
+    }
+
+    public boolean esValido(String token, UserDetails usuario) {
+        Claims c = parsear(token);
+        return c.getSubject().equals(usuario.getUsername())
+            && c.getExpiration().after(new Date());
+    }
+
+    private Claims parsear(String token) {
+        return Jwts.parser()
+            .verifyWith(clave())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajatip}{El algoritmo lo elige la clave}
+Con \texttt{signWith(clave())} no indicamos el algoritmo a mano: JJWT lo deduce del tamaño de la clave HMAC. Una clave de 32 bytes produce HS256; una mayor, HS384 o HS512. Por eso basta con que el secreto cumpla el tamaño mínimo.\par
+\end{cajatip}
+
+\section{Paso 6 --- Filtro de autenticación JWT}
+\begin{cajaproblema}{Problema a resolver}
+Cada petición protegida llega con su token en la cabecera, pero Spring aún no lo mira. ¿Cómo interceptamos la petición para validar el token antes de que llegue al controlador?\par
+\end{cajaproblema}
+Extendemos \texttt{OncePerRequestFilter}, que garantiza una sola ejecución por petición. El filtro lee la cabecera \texttt{Authorization}, y si trae un \texttt{Bearer}, extrae el token, recupera el usuario, valida y ---si todo está bien--- coloca la autenticación en el \texttt{SecurityContext}. A partir de ese momento Spring considera autenticada la petición y aplica las reglas de autorización. Si el token falta o es inválido, el filtro simplemente deja pasar la petición sin autenticar, y la cadena de seguridad responderá 401 o 403 según corresponda.
+
+\begin{cajacodigo}[security/JwtAuthFilter.java --- parte 1: imports y campos]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.security;
+
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+@Component
+@RequiredArgsConstructor
+public class JwtAuthFilter extends OncePerRequestFilter {
+
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajacodigo}[security/JwtAuthFilter.java --- parte 2: doFilterInternal]
+\begin{lstlisting}[style=java]
+    @Override
+    protected void doFilterInternal(@NonNull HttpServletRequest req,
+            @NonNull HttpServletResponse res, @NonNull FilterChain chain)
+            throws ServletException, IOException {
+
+        String cabecera = req.getHeader("Authorization");
+        if (cabecera == null || !cabecera.startsWith("Bearer ")) {
+            chain.doFilter(req, res);
+            return;
+        }
+        String token = cabecera.substring(7);
+        try {
+            String username = jwtService.extraerUsername(token);
+            if (username != null
+                    && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails usuario = userDetailsService.loadUserByUsername(username);
+                if (jwtService.esValido(token, usuario)) {
+                    var auth = new UsernamePasswordAuthenticationToken(
+                        usuario, null, usuario.getAuthorities());
+                    auth.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(req));
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
+            }
+        } catch (JwtException e) {
+            // token invalido o expirado: se continua sin autenticar
+        }
+        chain.doFilter(req, res);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\section{Paso 7 --- Configuración de seguridad}
+\begin{cajaproblema}{Problema a resolver}
+Falta unir todo: declarar qué rutas son públicas, cuáles exigen rol, desactivar el estado de sesión y enchufar nuestro filtro. ¿Dónde se define la política?\par
+\end{cajaproblema}
+La clase \texttt{SecurityConfig} expone el \texttt{SecurityFilterChain}. Desactivamos CSRF (es seguro hacerlo \emph{solo} porque la API es sin estado y no usa cookies de sesión), declaramos públicos los endpoints de autenticación y de Swagger, exigimos rol en el resto, fijamos la política de sesión en \texttt{STATELESS} y registramos nuestro \texttt{JwtAuthFilter} antes del filtro de usuario y contraseña. La anotación \texttt{@EnableMethodSecurity} habilita además \texttt{@PreAuthorize} en los controladores.
+
+\begin{cajacodigo}[security/SecurityConfig.java --- parte 1]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.security;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
+    private final UserDetailsService userDetailsService;
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajacodigo}[security/SecurityConfig.java --- parte 2: la cadena de filtros]
+\begin{lstlisting}[style=java]
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/estudiantes/**")
+                    .hasAnyRole("ADMIN", "DOCENTE", "ESTUDIANTE")
+                .requestMatchers(HttpMethod.POST, "/api/estudiantes/**")
+                    .hasAnyRole("ADMIN", "DOCENTE")
+                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+                .anyRequest().authenticated())
+            .sessionManagement(sm ->
+                sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtAuthFilter,
+                UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider =
+            new DaoAuthenticationProvider(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(provider);
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajadanger}{No desactives CSRF en aplicaciones con sesión}
+Aquí \texttt{csrf.disable()} es correcto porque la API es sin estado y se autentica con un token en la cabecera, no con cookies. En una aplicación web tradicional con sesión y formularios, desactivar CSRF abre la puerta a ataques de falsificación de petición. La regla es: token en cabecera $\rightarrow$ CSRF no aplica; cookie de sesión $\rightarrow$ CSRF obligatorio.\par
+\end{cajadanger}
+
+\section{Paso 8 --- Controlador de autenticación}
+\begin{cajaproblema}{Problema a resolver}
+Hacen falta los puntos de entrada que el cliente usará para registrarse y para iniciar sesión y recibir su token. ¿Cómo son esos endpoints?\par
+\end{cajaproblema}
+El \texttt{AuthController} expone \texttt{/api/auth/registro} y \texttt{/api/auth/login}. El registro cifra la contraseña y guarda el usuario; el login delega en el \texttt{AuthenticationManager} ---creando un token de autenticación \emph{no autenticado} con \texttt{unauthenticated(...)}, como indica la documentación oficial--- y, si las credenciales son válidas, emite el JWT. Los datos de entrada y salida viajan en \texttt{record} de Java, igual que los DTO de la Semana 6.
+
+\begin{cajacodigo}[dto/AuthDtos.java --- contratos de entrada y salida]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.dto;
+
+import ec.edu.uteq.appwebapi.model.Rol;
+import java.util.Set;
+
+public record LoginRequest(String username, String password) {}
+public record RegistroRequest(String username, String password, Set<Rol> roles) {}
+public record AuthResponse(String token, String tipo, long expiraEnMs) {}
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajacodigo}[controller/AuthController.java]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.controller;
+
+import ec.edu.uteq.appwebapi.dto.*;
+import ec.edu.uteq.appwebapi.model.Usuario;
+import ec.edu.uteq.appwebapi.repository.UsuarioRepository;
+import ec.edu.uteq.appwebapi.security.JwtService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.*;
+import org.springframework.security.authentication.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @PostMapping("/registro")
+    public ResponseEntity<String> registrar(@RequestBody RegistroRequest req) {
+        if (usuarioRepository.existsByUsername(req.username())) {
+            return ResponseEntity.badRequest().body("El usuario ya existe");
+        }
+        Usuario u = new Usuario();
+        u.setUsername(req.username());
+        u.setPassword(passwordEncoder.encode(req.password()));
+        u.setRoles(req.roles());
+        usuarioRepository.save(u);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest req) {
+        Authentication peticion = UsernamePasswordAuthenticationToken
+            .unauthenticated(req.username(), req.password());
+        Authentication auth = authenticationManager.authenticate(peticion);
+        String token = jwtService.generarToken((UserDetails) auth.getPrincipal());
+        return ResponseEntity.ok(new AuthResponse(token, "Bearer", 3600000));
+    }
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\section{Paso 9 --- Autorización por método}
+\begin{cajaproblema}{Problema a resolver}
+Las reglas por ruta de \texttt{SecurityConfig} cubren lo general, pero a veces queremos proteger un método concreto de un controlador existente. ¿Cómo se hace sin tocar la configuración global?\par
+\end{cajaproblema}
+Gracias a \texttt{@EnableMethodSecurity}, podemos anotar métodos con \texttt{@PreAuthorize} y una expresión de seguridad. Es la forma más legible de blindar acciones sensibles: por ejemplo, restringir el borrado de un estudiante únicamente al rol \texttt{ADMIN}, directamente sobre el \texttt{EstudianteController} de la Semana 6.
+
+\begin{cajacodigo}[controller/EstudianteController.java --- método protegido]
+\begin{lstlisting}[style=java]
+@DeleteMapping("/{id}")
+@PreAuthorize("hasRole('ADMIN')")
+@ResponseStatus(HttpStatus.NO_CONTENT)
+public void eliminar(@PathVariable Long id) {
+    servicio.eliminar(id);
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajatip}{Dos capas que se complementan}
+La autorización por ruta (en \texttt{SecurityConfig}) y la autorización por método (\texttt{@PreAuthorize}) no se excluyen: la primera filtra pronto, antes de entrar al controlador; la segunda protege puntos concretos con reglas finas. Usar ambas es una defensa en profundidad.\par
+\end{cajatip}
+
+\section{Paso 10 --- Probar la seguridad}
+\begin{cajaproblema}{Problema a resolver}
+Con todo en su sitio, hay que comprobar el ciclo completo: registrar, iniciar sesión, recibir el token y usarlo. ¿Cómo lo verificamos sin un frontend?\par
+\end{cajaproblema}
+Usamos \texttt{cURL} para recorrer el flujo. Primero registramos un administrador; luego iniciamos sesión y copiamos el token de la respuesta; por último llamamos a un endpoint protegido enviando ese token en la cabecera \texttt{Authorization}. Una llamada sin token a un recurso protegido debe devolver 401; con un rol insuficiente, 403.
+
+\begin{cajacodigo}[Terminal --- ciclo completo de autenticación]
+\begin{lstlisting}[style=markup]
+# 1) Registrar un administrador
+curl -X POST http://localhost:8080/api/auth/registro \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"Admin123*","roles":["ADMIN"]}'
+
+# 2) Iniciar sesion y obtener el token
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"Admin123*"}'
+# Respuesta: {"token":"eyJhbGciOiJIUzI1NiJ9...","tipo":"Bearer","expiraEnMs":3600000}
+
+# 3) Llamar a un endpoint protegido con el token
+curl http://localhost:8080/api/estudiantes \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9..."
+
+# 4) Llamar sin token -> 401 Unauthorized
+curl -i http://localhost:8080/api/estudiantes
+\end{lstlisting}
+\end{cajacodigo}
+
+\section{Paso 11 --- Documentar la seguridad en Swagger}
+\begin{cajaproblema}{Problema a resolver}
+La Semana 6 dejó Swagger UI funcionando, pero ahora los endpoints exigen token. ¿Cómo hacemos que Swagger permita escribir el \texttt{Bearer} para probar?\par
+\end{cajaproblema}
+Con springdoc-openapi declaramos un esquema de seguridad de tipo HTTP \texttt{bearer} mediante anotaciones. Así aparece el botón «Authorize» en Swagger UI, donde el usuario pega su token y prueba los endpoints protegidos desde el navegador. Recuerda que en \texttt{SecurityConfig} ya dejamos públicas las rutas \texttt{/swagger-ui/**} y \texttt{/v3/api-docs/**}.
+
+\begin{cajacodigo}[config/OpenApiConfig.java]
+\begin{lstlisting}[style=java]
+package ec.edu.uteq.appwebapi.config;
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@OpenAPIDefinition(
+    info = @Info(title = "API Academica UTEQ", version = "1.0"),
+    security = @SecurityRequirement(name = "bearerAuth"))
+@SecurityScheme(
+    name = "bearerAuth",
+    type = SecuritySchemeType.HTTP,
+    scheme = "bearer",
+    bearerFormat = "JWT")
+public class OpenApiConfig {
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+\section{Clientes en otro servidor: CORS entre orígenes}
+\begin{cajaproblema}{Problema a resolver}
+El cliente que consume la API (una SPA en Angular, o una página con JavaScript) se ejecuta en el navegador desde un origen distinto al de la API. Por seguridad, el navegador bloquea esas llamadas. ¿Cómo autorizamos al cliente legítimo sin abrir la API a cualquiera?\par
+\end{cajaproblema}
+Hasta aquí la guía asumió que el cliente y la API comparten origen o que el cliente no es un navegador. En un despliegue real es habitual separar los servidores: la API REST en \texttt{api.uteq.edu.ec} y el cliente en \texttt{app.uteq.edu.ec} o, en desarrollo, Angular en \texttt{localhost:4200} y la API en \texttt{localhost:8080}. Esta sección explica cuándo eso exige configurar CORS y cómo hacerlo en Spring Security 7.
+
+\subsection{Qué es un «origen» y la política del mismo origen}
+Un \textbf{origen} es la combinación de esquema, host y puerto. Así, \texttt{https://\allowbreak{}app.uteq.edu.ec} y \texttt{https://\allowbreak{}api.uteq.edu.ec} son orígenes distintos (host diferente), y \texttt{http://\allowbreak{}localhost:4200} y \texttt{http://\allowbreak{}localhost:8080} también lo son (puerto diferente). Por la \textbf{política del mismo origen}, el navegador impide que el JavaScript de un origen lea la respuesta de otro, salvo que el servidor lo permita explícitamente. CORS (Cross-Origin Resource Sharing) es justamente el mecanismo por el que el servidor declara qué orígenes externos pueden consumir sus recursos.
+
+\subsection{CORS solo afecta al navegador}
+Este es el punto que más confusión genera, y la razón por la que Thymeleaf y Angular no se comportan igual. CORS es una política que \textbf{aplica el navegador}; solo interviene cuando el código que hace la petición se ejecuta dentro de un navegador. La Tabla~\ref{tab:cors} resume los casos típicos del proyecto.
+
+\begin{table}[h]
+\centering
+\caption{Cuándo aplica CORS según el tipo de cliente.}
+\label{tab:cors}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{p{6.0cm} p{4.2cm} >{\centering\arraybackslash}p{2.4cm}}
+\rowcolor{jwebazul!12}
+\textbf{Cliente} & \textbf{Dónde se ejecuta la llamada} & \textbf{¿Aplica CORS?} \\
+SPA Angular en otro servidor & Navegador & Sí \\
+Thymeleaf (SSR) que llama por \texttt{RestClient} & Servidor (backend) & No \\
+Thymeleaf con \texttt{fetch}/JS al API en otro origen & Navegador & Sí \\
+Postman / \texttt{cURL} / pruebas & Herramienta (sin navegador) & No \\
+\end{tabular}
+\end{table}
+
+En el caso de \textbf{Angular}, el navegador de la persona descarga la SPA desde el servidor del cliente y, desde ahí, llama a la API en otro origen: es una llamada entre orígenes y CORS aplica. En el caso de \textbf{Thymeleaf renderizado en el servidor}, el navegador solo habla con el servidor Thymeleaf (mismo origen para él), y es ese servidor quien llama a la API de backend a backend con \texttt{RestClient} o \texttt{WebClient}; esa llamada no pasa por el navegador, así que no está sujeta a CORS. El JWT viaja igualmente en la cabecera \texttt{Authorization} de esa llamada servidor-a-servidor, pero no hay preflight ni cabeceras CORS de por medio.
+
+\begin{cajatip}{Postman y cURL no disparan CORS}
+Si pruebas la API con Postman o \texttt{cURL} y funciona, pero falla desde el navegador, no es un fallo de la API: es CORS. Esas herramientas no aplican la política del mismo origen; el navegador sí. Por eso conviene probar siempre el flujo real desde el cliente web.\par
+\end{cajatip}
+
+\subsection{La petición preflight}
+Para las peticiones que no son «simples» ---y las nuestras no lo son, porque llevan la cabecera \texttt{Authorization}, usan métodos como \texttt{PUT} o \texttt{DELETE} y envían \texttt{Content-Type:\allowbreak{} application/json}--- el navegador envía primero una petición \texttt{OPTIONS} llamada \emph{preflight}. En ella pregunta al servidor si permite ese origen, ese método y esas cabeceras. El servidor responde con \texttt{Access-Control-Allow-Origin}, \texttt{-Methods} y \texttt{-Headers}; solo si la respuesta lo autoriza, el navegador envía la petición real. En la práctica, toda llamada protegida desde Angular dispara un preflight.
+
+\subsection{Configurar CORS en Spring Security}
+La regla de oro es habilitar CORS \textbf{dentro de Spring Security}, no solo en Spring MVC. La cadena de filtros de seguridad se ejecuta antes que el controlador; si el preflight \texttt{OPTIONS} es rechazado en esa capa, el navegador nunca recibe las cabeceras y la llamada falla aunque el controlador sea correcto. Por eso añadimos dos cosas a la configuración de la sección «Paso 7»: la línea \texttt{.cors(...)} en la cadena de filtros y un bean \texttt{corsConfigurationSource} con los orígenes permitidos.
+
+\begin{cajacodigo}[SecurityConfig.java --- línea a añadir en la cadena de filtros]
+\begin{lstlisting}[style=java]
+http
+    .cors(Customizer.withDefaults())   // habilita CORS usando el bean de abajo
+    .csrf(csrf -> csrf.disable())
+    // ... resto de la configuracion de Paso 7 sin cambios ...
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajacodigo}[SecurityConfig.java --- bean de configuración CORS]
+\begin{lstlisting}[style=java]
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowedOrigins(List.of(
+        "https://app.uteq.edu.ec",   // SPA Angular en produccion
+        "http://localhost:4200"));   // Angular en desarrollo
+    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+    config.setExposedHeaders(List.of("Authorization"));
+    config.setAllowCredentials(false);          // token en cabecera, no cookies
+    config.setMaxAge(Duration.ofHours(1));      // cachea el preflight 1 hora
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+    return source;
+}
+\end{lstlisting}
+\end{cajacodigo}
+
+Los imports que añade esta configuración son \texttt{org.\allowbreak{}springframework.\allowbreak{}web.\allowbreak{}cors.*}, \texttt{org.\allowbreak{}springframework.\allowbreak{}security.\allowbreak{}config.\allowbreak{}Customizer}, \texttt{java.\allowbreak{}util.\allowbreak{}List} y \texttt{java.\allowbreak{}time.\allowbreak{}Duration}.
+
+\begin{cajawarn}{El bean debe llamarse exactamente corsConfigurationSource}
+Con \texttt{.cors(Customizer.withDefaults())}, Spring Security busca un bean con el nombre exacto \texttt{corsConfigurationSource} y de tipo \texttt{UrlBasedCorsConfigurationSource}. Si lo nombras distinto, no lo detecta y el preflight se rechaza en silencio. En ese caso, pásalo explícito: \texttt{.cors(cors -> cors.configurationSource(miBean))}.\par
+\end{cajawarn}
+
+\begin{cajadanger}{Nunca combines comodín de origen con credenciales}
+No uses \texttt{setAllowedOrigins(List.of("*"))} junto con \texttt{setAllowCredentials(true)}: el navegador rechaza esa combinación y, además, expondría la API a cualquier origen. Enumera los orígenes concretos de tu SPA. Si necesitas comodines controlados (por ejemplo varios subdominios), usa \texttt{setAllowedOriginPatterns(...)} en lugar de \texttt{setAllowedOrigins(...)}.\par
+\end{cajadanger}
+
+\subsection{El lado del cliente Angular}
+En Angular, lo natural es un interceptor HTTP que añade la cabecera \texttt{Authorization:\allowbreak{} Bearer} a cada petición de forma automática, para no repetirla en cada servicio. El token se obtuvo del endpoint de inicio de sesión y se guarda en el cliente.
+
+\begin{cajacodigo}[auth.interceptor.ts --- Angular adjunta el token]
+\begin{lstlisting}[style=markup]
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    req = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
+    });
+  }
+  return next(req);
+};
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajawarn}{Dónde guardar el token en el navegador}
+Guardar el token en \texttt{localStorage} es lo más común y sencillo, pero es legible por cualquier script, de modo que un ataque XSS podría robarlo. Para mayor seguridad puede usarse una cookie \texttt{HttpOnly}; eso, sin embargo, reintroduce la necesidad de CSRF y de \texttt{allowCredentials=true}. Es una decisión de diseño entre simplicidad y exposición.\par
+\end{cajawarn}
+
+\subsection{El lado Thymeleaf de servidor a servidor}
+Cuando el cliente Thymeleaf llama a la API desde su backend, no hay CORS: el reto es otro, custodiar el token. El servidor Thymeleaf obtiene el JWT tras el inicio de sesión del usuario, lo guarda (por ejemplo en la sesión del usuario en ese servidor) y lo adjunta en cada llamada con \texttt{RestClient}, el cliente HTTP síncrono de Spring 6.1+.
+
+\begin{cajacodigo}[Servidor Thymeleaf --- consumo de la API con RestClient]
+\begin{lstlisting}[style=java]
+// 'token' obtenido tras el login del usuario y guardado en su sesion
+EstudianteDTO[] estudiantes = restClient.get()
+    .uri("https://api.uteq.edu.ec/api/estudiantes")
+    .header("Authorization", "Bearer " + token)
+    .retrieve()
+    .body(EstudianteDTO[].class);
+\end{lstlisting}
+\end{cajacodigo}
+
+\begin{cajatip}{Resumen de decisión}
+Si el cliente corre en el navegador y está en otro origen (Angular, o JavaScript en una página), configura CORS en Spring Security. Si el cliente es otro servidor que llama de backend a backend (Thymeleaf con \texttt{RestClient}), no necesitas CORS: solo enviar el token en la cabecera y proteger esa comunicación con HTTPS y, si procede, restricciones de red.\par
+\end{cajatip}
+
+\section{Buenas prácticas y errores comunes}
+La seguridad mal aplicada da una falsa sensación de protección. Estas recomendaciones evitan los fallos más frecuentes en proyectos de estudiantes y también en producción.
+
+\begin{itemize}[leftmargin=1.4em,itemsep=3pt,topsep=2pt]
+\item \textbf{El secreto fuera del código.} Nunca subas \texttt{app.jwt.secret} al repositorio. Léelo de una variable de entorno y usa una clave larga y aleatoria; para HS256, mínimo 32 bytes.
+\item \textbf{Siempre HTTPS.} El token viaja en cada petición; sobre HTTP plano cualquiera puede interceptarlo y suplantar al usuario.
+\item \textbf{Expiración corta.} Una hora es un buen punto de partida. Para sesiones largas, lo correcto es añadir un \emph{refresh token} en lugar de alargar el token de acceso.
+\item \textbf{No guardar datos sensibles en el cuerpo.} El payload es legible por cualquiera; incluye solo el identificador del usuario y sus roles.
+\item \textbf{Contraseñas con BCrypt.} Jamás se guardan en claro ni con hash simple (MD5/SHA). BCrypt incorpora sal y coste configurable.
+\item \textbf{Distinguir 401 de 403.} 401 (no autenticado) significa «no sé quién eres»; 403 (prohibido) significa «sé quién eres, pero no puedes». Confundirlos despista al cliente.
+\end{itemize}
+
+\begin{cajawarn}{Error frecuente: orden y registro del filtro}
+Si el filtro no se ejecuta, revisa dos cosas: que esté anotado con \texttt{@Component} (para que Spring lo descubra) y que en \texttt{SecurityConfig} se registre con \texttt{addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)}. Si lo registraras después, la cadena ya habría decidido rechazar la petición.\par
+\end{cajawarn}
+
+\section{Lista de verificación}
+Antes de dar por terminada la integración de seguridad, confirma cada punto:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item Dependencias \texttt{spring-boot-starter-security} y \texttt{jjwt} 0.13.0 en el \texttt{pom.xml}.
+\item Propiedades \texttt{app.jwt.secret} (>= 32 bytes) y \texttt{app.jwt.expiration-ms} definidas.
+\item Entidad \texttt{Usuario}, enumerado \texttt{Rol} y \texttt{UsuarioRepository} creados; tablas creadas automáticamente por Hibernate desde las \texttt{@Entity} (\texttt{ddl-auto=update}).
+\item \texttt{UsuarioDetailsService} carga el usuario y mapea roles a \texttt{ROLE\_*}.
+\item Beans \texttt{PasswordEncoder} (BCrypt) y \texttt{AuthenticationManager} (\texttt{DaoAuthenticationProvider} + \texttt{ProviderManager}).
+\item \texttt{JwtService} emite y valida tokens con la API de JJWT 0.13.
+\item \texttt{JwtAuthFilter} extiende \texttt{OncePerRequestFilter} y coloca la autenticación en el contexto.
+\item \texttt{SecurityConfig} con DSL de lambdas, sesión \texttt{STATELESS}, CSRF desactivado y filtro registrado.
+\item \texttt{AuthController} con \texttt{/registro} y \texttt{/login}; rutas públicas permitidas.
+\item Endpoints protegidos por rol (ruta y/o \texttt{@PreAuthorize}); Swagger con esquema \texttt{bearerAuth}.
+\item CORS habilitado en Spring Security (\texttt{.cors(...)} + bean \texttt{corsConfigurationSource}) cuando el cliente es un navegador en otro origen (Angular); con orígenes explícitos y sin comodín junto a credenciales.
+\item Ciclo probado con \texttt{cURL}: 201 al registrar, token al iniciar sesión, 200 con token, 401 sin token, 403 con rol insuficiente.
+\end{itemize}
+
+\section{Referencias}
+Documentación oficial verificada (junio de 2026):
+
+\begin{itemize}[leftmargin=1.4em,itemsep=4pt,topsep=2pt]
+\item Spring Security --- Autenticación usuario/contraseña y \texttt{AuthenticationManager}: \\ \url{https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/index.html}
+\item Spring Security --- Integración de CORS: \\ \url{https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html}
+\item Spring Security --- \texttt{DaoAuthenticationProvider}: \\ \url{https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/dao-authentication-provider.html}
+\item Spring Security 7 --- Migración de configuración (DSL de lambdas): \\ \url{https://docs.spring.io/spring-security/reference/migration-7/configuration.html}
+\item JJWT (Java JWT) --- repositorio y API 0.13: \\ \url{https://github.com/jwtk/jjwt}
+\item Spring Boot --- notas de versión 4.x: \\ \url{https://github.com/spring-projects/spring-boot/releases}
+\item springdoc-openapi --- integración de OpenAPI 3 y Swagger UI: \\ \url{https://springdoc.org/}
+\end{itemize}
+
+\end{document}
