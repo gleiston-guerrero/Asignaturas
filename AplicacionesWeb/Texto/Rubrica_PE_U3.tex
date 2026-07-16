@@ -1,0 +1,384 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.3cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{parskip}
+
+\usepackage[table]{xcolor}
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{grisfila}{RGB}{245,245,245}
+\definecolor{goldclaro}{RGB}{252,245,220}
+\definecolor{verdeclaro}{RGB}{235,247,238}
+\definecolor{textogris}{RGB}{60,60,60}
+\definecolor{nivelaus}{RGB}{176,42,42}
+\definecolor{codebg}{RGB}{248,248,248}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{cajadefinicion}[1]{
+    colback=uteqverde!5,
+    colframe=uteqverde,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajaentregable}[1]{
+    colback=uteqdorado!8,
+    colframe=uteqdorado!80!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajacritica}[1]{
+    colback=red!5,
+    colframe=red!70!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\newtcolorbox{cajarepo}[1]{
+    colback=blue!4,
+    colframe=blue!60!black,
+    fonttitle=\bfseries,
+    coltitle=white,
+    title={#1},
+    boxrule=0.6pt,
+    arc=3pt,
+    breakable
+}
+
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    breaklines=true,
+    columns=fullflexible,
+    keepspaces=true
+}
+
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\usepackage{enumitem}\setlist{itemsep=2pt,topsep=2pt}
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textcolor{uteqverde}{Aplicaciones Web --- Quinto nivel --- PPA 2026-2027}}
+\rhead{\footnotesize\textcolor{uteqverde}{Rubrica PE-U3}}
+\rfoot{\thepage}
+\lfoot{\footnotesize UTEQ --- FCCDD --- Software}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\hypersetup{
+    pdftitle={Rubrica de la Practica Experimental --- Unidad III --- Aplicaciones Web},
+    pdfauthor={Dr. Gleiston Guerrero Ulloa},
+    pdfsubject={Rubrica de evaluacion de la Practica Experimental de la Unidad III},
+    pdfkeywords={Rubrica, Practica Experimental, Unidad III, ORM, Redis, C4, Aplicaciones Web, UTEQ}
+}
+
+\begin{document}
+
+% =====================================================================
+%  PORTADA
+% =====================================================================
+\begin{center}
+    \vspace*{0.8cm}
+    {\Large\bfseries\textcolor{uteqverde}{UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}}\\[4pt]
+    {\large Facultad de Ciencias de la Computacion y Diseno Digital}\\[2pt]
+    {\large Carrera de Ingenieria de Software (Redisenio)}\\[16pt]
+
+    {\LARGE\bfseries Rubrica de evaluacion}\\[4pt]
+    {\LARGE\bfseries Practica Experimental --- Unidad III}\\[10pt]
+
+    {\large\itshape Acceso a Datos y Patrones de Arquitectura:}\\
+    {\large\itshape Integracion ORM, Cache con Redis y Diseno Arquitectonico C4}\\[16pt]
+
+    \begin{tcolorbox}[colback=uteqverde!8,colframe=uteqverde,arc=3pt,
+                      width=0.90\textwidth,boxrule=0.8pt]
+        \centering
+        \textbf{Asignatura:} Aplicaciones Web (5to nivel --- Paralelo A)\\[2pt]
+        \textbf{Docente responsable:} Dr. Gleiston Ciceron Guerrero Ulloa, Ph.D.\\[2pt]
+        \texttt{gguerrero@uteq.edu.ec}\\[4pt]
+        \textbf{Periodo academico:} 2026-2027 PPA \quad\textbar\quad \textbf{Horas:} 12\\[2pt]
+        \textbf{Modalidad:} Trabajo en equipo (equipos del PFC)
+    \end{tcolorbox}
+
+    \vspace{0.6cm}
+    {\small Quevedo --- Los Rios --- Ecuador --- 2026}
+\end{center}
+
+\vspace{0.2cm}
+
+% =====================================================================
+%  1. OBJETO DE EVALUACION
+% =====================================================================
+\section{Objeto de evaluacion}
+
+Esta rubrica evalua la Practica Experimental de la Unidad III de la asignatura Aplicaciones Web, cuyo tema es la consolidacion de la capa de acceso a datos y de los patrones arquitectonicos del Proyecto Fin de Curso (PFC) del equipo. El alcance funcional queda fijado por la Guia GA-PE-U3 vigente y por los cuatro objetivos especificos declarados en ella: (i) documentacion arquitectonica con el Modelo C4 en tres niveles y minimo tres ADR; (ii) implementacion del modelo de datos con ORM, migraciones versionadas, seeders con al menos $50$ registros y CRUD con paginacion, ordenamiento dinamico y filtros multiples; (iii) implementacion del patron cache-aside con Redis y medicion cuantitativa del speedup con la formula $S = T_{sin}/T_{con}$ en al menos $n=10$ repeticiones; y (iv) pruebas unitarias de la capa Repository con cobertura $\geq 70$\,\%.
+
+El resultado de aprendizaje enunciado en la Guia es: \emph{disena e implementa soluciones web que integran mecanismos de gestion de estado, acceso a bases de datos relacionales mediante SQL parametrizado y ORM, y patrones de arquitectura escalables (multicapa, SOA, EDA, P2P), documentando las decisiones arquitectonicas con herramientas estandar}. La rubrica pondera diez criterios cuya suma constituye el 100\,\% de la nota de la Practica Experimental.
+
+Los fundamentos conceptuales que sustentan la evaluacion son: el modelo de arquitectura de HTTP como protocolo sin estado a nivel de aplicacion definido por el IETF~\cite{fielding2014http}; la disciplina de decisiones arquitectonicas versionadas propuesta por Nygard y adoptada por la ingenieria de arquitectura contemporanea~\cite{nygard2011adr,brown2023c4,bass2021software,richards2020fundamentals}; los patrones de arquitectura empresarial y la resolucion del \emph{object-relational impedance mismatch} sistematizados por Fowler~\cite{fowler2002patterns}; los sistemas orientados a datos y sus estrategias de cache descritas por Kleppmann~\cite{kleppmann2017designing}; el estandar internacional de calidad de producto software ISO/IEC 25010~\cite{iso25010}; los principios de disciplina experimental en ingenieria de software de Wohlin et al.~\cite{wohlin2012experimentation}; y las areas de conocimiento de arquitectura y aseguramiento de calidad del SWEBOK v4.0~\cite{washizaki2024swebok}.
+
+% =====================================================================
+%  2. CRITERIOS DE PISO
+% =====================================================================
+\section{Criterios de piso (excluyentes)}
+
+Los criterios de piso son \textbf{condiciones necesarias} para que la Practica Experimental pueda ser calificada con la rubrica de diez criterios. Si cualquiera de ellos no se cumple, la nota final de la Practica es \textbf{cero} (0/10) y no se procede a evaluar el resto. Esta separacion entre condiciones de admision y criterios de valor es una practica estandar en la evaluacion de artefactos reproducibles empleada por las revistas de alto impacto y por la ingenieria de software empirica~\cite{wohlin2012experimentation}.
+
+\begin{cajacritica}{P1 --- Entregable unico en el SGA}
+    \begin{itemize}
+        \item En el aula virtual (SGA) el equipo sube \textbf{unicamente un archivo PDF de una sola pagina} con los datos informativos de la practica (asignatura, unidad, tema, equipo e integrantes con carnet, fecha de corte, tag/commit corto de la entrega) y la URL del repositorio publico.
+        \item La URL debe estar en \textbf{una sola linea} de texto, sin cortes ni saltos, para permitir su copia integra por el evaluador.
+        \item Cualquier archivo adicional en el SGA (comprimidos, capturas, informes multipagina) invalida el entregable: se considera que el equipo no siguio la instruccion y aplica la clausula de piso.
+    \end{itemize}
+\end{cajacritica}
+
+\begin{cajacritica}{P2 --- Repositorio publico accesible desde el exterior}
+    \begin{itemize}
+        \item La URL declarada en el PDF debe abrir el repositorio sin requerir credenciales, invitaciones ni pertenencia a organizacion privada.
+        \item El evaluador verifica el acceso desde una sesion anonima (navegador en modo incognito, sin sesion Git iniciada). Si el repositorio pide inicio de sesion, se aplica la clausula de piso.
+        \item El repositorio debe estar activo en el momento de la evaluacion. Repositorios eliminados, renombrados o vueltos privados durante la ventana de calificacion equivalen a repositorio inaccesible.
+    \end{itemize}
+\end{cajacritica}
+
+\begin{cajacritica}{P3 --- Todos los fuentes en el repositorio}
+    \begin{itemize}
+        \item Deben estar versionados en el repositorio todos los archivos fuente necesarios para reconstruir la entrega: codigo fuente LaTeX del informe (\texttt{.tex}, \texttt{.bib}), imagenes en resolucion editable (PNG y, cuando aplique, el archivo fuente Structurizr DSL, PlantUML o \texttt{.drawio}), codigo de la aplicacion (backend y frontend), \emph{scripts} de migracion y semilla de la base de datos, \emph{scripts} de benchmark y todo archivo referenciado desde el informe.
+        \item Queda prohibido subir el informe unicamente como PDF sin sus fuentes. Un informe en PDF sin \texttt{.tex} y \texttt{.bib} versionados equivale a evidencia no verificable y activa la clausula de piso.
+        \item Los archivos binarios generados (por ejemplo, \texttt{.aux}, \texttt{.log}, \texttt{.pdf} compilado, \texttt{node\_modules}, \texttt{target}) no cuentan como fuentes; se recomienda que esten en \texttt{.gitignore}, aunque su presencia por si sola no es motivo de piso.
+    \end{itemize}
+\end{cajacritica}
+
+\begin{cajacritica}{P4 --- Reproducibilidad del PDF desde el repositorio}
+    \begin{itemize}
+        \item Para regenerar el PDF del informe debe bastar con: clonar el repositorio, situarse en el directorio del informe, abrir el archivo \texttt{.tex} principal y compilarlo con la cadena estandar declarada en un \texttt{README.md} de la carpeta del informe.
+        \item La cadena de compilacion debe estar documentada en el \texttt{README} del informe: motor (\texttt{pdflatex}, \texttt{xelatex} o \texttt{lualatex}), procesador de bibliografia (\texttt{bibtex} o \texttt{biber}) y numero minimo de pasadas.
+        \item No se admiten dependencias no declaradas (rutas absolutas locales, archivos ausentes del repositorio, paquetes exoticos sin mencion). Si el evaluador no logra regenerar el PDF siguiendo estrictamente el \texttt{README}, se aplica la clausula de piso.
+    \end{itemize}
+\end{cajacritica}
+
+\begin{cajacritica}{P5 --- Autoria trazable y honestidad academica}
+    \begin{itemize}
+        \item El historial \texttt{git log} debe evidenciar commits de \textbf{todos los integrantes declarados} en el PDF de datos informativos, con nombre y correo institucional (o correo declarado en el equipo). La ausencia total de commits de un integrante en la rama principal se documenta como observacion al docente pero no invalida por si sola la entrega; en cambio, la suplantacion de autoria (un solo integrante haciendo \emph{commit} en nombre de los demas mediante \texttt{git config} manipulado) se considera falta grave y activa la clausula de piso.
+        \item Todo contenido del informe y del codigo generado con asistencia de herramientas de inteligencia artificial debe estar declarado explicitamente en la seccion de contribuciones del informe, siguiendo la guia SWEBOK v4.0 sobre transparencia en el desarrollo asistido~\cite{washizaki2024swebok}.
+        \item Se prohibe la copia integra de codigo o texto de otros equipos o de fuentes externas sin cita. La deteccion de plagio activa la clausula de piso y se reporta al Coordinador de Carrera.
+    \end{itemize}
+\end{cajacritica}
+
+\begin{cajadefinicion}{Efecto de los criterios de piso}
+    Si los cinco criterios de piso se cumplen, se procede a aplicar la rubrica de diez criterios de la seccion siguiente. Si al menos uno no se cumple, la nota final de la Practica Experimental es \textbf{0/10}, se documenta la causa en la retroalimentacion al equipo y no se emite calificacion por criterio.
+\end{cajadefinicion}
+
+% =====================================================================
+%  3. ESCALA DE NIVELES Y FORMULA
+% =====================================================================
+\section{Escala de niveles y formula de calificacion}
+
+Cada criterio se evalua en cinco niveles: \emph{Excelente} $= 100$\,\%, \emph{Satisfactorio} $= 75$\,\%, \emph{En desarrollo} $= 50$\,\%, \emph{Insuficiente} $= 25$\,\%, \emph{Ausente} $= 0$\,\%. La escala de cuatro niveles activos mas \emph{Ausente} es la misma que el docente aplico en la rubrica GA-PE-U1, GA-PE-U2 y en la Guia de la Tercera Entrega del PFC (Rubrica RE-3), garantizando consistencia interna del curso.
+
+\begin{center}
+    $\displaystyle \text{Nota}_{100} \;=\; \sum_{i=1}^{10} \bigl(\text{peso}_{i} \times \text{nivel}_{i}\bigr) \qquad \text{Nota}_{10} \;=\; \frac{\text{Nota}_{100}}{10}$
+\end{center}
+
+La suma de los pesos es exactamente $100$\,\%. Los pesos se han asignado de modo que los cuatro objetivos especificos de la Guia queden ponderados con claridad: OE1 (C4 y ADR) suma $18$\,\%, OE2 (ORM y CRUD avanzado) suma $20$\,\%, OE3 (cache Redis y benchmark) suma $15$\,\% y OE4 (cobertura de pruebas) suma $12$\,\%; los criterios restantes cubren fundamento teorico, integracion \emph{end-to-end}, escalabilidad, informe y presentacion.
+
+% =====================================================================
+%  4. RUBRICA DETALLADA
+% =====================================================================
+\section{Rubrica detallada}
+
+{
+\footnotesize
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|L{3.0cm}|C{0.9cm}|L{2.5cm}|L{2.5cm}|L{2.5cm}|L{2.3cm}|}
+\hline
+\rowcolor{uteqverde!85}
+{\color{white}\textbf{Criterio}} &
+{\color{white}\textbf{Peso}} &
+{\color{white}\textbf{Excelente (100\,\%)}} &
+{\color{white}\textbf{Satisfactorio (75\,\%)}} &
+{\color{white}\textbf{En desarrollo (50\,\%)}} &
+{\color{white}\textbf{Insuficiente (25\,\%)}} \\
+\hline
+\endfirsthead
+
+\hline
+\rowcolor{uteqverde!85}
+{\color{white}\textbf{Criterio}} &
+{\color{white}\textbf{Peso}} &
+{\color{white}\textbf{Excelente (100\,\%)}} &
+{\color{white}\textbf{Satisfactorio (75\,\%)}} &
+{\color{white}\textbf{En desarrollo (50\,\%)}} &
+{\color{white}\textbf{Insuficiente (25\,\%)}} \\
+\hline
+\endhead
+
+% ============ C1 ============
+\textbf{C1. Fundamento teorico completo} (Guia sec. 4) &
+\centering 10\,\% &
+Las cuatro subsecciones (gestion de estado, ORM, patrones de arquitectura, cache) desarrolladas con minimo $350$ palabras cada una; tablas comparativas propias; cada afirmacion no trivial con cita IEEE verificable a fuente primaria. &
+Cuatro subsecciones con extension exigida; una o dos citas debiles o secundarias en lugar de primarias. &
+Tres de cuatro subsecciones con extension exigida; citas parciales o \emph{copy-paste} de definiciones sin analisis. &
+Menos de tres subsecciones desarrolladas o texto sin referencias. \\
+\rowcolor{grisfila}
+
+% ============ C2 ============
+\textbf{C2. Modelo C4 en tres niveles} (Guia paso 1) &
+\centering 10\,\% &
+Diagramas C4 Nivel 1 (Contexto), Nivel 2 (Contenedores) y Nivel 3 (Componentes del contenedor mas complejo) en PNG y archivo fuente editable (Structurizr DSL, PlantUML o \texttt{.drawio}) versionados en \texttt{docs/arquitectura/}; relaciones etiquetadas con protocolo; cada diagrama referenciado en el informe con Fig. y explicado en prosa~\cite{brown2023c4}. &
+Los tres niveles presentes con una relacion sin etiquetar o un actor faltante menor. &
+Solo dos de los tres niveles presentes, o los tres presentes pero sin archivo fuente editable. &
+Un solo nivel o diagramas genericos que no representan el PFC. \\
+
+% ============ C3 ============
+\textbf{C3. Registros de decision arquitectonica (ADR)} (Guia paso 1.4) &
+\centering 8\,\% &
+Al menos tres ADR en \texttt{docs/adr/} siguiendo la plantilla completa de Nygard (contexto, decision, estado, consecuencias, alternativas consideradas); numerados y con fecha; cubren arquitectura, ORM y estrategia de cache~\cite{nygard2011adr}. &
+Tres ADR con una seccion (por ejemplo, alternativas) reducida a una linea. &
+Dos ADR completos o tres ADR con estructura incompleta. &
+Menos de dos ADR o ADR sin la estructura de Nygard. \\
+\rowcolor{grisfila}
+
+% ============ C4 ============
+\textbf{C4. ORM, migraciones y seeder} (Guia paso 2.1--2.2) &
+\centering 10\,\% &
+ORM configurado (Doctrine, EF Core o Hibernate/JPA) con al menos tres entidades del PFC y sus relaciones; migraciones versionadas que corren sin errores desde base vacia; seeder que carga $\geq 50$ registros realistas; comando de reset documentado. Enfoque coherente con los patrones de mapeo objeto-relacional descritos por Fowler~\cite{fowler2002patterns}. &
+Migraciones y seeder funcionales con una relacion pendiente o menos de $50$ registros justificados. &
+ORM configurado y migraciones parciales; seeder con menos de $30$ registros. &
+Sin migraciones versionadas (esquema creado a mano) o sin seeder. \\
+
+% ============ C5 ============
+\textbf{C5. CRUD avanzado con paginacion} (Guia paso 2.3) &
+\centering 10\,\% &
+\emph{Endpoint} de listado devuelve datos paginados con metadata (\texttt{current\_page}, \texttt{total}, \texttt{last\_page} o equivalente); permite ordenamiento dinamico por al menos dos columnas y filtros multiples combinables; consultas parametrizadas sin concatenacion de cadenas (proteccion contra SQL injection segun~\cite{owasp2021top10}). &
+CRUD paginado con metadata pero ordenamiento fijo o un filtro faltante. &
+CRUD con paginacion sin metadata o sin filtros. &
+CRUD sin paginacion o vulnerable a inyeccion. \\
+\rowcolor{grisfila}
+
+% ============ C6 ============
+\textbf{C6. Cache Redis y benchmark de speedup} (Guia paso 3) &
+\centering 15\,\% &
+Patron cache-aside implementado en la consulta principal del PFC con TTL configurable; benchmark con $n\geq 10$ repeticiones que reporta $T_{sin}$, $T_{con}$, $S = T_{sin}/T_{con}$, media, desviacion tipica e intervalo de confianza al $95$\,\%; archivos crudos versionados en \texttt{docs/mediciones/}; discusion de significancia estadistica siguiendo la disciplina experimental de Wohlin~\cite{wohlin2012experimentation,kleppmann2017designing}. &
+Cache-aside operativo; benchmark con $n\geq 10$ pero sin intervalo de confianza. &
+Cache operativo; benchmark con $n<10$ o sin archivos crudos. &
+Cache no verificable o sin medicion cuantitativa. \\
+
+% ============ C7 ============
+\textbf{C7. Pruebas unitarias del Repository} (Guia paso 4) &
+\centering 12\,\% &
+Suite de pruebas unitarias de la capa Repository con cobertura de linea $\geq 70$\,\%; reporte JaCoCo, PHPUnit-CodeCoverage o Coverlet en \texttt{docs/mediciones/} en HTML y XML; captura del reporte incluida en el informe; pruebas correctas independientes del orden~\cite{washizaki2024swebok}. &
+Cobertura entre $60$\,\% y $69$\,\% con justificacion tecnica documentada. &
+Cobertura entre $40$\,\% y $59$\,\% o solo un formato de reporte. &
+Cobertura menor a $40$\,\% o sin reporte generado. \\
+\rowcolor{grisfila}
+
+% ============ C8 ============
+\textbf{C8. Integracion \emph{end-to-end} frontend-backend-datos} (Guia paso 5.1) &
+\centering 7\,\% &
+Demostracion verificable del flujo completo: frontend $\to$ \texttt{fetch()} $\to$ backend $\to$ Service $\to$ Redis (cache-aside) $\to$ Repository $\to$ ORM $\to$ SGBD; captura del Network tab de DevTools con la peticion y respuesta HTTP y encabezados; cumplimiento del contrato ProblemDetails RFC 7807 en respuestas de error~\cite{fielding2014http,rfc7807}. &
+Flujo funcional con una captura sin encabezados o sin ProblemDetails en errores. &
+Flujo parcial (funciona solo el camino de exito o solo tras cache miss). &
+Sin evidencia del flujo integrado. \\
+
+% ============ C9 ============
+\textbf{C9. Analisis de escalabilidad horizontal} (Guia paso 5.2) &
+\centering 5\,\% &
+Analisis en el informe con diagrama propio que muestra balanceador de carga (Nginx u otro), replicas del backend, sesiones centralizadas en Redis y replica de lectura del SGBD; discute \emph{sticky sessions} y \emph{trade-offs}, apoyado en atributos de calidad de la ISO/IEC 25010~\cite{iso25010,kleppmann2017designing,bass2021software}. &
+Analisis presente con diagrama pero sin discusion de \emph{sticky sessions} o de \emph{trade-offs}. &
+Analisis textual sin diagrama o diagrama sin analisis. &
+Ausente o generico (no aplica al PFC). \\
+\rowcolor{grisfila}
+
+% ============ C10 ============
+\textbf{C10. Calidad del informe y bibliografia} (Guia y transversal) &
+\centering 13\,\% &
+Informe en LaTeX con estructura Guia (portada, datos, resumen, cuerpo por objetivos, resultados, respuestas a los cuatro items del anexo, conclusiones, referencias); estilo IEEE consistente; \emph{cada afirmacion no trivial} con cita a fuente primaria verificable; toda tabla y toda figura referenciada en el cuerpo; sin espacios en blanco huerfanos; tag/commit de la entrega en portada. &
+Estructura completa con una seccion resumida o dos citas debiles. &
+Estructura parcial (dos secciones ausentes) o bibliografia irregular. &
+Informe sin estructura o sin bibliografia. \\
+
+\hline
+\rowcolor{goldclaro}
+\multicolumn{2}{|r|}{\textbf{Total ponderado}} &
+\multicolumn{4}{l|}{\textbf{100\,\%} \quad \footnotesize Nota${}_{100} = \sum (\text{peso}_i \times \text{nivel}_i)$ \; \textbar\; Nota${}_{10} = \text{Nota}_{100}/10$} \\
+\hline
+\end{longtable}
+}
+
+% =====================================================================
+%  5. REGLAS TRANSVERSALES
+% =====================================================================
+\section{Reglas transversales de calificacion}
+
+\begin{cajacritica}{Reglas transversales aplicables a todos los criterios}
+    \begin{enumerate}
+        \item \textbf{El repositorio Git es la fuente de verdad}. La evidencia verificada directamente sobre el repositorio se distingue siempre de la inferida del PDF o de capturas de pantalla. Un criterio dependiente de codigo cuya evidencia solo aparece en el PDF y no en el repositorio se califica como maximo \emph{En desarrollo} ($50$\,\%).
+        \item \textbf{Reproducibilidad del PDF} (P4). Si al evaluador no le basta con \emph{clonar + acceder al \texttt{.tex} + compilar} para regenerar el PDF, se aplica el criterio de piso P4 y la nota final es cero, aunque el contenido del informe sea excelente.
+        \item \textbf{Corte de commits}. Cualquier \emph{commit} posterior al corte declarado en el PDF de datos informativos se ignora para efectos de calificacion, pero no penaliza; queda como evidencia de trabajo posterior.
+        \item \textbf{Repositorio publico} (P2). Si el repositorio esta privado o pide autenticacion en el momento de la evaluacion, se aplica el criterio de piso y la nota final es cero.
+        \item \textbf{Consultas parametrizadas}. Cualquier consulta a la base de datos con concatenacion de datos del usuario en cadenas SQL limita el criterio C5 a \emph{Insuficiente} ($25$\,\%) por incumplimiento explicito del control A03:2021 --- Injection de OWASP Top 10~\cite{owasp2021top10}.
+        \item \textbf{Cadena de compilacion documentada}. La ausencia del \texttt{README} del informe con la cadena \texttt{pdflatex$\to$bibtex$\to$pdflatex$\to$pdflatex} (o equivalente para \texttt{lualatex}/\texttt{biber}) limita el criterio C10 a \emph{En desarrollo} ($50$\,\%).
+        \item \textbf{Referencias verificables}. Toda cita del informe debe corresponder a una entrada del archivo \texttt{.bib} versionado y a una fuente primaria localizable (DOI, ISBN, URL oficial o RFC). Referencias fabricadas o no verificables limitan el criterio C10 a \emph{Insuficiente} ($25$\,\%).
+        \item \textbf{Distribucion equitativa}. Un desbalance grave en la autoria de \emph{commits} (por ejemplo, un integrante con menos del $10$\,\% del total) se documenta como observacion al docente para decision individual, sin ser causa automatica de descuento del equipo.
+    \end{enumerate}
+\end{cajacritica}
+
+% =====================================================================
+%  6. INSTRUCCIONES PARA EL EVALUADOR
+% =====================================================================
+\section{Procedimiento del evaluador}
+
+El evaluador aplica el siguiente flujo, coherente con la metodologia \emph{repository-as-source-of-truth} usada durante todo el curso.
+
+\begin{enumerate}
+    \item Descargar el unico PDF entregado en el SGA; verificar que ocupa una sola pagina y contiene datos informativos y la URL del repositorio en una sola linea.
+    \item Copiar la URL en un navegador en modo incognito y verificar acceso publico al repositorio.
+    \item Clonar el repositorio a un directorio limpio: \texttt{git clone --quiet <URL>}.
+    \item Recorrer la estructura: \texttt{find . -type f -not -path '*/.git/*' | sort} y comprobar la presencia de fuentes (\texttt{.tex}, \texttt{.bib}, codigo, imagenes fuente).
+    \item Regenerar el PDF del informe siguiendo el \texttt{README} del informe; si falla, aplicar P4.
+    \item Verificar la autoria de \emph{commits}: \texttt{git log --pretty=format:'\%an <\%ae>' | sort | uniq -c | sort -rn}.
+    \item Aplicar los criterios de piso; si alguno falla, cerrar con nota cero y redactar retroalimentacion.
+    \item Aplicar la rubrica de diez criterios; para cada uno, registrar nivel y una linea de evidencia (ruta al archivo o comando de verificacion).
+    \item Calcular $\text{Nota}_{10}$ y redactar el informe individual del equipo en texto plano para copiar y pegar en el SGA.
+    \item Anotar en un archivo aparte las observaciones al docente (contribuciones desiguales, alertas de plagio, sugerencias para la siguiente unidad).
+\end{enumerate}
+
+% =====================================================================
+%  BIBLIOGRAFIA
+% =====================================================================
+\bibliographystyle{ieeetr}
+\bibliography{Rubrica_PE_U3}
+
+\end{document}
