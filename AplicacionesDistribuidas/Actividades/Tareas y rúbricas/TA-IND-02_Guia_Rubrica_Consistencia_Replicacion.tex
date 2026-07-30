@@ -1,0 +1,405 @@
+\documentclass[11pt,a4paper]{article}
+
+%============================================================
+% TA-IND-02 -- Informe Tecnico Individual
+% Analisis de Consistencia y Replicacion en BDD Distribuidas
+% Aplicaciones Distribuidas (ISR-701) -- Unidad 3
+% Documento combinado: Guia (consigna) + Rubrica de evaluacion
+%============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{ltablex}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[backend=biber,style=ieee,sorting=nyt]{biblatex}
+\usepackage[hidelinks]{hyperref}
+
+%------------------------------------------------------------
+% Bibliografia verificada (referencias de alto impacto, Unidad 3)
+%------------------------------------------------------------
+\begin{filecontents*}{references_U3.bib}
+@article{GilbertLynch2002CAP,
+    author  = {Gilbert, Seth and Lynch, Nancy},
+    title   = {Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services},
+    journal = {ACM SIGACT News},
+    volume  = {33},
+    number  = {2},
+    pages   = {51--59},
+    year    = {2002},
+    doi     = {10.1145/564585.564601}
+}
+@article{Abadi2012PACELC,
+    author  = {Abadi, Daniel J.},
+    title   = {Consistency Tradeoffs in Modern Distributed Database System Design: {CAP} is Only Part of the Story},
+    journal = {Computer},
+    volume  = {45},
+    number  = {2},
+    pages   = {37--42},
+    year    = {2012},
+    doi     = {10.1109/MC.2012.33}
+}
+@article{ViottiVukolic2016Consistency,
+    author  = {Viotti, Paolo and Vukoli{\'c}, Marko},
+    title   = {Consistency in Non-Transactional Distributed Storage Systems},
+    journal = {ACM Computing Surveys},
+    volume  = {49},
+    number  = {1},
+    eid     = {19},
+    pages   = {1--34},
+    year    = {2016},
+    doi     = {10.1145/2926965}
+}
+@article{Corbett2013Spanner,
+    author  = {Corbett, James C. and Dean, Jeffrey and Epstein, Michael and Fikes, Andrew and Frost, Christopher and Furman, J. J. and Ghemawat, Sanjay and Gubarev, Andrey and Heiser, Christopher and Hochschild, Peter and others},
+    title   = {Spanner: Google's Globally Distributed Database},
+    journal = {ACM Transactions on Computer Systems},
+    volume  = {31},
+    number  = {3},
+    eid     = {8},
+    pages   = {1--22},
+    year    = {2013},
+    doi     = {10.1145/2491245}
+}
+@inproceedings{DeCandia2007Dynamo,
+    author    = {DeCandia, Giuseppe and Hastorun, Deniz and Jampani, Madan and Kakulapati, Gunavardhan and Lakshman, Avinash and Pilchin, Alex and Sivasubramanian, Swaminathan and Vosshall, Peter and Vogels, Werner},
+    title     = {Dynamo: Amazon's Highly Available Key-value Store},
+    booktitle = {Proceedings of the 21st ACM SIGOPS Symposium on Operating Systems Principles (SOSP '07)},
+    pages     = {205--220},
+    year      = {2007},
+    doi       = {10.1145/1294261.1294281}
+}
+@book{VanSteenTanenbaum2017DS,
+    author    = {van Steen, Maarten and Tanenbaum, Andrew S.},
+    title     = {Distributed Systems},
+    edition   = {3},
+    publisher = {distributed-systems.net},
+    year      = {2017},
+    isbn      = {978-1543057386}
+}
+\end{filecontents*}
+\addbibresource{references_U3.bib}
+
+%------------------------------------------------------------
+% Paleta institucional UTEQ
+%------------------------------------------------------------
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqGray}{HTML}{5A6470}
+\definecolor{uteqSoft}{HTML}{EAF1F9}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=uteqBlue,
+    urlcolor=uteqMid,
+    citecolor=uteqTeal
+}
+
+%------------------------------------------------------------
+% Encabezado y pie de pagina
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\textcolor{uteqBlue}{\textbf{TA-IND-02}} -- Consistencia y Replicacion en BDD}
+\fancyhead[R]{\footnotesize Aplicaciones Distribuidas (ISR-701)}
+\fancyfoot[L]{\footnotesize Periodo 2026--2027 \quad Prof. Guerrero Ulloa G.C.}
+\fancyfoot[R]{\footnotesize Pagina \thepage}
+
+%------------------------------------------------------------
+% Estilo de secciones
+%------------------------------------------------------------
+\titleformat{\section}{\normalfont\large\bfseries\color{uteqBlue}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\color{uteqMid}}{\thesubsection}{0.6em}{}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=2pt,topsep=3pt}
+
+\newcommand{\uteqbox}[2]{%
+    \begin{tcolorbox}[colback=uteqSoft,colframe=uteqBlue,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=5pt,bottom=5pt,title=#1,fonttitle=\bfseries]
+        #2
+    \end{tcolorbox}%
+}
+
+\keepXColumns
+
+\begin{document}
+
+%============================================================
+% ENCABEZADO INSTITUCIONAL
+%============================================================
+\begin{center}
+    {\large\bfseries\color{uteqBlue} UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}\\[2pt]
+    {\normalsize Facultad de Ciencias de la Computacion}\\[1pt]
+    {\normalsize Carrera de Ingenieria de Software}\\[6pt]
+    {\normalsize\bfseries Aplicaciones Distribuidas (ISR-701) -- Unidad 3: Bases de Datos Distribuidas}\\[8pt]
+    \colorbox{uteqBlue}{\parbox{0.98\linewidth}{\centering\color{white}\bfseries\vspace{3pt}
+        GUIA Y RUBRICA DE EVALUACION -- TA-IND-02\\
+        Informe Tecnico Individual: Analisis de Consistencia y Replicacion en BDD Distribuidas\vspace{3pt}}}
+\end{center}
+
+\vspace{4pt}
+
+%------------------------------------------------------------
+% DATOS GENERALES
+%------------------------------------------------------------
+\renewcommand{\arraystretch}{1.3}
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries\color{uteqBlue}}p{3.2cm} X >{\bfseries\color{uteqBlue}}p{2.6cm} X@{}}
+    \toprule
+    Codigo & TA-IND-02 & Tipo & Trabajo Autonomo -- Individual -- Sumativa \\
+    Unidad & 3 -- Bases de Datos Distribuidas & Modalidad & Individual \\
+    Entregable & Documento en LaTeX, compilado (.tex). Minimo 5 paginas de contenido. & Calificacion & 0 -- 10 puntos \\
+    Estudiante & \rule{4.5cm}{0.4pt} & Fecha & \rule{3cm}{0.4pt} \\
+    \bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+
+\vspace{6pt}
+
+\uteqbox{Sintesis de la actividad}{%
+Segundo trabajo autonomo individual sumativo de la asignatura. El estudiante demuestra comprension profunda de los modelos de consistencia y de las estrategias de replicacion en bases de datos distribuidas (BDD), aplicados al contexto de su Proyecto Fin de Curso (PFC). El nucleo del trabajo es el analisis critico del modelo de consistencia implementado en el PFC del equipo al que pertenece y la evaluacion fundamentada de alternativas, respondiendo a la pregunta orientadora: \emph{?`es el modelo elegido el optimo para el dominio del sistema?}%
+}
+
+%============================================================
+% PARTE A -- GUIA (CONSIGNA)
+%============================================================
+\section{Objetivo y competencia}
+El trabajo evalua la capacidad del estudiante para razonar de forma independiente sobre las garantias de datos en sistemas distribuidos y para sustentar decisiones tecnicas con evidencia academica. La consistencia de replicas no es una propiedad binaria, sino un espectro de garantias con semantica formal precisa que va desde la linealizabilidad hasta la consistencia eventual, ordenadas por su fuerza semantica \parencite{ViottiVukolic2016Consistency}. El objetivo es que el estudiante ubique el modelo de su PFC dentro de ese espectro, lo justifique frente al dominio de negocio y evalue de forma critica si constituye la eleccion optima.
+
+\section{Tema y pregunta orientadora}
+Analisis critico del modelo de consistencia implementado en el PFC del equipo al que pertenece el estudiante y evaluacion de alternativas de consistencia y replicacion. La pregunta que estructura todo el informe es: \textbf{?`es el modelo de consistencia elegido el optimo para el dominio del sistema?} El estudiante debe tomar una postura razonada y defenderla con argumentos tecnicos y referencias, no con preferencias personales.
+
+\uteqbox{Objeto de analisis segun el equipo PFC}{%
+Cada estudiante analiza el modelo de consistencia y replicacion de \textbf{su propio equipo}. Los cuatro dominios de referencia del periodo son: \textbf{AGLS} -- TiendaTech (comercio electronico de hardware con asistente de compatibilidad); \textbf{BCEL} -- SGA Escuela Provincias Unidas (gestion academica); \textbf{FUVV} -- Laboratorios Informaticos (reserva y monitoreo distribuido de laboratorios); \textbf{ACC} -- Soporte Tecnico ISP (gestion de tickets). El analisis debe partir del modelo realmente implementado en el PFC, no de un caso generico.%
+}
+
+\section{Fundamento conceptual que debe demostrarse}
+El estudiante debe dominar y aplicar de forma correcta, como minimo, los siguientes bloques conceptuales, cada uno anclado a fuentes verificables.
+
+\subsection{Modelos de consistencia}
+El informe debe distinguir con precision los modelos del espectro de consistencia (consistencia fuerte o linealizabilidad, consistencia secuencial, consistencia causal, consistencia de lectura de los propios cambios y consistencia eventual), su semantica y sus garantias relativas ordenadas por fuerza \parencite{ViottiVukolic2016Consistency,VanSteenTanenbaum2017DS}. Debe quedar explicito por que un modelo mas fuerte impone mayor coordinacion y por que uno mas debil admite mayor disponibilidad y menor latencia.
+
+\subsection{Teoremas de compromiso: CAP y PACELC}
+El teorema CAP establece que, ante una particion de red, un sistema distribuido no puede garantizar simultaneamente consistencia y disponibilidad \parencite{GilbertLynch2002CAP}. El informe debe superar la lectura simplista de CAP e incorporar la formulacion PACELC, que anade el compromiso entre consistencia y latencia en operacion normal, sin particiones \parencite{Abadi2012PACELC}. La decision del PFC debe leerse a la luz de ambos marcos.
+
+\subsection{Estrategias de replicacion}
+Debe caracterizarse la estrategia de replicacion del sistema (replicacion primario--respaldo o \emph{leader--follower}, replicacion multi-lider, replicacion sin lider por quorum, replicacion sincrona frente a asincrona) y su relacion con el modelo de consistencia resultante \parencite{VanSteenTanenbaum2017DS}. Los sistemas de referencia industrial ilustran los extremos del espectro: Dynamo prioriza disponibilidad mediante replicacion sin lider y consistencia eventual \parencite{DeCandia2007Dynamo}, mientras que Spanner ofrece consistencia externa (transacciones globalmente consistentes) apoyandose en sincronizacion temporal \parencite{Corbett2013Spanner}.
+
+\section{Estructura obligatoria del documento (minimo 5 paginas)}
+El documento se elabora en LaTeX y debe contener, en este orden, las siguientes secciones. La ausencia de cualquiera de ellas se penaliza en la dimension correspondiente de la rubrica.
+
+\begin{enumerate}
+    \item \textbf{Portada:} titulo, codigo TA-IND-02, nombre del estudiante, equipo PFC, asignatura, unidad y fecha.
+    \item \textbf{Resumen} (maximo 200 palabras): sintesis del analisis y de la postura adoptada.
+    \item \textbf{Introduccion:} contexto del PFC, dominio del sistema y objetivo del informe.
+    \item \textbf{Marco teorico:} modelos de consistencia, teoremas CAP/PACELC y estrategias de replicacion, con estado del arte y fuentes academicas.
+    \item \textbf{Analisis del modelo de consistencia del PFC:} caracterizacion del modelo realmente implementado, estrategia de replicacion, y justificacion tecnica ligada al dominio.
+    \item \textbf{Evaluacion de alternativas:} al menos dos alternativas de consistencia/replicacion contrastadas con el modelo actual mediante criterios explicitos y una tabla comparativa.
+    \item \textbf{Discusion critica:} respuesta razonada a la pregunta orientadora (?`es el modelo optimo?), con trade-offs, limitaciones y mitigaciones a la luz de CAP/PACELC.
+    \item \textbf{Conclusiones.}
+    \item \textbf{Declaracion de uso de IA generativa:} herramienta, proposito y secciones asistidas.
+    \item \textbf{Referencias} en formato IEEE.
+\end{enumerate}
+
+\section{Requisitos tecnicos y condiciones de entrega}
+\begin{itemize}
+    \item Documento elaborado en LaTeX y compilable sin errores con \texttt{pdflatex}; se entrega el archivo \texttt{.tex} sin errores y compilable correctamente.
+    \item Minimo 5 paginas de contenido (sin contar portada ni bibliografia).
+    \item Minimo 4 referencias academicas, de las cuales al menos 2 con DOI verificable y correctamente correspondido al articulo citado.
+    \item Al menos una figura o diagrama propio (por ejemplo, la topologia de replicacion del PFC) con \texttt{\textbackslash caption}, \texttt{\textbackslash label} y referencia cruzada en el texto, y una tabla comparativa con formato \texttt{booktabs}.
+    \item Citacion en formato IEEE; el uso de formato APA se penaliza.
+    \item Trabajo individual y original; similitud inferior al 15\% (excluida la bibliografia).
+    \item Declaracion de uso de IA generativa obligatoria.
+    \item Entrega en el LMS en la fecha establecida; el nombre del archivo debe incluir codigo, apellido y equipo PFC.
+\end{itemize}
+
+\uteqbox{Piso de evaluacion (no negociable)}{%
+Todo aspecto o indicador ausente se evalua con CERO (0) en el criterio correspondiente. La calificacion es definitiva y se fundamenta exclusivamente en la evidencia presente en el documento entregado; no se otorgan notas provisionales.%
+}
+
+\section{Referencias de alto impacto sugeridas}
+Como punto de partida verificado, se recomienda apoyarse en las siguientes fuentes, que el estudiante debe complementar con literatura reciente pertinente a su dominio: el marco de modelos de consistencia de Viotti y Vukolic \parencite{ViottiVukolic2016Consistency}; el teorema CAP formalizado por Gilbert y Lynch \parencite{GilbertLynch2002CAP}; la formulacion PACELC de Abadi \parencite{Abadi2012PACELC}; el tratamiento de replicacion de van Steen y Tanenbaum \parencite{VanSteenTanenbaum2017DS}; y los sistemas de referencia Dynamo \parencite{DeCandia2007Dynamo} y Spanner \parencite{Corbett2013Spanner}.
+
+%============================================================
+% PARTE B -- RUBRICA
+%============================================================
+\section{Rubrica de evaluacion}
+Esta rubrica opera con cinco dimensiones y diez criterios. Cada criterio se valora en cinco niveles --- Sobresaliente (4), Satisfactorio (3), En desarrollo (2), Insuficiente (1) y Ausente (0) --- y los puntos se ponderan segun el peso del criterio. El esquema esta ajustado para concentrar el peso en el analisis de consistencia y replicacion: el nucleo (D2 + D3) representa el 55\% de la calificacion. La nota final se expresa sobre 10 puntos.
+
+\subsection{Escala de evaluacion y equivalencia (sobre 10)}
+\renewcommand{\arraystretch}{1.25}
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.6cm} X >{\centering\arraybackslash}p{2.6cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Nivel} & \textbf{Descripcion general} & \textbf{Equiv. / 10} \\
+    \midrule
+    4 -- Sobresaliente & Cumple todos los requisitos con calidad academica publicable: analisis profundo del modelo de consistencia, evaluacion original de alternativas y postura solidamente fundamentada frente al dominio del PFC. & 9.0 -- 10.0 \\
+    3 -- Satisfactorio & Cumple los requisitos con calidad academica solida; deficiencias menores en profundidad, formato o argumentacion. & 7.5 -- 8.9 \\
+    2 -- En desarrollo & Cumple parcialmente; requiere mejoras sustanciales en el analisis, la evaluacion de alternativas o la documentacion. & 6.0 -- 7.4 \\
+    1 -- Insuficiente & No alcanza los estandares minimos: analisis superficial, conceptos mal aplicados o documento deficiente. & 4.0 -- 5.9 \\
+    0 -- Ausente & No entregado, plagio verificado o el criterio no se desarrolla. & $<$ 4.0 \\
+    \bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+
+\vspace{4pt}
+\noindent\textit{Calculo por criterio:} Puntos obtenidos $=$ Nivel $(0\text{--}4) \times (\text{Peso del criterio}/4)$. Ejemplo: un criterio de peso 1.5 pts evaluado en nivel 3 aporta $3 \times (1.5/4) = 1.125$ pts.
+
+\subsection{Condiciones obligatorias (verificacion previa a la calificacion)}
+\renewcommand{\arraystretch}{1.25}
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\RaggedRight}X >{\RaggedRight}p{4.6cm} >{\RaggedRight}p{4.4cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Condicion} & \textbf{Verificacion} & \textbf{Consecuencia} \\
+    \midrule
+    Documento en LaTeX; compila sin errores con pdflatex. & El docente ejecuta pdflatex sobre el .tex entregado. & Si no compila: D4 $=$ 0 pts. \\
+    Trabajo individual y original; similitud $<$ 15\%. & Detector de plagio del LMS. & Plagio verificado: calificacion 0. \\
+    Minimo 5 paginas de contenido (sin portada ni bibliografia). & Conteo de paginas del PDF. & Penalizacion proporcional en D4. \\
+    Analiza el modelo de consistencia del PFC PROPIO (no generico). & El docente verifica la conexion con el PFC del equipo del estudiante. & Si la aplicacion al PFC esta ausente: D2 $=$ 0. \\
+    Evalua al menos DOS alternativas frente al modelo actual. & El docente verifica la comparacion y la tabla. & Si no hay evaluacion de alternativas: D3 $=$ 0. \\
+    Minimo 4 referencias academicas; $\geq$2 con DOI verificable. & El docente verifica 2 DOI al azar (existencia y correspondencia). & DOI invalido o mal asignado: $-0.5$ pts en D5. \\
+    Declaracion de uso de IA generativa. & Seccion de declaracion en el documento. & Ausencia de declaracion: $-0.3$ pts en D5. \\
+    Cualquier aspecto o indicador ausente. & Verificacion criterio por criterio. & Se evalua con CERO (0) en el criterio correspondiente. \\
+    \bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+
+\subsection{Distribucion de pesos por dimension}
+\renewcommand{\arraystretch}{1.25}
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries\RaggedRight}p{5.4cm} X >{\centering\arraybackslash}p{1.6cm} >{\centering\arraybackslash}p{1.4cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Dimension} & \textbf{Criterios} & \textbf{Puntos} & \textbf{Peso} \\
+    \midrule
+    D1 -- Fundamentacion teorica (consistencia y replicacion) & 1.1 Modelos de consistencia \; 1.2 Estrategias de replicacion y estado del arte & 2.0 & 20\% \\
+    D2 -- Analisis del modelo de consistencia del PFC \textbf{[NUCLEO]} & 2.1 Caracterizacion del modelo implementado \; 2.2 Justificacion tecnica ligada al dominio (CAP/PACELC) & 3.0 & 30\% \\
+    D3 -- Evaluacion de alternativas y trade-offs & 3.1 Alternativas y tabla comparativa \; 3.2 Postura critica: ?`es el modelo optimo? & 2.5 & 25\% \\
+    D4 -- Calidad del documento LaTeX & 4.1 Estructura, formato y compilacion \; 4.2 Elementos formales propios & 1.5 & 15\% \\
+    D5 -- Redaccion, referencias e integridad & 5.1 Referencias y citacion IEEE \; 5.2 Redaccion tecnica, IA e integridad & 1.0 & 10\% \\
+    \midrule
+    \textbf{TOTAL} & \textbf{10 criterios -- 5 dimensiones} & \textbf{10.0} & \textbf{100\%} \\
+    \bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+
+\subsection{Rubrica detallada por dimension}
+Las tablas siguientes se presentan en orientacion horizontal para legibilidad de los cinco niveles de desempeno.
+
+\begin{landscape}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{tabularx}{\linewidth}{@{}>{\RaggedRight}p{3.0cm} >{\RaggedRight}p{3.5cm} >{\RaggedRight}p{7cm} >{\RaggedRight}p{4.5cm} >{\RaggedRight}p{3.7cm} >{\RaggedRight}p{2.4cm}@{}}
+    \multicolumn{6}{@{}l}{\textbf{\color{uteqBlue}D1 -- Fundamentacion teorica de consistencia y replicacion (2.0 pts)}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{Indicadores} & \textbf{4 -- Sobresaliente} & \textbf{3 -- Satisfactorio} & \textbf{2 -- En desarrollo} & \textbf{1--0} \\
+    \midrule
+    1.1 Modelos de consistencia \newline (1.0 pt) & Espectro de modelos; semantica y orden por fuerza; CAP/PACELC & Distingue con rigor los modelos del espectro (fuerte, secuencial, causal, eventual), su semantica y orden por fuerza, e integra correctamente CAP y PACELC con fuentes. & Presenta los modelos y CAP/PACELC correctamente, con algun matiz breve o sin fuente. & Tratamiento parcial: modelos incompletos o CAP sin PACELC. & 1: confuso o con errores conceptuales. \newline 0: ausente. \\
+    \addlinespace
+    1.2 Replicacion y estado del arte \newline (1.0 pt) & Estrategias de replicacion; $\geq$4 fuentes; sintesis critica ($\leq$5 anos) & Caracteriza las estrategias de replicacion (lider--seguidor, multi-lider, quorum, sincrona/asincrona) y su relacion con la consistencia, con $\geq$4 fuentes verificadas y sintesis critica propia. & Estrategias y fuentes validas, pero la sintesis es mas descriptiva que critica. & Pocas fuentes o de baja calidad; replicacion tratada superficialmente. & 1: sin estado del arte reconocible. \newline 0: ausente. \\
+    \bottomrule
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{@{}>{\RaggedRight}p{3.0cm} >{\RaggedRight}p{3.5cm} >{\RaggedRight}p{7cm} >{\RaggedRight}p{4.5cm} >{\RaggedRight}p{3.7cm} >{\RaggedRight}p{2.4cm}@{}}
+    \multicolumn{6}{@{}l}{\textbf{\color{uteqBlue}D2 -- Analisis del modelo de consistencia del PFC (3.0 pts) \; [NUCLEO DE LA COMPETENCIA]}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{Indicadores} & \textbf{4 -- Sobresaliente} & \textbf{3 -- Satisfactorio} & \textbf{2 -- En desarrollo} & \textbf{1--0} \\
+    \midrule
+    2.1 Caracterizacion del modelo implementado \newline (1.5 pts) & Modelo real del PFC; estrategia de replicacion; topologia (figura propia) & Identifica con precision el modelo de consistencia realmente implementado en el PFC y su estrategia de replicacion, ilustrados con un diagrama propio de la topologia, sin ambiguedad conceptual. & Caracteriza el modelo y la replicacion correctamente, con algun elemento general o diagrama incompleto. & Caracterizacion vaga o generica; el modelo del PFC se menciona sin detalle. & 1: modelo mal identificado. \newline 0: aplicacion al PFC ausente (D2 $=$ 0). \\
+    \addlinespace
+    2.2 Justificacion tecnica ligada al dominio \newline (1.5 pts) & Argumentos del dominio; lectura CAP/PACELC; requisitos de negocio & Justifica el modelo con argumentos verificables del dominio del PFC (criticidad de datos, tolerancia a staleness, latencia, disponibilidad), leidos explicitamente bajo CAP/PACELC. & Justificacion tecnica valida ligada al dominio; algun argumento breve o sin respaldo. & Justificacion parcial o generica; sin lectura CAP/PACELC. & 1: justificacion trivial o por preferencia. \newline 0: ausente. \\
+    \bottomrule
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{@{}>{\RaggedRight}p{3.0cm} >{\RaggedRight}p{3.5cm} >{\RaggedRight}p{7cm} >{\RaggedRight}p{4.5cm} >{\RaggedRight}p{3.7cm} >{\RaggedRight}p{2.4cm}@{}}
+    \multicolumn{6}{@{}l}{\textbf{\color{uteqBlue}D3 -- Evaluacion de alternativas y trade-offs (2.5 pts)}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{Indicadores} & \textbf{4 -- Sobresaliente} & \textbf{3 -- Satisfactorio} & \textbf{2 -- En desarrollo} & \textbf{1--0} \\
+    \midrule
+    3.1 Alternativas y tabla comparativa \newline (1.5 pts) & $\geq$2 alternativas; $\geq$4 criterios tecnicos; tabla booktabs & Contrasta el modelo actual con $\geq$2 alternativas de consistencia/replicacion segun $\geq$4 criterios tecnicos (consistencia, disponibilidad, latencia, tolerancia a particiones, complejidad) en una tabla booktabs. & Comparacion con alternativas validas y tabla presente, pero $<$4 criterios o tabla incompleta. & Comparacion superficial o solo cualitativa, sin criterios estructurados. & 1: menciona alternativas sin compararlas. \newline 0: ausente (D3 $=$ 0). \\
+    \addlinespace
+    3.2 Postura critica: ?`es el modelo optimo? \newline (1.0 pt) & Juicio propio razonado; limitaciones y mitigaciones; respuesta a la pregunta & Responde de forma razonada a la pregunta orientadora, con juicio propio respaldado; reconoce limitaciones del modelo elegido y propone mitigaciones concretas. & Postura presente con argumentos validos, pero alguna limitacion o mitigacion tratada de forma breve. & Analisis mayormente descriptivo; juicio sin fundamentar. & 1: sin postura critica; solo resumen. \newline 0: ausente. \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{2pt}
+
+\begin{tabularx}{\linewidth}{@{}>{\RaggedRight}p{3.0cm} >{\RaggedRight}p{3.5cm} >{\RaggedRight}p{7cm} >{\RaggedRight}p{4.5cm} >{\RaggedRight}p{3.7cm} >{\RaggedRight}p{2.4cm}@{}}
+    \multicolumn{6}{@{}l}{\textbf{\color{uteqBlue}D4 -- Calidad del documento LaTeX (1.5 pts)}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{Indicadores} & \textbf{4 -- Sobresaliente} & \textbf{3 -- Satisfactorio} & \textbf{2 -- En desarrollo} & \textbf{1--0} \\
+    \midrule
+    4.1 Estructura, formato y compilacion \newline (0.75 pts) & Compila; $\geq$5 paginas; estructura obligatoria completa & Compila sin errores ni advertencias relevantes; estructura obligatoria completa; $\geq$5 paginas de contenido; tipografia consistente e indices automaticos. & Compila con advertencias menores; estructura mayormente completa; 5 paginas justas. & Estructura incompleta o requiere correcciones manuales; $<$5 paginas. & 1: compila con errores. \newline 0: no esta en LaTeX o no compila (D4 $=$ 0). \\
+    \addlinespace
+    4.2 Elementos formales propios \newline (0.75 pts) & Figura/diagrama propio con caption+label; tabla booktabs; referencias cruzadas & Incluye figura/diagrama PROPIO (topologia de replicacion) con \texttt{\textbackslash caption} y \texttt{\textbackslash label} referenciados, tabla booktabs y referencias cruzadas correctas. & Elementos presentes con deficiencias menores (alguna figura sin referenciar). & Pocos elementos formales o mal integrados; figuras de terceros sin elaboracion. & 1: elementos incorrectos. \newline 0: ausente. \\
+    \bottomrule
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{@{}>{\RaggedRight}p{3.0cm} >{\RaggedRight}p{3.5cm} >{\RaggedRight}p{7cm} >{\RaggedRight}p{4.5cm} >{\RaggedRight}p{3.7cm} >{\RaggedRight}p{2.4cm}@{}}
+    \multicolumn{6}{@{}l}{\textbf{\color{uteqBlue}D5 -- Redaccion, referencias e integridad (1.0 pts)}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{Indicadores} & \textbf{4 -- Sobresaliente} & \textbf{3 -- Satisfactorio} & \textbf{2 -- En desarrollo} & \textbf{1--0} \\
+    \midrule
+    5.1 Referencias y citacion IEEE \newline (0.5 pts) & $\geq$4 referencias; $\geq$2 con DOI verificable; formato IEEE & $\geq$4 referencias academicas en IEEE consistente; $\geq$2 con DOI verificable y correspondido; todas citadas en el texto. & Referencias suficientes en IEEE con imprecisiones menores. & Referencias escasas, formato inconsistente o alguna sin citar. & 1: insuficientes o no academicas. \newline 0: sin referencias verificables. \\
+    \addlinespace
+    5.2 Redaccion tecnica, IA e integridad \newline (0.5 pts) & Terminologia precisa; declaracion de IA; similitud $<$15\% & Redaccion tecnica precisa; declaracion de uso de IA (herramienta, proposito, secciones); integridad academica (similitud $<$15\%). & Redaccion correcta con 2--3 imprecisiones; declaracion de IA presente. & Terminologia inconsistente; declaracion de IA ausente. & 1: texto poco tecnico. \newline 0: deshonestidad academica. \\
+    \bottomrule
+\end{tabularx}
+
+\end{landscape}
+
+\subsection{Hoja de puntuacion del evaluador}
+\renewcommand{\arraystretch}{1.3}
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\RaggedRight}p{7.6cm} >{\centering\arraybackslash}p{1.8cm} >{\centering\arraybackslash}p{1.8cm} >{\centering\arraybackslash}p{2.0cm} X@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio} & \textbf{Nivel (0--4)} & \textbf{Peso (pts)} & \textbf{Pts. obten.} & \textbf{Observacion} \\
+    \midrule
+    \textbf{D1 -- Fundamentacion teorica} & & \textbf{2.0} & & \\
+    \quad 1.1 Modelos de consistencia & \rule{1cm}{0.4pt} & 1.0 & & \\
+    \quad 1.2 Replicacion y estado del arte & \rule{1cm}{0.4pt} & 1.0 & & \\
+    \textbf{D2 -- Analisis del modelo del PFC} & & \textbf{3.0} & & \\
+    \quad 2.1 Caracterizacion del modelo implementado & \rule{1cm}{0.4pt} & 1.5 & & \\
+    \quad 2.2 Justificacion tecnica ligada al dominio & \rule{1cm}{0.4pt} & 1.5 & & \\
+    \textbf{D3 -- Evaluacion de alternativas} & & \textbf{2.5} & & \\
+    \quad 3.1 Alternativas y tabla comparativa & \rule{1cm}{0.4pt} & 1.5 & & \\
+    \quad 3.2 Postura critica: ?`es el modelo optimo? & \rule{1cm}{0.4pt} & 1.0 & & \\
+    \textbf{D4 -- Calidad del documento LaTeX} & & \textbf{1.5} & & \\
+    \quad 4.1 Estructura, formato y compilacion & \rule{1cm}{0.4pt} & 0.75 & & \\
+    \quad 4.2 Elementos formales propios & \rule{1cm}{0.4pt} & 0.75 & & \\
+    \textbf{D5 -- Redaccion, referencias e integridad} & & \textbf{1.0} & & \\
+    \quad 5.1 Referencias y citacion IEEE & \rule{1cm}{0.4pt} & 0.5 & & \\
+    \quad 5.2 Redaccion tecnica, IA e integridad & \rule{1cm}{0.4pt} & 0.5 & & \\
+    \midrule
+    \textbf{CALIFICACION FINAL (sobre 10)} & & \textbf{10.0} & \textbf{\rule{1.4cm}{0.4pt} / 10} & Firma: \rule{2.5cm}{0.4pt} \\
+    \bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+
+\subsection{Penalizaciones aplicables}
+No compila $\rightarrow$ D4 $=$ 0. \quad Sin analisis del PFC propio $\rightarrow$ D2 $=$ 0. \quad Sin evaluacion de alternativas $\rightarrow$ D3 $=$ 0. \quad DOI invalido o mal asignado $\rightarrow$ $-0.5$ en D5. \quad Sin declaracion de IA $\rightarrow$ $-0.3$ en D5. \quad Documento con menos de 5 paginas $\rightarrow$ penalizacion proporcional en D4. \quad Plagio verificado $\rightarrow$ calificacion 0.
+
+\subsection{Nota metodologica}
+Esta rubrica se deriva de la consigna del TA-IND-02 (Analisis de Consistencia y Replicacion en BDD Distribuidas) y de las convenciones de evaluacion de la asignatura Aplicaciones Distribuidas (ISR-701). Frente al TA-IND-01, el esquema de pesos se ajusto para concentrar el 55\% de la calificacion en el nucleo tecnico de la unidad: el analisis del modelo de consistencia implementado en el PFC (D2, 30\%) y la evaluacion critica de alternativas (D3, 25\%). La escala de cinco niveles y el calculo ponderado mantienen coherencia con los demas instrumentos de la asignatura, adaptados al caracter individual de esta tarea y a una calificacion sobre 10.
+
+\printbibliography[title={Referencias}]
+
+\end{document}
