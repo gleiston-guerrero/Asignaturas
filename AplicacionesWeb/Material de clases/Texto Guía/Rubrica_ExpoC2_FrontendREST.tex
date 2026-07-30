@@ -1,0 +1,391 @@
+% =====================================================================
+%  RUBRICA DE EVALUACION --- Exposicion del Segundo Corte
+%  Front-end que consume web services REST creados en Spring Boot (PFC)
+%  Aplicaciones Web --- UTEQ --- PPA 2026-2027
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.2cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{parskip}
+
+\usepackage[table]{xcolor}
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{grisfila}{RGB}{245,245,245}
+\definecolor{goldclaro}{RGB}{252,245,220}
+\definecolor{verdeclaro}{RGB}{235,247,238}
+\definecolor{textogris}{RGB}{0,0,0}
+\definecolor{nivelaus}{RGB}{176,42,42}
+\definecolor{codebg}{RGB}{248,248,248}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{cajadefinicion}[1]{
+	colback=uteqverde!5,
+	colframe=uteqverde,
+	fonttitle=\bfseries,
+	coltitle=white,
+	title={#1},
+	boxrule=0.6pt,
+	arc=3pt,
+	breakable
+}
+
+\newtcolorbox{cajaentregable}[1]{
+	colback=uteqdorado!8,
+	colframe=uteqdorado!80!black,
+	fonttitle=\bfseries,
+	coltitle=white,
+	title={#1},
+	boxrule=0.6pt,
+	arc=3pt,
+	breakable
+}
+
+\newtcolorbox{cajacritica}[1]{
+	colback=red!5,
+	colframe=red!70!black,
+	fonttitle=\bfseries,
+	coltitle=white,
+	title={#1},
+	boxrule=0.6pt,
+	arc=3pt,
+	breakable
+}
+
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\usepackage{enumitem}\setlist{itemsep=2pt,topsep=2pt}
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textcolor{uteqverde}{Aplicaciones Web --- Quinto nivel --- PPA 2026-2027}}
+\rhead{\footnotesize\textcolor{uteqverde}{Rubrica Expo C2 --- Front-end REST}}
+\rfoot{\thepage}
+\lfoot{\footnotesize UTEQ --- FCCDD --- Ingenieria de Software}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\hypersetup{
+	pdftitle={Rubrica Exposicion Segundo Corte --- Front-end consumiendo REST de Spring Boot},
+	pdfauthor={Dr. Gleiston Guerrero Ulloa},
+	pdfsubject={Rubrica de evaluacion de entregables del Segundo Corte del PFC},
+	pdfkeywords={Rubrica, Segundo Corte, Front-end, REST, Spring Boot, diapositivas, PFC, UTEQ}
+}
+
+\begin{document}
+\color{textogris}
+
+% =====================================================================
+%  PORTADA
+% =====================================================================
+\begin{center}
+	\vspace*{0.4cm}
+	{\Large\bfseries\textcolor{uteqverde}{UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}}\\[4pt]
+	{\large Facultad de Ciencias de la Computacion y Diseno Digital}\\[2pt]
+	{\large Carrera de Ingenieria de Software (Redisenio)}\\[14pt]
+
+	{\LARGE\bfseries Rubrica de evaluacion}\\[4pt]
+	{\LARGE\bfseries Exposicion del Segundo Corte}\\[10pt]
+
+	{\large\itshape Front-end que consume web services REST}\\
+	{\large\itshape creados en Spring Boot, sobre el framework del Primer Corte (PFC)}\\[14pt]
+
+	\begin{tcolorbox}[colback=uteqverde!8,colframe=uteqverde,arc=3pt,
+	                  width=0.92\textwidth,boxrule=0.8pt]
+		\centering
+		\textbf{Asignatura:} Aplicaciones Web (5to nivel --- Paralelo A)\\[2pt]
+		\textbf{Docente responsable:} Dr. Gleiston Ciceron Guerrero Ulloa, Ph.D.\\[2pt]
+		\texttt{gguerrero@uteq.edu.ec}\\[4pt]
+		\textbf{Periodo academico:} 2026-2027 PPA \quad\textbar\quad \textbf{Corte:} Segundo\\[2pt]
+		\textbf{Modalidad:} Trabajo en equipo (equipos del PFC) \quad\textbar\quad \textbf{Escala:} 0--100 (equivalente sobre 10)
+	\end{tcolorbox}
+
+	\vspace{0.4cm}
+	{\small Quevedo --- Los Rios --- Ecuador --- 2026}
+\end{center}
+
+\vspace{0.2cm}
+
+% =====================================================================
+%  1. OBJETO DE EVALUACION
+% =====================================================================
+\section{Objeto de evaluacion}
+
+Esta rubrica evalua los \textbf{entregables} de la exposicion del Segundo Corte de la asignatura Aplicaciones Web. En este corte cada equipo expone \textbf{el mismo framework del Primer Corte}, ahora extendido con un \textbf{front-end (interfaz de usuario) que consume web services REST creados en Spring Boot} dentro de su Proyecto Fin de Curso (PFC). La evaluacion se concentra en tres entregables y no en la actuacion oral: (i) el \textbf{documento} subido al SGA y versionado en el repositorio, que debe contener el \textbf{paso a paso} reproducible para consumir la API REST; (ii) los \textbf{entregables del repositorio} (codigo del front-end que consume realmente los servicios, fuentes del informe y de las diapositivas, y evidencias); y (iii) las \textbf{diapositivas}, evaluadas por su calidad de diseno y por incluir lo esencial del consumo REST.
+
+Los fundamentos conceptuales que sustentan la evaluacion son: el estilo arquitectonico REST definido por Fielding~\cite{fielding2000rest}; la semantica de metodos y codigos de estado de HTTP del IETF~\cite{rfc9110http}; el formato de intercambio de datos JSON~\cite{rfc8259json}; los controles de seguridad de aplicaciones web del OWASP Top 10~\cite{owasp2021top10}; el modelo de calidad de producto software ISO/IEC 25010~\cite{iso25010}; las areas de conocimiento del SWEBOK v4.0 sobre practicas y transparencia en el desarrollo~\cite{washizaki2024swebok}; y los principios de diseno de presentaciones tecnicas basados en evidencia de Alley y en la teoria cognitiva del aprendizaje multimedia de Mayer~\cite{alley2013craft,mayer2009multimedia}.
+
+La nota se reparte entre los tres entregables asi: \textbf{Documento} (C1, C8) $= 24$\,\%; \textbf{Repositorio y consumo funcional} (C2, C3, C4, C9) $= 42$\,\%; \textbf{Diapositivas} (C5, C6, C7) $= 34$\,\%. El consumo REST funcional (C2) es un criterio de \emph{peso alto}, pero su ausencia no anula por si sola toda la nota.
+
+% =====================================================================
+%  2. CRITERIOS DE PISO
+% =====================================================================
+\section{Criterios de piso (excluyentes)}
+
+Los criterios de piso son \textbf{condiciones necesarias} para que la exposicion pueda calificarse con la rubrica de criterios. Si cualquiera de ellos no se cumple, la nota final del Segundo Corte es \textbf{cero} (0/10) y no se procede a evaluar el resto.
+
+\begin{cajacritica}{P1 --- Entregable unico en el SGA con caratula y URL del repositorio}
+	\begin{itemize}
+		\item En el aula virtual (SGA) el equipo sube \textbf{un unico archivo PDF con caratula} (datos de identificacion: asignatura, corte, tema, equipo e integrantes con carnet, fecha) que muestre \textbf{claramente, en una sola linea, la URL del repositorio} donde se encuentra el trabajo desarrollado.
+		\item La URL debe estar en \textbf{una sola linea}, sin cortes ni saltos, para permitir su copia integra por el evaluador.
+		\item Si la URL esta rota, el repositorio no es accesible, o no se cumple esta directriz, la calificacion es \textbf{CERO}.
+	\end{itemize}
+\end{cajacritica}
+
+\begin{cajacritica}{P2 --- Repositorio publico accesible desde el exterior}
+	\begin{itemize}
+		\item La URL declarada en el PDF debe abrir el repositorio sin credenciales, invitaciones ni pertenencia a una organizacion privada.
+		\item El evaluador verifica el acceso desde una sesion anonima (navegador en modo incognito, sin sesion Git iniciada). Si el repositorio pide inicio de sesion, se aplica la clausula de piso.
+		\item El repositorio debe estar activo durante la ventana de calificacion. Repositorios eliminados, renombrados o vueltos privados equivalen a repositorio inaccesible.
+	\end{itemize}
+\end{cajacritica}
+
+\begin{cajacritica}{P3 --- Todos los fuentes en el repositorio}
+	\begin{itemize}
+		\item Deben estar versionados todos los fuentes necesarios para reconstruir la entrega: codigo fuente del \textbf{front-end} (y del back-end o su referencia clara), fuentes LaTeX del informe (\texttt{.tex}, \texttt{.bib}), imagenes en resolucion editable, y el \textbf{archivo fuente de las diapositivas} (\texttt{.pptx}, \texttt{.tex}/Beamer o equivalente).
+		\item Queda prohibido subir el informe unicamente como PDF sin sus fuentes. Un informe en PDF sin \texttt{.tex} y \texttt{.bib} versionados equivale a evidencia no verificable y activa la clausula de piso.
+		\item Los binarios generados (\texttt{.aux}, \texttt{.log}, \texttt{node\_modules}, \texttt{target}, PDF compilado) no cuentan como fuentes; se recomienda incluirlos en \texttt{.gitignore}.
+	\end{itemize}
+\end{cajacritica}
+
+\begin{cajacritica}{P4 --- Reproducibilidad del PDF del documento desde el repositorio}
+	\begin{itemize}
+		\item El PDF del documento debe poder regenerarse \textbf{clonando el repositorio y compilando el archivo \texttt{.tex}}. Si el PDF no se genera correctamente a partir del LaTeX mediante clonacion y compilacion, la calificacion es \textbf{CERO}.
+		\item Las instrucciones de compilacion (compilador, orden de comandos, archivo principal, dependencias) deben estar documentadas en el archivo \texttt{README.md} del repositorio.
+		\item No se admiten dependencias no declaradas (rutas absolutas locales, archivos ausentes, paquetes no mencionados). Si el evaluador no logra regenerar el PDF siguiendo el \texttt{README}, se aplica la clausula de piso.
+	\end{itemize}
+\end{cajacritica}
+
+\begin{cajacritica}{P5 --- Autoria trazable y honestidad academica}
+	\begin{itemize}
+		\item El historial \texttt{git log} debe evidenciar commits de \textbf{los integrantes declarados} en el PDF, con nombre y correo institucional. La suplantacion de autoria (un solo integrante haciendo commit en nombre de los demas) se considera falta grave y activa la clausula de piso.
+		\item Todo contenido del informe, del codigo o de las diapositivas generado con asistencia de inteligencia artificial debe declararse explicitamente, siguiendo la guia SWEBOK v4.0 sobre transparencia~\cite{washizaki2024swebok}.
+		\item La copia integra de codigo, texto o diapositivas de otros equipos o de fuentes externas sin cita activa la clausula de piso y se reporta al Coordinador de Carrera.
+	\end{itemize}
+\end{cajacritica}
+
+\begin{cajadefinicion}{Efecto de los criterios de piso}
+	Si los cinco criterios de piso se cumplen, se aplica la rubrica de nueve criterios de la seccion siguiente. Si al menos uno no se cumple, la nota final del Segundo Corte es \textbf{0/10}, se documenta la causa en la retroalimentacion al equipo y no se emite calificacion por criterio.
+\end{cajadefinicion}
+
+% =====================================================================
+%  3. ESCALA Y FORMULA
+% =====================================================================
+\section{Escala de niveles y formula de calificacion}
+
+Cada criterio se evalua en cinco niveles: \emph{Excelente} $= 100$\,\%, \emph{Satisfactorio} $= 75$\,\%, \emph{En desarrollo} $= 50$\,\%, \emph{Insuficiente} $= 25$\,\%, \emph{Ausente} $= 0$\,\%. Esta escala es la misma que el docente aplico en las rubricas previas del curso, garantizando consistencia interna.
+
+\begin{center}
+	$\displaystyle \text{Nota}_{100} \;=\; \sum_{i=1}^{9} \bigl(\text{peso}_{i} \times \text{nivel}_{i}\bigr) \qquad \text{Nota}_{10} \;=\; \frac{\text{Nota}_{100}}{10}$
+\end{center}
+
+La suma de los pesos es exactamente $100$\,\%.
+
+\begin{cajacritica}{Nivel \emph{Ausente} = nota final CERO (regla excluyente)}
+	Si \textbf{cualquiera} de los nueve criterios recibe el nivel \textbf{Ausente} ($0$\,\%) ---es decir, el entregable o la evidencia que exige ese criterio \textbf{no existe}---, la nota final del Segundo Corte es \textbf{CERO} (0/10), con independencia del puntaje alcanzado en los demas criterios. En consecuencia, los nueve criterios son de \textbf{presencia obligatoria}: la formula ponderada solo se aplica cuando \emph{todos} los criterios obtienen al menos el nivel \emph{Insuficiente} ($25$\,\%). Basta un unico criterio en \emph{Ausente} para que la nota sea cero.
+\end{cajacritica}
+
+% =====================================================================
+%  4. RUBRICA DETALLADA
+% =====================================================================
+\section{Rubrica detallada}
+
+{
+\footnotesize
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|L{2.9cm}|C{0.8cm}|L{2.6cm}|L{2.6cm}|L{2.6cm}|L{2.3cm}|}
+\hline
+\rowcolor{uteqverde!85}
+{\color{white}\textbf{Criterio}} &
+{\color{white}\textbf{Peso}} &
+{\color{white}\textbf{Excelente (100\,\%)}} &
+{\color{white}\textbf{Satisfactorio (75\,\%)}} &
+{\color{white}\textbf{En desarrollo (50\,\%)}} &
+{\color{white}\textbf{Insuficiente (25\,\%)}} \\
+\hline
+\endfirsthead
+
+\hline
+\rowcolor{uteqverde!85}
+{\color{white}\textbf{Criterio}} &
+{\color{white}\textbf{Peso}} &
+{\color{white}\textbf{Excelente (100\,\%)}} &
+{\color{white}\textbf{Satisfactorio (75\,\%)}} &
+{\color{white}\textbf{En desarrollo (50\,\%)}} &
+{\color{white}\textbf{Insuficiente (25\,\%)}} \\
+\hline
+\endhead
+
+% ===== DOCUMENTO =====
+\textbf{C1. Documento: paso a paso del consumo de la API REST} &
+\centering 16\,\% &
+Paso a paso completo y reproducible: configuracion del cliente HTTP, URL base y endpoints, verbos GET/POST/PUT/DELETE, manejo de JSON, autenticacion (si aplica, p.\,ej. con JWT) y manejo de errores; cada paso numerado, con ruta de archivo y fragmento de codigo, verificable en el repositorio~\cite{fielding2000rest,rfc9110http,rfc8259json,jones2015jwt}. &
+Paso a paso en orden que cubre las operaciones principales; falta un aspecto menor (manejo de errores o autenticacion) o una ruta/fragmento sin detallar. &
+Describe el consumo de forma general sin pasos reproducibles (faltan endpoints, verbos o el tratamiento del JSON). &
+Solo menciona que se consume la API, sin explicar como; sin pasos ni endpoints. \\
+\rowcolor{grisfila}
+
+% ===== CONSUMO FUNCIONAL =====
+\textbf{C2. Consumo funcional de los web services REST (peso alto)} &
+\centering 18\,\% &
+El front-end consume realmente los endpoints de Spring Boot de extremo a extremo (operaciones del PFC), con evidencia verificable: codigo del cliente + captura del \emph{Network} de DevTools con peticion y respuesta HTTP y sus encabezados; manejo correcto de estados 2xx/4xx/5xx~\cite{rfc9110http,owasp2021top10}. &
+Consume la API con la mayoria de operaciones; una operacion con fallo menor o captura de evidencia incompleta. &
+Consumo parcial (solo lectura/listar, o solo el camino de exito); sin evidencia de peticiones/respuestas. &
+El front-end no consume la API (datos simulados o estaticos) o no hay evidencia verificable del consumo. \\
+
+% ===== CONTINUIDAD =====
+\textbf{C3. Continuidad y extension del framework del Primer Corte} &
+\centering 8\,\% &
+Mantiene el mismo framework/stack del Primer Corte y lo extiende con el front-end que consume los servicios REST; la relacion con lo anterior es explicita en documento y diapositivas. &
+Mantiene el framework y lo extiende, con la relacion con el Primer Corte poco explicitada. &
+Cambia parcialmente de framework sin justificacion, o la extension no se apoya en lo del Primer Corte. &
+No hay continuidad con el Primer Corte (framework distinto sin relacion). \\
+\rowcolor{grisfila}
+
+% ===== REPOSITORIO =====
+\textbf{C4. Repositorio: fuentes completos, estructura y reproducibilidad} &
+\centering 12\,\% &
+Repositorio con todos los fuentes (front-end, informe \texttt{.tex}/\texttt{.bib} y diapositivas fuente); estructura ordenada por carpetas; \texttt{README.md} con instrucciones de ejecucion del cliente y de compilacion del documento (compilador, orden, archivo principal, dependencias); \texttt{.gitignore} adecuado~\cite{washizaki2024swebok}. &
+Fuentes completos y \texttt{README} presente con una instruccion incompleta o estructura mejorable. &
+Faltan algunos fuentes (p.\,ej. diapositivas fuente) o \texttt{README} sin instrucciones de compilacion. &
+Repositorio desordenado o con fuentes ausentes; sin \texttt{README} util. \\
+
+% ===== DIAPOSITIVAS: ESPACIO =====
+\textbf{C5. Diapositivas: uso eficiente del espacio y legibilidad} &
+\centering 14\,\% &
+Definiciones cortas y pasos, sin textos largos; apoyo con imagenes/diagramas; el contenido \textbf{ocupa el espacio de forma eficiente y equilibrada}; tipografia legible a distancia; sin texto pequeno rodeado de espacio vacio ni contenido que desborde los margenes~\cite{alley2013craft,mayer2009multimedia}. &
+Diseno limpio y legible en su mayoria; una o dos diapositivas con exceso de texto o con espacio desaprovechado. &
+Varias diapositivas con parrafos largos, o con \textbf{texto pequeno y mucho espacio vacio}, o con desbordes; legibilidad comprometida. &
+Diapositivas saturadas de texto o casi vacias; ilegibles o con desbordes generalizados. \\
+\rowcolor{grisfila}
+
+% ===== DIAPOSITIVAS: CONTENIDO REST =====
+\textbf{C6. Diapositivas: contenido tecnico del consumo REST} &
+\centering 12\,\% &
+Incluyen lo esencial del consumo de la API ---diagrama del flujo (cliente $\to$ API REST $\to$ datos), endpoints/verbos y un fragmento de codigo clave o captura de la respuesta--- de forma sintetica; coherente con el documento aunque menos detallada, como corresponde a una diapositiva. &
+Presentan el consumo REST con un elemento faltante (sin diagrama de flujo o sin fragmento de codigo). &
+Mencionan el consumo REST de forma superficial, sin diagrama, endpoints ni codigo. &
+Las diapositivas no muestran nada tecnico sobre el consumo de la API. \\
+
+% ===== DIAPOSITIVAS: NARRATIVA =====
+\textbf{C7. Diapositivas: estructura, narrativa y calidad visual} &
+\centering 8\,\% &
+Portada con datos de identificacion, hilo logico (contexto $\to$ solucion $\to$ demostracion $\to$ cierre), diagramas/capturas propias, numeracion y coherencia visual (paleta y tipografia uniformes); sin faltas ortograficas~\cite{alley2013craft}. &
+Estructura clara con un elemento faltante (numeracion o cierre) o una inconsistencia visual menor. &
+Secuencia poco clara o inconsistencia visual notoria; alguna falta ortografica. &
+Sin estructura reconocible; multiples faltas o incoherencia visual. \\
+\rowcolor{grisfila}
+
+% ===== DOCUMENTO: CALIDAD =====
+\textbf{C8. Documento: estructura, redaccion y bibliografia verificable} &
+\centering 8\,\% &
+Documento en LaTeX con estructura completa (portada con datos y URL del repositorio, introduccion, paso a paso, conclusiones, referencias); estilo consistente; cada afirmacion no trivial con cita a fuente primaria verificable en el \texttt{.bib}; toda figura y tabla referenciada; sin espacios en blanco huerfanos ni referencias sin resolver (\texttt{??}). &
+Estructura completa con una seccion resumida o una o dos citas debiles. &
+Estructura parcial o bibliografia irregular (citas sin entrada en el \texttt{.bib}). &
+Documento sin estructura o sin bibliografia. \\
+
+% ===== EVIDENCIAS =====
+\textbf{C9. Evidencias y trazabilidad} &
+\centering 4\,\% &
+El \texttt{git log} evidencia commits de todos los integrantes con correo institucional; capturas de ejecucion del front-end consumiendo la API, coherentes con el codigo; contribucion con IA declarada~\cite{washizaki2024swebok}. &
+Commits de la mayoria de integrantes y evidencia suficiente. &
+Historial pobre o evidencia parcial. &
+Sin trazabilidad ni evidencia verificable. \\
+
+\hline
+\rowcolor{goldclaro}
+\multicolumn{2}{|r|}{\textbf{Total ponderado}} &
+\multicolumn{4}{l|}{\textbf{100\,\%} \quad \footnotesize Nota${}_{100} = \sum (\text{peso}_i \times \text{nivel}_i)$ \; \textbar\; Nota${}_{10} = \text{Nota}_{100}/10$} \\
+\hline
+\end{longtable}
+}
+
+% =====================================================================
+%  5. REGLAS TRANSVERSALES
+% =====================================================================
+\section{Reglas transversales de calificacion}
+
+\begin{cajacritica}{Reglas transversales aplicables a todos los criterios}
+	\begin{enumerate}
+		\item \textbf{Ausencia de un criterio $=$ nota cero}. Si alguno de los nueve criterios queda en nivel \emph{Ausente} ($0$\,\%), la nota final del Segundo Corte es \textbf{cero} (0/10) y no se aplica la ponderacion, conforme a la regla excluyente de la seccion~3.
+		\item \textbf{El repositorio Git es la fuente de verdad}. La evidencia verificada directamente sobre el repositorio se distingue siempre de la inferida del PDF o de capturas. Un criterio dependiente de codigo cuya evidencia solo aparece en el PDF y no en el repositorio se califica como maximo \emph{En desarrollo} ($50$\,\%).
+		\item \textbf{Consumo simulado}. Si el front-end muestra datos estaticos o simulados en lugar de consumir realmente la API REST, el criterio C2 se limita a \emph{Insuficiente} ($25$\,\%), aunque la interfaz luzca terminada.
+		\item \textbf{Penalizacion del espacio mal aprovechado}. En C5, el texto pequeno rodeado de mucho espacio vacio, los parrafos largos y los desbordes de texto/figuras fuera de los margenes se penalizan explicitamente; no pueden alcanzar el nivel \emph{Excelente}~\cite{mayer2009multimedia}.
+		\item \textbf{Consultas y datos del usuario}. Cualquier envio de datos del usuario a la API sin validacion o con concatenacion insegura limita C2 por incumplimiento del control A03:2021 --- Injection del OWASP Top 10~\cite{owasp2021top10}.
+		\item \textbf{Cadena de compilacion documentada}. La ausencia del \texttt{README} con la cadena de compilacion del documento (p.\,ej. \texttt{pdflatex$\to$bibtex$\to$pdflatex$\to$pdflatex}) limita C4 y C8 a \emph{En desarrollo} ($50$\,\%).
+		\item \textbf{Referencias verificables}. Toda cita del documento debe corresponder a una entrada del \texttt{.bib} versionado y a una fuente primaria localizable (DOI, ISBN, URL oficial o RFC). Referencias fabricadas o no verificables limitan C8 a \emph{Insuficiente} ($25$\,\%).
+		\item \textbf{Corte de commits}. Cualquier commit posterior a la fecha de corte declarada en el PDF se ignora para la calificacion, pero no penaliza.
+		\item \textbf{Distribucion equitativa}. Un desbalance grave en la autoria de commits (un integrante con menos del $10$\,\% del total) se documenta como observacion al docente para decision individual, sin ser causa automatica de descuento del equipo.
+	\end{enumerate}
+\end{cajacritica}
+
+% =====================================================================
+%  6. PROCEDIMIENTO DEL EVALUADOR
+% =====================================================================
+\section{Procedimiento del evaluador}
+
+\begin{enumerate}
+	\item Descargar el unico PDF entregado en el SGA; verificar la caratula con datos de identificacion y la URL del repositorio en una sola linea (P1).
+	\item Copiar la URL en un navegador en modo incognito y verificar acceso publico al repositorio (P2).
+	\item Clonar el repositorio a un directorio limpio: \texttt{git clone --quiet <URL>}.
+	\item Comprobar la presencia de fuentes (P3): front-end, \texttt{.tex}/\texttt{.bib} del informe y archivo fuente de las diapositivas.
+	\item Regenerar el PDF del documento siguiendo el \texttt{README}; si falla, aplicar P4 (nota cero).
+	\item Ejecutar o revisar el front-end y verificar el consumo real de la API (C2): buscar las llamadas HTTP en el codigo y contrastarlas con las capturas del \emph{Network} tab.
+	\item Verificar la autoria de commits (P5): \texttt{git log --pretty=format:'\%an <\%ae>' | sort | uniq -c | sort -rn}.
+	\item Aplicar los criterios de piso; si alguno falla, cerrar con nota cero y redactar la retroalimentacion.
+	\item Aplicar la rubrica de nueve criterios; para cada uno registrar el nivel y una linea de evidencia (ruta al archivo o comando de verificacion).
+	\item Calcular $\text{Nota}_{10}$, redactar el informe individual del equipo en texto plano para el SGA y anotar aparte las observaciones al docente.
+\end{enumerate}
+
+% =====================================================================
+%  7. PLANILLA DE CALIFICACION
+% =====================================================================
+\section{Planilla de calificacion}
+
+{\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.35}
+\noindent\begin{tabular}{|>{\bfseries}L{2.4cm}|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\rowcolor{verdeclaro}
+\textbf{Equipo} & \textbf{C1} & \textbf{C2} & \textbf{C3} & \textbf{C4} & \textbf{C5} & \textbf{C6} & \textbf{C7} & \textbf{C8} & \textbf{C9} & \textbf{Nota/100} \\
+\hline
+\rowcolor{grisfila}
+\footnotesize Peso & 16 & 18 & 8 & 12 & 14 & 12 & 8 & 8 & 4 & 100 \\
+\hline
+& & & & & & & & & & \\
+\hline
+& & & & & & & & & & \\
+\hline
+& & & & & & & & & & \\
+\hline
+\multicolumn{11}{l}{\footnotesize Anote en cada celda el porcentaje del nivel asignado (100/75/50/25/0). La nota se obtiene aplicando los pesos.} \\
+\end{tabular}
+}
+
+\vspace{8pt}
+\noindent{\footnotesize\textit{Docente:} Dr. Gleiston Ciceron Guerrero Ulloa, Ph.D. \quad\textbar\quad \texttt{gguerrero@uteq.edu.ec}}
+
+% =====================================================================
+%  BIBLIOGRAFIA
+% =====================================================================
+\bibliographystyle{ieeetr}
+\bibliography{Rubrica_ExpoC2_FrontendREST}
+
+\end{document}

@@ -1,0 +1,1016 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{graphicx}\usepackage{listings}\usepackage[most]{tcolorbox}
+\usepackage{longtable}\usepackage{array}\usepackage{enumitem}
+\usepackage{fancyhdr}\usepackage{titlesec}
+\usepackage[numbers,square]{natbib}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\contentsname}{Contenido}\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+\definecolor{ndverde}{HTML}{2F6F3E}\definecolor{ndverdeo}{HTML}{1F4A2A}
+\definecolor{ndnaranja}{HTML}{C8651B}\definecolor{tinta}{HTML}{000000}
+\definecolor{codbg}{HTML}{F3F7F4}\definecolor{numlin}{HTML}{AAAAAA}
+\definecolor{kw}{HTML}{116329}\definecolor{str}{HTML}{C41A16}\definecolor{com}{HTML}{717171}
+\definecolor{tipbg}{HTML}{E9F2EB}\definecolor{warnbg}{HTML}{FBF0D8}\definecolor{dangerbg}{HTML}{FBE9E7}
+\definecolor{probbg}{HTML}{FCF3E8}
+\lstset{basicstyle=\footnotesize\ttfamily\color{tinta},keywordstyle=\color{kw}\bfseries,
+	stringstyle=\color{str},commentstyle=\color{com}\itshape,numberstyle=\tiny\color{numlin},
+	numbers=left,numbersep=7pt,showstringspaces=false,breaklines=true,breakatwhitespace=false,
+	breakindent=14pt,columns=fullflexible,keepspaces=true,upquote=true,tabsize=2,frame=none}
+\lstdefinestyle{js}{language=Java,
+	morekeywords={const,let,var,async,await,require,module,exports,function,return,import,from,export,of,new,class,extends,try,catch,finally,throw,if,else,for,while,null,undefined,true,false,this}}
+\lstdefinestyle{json}{language=,morestring=[b]",stringstyle=\color{str},keywordstyle=\color{kw}\bfseries}
+\lstdefinestyle{bash}{language=bash,morekeywords={npm,node,npx,mkdir,cd}}
+\lstdefinestyle{markup}{}
+\newtcolorbox{cajacodigo}[1][]{enhanced, breakable=false, colback=codbg, colframe=ndverde!55,
+	boxrule=0.4pt, arc=2pt, left=4pt, right=6pt, top=3pt, bottom=3pt, boxsep=2pt,
+	title=#1, colbacktitle=ndverde, coltitle=white, fonttitle=\bfseries\small,
+	attach boxed title to top left={xshift=6pt,yshift=-2pt}, boxed title style={colback=ndverde, arc=1pt}}
+\newtcolorbox{cajaproblema}[1]{enhanced,breakable=false,colback=probbg,colframe=ndnaranja!70,
+	boxrule=0.8pt, arc=2pt, left=10pt,right=8pt,top=6pt,bottom=6pt,
+	fonttitle=\bfseries\color{white}, title=#1, coltitle=white,
+	attach boxed title to top left={xshift=8pt,yshift=-3pt},
+	boxed title style={colback=ndnaranja,arc=1pt}}
+\newtcolorbox{cajatip}[1]{enhanced,breakable=false,colback=tipbg,colframe=tipbg,
+	borderline west={3pt}{0pt}{ndverde}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+	fonttitle=\bfseries\color{ndverde}, title=#1, coltitle=ndverde}
+\newtcolorbox{cajawarn}[1]{enhanced,breakable=false,colback=warnbg,colframe=warnbg,
+	borderline west={3pt}{0pt}{ndnaranja}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+	fonttitle=\bfseries\color{ndnaranja}, title=#1, coltitle=ndnaranja}
+\newtcolorbox{cajadanger}[1]{enhanced,breakable=false,colback=dangerbg,colframe=dangerbg,
+	borderline west={3pt}{0pt}{red!60!black}, left=10pt,right=8pt,top=6pt,bottom=6pt,
+	fonttitle=\bfseries\color{red!60!black}, title=#1, coltitle=red!60!black}
+\titleformat{\section}{\color{ndverde}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\color{ndverdeo}\large\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\color{tinta}\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\color{gray}Aplicaciones Web --- Cliente Node.js sobre servicios Spring Boot --- UTEQ}
+\fancyfoot[C]{\footnotesize\color{gray}P\'agina \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\parskip}{6pt}\setlength{\parindent}{0pt}\setlength{\emergencystretch}{3em}
+\newcommand{\crearen}[1]{{\small\color{ndverdeo}\textbf{Crear en:}~}\texttt{#1}\par\nobreak\vspace{-1pt}}
+\newtcolorbox{ubic}{enhanced,breakable=false,colback=tipbg,colframe=tipbg,
+	borderline west={2.5pt}{0pt}{ndverdeo}, left=9pt,right=7pt,top=4pt,bottom=4pt,boxsep=1pt}
+\newcommand{\dondecrear}[3]{\begin{ubic}{\footnotesize\textbf{\color{ndverdeo}D\'onde crearlo en IntelliJ:}~clic secundario (bot\'on derecho) sobre \texttt{#1} $\rightarrow$ \emph{New} $\rightarrow$ \emph{#2}.\\[2pt]\textbf{\color{ndverdeo}Ruta (desde la ra\'iz del proyecto):}~\texttt{#3}}\end{ubic}\nobreak\vspace{3pt}}
+\newcommand{\editaren}[2]{\begin{ubic}{\footnotesize\textbf{\color{ndverdeo}D\'onde editarlo:}~abre el archivo existente #1.\\[2pt]\textbf{\color{ndverdeo}Ruta (desde la ra\'iz del proyecto):}~\texttt{#2}}\end{ubic}\nobreak\vspace{3pt}}
+\begin{document}
+\begin{titlepage}
+\vspace*{1.1cm}
+{\color{ndverde}\bfseries\large UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}\\[2pt]
+{\color{gray} Facultad de Ciencias de la Computaci\'on $\cdot$ Ingenier\'ia de Software}\\[2cm]
+{\color{tinta}\bfseries\fontsize{29}{33}\selectfont Cliente Node.js para}\\[6pt]
+{\color{ndverde}\bfseries\fontsize{29}{33}\selectfont servicios web de Spring Boot}\\[10pt]
+{\color{ndnaranja}\rule{\linewidth}{2.2pt}}\\[10pt]
+{\itshape\large Gu\'ia paso a paso: consumir una {API} {REST} con Express, {EJS}, Axios y \texttt{fetch}, con autenticaci\'on {JWT}}\\[4pt]
+{\color{gray} Entorno de desarrollo: IntelliJ IDEA. El servidor Spring Boot se asume ya construido y en ejecuci\'on.}\\[2.4cm]
+{\color{ndverdeo} Proyecto: aplicaci\'on web cliente con inicio de sesi\'on {JWT}, listado, alta, edici\'on y baja consumiendo la {API}}\\[2cm]
+\begin{flushleft}
+\textbf{Asignatura:} Aplicaciones Web (5.\textsuperscript{o} semestre)\\[3pt]
+\textbf{Docente:} Dr. Gleiston Cicer\'on Guerrero Ulloa, Ph.D.\\[3pt]
+\textbf{Per\'iodo:} PPA 2026--2027
+\end{flushleft}
+\vfill
+{\color{gray}\small Versiones de referencia (Node.js 22 LTS, Express 5, IntelliJ IDEA 2025) en la secci\'on 3.}
+\end{titlepage}
+\tableofcontents
+\clearpage
+
+\section{Introducción}
+Esta guía te enseña a construir, paso a paso, una aplicación cliente en Node.js que consume los servicios web de un servidor hecho en Spring Boot. Partimos de un supuesto explícito: el servidor ya existe, expone una API REST y está en ejecución; nuestro trabajo es escribir el cliente (client, «el que pide») que consume esa API. Construiremos una aplicación web completa con inicio de sesión mediante JWT, y con listado, alta, edición y baja de registros, todo alimentado por las llamadas al servidor.
+
+El método es práctico y acumulativo: cada sección plantea primero el problema concreto que resuelve, explica la técnica y muestra un ejemplo pequeño pero completo. Al final reunimos todas las piezas en una aplicación que funciona de extremo a extremo. Todo el desarrollo se hace en el IDE (Integrated Development Environment, «entorno de desarrollo integrado») IntelliJ IDEA.
+
+\begin{cajatip}{Convención sobre los términos}
+Cada término nuevo propio de las aplicaciones web se explica la primera vez que aparece. Cuando el término está en inglés, su significado en español se indica entre paréntesis, así: endpoint (punto de acceso). Al final de la guía encontrarás un glosario para consulta rápida.\par
+\end{cajatip}
+
+\subsection{Qué significa «consumir un servicio web»}
+Un servicio web (web service) es un programa que otro programa puede usar a través de la red, enviando peticiones y recibiendo respuestas en un formato acordado. Cuando decimos que nuestro cliente «consume» el servicio, queremos decir que le envía peticiones HTTP y procesa las respuestas que devuelve. El servidor Spring Boot ofrece los datos y las operaciones; el cliente Node.js los pide y los presenta al usuario en páginas web.
+
+En esta arquitectura hay una separación clara de responsabilidades: el servidor (server, «el que sirve») contiene la lógica de negocio y la base de datos; el cliente contiene la interfaz de usuario y orquesta las llamadas. Ambos se comunican mediante una API REST, que es el contrato que define qué operaciones existen y cómo invocarlas.
+
+\subsection{El estilo REST y por qué se usa}
+REST (Representational State Transfer, «transferencia de estado representacional») es un estilo de arquitectura para diseñar servicios web sobre HTTP, formalizado por Roy Fielding en su tesis doctoral~\citep{fielding2000rest}. En una API REST cada recurso (resource, «recurso»: por ejemplo, un estudiante) se identifica con una URL (Uniform Resource Locator, «localizador uniforme de recursos») y se manipula con los verbos (verbs, «métodos») de HTTP. Es el estilo dominante para comunicar un cliente con un servidor.
+
+La semántica de esos verbos y de los códigos de estado está definida en el estándar HTTP vigente~\citep{rfc9110http}. Los cuatro verbos que usaremos son GET (obtener), POST (crear), PUT (actualizar) y DELETE (eliminar). El servidor responde con un código de estado (status code) que indica el resultado: por ejemplo, 200 (OK, «correcto»), 201 (Created, «creado»), 401 (Unauthorized, «no autorizado») o 404 (Not Found, «no encontrado»).
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{5.1cm} >{\raggedright\arraybackslash}p{7.3cm}}
+\rowcolor{ndverde}\textcolor{white}{\textbf{Verbo}} & \textcolor{white}{\textbf{Significado}} & \textcolor{white}{\textbf{Ejemplo sobre el recurso estudiantes}} \\
+\endfirsthead
+\rowcolor{ndverde}\textcolor{white}{\textbf{Verbo}} & \textcolor{white}{\textbf{Significado}} & \textcolor{white}{\textbf{Ejemplo sobre el recurso estudiantes}} \\
+\endhead
+\ttfamily\color{ndverde}GET & Obtener datos & \texttt{GET /api/estudiantes} lista todos. \\ \hline
+\ttfamily\color{ndverde}POST & Crear un recurso & \texttt{POST /api/estudiantes} crea uno nuevo. \\ \hline
+\ttfamily\color{ndverde}PUT & Actualizar un recurso & \texttt{PUT /api/estudiantes/5} edita el de id 5. \\ \hline
+\ttfamily\color{ndverde}DELETE & Eliminar un recurso & \texttt{DELETE /api/estudiantes/5} borra el de id 5. \\ \hline
+\end{longtable}}
+
+\subsection{El formato de los datos: JSON}
+Los datos viajan entre cliente y servidor en formato JSON (JavaScript Object Notation, «notación de objetos de JavaScript»), un formato de texto ligero para intercambiar datos estructurados, definido en el estándar~\citep{rfc8259json}. Un estudiante se representa así en JSON: un objeto con pares de nombre y valor. Node.js convierte automáticamente entre JSON (texto) y objetos de JavaScript, lo que hace muy cómodo trabajar con la API.
+
+\begin{cajacodigo}[Un recurso «estudiante» en formato JSON]
+\begin{lstlisting}[style=json]
+{
+	"id": 5,
+	"nombre": "Ana Torres",
+	"correo": "ana.torres@uteq.edu.ec",
+	"carrera": "Ingenieria de Software"
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Convertir un objeto de JavaScript a texto JSON se llama serializar (serialize), y el paso inverso, deserializar (deserialize). En el cliente casi nunca lo harás a mano: la librería HTTP y Express lo hacen por ti, como veremos.
+
+\subsection{Lo que construirás}
+Al terminar tendrás una aplicación web cliente, servida por Express, que consume la API REST de Spring Boot. En concreto sabrás: iniciar sesión contra el servidor y obtener un token JWT; enviar ese token en cada petición protegida; y realizar el CRUD (Create, Read, Update, Delete: «crear, leer, actualizar, eliminar») completo de estudiantes consumiendo los endpoints del servidor, mostrando los resultados en vistas HTML.
+
+\section{Arquitectura y supuestos del servidor}
+\begin{cajaproblema}{Problema a resolver}
+Antes de escribir una sola línea del cliente necesitamos saber exactamente qué expone el servidor: en qué dirección y puerto responde, qué endpoints ofrece y cómo se autentica. ¿Cuáles son esos supuestos?\par
+\end{cajaproblema}
+Como el servidor Spring Boot ya está hecho, fijamos aquí los supuestos que usaremos en toda la guía. Un endpoint (punto de acceso o extremo) es cada dirección concreta de la API que atiende un tipo de petición. La dirección base (base URL, «URL base») del servidor es la parte común a todos los endpoints; el cliente la usará como prefijo.
+
+\subsection{Dirección, puerto y endpoints}
+Asumimos que el servidor Spring Boot escucha en el puerto 8080 de la misma máquina, por lo que su URL base es \texttt{http://\allowbreak{}localhost:\allowbreak{}8080}. El término localhost («equipo local») designa tu propia computadora; el número que sigue a los dos puntos es el puerto (port), un canal numerado por el que el servidor atiende. Los endpoints de la API cuelgan del prefijo \texttt{/api}.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.6cm} >{\raggedright\arraybackslash}p{2.0cm} >{\raggedright\arraybackslash}p{7.2cm}}
+\rowcolor{ndverde}\textcolor{white}{\textbf{Endpoint}} & \textcolor{white}{\textbf{Verbo}} & \textcolor{white}{\textbf{Qué hace}} \\
+\endfirsthead
+\rowcolor{ndverde}\textcolor{white}{\textbf{Endpoint}} & \textcolor{white}{\textbf{Verbo}} & \textcolor{white}{\textbf{Qué hace}} \\
+\endhead
+\ttfamily\color{ndverde}/api/auth/login & POST & Recibe usuario y clave; devuelve un token JWT. \\ \hline
+\ttfamily\color{ndverde}/api/estudiantes & GET & Devuelve la lista de estudiantes. \\ \hline
+\ttfamily\color{ndverde}/api/estudiantes/\{id\} & GET & Devuelve un estudiante por su id. \\ \hline
+\ttfamily\color{ndverde}/api/estudiantes & POST & Crea un estudiante con los datos del cuerpo. \\ \hline
+\ttfamily\color{ndverde}/api/estudiantes/\{id\} & PUT & Actualiza el estudiante indicado. \\ \hline
+\ttfamily\color{ndverde}/api/estudiantes/\{id\} & DELETE & Elimina el estudiante indicado. \\ \hline
+\end{longtable}}
+El cuerpo (body, «cuerpo» o payload, «carga útil») de una petición POST o PUT es el JSON con los datos que enviamos; el cuerpo de la respuesta es el JSON que devuelve el servidor. Nuestro cliente Node.js correrá en el puerto 3000, es decir en \texttt{http://\allowbreak{}localhost:\allowbreak{}3000}, para no chocar con el servidor.
+
+\subsection{El patrón: un cliente web que actúa de intermediario}
+Nuestro cliente no es una simple pantalla: es un servidor web Express que, a su vez, es cliente de la API de Spring Boot. Este patrón se conoce como BFF (Backend for Frontend, «backend para el frontend»): un backend (parte del servidor) pequeño y propio que sirve las páginas al navegador y concentra las llamadas a la API. El navegador habla con Express; Express habla con Spring Boot.
+
+\begin{cajacodigo}[Flujo de una petición de extremo a extremo]
+\begin{lstlisting}[style=markup]
+Navegador  --(HTTP)-->  Cliente Node.js/Express  --(HTTP + JWT)-->  Servidor Spring Boot
+   (vistas EJS)            localhost:3000                              localhost:8080/api
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Por qué un intermediario y no llamar a la API desde el navegador}
+Colocar Express en medio nos permite guardar el token JWT en la sesión del servidor (fuera del alcance de scripts del navegador), evitar problemas de CORS y no exponer detalles de la API. Es un diseño más seguro y ordenado, y es el que la industria llama BFF.\par
+\end{cajatip}
+
+\section{Preparación del entorno en IntelliJ IDEA}
+\begin{cajaproblema}{Problema a resolver}
+Para escribir y ejecutar el cliente necesitamos el motor de Node.js, un gestor de paquetes y el IDE configurado para reconocerlos. ¿Cómo preparamos ese entorno en IntelliJ IDEA?\par
+\end{cajaproblema}
+Node.js es el runtime (entorno de ejecución) que ejecuta JavaScript fuera del navegador; con él, JavaScript sirve para escribir servidores. Junto a Node.js se instala npm (Node Package Manager, «gestor de paquetes de Node»), la herramienta que descarga e instala las librerías (llamadas paquetes o dependencias) de las que depende el proyecto.
+
+\subsection{Instalar Node.js y habilitar el soporte en IntelliJ}
+Instala una versión LTS (Long-Term Support, «soporte a largo plazo») de Node.js —la 22— desde \texttt{nodejs.org}; el instalador incluye npm. En IntelliJ IDEA, activa el plugin (complemento) «Node.js» desde \emph{File $\rightarrow$ Settings $\rightarrow$ Plugins}, y comprueba que el IDE detecta el intérprete en \emph{Settings $\rightarrow$ Languages \& Frameworks $\rightarrow$ Node.js}. Con eso, IntelliJ ofrece autocompletado, ejecución y depuración de código Node.
+
+\begin{cajatip}{Comprobación rápida}
+Abre la terminal integrada de IntelliJ (\emph{View $\rightarrow$ Tool Windows $\rightarrow$ Terminal}) y ejecuta \texttt{node --version} y \texttt{npm --version}. Si ambos imprimen un número de versión, el entorno está listo.\par
+\end{cajatip}
+
+\subsection{Versiones de referencia (verificadas a julio de 2026)}
+Estas son las versiones vigentes de la tecnología usada en la guía.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{11.8cm}}
+\rowcolor{ndverde}\textcolor{white}{\textbf{Componente}} & \textcolor{white}{\textbf{Versión de referencia (jul. 2026)}} \\
+\endfirsthead
+\rowcolor{ndverde}\textcolor{white}{\textbf{Componente}} & \textcolor{white}{\textbf{Versión de referencia (jul. 2026)}} \\
+\endhead
+\ttfamily\color{ndverde}Node.js (LTS) & 22.x (incluye \texttt{fetch} nativo, disponible desde Node 18). \\ \hline
+\ttfamily\color{ndverde}npm & 10.x (viene con Node.js). \\ \hline
+\ttfamily\color{ndverde}Express & 5.x (framework web del cliente). \\ \hline
+\ttfamily\color{ndverde}EJS & 3.x (motor de plantillas para las vistas). \\ \hline
+\ttfamily\color{ndverde}Axios & 1.x (cliente HTTP con interceptores). \\ \hline
+\ttfamily\color{ndverde}IntelliJ IDEA & 2025.x (Community o Ultimate, con el plugin Node.js). \\ \hline
+\end{longtable}}
+
+\section{Paso 1: crear el proyecto Node.js}
+\begin{cajaproblema}{Problema a resolver}
+Necesitamos un proyecto Node.js con su archivo de configuración y una estructura de carpetas ordenada. ¿Cómo lo creamos desde IntelliJ IDEA?\par
+\end{cajaproblema}
+Todo proyecto Node.js se describe en un archivo \texttt{package.\allowbreak{}json}, que declara su nombre, sus scripts de arranque y sus dependencias. Lo genera el comando \texttt{npm init}. Crearemos el proyecto y, dentro de él, las carpetas que separan responsabilidades.
+
+\subsection{Inicializar el proyecto}
+En IntelliJ, crea un proyecto vacío en una carpeta llamada \texttt{cliente-\allowbreak{}estudiantes} y abre la terminal integrada en esa carpeta. Ejecuta \texttt{npm init -y} para generar un \texttt{package.\allowbreak{}json} inicial (la opción \texttt{-y} acepta los valores por defecto). Después crea la estructura de carpetas del proyecto.
+
+\crearen{Terminal integrada de IntelliJ (en la raíz del proyecto)}
+\begin{cajacodigo}[Inicializar el proyecto y crear carpetas]
+\begin{lstlisting}[style=bash]
+npm init -y
+mkdir src src/rutas src/servicios src/vistas src/publico
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+La carpeta \texttt{src} contendrá el código; \texttt{rutas} las rutas de Express; \texttt{servicios} el código que llama a la API; \texttt{vistas} las plantillas EJS; y \texttt{publico} los archivos estáticos (CSS, imágenes). Esta separación mantiene el proyecto legible a medida que crece.
+
+\begin{cajatip}{Crear carpetas sin la terminal}
+Si prefieres el ratón, cada carpeta se crea con clic secundario (botón derecho) sobre la carpeta contenedora en el panel \emph{Project} de IntelliJ $\rightarrow$ \emph{New} $\rightarrow$ \emph{Directory}. Por ejemplo, \texttt{src} se crea sobre la raíz \texttt{cliente-estudiantes}, y \texttt{rutas} se crea sobre \texttt{src}.\par
+\end{cajatip}
+
+\subsection{El archivo package.json}
+Ajustamos el \texttt{package.\allowbreak{}json} para indicar el punto de entrada y un script de arranque. La clave \texttt{"type": "module"} habilita la sintaxis moderna de módulos de JavaScript (\texttt{import}/\texttt{export}), más clara que la antigua \texttt{require}~\citep{casciaro2020node}. El script \texttt{start} permite arrancar la aplicación con \texttt{npm start}.
+
+\editaren{(lo generó \texttt{npm init -y}); ábrelo y reemplaza su contenido por este}{cliente-estudiantes/package.json}
+\begin{cajacodigo}[package.json]
+\begin{lstlisting}[style=json]
+{
+	"name": "cliente-estudiantes",
+	"version": "1.0.0",
+	"type": "module",
+	"main": "src/app.js",
+	"scripts": {
+		"start": "node src/app.js",
+		"dev": "node --watch src/app.js"
+	}
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El script \texttt{dev} usa \texttt{--watch} (observar), que reinicia el proceso automáticamente al guardar cambios: muy cómodo durante el desarrollo.
+
+\subsection{La estructura tras el paso 1}
+Con el proyecto inicializado y las carpetas creadas, esta es la estructura de partida. A partir de aquí, cada paso añadirá archivos y volveremos a mostrar el árbol marcando lo nuevo.
+
+\begin{cajacodigo}[Estructura tras el paso 1]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- package.json          # generado y ajustado en el paso 1
+|- src/
+   |- rutas/             # (vacia por ahora)
+   |- servicios/         # (vacia por ahora)
+   |- vistas/            # (vacia por ahora)
+   |- publico/           # (vacia por ahora)
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\section{Paso 2: instalar las dependencias}
+\begin{cajaproblema}{Problema a resolver}
+El cliente necesita un framework web (Express), un motor de plantillas (EJS), un cliente HTTP (Axios), manejo de sesión y variables de entorno. ¿Qué dependencias instalamos y para qué sirve cada una?\par
+\end{cajaproblema}
+Una dependencia (dependency) es una librería externa que nuestro proyecto usa. Se instala con \texttt{npm install}, que la descarga y la registra en \texttt{package.\allowbreak{}json}. Instalamos de una vez las que necesita el cliente. No instalamos ningún cliente HTTP adicional para \texttt{fetch}, porque Node.js 22 ya lo incluye de forma nativa~\citep{whatwg2024fetch}.
+
+\crearen{Terminal integrada de IntelliJ}
+\begin{cajacodigo}[Instalar dependencias]
+\begin{lstlisting}[style=bash]
+npm install express ejs axios express-session dotenv
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.1cm} >{\raggedright\arraybackslash}p{12.3cm}}
+\rowcolor{ndverde}\textcolor{white}{\textbf{Paquete}} & \textcolor{white}{\textbf{Para qué sirve}} \\
+\endfirsthead
+\rowcolor{ndverde}\textcolor{white}{\textbf{Paquete}} & \textcolor{white}{\textbf{Para qué sirve}} \\
+\endhead
+\ttfamily\color{ndverde}express & Framework web: define rutas y sirve las páginas del cliente. \\ \hline
+\ttfamily\color{ndverde}ejs & Motor de plantillas: genera HTML con datos dinámicos. \\ \hline
+\ttfamily\color{ndverde}axios & Cliente HTTP con interceptores, para llamar a la API. \\ \hline
+\ttfamily\color{ndverde}express-session & Guarda datos por usuario (el token JWT) entre peticiones. \\ \hline
+\ttfamily\color{ndverde}dotenv & Carga variables de entorno desde un archivo \texttt{.env}. \\ \hline
+\end{longtable}}
+Un framework (marco de trabajo) es una librería que impone una estructura y resuelve las tareas comunes para que te centres en tu lógica. Express es el framework web más usado en Node.js. Un motor de plantillas (template engine) es la herramienta que combina una plantilla HTML con datos para producir la página final; usaremos EJS (Embedded JavaScript, «JavaScript incrustado»).
+
+Al instalar, npm crea automáticamente dos elementos en la raíz: la carpeta \texttt{node\_modules} (donde descarga las librerías) y el archivo \texttt{package-lock.json} (que fija las versiones exactas). No los creas tú ni los subes al repositorio.
+
+\begin{cajacodigo}[Estructura tras el paso 2]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- package.json          # ahora incluye las dependencias instaladas
+|- package-lock.json     # <-- nuevo (lo genera npm; no se versiona)
+|- node_modules/         # <-- nuevo (librerias; no se versiona)
+|- src/
+   |- rutas/
+   |- servicios/
+   |- vistas/
+   |- publico/
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\section{Paso 3: configuración y variables de entorno}
+\begin{cajaproblema}{Problema a resolver}
+La URL del servidor y otros valores sensibles no deben estar «quemados» en el código. ¿Cómo los configuramos de forma limpia y segura?\par
+\end{cajaproblema}
+Una variable de entorno (environment variable) es un valor de configuración que vive fuera del código, en el entorno donde se ejecuta la aplicación. Las guardamos en un archivo \texttt{.env} y las leemos con el paquete \texttt{dotenv}. Así, cambiar la URL del servidor no obliga a tocar el código, y los secretos no acaban en el repositorio.
+
+\dondecrear{cliente-estudiantes (la raíz)}{File $\rightarrow$ nombre \texttt{.env}}{cliente-estudiantes/.env}
+\begin{cajacodigo}[.env]
+\begin{lstlisting}[style=markup]
+API_BASE_URL=http://localhost:8080/api
+SESSION_SECRET=cambia-esta-clave-por-una-larga-y-aleatoria
+PORT=3000
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajawarn}{No subas el archivo .env al repositorio}
+El \texttt{.env} contiene secretos. Añade una línea con \texttt{.env} a tu archivo \texttt{.gitignore} para que no se suba al repositorio. En su lugar, se suele versionar un \texttt{.env.example} con las claves pero sin los valores reales.\par
+\end{cajawarn}
+
+\dondecrear{cliente-estudiantes (la raíz)}{File $\rightarrow$ nombre \texttt{.gitignore}}{cliente-estudiantes/.gitignore}
+\begin{cajacodigo}[.gitignore]
+\begin{lstlisting}[style=markup]
+node_modules/
+.env
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\begin{cajacodigo}[Estructura tras el paso 3]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- package.json
+|- package-lock.json
+|- .env                  # <-- nuevo (configuracion y secretos)
+|- .gitignore            # <-- nuevo (excluye node_modules y .env)
+|- node_modules/
+|- src/
+   |- rutas/
+   |- servicios/
+   |- vistas/
+   |- publico/
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\section{Paso 4: la capa de servicios (Axios y fetch comparados)}
+\begin{cajaproblema}{Problema a resolver}
+Todas las llamadas a la API deben concentrarse en un solo lugar, con la URL base y las cabeceras comunes ya configuradas. ¿Cómo construimos esa capa, y qué diferencia hay entre usar Axios y el \texttt{fetch} nativo?\par
+\end{cajaproblema}
+Concentraremos el acceso a la API en una «capa de servicios»: módulos cuya única tarea es llamar al servidor y devolver datos. Compararemos dos formas de hacer las peticiones HTTP: Axios (una librería) y \texttt{fetch} (la función nativa de Node.js). Ambas devuelven una promesa (promise, «promesa»: un objeto que representa un resultado que llegará más tarde), por lo que se usan con \texttt{async}/\texttt{await} («asíncrono»/«esperar»), la sintaxis que permite escribir código asíncrono de forma secuencial y legible.
+
+\subsection{Opción A: un cliente Axios con URL base}
+Axios permite crear una «instancia» preconfigurada con la URL base y un tiempo máximo de espera (timeout). Así, en el resto del código solo indicamos la parte final del endpoint. Axios serializa y deserializa el JSON automáticamente: lo que envías en \texttt{data} se convierte a JSON, y la respuesta llega ya convertida en \texttt{response.\allowbreak{}data}.
+
+\dondecrear{src/servicios}{JavaScript File $\rightarrow$ nombre \texttt{apiCliente}}{cliente-estudiantes/src/servicios/apiCliente.js}
+\begin{cajacodigo}[src/servicios/apiCliente.js (instancia de Axios)]
+\begin{lstlisting}[style=js]
+import axios from "axios";
+import "dotenv/config";
+
+// Instancia con la URL base tomada de la variable de entorno
+const api = axios.create({
+	baseURL: process.env.API_BASE_URL,   // http://localhost:8080/api
+	timeout: 8000,                        // 8 s de espera maxima
+	headers: { "Content-Type": "application/json" }
+});
+
+export default api;
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+La cabecera (header) \texttt{Content-\allowbreak{}Type: application/\allowbreak{}json} le dice al servidor que el cuerpo que enviamos está en formato JSON. Una cabecera es un par nombre--valor que acompaña a la petición o a la respuesta con información de control (tipo de contenido, autenticación, etc.).
+
+\subsection{Opción B: el mismo servicio con fetch nativo}
+La función \texttt{fetch} hace lo mismo sin instalar nada, pero es de más bajo nivel: no tiene URL base (hay que componer la URL completa), no lanza error automáticamente ante códigos como 404 o 500 (debes revisar \texttt{response.\allowbreak{}ok}) y no convierte el JSON solo (debes llamar a \texttt{response.\allowbreak{}json()}). El siguiente ayudante encapsula esas diferencias.
+
+\dondecrear{src/servicios}{JavaScript File $\rightarrow$ nombre \texttt{apiFetch}}{cliente-estudiantes/src/servicios/apiFetch.js}
+\begin{cajacodigo}[src/servicios/apiFetch.js (envoltorio sobre fetch)]
+\begin{lstlisting}[style=js]
+import "dotenv/config";
+const BASE = process.env.API_BASE_URL;
+
+// Envoltorio: compone la URL, fija cabeceras y valida la respuesta
+export async function pedir(ruta, opciones = {}) {
+	const respuesta = await fetch(BASE + ruta, {
+		headers: { "Content-Type": "application/json", ...(opciones.headers || {}) },
+		...opciones
+	});
+	if (!respuesta.ok) {                          // fetch NO lanza error solo
+		throw new Error("HTTP " + respuesta.status);
+	}
+	if (respuesta.status === 204) return null;    // 204 = sin contenido
+	return await respuesta.json();                // deserializa el JSON
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajatip}{Axios o fetch: cuál elegir}
+Para este proyecto usaremos Axios por comodidad: su URL base, sus interceptores y el manejo automático de errores y de JSON ahorran código repetitivo. \texttt{fetch} es perfecto cuando quieres cero dependencias. Sabiendo que ambos devuelven promesas y se usan con \texttt{await}, cambiar de uno a otro es casi mecánico.\par
+\end{cajatip}
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{5.4cm} >{\raggedright\arraybackslash}p{5.4cm}}
+\rowcolor{ndverde}\textcolor{white}{\textbf{Aspecto}} & \textcolor{white}{\textbf{Axios}} & \textcolor{white}{\textbf{fetch nativo}} \\
+\endfirsthead
+\rowcolor{ndverde}\textcolor{white}{\textbf{Aspecto}} & \textcolor{white}{\textbf{Axios}} & \textcolor{white}{\textbf{fetch nativo}} \\
+\endhead
+Instalación & Dependencia externa & Incluido en Node 18+ \\ \hline
+URL base & Sí, en la instancia & No, URL completa \\ \hline
+JSON & Automático & Manual (\texttt{.json()}) \\ \hline
+Error por 4xx/5xx & Automático & Manual (\texttt{response.ok}) \\ \hline
+Interceptores & Sí & No (a mano) \\ \hline
+\end{longtable}}
+
+\begin{cajacodigo}[Estructura tras el paso 4]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- package.json  package-lock.json  .env  .gitignore
+|- node_modules/                 # (omitido en adelante)
+|- src/
+   |- rutas/
+   |- servicios/
+   |  |- apiCliente.js           # <-- nuevo (instancia de Axios)
+   |  |- apiFetch.js             # <-- nuevo (envoltorio sobre fetch)
+   |- vistas/
+   |- publico/
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\section{Paso 5: autenticación con JWT}
+\begin{cajaproblema}{Problema a resolver}
+Los endpoints de estudiantes están protegidos: el servidor exige un token que demuestre que el usuario inició sesión. ¿Cómo obtenemos ese token y cómo lo enviamos en cada petición?\par
+\end{cajaproblema}
+La API usa JWT (JSON Web Token, «token web JSON»), un formato compacto y firmado para transmitir de forma segura afirmaciones sobre un usuario, definido en el estándar~\citep{jones2015jwt}. Un token (ficha o credencial) es una cadena que el servidor emite al iniciar sesión y que el cliente presenta después para probar su identidad. El flujo tiene dos momentos: primero se obtiene el token; luego se envía en cada petición protegida.
+
+\subsection{Obtener el token: el inicio de sesión}
+El servicio de autenticación envía las credenciales al endpoint \texttt{/auth/\allowbreak{}login} con POST y recibe el token en la respuesta. Aquí lo hacemos con la instancia de Axios de la sección anterior. Devolvemos el token para que quien llame lo guarde.
+
+\dondecrear{src/servicios}{JavaScript File $\rightarrow$ nombre \texttt{authServicio}}{cliente-estudiantes/src/servicios/authServicio.js}
+\begin{cajacodigo}[src/servicios/authServicio.js]
+\begin{lstlisting}[style=js]
+import api from "./apiCliente.js";
+
+// Envia usuario y clave; devuelve el token JWT que emite el servidor
+export async function iniciarSesion(usuario, clave) {
+	const respuesta = await api.post("/auth/login", { usuario, clave });
+	return respuesta.data.token;   // el servidor responde { "token": "..." }
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\subsection{Enviar el token: la cabecera Authorization}
+Una vez obtenido, el token se envía en cada petición protegida dentro de la cabecera \texttt{Authorization} (autorización), con el esquema Bearer (portador): el valor es la palabra \texttt{Bearer} seguida de un espacio y el token. Para no repetir esto en cada llamada, usamos un interceptor (interceptor): una función de Axios que se ejecuta antes de cada petición y le añade la cabecera automáticamente si hay token.
+
+\editaren{\texttt{apiCliente.js} y añade este bloque al final (no crees un archivo nuevo)}{cliente-estudiantes/src/servicios/apiCliente.js}
+\begin{cajacodigo}[Interceptor que añade el token a cada petición]
+\begin{lstlisting}[style=js]
+// El token se guarda por peticion en api.defaults; ver el paso 6
+api.interceptors.request.use((config) => {
+	if (api.tokenActual) {
+		config.headers.Authorization = "Bearer " + api.tokenActual;
+	}
+	return config;
+});
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajawarn}{Buenas prácticas con el token (RFC 8725)}
+El token debe viajar siempre por HTTPS, tener una caducidad corta y validarse en el servidor; no debe guardarse en el almacenamiento del navegador accesible por scripts~\citep{rfc8725jwtbcp,owasp2021top10}. Por eso en esta guía lo guardamos en la sesión del servidor Express (paso 6), no en el navegador.\par
+\end{cajawarn}
+
+\begin{cajacodigo}[Estructura tras el paso 5]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- src/
+   |- rutas/
+   |- servicios/
+   |  |- apiCliente.js           # se le agrego el interceptor del token
+   |  |- apiFetch.js
+   |  |- authServicio.js         # <-- nuevo (iniciarSesion)
+   |- vistas/
+   |- publico/
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\section{Paso 6: el servidor Express y la sesión}
+\begin{cajaproblema}{Problema a resolver}
+Necesitamos un servidor web que sirva las páginas, recuerde el token de cada usuario entre peticiones y enrute las acciones. ¿Cómo lo montamos con Express?\par
+\end{cajaproblema}
+Express organiza la aplicación en middlewares y rutas. Un middleware (software intermedio) es una función que procesa la petición antes de que llegue a su destino: aquí usaremos middlewares para leer formularios, servir archivos estáticos y manejar la sesión. Una ruta (route) asocia un verbo y una URL con el código que responde. La sesión (session) es un almacén por usuario en el servidor donde guardaremos el token JWT.
+
+\dondecrear{src}{JavaScript File $\rightarrow$ nombre \texttt{app}}{cliente-estudiantes/src/app.js}
+\begin{cajacodigo}[src/app.js (configuración del servidor)]
+\begin{lstlisting}[style=js]
+import express from "express";
+import session from "express-session";
+import "dotenv/config";
+import rutasAuth from "./rutas/auth.js";
+import rutasEstudiantes from "./rutas/estudiantes.js";
+
+const app = express();
+
+// Middlewares base
+app.set("view engine", "ejs");                 // motor de plantillas EJS
+app.set("views", "src/vistas");
+app.use(express.urlencoded({ extended: true })); // lee formularios HTML
+app.use(express.static("src/publico"));          // sirve CSS e imagenes
+app.use(session({
+	secret: process.env.SESSION_SECRET,
+	resave: false,
+	saveUninitialized: false
+}));
+
+// Rutas
+app.use("/", rutasAuth);
+app.use("/estudiantes", rutasEstudiantes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Cliente en http://localhost:" + PORT));
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El middleware \texttt{express.\allowbreak{}urlencoded} deserializa los datos de los formularios HTML y los deja en \texttt{req.\allowbreak{}body}. El middleware \texttt{session} crea el almacén de sesión. La llamada \texttt{app.\allowbreak{}listen} arranca el servidor en el puerto configurado.
+
+\subsection{Un middleware para proteger rutas}
+Igual que el servidor exige token, nuestro cliente debe impedir el acceso a las páginas privadas si el usuario no ha iniciado sesión. Un middleware de guarda revisa si hay token en la sesión: si lo hay, deja pasar; si no, redirige al inicio de sesión.
+
+\dondecrear{src/rutas}{JavaScript File $\rightarrow$ nombre \texttt{guardia}}{cliente-estudiantes/src/rutas/guardia.js}
+\begin{cajacodigo}[src/rutas/guardia.js (control de acceso)]
+\begin{lstlisting}[style=js]
+// Deja pasar solo si hay token en la sesion; si no, va al login
+export function requiereSesion(req, res, next) {
+	if (req.session && req.session.token) {
+		return next();            // continua hacia la ruta
+	}
+	return res.redirect("/login");
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+La función \texttt{next} (siguiente) es el mecanismo de Express para pasar el control al siguiente middleware o a la ruta. Llamarla significa «todo bien, continúa»; no llamarla y responder (como en el \texttt{redirect}) corta la cadena.
+
+\begin{cajacodigo}[Estructura tras el paso 6]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- src/
+   |- app.js                     # <-- nuevo (servidor Express)
+   |- rutas/
+   |  |- guardia.js              # <-- nuevo (requiereSesion)
+   |- servicios/
+   |  |- apiCliente.js  apiFetch.js  authServicio.js
+   |- vistas/
+   |- publico/
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\section{Paso 7: las rutas de inicio de sesión}
+\begin{cajaproblema}{Problema a resolver}
+Necesitamos una página de inicio de sesión, procesar sus datos contra la API, guardar el token en la sesión y ofrecer el cierre de sesión. ¿Cómo se escriben esas rutas?\par
+\end{cajaproblema}
+Estas rutas conectan el formulario de login con el servicio de autenticación del paso 5. Al enviar el formulario, la ruta llama a \texttt{iniciar\allowbreak{}Sesion}, guarda el token devuelto en \texttt{req.\allowbreak{}session} y redirige al listado. El cierre de sesión destruye la sesión.
+
+\dondecrear{src/rutas}{JavaScript File $\rightarrow$ nombre \texttt{auth}}{cliente-estudiantes/src/rutas/auth.js}
+\begin{cajacodigo}[src/rutas/auth.js]
+\begin{lstlisting}[style=js]
+import { Router } from "express";
+import { iniciarSesion } from "../servicios/authServicio.js";
+
+const router = Router();
+
+// Muestra el formulario de login
+router.get("/login", (req, res) => res.render("login", { error: null }));
+
+// Procesa el login: pide el token a la API y lo guarda en la sesion
+router.post("/login", async (req, res) => {
+	try {
+		const { usuario, clave } = req.body;
+		const token = await iniciarSesion(usuario, clave);
+		req.session.token = token;                 // se guarda en el servidor
+		res.redirect("/estudiantes");
+	} catch (e) {
+		res.status(401).render("login", { error: "Credenciales invalidas" });
+	}
+});
+
+// Cierra la sesion
+router.get("/logout", (req, res) => {
+	req.session.destroy(() => res.redirect("/login"));
+});
+
+export default router;
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El objeto \texttt{Router} (enrutador) agrupa rutas relacionadas en un módulo. La palabra \texttt{await} espera a que la promesa de \texttt{iniciar\allowbreak{}Sesion} se resuelva antes de continuar; si el servidor rechaza las credenciales, Axios lanza un error que el \texttt{try/catch} captura para mostrar el mensaje.
+
+\begin{cajacodigo}[Estructura tras el paso 7]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- src/
+   |- app.js
+   |- rutas/
+   |  |- guardia.js
+   |  |- auth.js                 # <-- nuevo (login, logout)
+   |- servicios/
+   |  |- apiCliente.js  apiFetch.js  authServicio.js
+   |- vistas/
+   |- publico/
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\section{Paso 8: el CRUD consumiendo la API}
+\begin{cajaproblema}{Problema a resolver}
+El corazón del cliente es listar, crear, editar y eliminar estudiantes llamando a los endpoints del servidor, enviando el token en cada petición. ¿Cómo se implementa ese CRUD?\par
+\end{cajaproblema}
+Resolvemos el CRUD en dos piezas: un servicio que hace las llamadas a la API (reutilizando la instancia de Axios y su interceptor) y unas rutas que reciben las peticiones del navegador, pasan el token de la sesión al servicio y renderizan las vistas. Empezamos por el servicio.
+
+\subsection{El servicio de estudiantes}
+Cada método corresponde a un endpoint y a un verbo. Recibimos el token como parámetro y lo colocamos en \texttt{api.\allowbreak{}token\allowbreak{}Actual} para que el interceptor lo añada. Axios convierte la respuesta en objetos listos para usar.
+
+\dondecrear{src/servicios}{JavaScript File $\rightarrow$ nombre \texttt{estudianteServicio}}{cliente-estudiantes/src/servicios/estudianteServicio.js}
+\begin{cajacodigo}[src/servicios/estudianteServicio.js]
+\begin{lstlisting}[style=js]
+import api from "./apiCliente.js";
+
+function conToken(token) { api.tokenActual = token; }  // lo usa el interceptor
+
+export async function listar(token) {
+	conToken(token);
+	const r = await api.get("/estudiantes");
+	return r.data;                                  // arreglo de estudiantes
+}
+
+export async function buscar(token, id) {
+	conToken(token);
+	const r = await api.get("/estudiantes/" + id);
+	return r.data;
+}
+
+export async function crear(token, estudiante) {
+	conToken(token);
+	await api.post("/estudiantes", estudiante);     // 201 Created
+}
+
+export async function actualizar(token, id, estudiante) {
+	conToken(token);
+	await api.put("/estudiantes/" + id, estudiante);
+}
+
+export async function eliminar(token, id) {
+	conToken(token);
+	await api.delete("/estudiantes/" + id);         // 204 No Content
+}
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\subsection{Las rutas del CRUD}
+Las rutas usan el middleware \texttt{requiere\allowbreak{}Sesion} para exigir inicio de sesión, leen el token de la sesión y delegan en el servicio. Tras crear, actualizar o eliminar se redirige al listado: es el patrón Post--Redirect--Get, que evita que recargar la página repita la operación.
+
+\dondecrear{src/rutas}{JavaScript File $\rightarrow$ nombre \texttt{estudiantes}}{cliente-estudiantes/src/rutas/estudiantes.js}
+\begin{cajacodigo}[src/rutas/estudiantes.js --- parte 1/2]
+\begin{lstlisting}[style=js]
+import { Router } from "express";
+import { requiereSesion } from "./guardia.js";
+import * as servicio from "../servicios/estudianteServicio.js";
+
+const router = Router();
+router.use(requiereSesion);        // todas las rutas exigen sesion
+
+// Listar
+router.get("/", async (req, res) => {
+	const estudiantes = await servicio.listar(req.session.token);
+	res.render("lista", { estudiantes });
+});
+
+// Mostrar formulario de alta
+router.get("/nuevo", (req, res) => {
+	res.render("form", { estudiante: null });
+});
+
+// Mostrar formulario de edicion
+router.get("/:id/editar", async (req, res) => {
+	const estudiante = await servicio.buscar(req.session.token, req.params.id);
+	res.render("form", { estudiante });
+});
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+\begin{cajacodigo}[src/rutas/estudiantes.js --- parte 2/2]
+\begin{lstlisting}[style=js]
+// Guardar (crea si no hay id; actualiza si lo hay)
+router.post("/guardar", async (req, res) => {
+	const { id, nombre, correo, carrera } = req.body;
+	const datos = { nombre, correo, carrera };
+	if (id) {
+		await servicio.actualizar(req.session.token, id, datos);
+	} else {
+		await servicio.crear(req.session.token, datos);
+	}
+	res.redirect("/estudiantes");                 // patron PRG
+});
+
+// Eliminar
+router.post("/:id/eliminar", async (req, res) => {
+	await servicio.eliminar(req.session.token, req.params.id);
+	res.redirect("/estudiantes");
+});
+
+export default router;
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El fragmento \texttt{:\allowbreak{}id} en la ruta es un parámetro de ruta (route parameter): un hueco en la URL cuyo valor se lee en \texttt{req.\allowbreak{}params.\allowbreak{}id}. Así, \texttt{/estudiantes/\allowbreak{}5/\allowbreak{}editar} entrega \texttt{5} como \texttt{id}.
+
+\begin{cajacodigo}[Estructura tras el paso 8]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- src/
+   |- app.js
+   |- rutas/
+   |  |- guardia.js  auth.js
+   |  |- estudiantes.js          # <-- nuevo (CRUD: rutas)
+   |- servicios/
+   |  |- apiCliente.js  apiFetch.js  authServicio.js
+   |  |- estudianteServicio.js   # <-- nuevo (CRUD: llamadas a la API)
+   |- vistas/
+   |- publico/
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\section{Paso 9: las vistas con EJS}
+\begin{cajaproblema}{Problema a resolver}
+Necesitamos páginas HTML que muestren la lista, el formulario y el login, insertando los datos que devuelve la API. ¿Cómo las escribimos con EJS?\par
+\end{cajaproblema}
+EJS es un motor de plantillas: archivos HTML con etiquetas especiales para insertar datos y lógica. La etiqueta \texttt{<\%= ... \%>} inserta un valor escapándolo (convirtiendo caracteres peligrosos), lo que previene el ataque XSS (Cross-Site Scripting, «ejecución de scripts entre sitios»)~\citep{owasp2021top10}. La etiqueta \texttt{<\% ... \%>} ejecuta código (bucles, condicionales) sin imprimir nada.
+
+\subsection{La vista de login}
+Muestra el formulario y, si hubo un error, el mensaje correspondiente. El formulario envía los datos por POST a la ruta \texttt{/login}.
+
+\dondecrear{src/vistas}{File $\rightarrow$ nombre \texttt{login.ejs}}{cliente-estudiantes/src/vistas/login.ejs}
+\begin{cajacodigo}[src/vistas/login.ejs]
+\begin{lstlisting}[style=markup]
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Iniciar sesion</title></head>
+<body>
+	<h1>Iniciar sesion</h1>
+	<% if (error) { %>
+		<p style="color:red"><%= error %></p>
+	<% } %>
+	<form method="post" action="/login">
+		<input name="usuario" placeholder="Usuario" required>
+		<input name="clave" type="password" placeholder="Clave" required>
+		<button type="submit">Entrar</button>
+	</form>
+</body>
+</html>
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\subsection{La vista del listado}
+Recorre el arreglo de estudiantes con un bucle y pinta una fila por cada uno, con enlaces para editar y un botón para eliminar. El botón de eliminar va dentro de un formulario POST porque cambia datos en el servidor.
+
+\dondecrear{src/vistas}{File $\rightarrow$ nombre \texttt{lista.ejs}}{cliente-estudiantes/src/vistas/lista.ejs}
+\begin{cajacodigo}[src/vistas/lista.ejs]
+\begin{lstlisting}[style=markup]
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Estudiantes</title></head>
+<body>
+	<h1>Estudiantes</h1>
+	<a href="/estudiantes/nuevo">Nuevo</a> |
+	<a href="/logout">Cerrar sesion</a>
+	<table border="1">
+		<tr><th>Nombre</th><th>Correo</th><th>Carrera</th><th></th></tr>
+		<% estudiantes.forEach(function (e) { %>
+			<tr>
+				<td><%= e.nombre %></td>
+				<td><%= e.correo %></td>
+				<td><%= e.carrera %></td>
+				<td>
+					<a href="/estudiantes/<%= e.id %>/editar">Editar</a>
+					<form method="post" action="/estudiantes/<%= e.id %>/eliminar"
+					      style="display:inline">
+						<button type="submit">Eliminar</button>
+					</form>
+				</td>
+			</tr>
+		<% }); %>
+	</table>
+</body>
+</html>
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\subsection{La vista del formulario}
+Sirve para crear y para editar. Si recibe un estudiante (al editar), rellena los campos y añade un campo oculto con el \texttt{id}; si recibe \texttt{null}, los deja vacíos para un alta. El operador \texttt{?.} y un valor por defecto evitan errores cuando no hay estudiante.
+
+\dondecrear{src/vistas}{File $\rightarrow$ nombre \texttt{form.ejs}}{cliente-estudiantes/src/vistas/form.ejs}
+\begin{cajacodigo}[src/vistas/form.ejs]
+\begin{lstlisting}[style=markup]
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Estudiante</title></head>
+<body>
+	<h1><%= estudiante ? "Editar" : "Nuevo" %> estudiante</h1>
+	<form method="post" action="/estudiantes/guardar">
+		<input type="hidden" name="id" value="<%= estudiante?.id || '' %>">
+		<input name="nombre"  value="<%= estudiante?.nombre  || '' %>" required>
+		<input name="correo"  value="<%= estudiante?.correo  || '' %>"
+		       type="email" required>
+		<input name="carrera" value="<%= estudiante?.carrera || '' %>" required>
+		<button type="submit">Guardar</button>
+	</form>
+	<a href="/estudiantes">Volver</a>
+</body>
+</html>
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\subsection{Una hoja de estilos para la carpeta pública}
+Para que la carpeta \texttt{publico} no quede vacía y las páginas tengan un aspecto mínimo, creamos una hoja de estilos. Se sirve gracias al middleware \texttt{express.\allowbreak{}static} del paso 6, y se enlaza desde las vistas con \texttt{<link rel="stylesheet" href="/estilos.css">}.
+
+\dondecrear{src/publico}{File $\rightarrow$ nombre \texttt{estilos.css}}{cliente-estudiantes/src/publico/estilos.css}
+\begin{cajacodigo}[src/publico/estilos.css]
+\begin{lstlisting}[style=markup]
+body { font-family: system-ui, sans-serif; margin: 2rem; color: #1f2933; }
+table { border-collapse: collapse; }
+th, td { padding: 6px 10px; }
+button { cursor: pointer; }
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\begin{cajacodigo}[Estructura tras el paso 9]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- src/
+   |- app.js
+   |- rutas/
+   |  |- guardia.js  auth.js  estudiantes.js
+   |- servicios/
+   |  |- apiCliente.js  apiFetch.js  authServicio.js  estudianteServicio.js
+   |- vistas/
+   |  |- login.ejs               # <-- nuevo
+   |  |- lista.ejs               # <-- nuevo
+   |  |- form.ejs                # <-- nuevo
+   |- publico/
+      |- estilos.css             # <-- nuevo
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+
+\section{Paso 10: manejo de errores y CORS}
+\begin{cajaproblema}{Problema a resolver}
+El servidor puede responder con errores (token vencido, datos inválidos, caído) y el navegador puede toparse con restricciones de origen. ¿Cómo tratamos ambos casos?\par
+\end{cajaproblema}
+Un cliente robusto no asume que todo saldrá bien. Trataremos dos frentes: los errores que devuelve la API y el concepto de CORS. Como nuestras llamadas a Spring Boot salen desde el servidor Express (no desde el navegador), CORS casi nunca nos afecta, pero conviene entenderlo.
+
+\subsection{Un middleware de manejo de errores}
+Express reconoce un middleware de error por tener cuatro parámetros. Colócalo al final, después de las rutas, en \texttt{app.\allowbreak{}js}. Distingue el caso del token vencido (el servidor responde 401) para enviar al usuario de vuelta al login.
+
+\editaren{\texttt{app.js} e inserta este bloque justo antes de \texttt{app.listen(...)} (no crees un archivo nuevo)}{cliente-estudiantes/src/app.js}
+\begin{cajacodigo}[Middleware de manejo de errores]
+\begin{lstlisting}[style=js]
+// Cuatro parametros: Express lo trata como manejador de errores
+app.use((err, req, res, next) => {
+	const status = err.response?.status;   // codigo que devolvio la API
+	if (status === 401) {
+		return res.redirect("/login");     // token invalido o vencido
+	}
+	console.error(err.message);
+	res.status(500).send("Ocurrio un error al contactar el servidor.");
+});
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+El operador \texttt{?.} (encadenamiento opcional) evita un fallo si \texttt{err.\allowbreak{}response} no existe (por ejemplo, si el servidor está caído y no hubo respuesta). Para que este manejador reciba los errores de las rutas asíncronas en Express 4, envuelve las llamadas en \texttt{try/catch} y usa \texttt{next(e)}; en Express 5 los errores de funciones \texttt{async} se propagan solos.
+
+\subsection{Qué es CORS y por qué aquí no molesta}
+CORS (Cross-Origin Resource Sharing, «intercambio de recursos de origen cruzado») es una norma de seguridad de los navegadores que bloquea las peticiones de una página web hacia un origen (dominio, puerto o protocolo) distinto del suyo, salvo que el servidor lo permita con cabeceras específicas~\citep{whatwg2024fetch}. Afecta al código que corre en el navegador, no al que corre en Node.js.
+
+\begin{cajatip}{Ventaja del patrón BFF frente a CORS}
+Como el navegador solo habla con nuestro Express (mismo origen) y es Express quien llama a Spring Boot desde el servidor, no hay petición «de origen cruzado» en el navegador y CORS no interviene. Si algún día llamaras a la API directamente desde JavaScript del navegador, entonces sí tendrías que habilitar CORS en el servidor Spring Boot.\par
+\end{cajatip}
+
+\section{Paso 11: ejecutar el cliente en IntelliJ IDEA}
+\begin{cajaproblema}{Problema a resolver}
+Con todo el código escrito, ¿cómo arrancamos y probamos el cliente desde IntelliJ, y cómo lo depuramos si algo falla?\par
+\end{cajaproblema}
+IntelliJ puede ejecutar el proyecto de dos formas: desde la terminal integrada o con una «configuración de ejecución» (run configuration). La segunda permite además depurar (ejecutar paso a paso, inspeccionando variables). Antes de arrancar el cliente, asegúrate de que el servidor Spring Boot está en marcha en el puerto 8080.
+
+\subsection{Arrancar desde la terminal}
+En la terminal integrada, ejecuta el script de arranque. La aplicación quedará escuchando y podrás abrirla en el navegador.
+
+\crearen{Terminal integrada de IntelliJ}
+\begin{cajacodigo}[Arrancar el cliente]
+\begin{lstlisting}[style=bash]
+npm run dev
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Abre \texttt{http://\allowbreak{}localhost:\allowbreak{}3000/\allowbreak{}login} en el navegador, inicia sesión con un usuario válido del servidor y comprueba el listado, el alta, la edición y la baja.
+
+\subsection{Una configuración de ejecución para depurar}
+Crea la configuración en \emph{Run $\rightarrow$ Edit Configurations $\rightarrow$ + $\rightarrow$ Node.js}. En «JavaScript file» indica \texttt{src/\allowbreak{}app.js}. Guarda y usa el botón de depuración (el del insecto): puedes poner puntos de interrupción (breakpoints) haciendo clic en el margen izquierdo del editor, y el IDE detendrá la ejecución allí para que inspecciones las variables.
+
+\begin{cajatip}{Verificar las llamadas a la API}
+Si algo no funciona, revisa la consola de IntelliJ: los errores de Axios muestran el código de estado y el cuerpo de la respuesta del servidor. Un 401 indica token ausente o vencido; un 404, un endpoint mal escrito; un error de conexión, que el servidor Spring Boot no está en marcha.\par
+\end{cajatip}
+
+\section{El proyecto completo}
+Hemos resuelto cada pieza por separado; reunidas, forman la aplicación cliente completa. El siguiente mapa relaciona cada requisito con las piezas que lo resuelven, y la estructura muestra el conjunto de archivos.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{11.8cm}}
+\rowcolor{ndverde}\textcolor{white}{\textbf{Requisito}} & \textcolor{white}{\textbf{Piezas que lo resuelven}} \\
+\endfirsthead
+\rowcolor{ndverde}\textcolor{white}{\textbf{Requisito}} & \textcolor{white}{\textbf{Piezas que lo resuelven}} \\
+\endhead
+\ttfamily\color{ndverde}Inicio de sesión JWT & authServicio.js + rutas/auth.js + login.ejs + la sesión. \\ \hline
+\ttfamily\color{ndverde}Envío del token & Interceptor de Axios (cabecera Authorization: Bearer). \\ \hline
+\ttfamily\color{ndverde}Control de acceso & Middleware requiereSesion sobre las rutas privadas. \\ \hline
+\ttfamily\color{ndverde}CRUD & estudianteServicio.js + rutas/estudiantes.js + lista.ejs y form.ejs. \\ \hline
+\ttfamily\color{ndverde}Manejo de errores & Middleware de error en app.js (401 al login, 500 genérico). \\ \hline
+\end{longtable}}
+
+\begin{cajacodigo}[Estructura del proyecto cliente]
+\begin{lstlisting}[style=markup]
+cliente-estudiantes/
+|- package.json
+|- .env                         # API_BASE_URL, SESSION_SECRET, PORT
+|- .gitignore                   # incluye .env y node_modules
+|- src/
+   |- app.js                    # servidor Express (middlewares y rutas)
+   |- rutas/
+   |  |- auth.js                # login, logout
+   |  |- estudiantes.js         # CRUD
+   |  |- guardia.js             # requiereSesion
+   |- servicios/
+   |  |- apiCliente.js          # instancia de Axios + interceptor
+   |  |- apiFetch.js            # alternativa con fetch nativo
+   |  |- authServicio.js        # iniciarSesion
+   |  |- estudianteServicio.js  # listar, buscar, crear, actualizar, eliminar
+   |- vistas/
+   |  |- login.ejs  lista.ejs  form.ejs
+   |- publico/
+      |- estilos.css
+\end{lstlisting}
+\end{cajacodigo}
+\vspace{2pt}
+Con esto, el cliente Node.js consume de extremo a extremo los servicios web de Spring Boot: inicia sesión y obtiene el token JWT, lo envía en cada petición protegida, y realiza el CRUD completo mostrando los datos en vistas. Los conceptos que dominas aquí —REST, JSON, JWT, middlewares, promesas— se aplican igual frente a cualquier API REST, sea cual sea la tecnología del servidor.
+
+\section{Glosario}
+Términos y siglas que aparecen en la guía, para consulta rápida. Los términos en inglés incluyen su significado en español.
+
+{\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{12.2cm}}
+\rowcolor{ndverde}\textcolor{white}{\textbf{Término}} & \textcolor{white}{\textbf{Significado}} \\
+\endfirsthead
+\rowcolor{ndverde}\textcolor{white}{\textbf{Término}} & \textcolor{white}{\textbf{Significado}} \\
+\endhead
+\ttfamily\color{ndverde}API & Interfaz de programación de aplicaciones; el contrato del servicio. \\ \hline
+\ttfamily\color{ndverde}REST & Estilo de arquitectura para servicios web sobre HTTP. \\ \hline
+\ttfamily\color{ndverde}Endpoint & Punto de acceso: una dirección concreta de la API. \\ \hline
+\ttfamily\color{ndverde}HTTP & Protocolo de petición--respuesta de la web. \\ \hline
+\ttfamily\color{ndverde}JSON & Notación de objetos de JavaScript; formato de intercambio de datos. \\ \hline
+\ttfamily\color{ndverde}Payload & Carga útil: el cuerpo de datos de una petición o respuesta. \\ \hline
+\ttfamily\color{ndverde}Header & Cabecera: par nombre--valor de control en la petición/respuesta. \\ \hline
+\ttfamily\color{ndverde}JWT & Token web JSON; credencial firmada de autenticación. \\ \hline
+\ttfamily\color{ndverde}Bearer & Portador: esquema de la cabecera Authorization (\texttt{Bearer <token>}). \\ \hline
+\ttfamily\color{ndverde}Runtime & Entorno de ejecución (Node.js ejecuta JavaScript fuera del navegador). \\ \hline
+\ttfamily\color{ndverde}npm & Gestor de paquetes de Node; instala dependencias. \\ \hline
+\ttfamily\color{ndverde}Dependencia & Librería externa que el proyecto usa. \\ \hline
+\ttfamily\color{ndverde}Framework & Marco de trabajo que estructura la aplicación (Express). \\ \hline
+\ttfamily\color{ndverde}Middleware & Software intermedio: función que procesa la petición en cadena. \\ \hline
+\ttfamily\color{ndverde}Ruta (route) & Asociación de un verbo y una URL con el código que responde. \\ \hline
+\ttfamily\color{ndverde}Motor de plantillas & Herramienta que combina HTML y datos para generar la página (EJS). \\ \hline
+\ttfamily\color{ndverde}Promesa (promise) & Objeto que representa un resultado futuro de una operación asíncrona. \\ \hline
+\ttfamily\color{ndverde}async/await & Sintaxis para escribir código asíncrono de forma secuencial. \\ \hline
+\ttfamily\color{ndverde}Interceptor & Función que se ejecuta antes de cada petición de Axios. \\ \hline
+\ttfamily\color{ndverde}Sesión (session) & Almacén por usuario en el servidor entre peticiones. \\ \hline
+\ttfamily\color{ndverde}CORS & Intercambio de recursos de origen cruzado; norma de seguridad del navegador. \\ \hline
+\ttfamily\color{ndverde}BFF & Backend para el frontend; backend propio que sirve al cliente web. \\ \hline
+\ttfamily\color{ndverde}Serializar & Convertir un objeto a texto (JSON); deserializar es el paso inverso. \\ \hline
+\ttfamily\color{ndverde}PRG & Post--Redirect--Get; redirigir tras modificar para evitar reenvíos. \\ \hline
+\end{longtable}}
+
+\section{Recursos}
+Para profundizar, estos son los recursos de referencia más fiables.
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item Node.js (documentación oficial y API de \texttt{fetch}): \textbf{nodejs.org/docs}
+\item Express: \textbf{expressjs.com}
+\item EJS: \textbf{ejs.co}
+\item Axios: \textbf{axios-http.com}
+\item Estándar HTTP y JWT (IETF): \textbf{rfc-editor.org}
+\item OWASP (seguridad de aplicaciones web): \textbf{owasp.org}
+\end{itemize}
+
+\bibliographystyle{unsrtnat}
+\bibliography{guia_nodejs_cliente}
+
+\end{document}
