@@ -1,0 +1,2335 @@
+% =====================================================================
+%  UNIDAD IV --- MODELO-VISTA-CONTROLADOR Y SERVICIOS WEB
+%  Asignatura: Aplicaciones Web (Quinto nivel) --- PPA 2026-2027
+%  Universidad Tecnica Estatal de Quevedo
+%  Facultad de Ciencias de la Computacion y Diseno Digital
+%  Carrera de Ingenieria de Software
+%
+%  Preambulo derivado de LibroAplicacionesWeb_Completo_v3.tex
+%  Compilacion: pdflatex -> bibtex -> pdflatex -> pdflatex
+% =====================================================================
+\documentclass[11pt,a4paper,openany]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{parskip}
+
+\usepackage{xcolor}
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{codeborder}{RGB}{180,180,180}
+\definecolor{codekey}{RGB}{0,0,180}
+\definecolor{codestr}{RGB}{163,21,21}
+\definecolor{codecom}{RGB}{0,128,0}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,backgrounds,calc}
+\usetikzlibrary{shapes.geometric,shapes.symbols,shapes.multipart,shadows,matrix}
+\usetikzlibrary{decorations.markings,decorations.pathreplacing}
+\usetikzlibrary{babel}
+\usepackage{float}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{breakable,skins,listings}
+
+\newtcolorbox{cajadefinicion}[1]{colback=uteqverde!5,colframe=uteqverde,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaejemplo}[1]{colback=uteqdorado!8,colframe=uteqdorado!80!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaejercicio}[1]{colback=blue!4,colframe=blue!60!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaadvertencia}[1]{colback=red!5,colframe=red!70!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajahistoria}[1]{colback=blue!3,colframe=blue!50!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajabuenas}[1]{colback=green!4,colframe=uteqverde!90!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajacompara}[1]{colback=cyan!5,colframe=cyan!60!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajacritica}[1]{colback=orange!6,colframe=orange!75!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaadr}[1]{colback=violet!4,colframe=violet!70!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaanalogia}[1]{colback=teal!5,colframe=teal!70!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+
+\usepackage{listings}
+\lstdefinelanguage{HTML5}{language=HTML,sensitive=true,
+	morekeywords={article,header,nav,section,footer,aside,figure,figcaption,
+		main,picture,video,audio,canvas,svg,details,summary,dialog,
+		DOCTYPE,html,head,body,meta,link,title,div,span,form,input,
+		label,button,select,option,textarea,table,thead,tbody,tr,th,td,
+		p,a,img,ul,ol,li,h1,h2,h3,h4,h5,h6,script,style,em,strong}}
+\lstdefinelanguage{JavaScript}{
+	keywords={break,case,catch,continue,default,delete,do,else,
+		finally,for,function,if,in,instanceof,new,return,switch,this,throw,
+		try,typeof,var,void,while,with,let,const,of,yield,async,await,
+		class,extends,super,static,import,export,from,as,true,false,null,
+		undefined},
+	ndkeywords={Array,Boolean,Date,Error,Function,JSON,Math,Number,Object,
+		Promise,RegExp,String,Symbol,console,document,window,fetch,Map,Set,
+		AbortController,URLSearchParams,Headers,Response,Request},
+	sensitive=true,comment=[l]{//},morecomment=[s]{/*}{*/},
+	morestring=[b]',morestring=[b]",morestring=[b]`}
+\lstdefinelanguage{PHP}{
+	keywords={abstract,and,array,as,break,callable,case,catch,class,clone,
+		const,continue,declare,default,do,echo,else,elseif,empty,enum,extends,
+		final,finally,fn,for,foreach,function,global,if,implements,include,
+		instanceof,interface,isset,list,match,namespace,new,null,or,print,
+		private,protected,public,readonly,require,return,self,static,switch,
+		throw,trait,true,false,try,unset,use,var,while,yield,parent},
+	sensitive=true,comment=[l]{//},morecomment=[l]{\#},
+	morecomment=[s]{/*}{*/},morestring=[b]',morestring=[b]"}
+\lstdefinelanguage{TypeScript}{
+	keywords={abstract,any,as,async,await,boolean,break,case,catch,class,
+		const,constructor,continue,declare,default,delete,do,else,enum,export,
+		extends,false,finally,for,from,function,get,if,implements,import,in,
+		instanceof,interface,let,new,null,number,of,private,protected,public,
+		readonly,return,set,static,string,super,switch,this,throw,true,try,
+		type,typeof,undefined,void,while,yield},
+	ndkeywords={Observable,Signal,HttpClient,Injectable,Component,inject,
+		signal,computed,effect,resource,firstValueFrom,catchError,retry,
+		Promise,Array,Object,JSON,console},
+	sensitive=true,comment=[l]{//},morecomment=[s]{/*}{*/},
+	morestring=[b]',morestring=[b]",morestring=[b]`}
+
+\lstdefinestyle{codigobase}{basicstyle=\ttfamily\footnotesize,
+	backgroundcolor=\color{codebg},frame=single,rulecolor=\color{codeborder},
+	numbers=left,numberstyle=\tiny\color{gray},numbersep=8pt,stepnumber=1,
+	breaklines=true,breakatwhitespace=true,showstringspaces=false,tabsize=2,
+	keywordstyle=\color{codekey}\bfseries,stringstyle=\color{codestr},
+	commentstyle=\color{codecom}\itshape,captionpos=b,
+	xleftmargin=12pt,xrightmargin=4pt}
+\lstdefinestyle{java}{style=codigobase,language=Java}
+\lstdefinestyle{js}{style=codigobase,language=JavaScript}
+\lstdefinestyle{ts}{style=codigobase,language=TypeScript}
+\lstdefinestyle{php}{style=codigobase,language=PHP}
+\lstdefinestyle{html}{style=codigobase,language=HTML5}
+\lstdefinestyle{xml}{style=codigobase,language=XML}
+\lstdefinestyle{sql}{style=codigobase,language=SQL}
+\lstdefinestyle{shell}{style=codigobase,language=bash}
+\lstdefinelanguage{yaml}{keywords={true,false,null},sensitive=true,
+	comment=[l]{\#},morestring=[b]',morestring=[b]"}
+\lstdefinestyle{yaml}{style=codigobase,language=yaml}
+\lstdefinestyle{plano}{style=codigobase,language={}}
+
+\usepackage{array}\usepackage{booktabs}\usepackage{longtable}
+\usepackage{tabularx}\usepackage{multirow}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=uteqverde,citecolor=uteqverde,
+	urlcolor=uteqdorado!70!black,
+	pdftitle={Unidad IV - Modelo-Vista-Controlador y Servicios Web},
+	pdfauthor={UTEQ - Carrera de Ingenieria de Software}}
+\usepackage{url}
+\urlstyle{same}
+
+\usepackage{enumitem}\setlist{itemsep=2pt,topsep=2pt}
+\usepackage{epigraph}\setlength{\epigraphwidth}{0.72\textwidth}
+
+\usepackage{titlesec}
+% --- Titulos alineados a la izquierda y sin division silabica ---
+\newcommand{\sintitulopartido}{\hyphenpenalty=10000\exhyphenpenalty=10000\raggedright}
+% --- Rutas de archivo: monoespaciadas y con puntos de corte tras / . _ ---
+\newcommand{\ruta}[1]{{\ttfamily\small\rutaaux #1\relax}}
+\def\rutaaux{\futurelet\next\rutapaso}
+\def\rutapaso{%
+	\ifx\next\relax \let\sig\relax
+	\else \let\sig\rutaimprime \fi \sig}
+\def\rutaimprime#1{%
+	#1\ifnum`#1=`/ \allowbreak\fi
+	\ifnum`#1=`. \allowbreak\fi
+	\rutaaux}
+\titleformat{\chapter}[display]
+	{\normalfont\Huge\bfseries\color{uteqverde}\sintitulopartido}
+	{\filleft\Large Unidad \thechapter}
+	{1ex}{\titlerule\vspace{1ex}\filright}
+\titleformat{\section}
+	{\normalfont\Large\bfseries\color{uteqverde}\sintitulopartido}{\thesection}{1em}{}
+\titleformat{\subsection}
+	{\normalfont\large\bfseries\color{uteqverde!85!black}\sintitulopartido}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+	{\normalfont\normalsize\bfseries\color{uteqdorado!90!black}\sintitulopartido}{\thesubsubsection}{1em}{}
+
+\renewcommand{\lstlistlistingname}{Indice de listados de codigo}
+\renewcommand{\lstlistingname}{Listado}
+
+\makeatletter
+\renewcommand{\@pnumwidth}{2.3em}
+\renewcommand{\@tocrmarg}{3.2em}
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{3.0em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{4.5em}{3.8em}}
+\renewcommand*\l@subsubsection{\@dottedtocline{3}{8.3em}{4.7em}}
+\renewcommand*\l@figure{\@dottedtocline{1}{1.5em}{3.2em}}
+\let\l@table\l@figure
+\renewcommand*\l@lstlisting{\@dottedtocline{1}{1.5em}{3.2em}}
+\makeatother
+
+\emergencystretch=2em
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlepage}
+	\centering
+	\vspace*{1.5cm}
+	{\LARGE\bfseries\color{uteqverde} Universidad Técnica Estatal de Quevedo\par}
+	\vspace{0.4cm}
+	{\large Facultad de Ciencias de la Computación y Diseño Digital\par}
+	{\large Carrera de Ingeniería de Software\par}
+	\vspace{2.2cm}
+	{\Huge\bfseries\color{uteqverde} Unidad IV\par}
+	\vspace{0.5cm}
+	{\Huge\bfseries Modelo-Vista-Controlador\\[0.3cm] y Servicios Web\par}
+	\vspace{1.2cm}
+	\rule{0.75\textwidth}{1.5pt}\par
+	\vspace{0.8cm}
+	{\Large Asignatura: \textbf{Aplicaciones Web}\par}
+	\vspace{0.3cm}
+	{\large Quinto nivel \quad$\vert$\quad 190 horas \quad$\vert$\quad 5 créditos\par}
+	{\large Período Académico Presencial 2026--2027\par}
+	\vspace{2.5cm}
+	{\large\itshape Material de desarrollo de la unidad de aprendizaje\par}
+	{\large\itshape Proyecto conductor: BiblioUTEQ\par}
+	\vfill
+	{\large Quevedo --- Los Ríos --- Ecuador\par}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
+
+\mainmatter
+\setcounter{chapter}{3}
+
+% =====================================================================
+\chapter{Modelo-Vista-Controlador y Servicios Web}
+\label{cap:unidad4}
+
+\epigraph{«El MVC no reparte código en tres carpetas: reparte
+\emph{responsabilidades} entre tres tipos de objetos. Quien confunde
+ambas cosas termina con tres carpetas y una sola bola de barro.»}
+{--- \textit{Principio pedagógico de la asignatura}}
+
+\section*{Resultado de aprendizaje de la unidad}
+\addcontentsline{toc}{section}{Resultado de aprendizaje de la unidad}
+El resultado de aprendizaje que rige esta unidad, recuperado del sílabo y del programa analítico de la asignatura, se enuncia así: \emph{el estudiante diseña e implementa aplicaciones web bajo el patrón Modelo-Vista-Controlador y construye, documenta y consume servicios web interoperables, integrando componentes cliente-servidor en una solución funcional que responde a requisitos reales de un dominio institucional}.
+
+Ese enunciado general se descompone en cuatro resultados específicos, uno por cada bloque temático de la unidad. Cada bloque cierra con evidencias verificables en el repositorio del Proyecto Fin de Curso (PFC), de modo que la calificación no dependa de lo que el estudiante declare haber hecho sino de lo que efectivamente esté versionado.
+
+\begin{cajadefinicion}{Resultados de aprendizaje específicos de la Unidad IV}
+	\begin{enumerate}
+		\item \textbf{RA 4.1.} Explica el origen, los componentes y el ciclo de vida del patrón MVC, y justifica cuándo su aplicación aporta valor y cuándo introduce complejidad innecesaria.
+		\item \textbf{RA 4.2.} Implementa una aplicación web completa con un \emph{framework} MVC, aplicando enrutamiento, controladores, motor de plantillas y mapeo objeto-relacional.
+		\item \textbf{RA 4.3.} Diseña, implementa y documenta servicios web RESTful conformes a las restricciones de Fielding \cite{fielding2000rest} y a la semántica de HTTP definida en la RFC~9110 \cite{rfc9110}.
+		\item \textbf{RA 4.4.} Consume servicios web desde el cliente y desde el servidor, integra sistemas heterogéneos y evalúa críticamente las tendencias vigentes en integración de aplicaciones.
+	\end{enumerate}
+\end{cajadefinicion}
+
+\section*{Ubicación curricular y prerrequisitos}
+\addcontentsline{toc}{section}{Ubicación curricular y prerrequisitos}
+Esta unidad ocupa el tramo final del período académico y se apoya sin excepción en lo construido antes. De la Unidad~I proviene el dominio del cliente: HTML5 semántico, CSS3 y JavaScript moderno. De la Unidad~II, el ciclo petición-respuesta del lado del servidor y las defensas básicas frente al OWASP Top~10 \cite{owasp2021top10}. De la Unidad~III, la persistencia con mapeo objeto-relacional, el manejo de sesión y el vocabulario arquitectónico ---atributos de calidad, decisiones documentadas, principios SOLID--- que aquí se usará para argumentar por qué un diseño es preferible a otro.
+
+La pila tecnológica de referencia del PFC se mantiene sin cambios: Java~21 LTS con Spring Boot en su línea 4.x del lado del servidor, PostgreSQL~16 como gestor de datos, Angular~22 en el cliente y Docker Compose para el despliegue reproducible. El bloque~4.2 introduce además Laravel~13 sobre PHP~8.4 con un propósito deliberado: comparar dos encarnaciones muy distintas del mismo patrón permite distinguir lo que es esencial al MVC de lo que solo es idiosincrasia de un \emph{framework} concreto.
+
+Todos los listados de código de esta unidad fueron escritos y verificados contra la matriz de versiones de la tabla~\ref{tab:u4:versiones}. Esa matriz importa más de lo que parece: una parte considerable de los errores que los equipos reportan como «el ejemplo del libro no funciona» proviene de mezclar una biblioteca con una versión mayor del \emph{framework} que no la soporta.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Matriz de versiones contra la que se verificaron los listados de la unidad.}
+	\label{tab:u4:versiones}
+	\small
+	\begin{tabularx}{\textwidth}{L{4.4cm} L{2.9cm} X}
+		\toprule
+		\textbf{Componente} & \textbf{Versión} & \textbf{Restricción de compatibilidad} \\
+		\midrule
+		Java & 21 LTS & Requisito mínimo 17 para la línea Spring Boot 4.x \\
+		Spring Boot & 4.1.x & Exige Spring Framework 7.x y Spring Security 7.x \\
+		springdoc-openapi & 3.0.3 & La línea 3.x es para Boot 4.x; con Boot 3.x debe usarse la línea 2.x \\
+		jjwt & 0.12.x & API con \texttt{Jwts.SIG}; la 0.11 usa \texttt{SignatureAlgorithm} \\
+		Hibernate / JPA & Jakarta Persistence 3.2 & Paquete \texttt{jakarta.persistence}, no \texttt{javax} \\
+		PostgreSQL & 16 & \\
+		Angular & 22.x & Requiere TypeScript 6; \texttt{httpResource} estable desde esta versión \\
+		PHP & 8.4 & Promoción de propiedades en constructor desde 8.0 \\
+		Laravel & 13.x & Migraciones como clase anónima desde la 9 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajaadvertencia}{Advertencia sobre versiones}
+	Las versiones de la tabla~\ref{tab:u4:versiones} corresponden a las líneas estables vigentes al cierre del período de elaboración (julio de 2026). Spring Boot y Angular publican versiones mayores cada seis meses; Laravel, aproximadamente una vez al año. Antes de iniciar el PFC, el equipo debe fijar las versiones exactas en \texttt{pom.xml}, \texttt{package.json} y \texttt{composer.json}, y registrarlas en el \texttt{README.md}. Un proyecto que no declara sus versiones no es reproducible, y un proyecto no reproducible no es evaluable.
+\end{cajaadvertencia}
+
+% =====================================================================
+\section{El Patrón Modelo-Vista-Controlador (MVC)}
+\label{sec:u4:mvc}
+
+\subsection{Origen y fundamentos del MVC}
+\label{sec:u4:origen}
+
+Pocos patrones de diseño han sobrevivido cinco décadas de cambio tecnológico. El Modelo-Vista-Controlador lo ha hecho, y no por inercia: sigue apareciendo, con distintos nombres y variantes, en cada generación de herramientas que resuelve el mismo problema de fondo. Ese problema es viejo y sencillo de enunciar. Un programa interactivo tiene datos que representan algo del mundo, una manera de mostrarlos y una manera de reaccionar a lo que el usuario hace. Si esas tres cosas se escriben mezcladas, cualquier cambio en una arrastra a las otras dos.
+
+El patrón nace en el Xerox PARC a finales de los años setenta, dentro del proyecto Smalltalk. Trygve Reenskaug, ingeniero noruego en estancia de investigación, buscaba una forma de que varias representaciones visuales de un mismo conjunto de datos pudieran coexistir sin acoplarse entre sí. Su nota interna de diciembre de 1979 fijó los tres nombres que todavía usamos. La formulación que se difundió en la comunidad, sin embargo, no fue esa nota sino el artículo de Krasner y Pope publicado casi una década después en el \emph{Journal of Object-Oriented Programming} \cite{krasner1988cookbook}, que documentó cómo se usaba realmente el patrón en Smalltalk-80 y describió el mecanismo de notificación entre modelo y vistas.
+
+Conviene registrar un matiz que suele perderse en las explicaciones apresuradas. El MVC original fue concebido para interfaces gráficas de escritorio, donde el modelo puede \emph{notificar} a sus vistas que algo cambió y las vistas se redibujan solas. La web de los años noventa carecía por completo de ese mecanismo: el servidor no podía avisar al navegador de nada, porque HTTP es un protocolo sin estado en el que el cliente siempre inicia la conversación \cite{rfc9110}. El MVC que usan hoy Spring, Laravel o ASP.NET Core es, por tanto, una adaptación: conserva la separación de responsabilidades y sacrifica el mecanismo observador.
+
+\begin{cajahistoria}{Historia --- de Smalltalk al navegador}
+	La trayectoria del patrón puede leerse como una serie de traducciones sucesivas. Reenskaug lo formula en 1979 para Smalltalk-76 en el Xerox PARC. Krasner y Pope lo documentan y popularizan en 1988 \cite{krasner1988cookbook}. La banda de los cuatro lo cita en 1995 como ejemplo integrador de varios patrones ---Observador, Compuesto, Estrategia--- más que como un patrón atómico \cite{gamma1995patterns}. En 1999, Sun publica el modelo \emph{Model 2} para aplicaciones JSP, que reparte el trabajo entre \emph{servlets} y páginas: es el primer MVC verdaderamente web. Martin Fowler cataloga en 2002 las variantes de presentación de las aplicaciones empresariales, incluido el \emph{Front Controller} que hoy encarna el \texttt{DispatcherServlet} de Spring \cite{fowler2002patterns}. Ruby on Rails lo convierte en 2005 en la convención por defecto de toda una generación de \emph{frameworks}. Y desde 2010, con la irrupción de las aplicaciones de página única, el patrón se desdobla: el servidor deja de generar HTML y se vuelve proveedor de datos, mientras el cliente asume la vista y el control.
+\end{cajahistoria}
+
+La tabla~\ref{tab:u4:evolucion} sintetiza esa trayectoria y sirve como mapa de referencia para el resto de la unidad. Merece la pena mirarla dos veces: la columna de la derecha muestra que el rol del servidor se ha ido estrechando hasta quedar reducido, en la arquitectura dominante hoy, a un productor de representaciones JSON.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Evolución del patrón MVC y del reparto de responsabilidades entre cliente y servidor.}
+	\label{tab:u4:evolucion}
+	\small
+	\begin{tabularx}{\textwidth}{L{1.4cm} L{3.2cm} X L{3.0cm}}
+		\toprule
+		\textbf{Año} & \textbf{Hito} & \textbf{Aporte al patrón} & \textbf{Dónde vive la vista} \\
+		\midrule
+		1979 & Nota de Reenskaug (Xerox PARC) & Nombra los tres roles y propone el desacoplamiento entre datos y presentación & Escritorio \\
+		1988 & Krasner y Pope \cite{krasner1988cookbook} & Documenta el mecanismo de notificación modelo--vista & Escritorio \\
+		1995 & Catálogo de patrones \cite{gamma1995patterns} & Explica el MVC como composición de patrones más elementales & Escritorio \\
+		1999 & JSP \emph{Model 2} & Traslada el patrón al ciclo petición--respuesta de HTTP & Servidor \\
+		2002 & Catálogo empresarial \cite{fowler2002patterns} & Formaliza \emph{Front Controller} y \emph{Template View} & Servidor \\
+		2005 & Ruby on Rails & Convención sobre configuración; generadores de andamiaje & Servidor \\
+		2010 & Backbone, AngularJS & Primeras variantes MVC del lado del cliente & Navegador \\
+		2016 & Angular 2+, React, Vue & Componentes con estado; el servidor pasa a exponer datos & Navegador \\
+		2024 & Señales y renderizado híbrido & Reactividad de grano fino; vuelve el renderizado en servidor & Ambos \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajaanalogia}{Analogía --- la cocina de un restaurante}
+	Si el sistema fuera un restaurante, el \textbf{modelo} sería la despensa junto con las recetas: lo que el negocio realmente sabe y las reglas que gobiernan ese conocimiento. La \textbf{vista} sería el plato tal como llega a la mesa, emplatado y decorado. El \textbf{controlador} sería el mesero: recibe el pedido, decide a qué estación de la cocina enviarlo y devuelve el resultado, sin cocinar él mismo. La analogía es útil sobre todo por lo que prohíbe: un mesero que empieza a cocinar en el comedor es exactamente el controlador que ejecuta consultas SQL, valida reglas de negocio y arma HTML a mano. Es el error más frecuente en los proyectos de esta asignatura.
+\end{cajaanalogia}
+
+\subsection{Componentes del MVC: Model, View, Controller}
+\label{sec:u4:componentes}
+
+La definición canónica reparte tres responsabilidades. El modelo conoce el dominio y sus reglas; la vista traduce el estado del modelo a algo perceptible; el controlador interpreta la entrada del usuario y coordina a los otros dos. Lo difícil no es memorizar esa frase sino aplicarla cuando el código empieza a crecer y aparecen preguntas incómodas: ¿dónde va la validación?, ¿dónde el cálculo de una multa por retraso?, ¿dónde la decisión de qué página mostrar tras un error?
+
+\subsubsection{El modelo}
+
+El modelo agrupa dos cosas que conviene distinguir desde el principio: las \emph{entidades}, que representan conceptos del dominio y su estado persistente, y los \emph{servicios de dominio}, que albergan las reglas que involucran a varias entidades a la vez. En BiblioUTEQ, \texttt{Prestamo} es una entidad; la regla que determina si un usuario puede pedir prestado un ejemplar más ---porque no supera el límite de tres préstamos activos ni tiene multas impagas--- pertenece a un servicio.
+
+En Spring Boot, una entidad se declara con la anotación \texttt{@Entity}, que indica a JPA que la clase debe mapearse a una tabla. El listado~\ref{lst:u4:entity} muestra la forma mínima de esa declaración; nada más que eso hace falta para que Hibernate reconozca la clase.
+
+\begin{lstlisting}[style=java,caption={Declaracion minima de una entidad de dominio.},label={lst:u4:entity}]
+package ec.edu.uteq.biblioteq.dominio;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+@Entity
+public class Categoria {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String nombre;
+
+	// getters y setters omitidos por brevedad
+}
+\end{lstlisting}
+
+\begin{cajaejercicio}{Ejercicio corto 4.1 --- primera entidad}
+	Cree la clase \texttt{Libro} en el paquete \texttt{ec.edu.uteq.biblioteq.dominio} con los atributos \texttt{id}, \texttt{isbn}, \texttt{titulo} y \texttt{anioPublicacion}. Anote la clase como entidad y marque \texttt{isbn} como columna única mediante \texttt{@Column(unique = true, nullable = false, length = 17)}. Arranque la aplicación con Flyway desactivado y verifique en los registros de arranque que Hibernate genera la sentencia \texttt{create table libro}.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{backend-java/src/main/java/ec/edu/uteq/biblioteq/dominio/Libro.java}\\[3pt]
+	\textbf{Tiempo estimado:} 10 minutos.
+\end{cajaejercicio}
+
+Un error habitual consiste en llenar la entidad de anotaciones de presentación o de validación de formulario, convirtiéndola en un objeto que sirve a tres amos. La entidad debe responder solo al dominio y a la persistencia. Cuando la interfaz necesita una forma distinta del dato ---por ejemplo, el título del libro junto al nombre del autor y la cantidad de ejemplares disponibles, que viven en tres tablas--- se introduce un objeto de transferencia (DTO) específico para esa vista.
+
+\subsubsection{La vista}
+
+La vista es la única capa autorizada a preocuparse por el aspecto. Su regla de oro es negativa: no debe tomar decisiones de negocio. Puede decidir si un elemento se muestra en rojo o en verde; no puede decidir si un préstamo está vencido. Esa segunda decisión pertenece al modelo, y la vista se limita a preguntarla.
+
+En el MVC del lado del servidor, la vista es una plantilla que el motor rellena con los datos que el controlador le entrega. Spring Boot usa habitualmente Thymeleaf; Laravel usa Blade; ASP.NET Core usa Razor. Los tres comparten la misma idea: HTML con marcas que se sustituyen en tiempo de renderizado. El listado~\ref{lst:u4:thymeleaf} muestra el fragmento mínimo de una plantilla Thymeleaf que recorre una colección.
+
+\begin{lstlisting}[style=html,caption={Fragmento minimo de plantilla Thymeleaf que itera una coleccion.},label={lst:u4:thymeleaf}]
+<table>
+	<tr th:each="libro : ${libros}">
+		<td th:text="${libro.titulo}">Titulo de ejemplo</td>
+		<td th:text="${libro.isbn}">000-0-00-000000-0</td>
+	</tr>
+</table>
+\end{lstlisting}
+
+El texto que aparece dentro de las etiquetas ---«Titulo de ejemplo»--- no llega nunca al navegador: es un marcador de posición que permite abrir la plantilla directamente en el disco y verla maquetada sin arrancar el servidor. Esa propiedad, llamada \emph{prototipado natural}, es la razón principal por la que Thymeleaf desplazó a JSP en el ecosistema Spring.
+
+\begin{cajaejercicio}{Ejercicio corto 4.2 --- vista con formato condicional}
+	Amplíe el fragmento anterior con una tercera columna que muestre el estado de disponibilidad. Use \texttt{th:if} y \texttt{th:unless} para escribir «Disponible» o «Prestado» según el valor booleano \texttt{libro.disponible}, y aplique una clase CSS distinta en cada caso con \texttt{th:classappend}. Compruebe que el archivo \texttt{.html} sigue abriéndose correctamente en el navegador sin servidor.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{backend-java/src/main/resources/templates/libros/lista.html}\\[3pt]
+	\textbf{Tiempo estimado:} 15 minutos.
+\end{cajaejercicio}
+
+\subsubsection{El controlador}
+
+El controlador es la pieza que peor se comprende y peor se implementa. Su tarea es de coordinación: recibir la petición, extraer y convertir los parámetros, delegar el trabajo real en el modelo y decidir qué respuesta corresponde. Todo lo que exceda esas cuatro tareas está fuera de lugar.
+
+En Spring, un controlador de MVC clásico se anota con \texttt{@Controller} y sus métodos se asocian a rutas mediante \texttt{@GetMapping}, \texttt{@PostMapping} y familia. El listado~\ref{lst:u4:controller} muestra el esqueleto de un método que atiende una petición GET y entrega datos a la vista.
+
+\begin{lstlisting}[style=java,caption={Metodo de controlador que delega en el servicio y entrega datos al modelo de vista.},label={lst:u4:controller}]
+@Controller
+@RequestMapping("/libros")
+public class LibroController {
+
+	private final LibroService servicio;
+
+	public LibroController(LibroService servicio) {
+		this.servicio = servicio;
+	}
+
+	@GetMapping
+	public String listar(Model modelo) {
+		modelo.addAttribute("libros", servicio.listarDisponibles());
+		return "libros/lista";   // nombre logico de la plantilla
+	}
+}
+\end{lstlisting}
+
+Obsérvese que el método tiene cuatro líneas y ninguna de ellas contiene lógica de negocio. La cadena \texttt{"libros/lista"} no es una ruta de archivo sino un nombre lógico que el resolvedor de vistas traduce, por configuración, a \texttt{src/main/resources/templates/libros/lista.html}. Esa indirección es lo que permite cambiar de motor de plantillas sin tocar el controlador.
+
+\begin{cajaadvertencia}{Error frecuente --- el controlador que hace de todo}
+	El síntoma es inconfundible: un método de controlador de sesenta líneas que abre una conexión, ejecuta una consulta, recorre el resultado, aplica reglas de negocio y arma un mapa para la vista. Ese código funciona, y por eso sobrevive. Pero no se puede probar sin levantar un servidor web, no se puede reutilizar desde una tarea programada y cualquier cambio de regla obliga a tocar la capa de presentación. En la rúbrica de esta unidad, un controlador con acceso directo a datos o con reglas de negocio incorporadas se penaliza explícitamente, aunque la funcionalidad sea correcta.
+\end{cajaadvertencia}
+
+La figura~\ref{fig:u4:triada} representa las relaciones permitidas entre los tres componentes. Las flechas indican dirección de dependencia, no de flujo de datos: el controlador conoce al modelo, la vista consulta al modelo, y el modelo no conoce a ninguno de los dos. Esa asimetría es justamente lo que hace reutilizable al modelo.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		every node/.style={font=\small,align=center},
+		comp/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!8,
+			rounded corners=4pt,minimum width=3.1cm,minimum height=1.5cm},
+		flecha/.style={->,>=stealth,thick,uteqverde!70!black}]
+
+		\node[comp] (ctrl) {\textbf{Controlador}\\{\scriptsize interpreta la entrada}};
+		\node[comp,below left=1.8cm and 0.6cm of ctrl] (modelo) {\textbf{Modelo}\\{\scriptsize estado y reglas}};
+		\node[comp,below right=1.8cm and 0.6cm of ctrl] (vista) {\textbf{Vista}\\{\scriptsize representación}};
+
+		\draw[flecha] (ctrl) -- node[left,font=\scriptsize,xshift=-2pt] {delega} (modelo);
+		\draw[flecha] (ctrl) -- node[right,font=\scriptsize,xshift=2pt] {selecciona} (vista);
+		\draw[flecha,uteqdorado!80!black,dashed] (vista) -- node[below,font=\scriptsize] {consulta} (modelo);
+
+		\node[above=0.35cm of ctrl,font=\scriptsize\itshape] {petición HTTP};
+		\draw[flecha,gray] ($(ctrl.north)+(0,0.75)$) -- (ctrl.north);
+	\end{tikzpicture}
+	\caption{Dependencias permitidas entre los tres componentes del patrón. El modelo no conoce ni a la vista ni al controlador; esa independencia es la condición para poder probarlo de forma aislada.}
+	\label{fig:u4:triada}
+\end{figure}
+
+\subsection{Ciclo de vida de una petición web bajo MVC}
+\label{sec:u4:ciclo}
+
+Comprender el recorrido completo de una petición separa al estudiante que configura por prueba y error del que depura con criterio. Cuando aparece un error 404 en una ruta que existe, o cuando un formulario llega con todos los campos nulos, la causa está casi siempre en una de las etapas intermedias que el \emph{framework} ejecuta sin que uno las vea.
+
+En Spring Boot, la puerta de entrada es un único \emph{servlet} que Fowler catalogó como \emph{Front Controller} \cite{fowler2002patterns}: el \texttt{DispatcherServlet}. Todas las peticiones pasan por él, y desde ahí se despliega una secuencia de ocho etapas que la figura~\ref{fig:u4:ciclo} representa. Laravel implementa la misma idea con \texttt{public/index.php} y su \emph{kernel} HTTP; ASP.NET Core, con el \emph{pipeline} de \emph{middleware}. Cambian los nombres, no la estructura.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		every node/.style={font=\scriptsize,align=center},
+		etapa/.style={rectangle,draw=uteqverde!80!black,thick,fill=uteqverde!8,
+			rounded corners=3pt,minimum width=2.55cm,minimum height=1.0cm},
+		fl/.style={->,>=stealth,thick,uteqverde!70!black}]
+
+		\node[etapa,fill=uteqdorado!15,draw=uteqdorado!80!black] (a) {1. Navegador\\emite petición};
+		\node[etapa,right=0.55cm of a] (b) {2. Filtros y\\\emph{middleware}};
+		\node[etapa,right=0.55cm of b] (c) {3. \emph{Front}\\\emph{Controller}};
+		\node[etapa,right=0.55cm of c] (d) {4. Resolución\\de ruta};
+
+		\node[etapa,below=0.9cm of d] (e) {5. Enlace y\\validación};
+		\node[etapa,left=0.55cm of e] (f) {6. Método del\\controlador};
+		\node[etapa,left=0.55cm of f] (g) {7. Servicio\\y repositorio};
+		\node[etapa,left=0.55cm of g,fill=uteqdorado!15,draw=uteqdorado!80!black] (h) {8. Vista\\renderizada};
+
+		\draw[fl] (a) -- (b);
+		\draw[fl] (b) -- (c);
+		\draw[fl] (c) -- (d);
+		\draw[fl] (d) -- (e);
+		\draw[fl] (e) -- (f);
+		\draw[fl] (f) -- (g);
+		\draw[fl] (g) -- (h);
+		\draw[fl,uteqdorado!80!black,dashed] (h.north west) .. controls +(-0.8,1.4) .. (a.south west);
+	\end{tikzpicture}
+	\caption{Las ocho etapas del ciclo de vida de una petición bajo MVC del lado del servidor. La flecha discontinua representa la respuesta HTTP que retorna al navegador.}
+	\label{fig:u4:ciclo}
+\end{figure}
+
+La tabla~\ref{tab:u4:etapas} detalla qué ocurre en cada etapa, qué componente de Spring la ejecuta y cuál es el fallo típico asociado. Vale la pena conservarla a mano durante las primeras semanas de depuración: la mayoría de los errores que los equipos reportan como «no funciona» se localizan con ella en menos de un minuto.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Etapas del ciclo de vida de una petición, componente responsable y síntoma característico de fallo.}
+	\label{tab:u4:etapas}
+	\small
+	\begin{tabularx}{\textwidth}{L{0.7cm} L{3.4cm} X L{3.6cm}}
+		\toprule
+		\textbf{\#} & \textbf{Etapa} & \textbf{Qué ocurre} & \textbf{Síntoma si falla} \\
+		\midrule
+		1 & Emisión & El navegador construye la petición con método, URI, cabeceras y cuerpo & Ninguno visible en servidor \\
+		2 & Filtros & Seguridad, CORS, registro de acceso y compresión & 401 o 403 antes de llegar al controlador \\
+		3 & Despacho & \texttt{DispatcherServlet} toma el control & 500 con traza de arranque \\
+		4 & Enrutamiento & \texttt{HandlerMapping} busca el método que atiende la ruta & 404 pese a que el método existe \\
+		5 & Enlace de datos & Conversión de parámetros a objetos y validación & Campos nulos o \texttt{400 Bad Request} \\
+		6 & Ejecución & Se invoca el método del controlador & Excepción de negocio no capturada \\
+		7 & Dominio & Servicio y repositorio resuelven la operación & Transacción abierta o consulta N+1 \\
+		8 & Renderizado & El resolvedor localiza la plantilla y la rellena & 500 con \emph{template might not exist} \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Un detalle que conviene interiorizar: las etapas 2 y 5 son las que más problemas causan en los proyectos de esta asignatura, y ambas ocurren \emph{antes} de que el código del estudiante se ejecute. Cuando un formulario llega vacío, la causa habitual no es el controlador sino un desajuste entre el atributo \texttt{name} del campo HTML y el nombre de la propiedad del objeto destino. Colocar un punto de interrupción en la primera línea del método del controlador y observar el objeto recibido resuelve la duda de inmediato.
+
+\begin{cajaejercicio}{Ejercicio corto 4.3 --- trazado del ciclo}
+	Active el registro detallado del despachador añadiendo \texttt{logging.level.org.springframework.web=DEBUG} en \texttt{application.properties}. Realice una petición a una ruta inexistente y otra a una ruta válida. Copie del registro las líneas que muestren la resolución del \emph{handler} en ambos casos y explique, en no más de cinco renglones, en qué etapa de la tabla~\ref{tab:u4:etapas} se produce la diferencia.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{backend-java/src/main/resources/application.properties}\\[3pt]
+	\textbf{Tiempo estimado:} 20 minutos.
+\end{cajaejercicio}
+
+\subsection{Ventajas, desventajas y cuándo usar MVC}
+\label{sec:u4:ventajas}
+
+Presentar un patrón solo por sus virtudes es mala pedagogía y peor ingeniería. Todo patrón compra algo a cambio de algo, y la decisión profesional consiste en evaluar si el intercambio conviene en un contexto concreto. El MVC compra separación de responsabilidades y paga con indirección.
+
+Del lado de las ganancias, tres son sólidas y están respaldadas por la práctica industrial. La primera es la testabilidad: un modelo que no conoce a la vista puede probarse con JUnit sin levantar un servidor. La segunda es la sustituibilidad de la presentación: la misma lógica puede alimentar una plantilla HTML, una respuesta JSON y un informe PDF. La tercera es la división del trabajo en equipo, que permite que quien maqueta y quien programa el dominio avancen en paralelo sin bloquearse.
+
+Del lado de los costos, también hay tres, y suelen omitirse en la literatura de divulgación. El primero es la cantidad de artefactos: una funcionalidad trivial exige entidad, repositorio, servicio, controlador, DTO y plantilla, seis archivos donde antes bastaba uno. El segundo es la curva de aprendizaje del enrutamiento y la inyección de dependencias, que en Spring es notable. El tercero, más sutil, es la tentación del \emph{modelo anémico}: entidades reducidas a contenedores de atributos con toda la lógica desplazada a los servicios, lo que reproduce la programación procedimental bajo apariencia orientada a objetos.
+
+\begin{cajacritica}{Lectura crítica --- ¿es MVC un patrón o una familia de patrones?}
+	La banda de los cuatro no incluyó al MVC entre sus veintitrés patrones; lo mencionó en la introducción como ejemplo de cómo se combinan patrones más elementales \cite{gamma1995patterns}. Esta observación no es anecdótica. Explica por qué dos \emph{frameworks} que se declaran MVC pueden diferir tanto: no existe una especificación canónica que arbitre. Fowler llegó a proponer que el término se ha vuelto tan elástico que resulta poco informativo, y prefirió catalogar por separado \emph{Front Controller}, \emph{Page Controller}, \emph{Template View} y \emph{Transform View} \cite{fowler2002patterns}. Para efectos de esta asignatura, adoptamos una postura pragmática: MVC nombra una familia de soluciones que comparten el principio de separar estado, presentación y coordinación. Lo evaluable no es la fidelidad al patrón original sino la consistencia de la separación en el código entregado.
+\end{cajacritica}
+
+¿Cuándo conviene entonces? La tabla~\ref{tab:u4:cuando} propone un criterio de decisión basado en el tipo de aplicación. No es una regla mecánica, pero orienta la discusión que cada equipo debe documentar en su registro de decisiones arquitectónicas.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Criterio orientativo para decidir entre MVC del lado del servidor y arquitectura de API con cliente enriquecido.}
+	\label{tab:u4:cuando}
+	\small
+	\begin{tabularx}{\textwidth}{L{4.2cm} X X}
+		\toprule
+		\textbf{Situación} & \textbf{MVC en servidor} & \textbf{API REST + SPA} \\
+		\midrule
+		Sitio de contenido con SEO crítico & Recomendado & Requiere renderizado en servidor \\
+		Panel administrativo interno & Adecuado y económico & Sobredimensionado \\
+		Aplicación con interacción intensa & Costoso en peticiones & Recomendado \\
+		Varios clientes (web, móvil, terceros) & Inviable sin duplicar & Recomendado \\
+		Equipo pequeño sin perfil de \emph{frontend} & Recomendado & Riesgo de sobrecarga \\
+		Requisito de trabajo desconectado & No aplicable & Recomendado \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajaadr}{Decisión arquitectónica ADR-004 --- estilo de presentación del PFC}
+	\textbf{Contexto.} BiblioUTEQ debe atender a personal de biblioteca desde estaciones de escritorio y a estudiantes desde el navegador móvil. El equipo domina Angular por la Unidad~I y Spring Boot por las Unidades~II y~III.\\[3pt]
+	\textbf{Decisión.} Se adopta una arquitectura de API REST con cliente Angular. El módulo administrativo interno se implementa además con MVC del lado del servidor y Thymeleaf, con fines didácticos y para disponer de una interfaz de contingencia sin dependencia de JavaScript.\\[3pt]
+	\textbf{Consecuencias.} Positivas: un único servidor alimenta ambos clientes; el módulo Thymeleaf sirve de banco de pruebas manual. Negativas: se mantienen dos capas de presentación, lo que duplica el esfuerzo de pruebas de interfaz. Se acepta el costo por su valor formativo.\\[3pt]
+	\textbf{Estado.} Aceptada. Registrar en \texttt{docs/adr/ADR-004-estilo-presentacion.md}.
+\end{cajaadr}
+
+
+\subsubsection{Estructura de archivos y modelado del ejercicio 4.A}
+
+Antes de escribir la primera línea conviene saber dónde irá cada archivo. El listado~\ref{lst:u4:arbol-4a} fija la estructura exacta que debe tener el módulo, y la figura~\ref{fig:u4:sec-categoria} traza el recorrido completo de la petición de alta a través de esas clases. Quien tenga ambos a la vista no necesita improvisar ubicaciones ni adivinar quién llama a quién.
+
+\begin{lstlisting}[style=plano,caption={Estructura de archivos del ejercicio 4.A dentro del monorepo del PFC.},label={lst:u4:arbol-4a}]
+biblioteq/
+`-- backend-java/
+    |-- pom.xml
+    `-- src/
+        |-- main/
+        |   |-- java/ec/edu/uteq/biblioteq/
+        |   |   |-- BiblioUteqApplication.java
+        |   |   |-- dominio/
+        |   |   |   `-- Categoria.java                 <- @Entity
+        |   |   |-- repositorio/
+        |   |   |   `-- CategoriaRepository.java       <- JpaRepository
+        |   |   |-- servicio/
+        |   |   |   |-- CategoriaService.java          <- reglas de negocio
+        |   |   |   `-- excepcion/
+        |   |   |       `-- NombreDuplicadoException.java
+        |   |   `-- web/
+        |   |       |-- CategoriaController.java       <- @Controller
+        |   |       `-- form/
+        |   |           `-- CategoriaForm.java         <- DTO + @NotBlank
+        |   `-- resources/
+        |       |-- templates/
+        |       |   |-- layout/
+        |       |   |   `-- base.html                  <- fragmento comun
+        |       |   `-- categorias/
+        |       |       |-- lista.html
+        |       |       `-- formulario.html
+        |       |-- static/css/estilos.css
+        |       |-- db/migration/
+        |       |   `-- V4__crear_tabla_categoria.sql  <- Flyway
+        |       `-- application.properties
+        `-- test/java/ec/edu/uteq/biblioteq/
+            |-- servicio/CategoriaServiceTest.java     <- 4 pruebas JUnit
+            `-- web/CategoriaControllerTest.java       <- MockMvc
+\end{lstlisting}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		font=\scriptsize,
+		actor/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!10,rounded corners=2pt,
+			minimum width=2.1cm,minimum height=0.7cm,align=center},
+		linea/.style={dashed,gray!60},
+		msj/.style={->,>=stealth,semithick,uteqverde!70!black},
+		ret/.style={->,>=stealth,semithick,dashed,uteqdorado!85!black}]
+
+		\node[actor] (n1) at (0,0)    {Navegador};
+		\node[actor] (n2) at (3.1,0)  {Dispatcher\\Servlet};
+		\node[actor] (n3) at (6.2,0)  {Categoria\\Controller};
+		\node[actor] (n4) at (9.3,0)  {Categoria\\Service};
+		\node[actor] (n5) at (12.6,0) {Repositorio\\+ PostgreSQL};
+
+		\foreach \n in {n1,n2,n3,n4,n5} { \draw[linea] (\n.south) -- ++(0,-8.4); }
+
+		\draw[msj] (n1|-0,-1.0) -- node[above]{1: POST /categorias (datos del formulario)} (n2|-0,-1.0);
+		\draw[msj] (n2|-0,-1.8) -- node[above]{2: guardar(CategoriaForm, BindingResult)} (n3|-0,-1.8);
+		\draw[msj] (n3|-0,-2.6) -- node[above]{3: registrarCategoria(form)} (n4|-0,-2.6);
+		\draw[msj] (n4|-0,-3.4) -- node[above]{4: existsByNombre(nombre)} (n5|-0,-3.4);
+		\draw[ret] (n5|-0,-4.2) -- node[above]{5: false} (n4|-0,-4.2);
+		\draw[msj] (n4|-0,-5.0) -- node[above]{6: save(categoria)} (n5|-0,-5.0);
+		\draw[ret] (n5|-0,-5.8) -- node[above]{7: entidad con id} (n4|-0,-5.8);
+		\draw[ret] (n4|-0,-6.6) -- node[above]{8: id} (n3|-0,-6.6);
+		\draw[ret] (n3|-0,-7.4) -- node[above]{9: "redirect:/categorias"} (n2|-0,-7.4);
+		\draw[ret] (n2|-0,-8.2) -- node[above]{10: 302 Location: /categorias} (n1|-0,-8.2);
+
+		\node[draw=red!60!black,fill=red!5,rounded corners=2pt,align=left,
+			text width=6.0cm,anchor=north west,font=\scriptsize]
+			at (0.1,-9.0)
+			{\textbf{Flujo alterno.} Si el paso~5 devuelve \texttt{true}, el servicio lanza
+			\texttt{NombreDuplicadoException}; el controlador la traduce a un error de campo
+			y devuelve la vista \texttt{categorias/formulario} con estado 200, sin redirección.};
+	\end{tikzpicture}
+	\caption{Diagrama de secuencia del alta de una categoría. Las flechas continuas representan llamadas; las discontinuas, retornos. Los pasos 4 a 7 ocurren dentro de una única transacción.}
+	\label{fig:u4:sec-categoria}
+\end{figure}
+
+\begin{cajaejercicio}{Ejercicio integrador 4.A --- CRUD completo con MVC del lado del servidor}
+	\textbf{Enunciado.} Construya el módulo de gestión de categorías de BiblioUTEQ aplicando MVC del lado del servidor con Spring Boot y Thymeleaf. El módulo debe cubrir las cinco operaciones del CRUD y respetar estrictamente la separación de capas.\\[4pt]
+	\textbf{Requisitos funcionales.}
+	\begin{enumerate}
+		\item Listado paginado de categorías con diez elementos por página, ordenado alfabéticamente.
+		\item Formulario de alta con validación de servidor: nombre obligatorio, entre 3 y 60 caracteres, único en la tabla.
+		\item Edición mediante formulario precargado, accesible en \texttt{/categorias/\{id\}/editar}.
+		\item Baja lógica, no física: la categoría se marca como inactiva y deja de listarse.
+		\item Búsqueda por fragmento de nombre mediante parámetro de consulta.
+	\end{enumerate}
+	\textbf{Requisitos de diseño de obligado cumplimiento.}
+	\begin{itemize}
+		\item El controlador no puede contener sentencias SQL, llamadas a repositorios ni reglas de negocio.
+		\item La validación se declara con anotaciones sobre el DTO de formulario, jamás sobre la entidad.
+		\item Los errores de validación se devuelven a la misma vista con los mensajes junto a cada campo.
+		\item Tras un alta o edición exitosa se aplica el patrón \emph{Post/Redirect/Get} para evitar reenvíos.
+		\item El servicio expone métodos con nombres del dominio (\texttt{registrarCategoria}, \texttt{desactivarCategoria}), no verbos técnicos.
+	\end{itemize}
+	\textbf{Estructura y modelado.} El módulo debe respetar exactamente la estructura de archivos del listado~\ref{lst:u4:arbol-4a} y el recorrido de la figura~\ref{fig:u4:sec-categoria}, incluido el flujo alterno de nombre duplicado.\\[4pt]
+	\textbf{Entregables.} Código en el repositorio bajo \texttt{backend-java/}, con al menos cuatro pruebas de JUnit sobre el servicio (alta válida, nombre duplicado, nombre corto, baja lógica) y una prueba de \texttt{MockMvc} que verifique el código 302 tras el alta. Documento \texttt{docs/unidad4/taller-mvc.md} con capturas de las cinco pantallas y una explicación de dos párrafos sobre qué quedó en cada capa y por qué.\\[4pt]
+	\textbf{Criterios de piso.} El PDF entregado en el SGA debe incluir carátula con la URL del repositorio en una sola línea; si la URL está rota o el repositorio es inaccesible, la calificación es CERO. Si el proyecto no compila y arranca tras clonar el repositorio siguiendo las instrucciones del \texttt{README.md}, la calificación es CERO.\\[4pt]
+	\textbf{Tiempo estimado:} 6 a 8 horas de trabajo autónomo.
+\end{cajaejercicio}
+
+% =====================================================================
+\section{Implementación del Patrón MVC con Frameworks}
+\label{sec:u4:frameworks}
+
+\subsection{Frameworks MVC: panorama comparativo}
+\label{sec:u4:panorama}
+
+Ningún equipo profesional implementa el despacho de peticiones desde cero. Se elige un \emph{framework}, y esa elección condiciona el proyecto durante años. Conviene entonces que sea razonada y no heredada de la última tecnología que alguien vio en un vídeo.
+
+Los criterios que realmente pesan en la industria son cinco, y ninguno es la popularidad. El primero es la disponibilidad de talento en el mercado local: un sistema escrito en un \emph{framework} que nadie más domina en la región se vuelve inmantenible cuando el autor se va. El segundo es el ciclo de vida de las versiones y su ventana de soporte, porque una versión sin parches de seguridad es un pasivo. El tercero es la madurez del ecosistema de bibliotecas para las tareas transversales: autenticación, migraciones, colas, envío de correo. El cuarto es el costo operativo del despliegue. El quinto, muchas veces decisivo en el sector público ecuatoriano, es la compatibilidad con la infraestructura ya contratada.
+
+La tabla~\ref{tab:u4:comparativa} contrasta cinco \emph{frameworks} de amplia adopción. Las versiones indicadas corresponden a las líneas estables vigentes a mediados de 2026 y deben verificarse antes de iniciar cualquier proyecto.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Comparativa de \emph{frameworks} MVC de amplia adopción industrial.}
+	\label{tab:u4:comparativa}
+	\scriptsize
+	\begin{tabularx}{\textwidth}{L{2.1cm} L{1.9cm} L{2.4cm} L{2.4cm} X}
+		\toprule
+		\textbf{Framework} & \textbf{Lenguaje} & \textbf{Motor de vistas} & \textbf{Acceso a datos} & \textbf{Rasgo diferencial} \\
+		\midrule
+		Spring Boot 4 & Java 21+ & Thymeleaf & Spring Data JPA & Inyección de dependencias madura; dominio absoluto en banca y sector público \\
+		Laravel 13 & PHP 8.4 & Blade & Eloquent (Active Record) & Productividad muy alta; hospedaje compartido económico \\
+		ASP.NET Core 10 & C\# 13 & Razor & Entity Framework Core & Integración nativa con el ecosistema Microsoft \\
+		Django 5 & Python 3.12 & Django Templates & Django ORM & Panel de administración generado automáticamente \\
+		Express 5 & Node.js 22 & Diversos & Prisma o TypeORM & Minimalista; el patrón lo impone el equipo \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Dos observaciones sobre esa tabla merecen comentario. La primera es que Express no impone estructura alguna: quien lo elige asume la responsabilidad de definir y hacer cumplir la separación de capas, lo que en equipos junior degenera con frecuencia en carpetas MVC que contienen código sin separación real. La segunda es que Spring Boot y Laravel encarnan dos filosofías opuestas de acceso a datos. Spring Data JPA sigue el patrón \emph{Data Mapper}, con entidades ignorantes de la base; Eloquent sigue \emph{Active Record}, donde la propia entidad sabe guardarse \cite{fowler2002patterns}. La consecuencia práctica es visible: en Laravel se escribe \texttt{\$libro->save()}; en Spring, \texttt{repositorio.save(libro)}.
+
+\begin{cajacompara}{Data Mapper frente a Active Record}
+	\textbf{Active Record} (Eloquent, Rails). La entidad hereda de una clase base que le confiere métodos de persistencia. Ventaja: menos código y curva de entrada muy suave. Costo: la entidad depende de la infraestructura, lo que dificulta probarla sin base de datos y viola el principio de inversión de dependencias.\\[3pt]
+	\textbf{Data Mapper} (JPA/Hibernate, Doctrine). Un objeto intermedio traduce entre entidades y tablas; la entidad no conoce la base. Ventaja: dominio puro y probable en aislamiento. Costo: más artefactos y una curva de aprendizaje más pronunciada, sobre todo en el manejo del contexto de persistencia.\\[3pt]
+	\textbf{Criterio para el PFC.} Ambos son legítimos. Lo que la rúbrica evalúa no es cuál se eligió, sino si la elección está documentada en un ADR y si el código es coherente con ella. Mezclar ambos enfoques en un mismo proyecto sí se penaliza.
+\end{cajacompara}
+
+\begin{cajaejercicio}{Ejercicio corto 4.4 --- matriz de decisión}
+	Elabore una matriz de decisión ponderada para elegir el \emph{framework} de un sistema de matrícula en línea de una unidad educativa fiscal de Quevedo. Use los cinco criterios enunciados al inicio de esta subsección, asigne pesos que sumen 100, califique cada \emph{framework} de la tabla~\ref{tab:u4:comparativa} en escala de 1 a 5 y calcule el puntaje ponderado. Redacte un párrafo justificando los pesos elegidos.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{docs/adr/ADR-005-eleccion-framework.md}\\[3pt]
+	\textbf{Tiempo estimado:} 25 minutos.
+\end{cajaejercicio}
+
+\subsection{Laravel: el framework MVC de PHP}
+\label{sec:u4:laravel}
+
+Laravel se estudia en esta unidad por una razón concreta: es el \emph{framework} que un egresado de la carrera encontrará con mayor probabilidad en la pequeña y mediana empresa ecuatoriana, donde PHP domina por el bajo costo del hospedaje. También es un excelente contraste didáctico frente a Spring, porque resuelve los mismos problemas con decisiones de diseño casi opuestas.
+
+Taylor Otwell publicó la primera versión en junio de 2011 como alternativa a CodeIgniter, entonces dominante pero carente de autenticación integrada. La adopción masiva llegó con la versión 4, que reconstruyó el \emph{framework} sobre componentes de Symfony y adoptó Composer como gestor de dependencias. Desde entonces el ritmo de publicación es anual y la documentación oficial es, junto con el trabajo de referencia de Stauffer \cite{stauffer2023laravel}, la fuente primaria recomendada.
+
+\subsubsection{Estructura de un proyecto}
+
+Un proyecto Laravel recién creado impone una organización de carpetas que materializa el patrón. Conocerla ahorra tiempo: cuando el estudiante sabe dónde va cada cosa, deja de improvisar ubicaciones. El listado~\ref{lst:u4:estructura} recoge las carpetas que concentran el trabajo de esta unidad; el resto del esqueleto se omite por no ser relevante aquí.
+
+\begin{lstlisting}[style=plano,caption={Estructura de carpetas relevante de un proyecto Laravel.},label={lst:u4:estructura}]
+biblioteq-laravel/
+|-- app/
+|   |-- Http/
+|   |   |-- Controllers/      <- controladores
+|   |   `-- Requests/         <- validacion (FormRequest)
+|   |-- Models/               <- modelos Eloquent
+|   |-- Services/             <- reglas de negocio (creada a mano)
+|   `-- Providers/            <- registro de servicios
+|-- bootstrap/
+|   `-- app.php               <- middleware, rutas y excepciones
+|-- database/
+|   |-- migrations/           <- versionado del esquema
+|   `-- seeders/              <- datos de prueba
+|-- resources/
+|   `-- views/                <- plantillas Blade
+|-- routes/
+|   |-- web.php               <- rutas con sesion
+|   |-- console.php           <- comandos y tareas programadas
+|   `-- api.php               <- solo tras "php artisan install:api"
+|-- public/
+|   `-- index.php             <- unico punto de entrada
+`-- .env                      <- configuracion por entorno
+\end{lstlisting}
+
+Dos carpetas concentran la mayor parte del trabajo diario. En \texttt{routes/} se declara qué URL atiende qué controlador; en \texttt{app/Http/Controllers/} se implementa la coordinación. La separación entre \texttt{web.php} y \texttt{api.php} no es cosmética: el primer archivo aplica automáticamente el manejo de sesión y la protección CSRF, mientras el segundo prescinde de ambos por tratarse de servicios sin estado.
+
+Tres particularidades del esqueleto conviene fijarlas ahora, porque cambiaron con la versión~11 y contradicen a la mayoría de los tutoriales que siguen circulando. No existen \texttt{app/Http/Kernel.php} ni \texttt{app/Console/Kernel.php}: el registro de \emph{middleware}, el manejo de excepciones y la carga de rutas se declaran en \texttt{bootstrap/app.php} mediante el constructor fluido \texttt{Application::configure()}. La carpeta \texttt{app/Http/Middleware/} tampoco viene creada, y solo aparece cuando se genera un \emph{middleware} propio con \texttt{artisan}. Y \texttt{routes/api.php} no forma parte de la instalación por defecto: hay que solicitarlo con \texttt{php artisan install:api}, orden que además incorpora Sanctum y publica la migración de testigos de acceso.
+
+\begin{cajaadvertencia}{Verifique el esqueleto antes de seguir un tutorial}
+	Un estudiante que busque «registrar middleware en Laravel» encontrará decenas de resultados que le indicarán editar \texttt{app/Http/Kernel.php}. Ese archivo lleva sin existir desde 2024. El síntoma es inconfundible: se crea el archivo a mano, no ocurre nada y se pierde una tarde. La regla práctica es sencilla: cuando un tutorial mencione \texttt{Kernel.php}, \texttt{app/Exceptions/Handler.php} o la propiedad \texttt{\$casts} en el modelo, está escrito para Laravel~10 o anterior y debe traducirse a \texttt{bootstrap/app.php} y al método \texttt{casts()}.
+\end{cajaadvertencia}
+
+\subsubsection{Enrutamiento}
+
+La declaración de una ruta en Laravel es una sola línea. El listado~\ref{lst:u4:ruta} muestra la forma mínima, que asocia un verbo HTTP, un patrón de URI y un método de controlador.
+
+\begin{lstlisting}[style=php,caption={Declaracion minima de una ruta en Laravel.},label={lst:u4:ruta}]
+<?php
+use App\Http\Controllers\LibroController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/libros', [LibroController::class, 'index'])->name('libros.index');
+\end{lstlisting}
+
+El método \texttt{name()} asigna un identificador lógico a la ruta. Esa práctica, que muchos estudiantes omiten, permite generar URLs con \texttt{route('libros.index')} en lugar de escribirlas a mano, de modo que un cambio en el patrón de URI no obliga a buscar y reemplazar en decenas de plantillas.
+
+Cuando un recurso requiere las siete rutas convencionales del CRUD, una sola instrucción las declara todas. El listado~\ref{lst:u4:resource} muestra esa forma abreviada.
+
+\begin{lstlisting}[style=php,caption={Declaracion de las siete rutas convencionales de un recurso.},label={lst:u4:resource}]
+<?php
+Route::resource('libros', LibroController::class);
+
+// Equivale a: index, create, store, show, edit, update, destroy
+\end{lstlisting}
+
+\begin{cajaejercicio}{Ejercicio corto 4.5 --- inventario de rutas}
+	Ejecute la orden \texttt{route:list} de \texttt{artisan} en un proyecto donde haya declarado el recurso anterior. Copie la salida y elabore una tabla de tres columnas ---verbo, URI y método del controlador--- para las siete rutas. Indique cuáles de ellas son idempotentes según la semántica de la RFC~9110 \cite{rfc9110} y justifique cada caso en una línea.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{backend-php/routes/web.php} y \ruta{docs/unidad4/inventario-rutas.md}\\[3pt]
+	\textbf{Tiempo estimado:} 15 minutos.
+\end{cajaejercicio}
+
+\subsubsection{Modelos con Eloquent}
+
+Un modelo Eloquent hereda de la clase \texttt{Model} y, por convención, se corresponde con una tabla cuyo nombre es el plural en minúsculas del nombre de la clase. El listado~\ref{lst:u4:modelo} muestra la declaración mínima junto con la única propiedad que nunca debe omitirse.
+
+\begin{lstlisting}[style=php,caption={Modelo Eloquent minimo con proteccion contra asignacion masiva.},label={lst:u4:modelo}]
+<?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Libro extends Model
+{
+	// Solo estos atributos aceptan asignacion masiva
+	protected $fillable = ['isbn', 'titulo', 'anio_publicacion', 'categoria_id'];
+}
+\end{lstlisting}
+
+La propiedad \texttt{\$fillable} merece un comentario extenso porque su omisión es una vulnerabilidad real, no una advertencia teórica. Si el modelo no declara qué atributos aceptan asignación masiva, un atacante puede añadir campos al formulario ---por ejemplo \texttt{es\_administrador=1}--- y Eloquent los asignará sin objeciones. El riesgo aparece catalogado como \emph{Broken Object Property Level Authorization} en la clasificación de seguridad de interfaces de OWASP \cite{owasp2023api}. Un modelo sin \texttt{\$fillable} ni \texttt{\$guarded} se considera defecto de seguridad en la rúbrica de esta unidad.
+
+Las relaciones entre modelos se declaran como métodos. El listado~\ref{lst:u4:relacion} muestra las dos direcciones de una relación uno a muchos entre categoría y libro.
+
+\begin{lstlisting}[style=php,caption={Relaciones uno a muchos en ambas direcciones.},label={lst:u4:relacion}]
+<?php
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+// En App\Models\Categoria
+public function libros(): HasMany
+{
+	return $this->hasMany(Libro::class);
+}
+
+// En App\Models\Libro
+public function categoria(): BelongsTo
+{
+	return $this->belongsTo(Categoria::class);
+}
+\end{lstlisting}
+
+\subsubsection{Controladores y validación}
+
+El controlador de Laravel cumple exactamente el mismo papel que su equivalente en Spring, con una diferencia notable en la validación: Laravel permite declararla en una clase de petición aparte, que se ejecuta antes de que el método del controlador reciba el control. El listado~\ref{lst:u4:request} muestra esa clase, y el listado~\ref{lst:u4:controlador-laravel} el método que la consume.
+
+\begin{lstlisting}[style=php,caption={Clase de peticion con reglas de validacion declarativas.},label={lst:u4:request}]
+<?php
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class GuardarLibroRequest extends FormRequest
+{
+	// Sin este metodo la peticion se rechaza con 403 en los proyectos
+	// generados por versiones antiguas de "make:request".
+	public function authorize(): bool
+	{
+		return $this->user()?->can('gestionar-catalogo') ?? false;
+	}
+
+	public function rules(): array
+	{
+		return [
+			'isbn'             => ['required', 'string', 'size:17', 'unique:libros,isbn'],
+			'titulo'           => ['required', 'string', 'min:3', 'max:200'],
+			'anio_publicacion' => ['required', 'integer', 'between:1450,' . date('Y')],
+			'categoria_id'     => ['required', 'exists:categorias,id'],
+		];
+	}
+
+	public function messages(): array
+	{
+		return ['isbn.unique' => 'Ya existe un libro registrado con ese ISBN.'];
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=php,caption={Metodo de controlador que recibe la peticion ya validada.},label={lst:u4:controlador-laravel}]
+<?php
+namespace App\Http\Controllers;
+
+use App\Http\Requests\GuardarLibroRequest;
+use App\Services\CatalogoService;
+
+class LibroController extends Controller
+{
+	public function __construct(private CatalogoService $catalogo) {}
+
+	public function store(GuardarLibroRequest $peticion)
+	{
+		// Si la ejecucion llega aqui, los datos ya son validos
+		$this->catalogo->registrarLibro($peticion->validated());
+
+		return redirect()
+			->route('libros.index')
+			->with('exito', 'Libro registrado correctamente.');
+	}
+}
+\end{lstlisting}
+
+Repárese en que el método tiene tres líneas útiles y que la validación no aparece en ninguna de ellas. Cuando Laravel detecta que el parámetro es una subclase de \texttt{FormRequest}, ejecuta las reglas antes de invocar el método; si alguna falla, redirige automáticamente al formulario anterior con los errores y los valores previos. Ese mecanismo elimina el bloque de comprobaciones manuales que suele degradar los controladores.
+
+\subsubsection{Vistas con Blade}
+
+Blade compila las plantillas a PHP puro y las almacena en caché, de modo que el costo de la abstracción es nulo en ejecución. Su sintaxis se apoya en directivas que empiezan por arroba. El listado~\ref{lst:u4:blade} muestra una plantilla que hereda de un diseño base, recorre una colección y contempla el caso vacío.
+
+\begin{lstlisting}[style=php,caption={Plantilla Blade con herencia de diseno y manejo del caso vacio.},label={lst:u4:blade}]
+@extends('layouts.app')
+
+@section('titulo', 'Catalogo de libros')
+
+@section('contenido')
+	@if (session('exito'))
+		<div class="alerta-exito">{{ session('exito') }}</div>
+	@endif
+
+	<table class="tabla-catalogo">
+		@forelse ($libros as $libro)
+			<tr>
+				<td>{{ $libro->titulo }}</td>
+				<td>{{ $libro->categoria->nombre }}</td>
+			</tr>
+		@empty
+			<tr><td colspan="2">No hay libros registrados.</td></tr>
+		@endforelse
+	</table>
+
+	{{ $libros->links() }}
+@endsection
+\end{lstlisting}
+
+La doble llave escapa el contenido automáticamente, lo que neutraliza los intentos de inyección de scripts. Quien necesite emitir HTML sin escapar debe usar la sintaxis \texttt{\{!! \$variable !!\}}, y hacerlo es una decisión que debe justificarse: es exactamente el punto por donde entra un ataque de \emph{cross-site scripting} \cite{owasp2021top10}.
+
+\begin{cajaadvertencia}{Trampa clásica --- el problema N+1 en la plantilla}
+	El listado anterior contiene una bomba de tiempo. La expresión \texttt{\$libro->categoria->nombre} dispara una consulta por cada libro de la página, porque Eloquent carga las relaciones de forma perezosa. Con diez libros son once consultas; con doscientos, doscientas una. La solución cabe en una línea en el controlador: \texttt{Libro::with('categoria')->paginate(10)}. Active \texttt{Model::preventLazyLoading()} en el entorno de desarrollo para que Laravel lance una excepción cuando esto ocurra, en lugar de degradar silenciosamente el rendimiento.
+\end{cajaadvertencia}
+
+\subsubsection{Migraciones}
+
+El esquema de la base se versiona en archivos de migración, nunca mediante sentencias ejecutadas a mano en un cliente gráfico. Esta práctica es innegociable en el PFC porque es la única que permite reconstruir la base desde cero en cualquier máquina. El listado~\ref{lst:u4:migracion} muestra una migración típica.
+
+\begin{lstlisting}[style=php,caption={Migracion que crea la tabla de libros con su clave foranea.},label={lst:u4:migracion}]
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+	public function up(): void
+	{
+		Schema::create('libros', function (Blueprint $tabla) {
+			$tabla->id();
+			$tabla->string('isbn', 17)->unique();
+			$tabla->string('titulo', 200);
+			$tabla->unsignedSmallInteger('anio_publicacion');
+			$tabla->foreignId('categoria_id')->constrained('categorias');
+			$tabla->timestamps();
+		});
+	}
+
+	public function down(): void
+	{
+		Schema::dropIfExists('libros');
+	}
+};
+\end{lstlisting}
+
+\begin{cajaejercicio}{Ejercicio corto 4.6 --- ciclo completo de migración}
+	Genere la migración de la tabla \texttt{ejemplares} con \texttt{php artisan make:migration crear\_tabla\_ejemplares}. Incluya el código de barras único, la clave foránea hacia \texttt{libros}, un campo de estado con valores restringidos a \texttt{disponible}, \texttt{prestado} y \texttt{baja}, y las marcas de tiempo. Ejecute \texttt{php artisan migrate}, verifique el esquema, revierta con \texttt{php artisan migrate:rollback} y confirme que la tabla desapareció.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{backend-php/database/migrations/AAAA\_MM\_DD\_HHMMSS\_crear\_tabla\_ejemplares.php}\\[3pt]
+	\textbf{Tiempo estimado:} 25 minutos.
+\end{cajaejercicio}
+
+\begin{cajacompara}{El mismo caso de uso en Spring Boot y en Laravel}
+	\textbf{Ruta.} Spring: anotación \texttt{@GetMapping("/libros")} sobre el método. Laravel: línea declarativa en \texttt{routes/web.php}.\\[3pt]
+	\textbf{Persistencia.} Spring: interfaz \texttt{LibroRepository extends JpaRepository}, sin implementación. Laravel: el propio modelo expone \texttt{Libro::all()}.\\[3pt]
+	\textbf{Validación.} Spring: anotaciones \texttt{@NotBlank} y \texttt{@Size} sobre el DTO más \texttt{@Valid} en la firma. Laravel: clase \texttt{FormRequest} con reglas en forma de arreglo.\\[3pt]
+	\textbf{Vista.} Spring: Thymeleaf con atributos \texttt{th:*} sobre HTML válido. Laravel: Blade con directivas \texttt{@}.\\[3pt]
+	\textbf{Inyección de dependencias.} Spring: contenedor explícito con estereotipos. Laravel: contenedor con resolución automática por tipo.\\[3pt]
+	\textbf{Lectura.} La conclusión no es que uno sea superior. Es que el patrón sobrevive intacto a dos implementaciones muy distintas, lo que confirma que MVC describe una organización de responsabilidades y no una tecnología.
+\end{cajacompara}
+
+\subsection{Desarrollo de un proyecto integrador con MVC}
+\label{sec:u4:integrador-mvc}
+
+Los ejercicios cortos anteriores validan piezas sueltas. El proyecto que sigue exige ensamblarlas y sostener decisiones. Se plantea sobre el mismo dominio trabajado en Spring Boot, de modo que el estudiante pueda comparar experiencias reales y no impresiones.
+
+
+\subsubsection{Estructura de archivos y modelado del ejercicio 4.B}
+
+Las cinco reglas de negocio del enunciado son difíciles de programar bien si antes no se han dibujado. Dos diagramas bastan. El primero, la figura~\ref{fig:u4:estados-ejemplar}, fija los estados que puede tomar un ejemplar y las transiciones legales entre ellos; todo cambio de estado que no aparezca en ese diagrama es un defecto. El segundo, la figura~\ref{fig:u4:act-devolucion}, descompone la devolución, que es el punto donde se concentran las decisiones. El listado~\ref{lst:u4:arbol-4b} indica dónde vive cada archivo.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		font=\scriptsize,
+		estado/.style={rectangle,rounded corners=8pt,draw=uteqverde,thick,fill=uteqverde!8,
+			minimum width=2.1cm,minimum height=0.85cm,align=center},
+		ini/.style={circle,fill=black,minimum size=5pt,inner sep=0pt},
+		fin/.style={circle,draw=black,thick,minimum size=9pt,inner sep=0pt},
+		tr/.style={->,>=stealth,semithick,uteqverde!65!black}]
+
+		\node[ini] (i) at (-2.6,0) {};
+		\node[estado] (disp) at (0,0) {disponible};
+		\node[estado] (res) at (0,2.7) {reservado};
+		\node[estado] (pres) at (5.0,0) {prestado};
+		\node[estado,fill=red!8,draw=red!60!black] (baja) at (5.0,-2.7) {baja};
+		\node[fin] (f) at (8.6,-2.7) {};
+		\fill (f) circle (2.4pt);
+
+		\draw[tr] (i) -- node[above]{alta} (disp);
+		\draw[tr] (disp) to[bend left=22] node[above]{prestar} (pres);
+		\draw[tr] (pres) to[bend left=22] node[below]{devolver [sin reserva]} (disp);
+		\draw[tr] (disp) to[bend left=22] node[left,align=right]{reservar} (res);
+		\draw[tr] (res) to[bend left=22] node[right,align=left]{caducar\\(48 h)} (disp);
+		\draw[tr] (res) -- node[above,sloped]{retirar reserva} (pres);
+		\draw[tr] (pres) -- node[right]{declarar pérdida} (baja);
+		\draw[tr] (disp) |- node[below,pos=0.72]{dar de baja} (baja);
+		\draw[tr] (baja) -- (f);
+		\draw[tr] (pres) to[out=-25,in=25,looseness=6] node[right,align=left]{renovar\\(máx. 1 vez)} (pres);
+	\end{tikzpicture}
+	\caption{Diagrama de estados del ejemplar. Solo las transiciones dibujadas son legales; el servicio debe rechazar cualquier otra con una excepción de dominio.}
+	\label{fig:u4:estados-ejemplar}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		font=\scriptsize,
+		acc/.style={rectangle,rounded corners=4pt,draw=uteqverde,thick,fill=uteqverde!8,
+			minimum width=4.4cm,minimum height=0.8cm,align=center},
+		dec/.style={diamond,draw=uteqdorado!85!black,thick,fill=uteqdorado!12,
+			aspect=2.4,inner sep=1pt,align=center},
+		ini/.style={circle,fill=black,minimum size=6pt,inner sep=0pt},
+		fin/.style={circle,draw=black,thick,minimum size=10pt,inner sep=0pt},
+		fl/.style={->,>=stealth,semithick,uteqverde!65!black}]
+
+		\node[ini] (i) at (0,0) {};
+		\node[acc,below=0.55cm of i] (reg) {Registrar fecha real de devolución};
+		\node[dec,below=0.55cm of reg] (d1) {¿fecha real $>$ fecha comprometida?};
+		\node[acc,below=1.5cm of d1] (calc) {Calcular días de retraso $d$};
+		\node[acc,below=0.5cm of calc] (mul) {multa $=\min(0{,}25 \times d\;;\;20)$};
+		\node[acc,below=0.5cm of mul] (regm) {Registrar multa al usuario};
+		\node[circle,draw,minimum size=6pt,inner sep=0pt,below=0.55cm of regm] (m) {};
+		\node[acc,below=0.55cm of m] (est) {Actualizar estado del ejemplar};
+		\node[dec,below=0.6cm of est] (d2) {¿existe reserva pendiente del título?};
+		\node[acc,below=1.5cm of d2] (notif) {Asignar a la reserva y notificar};
+		\node[acc,below=0.5cm of notif] (fin1) {Ejemplar queda en \texttt{reservado}};
+		\node[acc,right=1.5cm of fin1,minimum width=3.6cm] (fin2) {Ejemplar queda en \texttt{disponible}};
+		\node[fin,below=0.6cm of fin1] (f) {};
+		\fill (f) circle (2.6pt);
+
+		\draw[fl] (i) -- (reg);
+		\draw[fl] (reg) -- (d1);
+		\draw[fl] (d1) -- node[left,pos=0.35]{sí} (calc);
+		\draw[fl] (calc) -- (mul);
+		\draw[fl] (mul) -- (regm);
+		\draw[fl] (regm) -- (m);
+		\draw[fl] (d1.east) -- node[above,pos=0.25]{no} ++(3.5,0) |- (m.east);
+		\draw[fl] (m) -- (est);
+		\draw[fl] (est) -- (d2);
+		\draw[fl] (d2) -- node[left,pos=0.35]{sí} (notif);
+		\draw[fl] (notif) -- (fin1);
+		\draw[fl] (d2.east) -- node[above,pos=0.2]{no} ++(3.2,0) |- (fin2.north);
+		\draw[fl] (fin1) -- (f);
+		\draw[fl] (fin2) |- (f.east);
+	\end{tikzpicture}
+	\caption{Diagrama de actividades del proceso de devolución. El tope de 20 dólares se aplica dentro del cálculo, no después de registrarla.}
+	\label{fig:u4:act-devolucion}
+\end{figure}
+
+\begin{lstlisting}[style=plano,caption={Estructura de archivos del ejercicio 4.B dentro del monorepo del PFC.},label={lst:u4:arbol-4b}]
+biblioteq/
+`-- backend-php/
+    |-- composer.json
+    |-- .env.example                             <- sin credenciales reales
+    |-- app/
+    |   |-- Models/
+    |   |   |-- Usuario.php
+    |   |   |-- Ejemplar.php
+    |   |   |-- Prestamo.php
+    |   |   `-- Multa.php
+    |   |-- Services/
+    |   |   |-- PrestamoService.php               <- las 5 reglas de negocio
+    |   |   `-- CalculadoraMultas.php             <- tope de 20 dolares
+    |   |-- Enums/
+    |   |   `-- EstadoEjemplar.php                <- disponible|reservado|prestado|baja
+    |   |-- Exceptions/
+    |   |   |-- LimitePrestamosException.php
+    |   |   `-- UsuarioConMultasException.php
+    |   |-- Http/
+    |   |   |-- Controllers/
+    |   |   |   `-- PrestamoController.php
+    |   |   `-- Requests/
+    |   |       `-- RegistrarPrestamoRequest.php
+    |   `-- Providers/AppServiceProvider.php      <- preventLazyLoading()
+    |-- database/
+    |   |-- migrations/
+    |   |   |-- ..._crear_tabla_ejemplares.php
+    |   |   |-- ..._crear_tabla_prestamos.php
+    |   |   `-- ..._crear_tabla_multas.php
+    |   `-- seeders/
+    |       `-- DatosDemoSeeder.php               <- 20 usuarios, 100 ejemplares
+    |-- resources/views/
+    |   |-- layouts/app.blade.php
+    |   `-- prestamos/
+    |       |-- index.blade.php
+    |       |-- crear.blade.php
+    |       `-- devolver.blade.php
+    |-- routes/web.php
+    `-- tests/Feature/
+        |-- LimitePrestamosTest.php               <- regla 1
+        |-- UsuarioConMultasTest.php              <- regla 2
+        |-- EstadoEjemplarTest.php                <- regla 3
+        |-- PlazoQuinceDiasTest.php               <- regla 4
+        `-- CalculoMultaTest.php                  <- regla 5 (incluye el tope)
+\end{lstlisting}
+
+\begin{cajaejercicio}{Ejercicio integrador 4.B --- módulo de préstamos en Laravel}
+	\textbf{Contexto.} La biblioteca necesita registrar préstamos y devoluciones de ejemplares. Cada préstamo vincula un usuario con un ejemplar concreto, tiene fecha de salida, fecha comprometida de devolución y fecha real de devolución cuando corresponde.\\[4pt]
+	\textbf{Reglas de negocio de obligado cumplimiento.}
+	\begin{enumerate}
+		\item Un usuario no puede mantener más de tres préstamos activos de forma simultánea.
+		\item Un usuario con multas impagas no puede iniciar un préstamo nuevo.
+		\item Solo se puede prestar un ejemplar cuyo estado sea \texttt{disponible}; al prestarlo pasa a \texttt{prestado}.
+		\item El plazo por defecto es de quince días corridos desde la fecha de salida.
+		\item Al devolver con retraso se genera automáticamente una multa de 0,25 dólares por día, con un tope de 20 dólares.
+	\end{enumerate}
+	\textbf{Requisitos técnicos.}
+	\begin{itemize}
+		\item Las cinco reglas anteriores residen en una clase de servicio bajo \texttt{app/Services/}, jamás en el controlador ni en el modelo.
+		\item El registro de préstamo y el cambio de estado del ejemplar ocurren dentro de una misma transacción de base de datos.
+		\item Las consultas de listado usan carga anticipada de relaciones; se debe activar \texttt{preventLazyLoading} en desarrollo.
+		\item El esquema se define exclusivamente mediante migraciones, con al menos un \emph{seeder} que genere veinte usuarios y cien ejemplares.
+		\item Las vistas heredan de un diseño base común y muestran los mensajes de error de validación junto a cada campo.
+	\end{itemize}
+	\textbf{Estructura y modelado.} La implementación debe seguir la estructura del listado~\ref{lst:u4:arbol-4b}. Las transiciones de estado del ejemplar se ajustan sin excepción a la figura~\ref{fig:u4:estados-ejemplar}, y el proceso de devolución al de la figura~\ref{fig:u4:act-devolucion}. Antes de programar, cada equipo redibuja ambos diagramas en su documentación con las modificaciones que su dominio requiera.\\[4pt]
+	\textbf{Pruebas exigidas.} Cinco pruebas automatizadas con PHPUnit o Pest, una por cada regla de negocio, que verifiquen tanto el camino feliz como el rechazo. La prueba de la multa debe cubrir el caso del tope de 20 dólares.\\[4pt]
+	\textbf{Informe comparativo.} Documento \texttt{docs/unidad4/comparativa-frameworks.md} de entre dos y tres páginas que contraste esta implementación con el módulo equivalente en Spring Boot, sobre cuatro ejes: cantidad de archivos creados, tiempo invertido, facilidad para escribir las pruebas y claridad de la separación de capas. El informe debe cerrar con una recomendación argumentada para un escenario concreto, no con una preferencia personal.\\[4pt]
+	\textbf{Criterios de piso.} Rigen los dos criterios generales de la asignatura: carátula del PDF con la URL del repositorio visible en una sola línea, y reconstrucción exitosa del proyecto siguiendo el \texttt{README.md}. Adicionalmente, un proyecto sin migraciones ---esquema creado a mano--- recibe calificación CERO en este taller.\\[4pt]
+	\textbf{Tiempo estimado:} 10 a 12 horas de trabajo en equipo.
+\end{cajaejercicio}
+
+\begin{cajabuenas}{Diez prácticas profesionales para trabajar con frameworks MVC}
+	\begin{enumerate}
+		\item Un controlador de más de treinta líneas por método es una señal de que hay lógica mal ubicada.
+		\item Toda regla de negocio vive en un servicio y tiene al menos una prueba automatizada asociada.
+		\item El esquema de la base se versiona en migraciones y jamás se modifica a mano en producción.
+		\item Los secretos y las cadenas de conexión se leen de variables de entorno, nunca del repositorio.
+		\item Las relaciones se cargan de forma anticipada cuando se van a recorrer en una vista.
+		\item Toda entrada del usuario se valida en el servidor, con independencia de lo que valide el navegador.
+		\item Tras una operación de escritura exitosa se responde con redirección, no con renderizado directo.
+		\item Los nombres de rutas, servicios y métodos usan el vocabulario del dominio, no el de la infraestructura.
+		\item Las dependencias se declaran con versiones fijas y se registran en el archivo de bloqueo correspondiente.
+		\item Cada decisión estructural no obvia se documenta en un ADR breve dentro de \texttt{docs/adr/}.
+	\end{enumerate}
+\end{cajabuenas}
+
+% =====================================================================
+\section{Servicios Web: Conceptos, Tipos e Implementación}
+\label{sec:u4:servicios}
+
+\subsection{Fundamentos y estándares de servicios web}
+\label{sec:u4:fundamentos}
+
+Hasta aquí la aplicación conversaba con un ser humano a través de un navegador. Un servicio web invierte el destinatario: la conversación ocurre entre programas. Esa diferencia, que parece menor, cambia todo el diseño. Un humano tolera ambigüedad, interpreta una pantalla mal alineada y reintenta cuando algo falla. Un programa no. Necesita contratos explícitos, formatos predecibles y errores que pueda distinguir sin leer prosa.
+
+El problema que los servicios web resuelven es viejo: hacer que dos sistemas construidos por equipos distintos, en lenguajes distintos y sobre plataformas distintas, intercambien información sin acordar previamente su tecnología interna. Antes de la web existieron intentos de resolverlo ---CORBA, DCOM, RMI--- y todos compartían la misma debilidad: exigían que ambos extremos hablaran el mismo dialecto binario, lo que en la práctica los ataba a un proveedor.
+
+\begin{cajadefinicion}{Definición operativa --- servicio web}
+	Un servicio web es una funcionalidad expuesta a través de una red mediante un protocolo estándar, con un contrato accesible que describe qué operaciones ofrece, qué datos espera y qué datos devuelve, de modo que un programa cliente pueda consumirla sin conocer su implementación interna. Los tres rasgos que lo definen son la \emph{interoperabilidad} entre plataformas, la \emph{independencia de la implementación} y la \emph{existencia de un contrato} verificable.
+\end{cajadefinicion}
+
+La respuesta que se impuso a finales de los años noventa fue apoyarse en lo que ya funcionaba: HTTP y XML. Sobre esa base se construyó la familia de estándares que hoy se conoce genéricamente como servicios web SOAP, y que descansa en tres especificaciones complementarias. SOAP define el formato del sobre que envuelve el mensaje \cite{w3c2007soap12}. WSDL describe el contrato del servicio en un documento XML procesable por herramientas \cite{w3c2007wsdl20}. UDDI, hoy prácticamente en desuso, proponía un registro para descubrir servicios.
+
+\subsubsection{Anatomía de un mensaje SOAP}
+
+Un mensaje SOAP tiene una estructura fija de tres partes anidadas: un sobre que lo contiene todo, una cabecera opcional para metadatos de procesamiento y un cuerpo obligatorio con la carga útil. La figura~\ref{fig:u4:soap} representa esa anatomía.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		every node/.style={font=\small,align=center},
+		caja/.style={rectangle,draw=uteqverde,thick,rounded corners=3pt}]
+
+		\node[caja,fill=uteqverde!5,minimum width=8.2cm,minimum height=4.6cm] (sobre) {};
+		\node[above=0.05cm of sobre.south,font=\scriptsize\itshape,yshift=4.1cm] {};
+		\node[font=\bfseries\small] at ([yshift=-0.35cm]sobre.north) {Envelope};
+
+		\node[caja,fill=uteqdorado!12,minimum width=7.2cm,minimum height=1.25cm]
+			(cabecera) at ([yshift=0.85cm]sobre.center) {\textbf{Header} \emph{(opcional)}\\{\scriptsize seguridad, transacción, enrutamiento}};
+
+		\node[caja,fill=blue!6,minimum width=7.2cm,minimum height=1.9cm]
+			(cuerpo) at ([yshift=-0.95cm]sobre.center) {\textbf{Body} \emph{(obligatorio)}\\{\scriptsize datos de la operación}\\[2pt]{\scriptsize o bien \textbf{Fault} si hubo error}};
+	\end{tikzpicture}
+	\caption{Estructura de un mensaje SOAP 1.2 según la especificación del W3C \cite{w3c2007soap12}. La cabecera transporta metadatos de procesamiento; el cuerpo, la carga útil o el elemento \texttt{Fault} en caso de error.}
+	\label{fig:u4:soap}
+\end{figure}
+
+El listado~\ref{lst:u4:soap} muestra un mensaje mínimo. Su verbosidad, que hoy resulta llamativa, era precisamente el argumento a favor en su momento: todo está declarado y nada se infiere.
+
+\begin{lstlisting}[style=xml,caption={Mensaje SOAP 1.2 minimo de consulta de disponibilidad.},label={lst:u4:soap}]
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+	<soap:Header/>
+	<soap:Body>
+		<consultarDisponibilidad xmlns="http://biblioteq.uteq.edu.ec/servicios">
+			<isbn>978-84-376-0494-7</isbn>
+		</consultarDisponibilidad>
+	</soap:Body>
+</soap:Envelope>
+\end{lstlisting}
+
+\begin{cajahistoria}{Historia --- por qué SOAP perdió la web y ganó la empresa}
+	Entre 1999 y 2007 SOAP fue sinónimo de servicio web. Los grandes proveedores respaldaron la pila WS-* con especificaciones para seguridad, transacciones distribuidas, entrega confiable y direccionamiento. El resultado fue una torre de estándares tan completa como pesada: un simple intercambio de datos requería generar clases desde el WSDL, configurar espacios de nombres y depurar errores de esquema. Cuando los servicios de Amazon publicaron en 2006 dos interfaces equivalentes ---una SOAP y otra sencilla sobre HTTP--- la abrumadora mayoría del tráfico se fue a la segunda. La web eligió la simplicidad. La empresa, en cambio, conservó SOAP donde importaban las garantías formales: banca, seguros, aduanas y facturación electrónica. En Ecuador, buena parte de la integración con el Servicio de Rentas Internas para comprobantes electrónicos sigue operando sobre servicios SOAP, y un egresado que trabaje en facturación se encontrará con WSDL más pronto que tarde.
+\end{cajahistoria}
+
+\subsubsection{Formatos de intercambio}
+
+El contenido que viaja entre sistemas debe serializarse. Durante la era SOAP el formato fue XML, autodescriptivo y validable contra un esquema, pero costoso en tamaño y en tiempo de análisis. JSON lo desplazó por tres motivos que conviene enumerar sin idealizarlo: es más compacto, se convierte a estructuras nativas en cualquier lenguaje moderno con una llamada, y coincide con el modelo de objetos de JavaScript, el lenguaje del navegador.
+
+JSON tiene también carencias reales. No define tipos de fecha, no distingue enteros de reales y carece de un mecanismo de validación tan asentado como XML Schema. La primera se resuelve por convención adoptando ISO~8601 en cadenas; la tercera, mediante JSON Schema, que la especificación OpenAPI incorpora desde su versión 3.1 \cite{oai2025oas32}.
+
+La tabla~\ref{tab:u4:soaprest} contrasta ambos estilos punto por punto. Antes de leerla conviene fijar una idea que la propia tabla no puede expresar: SOAP y REST no compiten en el mismo terreno. El primero es un protocolo con garantías formales; el segundo, un conjunto de restricciones sobre cómo usar un protocolo que ya existe.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Comparación entre los dos estilos dominantes de servicios web.}
+	\label{tab:u4:soaprest}
+	\small
+	\begin{tabularx}{\textwidth}{L{3.3cm} X X}
+		\toprule
+		\textbf{Aspecto} & \textbf{SOAP} & \textbf{REST} \\
+		\midrule
+		Naturaleza & Protocolo con especificación formal & Estilo arquitectónico con restricciones \\
+		Transporte & HTTP, SMTP, JMS y otros & HTTP exclusivamente \\
+		Formato & XML obligatorio & JSON habitual; negociable \\
+		Contrato & WSDL, procesable por herramientas & OpenAPI, adoptado por convención \\
+		Manejo de errores & Elemento \texttt{Fault} en el cuerpo & Códigos de estado HTTP más cuerpo estructurado \\
+		Transacciones & WS-AtomicTransaction & Sin soporte nativo \\
+		Tamaño típico & Elevado por la verbosidad XML & Reducido \\
+		Curva de entrada & Pronunciada & Suave \\
+		Dominio de uso vigente & Banca, seguros, administración tributaria & Web pública, móviles, microservicios \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajaejercicio}{Ejercicio corto 4.7 --- lectura de un contrato WSDL}
+	Descargue el documento WSDL de cualquier servicio público disponible ---por ejemplo, un servicio de conversión de unidades o de consulta de códigos postales--- y localice en él los cuatro elementos estructurales: \texttt{types}, \texttt{interface} (o \texttt{portType} en WSDL~1.1), \texttt{binding} y \texttt{service}. Elabore un esquema de media página que explique qué información aporta cada uno y qué elemento equivalente cumpliría ese papel en un documento OpenAPI.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{docs/unidad4/wsdl-frente-a-openapi.md}\\[3pt]
+	\textbf{Tiempo estimado:} 30 minutos.
+\end{cajaejercicio}
+
+\subsection{Servicios web RESTful}
+\label{sec:u4:rest}
+
+REST no es una tecnología ni una biblioteca. Es un estilo arquitectónico que Roy Fielding formuló en su tesis doctoral del año 2000 \cite{fielding2000rest} y desarrolló con Taylor dos años después en un artículo que sigue siendo la referencia obligada \cite{fielding2002principled}. Fielding no inventó REST observando cómo debía ser la web: lo derivó analizando por qué la web que ya existía había escalado tan bien. Esa procedencia explica por qué sus restricciones parecen a veces contraintuitivas y, sin embargo, funcionan.
+
+\subsubsection{Las seis restricciones}
+
+Un sistema es RESTful si cumple seis restricciones. Cinco son obligatorias y una es opcional, detalle que conviene retener porque se pregunta con frecuencia.
+
+\begin{cajadefinicion}{Las seis restricciones del estilo REST}
+	\begin{enumerate}
+		\item \textbf{Cliente-servidor.} Separación estricta de responsabilidades entre quien almacena y quien presenta, de modo que ambos evolucionen por separado.
+		\item \textbf{Sin estado.} Cada petición contiene toda la información necesaria para ser atendida; el servidor no guarda contexto de sesión entre peticiones.
+		\item \textbf{Cacheable.} Toda respuesta indica explícitamente si puede almacenarse y por cuánto tiempo.
+		\item \textbf{Interfaz uniforme.} Identificación de recursos mediante URI, manipulación mediante representaciones, mensajes autodescriptivos e hipermedia como motor del estado.
+		\item \textbf{Sistema en capas.} El cliente no puede saber si habla con el servidor final o con un intermediario.
+		\item \textbf{Código bajo demanda} \emph{(opcional)}. El servidor puede extender la funcionalidad del cliente enviándole código ejecutable.
+	\end{enumerate}
+\end{cajadefinicion}
+
+La restricción que más discusión genera es la ausencia de estado, porque choca de frente con la práctica de guardar la sesión del usuario en memoria del servidor. La consecuencia es directa y tiene efectos operativos: si el servidor no guarda sesión, cualquier instancia puede atender cualquier petición, y escalar horizontalmente se vuelve trivial. Esa es la razón técnica por la que las interfaces REST autentican con testigos firmados como JWT \cite{jones2015jwt} en lugar de cookies de sesión: el testigo viaja en cada petición y se valida sin consultar almacenamiento compartido.
+
+\subsubsection{Modelo de madurez de Richardson}
+
+Leonard Richardson propuso una escala de cuatro niveles para evaluar cuán RESTful es una interfaz. Su valor es diagnóstico: permite señalar con precisión qué le falta a una API en lugar de calificarla vagamente como «poco REST». La tabla~\ref{tab:u4:richardson} traduce cada nivel a un ejemplo del dominio bibliotecario, de modo que el equipo pueda ubicar su propia interfaz sin ambigüedad.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Niveles del modelo de madurez de Richardson aplicados al dominio de BiblioUTEQ.}
+	\label{tab:u4:richardson}
+	\small
+	\begin{tabularx}{\textwidth}{L{1.5cm} L{3.6cm} X}
+		\toprule
+		\textbf{Nivel} & \textbf{Característica} & \textbf{Ejemplo en el dominio} \\
+		\midrule
+		0 & Un único extremo; el verbo real viaja en el cuerpo & \texttt{POST /api} con \texttt{\{"accion":"buscarLibro"\}} \\
+		1 & Recursos identificados por URI, pero un solo verbo & \texttt{POST /libros/buscar}, \texttt{POST /libros/crear} \\
+		2 & Verbos HTTP con su semántica correcta y códigos de estado adecuados & \texttt{GET /libros/42}, \texttt{DELETE /libros/42}, respuesta \texttt{204} \\
+		3 & Hipermedia: la respuesta enlaza las transiciones posibles & El préstamo devuelto incluye enlace a \texttt{/prestamos/7/devolucion} \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Un dato que conviene conocer antes de discutir sobre HATEOAS: en el experimento controlado de Bogner y colaboradores con 105 participantes de la industria y la academia, apenas el 27\% conocía el modelo de madurez de Richardson, y de quienes lo conocían, el 79\% consideró que el nivel~2 basta para llamar RESTful a una interfaz \cite{bogner2023restful}. La misma investigación aporta evidencia empírica ---escasa hasta entonces--- de que respetar las reglas de diseño mejora de forma medible la comprensibilidad de las APIs. Es un buen recordatorio de que las convenciones de nomenclatura no son manías estéticas.
+
+\subsubsection{Diseño de URI y uso de verbos}
+
+Una URI identifica un recurso, no una acción. De ese principio se derivan casi todas las reglas prácticas. Los recursos se nombran con sustantivos en plural, las acciones se expresan con el verbo HTTP y las jerarquías se representan con anidamiento.
+
+\begin{cajabuenas}{Doce reglas para el diseño de URI}
+	\begin{enumerate}
+		\item Sustantivos en plural y en minúsculas: \texttt{/libros}, nunca \texttt{/obtenerLibro}.
+		\item Guiones para separar palabras, jamás guiones bajos ni mayúsculas intercaladas.
+		\item Sin extensión de archivo; el formato se negocia con la cabecera \texttt{Accept}.
+		\item Sin barra final; \texttt{/libros} y \texttt{/libros/} no deben coexistir.
+		\item Anidamiento máximo de dos niveles: \texttt{/libros/42/ejemplares} es aceptable, tres ya no.
+		\item Filtros, ordenamiento y paginación como parámetros de consulta, no como segmentos de ruta.
+		\item Versión en el primer segmento: \texttt{/api/v1/libros}.
+		\item Identificadores opacos; evitar exponer claves autoincrementales cuando la enumeración sea un riesgo.
+		\item Nombres en un único idioma, coherente en toda la interfaz.
+		\item Sin verbos, salvo en operaciones que no encajan en el modelo de recursos, y aun entonces de forma excepcional.
+		\item Códigos de estado con su semántica exacta, según la RFC~9110 \cite{rfc9110}.
+		\item Errores en formato de detalle de problema conforme a la RFC~9457 \cite{rfc9457}.
+	\end{enumerate}
+\end{cajabuenas}
+
+La tabla~\ref{tab:u4:verbos} recoge el mapeo canónico entre verbo, operación y código de respuesta, junto con dos propiedades que la RFC~9110 define con precisión y que los estudiantes confunden habitualmente: seguridad e idempotencia \cite{rfc9110}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Mapeo canónico de verbos HTTP, con sus propiedades de seguridad e idempotencia.}
+	\label{tab:u4:verbos}
+	\scriptsize
+	\begin{tabularx}{\textwidth}{L{1.4cm} L{3.1cm} C{1.3cm} C{2.0cm} X}
+		\toprule
+		\textbf{Verbo} & \textbf{Operación} & \textbf{Seguro} & \textbf{Idem\-potente} & \textbf{Respuesta habitual} \\
+		\midrule
+		GET & Recuperar representación & Sí & Sí & 200 con cuerpo; 404 si no existe \\
+		POST & Crear subordinado & No & No & 201 con cabecera \texttt{Location} \\
+		PUT & Reemplazar por completo & No & Sí & 200 o 204; 201 si se crea \\
+		PATCH & Modificar parcialmente & No & No & 200 o 204 \\
+		DELETE & Eliminar & No & Sí & 204 sin cuerpo \\
+		HEAD & Cabeceras de GET & Sí & Sí & 200 sin cuerpo \\
+		OPTIONS & Consultar capacidades & Sí & Sí & 200 con \texttt{Allow} \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajaadvertencia}{Distinción que se pregunta en examen}
+	\textbf{Seguro} significa que la operación no modifica el estado del servidor. \textbf{Idempotente} significa que repetirla produce el mismo efecto que ejecutarla una sola vez. Toda operación segura es idempotente, pero no al revés: DELETE modifica el estado ---no es segura--- y sin embargo borrar dos veces el mismo recurso deja el sistema en el mismo estado, luego es idempotente. POST no es idempotente porque dos envíos crean dos recursos distintos; de ahí que el patrón \emph{Post/Redirect/Get} exista y que los formularios deban protegerse contra el doble envío.
+\end{cajaadvertencia}
+
+\subsubsection{Representación estructurada de los errores}
+
+Devolver un código 400 con el cuerpo \texttt{"error"} obliga al cliente a adivinar. La RFC~9457, que sustituyó a la RFC~7807 en julio de 2023, normaliza un formato de detalle de problema con cinco campos y admite extensiones propias \cite{rfc9457}. El listado~\ref{lst:u4:problem} muestra una respuesta conforme.
+
+\begin{lstlisting}[style=js,caption={Respuesta de error conforme al formato de detalle de problema.},label={lst:u4:problem}]
+HTTP/1.1 409 Conflict
+Content-Type: application/problem+json
+
+{
+	"type":     "https://biblioteq.uteq.edu.ec/problemas/limite-prestamos",
+	"title":    "Limite de prestamos alcanzado",
+	"status":   409,
+	"detail":   "El usuario 1042 mantiene 3 prestamos activos; el maximo es 3.",
+	"instance": "/api/v1/prestamos",
+	"prestamosActivos": 3,
+	"limite": 3
+}
+\end{lstlisting}
+
+Los cuatro primeros campos cumplen papeles distintos y complementarios. El campo \texttt{type} es un identificador estable del tipo de problema, pensado para que el cliente lo compare mediante código. El campo \texttt{title} es un resumen legible que no debe cambiar entre ocurrencias. El campo \texttt{detail} sí es específico de la ocurrencia concreta. El campo \texttt{instance} identifica dónde se produjo. Las dos últimas claves del ejemplo son extensiones propias del dominio, plenamente permitidas por la especificación.
+
+\begin{cajaejercicio}{Ejercicio corto 4.8 --- catálogo de errores}
+	Diseñe el catálogo de errores del módulo de préstamos con al menos seis tipos de problema. Para cada uno indique el identificador \texttt{type}, el título, el código de estado HTTP apropiado y las extensiones que aportarían valor al cliente. Justifique en particular por qué elige 409 y no 400 para el conflicto de límite de préstamos, y por qué 422 y no 400 para un ISBN sintácticamente válido pero inexistente en el catálogo.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{docs/api/catalogo-de-errores.md}\\[3pt]
+	\textbf{Tiempo estimado:} 30 minutos.
+\end{cajaejercicio}
+
+\subsection{Implementación de servicios web}
+\label{sec:u4:implementacion}
+
+Con el vocabulario asentado, la implementación resulta sorprendentemente breve. Spring Boot reduce un controlador REST a una clase anotada, y la mayor parte del esfuerzo se desplaza hacia donde debe estar: el diseño del contrato y el tratamiento de los errores.
+
+\subsubsection{El controlador REST}
+
+La diferencia entre \texttt{@Controller} y \texttt{@RestController} cabe en una frase: el segundo serializa el valor de retorno al cuerpo de la respuesta en lugar de interpretarlo como nombre de vista. El listado~\ref{lst:u4:restcontroller} muestra la declaración mínima.
+
+\begin{lstlisting}[style=java,caption={Controlador REST minimo que devuelve una representacion JSON.},label={lst:u4:restcontroller}]
+@RestController
+@RequestMapping("/api/v1/libros")
+public class LibroApiController {
+
+	private final CatalogoService catalogo;
+
+	public LibroApiController(CatalogoService catalogo) {
+		this.catalogo = catalogo;
+	}
+
+	@GetMapping("/{id}")
+	public LibroDto obtener(@PathVariable Long id) {
+		return catalogo.buscarPorId(id);
+	}
+}
+\end{lstlisting}
+
+\begin{cajaejercicio}{Ejercicio corto 4.9 --- el primer extremo}
+	Implemente el controlador anterior en el proyecto del PFC y compruébelo con \texttt{curl}. Verifique que una consulta a un identificador existente devuelve 200 con cuerpo JSON, y que un identificador inexistente devuelve 500 con una traza. Ese 500 es el comportamiento por defecto y es incorrecto: anótelo, porque la siguiente subsección lo corrige.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{backend-java/src/main/java/ec/edu/uteq/biblioteq/api/LibroApiController.java}\\[3pt]
+	\textbf{Tiempo estimado:} 15 minutos.
+\end{cajaejercicio}
+
+\subsubsection{Objetos de transferencia y validación}
+
+Exponer entidades JPA directamente en la interfaz es uno de los defectos más caros de corregir después. Acopla el contrato público al esquema de la base, arrastra relaciones perezosas que provocan errores de serialización y filtra campos que no deberían salir. La solución es un objeto de transferencia por operación. En Java~21, un \texttt{record} lo expresa en una línea, como muestra el listado~\ref{lst:u4:dto}.
+
+\begin{lstlisting}[style=java,caption={Objetos de transferencia diferenciados para entrada y salida.},label={lst:u4:dto}]
+public record CrearLibroRequest(
+	@NotBlank @Size(min = 17, max = 17) String isbn,
+	@NotBlank @Size(min = 3, max = 200) String titulo,
+	@Min(1450) @Max(2026) int anioPublicacion,
+	@NotNull Long categoriaId) {}
+
+public record LibroDto(
+	Long id,
+	String isbn,
+	String titulo,
+	int anioPublicacion,
+	String categoria,
+	int ejemplaresDisponibles) {}
+\end{lstlisting}
+
+Que la entrada y la salida sean tipos distintos no es redundancia: el cliente no envía el identificador ni el número de ejemplares disponibles, y el servidor no devuelve el identificador de categoría sino su nombre. Confundir ambos objetos obliga a documentar campos que se ignoran, lo que degrada la especificación.
+
+Para que las anotaciones surtan efecto hay que activarlas en la firma del método con \texttt{@Valid}. El listado~\ref{lst:u4:post} muestra el método de creación completo, con el código 201 y la cabecera \texttt{Location} que la semántica de HTTP exige \cite{rfc9110}.
+
+\begin{lstlisting}[style=java,caption={Creacion de un recurso con codigo 201 y cabecera Location.},label={lst:u4:post}]
+import org.springframework.web.util.UriComponentsBuilder;
+
+@PostMapping
+public ResponseEntity<LibroDto> crear(@Valid @RequestBody CrearLibroRequest peticion) {
+
+	LibroDto creado = catalogo.registrarLibro(peticion);
+
+	// Se construye desde una ruta declarada, no desde el contexto de la peticion:
+	// asi el metodo es probable con MockMvc y no depende de RequestContextHolder.
+	URI ubicacion = UriComponentsBuilder
+		.fromPath("/api/v1/libros/{id}")
+		.buildAndExpand(creado.id())
+		.toUri();
+
+	return ResponseEntity.created(ubicacion).body(creado);
+}
+\end{lstlisting}
+
+\subsubsection{Tratamiento centralizado de errores}
+
+Capturar excepciones dentro de cada método del controlador multiplica el código y produce respuestas inconsistentes. Spring ofrece un manejador global mediante \texttt{@RestControllerAdvice}. El listado~\ref{lst:u4:advice} traduce dos excepciones de dominio al formato de detalle de problema.
+
+\begin{lstlisting}[style=java,caption={Manejador global que traduce excepciones de dominio a detalles de problema.},label={lst:u4:advice}]
+@RestControllerAdvice
+public class ManejadorDeErrores {
+
+	private static final String BASE = "https://biblioteq.uteq.edu.ec/problemas/";
+
+	@ExceptionHandler(RecursoNoEncontradoException.class)
+	public ProblemDetail noEncontrado(RecursoNoEncontradoException ex) {
+		ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+				HttpStatus.NOT_FOUND, ex.getMessage());
+		pd.setTitle("Recurso no encontrado");
+		pd.setType(URI.create(BASE + "no-encontrado"));
+		return pd;
+	}
+
+	@ExceptionHandler(LimitePrestamosException.class)
+	public ProblemDetail limiteAlcanzado(LimitePrestamosException ex) {
+		ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+				HttpStatus.CONFLICT, ex.getMessage());
+		pd.setTitle("Limite de prestamos alcanzado");
+		pd.setType(URI.create(BASE + "limite-prestamos"));
+		pd.setProperty("prestamosActivos", ex.getActivos());
+		pd.setProperty("limite", ex.getLimite());
+		return pd;
+	}
+}
+\end{lstlisting}
+
+La clase \texttt{ProblemDetail} implementa directamente la RFC~9457, de modo que la conformidad con el estándar no exige biblioteca adicional alguna. Con este manejador en su sitio, el 500 detectado en el ejercicio~4.9 se convierte en un 404 correctamente descrito.
+
+\subsubsection{Documentación con OpenAPI}
+
+Una interfaz sin especificación publicada no es consumible por terceros sin negociación humana, lo que anula buena parte de su valor. OpenAPI, en su versión 3.2 publicada en septiembre de 2025 \cite{oai2025oas32}, es el formato de facto para describir interfaces HTTP. En Spring Boot basta la dependencia del listado~\ref{lst:u4:springdoc} para que la especificación se genere a partir del código y se publique junto con una interfaz interactiva.
+
+\begin{lstlisting}[style=xml,caption={Dependencia que habilita la generacion automatica de la especificacion.},label={lst:u4:springdoc}]
+<!-- Spring Boot 4.x requiere la linea 3.x de springdoc.
+     Con Spring Boot 3.x debe usarse la linea 2.x (por ejemplo 2.8.5). -->
+<dependency>
+	<groupId>org.springdoc</groupId>
+	<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+	<version>3.0.3</version>
+</dependency>
+\end{lstlisting}
+
+Dos precauciones acompañan a esa dependencia. La primera es la compatibilidad: la línea 3.x se construye sobre Spring Boot 4.x y no funciona sobre la 3.x, donde corresponde la línea 2.x. La segunda es operativa: los extremos de documentación quedan habilitados por defecto, y publicar la estructura interna de la interfaz en producción amplía la superficie de ataque. En el perfil de producción deben desactivarse con \texttt{springdoc.api-docs.enabled=false} y \texttt{springdoc.swagger-ui.enabled=false}; las rutas exactas en las que quedan publicados se confirman en el registro de arranque de la aplicación.
+
+La generación automática cubre rutas, verbos y esquemas, pero no las descripciones ni los ejemplos, que siguen siendo responsabilidad de quien programa. El listado~\ref{lst:u4:openapi-anot} muestra cómo enriquecer un extremo con metadatos.
+
+\begin{lstlisting}[style=java,caption={Anotaciones que enriquecen la especificacion generada.},label={lst:u4:openapi-anot}]
+@Operation(
+	summary = "Registra un libro en el catalogo",
+	description = "Crea un libro nuevo. El ISBN debe ser unico en todo el catalogo.")
+@ApiResponses({
+	@ApiResponse(responseCode = "201", description = "Libro creado",
+		content = @Content(schema = @Schema(implementation = LibroDto.class))),
+	@ApiResponse(responseCode = "400", description = "Datos invalidos",
+		content = @Content(mediaType = "application/problem+json")),
+	@ApiResponse(responseCode = "409", description = "ISBN duplicado",
+		content = @Content(mediaType = "application/problem+json"))
+})
+@PostMapping
+public ResponseEntity<LibroDto> crear(@Valid @RequestBody CrearLibroRequest peticion) {
+
+	LibroDto creado = catalogo.registrarLibro(peticion);
+	URI ubicacion = UriComponentsBuilder
+		.fromPath("/api/v1/libros/{id}")
+		.buildAndExpand(creado.id())
+		.toUri();
+
+	return ResponseEntity.created(ubicacion).body(creado);
+}
+\end{lstlisting}
+
+\begin{cajaadvertencia}{La especificación como artefacto versionado}
+	No basta con que la interfaz interactiva funcione en la máquina de quien programa. El PFC exige exportar el documento a \texttt{docs/api/openapi.json} y versionarlo, porque solo así puede detectarse en revisión de código que un cambio rompió el contrato. Una modificación que altera un tipo de dato o elimina un campo obligatorio es un cambio incompatible y exige nueva versión mayor de la interfaz.
+\end{cajaadvertencia}
+
+\subsubsection{Autenticación con testigos}
+
+Como la restricción de ausencia de estado prohíbe la sesión en servidor, la autenticación se resuelve con testigos firmados. Un JWT consta de tres partes separadas por puntos ---cabecera, carga y firma--- codificadas en Base64URL \cite{jones2015jwt}. El listado~\ref{lst:u4:jwt} muestra la generación de un testigo con la biblioteca de referencia.
+
+\begin{lstlisting}[style=java,caption={Generacion de un testigo firmado con vigencia limitada.},label={lst:u4:jwt}]
+import io.jsonwebtoken.Jwts;
+import javax.crypto.SecretKey;
+
+@Service
+public class TokenService {
+
+	private final SecretKey claveSecreta;   // inyectada desde variable de entorno
+
+	public TokenService(@Value("${biblioteq.jwt.secreto}") String secreto) {
+		this.claveSecreta = Keys.hmacShaKeyFor(secreto.getBytes(StandardCharsets.UTF_8));
+	}
+
+	public String generarToken(String usuario, List<String> roles) {
+		Instant ahora = Instant.now();
+
+		return Jwts.builder()
+			.subject(usuario)
+			.claim("roles", roles)
+			.issuer("biblioteq-uteq")
+			.issuedAt(Date.from(ahora))
+			.expiration(Date.from(ahora.plus(30, ChronoUnit.MINUTES)))
+			.signWith(claveSecreta, Jwts.SIG.HS256)
+			.compact();
+	}
+}
+\end{lstlisting}
+
+\begin{cajaadvertencia}{Errores de seguridad que invalidan el trabajo}
+	Cuatro fallos aparecen con regularidad en las entregas y los cuatro comprometen el sistema por completo. El primero es guardar la clave de firma en el repositorio; debe leerse de una variable de entorno. El segundo es emitir testigos sin fecha de expiración o con vigencias de días. El tercero es confiar en el algoritmo declarado en la cabecera del testigo, lo que abre la puerta al ataque de algoritmo \texttt{none}: el algoritmo debe fijarse en la validación. El cuarto es almacenar el testigo en \texttt{localStorage} del navegador, donde cualquier script inyectado puede leerlo; una cookie con los atributos \texttt{HttpOnly}, \texttt{Secure} y \texttt{SameSite} es preferible. Los cuatro figuran en la clasificación de riesgos de interfaces de OWASP \cite{owasp2023api}.
+\end{cajaadvertencia}
+
+
+\subsubsection{Estructura de archivos y modelado del ejercicio 4.C}
+
+Este ejercicio atraviesa las dos mitades del sistema, de modo que la estructura del listado~\ref{lst:u4:arbol-4c} cubre a la vez el servidor y el cliente. La figura~\ref{fig:u4:sec-jwt} traza el recorrido de una escritura autenticada e indica en qué punto exacto se produce cada uno de los códigos de error que el enunciado exige demostrar. Ese diagrama responde a una confusión muy común entre estudiantes: el 401 y el 403 no los emite el controlador, sino la cadena de filtros de seguridad, que se ejecuta antes.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		font=\scriptsize,
+		actor/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!10,rounded corners=2pt,
+			minimum width=2.0cm,minimum height=0.7cm,align=center},
+		linea/.style={dashed,gray!60},
+		msj/.style={->,>=stealth,semithick,uteqverde!70!black},
+		ret/.style={->,>=stealth,semithick,dashed,uteqdorado!85!black},
+		err/.style={->,>=stealth,semithick,dashed,red!70!black}]
+
+		\node[actor] (c1) at (0,0)    {Cliente\\Angular};
+		\node[actor] (c2) at (3.2,0)  {Filtro JWT\\(Security)};
+		\node[actor] (c3) at (6.4,0)  {Libro\\ApiController};
+		\node[actor] (c4) at (9.6,0)  {Catalogo\\Service};
+		\node[actor] (c5) at (12.8,0) {Repositorio\\+ PostgreSQL};
+
+		\foreach \n in {c1,c2,c3,c4,c5} { \draw[linea] (\n.south) -- ++(0,-9.2); }
+
+		\draw[msj] (c1|-0,-1.0) -- node[above]{1: POST /api/v1/libros + Authorization: Bearer} (c2|-0,-1.0);
+		\draw[err] (c2|-0,-1.75) -- node[above]{2a: 401 si la firma o la vigencia fallan} (c1|-0,-1.75);
+		\draw[err] (c2|-0,-2.5) -- node[above]{2b: 403 si el rol no es BIBLIOTECARIO} (c1|-0,-2.5);
+		\draw[msj] (c2|-0,-3.25) -- node[above]{3: peticion autenticada y autorizada} (c3|-0,-3.25);
+		\draw[err] (c3|-0,-4.0) -- node[above]{4a: 400 si @Valid rechaza el cuerpo} (c1|-0,-4.0);
+		\draw[msj] (c3|-0,-4.75) -- node[above]{5: registrarLibro(dto)} (c4|-0,-4.75);
+		\draw[msj] (c4|-0,-5.5) -- node[above]{6: existsByIsbn(isbn)} (c5|-0,-5.5);
+		\draw[err] (c4|-0,-6.25) -- node[above]{6a: 409 si el ISBN ya existe} (c1|-0,-6.25);
+		\draw[msj] (c4|-0,-7.0) -- node[above]{7: save(libro)} (c5|-0,-7.0);
+		\draw[ret] (c5|-0,-7.7) -- node[above]{8: entidad con id} (c4|-0,-7.7);
+		\draw[ret] (c4|-0,-8.4) -- node[above]{9: LibroDto} (c3|-0,-8.4);
+		\draw[ret] (c3|-0,-9.1) -- node[above]{10: 201 Created + Location} (c1|-0,-9.1);
+
+		\node[align=left,font=\scriptsize,anchor=north west,text width=13.5cm]
+			at (-0.9,-9.8)
+			{Las flechas rojas discontinuas son salidas anticipadas: la ejecución termina ahí y el
+			resto de los pasos no ocurre. Todas ellas responden con \texttt{application/problem+json}.};
+	\end{tikzpicture}
+	\caption{Diagrama de secuencia de una escritura autenticada, con los cuatro puntos donde puede interrumpirse. El 401 y el 403 se emiten antes de alcanzar el controlador.}
+	\label{fig:u4:sec-jwt}
+\end{figure}
+
+\begin{lstlisting}[style=plano,caption={Estructura de archivos del ejercicio 4.C servidor y cliente.},label={lst:u4:arbol-4c}]
+biblioteq/
+|-- backend-java/src/main/java/ec/edu/uteq/biblioteq/
+|   |-- api/
+|   |   |-- LibroApiController.java          <- @RestController
+|   |   |-- EjemplarApiController.java       <- recurso anidado
+|   |   |-- dto/
+|   |   |   |-- CrearLibroRequest.java       <- record + @NotBlank
+|   |   |   |-- ActualizarLibroRequest.java
+|   |   |   `-- LibroDto.java
+|   |   `-- error/
+|   |       `-- ManejadorDeErrores.java      <- @RestControllerAdvice
+|   |-- seguridad/
+|   |   |-- SecurityConfig.java              <- reglas por rol
+|   |   |-- TokenService.java                <- firma y vigencia
+|   |   `-- FiltroJwt.java
+|   |-- servicio/CatalogoService.java
+|   `-- repositorio/LibroRepository.java
+|-- backend-java/src/test/java/.../api/
+|   `-- LibroApiControllerIT.java            <- 8 pruebas MockMvc
+|-- frontend/src/app/
+|   |-- nucleo/
+|   |   |-- http/autenticacion.interceptor.ts
+|   |   |-- http/pedir-json.ts
+|   |   `-- sesion/sesion.service.ts
+|   `-- catalogo/
+|       |-- catalogo.service.ts              <- HttpClient tipado
+|       |-- catalogo.component.ts            <- httpResource
+|       `-- formulario-libro.component.ts
+`-- docs/api/
+    |-- openapi.json                         <- especificacion exportada
+    |-- catalogo-de-errores.md
+    `-- biblioteq.http                        <- coleccion de pruebas
+\end{lstlisting}
+
+\begin{cajaejercicio}{Ejercicio integrador 4.C --- API REST completa del catálogo}
+	\textbf{Enunciado.} Implemente la interfaz REST del módulo de catálogo de BiblioUTEQ, con calidad de entrega profesional.\\[4pt]
+	\textbf{Extremos exigidos.}
+	\begin{itemize}
+		\item \texttt{GET /api/v1/libros} con paginación, ordenamiento y filtro por categoría y por fragmento de título.
+		\item \texttt{GET /api/v1/libros/\{id\}} con 404 descrito según la RFC~9457.
+		\item \texttt{POST /api/v1/libros} con 201, cabecera \texttt{Location} y 409 ante ISBN duplicado.
+		\item \texttt{PUT /api/v1/libros/\{id\}} con reemplazo completo e idempotencia verificable.
+		\item \texttt{DELETE /api/v1/libros/\{id\}} con 204 y baja lógica.
+		\item \texttt{GET /api/v1/libros/\{id\}/ejemplares} como recurso anidado.
+	\end{itemize}
+	\textbf{Requisitos transversales.}
+	\begin{enumerate}
+		\item Todos los errores en formato \texttt{application/problem+json} desde un manejador global único.
+		\item Especificación OpenAPI generada, enriquecida con descripciones y ejemplos, y exportada a \texttt{docs/api/openapi.json}.
+		\item Autenticación con JWT: lectura pública, escritura restringida al rol \texttt{BIBLIOTECARIO}.
+		\item Colección de pruebas de Postman o archivo \texttt{.http} versionado en \texttt{docs/api/}.
+		\item Al menos ocho pruebas de integración con \texttt{MockMvc} que cubran los códigos 200, 201, 204, 400, 401, 403, 404 y 409.
+	\end{enumerate}
+	\textbf{Parte 2 --- cliente Angular.} La interfaz no se entrega sin consumidor. El cliente debe incluir: servicio tipado con \texttt{HttpClient} para las escrituras; una pantalla de catálogo construida con \texttt{httpResource} que refresque al cambiar el filtro; el interceptor de autenticación del listado~\ref{lst:u4:interceptor}; y el tratamiento diferenciado de los cuatro errores de la figura~\ref{fig:u4:sec-jwt}, de modo que el 401 redirija al ingreso, el 403 muestre un aviso de permisos, el 400 marque los campos del formulario y el 409 señale el ISBN duplicado. Mostrar un único mensaje genérico para los cuatro casos se considera incumplido.\\[4pt]
+	\textbf{Estructura y modelado.} La entrega respeta la estructura del listado~\ref{lst:u4:arbol-4c}. Las ocho pruebas de integración deben cubrir, una a una, las salidas anticipadas de la figura~\ref{fig:u4:sec-jwt} y el camino feliz.\\[4pt]
+	\textbf{Nivel de madurez.} La interfaz debe alcanzar de forma demostrable el nivel~2 de Richardson. Alcanzar el nivel~3 en al menos un recurso otorga puntaje adicional, siempre que se documente la decisión.\\[4pt]
+	\textbf{Criterios de piso.} Rigen los dos criterios generales de la asignatura. Adicionalmente, una entrega en la que cualquier extremo devuelva 200 ante un error, o en la que la clave de firma del JWT esté versionada en el repositorio, recibe calificación CERO por defecto de seguridad.\\[4pt]
+	\textbf{Tiempo estimado:} 12 a 15 horas de trabajo en equipo.
+\end{cajaejercicio}
+
+\begin{cajacritica}{Lectura crítica --- las pruebas de una API no son opcionales}
+	La revisión sistemática de Golmohammadi, Zhang y Arcuri sobre 92 estudios de pruebas de interfaces REST documenta que la verificación automatizada de este tipo de servicios plantea dificultades específicas: dependen de la red, interactúan con servicios externos y su estado evoluciona entre llamadas \cite{golmohammadi2023testing}. Ese trabajo también muestra que la generación automática de casos de prueba a partir de la especificación OpenAPI es una línea activa de investigación con herramientas ya utilizables. La lectura para el PFC es doble: primero, una especificación bien escrita no solo documenta, también habilita la automatización de las pruebas; segundo, probar manualmente con un cliente gráfico no constituye evidencia y no se acepta como tal en la rúbrica.
+\end{cajacritica}
+
+% =====================================================================
+\section{Consumo de Servicios Web e Integración de Sistemas}
+\label{sec:u4:consumo}
+
+\subsection{Consumo de APIs REST desde el cliente (JavaScript)}
+\label{sec:u4:cliente}
+
+Publicar una interfaz es media tarea. La otra media consiste en consumirla bien, y ahí es donde los proyectos suelen deteriorarse: peticiones sin control de errores, estados de carga que no se muestran, condiciones de carrera cuando el usuario escribe rápido en un buscador y credenciales repetidas en cada llamada.
+
+\subsubsection{La API Fetch}
+
+El navegador ofrece \texttt{fetch} como mecanismo nativo, sin dependencias. Su forma más simple ocupa dos líneas, como muestra el listado~\ref{lst:u4:fetch-min}.
+
+\begin{lstlisting}[style=js,caption={Peticion GET minima con la API Fetch.},label={lst:u4:fetch-min}]
+const respuesta = await fetch('/api/v1/libros/42');
+const libro = await respuesta.json();
+\end{lstlisting}
+
+Ese código es correcto y, al mismo tiempo, inaceptable en producción por una razón que sorprende a casi todos los estudiantes: \texttt{fetch} \emph{no} rechaza la promesa cuando el servidor responde 404 o 500. Solo falla ante errores de red. Un 404 llega como una respuesta perfectamente resuelta cuya propiedad \texttt{ok} vale \texttt{false}. Quien omite esa comprobación intentará interpretar como libro un cuerpo de error, y el fallo aparecerá varias capas más arriba, donde ya nadie lo relaciona con la causa.
+
+El listado~\ref{lst:u4:fetch-completo} muestra una función de consumo con las cuatro precauciones que deben estar siempre presentes: comprobación del estado, tiempo límite, interpretación del cuerpo de error y propagación de una excepción tipada.
+
+\begin{lstlisting}[style=js,caption={Funcion de consumo con control de estado tiempo limite y error estructurado.},label={lst:u4:fetch-completo}]
+class ErrorApi extends Error {
+	constructor(problema) {
+		super(problema.title ?? 'Error de la API');
+		this.problema = problema;
+		this.status = problema.status;
+	}
+}
+
+async function pedirJson(url, opciones = {}, msLimite = 8000) {
+	const control = new AbortController();
+	const temporizador = setTimeout(() => control.abort(), msLimite);
+
+	try {
+		const respuesta = await fetch(url, {
+			...opciones,
+			signal: control.signal,
+			headers: { 'Accept': 'application/json', ...(opciones.headers ?? {}) }
+		});
+
+		if (!respuesta.ok) {
+			// El servidor responde con application/problem+json (RFC 9457)
+			const problema = await respuesta.json().catch(() => ({ status: respuesta.status }));
+			throw new ErrorApi(problema);
+		}
+
+		return respuesta.status === 204 ? null : await respuesta.json();
+
+	} finally {
+		clearTimeout(temporizador);
+	}
+}
+\end{lstlisting}
+
+\begin{cajaejercicio}{Ejercicio corto 4.10 --- fallo silencioso}
+	Consuma con el listado~\ref{lst:u4:fetch-min} un identificador inexistente y observe en la consola qué ocurre exactamente. Repita con el listado~\ref{lst:u4:fetch-completo} y compare. Documente en cinco renglones dónde se manifiesta el error en cada caso y por qué el segundo enfoque facilita el diagnóstico.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{frontend/src/app/nucleo/http/pedir-json.ts}\\[3pt]
+	\textbf{Tiempo estimado:} 15 minutos.
+\end{cajaejercicio}
+
+\subsubsection{Consumo desde Angular}
+
+Angular ofrece hoy dos caminos, y ambos son correctos. El primero es el servicio \texttt{HttpClient}, que se inyecta y devuelve observables; sigue siendo la base de todo y es obligatorio conocerlo. El segundo es la familia de funciones \texttt{resource}, \texttt{rxResource} y \texttt{httpResource}, que expresan la carga de datos como señales y que dejaron de ser experimentales en Angular~22. El listado~\ref{lst:u4:angular-servicio} muestra el enfoque clásico, que conviene dominar primero porque es el que aparece en la mayoría del código existente.
+
+\begin{lstlisting}[style=ts,caption={Servicio Angular de acceso al catalogo con tipado explicito.},label={lst:u4:angular-servicio}]
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Libro {
+	id: number;
+	isbn: string;
+	titulo: string;
+	anioPublicacion: number;
+	categoria: string;
+	ejemplaresDisponibles: number;
+}
+
+export interface Pagina<T> {
+	content: T[];
+	totalElements: number;
+	number: number;
+	size: number;
+}
+
+@Injectable({ providedIn: 'root' })
+export class CatalogoService {
+
+	private readonly http = inject(HttpClient);
+	private readonly base = '/api/v1/libros';
+
+	listar(pagina: number, filtro: string): Observable<Pagina<Libro>> {
+		const params = new HttpParams()
+			.set('page', pagina)
+			.set('size', 10)
+			.set('titulo', filtro);
+
+		return this.http.get<Pagina<Libro>>(this.base, { params });
+	}
+
+	crear(datos: Omit<Libro, 'id' | 'categoria' | 'ejemplaresDisponibles'>): Observable<Libro> {
+		return this.http.post<Libro>(this.base, datos);
+	}
+}
+\end{lstlisting}
+
+Tres decisiones de ese listado merecen comentario. El tipado de la respuesta con genéricos permite que el compilador detecte en tiempo de compilación cualquier desajuste con el contrato. El uso de \texttt{HttpParams} evita la concatenación manual de cadenas de consulta, que es fuente de errores de codificación. Y la centralización de la URL base en una constante privada hace que un cambio de versión de la interfaz afecte a una sola línea.
+
+\subsubsection{Interceptores}
+
+Repetir en cada llamada la cabecera de autorización, el registro de la petición o el manejo del 401 conduce a duplicación. Un interceptor resuelve las tres cosas en un punto único. El listado~\ref{lst:u4:interceptor} muestra uno que añade el testigo y reacciona ante una sesión expirada.
+
+\begin{lstlisting}[style=ts,caption={Interceptor funcional que anade el testigo y reacciona ante 401.},label={lst:u4:interceptor}]
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
+
+export const autenticacionInterceptor: HttpInterceptorFn = (peticion, siguiente) => {
+
+	const router = inject(Router);
+	const token = inject(SesionService).token();
+
+	const conCredenciales = token
+		? peticion.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+		: peticion;
+
+	return siguiente(conCredenciales).pipe(
+		catchError((error: HttpErrorResponse) => {
+			if (error.status === 401) {
+				router.navigate(['/ingreso'], { queryParams: { expirada: true } });
+			}
+			return throwError(() => error);
+		})
+	);
+};
+\end{lstlisting}
+
+\subsubsection{Carga de datos con señales}
+
+Cuando la pantalla solo necesita leer y refrescar datos ante un cambio de filtro, el enfoque clásico obliga a coordinar a mano tres estados: cargando, error y valor. La función \texttt{httpResource} los expone directamente como señales y vuelve a lanzar la petición cuando cambia cualquier señal que se lea dentro de su expresión. El listado~\ref{lst:u4:httpresource} muestra el componente equivalente al servicio anterior.
+
+\begin{lstlisting}[style=ts,caption={Carga reactiva del catalogo con httpResource y senales.},label={lst:u4:httpresource}]
+import { Component, signal, computed } from '@angular/core';
+import { httpResource } from '@angular/common/http';
+
+@Component({
+	selector: 'app-catalogo',
+	template: `
+		<input [value]="filtro()" (input)="filtro.set($any($event.target).value)">
+
+		@if (libros.isLoading()) {
+			<p>Cargando catalogo...</p>
+		} @else if (libros.error()) {
+			<p class="error">No se pudo cargar el catalogo.</p>
+		} @else {
+			<ul>
+				@for (libro of libros.value()?.content ?? []; track libro.id) {
+					<li>{{ libro.titulo }}</li>
+				}
+			</ul>
+		}
+	`
+})
+export class CatalogoComponent {
+
+	readonly filtro = signal('');
+	readonly pagina = signal(0);
+
+	// Se relanza sola cuando cambian filtro() o pagina().
+	readonly libros = httpResource<Pagina<Libro>>(() => ({
+		url: '/api/v1/libros',
+		params: { titulo: this.filtro(), page: this.pagina(), size: 10 }
+	}));
+
+	readonly total = computed(() => this.libros.value()?.totalElements ?? 0);
+}
+\end{lstlisting}
+
+Dos consecuencias prácticas justifican el cambio. La primera es que desaparece la suscripción manual y, con ella, la posibilidad de olvidar cancelarla. La segunda es que \texttt{httpResource} se apoya en \texttt{HttpClient}, de modo que los interceptores ya registrados ---incluido el del listado~\ref{lst:u4:interceptor}--- siguen aplicándose sin cambio alguno. El PFC puede usar cualquiera de los dos enfoques, pero no debe alternarlos sin criterio dentro del mismo módulo.
+
+\begin{cajaadvertencia}{CORS: el error que todos encuentran}
+	Cuando el cliente Angular se sirve en el puerto 4200 y la interfaz en el 8080, el navegador bloquea las peticiones por política de mismo origen y muestra un mensaje sobre la cabecera \texttt{Access-Control-Allow-Origin}. Conviene tener claro que el bloqueo lo aplica el navegador, no el servidor: la petición llega y se procesa, pero la respuesta no se entrega al código JavaScript. La solución en desarrollo es configurar el \emph{proxy} de Angular en \texttt{proxy.conf.json}; en producción, servir ambos desde el mismo origen mediante Nginx. Desactivar CORS con una extensión del navegador o permitir cualquier origen con comodín en producción no son soluciones: son defectos de seguridad y se penalizan como tales.
+\end{cajaadvertencia}
+
+\begin{cajaejercicio}{Ejercicio corto 4.11 --- buscador sin condiciones de carrera}
+	Implemente un campo de búsqueda que consulte \texttt{/api/v1/libros?titulo=} conforme el usuario escribe. Aplique \texttt{debounceTime(300)}, \texttt{distinctUntilChanged()} y \texttt{switchMap} para que las respuestas lentas de consultas antiguas no sobrescriban a las recientes. Demuestre el problema desactivando \texttt{switchMap} y limitando la velocidad de la red desde las herramientas del navegador.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{frontend/src/app/catalogo/buscador/buscador.component.ts}\\[3pt]
+	\textbf{Tiempo estimado:} 30 minutos.
+\end{cajaejercicio}
+
+\subsection{Consumo de servicios web desde el servidor}
+\label{sec:u4:servidor}
+
+No todo consumo ocurre en el navegador. Un servidor consume servicios de terceros continuamente: pasarelas de pago, servicios de correo, la administración tributaria, catálogos bibliográficos externos. Esas llamadas plantean exigencias que el consumo desde el cliente no tiene, porque un fallo del servicio externo puede arrastrar consigo a toda la aplicación.
+
+\subsubsection{El cliente HTTP de Spring}
+
+Spring Framework~6.1 introdujo \texttt{RestClient}, una interfaz fluida y síncrona que sustituye al antiguo \texttt{RestTemplate}. Los tiempos límite se declaran por configuración, como muestra el listado~\ref{lst:u4:restclient-props}, y el cliente se expone como \emph{bean} según el listado~\ref{lst:u4:restclient}.
+
+\begin{lstlisting}[style=yaml,caption={Tiempos limite globales del cliente HTTP declarados por configuracion.},label={lst:u4:restclient-props}]
+# src/main/resources/application.yml
+spring:
+	http:
+		client:
+			connect-timeout: 3s
+			read-timeout: 5s
+\end{lstlisting}
+
+\begin{lstlisting}[style=java,caption={Cliente HTTP declarado como bean sobre los tiempos limite globales.},label={lst:u4:restclient}]
+package ec.edu.uteq.biblioteq.infraestructura.http;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClient;
+
+@Configuration
+public class ClientesHttpConfig {
+
+	@Bean
+	public RestClient clienteCatalogoExterno(RestClient.Builder builder) {
+		// El builder inyectado ya trae aplicados los tiempos limite
+		// declarados en spring.http.client.*
+		return builder
+			.baseUrl("https://openlibrary.org")
+			.defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+			.build();
+	}
+}
+\end{lstlisting}
+
+Los dos tiempos límite no son un detalle de afinamiento: son la diferencia entre un servicio que se degrada y uno que se cae. Sin ellos, si el servicio remoto deja de responder sin cerrar la conexión, cada petición retiene un hilo indefinidamente hasta agotar el conjunto disponible, y la aplicación deja de atender incluso las peticiones que no dependen del servicio externo. Declararlos por configuración tiene además la ventaja de permitir valores distintos por entorno sin recompilar.
+
+\begin{cajaadvertencia}{Error de compilación heredado de tutoriales antiguos}
+	Circula ampliamente una variante que aplica \texttt{setConnectTimeout(} \texttt{Duration.ofSeconds(3))} sobre un \texttt{SimpleClientHttpRequestFactory}. Ese método recibe un \texttt{int} de milisegundos, no un \texttt{Duration}, de modo que el código \textbf{no compila}. Quien necesite construir la fábrica de forma programática ---por ejemplo para ajustar el conjunto de conexiones de Apache HttpClient--- debe usar la API introducida en Spring Boot~3.4 y vigente en la línea~4.x, que sí trabaja con \texttt{Duration}, tal como recoge el listado~\ref{lst:u4:restclient-prog}.
+\end{cajaadvertencia}
+
+\begin{lstlisting}[style=java,caption={Alternativa programatica cuando se requiere una fabrica especifica.},label={lst:u4:restclient-prog}]
+import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
+import org.springframework.boot.http.client.ClientHttpRequestFactorySettings;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import java.time.Duration;
+
+@Bean
+public RestClient clienteConFabricaExplicita(RestClient.Builder builder) {
+
+	ClientHttpRequestFactorySettings ajustes = ClientHttpRequestFactorySettings
+		.defaults()
+		.withConnectTimeout(Duration.ofSeconds(3))
+		.withReadTimeout(Duration.ofSeconds(5));
+
+	ClientHttpRequestFactory fabrica = ClientHttpRequestFactoryBuilder
+		.detect()
+		.build(ajustes);
+
+	return builder
+		.baseUrl("https://openlibrary.org")
+		.requestFactory(fabrica)
+		.build();
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=java,caption={Invocacion de un servicio externo con traduccion del error.},label={lst:u4:restclient-uso}]
+private static final Logger log = LoggerFactory.getLogger(CatalogoExternoClient.class);
+
+public Optional<FichaExterna> consultarPorIsbn(String isbn) {
+	try {
+		FichaExterna ficha = cliente.get()
+			.uri("/isbn/{isbn}.json", isbn)
+			.retrieve()
+			.body(FichaExterna.class);
+
+		return Optional.ofNullable(ficha);
+
+	} catch (HttpClientErrorException.NotFound ex) {
+		return Optional.empty();          // 404 no es un fallo del sistema
+	} catch (RestClientException ex) {
+		log.warn("Catalogo externo no disponible para ISBN {}", isbn, ex);
+		return Optional.empty();          // degradacion controlada
+	}
+}
+\end{lstlisting}
+
+\subsubsection{Resiliencia}
+
+Un servicio externo fallará. La pregunta de diseño no es si ocurrirá sino qué hará el sistema cuando ocurra. Cuatro mecanismos cubren la mayor parte de los casos y conviene aplicarlos con criterio, porque combinados a ciegas pueden empeorar la situación.
+
+\begin{cajadefinicion}{Cuatro mecanismos de resiliencia}
+	\textbf{Tiempo límite.} Fija cuánto se espera antes de abandonar. Es el mecanismo más barato y el más olvidado.\\[3pt]
+	\textbf{Reintento con espera exponencial.} Repite la operación tras esperas crecientes. Solo debe aplicarse a operaciones idempotentes: reintentar un POST puede duplicar un cobro.\\[3pt]
+	\textbf{Cortacircuitos.} Tras varios fallos consecutivos deja de intentar durante un período, lo que evita saturar un servicio ya caído y libera recursos propios.\\[3pt]
+	\textbf{Respuesta alternativa.} Devuelve un valor de reserva ---dato en caché, resultado parcial, mensaje explicativo--- en lugar de propagar el fallo al usuario.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Reintentos mal usados}
+	Un reintento automático sobre una operación no idempotente es una de las causas clásicas de duplicación de registros en sistemas transaccionales. Si el servicio remoto procesó la petición pero la respuesta se perdió en la red, el reintento crea un segundo recurso. La protección estándar consiste en enviar una clave de idempotencia en una cabecera y exigir que el servidor la almacene para descartar repeticiones. Antes de programar cualquier reintento, verifique el verbo: GET, PUT y DELETE lo admiten; POST y PATCH, no, salvo que exista esa clave \cite{rfc9110}.
+\end{cajaadvertencia}
+
+\subsubsection{Caché y consumo de servicios SOAP}
+
+Cuando el dato externo cambia poco ---una ficha bibliográfica, una tabla de códigos--- almacenarlo en caché reduce latencia y protege frente a caídas. La estrategia habitual es \emph{cache-aside}: se consulta la caché, y solo si no está el dato se llama al servicio y se almacena el resultado con un tiempo de vida acorde a su volatilidad.
+
+Para servicios SOAP, la vía más productiva sigue siendo generar las clases cliente a partir del WSDL. En el mundo Java, el complemento \texttt{jaxws-maven-plugin} lo hace durante la compilación; en PHP, la clase \texttt{SoapClient} de la biblioteca estándar consume el contrato en tiempo de ejecución. El listado~\ref{lst:u4:soapclient} muestra el segundo caso, notablemente más breve.
+
+\begin{lstlisting}[style=php,caption={Consumo de un servicio SOAP desde PHP con la clase estandar.},label={lst:u4:soapclient}]
+<?php
+$cliente = new SoapClient('https://servicio.ejemplo.ec/catalogo?wsdl', [
+	'connection_timeout' => 5,
+	'cache_wsdl'         => WSDL_CACHE_MEMORY,
+	'exceptions'         => true,
+	'trace'              => true,
+]);
+
+try {
+	$respuesta = $cliente->consultarDisponibilidad(['isbn' => '978-84-376-0494-7']);
+	$disponible = $respuesta->disponible;
+} catch (SoapFault $error) {
+	// Registrar y degradar: nunca propagar el SoapFault al usuario final
+	error_log('Servicio externo no disponible: ' . $error->getMessage());
+	$disponible = null;
+}
+\end{lstlisting}
+
+\begin{cajaejercicio}{Ejercicio corto 4.12 --- degradación observable}
+	Integre el cliente del listado~\ref{lst:u4:restclient-uso} en el módulo de alta de libros, de forma que al introducir un ISBN se sugiera automáticamente el título recuperado del catálogo externo. Verifique tres escenarios: servicio disponible, ISBN inexistente y servicio caído ---simúlelo apuntando a un puerto cerrado---. En los tres casos el formulario debe seguir siendo utilizable.\\[3pt]
+	\textbf{Ubicación en el proyecto:} \ruta{backend-java/src/main/java/ec/edu/uteq/biblioteq/infraestructura/externo/CatalogoExternoClient.java}\\[3pt]
+	\textbf{Tiempo estimado:} 40 minutos.
+\end{cajaejercicio}
+
+\subsection{Proyecto integrador final}
+\label{sec:u4:proyecto-final}
+
+El proyecto que cierra la unidad reúne todo lo trabajado desde la semana uno. No es un ejercicio más: constituye la entrega \texttt{v1.0.0} del Proyecto Fin de Curso y concentra el mayor peso de la evaluación del segundo corte.
+
+
+\subsubsection{Arquitectura de la solución}
+
+La entrega final no se improvisa a partir del código existente: se diseña primero y luego se ensambla. La figura~\ref{fig:u4:c4} muestra la vista de contenedores del sistema, es decir, las unidades desplegables por separado y los protocolos con que se comunican. Cada caja de ese diagrama corresponde a un servicio del archivo \texttt{docker-compose.yml}, de modo que el diagrama y el despliegue no pueden divergir sin que se note.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		font=\scriptsize,
+		pers/.style={rectangle,rounded corners=3pt,draw=blue!60!black,thick,fill=blue!12,
+			minimum width=2.5cm,minimum height=1.0cm,align=center},
+		cont/.style={rectangle,rounded corners=3pt,draw=uteqverde,thick,fill=uteqverde!10,
+			minimum width=3.1cm,minimum height=1.35cm,align=center},
+		alm/.style={cylinder,shape border rotate=90,aspect=0.28,draw=uteqverde!80!black,
+			thick,fill=uteqverde!12,minimum width=1.8cm,minimum height=2.2cm,align=center},
+		ext/.style={rectangle,rounded corners=3pt,draw=gray!70!black,thick,fill=gray!12,
+			minimum width=2.7cm,minimum height=1.0cm,align=center},
+		fl/.style={->,>=stealth,semithick,uteqverde!70!black}]
+
+		\node[pers] (est) at (0,1.6) {Estudiante};
+		\node[pers] (bib) at (0,-1.6) {Bibliotecario};
+
+		\node[cont] (spa) at (4.2,0) {\textbf{Cliente web}\\Angular 22\\servido por Nginx};
+		\node[cont] (api) at (8.8,0) {\textbf{API}\\Spring Boot 4\\Java 21};
+		\node[cont] (mvc) at (8.8,-3.2) {\textbf{Módulo admin.}\\Thymeleaf\\(mismo proceso)};
+
+		\node[alm] (pg) at (13.2,0.9) {Postgre\\SQL 16};
+		\node[alm] (rd) at (13.2,-2.2) {Redis 7};
+		\node[ext] (ext) at (8.8,3.4) {Catálogo externo\\(HTTPS/JSON)};
+
+		\draw[fl] (est) -- node[above,sloped]{HTTPS} (spa);
+		\draw[fl] (bib) -- node[below,sloped]{HTTPS} (spa);
+		\draw[fl] (spa) -- node[above]{JSON/REST} node[below]{JWT} (api);
+		\draw[fl] (api) -- node[above,sloped]{JDBC} (pg);
+		\draw[fl] (api) -- node[below,sloped]{caché}  (rd);
+		\draw[fl] (api) -- node[right]{cliente HTTP} (ext);
+		\draw[fl] (bib) |- node[below,pos=0.72]{HTTPS (contingencia)} (mvc);
+		\draw[fl] (mvc) -- (api);
+	\end{tikzpicture}
+	\caption{Vista de contenedores de BiblioUTEQ. Cada contenedor corresponde a un servicio declarado en \texttt{docker-compose.yml} con su imagen fijada por resumen SHA-256.}
+	\label{fig:u4:c4}
+\end{figure}
+
+El listado~\ref{lst:u4:arbol-4d} recoge la estructura completa del monorepo. Merece atención el hecho de que la documentación no sea una carpeta secundaria: los ADR, la especificación de la interfaz y el catálogo de procedimientos almacenados son entregables evaluados con el mismo rigor que el código.
+
+\begin{lstlisting}[style=plano,caption={Estructura del monorepo para la entrega v1.0.0.},label={lst:u4:arbol-4d}]
+biblioteq/
+|-- README.md                     <- instrucciones de compilacion y arranque
+|-- docker-compose.yml            <- imagenes fijadas por SHA-256
+|-- .github/workflows/ci.yml      <- compila, prueba y publica cobertura
+|-- backend-java/
+|   |-- pom.xml
+|   `-- src/main/java/ec/edu/uteq/biblioteq/
+|       |-- api/                  <- @RestController + DTO + advice
+|       |-- web/                  <- @Controller + Thymeleaf (modulo admin)
+|       |-- servicio/             <- reglas de negocio
+|       |-- dominio/              <- entidades y enums
+|       |-- repositorio/          <- JPA y llamadas a procedimientos
+|       |-- seguridad/            <- JWT y reglas por rol
+|       `-- infraestructura/      <- clientes HTTP, cache
+|-- backend-php/                  <- modulo comparativo (ejercicio 4.B)
+|-- frontend/
+|   |-- package.json
+|   `-- src/app/
+|       |-- nucleo/               <- interceptores, sesion, guardas
+|       |-- catalogo/
+|       |-- circulacion/          <- prestamos, devoluciones, reservas
+|       |-- multas/
+|       `-- tablero/              <- 4 indicadores agregados
+|-- db/
+|   |-- migration/                <- Flyway V1..Vn
+|   `-- procs/                    <- procedimientos y funciones versionados
+`-- docs/
+    |-- adr/                      <- minimo 6 decisiones documentadas
+    |-- api/openapi.json
+    |-- basedatos/CATALOGO-SP.md
+    |-- diagramas/                <- clases, estados, secuencia, actividades
+    `-- informe-final.pdf         <- minimo 15 referencias APA
+\end{lstlisting}
+
+\subsubsection{Modelo de dominio}
+
+El diagrama de clases de la figura~\ref{fig:u4:clases} fija el vocabulario del sistema. Conviene leerlo prestando atención a las multiplicidades, porque de ellas se derivan decisiones concretas de esquema: la relación entre préstamo y multa es de uno a cero-o-uno, lo que significa que la multa referencia al préstamo y no al revés, y que un préstamo devuelto a tiempo simplemente no tiene fila asociada.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		font=\scriptsize,
+		clase/.style={rectangle split,rectangle split parts=3,draw=uteqverde,thick,
+			rectangle split part fill={uteqverde!22,uteqverde!5,uteqverde!5},
+			text width=3.5cm,align=left,rounded corners=2pt},
+		rel/.style={-,semithick,uteqverde!65!black}]
+
+		\node[clase] (cat) at (0,0)
+			{\centering\textbf{Categoria}\nodepart{two}
+			$-$ id : Long\\ $-$ nombre : String\\ $-$ activa : boolean\nodepart{three}
+			$+$ desactivar()};
+
+		\node[clase] (lib) at (0,-4.3)
+			{\centering\textbf{Libro}\nodepart{two}
+			$-$ id : Long\\ $-$ isbn : String\\ $-$ titulo : String\\ $-$ anioPublicacion : int\nodepart{three}
+			$+$ hayDisponibles()};
+
+		\node[clase] (eje) at (0,-9.2)
+			{\centering\textbf{Ejemplar}\nodepart{two}
+			$-$ id : Long\\ $-$ codigoBarras : String\\ $-$ estado : EstadoEjemplar\nodepart{three}
+			$+$ prestar()\\ $+$ devolver()\\ $+$ darDeBaja()};
+
+		\node[clase] (usu) at (7.2,0)
+			{\centering\textbf{Usuario}\nodepart{two}
+			$-$ id : Long\\ $-$ cedula : String\\ $-$ nombre : String\\ $-$ rol : Rol\nodepart{three}
+			$+$ puedePedirPrestado()};
+
+		\node[clase] (rsv) at (7.2,-4.3)
+			{\centering\textbf{Reserva}\nodepart{two}
+			$-$ id : Long\\ $-$ fechaSolicitud : LocalDate\\ $-$ fechaCaducidad : LocalDate\nodepart{three}
+			$+$ estaVigente()};
+
+		\node[clase] (pre) at (7.2,-9.2)
+			{\centering\textbf{Prestamo}\nodepart{two}
+			$-$ id : Long\\ $-$ fechaSalida : LocalDate\\ $-$ fechaComprometida : LocalDate\\ $-$ fechaDevolucion : LocalDate\nodepart{three}
+			$+$ diasDeRetraso()\\ $+$ renovar()};
+
+		\node[clase] (mul) at (7.2,-14.0)
+			{\centering\textbf{Multa}\nodepart{two}
+			$-$ id : Long\\ $-$ monto : BigDecimal\\ $-$ pagada : boolean\nodepart{three}
+			$+$ registrarPago()};
+
+		\draw[rel] (cat.south) -- node[left,pos=0.2]{1} node[left,pos=0.8]{0..*} (lib.north);
+		\draw[rel] (lib.south) -- node[left,pos=0.2]{1} node[left,pos=0.8]{1..*} (eje.north);
+		\draw[rel] (usu.south) -- node[right,pos=0.2]{1} node[right,pos=0.8]{0..*} (rsv.north);
+		\draw[rel] (rsv.south) -- node[right,pos=0.2]{} node[right,pos=0.8]{} (pre.north);
+		\draw[rel] (pre.south) -- node[right,pos=0.2]{1} node[right,pos=0.8]{0..1} (mul.north);
+		\draw[rel] (lib.east) -- node[above,pos=0.25]{1} node[above,pos=0.8]{0..*} (rsv.west);
+		\draw[rel] (eje.east) -- node[above,pos=0.25]{1} node[above,pos=0.8]{0..*} (pre.west);
+		\draw[rel] (usu.east) -- ++(1.5,0) |- node[right,pos=0.25]{1 : 0..*} (pre.east);
+	\end{tikzpicture}
+	\caption{Diagrama de clases del dominio de BiblioUTEQ. Las operaciones listadas son las que contienen reglas; los accesores se omiten.}
+	\label{fig:u4:clases}
+\end{figure}
+
+\subsubsection{Ciclo de vida del préstamo}
+
+El ejemplar tiene su propio ciclo, ya modelado en la figura~\ref{fig:u4:estados-ejemplar}. El préstamo tiene otro, distinto y con frecuencia confundido con el anterior. La figura~\ref{fig:u4:estados-prestamo} lo separa. La distinción importa: un préstamo vencido y uno activo son el mismo registro en la base, pero disparan reglas diferentes, y modelarlos como estados explícitos evita que esa lógica quede dispersa en condicionales repartidos por el código.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		font=\scriptsize,
+		estado/.style={rectangle,rounded corners=8pt,draw=uteqverde,thick,fill=uteqverde!8,
+			minimum width=2.2cm,minimum height=0.85cm,align=center},
+		ini/.style={circle,fill=black,minimum size=5pt,inner sep=0pt},
+		fin/.style={circle,draw=black,thick,minimum size=9pt,inner sep=0pt},
+		tr/.style={->,>=stealth,semithick,uteqverde!65!black}]
+
+		\node[ini] (i) at (-2.4,0) {};
+		\node[estado] (act) at (0,0) {activo};
+		\node[estado] (ren) at (4.4,0) {renovado};
+		\node[estado,fill=orange!12,draw=orange!80!black] (ven) at (4.4,-2.6) {vencido};
+		\node[estado] (dev) at (0,-2.6) {devuelto};
+		\node[fin] (f) at (-2.4,-2.6) {};
+		\fill (f) circle (2.4pt);
+
+		\draw[tr] (i) -- node[above]{registrar} (act);
+		\draw[tr] (act) -- node[above,align=center]{renovar\\{[}sin reserva pendiente{]}} (ren);
+		\draw[tr] (act) -- node[left]{devolver} (dev);
+		\draw[tr] (ren) -- node[right,align=left]{hoy $>$ fecha\\comprometida} (ven);
+		\draw[tr] (act) -- node[above,sloped,align=center]{hoy $>$ fecha comprometida} (ven);
+		\draw[tr] (ren) to[bend left=32] node[above,sloped]{devolver} (dev);
+		\draw[tr] (ven) -- node[below,align=center]{devolver\\(genera multa)} (dev);
+		\draw[tr] (dev) -- (f);
+	\end{tikzpicture}
+	\caption{Diagrama de estados del préstamo. El paso a \texttt{vencido} no lo provoca una acción del usuario sino el paso del tiempo, lo que exige una tarea programada o un cálculo derivado en cada consulta.}
+	\label{fig:u4:estados-prestamo}
+\end{figure}
+
+\subsubsection{Recorrido de extremo a extremo}
+
+Los diagramas anteriores describen estructura y estados; falta el que muestra cómo colaboran las capas en tiempo de ejecución. La figura~\ref{fig:u4:sec-prestamo} recorre el caso de uso central del sistema desde el clic del bibliotecario hasta la confirmación en pantalla, atravesando cliente, interfaz, servicio y base de datos.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		font=\scriptsize,
+		actor/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!10,rounded corners=2pt,
+			minimum width=2.0cm,minimum height=0.7cm,align=center},
+		linea/.style={dashed,gray!60},
+		msj/.style={->,>=stealth,semithick,uteqverde!70!black},
+		ret/.style={->,>=stealth,semithick,dashed,uteqdorado!85!black}]
+
+		\node[actor,fill=blue!12,draw=blue!60!black] (a1) at (0,0) {Biblio\-tecario};
+		\node[actor] (a2) at (3.0,0)  {SPA\\Angular};
+		\node[actor] (a3) at (6.0,0)  {Prestamo\\ApiController};
+		\node[actor] (a4) at (9.0,0)  {Prestamo\\Service};
+		\node[actor] (a5) at (12.1,0) {Repositorios\\+ PostgreSQL};
+
+		\foreach \n in {a1,a2,a3,a4,a5} { \draw[linea] (\n.south) -- ++(0,-9.0); }
+
+		\draw[msj] (a1|-0,-1.0) -- node[above]{1: confirma préstamo} (a2|-0,-1.0);
+		\draw[msj] (a2|-0,-1.75) -- node[above]{2: POST /api/v1/prestamos} (a3|-0,-1.75);
+		\draw[msj] (a3|-0,-2.5) -- node[above]{3: registrarPrestamo(dto)} (a4|-0,-2.5);
+		\draw[msj] (a4|-0,-3.25) -- node[above]{4: contarActivos(usuario)} (a5|-0,-3.25);
+		\draw[ret] (a5|-0,-3.95) -- node[above]{5: 2} (a4|-0,-3.95);
+		\draw[msj] (a4|-0,-4.65) -- node[above]{6: tieneMultasImpagas(usuario)} (a5|-0,-4.65);
+		\draw[ret] (a5|-0,-5.35) -- node[above]{7: false} (a4|-0,-5.35);
+		\draw[msj] (a4|-0,-6.05) -- node[above]{8: bloquear y prestar ejemplar} (a5|-0,-6.05);
+		\draw[msj] (a4|-0,-6.75) -- node[above]{9: guardar préstamo (+15 días)} (a5|-0,-6.75);
+		\draw[ret] (a4|-0,-7.45) -- node[above]{10: PrestamoDto} (a3|-0,-7.45);
+		\draw[ret] (a3|-0,-8.15) -- node[above]{11: 201 + Location} (a2|-0,-8.15);
+		\draw[ret] (a2|-0,-8.85) -- node[above]{12: comprobante en pantalla} (a1|-0,-8.85);
+
+		\draw[decorate,decoration={brace,amplitude=4pt},red!60!black,thick]
+			(13.25,-3.05) -- (13.25,-6.95) node[midway,right=5pt,align=left,text width=1.25cm]
+			{\textcolor{red!60!black}{una sola trans\-acción}};
+	\end{tikzpicture}
+	\caption{Diagrama de secuencia del registro de un préstamo. Los pasos 4 a 9 comparten transacción: si el paso 9 falla, el ejemplar no queda marcado como prestado.}
+	\label{fig:u4:sec-prestamo}
+\end{figure}
+
+\begin{cajaejercicio}{Ejercicio integrador 4.D --- BiblioUTEQ v1.0.0}
+	\textbf{Alcance funcional mínimo.}
+	\begin{enumerate}
+		\item Gestión de catálogo: libros, ejemplares y categorías, con búsqueda y paginación.
+		\item Gestión de usuarios con roles diferenciados de estudiante, bibliotecario y administrador.
+		\item Circulación: préstamo, renovación y devolución, con las cinco reglas de negocio del ejercicio~4.B.
+		\item Reservas sobre ejemplares no disponibles, con notificación al liberarse.
+		\item Multas: cálculo automático, consulta y registro de pago.
+		\item Tablero con al menos cuatro indicadores agregados de circulación.
+	\end{enumerate}
+	\textbf{Requisitos arquitectónicos.}
+	\begin{itemize}
+		\item Interfaz REST en Spring Boot que alcance el nivel~2 de Richardson en todos sus recursos.
+		\item Cliente Angular que consuma exclusivamente esa interfaz, sin acceso directo a la base de datos.
+		\item Módulo administrativo adicional con MVC del lado del servidor y Thymeleaf, según el ADR-004.
+		\item Autenticación con JWT y autorización por rol verificada en el servidor en cada extremo.
+		\item Errores conformes a la RFC~9457 en toda la interfaz, sin excepción.
+		\item Acceso a datos según la política híbrida de la asignatura: operaciones elementales con JPA, el resto mediante procedimientos almacenados catalogados en \texttt{docs/basedatos/CATALOGO-SP.md}.
+		\item Despliegue reproducible con Docker Compose e imágenes fijadas por resumen SHA-256.
+	\end{itemize}
+	\textbf{Requisitos de calidad.}
+	\begin{itemize}
+		\item Cobertura de pruebas igual o superior al 70\% en la capa de servicios, medida con JaCoCo.
+		\item Al menos quince pruebas de integración sobre la interfaz REST.
+		\item Especificación OpenAPI completa y versionada.
+		\item Verificación de los seis controles mínimos de OWASP acordados en la Unidad~III \cite{owasp2021top10}.
+		\item Registro de decisiones arquitectónicas con un mínimo de seis ADR.
+		\item Flujo de integración continua en GitHub Actions que compile, pruebe y publique el informe de cobertura.
+	\end{itemize}
+	\textbf{Estructura y modelado.} El repositorio reproduce la estructura del listado~\ref{lst:u4:arbol-4d}. La carpeta \texttt{docs/diagramas/} debe contener, como mínimo, la versión propia del equipo de los cinco diagramas de esta sección: contenedores (figura~\ref{fig:u4:c4}), clases (figura~\ref{fig:u4:clases}), estados del ejemplar y del préstamo (figuras~\ref{fig:u4:estados-ejemplar} y~\ref{fig:u4:estados-prestamo}), y secuencia del caso de uso central (figura~\ref{fig:u4:sec-prestamo}). Se admite cualquier herramienta ---PlantUML, Mermaid, draw.io--- siempre que el archivo fuente esté versionado junto a la imagen. Un diagrama que contradiga al código entregado se penaliza igual que un defecto funcional.\\[4pt]
+	\textbf{Entrega.} Etiqueta \texttt{v1.0.0} en el repositorio, que constituye la única fuente de verdad para la calificación. Documento técnico final con un mínimo de quince referencias en formato APA. Defensa oral de treinta minutos en la que cada integrante debe poder responder sobre cualquier parte del sistema.\\[4pt]
+	\textbf{Criterios de piso.} Rigen los dos criterios generales de la asignatura. Adicionalmente: ausencia de la etiqueta \texttt{v1.0.0}, cobertura inferior al 40\% o credenciales versionadas en el repositorio implican calificación CERO.\\[4pt]
+	\textbf{Tiempo estimado:} 40 a 50 horas de trabajo en equipo distribuidas en cuatro semanas.
+\end{cajaejercicio}
+
+\begin{cajabuenas}{Lista de verificación previa a la entrega final}
+	\begin{enumerate}
+		\item El repositorio se clona en una máquina limpia y el sistema arranca siguiendo solo el \texttt{README.md}.
+		\item Ningún archivo del repositorio contiene contraseñas, claves de firma ni cadenas de conexión reales.
+		\item Todos los extremos responden el código de estado correcto, incluidos los casos de error.
+		\item La especificación OpenAPI está sincronizada con el código y versionada.
+		\item Las migraciones reconstruyen el esquema desde cero sin intervención manual.
+		\item El informe de cobertura se genera en la integración continua y no solo en local.
+		\item Los mensajes de \emph{commit} identifican al autor real de cada aporte.
+		\item Existe al menos un ADR por cada decisión estructural no obvia.
+		\item Las imágenes de Docker están fijadas por resumen, no por etiqueta móvil.
+		\item El documento técnico cita quince fuentes verificables, ninguna inventada.
+	\end{enumerate}
+\end{cajabuenas}
+
+\subsection{Tendencias actuales y perspectivas profesionales}
+\label{sec:u4:tendencias}
+
+Cerrar la unidad enumerando tecnologías de moda sería poco útil: la lista caducaría antes de la graduación. Resulta más provechoso identificar las tensiones de fondo que están moviendo el diseño de servicios, porque esas tensiones sobreviven a las herramientas concretas que las resuelven en cada momento.
+
+\subsubsection{La tensión entre generalidad y ajuste al cliente}
+
+REST expone recursos genéricos y el cliente compone lo que necesita. Cuando el cliente es un móvil con red inestable, esa generalidad se paga en peticiones múltiples y datos sobrantes. GraphQL responde permitiendo que el cliente declare exactamente qué campos quiere; el costo es un servidor más complejo, con dificultades adicionales de caché y de limitación de consultas costosas. El patrón \emph{Backend for Frontend} responde de otro modo: mantiene la interfaz genérica y añade una capa intermedia adaptada a cada tipo de cliente.
+
+Ninguna de las tres opciones es universalmente superior. Para un sistema como BiblioUTEQ, con un cliente web y un volumen moderado, REST sigue siendo la elección razonable, y así debe argumentarse en el ADR correspondiente en lugar de adoptar GraphQL porque suene moderno.
+
+\subsubsection{La tensión entre acoplamiento temporal y simplicidad}
+
+Toda llamada síncrona acopla en el tiempo a quien llama con quien responde: si el segundo no está, el primero falla. La arquitectura orientada a eventos rompe ese acoplamiento mediante colas de mensajes, y a cambio introduce consistencia eventual, es decir, ventanas durante las cuales dos partes del sistema tienen versiones distintas de la verdad. Ese modelo encaja bien en procesos que toleran retraso ---notificar la disponibilidad de una reserva, generar un informe--- y muy mal en operaciones que el usuario espera ver reflejadas de inmediato.
+
+\subsubsection{Otros vectores de cambio}
+
+Tres desarrollos adicionales merecen seguimiento por su impacto previsible en el ejercicio profesional a corto plazo. El primero es la consolidación de HTTP/3 sobre QUIC, que reduce la latencia de establecimiento de conexión y mejora el comportamiento en redes móviles inestables, escenario habitual en buena parte del territorio ecuatoriano. El segundo es la extensión del enfoque \emph{API-first}, en el que la especificación OpenAPI se escribe y acuerda antes que el código, de modo que cliente y servidor se desarrollen en paralelo contra un contrato estable. El tercero es la aparición de protocolos para exponer herramientas y datos a agentes automáticos, una capa de integración que reutiliza casi todo lo estudiado en esta unidad: contratos explícitos, autenticación por testigos y errores estructurados.
+
+\begin{cajacritica}{Lectura crítica --- la asistencia automática y el criterio propio}
+	Las herramientas de generación asistida de código producen hoy controladores REST y servicios completos en segundos. Esa capacidad desplaza el valor profesional hacia donde siempre debió estar: saber si el código generado es correcto. Un generador puede producir un extremo que devuelve 200 ante un error, que expone la entidad JPA con todas sus relaciones o que reintenta un POST sin clave de idempotencia. Detectar esos tres defectos exige exactamente los criterios desarrollados en esta unidad. La conclusión operativa para el estudiante es directa: el conocimiento que conserva valor no es la sintaxis de las anotaciones sino la capacidad de revisar críticamente un diseño y sostener el argumento.
+\end{cajacritica}
+
+\subsubsection{Perspectivas profesionales}
+
+Las competencias construidas en esta unidad se corresponden con perfiles laborales concretos y demandados. Quien domina el diseño de interfaces REST, su documentación y su prueba automatizada cubre el núcleo del perfil de desarrollador de servicios; añadiendo el consumo desde Angular, el de desarrollador de pila completa. La documentación de decisiones arquitectónicas y la evaluación por atributos de calidad conforme a la norma ISO/IEC~25010:2023 \cite{iso25010} constituyen, además, la puerta de entrada a roles de arquitectura.
+
+Conviene señalar un punto que rara vez se dice en clase. Lo que distingue a un candidato en una entrevista técnica no suele ser la cantidad de tecnologías listadas en la hoja de vida, sino la capacidad de explicar por qué eligió una y descartó otra en un proyecto concreto. Un repositorio con seis ADR bien redactados, pruebas que fallan cuando deben fallar y una especificación OpenAPI sincronizada dice más sobre criterio profesional que una lista de veinte herramientas. El PFC de esta asignatura es, para muchos estudiantes, la primera pieza presentable de ese portafolio.
+
+% =====================================================================
+\section*{Síntesis de la unidad}
+\addcontentsline{toc}{section}{Síntesis de la unidad}
+
+La unidad recorrió un arco que va de un patrón de 1979 a las interfaces que hoy sostienen la integración entre sistemas. El hilo conductor fue uno solo: separar responsabilidades para que el cambio en una parte no obligue a tocar las demás. El MVC lo hace dentro de una aplicación; los servicios web, entre aplicaciones distintas.
+
+Del bloque~4.1 debe retenerse que el patrón describe una asignación de responsabilidades y no una estructura de carpetas, y que su adaptación a HTTP sacrificó el mecanismo de notificación del original. Del bloque~4.2, que dos \emph{frameworks} con filosofías opuestas ---\emph{Data Mapper} frente a \emph{Active Record}--- implementan el mismo patrón, lo que confirma su carácter conceptual. Del bloque~4.3, que REST es un conjunto de restricciones derivadas del análisis de la web y que su cumplimiento se evalúa, no se declara. Del bloque~4.4, que consumir un servicio exige prever su fallo desde el primer día.
+
+\begin{cajadefinicion}{Diez afirmaciones que el estudiante debe poder defender}
+	\begin{enumerate}
+		\item El controlador coordina; no consulta la base de datos ni decide reglas de negocio.
+		\item La vista puede decidir colores, jamás si un préstamo está vencido.
+		\item El \emph{Front Controller} concentra la entrada; las ocho etapas del ciclo explican casi todo fallo.
+		\item MVC no siempre conviene: para una interfaz con varios clientes, la API con cliente enriquecido es superior.
+		\item \emph{Active Record} y \emph{Data Mapper} son intercambiables en cuanto a resultado y muy distintos en cuanto a acoplamiento.
+		\item Un modelo sin control de asignación masiva es una vulnerabilidad, no un descuido de estilo.
+		\item Toda operación segura es idempotente; no toda operación idempotente es segura.
+		\item Un error debe viajar con su código de estado correcto y un cuerpo estructurado según la RFC~9457.
+		\item \texttt{fetch} no rechaza la promesa ante un 404: comprobar \texttt{ok} es obligatorio.
+		\item Reintentar una operación no idempotente sin clave de idempotencia puede duplicar registros.
+	\end{enumerate}
+\end{cajadefinicion}
+
+\section*{Autoevaluación}
+\addcontentsline{toc}{section}{Autoevaluación}
+
+Las preguntas siguientes no tienen respuesta en una sola línea del texto: exigen relacionar. Se recomienda responderlas por escrito antes de la evaluación parcial del segundo corte.
+
+\begin{enumerate}
+	\item Explique por qué el MVC original de Smalltalk no puede trasladarse literalmente a la web y qué elemento concreto se pierde en la traducción.
+	\item Un compañero afirma que su proyecto usa MVC porque tiene tres carpetas llamadas \texttt{models}, \texttt{views} y \texttt{controllers}. Formule tres preguntas que permitan verificar si la separación es real.
+	\item Justifique con un caso del dominio bibliotecario por qué exponer entidades JPA en la interfaz REST es una mala decisión, y cuantifique el costo de revertirla más adelante.
+	\item Una interfaz devuelve siempre el código 200, incluso ante errores, con un campo \texttt{exito} en el cuerpo. Enumere cuatro consecuencias técnicas concretas de esa decisión.
+	\item Diseñe la URI, el verbo y el código de respuesta para la operación «renovar un préstamo». Argumente por qué su propuesta no viola la regla de no usar verbos en las URI.
+	\item Un servicio externo de catálogo bibliográfico responde con una latencia media de 400\,ms y falla en el 2\% de las llamadas. Proponga una estrategia completa de resiliencia y justifique cada mecanismo elegido.
+	\item Compare el esfuerzo de implementar la misma funcionalidad en Spring Boot y en Laravel según su propia experiencia en los ejercicios~4.A y~4.B, e identifique en qué punto concreto cada uno resultó superior.
+	\item Explique por qué el nivel~3 de Richardson es poco frecuente en la industria y en qué escenario sí aportaría valor real.
+\end{enumerate}
+
+% =====================================================================
+\bibliographystyle{plain}
+\addcontentsline{toc}{section}{Referencias}
+\bibliography{Unidad4}
+
+\end{document}

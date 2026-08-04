@@ -1,0 +1,2292 @@
+% =====================================================================
+%  UNIDAD IV --- MODELO-VISTA-CONTROLADOR Y SERVICIOS WEB
+%  Asignatura: Aplicaciones Web (Quinto nivel) --- PPA 2026-2027
+%  Universidad Tecnica Estatal de Quevedo
+%  Facultad de Ciencias de la Computacion y Diseno Digital
+%  Carrera de Ingenieria de Software
+%
+%  Preambulo derivado de LibroAplicacionesWeb_Completo_v3.tex
+%  Compilacion: pdflatex -> bibtex -> pdflatex -> pdflatex
+% =====================================================================
+\documentclass[11pt,a4paper,openany]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{parskip}
+
+\usepackage{xcolor}
+\definecolor{uteqverde}{RGB}{0,102,51}
+\definecolor{uteqdorado}{RGB}{204,153,0}
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{codeborder}{RGB}{180,180,180}
+\definecolor{codekey}{RGB}{0,0,180}
+\definecolor{codestr}{RGB}{163,21,21}
+\definecolor{codecom}{RGB}{0,128,0}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,backgrounds,calc}
+\usetikzlibrary{shapes.geometric,shapes.symbols,shapes.multipart,shadows,matrix}
+\usetikzlibrary{decorations.markings,decorations.pathreplacing}
+\usetikzlibrary{babel}
+\usepackage{float}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{breakable,skins,listings}
+
+\newtcolorbox{cajadefinicion}[1]{colback=uteqverde!5,colframe=uteqverde,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaejemplo}[1]{colback=uteqdorado!8,colframe=uteqdorado!80!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaejercicio}[1]{colback=blue!4,colframe=blue!60!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaadvertencia}[1]{colback=red!5,colframe=red!70!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajahistoria}[1]{colback=blue!3,colframe=blue!50!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajabuenas}[1]{colback=green!4,colframe=uteqverde!90!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajacompara}[1]{colback=cyan!5,colframe=cyan!60!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajacritica}[1]{colback=orange!6,colframe=orange!75!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaadr}[1]{colback=violet!4,colframe=violet!70!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+\newtcolorbox{cajaanalogia}[1]{colback=teal!5,colframe=teal!70!black,
+	fonttitle=\bfseries\color{white},title=#1,breakable,enhanced}
+
+\usepackage{listings}
+\lstdefinelanguage{HTML5}{language=HTML,sensitive=true,
+	morekeywords={article,header,nav,section,footer,aside,figure,figcaption,
+		main,picture,video,audio,canvas,svg,details,summary,dialog,
+		DOCTYPE,html,head,body,meta,link,title,div,span,form,input,
+		label,button,select,option,textarea,table,thead,tbody,tr,th,td,
+		p,a,img,ul,ol,li,h1,h2,h3,h4,h5,h6,script,style,em,strong}}
+\lstdefinelanguage{JavaScript}{
+	keywords={break,case,catch,continue,default,delete,do,else,
+		finally,for,function,if,in,instanceof,new,return,switch,this,throw,
+		try,typeof,var,void,while,with,let,const,of,yield,async,await,
+		class,extends,super,static,import,export,from,as,true,false,null,
+		undefined},
+	ndkeywords={Array,Boolean,Date,Error,Function,JSON,Math,Number,Object,
+		Promise,RegExp,String,Symbol,console,document,window,fetch,Map,Set,
+		AbortController,URLSearchParams,Headers,Response,Request},
+	sensitive=true,comment=[l]{//},morecomment=[s]{/*}{*/},
+	morestring=[b]',morestring=[b]",morestring=[b]`}
+\lstdefinelanguage{PHP}{
+	keywords={abstract,and,array,as,break,callable,case,catch,class,clone,
+		const,continue,declare,default,do,echo,else,elseif,empty,enum,extends,
+		final,finally,fn,for,foreach,function,global,if,implements,include,
+		instanceof,interface,isset,list,match,namespace,new,null,or,print,
+		private,protected,public,readonly,require,return,self,static,switch,
+		throw,trait,true,false,try,unset,use,var,while,yield,parent},
+	sensitive=true,comment=[l]{//},morecomment=[l]{\#},
+	morecomment=[s]{/*}{*/},morestring=[b]',morestring=[b]"}
+\lstdefinelanguage{TypeScript}{
+	keywords={abstract,any,as,async,await,boolean,break,case,catch,class,
+		const,constructor,continue,declare,default,delete,do,else,enum,export,
+		extends,false,finally,for,from,function,get,if,implements,import,in,
+		instanceof,interface,let,new,null,number,of,private,protected,public,
+		readonly,return,set,static,string,super,switch,this,throw,true,try,
+		type,typeof,undefined,void,while,yield},
+	ndkeywords={Observable,Signal,HttpClient,Injectable,Component,inject,
+		signal,computed,effect,resource,firstValueFrom,catchError,retry,
+		Promise,Array,Object,JSON,console},
+	sensitive=true,comment=[l]{//},morecomment=[s]{/*}{*/},
+	morestring=[b]',morestring=[b]",morestring=[b]`}
+
+\lstdefinestyle{codigobase}{basicstyle=\ttfamily\footnotesize,
+	backgroundcolor=\color{codebg},frame=single,rulecolor=\color{codeborder},
+	numbers=left,numberstyle=\tiny\color{gray},numbersep=8pt,stepnumber=1,
+	breaklines=true,breakatwhitespace=true,showstringspaces=false,tabsize=2,
+	keywordstyle=\color{codekey}\bfseries,stringstyle=\color{codestr},
+	commentstyle=\color{codecom}\itshape,captionpos=b,
+	xleftmargin=12pt,xrightmargin=4pt}
+\lstdefinestyle{java}{style=codigobase,language=Java}
+\lstdefinestyle{js}{style=codigobase,language=JavaScript}
+\lstdefinestyle{ts}{style=codigobase,language=TypeScript}
+\lstdefinestyle{php}{style=codigobase,language=PHP}
+\lstdefinestyle{html}{style=codigobase,language=HTML5}
+\lstdefinestyle{xml}{style=codigobase,language=XML}
+\lstdefinestyle{sql}{style=codigobase,language=SQL}
+\lstdefinestyle{shell}{style=codigobase,language=bash}
+\lstdefinelanguage{yaml}{keywords={true,false,null},sensitive=true,
+	comment=[l]{\#},morestring=[b]',morestring=[b]"}
+\lstdefinestyle{yaml}{style=codigobase,language=yaml}
+\lstdefinestyle{plano}{style=codigobase,language={}}
+
+\usepackage{array}\usepackage{booktabs}\usepackage{longtable}
+\usepackage{tabularx}\usepackage{multirow}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=uteqverde,citecolor=uteqverde,
+	urlcolor=uteqdorado!70!black,
+	pdftitle={Unidad IV - Modelo-Vista-Controlador y Servicios Web},
+	pdfauthor={UTEQ - Carrera de Ingenieria de Software}}
+\usepackage{url}
+\urlstyle{same}
+
+\usepackage{enumitem}\setlist{itemsep=2pt,topsep=2pt}
+\usepackage{epigraph}\setlength{\epigraphwidth}{0.72\textwidth}
+
+\usepackage{titlesec}
+% --- Titulos alineados a la izquierda y sin division silabica ---
+\newcommand{\sintitulopartido}{\hyphenpenalty=10000\exhyphenpenalty=10000\raggedright}
+% --- Rutas de archivo: monoespaciadas y con puntos de corte tras / . _ ---
+\newcommand{\ruta}[1]{{\ttfamily\small\rutaaux #1\relax}}
+\def\rutaaux{\futurelet\next\rutapaso}
+\def\rutapaso{%
+	\ifx\next\relax \let\sig\relax
+	\else \let\sig\rutaimprime \fi \sig}
+\def\rutaimprime#1{%
+	#1\ifnum`#1=`/ \allowbreak\fi
+	\ifnum`#1=`. \allowbreak\fi
+	\rutaaux}
+\titleformat{\chapter}[display]
+	{\normalfont\Huge\bfseries\color{uteqverde}\sintitulopartido}
+	{\filleft\Large Unidad \thechapter}
+	{1ex}{\titlerule\vspace{1ex}\filright}
+\titleformat{\section}
+	{\normalfont\Large\bfseries\color{uteqverde}\sintitulopartido}{\thesection}{1em}{}
+\titleformat{\subsection}
+	{\normalfont\large\bfseries\color{uteqverde!85!black}\sintitulopartido}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+	{\normalfont\normalsize\bfseries\color{uteqdorado!90!black}\sintitulopartido}{\thesubsubsection}{1em}{}
+
+\renewcommand{\lstlistlistingname}{Indice de listados de codigo}
+\renewcommand{\lstlistingname}{Listado}
+
+\makeatletter
+\renewcommand{\@pnumwidth}{2.3em}
+\renewcommand{\@tocrmarg}{3.2em}
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{3.0em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{4.5em}{3.8em}}
+\renewcommand*\l@subsubsection{\@dottedtocline{3}{8.3em}{4.7em}}
+\renewcommand*\l@figure{\@dottedtocline{1}{1.5em}{3.2em}}
+\let\l@table\l@figure
+\renewcommand*\l@lstlisting{\@dottedtocline{1}{1.5em}{3.2em}}
+\makeatother
+
+\emergencystretch=2em
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlepage}
+	\centering
+	\vspace*{1.2cm}
+	{\LARGE\bfseries\color{uteqverde} Universidad Técnica Estatal de Quevedo\par}
+	\vspace{0.4cm}
+	{\large Facultad de Ciencias de la Computación y Diseño Digital\par}
+	{\large Carrera de Ingeniería de Software\par}
+	\vspace{2.0cm}
+	{\Huge\bfseries\color{uteqverde} BiblioUTEQ\par}
+	\vspace{0.5cm}
+	{\Huge\bfseries Guía de construcción\\[0.3cm] del proyecto desde cero\par}
+	\vspace{1.0cm}
+	\rule{0.75\textwidth}{1.5pt}\par
+	\vspace{0.8cm}
+	{\Large Spring Boot 4 \quad$\vert$\quad Java 21 LTS \quad$\vert$\quad PostgreSQL 16\par}
+	\vspace{0.3cm}
+	{\large Entorno de desarrollo: IntelliJ IDEA Ultimate sobre Windows\par}
+	\vspace{2.0cm}
+	{\large Asignatura: \textbf{Aplicaciones Web} --- Quinto nivel\par}
+	{\large Período Académico Presencial 2026--2027\par}
+	\vspace{1.5cm}
+	{\large\itshape Proyecto Fin de Curso --- documento de referencia\par}
+	\vfill
+	{\large Quevedo --- Los Ríos --- Ecuador\par}
+\end{titlepage}
+
+\chapter*{Cómo leer esta guía}
+\addcontentsline{toc}{chapter}{Cómo leer esta guía}
+\markboth{Cómo leer esta guía}{Cómo leer esta guía}
+
+Esta guía construye BiblioUTEQ desde una carpeta vacía hasta un sistema que arranca, responde peticiones y persiste datos. No es un resumen ni un recetario de fragmentos sueltos: cada archivo que aparece se crea en un orden determinado, y ese orden tiene una justificación que también se explica.
+
+El supuesto de partida es deliberadamente bajo. Se da por conocido únicamente aquello que la asignatura ya cubrió en niveles anteriores: los tipos de datos primitivos de Java, el significado de los modificadores de alcance y la mecánica de declarar e invocar un método dentro de una clase. Todo lo demás ---qué es un paquete, qué es una anotación, por qué existe un contenedor de dependencias, qué hace Maven, qué significa que una interfaz no tenga implementación--- se explica en el punto exacto donde aparece por primera vez.
+
+\begin{cajadefinicion}{Convenciones tipográficas de la guía}
+	\textbf{Cajas verdes de definición} introducen un concepto nuevo. Cuando una palabra aparece por primera vez en el texto y tiene su propia caja, conviene leerla antes de continuar.\\[3pt]
+	\textbf{Cajas doradas de ejemplo} muestran el resultado esperado de una acción, normalmente lo que debe verse en pantalla.\\[3pt]
+	\textbf{Cajas azules de ejercicio} proponen una verificación breve. No son opcionales: detectan errores mientras todavía son baratos de corregir.\\[3pt]
+	\textbf{Cajas rojas de advertencia} señalan errores frecuentes con consecuencias reales.\\[3pt]
+	\textbf{Cajas verdes claras de buenas prácticas} recogen criterios que la rúbrica evalúa.\\[3pt]
+	Las rutas de archivo se escriben siempre desde la raíz del proyecto, con barras inclinadas hacia adelante, aun en Windows: \texttt{src/main/java/ec/edu/uteq/biblioteq/}.
+\end{cajadefinicion}
+
+El recorrido tiene ocho capítulos y sigue una progresión de adentro hacia afuera. Primero se prepara el entorno; después se genera el esqueleto; luego se modela el dominio en un diagrama de clases; a partir de ese diagrama se escriben las entidades, los repositorios, los servicios y, al final, los controladores. La pantalla es lo último que se construye, y esa decisión no es estética: quien empieza por la pantalla termina colocando las reglas de negocio dentro del controlador, que es precisamente el defecto que la rúbrica penaliza.
+
+\begin{cajaadvertencia}{Sobre copiar y pegar}
+	Todo el código de esta guía está pensado para escribirse a mano al menos la primera vez. IntelliJ IDEA completa buena parte de él automáticamente, y ese proceso de completado ---ver la lista de opciones que el editor propone, elegir una y entender por qué---, enseña más que pegar un bloque terminado. Cuando se pega código sin leerlo, el compilador acepta y el estudiante no aprende; cuando se escribe, el compilador protesta y ahí empieza el aprendizaje.
+\end{cajaadvertencia}
+
+\tableofcontents
+\listoffigures
+\lstlistoflistings
+
+\mainmatter
+
+% =====================================================================
+\chapter{Preparación del entorno de desarrollo}
+\label{cap:entorno}
+
+Antes de escribir una sola línea es necesario dejar la máquina en condiciones. Este capítulo instala y verifica cuatro piezas: el compilador de Java, el entorno de desarrollo, la base de datos y la herramienta de contenedores. Ninguna es opcional y todas deben quedar comprobadas, porque un problema de entorno detectado en la semana tres se disfraza de error de programación y consume días.
+
+\section{Qué se instala y por qué}
+\label{sec:que-instala}
+
+Un proyecto Spring Boot no es un archivo que se ejecuta: es un conjunto de piezas que colaboran. Conviene saber qué hace cada una antes de instalarlas, porque así los mensajes de error dejan de ser ruido y pasan a señalar un responsable concreto.
+
+\subsection{Las cuatro piezas del entorno}
+\label{sec:cuatro-piezas}
+
+La primera pieza es el \emph{kit de desarrollo de Java}, conocido por sus siglas en inglés JDK. Contiene el compilador, que traduce el código fuente a un formato intermedio, y la máquina virtual, que ejecuta ese formato intermedio. Sin JDK no hay compilación posible.
+
+La segunda es el entorno de desarrollo integrado, IntelliJ IDEA. Un editor de texto bastaría en teoría, pero en la práctica el entorno aporta tres cosas que ahorran horas: completado de código con conocimiento del proyecto, navegación entre archivos relacionados y un depurador que permite detener la ejecución y observar el estado de las variables.
+
+La tercera es PostgreSQL, el gestor de base de datos relacional. Almacena los datos de forma permanente y garantiza que las operaciones se cumplan por completo o no se cumplan en absoluto. La cuarta es Docker, que permite ejecutar PostgreSQL sin instalarlo directamente en el sistema operativo.
+
+\begin{cajadefinicion}{JDK --- Java Development Kit}
+	Conjunto de herramientas necesarias para desarrollar en Java. Incluye el compilador (\texttt{javac}), la máquina virtual que ejecuta los programas (\texttt{java}) y la biblioteca estándar con las clases básicas del lenguaje. Se distingue del JRE (\emph{Java Runtime Environment}), que solo permite ejecutar programas ya compilados pero no crearlos. Para desarrollar hace falta el JDK completo.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{LTS --- Long Term Support}
+	Designación que reciben ciertas versiones de Java con soporte extendido. Java publica una versión nueva cada seis meses, pero solo una de cada cuatro recibe parches de seguridad durante varios años. Java~21 es LTS; Java~22 y~23 no lo son. En un proyecto institucional se elige siempre una versión LTS, porque una versión sin parches de seguridad es un pasivo, no un activo.
+\end{cajadefinicion}
+
+\subsection{Versiones fijadas para el proyecto}
+\label{sec:versiones}
+
+Las versiones no se eligen por gusto ni se dejan al azar, y la tabla~\ref{tab:versiones} recoge las que rigen para todo el curso. Se fijan al inicio, se declaran en los archivos de configuración y se documentan en el \texttt{README.md} del repositorio. Un proyecto que no declara sus versiones no es reproducible, y un proyecto no reproducible no es evaluable.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Versiones fijadas para el desarrollo de BiblioUTEQ.}
+	\label{tab:versiones}
+	\small
+	\begin{tabularx}{\textwidth}{L{3.5cm} L{2.6cm} X}
+		\toprule
+		\textbf{Componente} & \textbf{Versión} & \textbf{Función en el proyecto} \\
+		\midrule
+		Java (JDK) & 21 LTS & Compilación y ejecución \\
+		Spring Boot & 4.1.x & Armazón de la aplicación \\
+		Maven & 3.9.x & Construcción y gestión de dependencias \\
+		PostgreSQL & 16 & Almacenamiento persistente \\
+		Flyway & 10.x & Versionado del esquema de la base \\
+		IntelliJ IDEA & 2025.1.2 Ultimate & Entorno de desarrollo \\
+		Docker Desktop & 4.x & Ejecución de PostgreSQL en contenedor \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajaadvertencia}{No mezcle versiones mayores}
+	Spring Boot~4 exige Java~17 como mínimo y se recomienda con Java~21. Si el sistema tiene instalado Java~11 o Java~8 de alguna herramienta anterior, el proyecto no compilará y el mensaje de error hablará de una versión de clase no soportada. La verificación de la sección siguiente existe precisamente para detectar ese caso antes de perder una tarde.
+\end{cajaadvertencia}
+
+\section{Instalación y verificación paso a paso}
+\label{sec:instalacion}
+
+Cada paso de esta sección termina con una comprobación. Si la comprobación falla, no se avanza: se resuelve el problema en ese punto. Los errores de entorno se acumulan y se enmascaran unos a otros.
+
+\subsection{Paso 1 --- instalar el JDK 21}
+\label{sec:paso-jdk}
+
+Descargue Eclipse Temurin~21 o el JDK de Oracle en su versión~21 y ejecute el instalador aceptando la ruta propuesta. Al finalizar, abra una ventana de PowerShell nueva ---no una que estuviera abierta antes, porque no verá las variables recién creadas--- y ejecute la comprobación del listado~\ref{lst:verif-java}.
+
+\begin{lstlisting}[style=shell,caption={Verificacion de la instalacion del JDK.},label={lst:verif-java}]
+java -version
+javac -version
+\end{lstlisting}
+
+\begin{cajaejemplo}{Salida esperada}
+	La primera orden debe informar una versión que empiece por 21, con un texto similar a \texttt{openjdk version "21.0.x"}. La segunda debe responder \texttt{javac 21.0.x}. Si la segunda orden no se reconoce, se instaló un JRE en lugar de un JDK. Si ambas responden pero con un número distinto de 21, hay otra versión de Java tomando precedencia en la variable de entorno \texttt{PATH}.
+\end{cajaejemplo}
+
+\begin{cajadefinicion}{Variable de entorno PATH}
+	Lista de carpetas donde el sistema operativo busca los programas cuando se escribe su nombre en la consola. Si dos versiones de Java están instaladas, se ejecuta la que aparezca primero en esa lista. En Windows se edita desde el Panel de control, en la sección de variables de entorno del sistema.
+\end{cajadefinicion}
+
+\subsection{Paso 2 --- instalar IntelliJ IDEA}
+\label{sec:paso-idea}
+
+Descargue IntelliJ IDEA Ultimate y actívelo con la licencia académica gratuita, que se obtiene registrando el correo institucional en el programa educativo de JetBrains. La edición Community no sirve para esta asignatura: carece del soporte para Spring, para bases de datos y para plantillas que se usará a lo largo del curso.
+
+Tras la primera apertura conviene ajustar tres opciones que evitan problemas posteriores. En \emph{Settings} → \emph{Build, Execution, Deployment} → \emph{Build Tools} → \emph{Maven}, verifique que el JDK apuntado sea el~21. En \emph{Editor} → \emph{File Encodings}, fije UTF-8 en las tres listas desplegables. En \emph{Editor} → \emph{Code Style} → \emph{Java}, active el uso de tabulaciones para la indentación.
+
+\begin{cajaadvertencia}{La codificación de caracteres importa}
+	Si el proyecto no está en UTF-8, las tildes y las eñes de los mensajes se convertirán en símbolos ilegibles al ejecutar la aplicación. El problema aparece en tiempo de ejecución, no al compilar, y suele descubrirse cuando ya hay decenas de archivos escritos. Cinco segundos de configuración ahora ahorran una tarde de sustituciones después.
+\end{cajaadvertencia}
+
+\subsection{Paso 3 --- levantar PostgreSQL con Docker}
+\label{sec:paso-postgres}
+
+Instale Docker Desktop y verifique que el motor esté en ejecución: el icono de la barra de tareas debe mostrarse en color, no en gris. Después cree, en una carpeta de trabajo, el archivo del listado~\ref{lst:compose} y ejecute la orden que lo acompaña.
+
+\begin{cajadefinicion}{Contenedor y Docker}
+	Un \emph{contenedor} es un paquete que incluye un programa junto con todo lo que necesita para ejecutarse: bibliotecas, configuración y dependencias del sistema. Docker es la herramienta que crea y ejecuta contenedores. Su ventaja para esta asignatura es concreta: PostgreSQL se ejecuta idéntico en todas las máquinas del curso, sin instalarlo en Windows y sin que las instalaciones previas de cada estudiante interfieran.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Imagen y etiqueta}
+	La \emph{imagen} es la plantilla a partir de la cual se crea un contenedor; el contenedor es la instancia en ejecución de esa imagen. Una \emph{etiqueta} identifica la versión, como en \texttt{postgres:16-alpine}. La palabra \texttt{alpine} indica que la imagen se basa en una distribución de Linux muy pequeña, lo que reduce el tamaño de descarga.
+\end{cajadefinicion}
+
+\begin{lstlisting}[style=yaml,caption={Archivo compose.yaml para levantar PostgreSQL en desarrollo.},label={lst:compose}]
+# Archivo: compose.yaml (en la raiz del proyecto)
+services:
+	postgres:
+		image: postgres:16-alpine
+		container_name: biblioteq-db
+		environment:
+			POSTGRES_DB: biblioteq
+			POSTGRES_USER: biblioteq_app
+			POSTGRES_PASSWORD: cambiar_en_produccion
+		ports:
+			- "5432:5432"
+		volumes:
+			- datos_biblioteq:/var/lib/postgresql/data
+
+volumes:
+	datos_biblioteq:
+\end{lstlisting}
+
+\begin{lstlisting}[style=shell,caption={Puesta en marcha y verificacion del contenedor de base de datos.},label={lst:compose-run}]
+docker compose up -d
+docker ps
+\end{lstlisting}
+
+La primera orden descarga la imagen si no está presente y arranca el contenedor en segundo plano, que es lo que indica la opción \texttt{-d}. La segunda lista los contenedores activos: debe aparecer una línea con el nombre \texttt{biblioteq-db} y el estado \texttt{Up}.
+
+\begin{cajadefinicion}{Puerto y mapeo de puertos}
+	Un \emph{puerto} es un número que identifica un canal de comunicación dentro de una máquina. PostgreSQL escucha por convención en el 5432. La línea \texttt{"5432:5432"} conecta el puerto 5432 de Windows con el 5432 del contenedor, de modo que la aplicación pueda alcanzar la base como si estuviera instalada localmente. Si otro programa ya ocupa ese puerto, cambie el número de la izquierda ---por ejemplo \texttt{"5433:5432"}--- y ajuste después la configuración de la aplicación.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Volumen}
+	Espacio de almacenamiento que sobrevive a la destrucción del contenedor. Sin volumen, al detener y recrear el contenedor se perderían todos los datos. Con volumen, los datos permanecen. El nombre \texttt{datos\_biblioteq} identifica ese espacio.
+\end{cajadefinicion}
+
+\begin{cajaejercicio}{Verificación 1.1 --- conexión a la base de datos}
+	Desde IntelliJ IDEA, abra la pestaña \emph{Database} en el lateral derecho, pulse el signo más y elija PostgreSQL. Complete los datos: servidor \texttt{localhost}, puerto \texttt{5432}, base \texttt{biblioteq}, usuario \texttt{biblioteq\_app} y la contraseña del archivo \texttt{compose.yaml}. Pulse \emph{Test Connection}. Si el resultado es correcto, el entorno está listo. Si falla, revise que el contenedor aparezca como \texttt{Up} en \texttt{docker ps} antes de tocar cualquier otra cosa.
+\end{cajaejercicio}
+
+\begin{cajabuenas}{Verificaciones que deben quedar registradas}
+	\begin{enumerate}
+		\item \texttt{java -version} y \texttt{javac -version} informan la versión 21.
+		\item IntelliJ IDEA abre y muestra la licencia activa.
+		\item La codificación del proyecto está en UTF-8 en las tres opciones.
+		\item \texttt{docker ps} muestra el contenedor \texttt{biblioteq-db} en estado \texttt{Up}.
+		\item La conexión de prueba desde la pestaña \emph{Database} termina con éxito.
+	\end{enumerate}
+	Anote las cinco comprobaciones en la bitácora del equipo con fecha y captura. Ante cualquier problema posterior, el primer paso será repetirlas.
+\end{cajabuenas}
+
+% =====================================================================
+\chapter{Creación del proyecto y estructura inicial}
+\label{cap:creacion}
+
+Con el entorno verificado, este capítulo genera el esqueleto del proyecto y examina, archivo por archivo, todo lo que aparece. La generación toma dos minutos; entender lo generado toma bastante más, y es lo que permite después modificarlo con criterio en lugar de por tanteo.
+
+\section{Generación del esqueleto con Spring Initializr}
+\label{sec:initializr}
+
+Nadie crea un proyecto Spring Boot manualmente. Existe un generador oficial que produce la estructura de carpetas, el archivo de construcción y la clase de arranque ya configurados entre sí.
+
+\subsection{Qué es Spring Initializr y cómo se invoca}
+\label{sec:que-initializr}
+
+Spring Initializr es un servicio web que recibe unas pocas decisiones ---lenguaje, versión, dependencias--- y devuelve un proyecto comprimido listo para abrir. IntelliJ IDEA Ultimate lo integra, de modo que no hace falta visitar el sitio ni descomprimir nada.
+
+En IntelliJ, elija \emph{File} → \emph{New} → \emph{Project} y seleccione \emph{Spring Boot} en la lista lateral. Complete el formulario con los valores de la tabla~\ref{tab:initializr} y avance a la pantalla siguiente, donde se seleccionan las dependencias.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Valores del formulario de generación del proyecto.}
+	\label{tab:initializr}
+	\small
+	\begin{tabularx}{\textwidth}{L{3.0cm} L{4.4cm} X}
+		\toprule
+		\textbf{Campo} & \textbf{Valor} & \textbf{Qué significa} \\
+		\midrule
+		Name & \texttt{biblioteq} & Nombre de la carpeta y del proyecto \\
+		Language & Java & Lenguaje del código fuente \\
+		Type & Maven & Herramienta de construcción \\
+		Group & \texttt{ec.edu.uteq} & Identificador de la organización \\
+		Artifact & \texttt{biblioteq} & Identificador del proyecto \\
+		Package name & \texttt{ec.edu.uteq.biblioteq} & Paquete raíz del código \\
+		JDK & 21 & Versión del compilador \\
+		Java & 21 & Versión del lenguaje \\
+		Packaging & Jar & Formato del artefacto final \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajadefinicion}{Paquete}
+	Mecanismo de Java para agrupar clases relacionadas y evitar que dos clases con el mismo nombre entren en conflicto. Se escribe con puntos y se corresponde con carpetas anidadas en el disco: el paquete \texttt{ec.edu.uteq.biblioteq} vive en la carpeta \texttt{ec/edu/uteq/biblioteq}. La convención de empezar por el dominio institucional invertido ---\texttt{ec.edu.uteq} para \texttt{uteq.edu.ec}--- garantiza que ninguna otra organización del mundo use el mismo prefijo.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Group y Artifact}
+	Son las dos coordenadas con las que Maven identifica un proyecto de forma única. El \emph{group} identifica a la organización que lo publica; el \emph{artifact}, al proyecto concreto dentro de esa organización. Sumados a la versión forman las coordenadas completas, que es como una biblioteca se localiza y se descarga.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{JAR}
+	Formato de archivo que empaqueta todas las clases compiladas de un proyecto en un solo fichero. Spring Boot produce un JAR \emph{ejecutable}: contiene además un servidor web incorporado, de modo que la aplicación se lanza con una sola orden y no necesita instalarse dentro de otro servidor.
+\end{cajadefinicion}
+
+\subsection{Selección de dependencias}
+\label{sec:dependencias}
+
+La segunda pantalla presenta un catálogo extenso. Seleccione exactamente las siete de la tabla~\ref{tab:deps} y ninguna más; añadir dependencias «por si acaso» alarga el arranque y complica el diagnóstico de errores.
+
+\begin{cajadefinicion}{Dependencia}
+	Biblioteca externa que el proyecto necesita para funcionar. En lugar de descargarla a mano y copiarla en una carpeta, se declara en el archivo de construcción y Maven la obtiene automáticamente, junto con todo lo que a su vez ella necesite. Esa cadena de necesidades se llama \emph{dependencias transitivas}.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Starter}
+	Dependencia agrupadora propia de Spring Boot, reconocible porque su nombre empieza por \texttt{spring-boot-starter}. No contiene código propio: agrupa un conjunto de bibliotecas que se sabe que funcionan bien juntas, con versiones ya cotejadas entre sí. Esa curaduría de versiones compatibles es buena parte del valor de Spring Boot.
+\end{cajadefinicion}
+
+\begin{table}[htbp]
+	\centering
+	\caption{Dependencias que se seleccionan en el generador y función de cada una.}
+	\label{tab:deps}
+	\small
+	\begin{tabularx}{\textwidth}{L{4.2cm} X}
+		\toprule
+		\textbf{Dependencia} & \textbf{Para qué sirve} \\
+		\midrule
+		Spring Web & Aporta el servidor web incorporado y las anotaciones de controlador \\
+		Spring Data JPA & Mapeo objeto-relacional y generación automática de repositorios \\
+		PostgreSQL Driver & Traductor entre Java y el protocolo de PostgreSQL \\
+		Flyway Migration & Versionado del esquema de la base de datos \\
+		Validation & Validación declarativa de datos de entrada \\
+		Lombok & Reduce código repetitivo mediante anotaciones \\
+		Spring Boot DevTools & Reinicio automático al detectar cambios en desarrollo \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajadefinicion}{Controlador de base de datos --- driver}
+	Biblioteca que traduce entre el lenguaje de programación y el protocolo particular de un gestor de base de datos. Java define una interfaz común llamada JDBC; cada gestor aporta su propio controlador que la implementa. Cambiar de PostgreSQL a otro gestor implica cambiar el controlador, no el código de la aplicación: esa independencia es el propósito de JDBC.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{DevTools no se despliega en producción}
+	DevTools reinicia la aplicación cada vez que detecta un archivo compilado nuevo, lo que resulta muy cómodo mientras se programa. También expone información interna y consume memoria. Spring Boot lo excluye automáticamente del JAR final, pero conviene saber que existe esa distinción entre lo que se usa al desarrollar y lo que se despliega.
+\end{cajaadvertencia}
+
+\section{Anatomía del proyecto generado}
+\label{sec:anatomia}
+
+Al pulsar \emph{Create}, IntelliJ descarga el proyecto y abre la ventana principal. Lo que se ve entonces es la estructura del listado~\ref{lst:estructura-e0}, que denominaremos \textbf{estado E0}. A lo largo de la guía iremos marcando cómo evoluciona esta estructura, y cada estado nuevo mostrará en su árbol las incorporaciones respecto del anterior.
+
+\begin{lstlisting}[style=plano,caption={Estado E0 --- estructura recien generada por Spring Initializr.},label={lst:estructura-e0}]
+biblioteq/
+|-- .mvn/
+|   `-- wrapper/
+|       `-- maven-wrapper.properties   <- version de Maven fijada
+|-- src/
+|   |-- main/
+|   |   |-- java/
+|   |   |   `-- ec/edu/uteq/biblioteq/
+|   |   |       `-- BiblioutegApplication.java   <- clase de arranque
+|   |   `-- resources/
+|   |       |-- static/                <- archivos servidos tal cual
+|   |       |-- templates/             <- plantillas HTML
+|   |       `-- application.properties <- configuracion
+|   `-- test/
+|       `-- java/
+|           `-- ec/edu/uteq/biblioteq/
+|               `-- BiblioutegApplicationTests.java
+|-- .gitignore              <- archivos excluidos del repositorio
+|-- mvnw                    <- lanzador de Maven para Linux y macOS
+|-- mvnw.cmd                <- lanzador de Maven para Windows
+`-- pom.xml                 <- archivo de construccion
+\end{lstlisting}
+
+\subsection{Las carpetas y su significado}
+\label{sec:carpetas}
+
+La separación entre \texttt{src/main} y \texttt{src/test} es una convención de Maven que conviene respetar sin excepciones. En \texttt{main} vive el código que se despliega; en \texttt{test}, el que verifica ese código y que nunca llega al artefacto final. Ambas ramas replican la misma estructura de paquetes, de modo que la prueba de una clase se ubica en el mismo paquete que la clase probada.
+
+Dentro de \texttt{main} hay dos ramas más. La carpeta \texttt{java} contiene el código fuente; la carpeta \texttt{resources} contiene todo lo que no es código pero debe acompañarlo: configuración, plantillas, archivos de migración, imágenes. Ambas terminan empaquetadas en el JAR final.
+
+\begin{cajadefinicion}{Convención sobre configuración}
+	Principio de diseño según el cual la herramienta asume valores razonables por defecto y solo exige configurar lo excepcional. Maven no pregunta dónde está el código fuente: da por hecho que está en \texttt{src/main/java}. Respetar la convención significa no tener que configurar nada; apartarse de ella obliga a declararlo todo. Ruby on Rails popularizó este principio en 2005 y Spring Boot lo adoptó después.
+\end{cajadefinicion}
+
+Las subcarpetas \texttt{static} y \texttt{templates} tienen destinos distintos. En \texttt{static} se colocan archivos que el servidor entrega sin modificar: hojas de estilo, imágenes, scripts. En \texttt{templates} se colocan plantillas que un motor procesa antes de enviarlas, sustituyendo marcas por datos. En la fase actual del proyecto ambas quedarán vacías, porque el sistema expondrá una interfaz de programación y no páginas.
+
+\subsection{Los archivos de la raíz}
+\label{sec:archivos-raiz}
+
+El archivo \texttt{pom.xml} es el centro del proyecto y merece su propia sección, que viene a continuación. Los dos lanzadores \texttt{mvnw} y \texttt{mvnw.cmd} constituyen el llamado \emph{envoltorio de Maven}: permiten construir el proyecto aunque Maven no esté instalado en la máquina, porque lo descargan en la versión exacta que el proyecto declara. En Windows se usa siempre \texttt{mvnw.cmd}.
+
+El archivo \texttt{.gitignore} enumera lo que no debe versionarse. Viene con un contenido razonable, pero conviene revisarlo: debe excluir la carpeta \texttt{target}, donde se depositan los archivos compilados, y cualquier archivo con credenciales.
+
+\begin{cajaadvertencia}{Lo que jamás se versiona}
+	Nunca suba al repositorio la carpeta \texttt{target}, los archivos con contraseñas reales, ni la carpeta \texttt{.idea} con la configuración personal del entorno. Un repositorio con credenciales implica calificación cero en el Proyecto Fin de Curso, y borrarlas después no basta: quedan en el historial de cambios y siguen siendo recuperables.
+\end{cajaadvertencia}
+
+\section{El archivo de construcción: pom.xml}
+\label{sec:pom}
+
+Todo lo que Maven sabe del proyecto está en un único archivo. Leerlo entero una vez evita mucha confusión posterior.
+
+\subsection{Qué es Maven y qué es el POM}
+\label{sec:maven}
+
+Maven cumple dos funciones que suelen confundirse. La primera es gestionar dependencias: leer qué bibliotecas necesita el proyecto, descargarlas de un repositorio central y ponerlas a disposición del compilador. La segunda es construir: compilar el código, ejecutar las pruebas y empaquetar el resultado en un JAR.
+
+\begin{cajadefinicion}{POM --- Project Object Model}
+	Archivo \texttt{pom.xml} que describe el proyecto para Maven: sus coordenadas, su versión de Java, sus dependencias y sus complementos de construcción. Está escrito en XML, un formato de marcado donde cada dato va encerrado entre una etiqueta de apertura y otra de cierre. Es el equivalente del \texttt{package.json} de Node.js o del \texttt{composer.json} de PHP.
+\end{cajadefinicion}
+
+\begin{lstlisting}[style=xml,caption={Fragmento esencial del archivo pom.xml generado.},label={lst:pom}]
+<project>
+	<!-- El proyecto hereda de spring-boot-starter-parent, que fija
+	     versiones compatibles de decenas de bibliotecas -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.1.0</version>
+	</parent>
+
+	<!-- Coordenadas propias del proyecto -->
+	<groupId>ec.edu.uteq</groupId>
+	<artifactId>biblioteq</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+
+	<properties>
+		<java.version>21</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-database-postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
+\end{lstlisting}
+
+\subsection{Detalles que conviene entender del POM}
+\label{sec:pom-detalles}
+
+Repare en que las dependencias de Spring no declaran versión. Eso es posible porque el proyecto hereda del \texttt{spring-boot-starter-parent}, que actúa como catálogo: fija qué versión de cada biblioteca es compatible con la versión de Spring Boot elegida. Esa herencia es la razón por la que actualizar Spring Boot suele ser cuestión de cambiar un solo número.
+
+\begin{cajadefinicion}{Ámbito de una dependencia --- scope}
+	Indica en qué momento se necesita la biblioteca. El valor \texttt{runtime} señala que no hace falta al compilar pero sí al ejecutar: es el caso del controlador de PostgreSQL, porque el código nunca lo nombra directamente. El valor \texttt{test} señala que solo se usa en las pruebas y no debe empaquetarse en el artefacto final. Sin \texttt{scope} explícito se asume \texttt{compile}, que significa disponible siempre.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{SNAPSHOT}
+	Sufijo que marca una versión en desarrollo, todavía inestable y sujeta a cambios. Se opone a una versión definitiva como \texttt{1.0.0}. Mientras el proyecto está en construcción, la versión será \texttt{0.1.0-SNAPSHOT}; en la entrega final se etiquetará como \texttt{1.0.0}.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Flyway necesita dos dependencias --- no una}
+	Desde la versión~10, Flyway separó el núcleo del soporte de cada gestor. Declarar solo \texttt{flyway-core} produce un error de arranque que menciona que no se encuentra soporte para el tipo de base de datos. Hay que añadir además \texttt{flyway-database-postgresql}. Es un fallo muy frecuente y su mensaje no es evidente.
+\end{cajaadvertencia}
+
+\section{Configuración de la aplicación}
+\label{sec:configuracion}
+
+El generador crea \texttt{application.properties}, pero para un proyecto con varias secciones anidadas resulta más legible el formato YAML. Elimine ese archivo y cree en su lugar \texttt{src/main/resources/application.yml}.
+
+\subsection{El archivo application.yml}
+\label{sec:appyml}
+
+\begin{cajadefinicion}{YAML}
+	Formato de archivo de configuración basado en texto donde la jerarquía se expresa mediante indentación en lugar de llaves o etiquetas. Es más breve que XML y más legible que un archivo de propiedades cuando hay estructuras anidadas. Su única exigencia estricta es la coherencia en la indentación: mezclar tabulaciones y espacios produce errores difíciles de ver.
+\end{cajadefinicion}
+
+\begin{lstlisting}[style=yaml,caption={Configuracion inicial de la aplicacion en application.yml.},label={lst:appyml}]
+spring:
+	application:
+		name: biblioteq
+
+	datasource:
+		url: jdbc:postgresql://localhost:5432/biblioteq
+		username: biblioteq_app
+		password: ${DB_PASSWORD:cambiar_en_produccion}
+
+	jpa:
+		hibernate:
+			ddl-auto: validate      # nunca update ni create
+		open-in-view: false       # evita consultas perezosas en la vista
+		properties:
+			hibernate:
+				format_sql: true
+
+	flyway:
+		enabled: true
+		locations: classpath:db/migration
+
+server:
+	port: 8080
+
+logging:
+	level:
+		org.hibernate.SQL: DEBUG
+\end{lstlisting}
+
+\subsection{Por qué cada valor es el que es}
+\label{sec:appyml-porque}
+
+La propiedad \texttt{url} sigue el formato de JDBC: el protocolo, el gestor, la máquina, el puerto y el nombre de la base. Si en el capítulo anterior tuvo que cambiar el puerto por estar ocupado, aquí debe reflejarlo.
+
+La contraseña usa la sintaxis \texttt{\$\{DB\_PASSWORD:valor\_por\_defecto\}}. Esto instruye a Spring para que tome el valor de la variable de entorno \texttt{DB\_PASSWORD} y, solo si no existe, use el valor tras los dos puntos. Es el mecanismo que permitirá más adelante desplegar sin escribir la contraseña real en ningún archivo del repositorio.
+
+\begin{cajaadvertencia}{ddl-auto: la propiedad que arruina proyectos}
+	Hibernate puede crear y alterar tablas por su cuenta. Con el valor \texttt{update} parece magia: se añade un atributo a una entidad y la columna aparece sola. Es una trampa. Nadie sabe qué sentencias se ejecutaron, no hay historial, no se puede reconstruir la base desde cero en otra máquina y en producción puede provocar pérdidas de datos. En esta asignatura el valor obligatorio es \texttt{validate}, que se limita a comprobar que el esquema coincide con las entidades y falla en caso contrario. El esquema lo define Flyway, como se verá en el capítulo~\ref{cap:persistencia}.
+\end{cajaadvertencia}
+
+La propiedad \texttt{open-in-view} merece una explicación. Cuando está activada ---y viene activada por defecto--- Spring mantiene abierta la sesión de persistencia durante todo el renderizado de la respuesta, lo que enmascara el problema de las consultas perezosas: el código funciona en desarrollo y se degrada silenciosamente en producción. Ponerla en \texttt{false} hace que ese fallo aparezca durante el desarrollo, que es exactamente donde debe aparecer.
+
+\section{Primer arranque y verificación}
+\label{sec:primer-arranque}
+
+Aún no hay entidades ni tablas, pero la aplicación ya puede arrancar. Ese arranque en vacío confirma que la configuración, las dependencias y la conexión a la base están bien.
+
+\subsection{La clase de arranque}
+\label{sec:clase-arranque}
+
+El generador creó una única clase con un nombre derivado del proyecto. Renómbrela a \texttt{BiblioutegApplication} si el generador produjo otra variante, y observe su contenido, que aparece en el listado~\ref{lst:arranque}.
+
+\begin{lstlisting}[style=java,caption={Clase de arranque de la aplicacion.},label={lst:arranque}]
+package ec.edu.uteq.biblioteq;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BiblioutegApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(BiblioutegApplication.class, args);
+	}
+}
+\end{lstlisting}
+
+\begin{cajadefinicion}{Anotación}
+	Marca que se adjunta a una clase, un método o un atributo y que no cambia por sí sola el comportamiento del programa. Se escribe con arroba delante. Su utilidad aparece cuando otra herramienta la lee: el armazón examina las clases, encuentra las anotaciones y actúa en consecuencia. Es información sobre el código, dirigida a un lector automático. El uso intensivo de anotaciones es el rasgo que define el estilo de programación de Spring y está desarrollado en la obra de referencia de Walls~\cite{walls2022spring}.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{@SpringBootApplication}
+	Anotación que combina otras tres. La primera declara que la clase aporta configuración. La segunda activa la configuración automática, mecanismo por el que Spring examina las dependencias presentes y deduce qué debe poner en marcha: si encuentra el controlador de PostgreSQL, prepara una conexión; si encuentra Spring Web, arranca un servidor. La tercera activa el escaneo de componentes, que se explica a continuación.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Escaneo de componentes}
+	Proceso por el cual Spring recorre, al arrancar, todas las clases del paquete donde vive la clase anotada y de sus subpaquetes, buscando anotaciones conocidas. Cada clase marcada se registra y queda disponible para ser inyectada en otras. Esta es la razón de una regla que se incumple con frecuencia: la clase de arranque debe estar en el paquete raíz, porque solo se examina lo que cuelga de ella hacia abajo.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Nunca mueva la clase de arranque a un subpaquete}
+	Si \texttt{BiblioutegApplication} se traslada a \texttt{ec.edu.uteq.biblioteq.config}, Spring dejará de encontrar las clases de \texttt{dominio}, \texttt{aplicacion} y \texttt{web}, porque ya no cuelgan del paquete escaneado. El síntoma es desconcertante: la aplicación arranca sin errores pero ningún componente existe, y toda inyección falla informando que no hay candidato disponible.
+\end{cajaadvertencia}
+
+\subsection{Ejecución y lectura del registro}
+\label{sec:ejecucion}
+
+Pulse el triángulo verde junto al método \texttt{main} o use la combinación \texttt{Shift + F10}. La aplicación arrancará y el panel inferior mostrará el registro de arranque.
+
+\begin{cajaejemplo}{Qué debe aparecer en el registro}
+	Cuatro señales confirman un arranque correcto. Primera, el logotipo de Spring en caracteres de texto seguido del número de versión. Segunda, una línea que informa que Flyway no encontró migraciones y que el esquema está vacío. Tercera, una línea indicando que Tomcat arrancó en el puerto 8080. Cuarta, un mensaje final del tipo \texttt{Started BiblioutegApplication in 3.2 seconds}. Si aparecen las cuatro, el proyecto está sano.
+\end{cajaejemplo}
+
+\begin{cajadefinicion}{Tomcat}
+	Servidor web escrito en Java que atiende las peticiones HTTP. Spring Boot lo incorpora dentro del JAR, de modo que no hay que instalarlo ni configurarlo por separado. Cuando el registro anuncia que Tomcat arrancó, significa que la aplicación ya está escuchando peticiones.
+\end{cajadefinicion}
+
+\begin{cajaejercicio}{Verificación 2.1 --- el proyecto responde}
+	Con la aplicación en ejecución, abra un navegador en \texttt{http://localhost:8080}. Verá una página de error con el código 404 y el título \emph{Whitelabel Error Page}. Ese resultado es el correcto y conviene entender por qué: significa que el servidor está atendiendo peticiones y que no encontró nada publicado en la ruta raíz, que es exactamente la situación actual, porque todavía no existe ningún controlador. Un error de conexión rechazada, en cambio, indicaría que la aplicación no arrancó.
+\end{cajaejercicio}
+
+\begin{cajabuenas}{Primer punto de control del repositorio}
+	Este es el momento de crear el repositorio y hacer el primer registro de cambios. Ejecute \texttt{git init}, verifique que \texttt{.gitignore} excluye \texttt{target} y \texttt{.idea}, y confirme con un mensaje descriptivo del tipo \texttt{estructura inicial del proyecto y configuracion de base de datos}. Cada integrante del equipo debe confirmar sus propios cambios con su propia identidad: la autoría de los registros se audita al calificar, y los aportes atribuidos a otra persona se marcan como problema de integridad académica.
+\end{cajabuenas}
+
+% =====================================================================
+\chapter{Modelado del dominio y diagrama de clases}
+\label{cap:modelado}
+
+El código todavía puede esperar. Antes de escribir la primera entidad hay que decidir qué conceptos existen en la biblioteca, qué sabe cada uno y cómo se relacionan entre sí. Esa decisión se plasma en un diagrama de clases, y el diagrama se convierte después en código de forma casi mecánica. Invertir dos horas aquí evita rehacer semanas de trabajo más adelante.
+
+\section{De la realidad al modelo}
+\label{sec:realidad-modelo}
+
+Un modelo no es una fotografía de la realidad: es una simplificación intencionada, hecha para resolver un problema concreto. La biblioteca real tiene estanterías, horarios y personal de turno; el modelo solo incluye lo que el sistema necesita conocer.
+
+\subsection{Identificación de los conceptos del dominio}
+\label{sec:conceptos}
+
+El método más eficaz para descubrir los conceptos consiste en escribir en prosa lo que el sistema debe hacer y subrayar los sustantivos. Los sustantivos que se repiten y tienen identidad propia son candidatos a clase; los verbos suelen convertirse en operaciones.
+
+\begin{cajaejemplo}{Descripción del negocio}
+	«La biblioteca conserva un \underline{catálogo} de \underline{libros}, cada uno clasificado en una \underline{categoría}. De un mismo libro pueden existir varios \underline{ejemplares} físicos, cada uno con su código de barras. Un \underline{usuario} solicita un \underline{préstamo} de un ejemplar disponible, y debe devolverlo antes de la fecha comprometida; si se retrasa se le genera una \underline{multa}. Cuando todos los ejemplares de un libro están prestados, el usuario puede registrar una \underline{reserva} y se le avisa al liberarse uno.»
+\end{cajaejemplo}
+
+De ese párrafo salen siete conceptos: Categoria, Libro, Ejemplar, Usuario, Prestamo, Multa y Reserva. Los siete tienen identidad propia y estado que debe conservarse, de modo que los siete serán clases del dominio.
+
+\begin{cajadefinicion}{Dominio}
+	Área de conocimiento y actividad sobre la que trata el sistema. El dominio de BiblioUTEQ es la gestión bibliotecaria, con su vocabulario propio: circulación, ejemplar, signatura, préstamo. Programar contra un dominio implica usar sus palabras en el código: una clase se llama \texttt{Prestamo} y no \texttt{TablaDatos2}.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Entidad}
+	Objeto del dominio que tiene identidad propia y cuyo estado debe conservarse entre ejecuciones del programa. Dos ejemplares con el mismo título siguen siendo ejemplares distintos porque tienen códigos de barras distintos: esa distinguibilidad es la identidad. Se opone al \emph{objeto de valor}, que carece de identidad y se define solo por sus atributos, como una cantidad de dinero.
+\end{cajadefinicion}
+
+\subsection{La distinción crítica entre Libro y Ejemplar}
+\label{sec:libro-ejemplar}
+
+Existe una confusión que aparece en casi todos los proyectos de biblioteca y que conviene resolver ahora, porque contamina todo el modelo si se arrastra.
+
+Un \emph{libro} es una obra: tiene título, autor, ISBN y año de publicación. Un \emph{ejemplar} es una copia física de esa obra: tiene un código de barras único, un estado de conservación y una ubicación en la estantería. Cuando un usuario pide prestado «Cien años de soledad», no se lleva el libro: se lleva un ejemplar concreto, y los otros cuatro siguen disponibles.
+
+\begin{cajaadvertencia}{Modelar sin la distinción rompe el sistema}
+	Si se prescinde de la clase \texttt{Ejemplar} y se añade un atributo \texttt{cantidad} a \texttt{Libro}, el sistema deja de poder responder preguntas elementales: qué copia concreta tiene cada usuario, cuál se perdió, cuál está en reparación. Y el préstamo pasa a apuntar a una obra abstracta, lo que hace imposible registrar la devolución de una copia específica. Es un error de modelado, no de programación, y por eso no se detecta compilando.
+\end{cajaadvertencia}
+
+\section{El diagrama de clases}
+\label{sec:diagrama-clases}
+
+Un diagrama de clases representa las clases del dominio, sus atributos y las relaciones entre ellas. Es el plano del sistema: quien lo lee sabe qué existe y cómo se conecta, sin abrir un solo archivo de código.
+
+\subsection{Cómo se lee el diagrama}
+\label{sec:leer-diagrama}
+
+Cada caja es una clase. La parte superior lleva el nombre; la inferior, los atributos. Las líneas entre cajas son relaciones, y los números en sus extremos indican cuántos objetos participan de cada lado. A esos números se les llama \emph{cardinalidad} o \emph{multiplicidad}.
+
+\begin{cajadefinicion}{Cardinalidad}
+	Número de objetos de una clase que pueden vincularse a un objeto de la otra. Se escribe en cada extremo de la relación. El símbolo \texttt{1} significa exactamente uno; \texttt{*} significa cero o más; \texttt{0..1} significa ninguno o uno; \texttt{1..*} significa al menos uno. Leer una relación consiste en recorrerla en ambos sentidos: «un libro tiene muchos ejemplares» y «un ejemplar pertenece a un solo libro».
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Enumeración}
+	Tipo de dato que solo admite un conjunto cerrado de valores, definidos por su nombre. El estado de un ejemplar solo puede ser disponible, prestado o de baja, y ningún otro. Usar una enumeración en lugar de texto libre impide que alguien escriba «Disponibe» con una errata y el sistema deje de reconocer el valor. En el diagrama se marcan con la etiqueta \emph{enum}.
+\end{cajadefinicion}
+
+La figura~\ref{fig:clases} presenta el diagrama completo del dominio de BiblioUTEQ. Conviene recorrerlo relación por relación antes de seguir leyendo.
+
+\begin{figure}[htbp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tikzpicture}[
+		every node/.style={font=\scriptsize,align=left},
+		clase/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!5,
+			rounded corners=2pt,inner sep=4pt,minimum width=2.9cm},
+		enumc/.style={rectangle,draw=uteqdorado!85!black,thick,fill=uteqdorado!10,
+			rounded corners=2pt,inner sep=4pt,minimum width=2.5cm},
+		rel/.style={-,thick,uteqverde!70!black},
+		card/.style={font=\tiny,inner sep=1.5pt}]
+
+		% --- fila superior
+		\node[clase] (cat) at (0,6.4) {\textbf{Categoria}\\[1pt]\rule{2.7cm}{0.3pt}\\[1pt] id : Long\\ nombre : String\\ activa : boolean};
+		\node[clase] (lib) at (4.6,6.4) {\textbf{Libro}\\[1pt]\rule{2.7cm}{0.3pt}\\[1pt] id : Long\\ isbn : String\\ titulo : String\\ autor : String\\ anioPublicacion : int};
+		\node[clase] (usu) at (9.7,6.4) {\textbf{Usuario}\\[1pt]\rule{2.7cm}{0.3pt}\\[1pt] id : Long\\ cedula : String\\ nombre : String\\ correo : String\\ rol : RolUsuario};
+
+		% --- fila media
+		\node[clase] (eje) at (4.6,3.15) {\textbf{Ejemplar}\\[1pt]\rule{2.7cm}{0.3pt}\\[1pt] id : Long\\ codigoBarras : String\\ estado : EstadoEjemplar\\ ubicacion : String};
+		\node[clase] (res) at (9.7,3.15) {\textbf{Reserva}\\[1pt]\rule{2.7cm}{0.3pt}\\[1pt] id : Long\\ fechaSolicitud : LocalDate\\ estado : EstadoReserva};
+
+		% --- fila inferior
+		\node[clase] (pre) at (4.6,0.0) {\textbf{Prestamo}\\[1pt]\rule{2.7cm}{0.3pt}\\[1pt] id : Long\\ fechaSalida : LocalDate\\ fechaCompromiso : LocalDate\\ fechaDevolucion : LocalDate\\ estado : EstadoPrestamo};
+		\node[clase] (mul) at (0,0.0) {\textbf{Multa}\\[1pt]\rule{2.7cm}{0.3pt}\\[1pt] id : Long\\ monto : BigDecimal\\ diasRetraso : int\\ pagada : boolean};
+
+		% --- relaciones
+		\draw[rel] (cat) -- (lib) node[card,pos=0.12,above] {1} node[card,pos=0.88,above] {*};
+		\draw[rel] (lib) -- (eje) node[card,pos=0.10,left] {1} node[card,pos=0.90,left] {*};
+		\draw[rel] (eje) -- (pre) node[card,pos=0.10,left] {1} node[card,pos=0.90,left] {*};
+		\draw[rel] (usu) -- (res) node[card,pos=0.10,left] {1} node[card,pos=0.90,left] {*};
+		\draw[rel] (lib.east) -- ++(0.6,0) |- (res.west) node[card,pos=0.05,above] {1} node[card,pos=0.95,above] {*};
+		\draw[rel] (usu.east) -- (15.3,6.4) -- (15.3,-0.55) -- (pre.south east) node[card,pos=0.04,above] {1} node[card,pos=0.96,below] {*};
+		\draw[rel] (pre) -- (mul) node[card,pos=0.10,above] {1} node[card,pos=0.90,above] {0..1};
+
+		% --- enumeraciones
+		\node[enumc] (e1) at (0,4.25) {\textit{\guillemotleft enum\guillemotright}\ \textbf{EstadoEjemplar}\\[1pt] DISPONIBLE\\ PRESTADO\\ BAJA};
+		\node[enumc] (e2) at (0,2.15) {\textit{\guillemotleft enum\guillemotright}\ \textbf{EstadoPrestamo}\\[1pt] ACTIVO\\ DEVUELTO\\ VENCIDO};
+		\node[enumc] (e3) at (13.3,4.9) {\textit{\guillemotleft enum\guillemotright}\ \textbf{RolUsuario}\\[1pt] ESTUDIANTE\\ BIBLIOTECARIO\\ ADMINISTRADOR};
+		\node[enumc] (e4) at (13.9,2.4) {\textit{\guillemotleft enum\guillemotright}\ \textbf{EstadoReserva}\\[1pt] PENDIENTE\\ NOTIFICADA\\ CANCELADA};
+
+		\draw[dashed,gray] (e1.east) -- (eje.west);
+		\draw[dashed,gray] (e2.east) -- (pre.west);
+		\draw[dashed,gray] (e3.west) -- (usu.east);
+		\draw[dashed,gray] (e4.west) -- (res.east);
+	\end{tikzpicture}}
+	\caption{Diagrama de clases del dominio de BiblioUTEQ. Las líneas continuas representan relaciones entre entidades con su cardinalidad en cada extremo; las líneas discontinuas vinculan cada entidad con las enumeraciones que utiliza.}
+	\label{fig:clases}
+\end{figure}
+
+\subsection{Lectura relación por relación}
+\label{sec:relaciones}
+
+Las siete relaciones del diagrama se leen como frases del negocio. Enunciarlas en voz alta es la mejor forma de comprobar que el modelo es correcto: si una frase suena rara, el modelo está mal.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Relaciones del modelo enunciadas en lenguaje del negocio.}
+	\label{tab:relaciones}
+	\small
+	\begin{tabularx}{\textwidth}{L{3.9cm} L{1.5cm} X}
+		\toprule
+		\textbf{Relación} & \textbf{Card.} & \textbf{Lectura en ambos sentidos} \\
+		\midrule
+		Categoria --- Libro & 1 : * & Una categoría agrupa muchos libros; cada libro pertenece a una sola categoría \\
+		Libro --- Ejemplar & 1 : * & Un libro tiene muchos ejemplares físicos; cada ejemplar es copia de un solo libro \\
+		Ejemplar --- Prestamo & 1 : * & Un ejemplar acumula muchos préstamos a lo largo del tiempo; cada préstamo afecta a un solo ejemplar \\
+		Usuario --- Prestamo & 1 : * & Un usuario realiza muchos préstamos; cada préstamo pertenece a un solo usuario \\
+		Usuario --- Reserva & 1 : * & Un usuario registra muchas reservas; cada reserva es de un solo usuario \\
+		Libro --- Reserva & 1 : * & Un libro recibe muchas reservas; cada reserva es sobre un solo libro \\
+		Prestamo --- Multa & 1 : 0..1 & Un préstamo puede generar como máximo una multa; toda multa procede de un préstamo \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Dos relaciones merecen comentario adicional. La primera es \texttt{Ejemplar --- Prestamo} con cardinalidad uno a muchos: podría parecer que un ejemplar solo tiene un préstamo, pero eso solo es cierto en un instante dado. A lo largo del tiempo acumula decenas, y todos deben conservarse por trazabilidad. La restricción de que no haya dos préstamos activos simultáneos sobre el mismo ejemplar no es una cardinalidad: es una regla de negocio que se verificará en el servicio.
+
+La segunda es \texttt{Prestamo --- Multa} con cardinalidad cero o uno. La multa no siempre existe: solo se crea cuando hay retraso. Modelarla como clase aparte, en lugar de como dos atributos dentro de \texttt{Prestamo}, permite registrar su pago, consultar el total adeudado por usuario y conservar el historial aunque el préstamo se archive.
+
+\begin{cajaadvertencia}{La reserva es sobre el libro y el préstamo sobre el ejemplar}
+	Es una asimetría deliberada y suele confundir. Cuando un usuario reserva, aún no existe un ejemplar asignado: reserva la obra y espera a que se libere cualquier copia. Cuando el préstamo se materializa, sí hay un ejemplar concreto en sus manos. Si se modelara la reserva sobre el ejemplar habría que elegir arbitrariamente una copia y bloquearla, lo que reduciría la disponibilidad sin motivo.
+\end{cajaadvertencia}
+
+\section{Del diagrama al código}
+\label{sec:diagrama-codigo}
+
+La traducción del diagrama a clases de Java sigue reglas fijas. Conocerlas convierte una tarea que parece creativa en una tarea mecánica y verificable.
+
+\subsection{Reglas de traducción}
+\label{sec:reglas-traduccion}
+
+Cada caja del diagrama se convierte en una clase Java anotada como entidad. Cada atributo se convierte en un campo de la clase. Cada enumeración se convierte en un tipo \texttt{enum} propio, en su propio archivo.
+
+La tabla~\ref{tab:traduccion} resume esa correspondencia y conviene tenerla a la vista mientras se escribe el capítulo siguiente. Las relaciones exigen una decisión adicional: dónde colocar la referencia. En una relación uno a muchos, el lado «muchos» lleva siempre la clave que apunta al lado «uno». Un ejemplar guarda a qué libro pertenece; un libro no guarda la lista de sus ejemplares en la base de datos, aunque pueda exponerla en el código.
+
+\begin{cajadefinicion}{Clave primaria y clave foránea}
+	La \emph{clave primaria} es el atributo que identifica de forma única a cada fila de una tabla; en este modelo es siempre \texttt{id}. La \emph{clave foránea} es un atributo que contiene la clave primaria de otra tabla, y así materializa la relación. La tabla \texttt{ejemplar} tendrá una columna \texttt{libro\_id} que es clave foránea hacia la tabla \texttt{libro}. El gestor de base de datos garantiza que ese valor exista realmente, lo que se llama \emph{integridad referencial}.
+\end{cajadefinicion}
+
+\begin{table}[htbp]
+	\centering
+	\caption{Correspondencia entre elementos del diagrama y artefactos de código.}
+	\label{tab:traduccion}
+	\small
+	\begin{tabularx}{\textwidth}{L{4.2cm} L{3.6cm} X}
+		\toprule
+		\textbf{En el diagrama} & \textbf{En Java} & \textbf{En la base de datos} \\
+		\midrule
+		Caja de clase & Clase con \texttt{@Entity} & Tabla \\
+		Atributo & Campo de la clase & Columna \\
+		Atributo \texttt{id} & Campo con \texttt{@Id} & Clave primaria \\
+		Extremo «1» de la relación & Campo con \texttt{@ManyToOne} & Columna de clave foránea \\
+		Extremo «*» de la relación & Campo \texttt{List} con \texttt{@OneToMany} & No genera columna \\
+		Caja de enumeración & Tipo \texttt{enum} propio & Columna de texto restringido \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\subsection{Qué se implementa y qué se pospone}
+\label{sec:alcance-implementacion}
+
+Implementar las siete entidades a la vez es un error de método: se acumulan errores y ninguno se localiza. La guía construye primero un camino vertical completo ---de la base de datos hasta la interfaz--- sobre las entidades \texttt{Categoria}, \texttt{Libro} y \texttt{Ejemplar}, y deja las cuatro restantes como trabajo del equipo, ya con el patrón aprendido.
+
+\begin{cajabuenas}{Estrategia de corte vertical}
+	Construir una funcionalidad completa a través de todas las capas antes de ampliar a lo ancho tiene tres ventajas. Se detectan pronto los problemas de integración entre capas, que son los caros. Se dispone de un ejemplo funcionando que sirve de plantilla para el resto. Y se puede demostrar avance real en cualquier momento, en lugar de tener siete entidades a medio hacer y nada que enseñar.
+\end{cajabuenas}
+
+\begin{cajaejercicio}{Verificación 3.1 --- el diagrama antes del código}
+	Antes de continuar, reproduzca el diagrama de la figura~\ref{fig:clases} con una herramienta de modelado y expórtelo a \texttt{docs/modelado/diagrama-clases.png}. Añada las cardinalidades y las enumeraciones. Después escriba, en \texttt{docs/modelado/README.md}, las siete frases de la tabla~\ref{tab:relaciones} con sus propias palabras. Si alguna frase no se sostiene al leerla en voz alta, revise el modelo antes de escribir código: corregir un diagrama cuesta minutos y corregir un esquema poblado cuesta días.
+\end{cajaejercicio}
+
+% =====================================================================
+\chapter{La capa de persistencia}
+\label{cap:persistencia}
+
+Con el modelo decidido, empieza la construcción. Este capítulo crea el esquema de la base de datos, escribe las entidades que lo reflejan y declara los repositorios que permiten consultarlas. Al terminar, el proyecto tendrá tablas reales, clases que las representan y la capacidad de leer y escribir datos, aunque todavía nadie pueda invocarlo desde fuera.
+
+\section{El esquema de la base de datos con Flyway}
+\label{sec:flyway}
+
+El esquema se define primero y en SQL. Esa decisión tiene consecuencias que conviene entender antes de escribir la primera migración.
+
+\subsection{Por qué el esquema se versiona}
+\label{sec:por-que-versionar}
+
+Existen dos formas de crear las tablas. La primera consiste en dejar que Hibernate las genere a partir de las entidades. La segunda, en escribirlas en archivos SQL numerados que se guardan en el repositorio y se ejecutan en orden.
+
+La primera es cómoda y es la que la mayoría de los tutoriales muestran. También es la que impide reconstruir la base en otra máquina, la que no deja historial de qué cambió y cuándo, y la que en producción puede borrar una columna con datos sin preguntar. En esta asignatura se usa la segunda sin excepciones.
+
+\begin{cajadefinicion}{Migración}
+	Archivo que contiene las sentencias necesarias para llevar el esquema de un estado al siguiente. Las migraciones se numeran y se ejecutan en orden, de modo que aplicar todas desde cero sobre una base vacía produce el esquema actual. Nunca se modifica una migración ya aplicada: los cambios se añaden en una migración nueva.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Flyway}
+	Herramienta que aplica las migraciones automáticamente al arrancar la aplicación. Mantiene una tabla propia, \texttt{flyway\_schema\_history}, donde registra qué archivos ya ejecutó y con qué resultado. Si un archivo ya aplicado cambia, Flyway detecta la discrepancia mediante una suma de verificación y detiene el arranque en lugar de dejar la base en un estado incierto.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{DDL y DML}
+	El lenguaje SQL se divide en dos familias. El \emph{lenguaje de definición de datos} (DDL) crea y modifica la estructura: \texttt{CREATE TABLE}, \texttt{ALTER TABLE}. El \emph{lenguaje de manipulación de datos} (DML) opera sobre el contenido: \texttt{INSERT}, \texttt{UPDATE}, \texttt{SELECT}. Las migraciones contienen sobre todo DDL.
+\end{cajadefinicion}
+
+\subsection{Escritura de la primera migración}
+\label{sec:primera-migracion}
+
+Cree la carpeta \texttt{src/main/} \texttt{resources/db/migration} y dentro el archivo \texttt{V1\_\_esquema\_} \texttt{inicial.sql}. El nombre no es libre: Flyway exige el formato de la caja siguiente y rechaza cualquier variante.
+
+\begin{cajadefinicion}{Convención de nombres de Flyway}
+	La letra \texttt{V} mayúscula indica migración versionada. Sigue el número de versión, que puede tener puntos o guiones bajos. Después vienen \textbf{dos} guiones bajos seguidos, que actúan como separador. Luego una descripción con palabras separadas por guiones bajos simples. Finalmente la extensión \texttt{.sql}. Un solo guión bajo en el separador hace que Flyway ignore el archivo en silencio, y ese silencio es el que confunde.
+\end{cajadefinicion}
+
+\begin{lstlisting}[style=sql,caption={Migracion V1 --- creacion de las tablas del nucleo del catalogo.},label={lst:v1}]
+-- V1__esquema_inicial.sql
+
+CREATE TABLE categoria (
+	id      BIGSERIAL    PRIMARY KEY,
+	nombre  VARCHAR(60)  NOT NULL UNIQUE,
+	activa  BOOLEAN      NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE libro (
+	id                BIGSERIAL     PRIMARY KEY,
+	isbn              VARCHAR(17)   NOT NULL UNIQUE,
+	titulo            VARCHAR(200)  NOT NULL,
+	autor             VARCHAR(150)  NOT NULL,
+	anio_publicacion  SMALLINT      NOT NULL,
+	categoria_id      BIGINT        NOT NULL,
+	CONSTRAINT fk_libro_categoria
+		FOREIGN KEY (categoria_id) REFERENCES categoria (id),
+	CONSTRAINT ck_libro_anio
+		CHECK (anio_publicacion BETWEEN 1450 AND 2100)
+);
+
+CREATE TABLE ejemplar (
+	id             BIGSERIAL    PRIMARY KEY,
+	codigo_barras  VARCHAR(30)  NOT NULL UNIQUE,
+	estado         VARCHAR(20)  NOT NULL,
+	ubicacion      VARCHAR(60),
+	libro_id       BIGINT       NOT NULL,
+	CONSTRAINT fk_ejemplar_libro
+		FOREIGN KEY (libro_id) REFERENCES libro (id),
+	CONSTRAINT ck_ejemplar_estado
+		CHECK (estado IN ('DISPONIBLE', 'PRESTADO', 'BAJA'))
+);
+
+CREATE INDEX idx_libro_titulo   ON libro (titulo);
+CREATE INDEX idx_ejemplar_libro ON ejemplar (libro_id);
+\end{lstlisting}
+
+\subsection{Lectura detallada de la migración}
+\label{sec:lectura-migracion}
+
+Cada palabra de ese archivo cumple una función y ninguna sobra. Conviene recorrerlas porque las mismas construcciones reaparecerán en todas las migraciones posteriores.
+
+\begin{cajadefinicion}{BIGSERIAL}
+	Tipo de PostgreSQL que crea un número entero grande cuyo valor se genera solo, incrementándose en cada inserción. Es la forma habitual de dar identidad a las filas sin que el programa tenga que calcular el siguiente número, tarea que sería insegura con varios usuarios simultáneos.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Restricción --- constraint}
+	Regla que el gestor de base de datos hace cumplir por su cuenta, con independencia del programa que escriba. \texttt{NOT NULL} impide valores ausentes. \texttt{UNIQUE} impide duplicados. \texttt{PRIMARY KEY} combina ambas y además identifica la fila. \texttt{FOREIGN KEY} obliga a que el valor exista en la tabla referenciada. \texttt{CHECK} exige que una condición se cumpla.
+\end{cajadefinicion}
+
+\begin{cajabuenas}{Por qué las restricciones se declaran en la base y no solo en Java}
+	Podría parecer redundante validar en la aplicación y también en la base. No lo es. La aplicación no es el único camino hacia los datos: existen scripts de carga, herramientas de administración y, con el tiempo, otros programas. La base es la última línea de defensa y la única que nadie puede saltarse. Nombrar las restricciones ---\texttt{fk\_libro\_categoria} en lugar de dejar que el gestor invente un nombre--- permite además que los mensajes de error sean comprensibles.
+\end{cajabuenas}
+
+\begin{cajadefinicion}{Índice}
+	Estructura auxiliar que acelera las búsquedas por una columna, al precio de ocupar espacio y ralentizar levemente las escrituras. Sin índice, buscar un título obliga al gestor a recorrer toda la tabla. Se crean índices sobre las columnas por las que se busca con frecuencia y sobre las claves foráneas, porque estas últimas se usan constantemente al unir tablas.
+\end{cajadefinicion}
+
+La convención de nombres de columnas también merece atención. En SQL se usa \texttt{anio\_} \texttt{publicacion} con guión bajo; en Java se usará \texttt{anioPublicacion} con mayúscula intercalada. Hibernate traduce automáticamente entre ambas formas, de modo que no hace falta declarar la correspondencia salvo cuando el nombre no sigue la convención.
+
+\begin{cajaejercicio}{Verificación 4.1 --- las tablas existen}
+	Arranque la aplicación. En el registro debe aparecer que Flyway migró el esquema a la versión~1. Abra después la pestaña \emph{Database} de IntelliJ, expanda el esquema \texttt{public} y confirme que existen cuatro tablas: las tres del listado más \texttt{flyway\_schema\_history}. Abra esta última y observe la fila que registra la migración aplicada, con su suma de verificación y la marca de tiempo.
+\end{cajaejercicio}
+
+\begin{cajaadvertencia}{Qué hacer cuando una migración falla a medias}
+	Si la migración contiene un error de sintaxis, Flyway la marca como fallida y el arranque se detiene en los intentos siguientes. Durante el desarrollo la salida más limpia es reconstruir la base entera: detenga la aplicación, ejecute \texttt{docker compose down -v} para eliminar el volumen, vuelva a levantarlo con \texttt{docker compose up -d} y arranque de nuevo. Esa maniobra borra todos los datos, de modo que solo es aceptable en desarrollo; en producción se corrige con una migración nueva que repare el estado.
+\end{cajaadvertencia}
+
+\section{Las entidades del dominio}
+\label{sec:entidades}
+
+Con las tablas creadas, toca escribir las clases que las representan. El paquete \texttt{dominio} es el corazón del sistema y el único que no depende de ningún otro.
+
+\subsection{Creación del paquete y las enumeraciones}
+\label{sec:enums}
+
+En IntelliJ, sitúese sobre \texttt{ec.edu.uteq.biblioteq}, pulse el botón derecho y elija \emph{New} → \emph{Package}. Escriba \texttt{dominio}. Repita para crear \texttt{dominio.enums}.
+
+\begin{lstlisting}[style=java,caption={Enumeracion del estado de un ejemplar.},label={lst:enum}]
+package ec.edu.uteq.biblioteq.dominio.enums;
+
+public enum EstadoEjemplar {
+	DISPONIBLE,
+	PRESTADO,
+	BAJA
+}
+\end{lstlisting}
+
+\begin{cajadefinicion}{enum}
+	Tipo cuyo conjunto de valores posibles se declara por completo y no admite otros. Cada valor es una constante con nombre. Su ventaja sobre una cadena de texto es que el compilador rechaza cualquier valor no declarado: escribir \texttt{EstadoEjemplar.DISPONIBE} con una errata produce un error de compilación, mientras que la cadena \texttt{"DISPONIBE"} pasaría inadvertida hasta fallar en ejecución.
+\end{cajadefinicion}
+
+\subsection{La entidad Categoria paso a paso}
+\label{sec:entidad-categoria}
+
+Se empieza por la entidad más simple, la que no depende de ninguna otra. El listado~\ref{lst:categoria} muestra el resultado completo, y las cajas posteriores explican cada anotación.
+
+\begin{lstlisting}[style=java,caption={Entidad Categoria con sus anotaciones de mapeo.},label={lst:categoria}]
+package ec.edu.uteq.biblioteq.dominio;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "categoria")
+public class Categoria {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(nullable = false, unique = true, length = 60)
+	private String nombre;
+
+	@Column(nullable = false)
+	private boolean activa = true;
+
+	protected Categoria() {
+		// Constructor sin argumentos exigido por JPA
+	}
+
+	public Categoria(String nombre) {
+		this.nombre = nombre;
+		this.activa = true;
+	}
+
+	// Metodos de acceso omitidos en el listado
+}
+\end{lstlisting}
+
+\begin{cajadefinicion}{@Entity}
+	Declara que la clase representa una tabla y que sus instancias pueden guardarse en la base. Es la anotación que convierte una clase corriente en algo que JPA gestiona. Sin ella, la clase se comporta como cualquier otra y el intento de guardarla produce un error indicando que el tipo no está mapeado.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{@Table}
+	Indica el nombre de la tabla asociada. Es opcional cuando el nombre coincide con el de la clase en minúsculas, que es el caso aquí; se escribe de todos modos porque hace explícita la correspondencia y evita sorpresas si alguien renombra la clase.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{@Id y @GeneratedValue}
+	La primera señala el atributo que actúa como identificador único. La segunda indica quién genera ese valor. La estrategia \texttt{IDENTITY} delega la generación en la base de datos, que es coherente con el tipo \texttt{BIGSERIAL} de la migración. Otras estrategias existen para escenarios distintos, pero mezclar una estrategia con un tipo de columna incompatible produce errores difíciles de diagnosticar.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{@Column}
+	Describe la columna correspondiente al atributo. Sus opciones repiten deliberadamente lo declarado en la migración: si la base dice que \texttt{nombre} no admite nulos y mide como máximo 60 caracteres, la entidad debe decir lo mismo. Esa duplicación no es un descuido: es lo que permite que la propiedad \texttt{ddl-auto: validate} detecte al arrancar cualquier divergencia entre el esquema y el código.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Constructor sin argumentos}
+	JPA necesita crear instancias vacías para después rellenarlas con los datos leídos de la base, y para eso requiere un constructor que no reciba nada. Se declara con alcance \texttt{protected} en lugar de público para señalar que no está pensado para el programador: quien construya una categoría debe usar el constructor que exige el nombre, de modo que sea imposible crear una categoría sin él.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Jakarta y no javax}
+	Las importaciones empiezan por \texttt{jakarta.persistence} y no por \texttt{javax.persistence}. El cambio de prefijo ocurrió al transferirse la especificación de Oracle a la Fundación Eclipse, y afecta a todo el ecosistema desde Spring Boot~3. Cualquier ejemplo con \texttt{javax} está escrito para Spring Boot~2 o anterior y no compilará. Si IntelliJ propone ambas opciones al completar, elija siempre \texttt{jakarta}.
+\end{cajaadvertencia}
+
+\subsection{Entidades con relaciones}
+\label{sec:entidades-relacion}
+
+La entidad \texttt{Libro} introduce lo que faltaba: una referencia a otra entidad. El listado~\ref{lst:libro} la muestra.
+
+\begin{lstlisting}[style=java,caption={Entidad Libro con su relacion hacia Categoria.},label={lst:libro}]
+package ec.edu.uteq.biblioteq.dominio;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "libro")
+public class Libro {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(nullable = false, unique = true, length = 17)
+	private String isbn;
+
+	@Column(nullable = false, length = 200)
+	private String titulo;
+
+	@Column(nullable = false, length = 150)
+	private String autor;
+
+	@Column(name = "anio_publicacion", nullable = false)
+	private int anioPublicacion;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "categoria_id", nullable = false)
+	private Categoria categoria;
+
+	protected Libro() { }
+
+	public Libro(String isbn, String titulo, String autor,
+			int anioPublicacion, Categoria categoria) {
+		this.isbn = isbn;
+		this.titulo = titulo;
+		this.autor = autor;
+		this.anioPublicacion = anioPublicacion;
+		this.categoria = categoria;
+	}
+
+	// Metodos de acceso omitidos en el listado
+}
+\end{lstlisting}
+
+\begin{cajadefinicion}{@ManyToOne}
+	Declara el lado «muchos» de una relación uno a muchos. Se lee literalmente: muchos libros apuntan a una categoría. Es la anotación que se coloca en la clase que lleva la clave foránea, y en el noventa por ciento de los casos es la única que hace falta para que una relación funcione.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{@JoinColumn}
+	Indica qué columna de la tabla contiene la clave foránea. Sin esta anotación Hibernate inventaría un nombre siguiendo su propia convención, que podría no coincidir con el de la migración. Declararla explícitamente elimina esa incertidumbre.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Carga perezosa y carga anticipada}
+	La opción \texttt{fetch = FetchType.LAZY} indica que la categoría no se traiga de la base al cargar el libro, sino solo cuando alguien la pida. La alternativa, \texttt{EAGER}, la trae siempre. La perezosa es la correcta por defecto: evita arrastrar media base de datos al leer un solo registro. Su contrapartida es el problema de las consultas repetidas que se trata más adelante.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Por qué esta guía no coloca @OneToMany}
+	Sería posible añadir en \texttt{Categoria} una lista de libros anotada con \texttt{@OneToMany}. La guía no lo hace, y la omisión es deliberada. Esa lista no aporta ninguna columna a la base, invita a cargar en memoria miles de registros sin necesidad y complica la serialización al producir ciclos: la categoría contiene libros y cada libro contiene su categoría. Cuando se necesite conocer los libros de una categoría, se preguntará al repositorio, que es donde corresponde.
+\end{cajaadvertencia}
+
+\begin{cajadefinicion}{@Enumerated}
+	Anotación que aparece en la entidad \texttt{Ejemplar} para su atributo de estado. Indica cómo se guarda el valor de una enumeración. La opción \texttt{EnumType.STRING} guarda el nombre del valor, y es la única aceptable. La alternativa \texttt{ORDINAL} guarda la posición numérica, de modo que insertar un valor nuevo en medio de la lista reinterpreta silenciosamente todos los registros existentes. Es un error irreversible y sin aviso.
+\end{cajadefinicion}
+
+\begin{cajaejercicio}{Verificación 4.2 --- las entidades concuerdan con el esquema}
+	Escriba la entidad \texttt{Ejemplar} siguiendo el patrón de \texttt{Libro}: identificador, código de barras único de 30 caracteres, estado con \texttt{@Enumerated(EnumType.STRING)} y longitud 20, ubicación opcional de 60 caracteres, y relación \texttt{@ManyToOne} hacia \texttt{Libro} sobre la columna \texttt{libro\_id}. Arranque después la aplicación. Como \texttt{ddl-auto} vale \texttt{validate}, cualquier discrepancia entre la entidad y la tabla detendrá el arranque con un mensaje que nombra la columna conflictiva. Un arranque limpio significa que las tres entidades concuerdan exactamente con el esquema.
+\end{cajaejercicio}
+
+\section{Los repositorios}
+\label{sec:repositorios}
+
+Las entidades saben qué son pero no saben buscarse. Esa responsabilidad corresponde a los repositorios, y aquí Spring Data ofrece algo que sorprende la primera vez: basta declarar una interfaz sin escribir su implementación.
+
+\subsection{Qué es un repositorio y por qué es una interfaz}
+\label{sec:que-repositorio}
+
+\begin{cajadefinicion}{Repositorio}
+	Objeto que encapsula el acceso a una colección de entidades y ofrece operaciones para guardarlas, buscarlas y eliminarlas. Su propósito es que el resto del programa no sepa si los datos vienen de una base relacional, de un archivo o de un servicio remoto. El patrón está catalogado en la obra de referencia de Fowler sobre arquitectura de aplicaciones empresariales~\cite{fowler2002patterns}.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Interfaz}
+	Declaración de qué operaciones ofrece un tipo, sin decir cómo las realiza. Enumera nombres de métodos, sus parámetros y lo que devuelven, y deja la implementación a otras clases. Su utilidad es permitir que quien usa el tipo dependa solo del contrato y no de una implementación concreta, de modo que esta pueda sustituirse.
+\end{cajadefinicion}
+
+Lo llamativo de Spring Data es que nadie escribe la implementación. Al arrancar, el armazón examina las interfaces que extienden \texttt{JpaRepository}, genera una clase que las implementa y la registra. La generación no es mágica: se apoya en que los nombres de los métodos siguen una gramática conocida.
+
+\begin{lstlisting}[style=java,caption={Repositorios de las tres entidades del catalogo.},label={lst:repos}]
+package ec.edu.uteq.biblioteq.dominio;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import java.util.Optional;
+import java.util.List;
+
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+
+	Optional<Categoria> findByNombreIgnoreCase(String nombre);
+
+	boolean existsByNombreIgnoreCase(String nombre);
+
+	List<Categoria> findByActivaTrueOrderByNombreAsc();
+}
+
+public interface LibroRepository extends JpaRepository<Libro, Long> {
+
+	Optional<Libro> findByIsbn(String isbn);
+
+	boolean existsByIsbn(String isbn);
+
+	Page<Libro> findByTituloContainingIgnoreCase(String fragmento, Pageable paginacion);
+
+	Page<Libro> findByCategoriaId(Long categoriaId, Pageable paginacion);
+}
+\end{lstlisting}
+
+\begin{cajaadvertencia}{Cada interfaz en su propio archivo}
+	El listado anterior muestra las dos interfaces juntas para ahorrar espacio. En el proyecto real cada una va en su archivo, con el nombre exacto de la interfaz: \texttt{CategoriaRepository.java} y \texttt{LibroRepository.java}. Java exige que un tipo público resida en un archivo con su mismo nombre.
+\end{cajaadvertencia}
+
+\subsection{Consultas derivadas del nombre del método}
+\label{sec:consultas-derivadas}
+
+La expresión \texttt{findByTituloContainingIgnoreCase} no es un nombre arbitrario: es una consulta escrita en palabras. Spring Data la descompone y genera el SQL correspondiente, según la gramática que recoge la tabla~\ref{tab:derivadas}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Gramática de los nombres de método y su traducción a SQL.}
+	\label{tab:derivadas}
+	\small
+	\begin{tabularx}{\textwidth}{L{4.6cm} L{3.4cm} X}
+		\toprule
+		\textbf{Fragmento del nombre} & \textbf{Traducción} & \textbf{Observación} \\
+		\midrule
+		\texttt{findBy} & \texttt{SELECT ... WHERE} & Prefijo que inicia la consulta \\
+		\texttt{existsBy} & \texttt{SELECT COUNT} & Devuelve un valor lógico \\
+		\texttt{Titulo} & \texttt{titulo = ?} & Nombre del atributo de la entidad \\
+		\texttt{Containing} & \texttt{LIKE \%?\%} & Coincidencia parcial \\
+		\texttt{IgnoreCase} & \texttt{LOWER(...)} & Insensible a mayúsculas \\
+		\texttt{CategoriaId} & \texttt{categoria\_id = ?} & Navega por la relación \\
+		\texttt{OrderByNombreAsc} & \texttt{ORDER BY nombre ASC} & Ordenamiento \\
+		\texttt{ActivaTrue} & \texttt{activa = true} & Comparación con literal \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajadefinicion}{Genéricos}
+	La expresión \texttt{JpaRepository<Categoria, Long>} usa los llamados tipos genéricos, que permiten declarar un tipo parametrizado por otros. Aquí se indica que este repositorio trabaja con entidades \texttt{Categoria} cuyo identificador es de tipo \texttt{Long}. Gracias a esa declaración el compilador sabe que \texttt{findById} devolverá una categoría y no otra cosa, y detecta el error si se le asigna a una variable incorrecta.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Optional}
+	Tipo que representa un valor que puede estar presente o ausente. Se usa para lo que en otros lenguajes se resolvería devolviendo un valor nulo. Su ventaja es que obliga a quien lo recibe a considerar explícitamente el caso ausente, en lugar de olvidarlo y provocar el error más común de Java. Un método que busca por identificador devuelve \texttt{Optional} porque puede no encontrar nada, mientras que uno que lista devuelve una lista, que en el peor caso estará vacía.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Page y Pageable}
+	\texttt{Pageable} transporta la petición de una página concreta: qué número, de qué tamaño y con qué ordenamiento. \texttt{Page} transporta la respuesta: los elementos de esa página más los metadatos de total de elementos y de páginas. Devolver una página en lugar de una lista completa es obligatorio en cualquier consulta que pueda crecer, porque una tabla con cien mil filas convertida en lista agota la memoria del servidor.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Un error de escritura en el nombre detiene el arranque}
+	Si se escribe \texttt{findByTitulooContaining} con una letra de más, Spring Data no encuentra un atributo llamado así y falla al construir el repositorio. El mensaje menciona que no se pudo resolver una propiedad y nombra el fragmento problemático. Es un fallo incómodo por aparecer al arrancar y no al compilar, pero tiene una virtud: aparece siempre, y no se cuela hasta producción.
+\end{cajaadvertencia}
+
+\begin{cajabuenas}{Cuándo dejar de usar consultas derivadas}
+	La gramática de nombres es cómoda hasta que el método pasa de unas ocho palabras. Un nombre como \texttt{findByCategoriaIdAnd} \texttt{AnioPublicacionGreaterThanAnd} \texttt{TituloContainingIgnoreCase} \texttt{OrderByTituloAsc} es ilegible y frágil. A partir de ese punto se declara la consulta explícitamente con la anotación \texttt{@Query}, o se traslada a un procedimiento almacenado según la política de acceso a datos de la asignatura. La regla práctica: si el nombre no cabe cómodamente en una línea, ha dejado de ser la herramienta adecuada.
+\end{cajabuenas}
+
+% =====================================================================
+\chapter{La capa de aplicación}
+\label{cap:aplicacion}
+
+Las entidades guardan datos y los repositorios los recuperan, pero nadie decide todavía si una operación es legítima. Ese es el trabajo de la capa de aplicación: alberga las reglas del negocio, coordina varios repositorios cuando hace falta y delimita las transacciones. Es la capa donde vive el valor real del sistema y la que más pruebas debe tener.
+
+\section{Objetos de transferencia}
+\label{sec:dto}
+
+Antes de escribir el primer servicio hay que resolver una pregunta: qué recibe y qué devuelve. La respuesta no es «entidades», y conviene entender por qué.
+
+\subsection{Por qué las entidades no salen de esta capa}
+\label{sec:por-que-dto}
+
+Exponer entidades hacia afuera es cómodo y produce tres problemas serios. El primero es de acoplamiento: cualquier cambio en el esquema de la base se convierte automáticamente en un cambio del contrato público, de modo que renombrar una columna rompe a todos los clientes. El segundo es técnico: al convertir la entidad a JSON, el conversor intenta leer las relaciones perezosas y falla, o peor, arrastra media base de datos en la respuesta. El tercero es de seguridad: campos que nunca debieron salir ---una contraseña cifrada, una marca interna de auditoría--- salen sin que nadie lo advierta.
+
+\begin{cajadefinicion}{DTO --- Data Transfer Object}
+	Objeto cuya única función es transportar datos entre capas con la forma exacta que la capa receptora necesita. No tiene comportamiento ni reglas: solo campos. Se define uno distinto por cada operación, porque lo que el cliente envía al crear un libro y lo que recibe al consultarlo no coinciden.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{record}
+	Forma abreviada de declarar una clase inmutable portadora de datos, disponible en Java desde la versión~16. Una sola línea declara los campos, el constructor, los métodos de acceso y las operaciones de comparación y representación textual. Es la manera idiomática de escribir un DTO en Java~21. \emph{Inmutable} significa que sus valores no cambian tras la construcción, lo que elimina toda una familia de errores.
+\end{cajadefinicion}
+
+\subsection{Los DTO del catálogo}
+\label{sec:dto-catalogo}
+
+Cree el paquete \texttt{aplicacion.dto} y dentro los tres tipos del listado~\ref{lst:dtos}. Observe que el de entrada y el de salida son tipos distintos y no comparten campos por casualidad.
+
+\begin{lstlisting}[style=java,caption={Objetos de transferencia diferenciados para entrada y salida.},label={lst:dtos}]
+package ec.edu.uteq.biblioteq.aplicacion.dto;
+
+import jakarta.validation.constraints.*;
+
+// --- Entrada: lo que el cliente envia al crear o actualizar
+public record CrearLibroRequest(
+
+		@NotBlank(message = "El ISBN es obligatorio")
+		@Size(min = 17, max = 17, message = "El ISBN debe tener 17 caracteres")
+		String isbn,
+
+		@NotBlank(message = "El titulo es obligatorio")
+		@Size(min = 3, max = 200)
+		String titulo,
+
+		@NotBlank(message = "El autor es obligatorio")
+		@Size(max = 150)
+		String autor,
+
+		@Min(value = 1450, message = "Anio de publicacion fuera de rango")
+		@Max(value = 2100)
+		int anioPublicacion,
+
+		@NotNull(message = "La categoria es obligatoria")
+		Long categoriaId) { }
+
+// --- Salida: lo que el sistema devuelve
+public record LibroDto(
+		Long id,
+		String isbn,
+		String titulo,
+		String autor,
+		int anioPublicacion,
+		String categoria,
+		long ejemplaresDisponibles) { }
+\end{lstlisting}
+
+Las diferencias entre ambos tipos no son caprichosas. El cliente no envía el identificador, porque lo genera la base. Tampoco envía el número de ejemplares disponibles, porque es un dato calculado. Y al recibir, en lugar del identificador numérico de la categoría obtiene su nombre, que es lo que una pantalla necesita mostrar.
+
+\begin{cajadefinicion}{Anotaciones de validación}
+	Pertenecen a la especificación Jakarta Validation. \texttt{@NotNull} exige que el valor exista. \texttt{@NotBlank} exige además que, tratándose de texto, contenga al menos un carácter que no sea espacio. \texttt{@Size} acota la longitud. \texttt{@Min} y \texttt{@Max} acotan valores numéricos. El atributo \texttt{message} personaliza el texto del error; sin él se emite un mensaje genérico en inglés.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Las anotaciones de validación no van en la entidad}
+	Colocar \texttt{@NotBlank} sobre un atributo de \texttt{Libro} parece ahorrar trabajo y contamina el dominio con reglas de formulario. El criterio de la asignatura es estricto: la entidad declara restricciones de persistencia mediante \texttt{@Column}; el DTO declara restricciones de entrada mediante las anotaciones de validación. Son dos preocupaciones distintas y viven en dos archivos distintos.
+\end{cajaadvertencia}
+
+\section{Las excepciones del dominio}
+\label{sec:excepciones}
+
+Cuando una regla se incumple, el servicio debe comunicarlo de forma que la capa superior pueda distinguir un caso de otro. Devolver un valor nulo o una cadena de texto no sirve: hace falta un tipo.
+
+\subsection{Jerarquía de excepciones propias}
+\label{sec:jerarquia-excepciones}
+
+\begin{cajadefinicion}{Excepción}
+	Objeto que representa una situación que impide continuar con el curso normal de la ejecución. Al lanzarse, interrumpe el método actual y asciende por la cadena de llamadas hasta que alguien la captura. Su ventaja frente a devolver códigos de error es que no puede ignorarse por descuido.
+\end{cajadefinicion}
+
+\begin{lstlisting}[style=java,caption={Excepciones propias del dominio del catalogo.},label={lst:excepciones}]
+package ec.edu.uteq.biblioteq.aplicacion.excepciones;
+
+// Base comun de todas las excepciones del negocio
+public abstract class NegocioException extends RuntimeException {
+
+	protected NegocioException(String mensaje) {
+		super(mensaje);
+	}
+}
+
+public class RecursoNoEncontradoException extends NegocioException {
+
+	public RecursoNoEncontradoException(String recurso, Object identificador) {
+		super("No se encontro %s con identificador %s"
+				.formatted(recurso, identificador));
+	}
+}
+
+public class IsbnDuplicadoException extends NegocioException {
+
+	private final String isbn;
+
+	public IsbnDuplicadoException(String isbn) {
+		super("Ya existe un libro registrado con el ISBN " + isbn);
+		this.isbn = isbn;
+	}
+
+	public String getIsbn() {
+		return isbn;
+	}
+}
+\end{lstlisting}
+
+\begin{cajadefinicion}{Clase abstracta}
+	Clase que no puede instanciarse directamente y existe para que otras hereden de ella. \texttt{NegocioException} agrupa a todas las excepciones del dominio, lo que permitirá más adelante capturarlas todas juntas con una sola regla y distinguirlas de los fallos técnicos.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{RuntimeException}
+	Familia de excepciones que el compilador no obliga a declarar ni a capturar. La alternativa son las excepciones comprobadas, que exigen escribir \texttt{throws} en cada método por el que pasan. Para reglas de negocio se prefiere la primera opción, porque una excepción de negocio suele viajar varias capas hacia arriba y declararla en todas ensuciaría las firmas sin aportar nada.
+\end{cajadefinicion}
+
+\begin{cajabuenas}{Una excepción por regla incumplida}
+	Resulta tentador crear una sola excepción genérica con un mensaje distinto en cada caso. No lo haga. Un tipo por regla permite que la capa web asigne a cada situación su código de estado correcto: recurso inexistente a 404, conflicto de duplicado a 409, regla de negocio violada a 422. Con una excepción genérica todo termina en el mismo código y el cliente pierde la capacidad de reaccionar de forma diferenciada.
+\end{cajabuenas}
+
+\subsection{Qué pertenece a una excepción de negocio y qué no}
+\label{sec:que-excepcion}
+
+No todo fallo es una excepción de negocio. Conviene distinguir tres familias, porque cada una se trata de forma distinta y mezclarlas produce respuestas incoherentes.
+
+La primera son los fallos de formato: un ISBN de quince caracteres, un año negativo, un campo obligatorio ausente. No llegan al servicio, porque las anotaciones de validación los detienen antes, y se traducen a un código 400. Escribir en el servicio una comprobación de longitud es duplicar trabajo ya hecho.
+
+La segunda son las reglas de negocio propiamente dichas: el ISBN ya existe, la categoría está inactiva, el usuario superó su límite de préstamos. Son las que justifican una excepción propia, porque solo el dominio puede decidirlas y el cliente necesita distinguir unas de otras.
+
+La tercera son los fallos técnicos: la base de datos no responde, se agotó la memoria, falló la red. No se capturan en el servicio ni se convierten en excepciones de dominio. Deben ascender hasta el manejador global, registrarse con su traza completa y devolver un 500 genérico, sin exponer al cliente los detalles internos.
+
+\begin{cajaadvertencia}{Nunca devuelva la traza de error al cliente}
+	Una traza revela la estructura de paquetes, las versiones de las bibliotecas y a veces fragmentos de consultas. Es información valiosa para quien busque vulnerabilidades y se cataloga como exposición de datos sensibles en el material de referencia de OWASP~\cite{owasp2021top10}. El cliente recibe un mensaje genérico y un identificador de correlación; la traza completa va al registro del servidor, donde el equipo puede consultarla.
+\end{cajaadvertencia}
+
+\section{Los servicios}
+\label{sec:servicios}
+
+El servicio es donde el sistema decide. Recibe una petición ya validada en su formato, comprueba las reglas del negocio, coordina los repositorios y devuelve el resultado o lanza la excepción correspondiente.
+
+\subsection{Anatomía de un servicio}
+\label{sec:anatomia-servicio}
+
+\begin{lstlisting}[style=java,caption={Servicio del catalogo con sus reglas de negocio.},label={lst:servicio}]
+package ec.edu.uteq.biblioteq.aplicacion;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+@Service
+public class CatalogoService {
+
+	private final LibroRepository libros;
+	private final CategoriaRepository categorias;
+	private final LibroMapper mapper;
+
+	// Inyeccion por constructor: Spring provee las tres dependencias
+	public CatalogoService(LibroRepository libros,
+			CategoriaRepository categorias,
+			LibroMapper mapper) {
+		this.libros = libros;
+		this.categorias = categorias;
+		this.mapper = mapper;
+	}
+
+	@Transactional(readOnly = true)
+	public Page<LibroDto> listar(String filtro, Pageable paginacion) {
+		Page<Libro> pagina = (filtro == null || filtro.isBlank())
+				? libros.findAll(paginacion)
+				: libros.findByTituloContainingIgnoreCase(filtro, paginacion);
+		return pagina.map(mapper::aDto);
+	}
+
+	@Transactional(readOnly = true)
+	public LibroDto buscarPorId(Long id) {
+		Libro libro = libros.findById(id)
+				.orElseThrow(() -> new RecursoNoEncontradoException("libro", id));
+		return mapper.aDto(libro);
+	}
+
+	@Transactional
+	public LibroDto registrarLibro(CrearLibroRequest peticion) {
+
+		// Regla 1: el ISBN no puede repetirse
+		if (libros.existsByIsbn(peticion.isbn())) {
+			throw new IsbnDuplicadoException(peticion.isbn());
+		}
+
+		// Regla 2: la categoria debe existir y estar activa
+		Categoria categoria = categorias.findById(peticion.categoriaId())
+				.orElseThrow(() -> new RecursoNoEncontradoException(
+						"categoria", peticion.categoriaId()));
+
+		Libro nuevo = new Libro(peticion.isbn(), peticion.titulo(),
+				peticion.autor(), peticion.anioPublicacion(), categoria);
+
+		return mapper.aDto(libros.save(nuevo));
+	}
+}
+\end{lstlisting}
+
+\subsection{Los mecanismos que aparecen en el servicio}
+\label{sec:mecanismos-servicio}
+
+\begin{cajadefinicion}{@Service}
+	Anotación que marca la clase como componente de la capa de aplicación. Al arrancar, el escaneo de componentes la encuentra, crea una instancia y la registra. Técnicamente equivale a \texttt{@Component}, pero comunica la intención: quien lee el código sabe de inmediato en qué capa está.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Bean y contenedor}
+	Un \emph{bean} es un objeto que Spring crea y administra en lugar de que lo cree el programador. El \emph{contenedor} es la estructura que guarda todos los beans y sabe cómo relacionarlos. La consecuencia práctica es que en el código no aparece la palabra \texttt{new} para un servicio o un repositorio: el contenedor los provee ya construidos.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Inyección de dependencias}
+	Técnica por la cual un objeto no construye sus colaboradores sino que los recibe desde fuera. Aquí el servicio declara en su constructor que necesita dos repositorios y un conversor; Spring examina esa firma, busca en el contenedor los beans compatibles y los pasa. La ventaja decisiva aparece al probar: en una prueba se le entregan repositorios simulados sin tocar el código del servicio.
+\end{cajadefinicion}
+
+\begin{cajabuenas}{Inyección por constructor y no por campo}
+	Existe la alternativa de anotar los campos con \texttt{@Autowired} y prescindir del constructor. Es más corta y peor. Con inyección por constructor los campos pueden declararse finales, lo que garantiza que nadie los reemplace después; las dependencias quedan visibles en la firma, de modo que una clase con ocho parámetros delata que hace demasiado; y la clase puede instanciarse en una prueba sin necesidad de armazón alguno. Es la forma recomendada por la propia documentación de Spring y la que exige la rúbrica.
+\end{cajabuenas}
+
+\begin{cajadefinicion}{@Transactional}
+	Delimita una transacción: un conjunto de operaciones que se confirman todas o no se confirma ninguna. Si el método termina con normalidad, los cambios se guardan; si lanza una excepción, se deshacen por completo. El atributo \texttt{readOnly = true} en los métodos de consulta informa al gestor de que no habrá escrituras, lo que permite optimizaciones y previene modificaciones accidentales.
+\end{cajadefinicion}
+
+\begin{cajaejemplo}{Por qué la transacción importa en este dominio}
+	Registrar un préstamo exige dos escrituras: insertar la fila del préstamo y cambiar el estado del ejemplar a prestado. Si la primera se confirma y la segunda falla, el sistema queda con un préstamo activo sobre un ejemplar que sigue figurando como disponible, y ese ejemplar podría prestarse otra vez. La transacción impide ese estado imposible: o se completan las dos escrituras o no se completa ninguna.
+\end{cajaejemplo}
+
+\begin{cajadefinicion}{orElseThrow}
+	Método del tipo \texttt{Optional} que devuelve el valor si está presente y lanza la excepción indicada si está ausente. Es la forma idiomática de convertir un resultado que puede faltar en una excepción de negocio, y sustituye a la comparación explícita con nulo seguida de un lanzamiento manual.
+\end{cajadefinicion}
+
+\section{El conversor entre entidad y DTO}
+\label{sec:mapper}
+
+Falta una pieza: alguien tiene que traducir entre la entidad y el objeto de transferencia. Esa conversión no pertenece ni a la entidad ni al servicio, de modo que se aloja en una clase propia.
+
+\subsection{Declaración del conversor}
+\label{sec:decl-mapper}
+
+\begin{lstlisting}[style=java,caption={Componente que traduce entre la entidad y su objeto de transferencia.},label={lst:mapper}]
+package ec.edu.uteq.biblioteq.aplicacion;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class LibroMapper {
+
+	private final EjemplarRepository ejemplares;
+
+	public LibroMapper(EjemplarRepository ejemplares) {
+		this.ejemplares = ejemplares;
+	}
+
+	public LibroDto aDto(Libro libro) {
+		long disponibles = ejemplares.countByLibroIdAndEstado(
+				libro.getId(), EstadoEjemplar.DISPONIBLE);
+
+		return new LibroDto(
+				libro.getId(),
+				libro.getIsbn(),
+				libro.getTitulo(),
+				libro.getAutor(),
+				libro.getAnioPublicacion(),
+				libro.getCategoria().getNombre(),
+				disponibles);
+	}
+}
+\end{lstlisting}
+
+\begin{cajadefinicion}{@Component}
+	Anotación genérica que registra la clase como bean. Se usa cuando la clase no encaja con claridad en ninguna capa: no es un servicio con reglas de negocio, no es un repositorio ni un controlador. Las tres anotaciones \texttt{@Service}, \texttt{@Repository} y \texttt{@Controller} son especializaciones suyas que además comunican la intención.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Este conversor esconde una consulta N+1}
+	El método \texttt{aDto} consulta el número de ejemplares disponibles. Al convertir una página de diez libros se ejecutan once consultas: una para los libros y una por cada uno. Con doscientos libros serían doscientas una. La solución consiste en obtener los recuentos de todos los libros en una sola consulta agrupada y pasarlos al conversor, en lugar de que este pregunte uno por uno. Se deja planteado deliberadamente: es el ejercicio de optimización del capítulo~\ref{cap:verificacion} y conviene medirlo antes de corregirlo.
+\end{cajaadvertencia}
+
+\subsection{Alternativas al conversor escrito a mano}
+\label{sec:alt-mapper}
+
+Escribir la conversión campo por campo es explícito y no esconde nada, pero se vuelve repetitivo cuando hay siete entidades. Existen tres caminos y conviene conocer sus contrapartidas antes de elegir.
+
+El primero es el que usa esta guía: una clase con un método por conversión. Su virtud es que cualquiera entiende qué ocurre leyendo diez líneas, y que la lógica de cálculo ---como el recuento de ejemplares--- cabe con naturalidad. Su costo es el volumen de código conforme el proyecto crece.
+
+El segundo consiste en añadir al propio DTO un método de fábrica que reciba la entidad y construya el objeto. Ahorra una clase y funciona bien mientras la conversión sea directa. Deja de servir en cuanto necesita consultar un repositorio, porque un \emph{record} no debería depender de la infraestructura.
+
+El tercero recurre a un generador como MapStruct, que produce el código de conversión durante la compilación a partir de una interfaz anotada. Elimina el trabajo repetitivo y mantiene el rendimiento, ya que el resultado es código Java corriente y no inspección en tiempo de ejecución. Su costo es una dependencia más y un paso de generación que hay que entender cuando algo falla.
+
+\begin{cajabuenas}{Criterio para el Proyecto Fin de Curso}
+	Los tres caminos son aceptables y la rúbrica no impone ninguno. Lo que sí evalúa es la coherencia: elegir uno, documentarlo en un ADR y aplicarlo en todo el proyecto. Un sistema donde tres entidades se convierten a mano, dos con métodos de fábrica y dos con un generador resulta más difícil de mantener que cualquiera de las tres opciones aplicada de forma consistente.
+\end{cajabuenas}
+
+\begin{cajaejercicio}{Verificación 5.1 --- el servicio se prueba sin base de datos}
+	Escriba una prueba de \texttt{CatalogoService} que verifique la regla del ISBN duplicado. Construya el servicio pasándole repositorios simulados con Mockito, indique que \texttt{existsByIsbn} devuelva verdadero y compruebe que \texttt{registrarLibro} lanza \texttt{IsbnDuplicadoException}. La prueba debe ejecutarse en milisegundos y sin que Docker esté encendido: si necesita la base de datos para pasar, la inyección de dependencias no se está aprovechando.
+\end{cajaejercicio}
+
+% =====================================================================
+\chapter{La capa web}
+\label{cap:web}
+
+Solo ahora, con el dominio funcionando y probado, se abre el sistema al exterior. Este capítulo expone la funcionalidad como una interfaz de programación sobre HTTP y traduce las excepciones del dominio a respuestas que un cliente pueda interpretar.
+
+\section{El controlador REST}
+\label{sec:controlador}
+
+El controlador es la capa más delgada del sistema. Su trabajo se reduce a cuatro tareas y cualquier cosa que exceda esas cuatro está mal ubicada.
+
+\subsection{Las cuatro tareas del controlador}
+\label{sec:tareas-controlador}
+
+Recibir la petición, convertir sus parámetros a objetos del lenguaje, delegar el trabajo real en el servicio y decidir qué respuesta corresponde. No consulta la base de datos, no aplica reglas de negocio y no arma consultas.
+
+\begin{lstlisting}[style=java,caption={Controlador REST del catalogo de libros.},label={lst:controlador}]
+package ec.edu.uteq.biblioteq.web;
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import jakarta.validation.Valid;
+import java.net.URI;
+
+@RestController
+@RequestMapping("/api/v1/libros")
+public class LibroController {
+
+	private final CatalogoService catalogo;
+
+	public LibroController(CatalogoService catalogo) {
+		this.catalogo = catalogo;
+	}
+
+	@GetMapping
+	public Page<LibroDto> listar(
+			@RequestParam(required = false) String titulo,
+			@PageableDefault(size = 10, sort = "titulo") Pageable paginacion) {
+		return catalogo.listar(titulo, paginacion);
+	}
+
+	@GetMapping("/{id}")
+	public LibroDto obtener(@PathVariable Long id) {
+		return catalogo.buscarPorId(id);
+	}
+
+	@PostMapping
+	public ResponseEntity<LibroDto> crear(
+			@Valid @RequestBody CrearLibroRequest peticion) {
+
+		LibroDto creado = catalogo.registrarLibro(peticion);
+
+		URI ubicacion = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(creado.id())
+				.toUri();
+
+		return ResponseEntity.created(ubicacion).body(creado);
+	}
+}
+\end{lstlisting}
+
+\subsection{Las anotaciones del controlador}
+\label{sec:anotaciones-controlador}
+
+\begin{cajadefinicion}{@RestController}
+	Combina \texttt{@Controller} con \texttt{@ResponseBody}. La consecuencia es que el objeto devuelto por cada método se convierte a JSON y se escribe en el cuerpo de la respuesta, en lugar de interpretarse como el nombre de una plantilla. Es la diferencia entre una interfaz de programación y una aplicación que genera páginas.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{@RequestMapping en la clase}
+	Fija el prefijo de ruta común a todos los métodos. El fragmento \texttt{/api/v1} merece atención: versionar la interfaz desde el primer día cuesta nada, y añadirlo después obliga a coordinar el cambio con todos los clientes ya existentes.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{@PathVariable y @RequestParam}
+	La primera extrae un segmento variable de la ruta: en \texttt{/libros/42} recupera el 42. La segunda extrae un parámetro de consulta: en \texttt{/libros?titulo=soledad} recupera la palabra. La diferencia no es de estilo: la ruta identifica el recurso, mientras que los parámetros de consulta lo filtran u ordenan.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{@RequestBody y @Valid}
+	La primera convierte el JSON recibido en un objeto Java. La segunda activa la comprobación de las anotaciones de validación declaradas en ese objeto. Sin \texttt{@Valid}, las anotaciones del DTO no hacen absolutamente nada y los datos inválidos llegan al servicio: es uno de los olvidos más frecuentes y no produce ningún aviso.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{ResponseEntity}
+	Tipo que permite controlar por completo la respuesta: su código de estado, sus cabeceras y su cuerpo. Se usa cuando no basta con devolver el objeto, como en la creación, donde la norma exige responder con el código 201 y una cabecera \texttt{Location} que indique dónde quedó el recurso creado~\cite{rfc9110}.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{Los códigos de estado no son decorativos}
+	Devolver siempre 200 con un campo booleano de éxito en el cuerpo rompe la caché, confunde a los intermediarios, invalida el monitoreo basado en códigos y obliga a cada cliente a inventar su propia lógica de interpretación. En la rúbrica de la asignatura, una interfaz que responde 200 ante un error recibe calificación cero en el criterio correspondiente.
+\end{cajaadvertencia}
+
+\section{El manejo centralizado de errores}
+\label{sec:manejo-errores}
+
+Capturar excepciones dentro de cada método multiplicaría el código y produciría respuestas inconsistentes. Spring ofrece un mecanismo para concentrar esa traducción en un solo lugar.
+
+\subsection{El manejador global}
+\label{sec:manejador-global}
+
+\begin{lstlisting}[style=java,caption={Manejador global que traduce excepciones a detalles de problema.},label={lst:advice}]
+package ec.edu.uteq.biblioteq.web;
+
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import java.net.URI;
+
+@RestControllerAdvice
+public class ManejadorDeErrores {
+
+	private static final String BASE = "https://biblioteq.uteq.edu.ec/problemas/";
+
+	@ExceptionHandler(RecursoNoEncontradoException.class)
+	public ProblemDetail noEncontrado(RecursoNoEncontradoException ex) {
+		ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+				HttpStatus.NOT_FOUND, ex.getMessage());
+		pd.setTitle("Recurso no encontrado");
+		pd.setType(URI.create(BASE + "no-encontrado"));
+		return pd;
+	}
+
+	@ExceptionHandler(IsbnDuplicadoException.class)
+	public ProblemDetail isbnDuplicado(IsbnDuplicadoException ex) {
+		ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+				HttpStatus.CONFLICT, ex.getMessage());
+		pd.setTitle("ISBN duplicado");
+		pd.setType(URI.create(BASE + "isbn-duplicado"));
+		pd.setProperty("isbn", ex.getIsbn());
+		return pd;
+	}
+}
+\end{lstlisting}
+
+\begin{cajadefinicion}{@RestControllerAdvice}
+	Marca una clase cuyos métodos se aplican a todos los controladores del proyecto. Es el punto único donde se traducen las excepciones a respuestas HTTP. La anotación \texttt{@ExceptionHandler} sobre cada método declara qué tipo de excepción atiende.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{ProblemDetail}
+	Clase de Spring que implementa el formato normalizado de errores definido en la RFC~9457~\cite{rfc9457}. Sus campos tienen papeles distintos: \texttt{type} identifica el tipo de problema de forma estable para que el cliente lo compare por código; \texttt{title} es un resumen legible que no cambia entre ocurrencias; \texttt{detail} describe esta ocurrencia concreta; \texttt{instance} indica dónde se produjo. El método \texttt{setProperty} añade campos propios del dominio, plenamente permitidos por la especificación.
+\end{cajadefinicion}
+
+\begin{cajaejemplo}{Respuesta que produce el segundo manejador}
+	Ante un ISBN repetido, el cliente recibe el código 409 con el tipo de contenido \texttt{application/problem+json} y un cuerpo que incluye el identificador estable del problema, el título, el detalle con el ISBN concreto y el campo propio \texttt{isbn}. Un cliente puede así distinguir por código este conflicto de cualquier otro, sin analizar el texto en español.
+\end{cajaejemplo}
+
+\begin{cajabuenas}{Por qué 409 y no 400}
+	La elección del código no es arbitraria. Un 400 indica que la petición está mal formada, y no es el caso: el JSON es correcto y todos los campos cumplen su formato. Lo que ocurre es un conflicto con el estado actual del recurso, y para eso existe el 409. Del mismo modo, una petición bien formada que viola una regla de negocio corresponde a un 422. Distinguir estos tres códigos es lo que separa una interfaz pensada de una improvisada.
+\end{cajabuenas}
+
+\subsection{Los errores de validación y el caso por defecto}
+\label{sec:validacion-errores}
+
+El manejador anterior atiende dos excepciones propias, pero faltan dos situaciones que ocurrirán con más frecuencia que ambas.
+
+La primera son los fallos de validación. Cuando \texttt{@Valid} rechaza un DTO, Spring lanza una excepción propia que, sin tratamiento, produce una respuesta 400 con un cuerpo poco informativo. Conviene capturarla y componer un detalle de problema que enumere qué campo falló y por qué, aprovechando los mensajes declarados en las anotaciones del DTO. El cliente puede así señalar el campo exacto del formulario en lugar de mostrar un error general.
+
+La segunda es el caso por defecto: cualquier excepción no prevista. Sin una regla que la atienda, el cliente recibe una traza completa. La regla de reserva captura el tipo más general, registra la traza con un identificador de correlación y devuelve un 500 con un mensaje neutro que incluye ese identificador. Cuando un usuario reporte un fallo, ese identificador permitirá localizar la traza exacta en el registro del servidor.
+
+\begin{cajabuenas}{Orden de evaluación de las reglas}
+	Spring elige siempre el manejador cuyo tipo de excepción sea más específico, de modo que el orden de los métodos dentro de la clase no importa. Sí importa la jerarquía: como todas las excepciones propias heredan de \texttt{NegocioException}, es posible añadir una regla para esa clase base que atienda de golpe a las que no tengan tratamiento particular, sin dejar de aplicar las reglas específicas donde existan.
+\end{cajabuenas}
+
+\begin{cajaejercicio}{Verificación 6.1 --- los tres caminos}
+	Con la aplicación en ejecución, compruebe tres situaciones desde la pestaña de peticiones HTTP de IntelliJ. Primera: una consulta a un identificador existente debe responder 200 con el cuerpo del libro. Segunda: una consulta a un identificador inexistente debe responder 404 con el cuerpo en formato de detalle de problema, no con una traza de error. Tercera: una creación con un ISBN ya registrado debe responder 409 e incluir el campo \texttt{isbn}. Si la segunda devuelve 500, el manejador global no se está aplicando: verifique que la clase esté en un paquete que cuelgue del paquete raíz.
+\end{cajaejercicio}
+
+% =====================================================================
+\chapter{Diagrama de secuencia y orden de construcción}
+\label{cap:secuencia}
+
+Los capítulos anteriores crearon los artefactos uno por uno. Este los reúne en una sola vista: qué ocurre cuando llega una petición, en qué orden colaboran las piezas y por qué se construyeron en ese orden y no en otro. También recopila la evolución completa de la estructura de carpetas, desde el esqueleto generado hasta el proyecto terminado.
+
+\section{Recorrido completo de una petición}
+\label{sec:recorrido}
+
+Un diagrama de secuencia muestra la conversación entre objetos a lo largo del tiempo. Se lee de arriba hacia abajo: cada flecha es un mensaje y la posición vertical indica cuándo ocurre respecto de los demás.
+
+\subsection{Cómo se lee un diagrama de secuencia}
+\label{sec:leer-secuencia}
+
+Cada columna representa un participante y la línea vertical que cuelga de ella es su \emph{línea de vida}. Los rectángulos sobre esa línea indican los periodos en que el participante está trabajando. Las flechas continuas son llamadas; las discontinuas, respuestas.
+
+\begin{cajadefinicion}{Diagrama de secuencia}
+	Representación del intercambio de mensajes entre participantes ordenado en el tiempo. A diferencia del diagrama de clases, que muestra la estructura estática, este muestra el comportamiento dinámico: qué llama a qué y en qué orden. Es la herramienta adecuada para explicar un caso de uso concreto y para localizar dónde debe abrirse una transacción.
+\end{cajadefinicion}
+
+La figura~\ref{fig:secuencia} traza el registro de un libro nuevo, que es el caso de uso más completo de los implementados: atraviesa las cuatro capas, valida, consulta, escribe y abre una transacción.
+
+\begin{figure}[htbp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tikzpicture}[
+		every node/.style={font=\scriptsize,align=center},
+		part/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!8,
+			rounded corners=2pt,inner sep=3pt,minimum width=2.0cm,minimum height=0.65cm},
+		vida/.style={dashed,gray!70},
+		act/.style={rectangle,draw=uteqverde!80!black,fill=uteqverde!25,minimum width=0.22cm},
+		msg/.style={->,>=stealth,thick,uteqverde!75!black},
+		ret/.style={->,>=stealth,dashed,uteqdorado!85!black},
+		et/.style={font=\tiny,fill=white,inner sep=1.2pt}]
+
+		% --- participantes
+		\def\ya{0}
+		\node[part] (c) at (0,\ya)    {Cliente\\{\tiny HTTP}};
+		\node[part] (w) at (3.1,\ya)  {LibroController\\{\tiny @RestController}};
+		\node[part] (s) at (6.6,\ya)  {CatalogoService\\{\tiny @Service}};
+		\node[part] (r) at (10.1,\ya) {LibroRepository\\{\tiny @Repository}};
+		\node[part] (m) at (13.2,\ya) {LibroMapper\\{\tiny @Component}};
+		\node[part] (d) at (16.2,\ya) {PostgreSQL\\{\tiny base de datos}};
+
+		% --- lineas de vida
+		\foreach \n in {c,w,s,r,m,d} { \draw[vida] (\n.south) -- ++(0,-11.4); }
+
+		% --- barras de activacion
+		\node[act,minimum height=9.9cm] at (0,-5.35)    {};
+		\node[act,minimum height=8.9cm] at (3.1,-5.55)  {};
+		\node[act,minimum height=7.2cm] at (6.6,-5.9)   {};
+
+		% --- mensajes
+		\draw[msg] (0.15,-0.75)  -- (2.95,-0.75)  node[et,midway,above] {1. POST /api/v1/libros + JSON};
+		\draw[msg] (3.25,-1.65)  -- (3.25,-1.65)  node[et,right,xshift=2pt] {2. @Valid comprueba el DTO};
+		\draw[msg] (3.25,-2.45)  -- (6.45,-2.45)  node[et,midway,above] {3. registrarLibro(peticion)};
+		\draw[msg] (6.75,-3.3)   -- (6.75,-3.3)   node[et,right,xshift=2pt] {4. @Transactional abre la transaccion};
+		\draw[msg] (6.75,-4.1)   -- (9.95,-4.1)   node[et,midway,above] {5. existsByIsbn(isbn)};
+		\draw[msg] (10.25,-4.7)  -- (16.05,-4.7)  node[et,midway,above] {6. SELECT COUNT(*) FROM libro WHERE isbn = ?};
+		\draw[ret] (16.05,-5.3)  -- (6.75,-5.3)   node[et,midway,above] {7. false --- el ISBN no existe};
+		\draw[msg] (6.75,-6.0)   -- (9.95,-6.0)   node[et,midway,above] {8. save(nuevoLibro)};
+		\draw[msg] (10.25,-6.6)  -- (16.05,-6.6)  node[et,midway,above] {9. INSERT INTO libro (...) RETURNING id};
+		\draw[ret] (16.05,-7.2)  -- (6.75,-7.2)   node[et,midway,above] {10. Libro con id asignado};
+		\draw[msg] (6.75,-7.9)   -- (13.05,-7.9)  node[et,midway,above] {11. aDto(libro)};
+		\draw[ret] (13.05,-8.5)  -- (6.75,-8.5)   node[et,midway,above] {12. LibroDto};
+		\draw[msg] (6.75,-9.1)   -- (6.75,-9.1)   node[et,right,xshift=2pt] {13. confirma la transaccion};
+		\draw[ret] (6.45,-9.75)  -- (3.25,-9.75)  node[et,midway,above] {14. LibroDto};
+		\draw[ret] (2.95,-10.5)  -- (0.15,-10.5)  node[et,midway,above] {15. 201 Created + Location};
+
+		% --- marco de la transaccion
+		\draw[uteqdorado!85!black,thick,dashed,rounded corners=3pt]
+			(5.55,-3.55) rectangle (17.3,-9.4);
+		\node[font=\tiny\bfseries,uteqdorado!70!black,fill=white,inner sep=2pt]
+			at (16.0,-3.55) {transaccion (pasos 5 a 13)};
+	\end{tikzpicture}}
+	\caption{Diagrama de secuencia del registro de un libro. El marco discontinuo delimita la transacción: todas las operaciones que abarca se confirman juntas o se deshacen juntas.}
+	\label{fig:secuencia}
+\end{figure}
+
+\subsection{Qué enseña el diagrama sobre el diseño}
+\label{sec:ensena-secuencia}
+
+Tres observaciones del diagrama valen más que una explicación abstracta de arquitectura. La primera es que la validación del paso~2 ocurre antes de que el controlador ejecute una sola línea propia: cuando los datos llegan al servicio, ya son válidos en su formato, y por eso el servicio solo comprueba reglas de negocio.
+
+La segunda es que el marco de la transacción abarca del paso~5 al~13. La consulta de existencia y la inserción quedan dentro del mismo ámbito, de modo que ningún otro proceso pueda insertar el mismo ISBN entre ambas operaciones. Colocar la anotación en el controlador en lugar del servicio dejaría fuera esa protección.
+
+La tercera es que la base de datos solo aparece a la derecha del repositorio. Ninguna flecha va del controlador ni del servicio directamente a PostgreSQL, y esa ausencia es el criterio visual más rápido para comprobar que las capas se respetan. Un diagrama de secuencia con una flecha del controlador a la base delata el defecto sin necesidad de leer el código.
+
+\begin{cajaadvertencia}{El diagrama también muestra un riesgo}
+	El paso~11 llama al conversor, que a su vez consulta el número de ejemplares disponibles. Para un solo libro son dos consultas y no hay problema. Para una página de diez libros el mismo camino se recorre diez veces, lo que produce once consultas donde deberían bastar dos. Es la consulta N+1 anunciada en el capítulo anterior, y el diagrama la hace visible antes de que aparezca como lentitud.
+\end{cajaadvertencia}
+
+\section{El orden de creación de cada elemento}
+\label{sec:orden-creacion}
+
+Los artefactos no se crean en el orden en que aparecen en el diagrama de secuencia. Se crean en el orden inverso, y hay una razón sencilla: cada pieza necesita que exista la que está debajo.
+
+\subsection{De adentro hacia afuera}
+\label{sec:adentro-afuera}
+
+La figura~\ref{fig:orden} presenta las siete etapas de construcción con su artefacto, su anotación y la razón por la que ocupa esa posición.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		every node/.style={font=\scriptsize,align=left},
+		etapa/.style={rectangle,draw=uteqverde,thick,fill=uteqverde!7,
+			rounded corners=3pt,inner sep=5pt,text width=12.4cm,minimum height=0.95cm},
+		num/.style={circle,draw=uteqdorado!85!black,fill=uteqdorado,
+			text=white,font=\scriptsize\bfseries,inner sep=2.5pt,minimum size=0.5cm},
+		fl/.style={->,>=stealth,thick,uteqdorado!80!black}]
+
+		\foreach \i/\y/\t in {
+			1/0/{\textbf{Migración SQL} \quad\emph{V1\_\_esquema\_inicial.sql} \\ Define la verdad sobre la estructura. Todo lo demás la refleja.},
+			2/-1.35/{\textbf{Enumeraciones} \quad\emph{enum} \\ No dependen de nada y varias entidades las necesitan.},
+			3/-2.7/{\textbf{Entidades} \quad\texttt{@Entity} \\ Reflejan las tablas. Se validan contra el esquema al arrancar.},
+			4/-4.05/{\textbf{Repositorios} \quad\texttt{@Repository} \\ Interfaces sin implementación. Necesitan que la entidad exista.},
+			5/-5.4/{\textbf{DTO y excepciones} \quad\emph{record} \\ Definen el contrato de la capa de aplicación con el exterior.},
+			6/-6.75/{\textbf{Servicios y conversores} \quad\texttt{@Service} \quad\texttt{@Component} \\ Reglas de negocio y transacciones. Aquí se escriben las pruebas.},
+			7/-8.1/{\textbf{Controlador y manejador} \quad\texttt{@RestController} \quad\texttt{@RestControllerAdvice} \\ Última capa. Solo coordina y traduce a HTTP.}}
+		{
+			\node[etapa] (e\i) at (0,\y) {\t};
+			\node[num] at (-6.55,\y) {\i};
+		}
+		\foreach \i/\j in {1/2,2/3,3/4,4/5,5/6,6/7} {
+			\draw[fl] (e\i.south) -- (e\j.north);
+		}
+	\end{tikzpicture}
+	\caption{Orden de construcción de los artefactos del proyecto. Cada etapa depende de que la anterior exista, de modo que alterar el orden obliga a escribir código contra piezas todavía inexistentes.}
+	\label{fig:orden}
+\end{figure}
+
+\begin{cajabuenas}{Por qué este orden y no el contrario}
+	Empezar por el controlador parece natural porque es lo primero que se ve funcionar. Es también la causa directa del defecto más penalizado: cuando el servicio todavía no existe, la lógica se escribe en el único lugar disponible, que es el controlador, y ahí se queda. Construir de adentro hacia afuera obliga a que cada regla nazca en su capa correcta desde el principio.
+\end{cajabuenas}
+
+\subsection{Tabla de referencia de anotaciones}
+\label{sec:tabla-anotaciones}
+
+Las anotaciones aparecieron dispersas a lo largo de la guía, cada una en el momento en que hacía falta. La tabla~\ref{tab:anotaciones} las reúne agrupadas por capa, de modo que pueda consultarse durante el desarrollo sin necesidad de releer los capítulos.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Anotaciones utilizadas en el proyecto, agrupadas por capa.}
+	\label{tab:anotaciones}
+	\scriptsize
+	\begin{tabularx}{\textwidth}{L{3.5cm} L{2.1cm} X}
+		\toprule
+		\textbf{Anotación} & \textbf{Capa} & \textbf{Qué provoca} \\
+		\midrule
+		\texttt{@SpringBootApplication} & Arranque & Configuración automática y escaneo de componentes \\
+		\texttt{@Entity} & Dominio & La clase se mapea a una tabla \\
+		\texttt{@Table} \texttt{@Column} & Dominio & Nombres y restricciones de tabla y columnas \\
+		\texttt{@Id} \texttt{@GeneratedValue} & Dominio & Identificador y estrategia de generación \\
+		\texttt{@ManyToOne} \texttt{@JoinColumn} & Dominio & Relación y columna de clave foránea \\
+		\texttt{@Enumerated} & Dominio & Forma de almacenar una enumeración \\
+		\texttt{@Repository} & Dominio & Bean de acceso a datos; traduce excepciones de JDBC \\
+		\texttt{@Service} & Aplicación & Bean con reglas de negocio \\
+		\texttt{@Component} & Aplicación & Bean genérico sin capa definida \\
+		\texttt{@Transactional} & Aplicación & Delimita la transacción \\
+		\texttt{@RestController} & Web & Bean web; el retorno se serializa a JSON \\
+		\texttt{@RequestMapping} & Web & Prefijo de ruta de la clase \\
+		\texttt{@GetMapping} \texttt{@PostMapping} & Web & Asocia el método a un verbo y una ruta \\
+		\texttt{@PathVariable} \texttt{@RequestParam} & Web & Extrae datos de la ruta o de la consulta \\
+		\texttt{@RequestBody} \texttt{@Valid} & Web & Convierte el JSON de entrada y lo valida \\
+		\texttt{@RestControllerAdvice} & Web & Manejador global de excepciones \\
+		\texttt{@ExceptionHandler} & Web & Asocia un método a un tipo de excepción \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{cajadefinicion}{@Repository}
+	Merece una nota propia porque en Spring Data no se escribe: las interfaces que extienden \texttt{JpaRepository} se registran igualmente. Se incluye en la tabla porque sí se usa cuando se implementa un acceso a datos a mano, y porque aporta algo más que el registro: traduce las excepciones específicas del controlador de base de datos a una jerarquía común de Spring, de modo que el código superior no dependa del gestor concreto.
+\end{cajadefinicion}
+
+\section{Evolución de la estructura del proyecto}
+\label{sec:evolucion}
+
+Esta sección recopila cómo cambia el árbol de carpetas en cada etapa. Sirve como lista de verificación: al terminar cada capítulo, la estructura debe coincidir con el estado correspondiente.
+
+\subsection{Estados intermedios}
+\label{sec:estados}
+
+El estado E0 apareció en el listado~\ref{lst:estructura-e0}. Los listados siguientes marcan con \texttt{(+)} lo que se incorpora respecto del estado anterior.
+
+\begin{lstlisting}[style=plano,caption={Estado E1 --- tras configurar la base y la primera migracion (capitulos 2 y 4).},label={lst:e1}]
+biblioteq/
+|-- src/main/
+|   |-- java/ec/edu/uteq/biblioteq/
+|   |   `-- BiblioutegApplication.java
+|   `-- resources/
+|       |-- db/                            (+)
+|       |   `-- migration/                 (+)
+|       |       `-- V1__esquema_inicial.sql (+)
+|       `-- application.yml                (+ sustituye a .properties)
+|-- compose.yaml                           (+)
+`-- pom.xml
+\end{lstlisting}
+
+\begin{lstlisting}[style=plano,caption={Estado E2 --- tras escribir entidades y repositorios (capitulo 4).},label={lst:e2}]
+src/main/java/ec/edu/uteq/biblioteq/
+|-- dominio/                       (+)
+|   |-- enums/                     (+)
+|   |   |-- EstadoEjemplar.java    (+)
+|   |   `-- EstadoPrestamo.java    (+)
+|   |-- Categoria.java             (+)
+|   |-- Libro.java                 (+)
+|   |-- Ejemplar.java              (+)
+|   |-- CategoriaRepository.java   (+)
+|   |-- LibroRepository.java       (+)
+|   `-- EjemplarRepository.java    (+)
+`-- BiblioutegApplication.java
+\end{lstlisting}
+
+\begin{lstlisting}[style=plano,caption={Estado E3 --- tras la capa de aplicacion (capitulo 5).},label={lst:e3}]
+src/main/java/ec/edu/uteq/biblioteq/
+|-- aplicacion/                          (+)
+|   |-- dto/                             (+)
+|   |   |-- CrearLibroRequest.java       (+)
+|   |   `-- LibroDto.java                (+)
+|   |-- excepciones/                     (+)
+|   |   |-- NegocioException.java        (+)
+|   |   |-- RecursoNoEncontradoException.java (+)
+|   |   `-- IsbnDuplicadoException.java  (+)
+|   |-- CatalogoService.java             (+)
+|   `-- LibroMapper.java                 (+)
+|-- dominio/
+`-- BiblioutegApplication.java
+\end{lstlisting}
+
+\begin{lstlisting}[style=plano,caption={Estado E4 --- estructura completa tras la capa web y las pruebas.},label={lst:e4}]
+biblioteq/
+|-- src/
+|   |-- main/
+|   |   |-- java/ec/edu/uteq/biblioteq/
+|   |   |   |-- aplicacion/
+|   |   |   |   |-- dto/
+|   |   |   |   |-- excepciones/
+|   |   |   |   |-- CatalogoService.java
+|   |   |   |   `-- LibroMapper.java
+|   |   |   |-- dominio/
+|   |   |   |   |-- enums/
+|   |   |   |   |-- (entidades)
+|   |   |   |   `-- (repositorios)
+|   |   |   |-- web/                          (+)
+|   |   |   |   |-- LibroController.java      (+)
+|   |   |   |   `-- ManejadorDeErrores.java   (+)
+|   |   |   `-- BiblioutegApplication.java
+|   |   `-- resources/
+|   |       |-- db/migration/
+|   |       `-- application.yml
+|   `-- test/
+|       |-- java/ec/edu/uteq/biblioteq/
+|       |   |-- aplicacion/
+|       |   |   `-- CatalogoServiceTest.java  (+)
+|       |   `-- web/
+|       |       `-- LibroControllerTest.java  (+)
+|       `-- resources/
+|           `-- application-test.yml          (+)
+|-- docs/                                     (+)
+|   |-- adr/                                  (+)
+|   |-- api/                                  (+)
+|   `-- modelado/                             (+)
+|-- compose.yaml
+|-- README.md                                 (+)
+`-- pom.xml
+\end{lstlisting}
+
+\subsection{Reglas de organización que se han seguido}
+\label{sec:reglas-organizacion}
+
+Tres criterios explican la estructura anterior y conviene enunciarlos, porque el equipo tendrá que aplicarlos al añadir las cuatro entidades restantes.
+
+El primero es que los paquetes se organizan por capa y no por tipo de artefacto. No existe un paquete \texttt{entidades} junto a otro \texttt{servicios}: existen \texttt{dominio}, \texttt{aplicacion} y \texttt{web}, cada uno con lo que le corresponde. Cuando el sistema crezca, esta organización permitirá dividir por funcionalidad sin reorganizarlo todo.
+
+El segundo es que las dependencias apuntan siempre hacia adentro. La capa web conoce a la de aplicación; la de aplicación conoce al dominio; el dominio no conoce a ninguna de las dos. Si alguna vez una clase de \texttt{dominio} necesita importar algo de \texttt{web}, hay un error de diseño y no una necesidad real~\cite{martin2017clean}.
+
+El tercero es que la rama de pruebas replica la estructura de la rama principal. La prueba de \texttt{CatalogoService} vive en el mismo paquete que la clase probada, lo que permite que acceda a elementos no públicos cuando sea necesario y hace evidente qué está probado y qué no.
+
+\begin{cajaejercicio}{Verificación 7.1 --- el mapa completo}
+	Dibuje el diagrama de secuencia del caso de uso «registrar un préstamo», que aún no está implementado, siguiendo el estilo de la figura~\ref{fig:secuencia}. Debe incluir la comprobación de las tres reglas ---límite de préstamos activos, ausencia de multas impagas y disponibilidad del ejemplar---, la inserción del préstamo y el cambio de estado del ejemplar. Marque con precisión dónde empieza y dónde termina la transacción. Ese diagrama será el plano del trabajo del equipo en las semanas siguientes.
+\end{cajaejercicio}
+
+% =====================================================================
+\chapter{Verificación, pruebas y cierre}
+\label{cap:verificacion}
+
+Un sistema que arranca no es un sistema terminado. Este capítulo cierra el ciclo: comprueba que lo construido funciona, mide lo que se sospecha lento y deja el repositorio en condiciones de ser evaluado.
+
+\section{Pruebas automatizadas}
+\label{sec:pruebas}
+
+Probar a mano con un cliente gráfico no constituye evidencia y no se acepta como tal en la rúbrica. Las pruebas se escriben, se versionan y se ejecutan solas.
+
+\subsection{Los dos niveles de prueba}
+\label{sec:niveles-prueba}
+
+\begin{cajadefinicion}{Prueba unitaria}
+	Verifica una sola clase de forma aislada, sustituyendo sus dependencias por dobles simulados. Se ejecuta en milisegundos y no necesita base de datos ni servidor. Es la prueba adecuada para las reglas de negocio del servicio.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Prueba de integración}
+	Verifica que varias piezas funcionan juntas. En la capa web se apoya en \texttt{MockMvc}, que ejecuta peticiones contra los controladores sin levantar un servidor real, de modo que se comprueban rutas, códigos de estado y formato de respuesta.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Doble de prueba --- mock}
+	Objeto que sustituye a una dependencia real y cuyo comportamiento se programa para el caso concreto. La biblioteca Mockito permite indicar que un repositorio simulado responda cierto valor ante cierta llamada, sin tocar la base de datos. Es la contrapartida directa de haber usado inyección por constructor.
+\end{cajadefinicion}
+
+\begin{lstlisting}[style=java,caption={Prueba unitaria de la regla del ISBN duplicado.},label={lst:prueba-servicio}]
+package ec.edu.uteq.biblioteq.aplicacion;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+class CatalogoServiceTest {
+
+	@Mock  private LibroRepository libros;
+	@Mock  private CategoriaRepository categorias;
+	@Mock  private LibroMapper mapper;
+
+	@InjectMocks private CatalogoService servicio;
+
+	@Test
+	void rechaza_un_isbn_ya_registrado() {
+
+		// Preparacion: el repositorio simulado dice que el ISBN existe
+		when(libros.existsByIsbn("978-84-376-0494-7")).thenReturn(true);
+
+		CrearLibroRequest peticion = new CrearLibroRequest(
+				"978-84-376-0494-7", "Cien anios de soledad",
+				"Gabriel Garcia Marquez", 1967, 1L);
+
+		// Ejecucion y comprobacion
+		assertThatThrownBy(() -> servicio.registrarLibro(peticion))
+				.isInstanceOf(IsbnDuplicadoException.class)
+				.hasMessageContaining("978-84-376-0494-7");
+
+		// El libro nunca debio guardarse
+		verify(libros, never()).save(any());
+	}
+}
+\end{lstlisting}
+
+\begin{cajadefinicion}{Estructura de una prueba}
+	Toda prueba tiene tres momentos: preparar el escenario, ejecutar la operación y comprobar el resultado. En el listado anterior se distinguen con claridad. La última línea comprueba algo que suele olvidarse: que la operación prohibida efectivamente no ocurrió. Verificar solo que se lanzó la excepción dejaría sin detectar un servicio que además guarda el libro antes de fallar.
+\end{cajadefinicion}
+
+\begin{cajabuenas}{Nombres de prueba que se leen como frases}
+	El nombre \texttt{rechaza\_un\_isbn\_ya\_registrado} describe la regla verificada. Cuando esa prueba falle dentro de seis meses, el informe dirá exactamente qué dejó de cumplirse. Un nombre como \texttt{test1} o \texttt{testRegistrar} obliga a abrir el archivo para entender qué se rompió. El conjunto de nombres de prueba de un proyecto bien escrito es, en la práctica, la especificación de sus reglas de negocio.
+\end{cajabuenas}
+
+\subsection{Prueba de la capa web}
+\label{sec:prueba-web}
+
+\begin{lstlisting}[style=java,caption={Prueba de integracion del controlador con MockMvc.},label={lst:prueba-web}]
+@WebMvcTest(LibroController.class)
+class LibroControllerTest {
+
+	@Autowired private MockMvc mvc;
+	@MockitoBean private CatalogoService catalogo;
+
+	@Test
+	void devuelve_404_con_formato_de_problema_si_no_existe() throws Exception {
+
+		when(catalogo.buscarPorId(99L))
+				.thenThrow(new RecursoNoEncontradoException("libro", 99L));
+
+		mvc.perform(get("/api/v1/libros/99"))
+				.andExpect(status().isNotFound())
+				.andExpect(content().contentType("application/problem+json"))
+				.andExpect(jsonPath("$.title").value("Recurso no encontrado"));
+	}
+}
+\end{lstlisting}
+
+\begin{cajadefinicion}{@WebMvcTest}
+	Anotación que arranca únicamente la capa web: los controladores, el manejador de errores y la conversión a JSON. No crea repositorios ni conexión a la base, de modo que la prueba es rápida. Las dependencias del controlador se sustituyen con \texttt{@MockitoBean}, que registra un doble en el contenedor en lugar del bean real.
+\end{cajadefinicion}
+
+\begin{cajaadvertencia}{MockBean quedó obsoleta}
+	Hasta Spring Boot~3.3 la anotación se llamaba \texttt{@MockBean}. Fue marcada como obsoleta y sustituida por \texttt{@MockitoBean}, que vive en un paquete distinto. Los ejemplos anteriores a 2025 usan la forma antigua y producen un aviso de compilación, o directamente un error en las versiones más recientes.
+\end{cajaadvertencia}
+
+\section{Medición y corrección del problema N+1}
+\label{sec:n1}
+
+El capítulo~\ref{cap:aplicacion} anunció una consulta ineficiente y el capítulo~\ref{cap:secuencia} la hizo visible en el diagrama. Toca medirla y corregirla, en ese orden.
+
+\subsection{Cómo medirlo}
+\label{sec:medir-n1}
+
+La configuración ya incluye el registro de sentencias SQL en modo depuración. Cargue veinte libros de prueba, solicite la primera página y cuente las líneas de consulta en el registro. Deben aparecer veintiuna donde bastarían dos.
+
+\begin{cajaejemplo}{Lo que se observa en el registro}
+	Una primera sentencia recupera los diez libros de la página. A continuación aparecen diez sentencias casi idénticas, cada una contando ejemplares de un libro distinto, y una más para el total de la paginación. El patrón es inconfundible: una consulta seguida de muchas iguales que solo difieren en el parámetro.
+\end{cajaejemplo}
+
+\begin{cajadefinicion}{Problema N+1}
+	Se ejecuta una consulta para obtener una lista de N elementos y después una consulta adicional por cada elemento para resolver un dato asociado, lo que suma N+1 viajes a la base. Con datos de prueba pasa inadvertido; con datos reales convierte una pantalla instantánea en una espera de varios segundos.
+\end{cajadefinicion}
+
+\subsection{Cómo corregirlo}
+\label{sec:corregir-n1}
+
+La corrección consiste en obtener todos los recuentos de una sola vez y entregárselos al conversor, en lugar de que este pregunte uno por uno.
+
+\begin{lstlisting}[style=java,caption={Consulta agrupada que sustituye a las N consultas individuales.},label={lst:fix-n1}]
+// En EjemplarRepository
+@Query("""
+		SELECT e.libro.id AS libroId, COUNT(e) AS total
+		FROM Ejemplar e
+		WHERE e.libro.id IN :libroIds AND e.estado = :estado
+		GROUP BY e.libro.id
+		""")
+List<RecuentoPorLibro> contarPorLibros(
+		@Param("libroIds") List<Long> libroIds,
+		@Param("estado") EstadoEjemplar estado);
+\end{lstlisting}
+
+\begin{cajadefinicion}{@Query y JPQL}
+	La anotación permite escribir la consulta explícitamente cuando la gramática de nombres de método ya no alcanza. El lenguaje empleado es JPQL, muy parecido a SQL con una diferencia importante: opera sobre entidades y atributos de Java, no sobre tablas y columnas. Por eso se escribe \texttt{Ejemplar e} y \texttt{e.libro.id}, y no \texttt{ejemplar} ni \texttt{libro\_id}.
+\end{cajadefinicion}
+
+\begin{cajadefinicion}{Proyección}
+	Interfaz que declara únicamente los datos que la consulta devuelve, sin corresponder a ninguna entidad. Aquí \texttt{RecuentoPorLibro} declararía dos métodos de acceso, uno por columna del resultado. Spring Data genera la implementación. Es la forma correcta de recuperar agregados, que no son entidades y no deben forzarse a serlo.
+\end{cajadefinicion}
+
+\begin{cajaejercicio}{Verificación 8.1 --- la mejora es medible}
+	Aplique la corrección y repita la medición con los mismos veinte libros. El registro debe pasar de veintiuna sentencias a tres. Documente ambas cifras en \texttt{docs/adr/ADR-002-consulta-agregada.md} junto con la decisión y sus consecuencias. Una mejora sin medición previa y posterior no es una mejora demostrada: es una afirmación.
+\end{cajaejercicio}
+
+\section{Cierre del proyecto}
+\label{sec:cierre}
+
+Queda dejar el repositorio en condiciones. Lo que sigue no es burocracia: es lo primero que abre quien evalúa y lo primero que abre quien contrata.
+
+\subsection{El archivo README}
+\label{sec:readme}
+
+\begin{cajabuenas}{Contenido mínimo del README.md}
+	\begin{enumerate}
+		\item Nombre del proyecto, asignatura, período y nombres completos de los integrantes.
+		\item Requisitos previos con versiones exactas: JDK, Docker, Maven.
+		\item Pasos de puesta en marcha desde una máquina limpia, en orden y copiables.
+		\item Orden para ejecutar las pruebas y dónde se genera el informe de cobertura.
+		\item Estructura de paquetes con una línea que explique la responsabilidad de cada uno.
+		\item Enlace a la especificación de la interfaz y a los registros de decisión.
+		\item Variables de entorno necesarias, con sus nombres pero jamás con sus valores reales.
+	\end{enumerate}
+\end{cajabuenas}
+
+\begin{cajaadvertencia}{La prueba definitiva del README}
+	Pida a un compañero de otro equipo que clone el repositorio en su máquina y siga el archivo al pie de la letra, sin preguntar nada. Si el sistema no arranca, el documento está incompleto, aunque a usted le funcione. Ese es exactamente el procedimiento con el que se califica, y el criterio de piso correspondiente convierte el fallo en calificación cero.
+\end{cajaadvertencia}
+
+\subsection{Lista de verificación final}
+\label{sec:lista-final}
+
+\begin{cajabuenas}{Antes de etiquetar la entrega}
+	\begin{enumerate}
+		\item El repositorio se clona en una máquina limpia y el sistema arranca siguiendo solo el \texttt{README.md}.
+		\item Ningún archivo versionado contiene contraseñas, claves de firma ni cadenas de conexión reales.
+		\item Todos los extremos responden el código de estado correcto, incluidos los casos de error.
+		\item Las migraciones reconstruyen el esquema desde cero sin intervención manual.
+		\item La propiedad \texttt{ddl-auto} vale \texttt{validate} y no otra cosa.
+		\item Las pruebas pasan con la orden \texttt{mvnw.cmd verify} y el informe de cobertura se genera.
+		\item Los mensajes de registro de cambios identifican al autor real de cada aporte.
+		\item Existe un ADR por cada decisión estructural no obvia.
+		\item El diagrama de clases y el de secuencia están en \texttt{docs/modelado/} y coinciden con el código.
+		\item La carátula del PDF entregado muestra la URL del repositorio en una sola línea.
+	\end{enumerate}
+\end{cajabuenas}
+
+\begin{cajaadvertencia}{Criterios de piso de la asignatura}
+	Rigen los dos criterios generales sin excepción. Primero: el PDF subido al SGA debe incluir carátula con la URL del repositorio visible en una sola línea; si la URL está rota o el repositorio es inaccesible, la calificación es CERO. Segundo: si el proyecto no se reconstruye y arranca tras clonar el repositorio siguiendo las instrucciones documentadas en el \texttt{README.md}, la calificación es CERO. A ellos se añade uno propio de este proyecto: credenciales versionadas en el repositorio implican calificación CERO, con independencia de la calidad del resto del trabajo.
+\end{cajaadvertencia}
+
+\section*{Qué queda por construir}
+\addcontentsline{toc}{section}{Qué queda por construir}
+
+Esta guía completó un corte vertical sobre tres entidades: de la migración al controlador, con pruebas en ambos extremos. Quedan cuatro entidades del diagrama de clases ---Usuario, Prestamo, Reserva y Multa--- y con ellas la parte más interesante del dominio, que es la que tiene reglas de verdad.
+
+El patrón, sin embargo, ya está completo y es el mismo para todas. Migración numerada, enumeración si hace falta, entidad, repositorio, DTO, excepciones propias, servicio con sus reglas y sus transacciones, conversor, controlador y manejador de errores. Siete etapas en el orden de la figura~\ref{fig:orden}, con una verificación al final de cada una.
+
+\begin{cajabuenas}{Reparto sugerido del trabajo restante}
+	Resulta tentador que cada integrante tome una entidad y trabaje aislado. Es mala idea: las cuatro entidades restantes se relacionan entre sí y el préstamo depende de las otras tres. Un reparto mejor asigna a cada persona un caso de uso completo a través de todas las capas ---registrar préstamo, registrar devolución, gestionar reservas, consultar multas---, de modo que todos toquen todas las capas y nadie quede siendo el único que entiende una parte del sistema. En la defensa oral, cada integrante debe poder responder sobre cualquier parte, y ese reparto es el que lo hace posible.
+\end{cajabuenas}
+
+% =====================================================================
+\bibliographystyle{plain}
+\addcontentsline{toc}{chapter}{Referencias}
+\bibliography{Guia_BiblioUTEQ}
+
+\end{document}
