@@ -1,0 +1,3072 @@
+% ================================================================
+% MANUAL: Aplicacion JMS con cola de mensajes y publicacion/suscripcion
+% Aplicaciones Distribuidas (ISR-701) - UTEQ
+% Compilacion: pdflatex -> biber -> pdflatex -> pdflatex
+% ================================================================
+\documentclass[11pt,a4paper]{book}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.6cm,right=2.4cm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,backgrounds,calc}
+\tcbuselibrary{breakable,skins}
+
+% ---------------- Paleta institucional UTEQ ----------------
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqGrey}{HTML}{F4F6F9}
+\definecolor{uteqRed}{HTML}{B3261E}
+\definecolor{codeBg}{HTML}{F7F8FA}
+
+% ---------------- Encabezado y pie ----------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\footnotesize\color{uteqBlue}\thepage}
+\fancyhead[RE]{\footnotesize\color{uteqBlue}Manual JMS: cola y publicación/suscripción}
+\fancyhead[LO]{\footnotesize\color{uteqBlue}\nouppercase{\leftmark}}
+\fancyfoot[C]{\footnotesize Aplicaciones Distribuidas (ISR-701) -- UTEQ}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{uteqBlue}\leaders\hrule height \headrulewidth\hfill}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\fancyfoot[C]{\footnotesize\thepage}}
+
+% ---------------- Titulos ----------------
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+	{\normalfont\huge\bfseries\color{uteqBlue}}
+	{\normalsize\color{uteqTeal}CAPÍTULO \thechapter}{6pt}{\Large}
+\titlespacing*{\chapter}{0pt}{-20pt}{18pt}
+\titleformat{\section}{\normalfont\large\bfseries\color{uteqBlue}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\color{uteqMid}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\small\bfseries\color{uteqTeal}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titlespacing*{\subsection}{0pt}{9pt}{4pt}
+
+% ---------------- Cajas ----------------
+\newtcolorbox{cajaAviso}[1]{breakable,enhanced,colback=uteqRed!5,colframe=uteqRed,boxrule=0.9pt,arc=2pt,left=6pt,right=6pt,top=5pt,bottom=5pt,fonttitle=\bfseries\small,title={#1}}
+\newtcolorbox{cajaNota}[1]{breakable,enhanced,colback=uteqGrey,colframe=uteqMid,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=5pt,bottom=5pt,fonttitle=\bfseries\small,title={#1}}
+\newtcolorbox{cajaTip}[1]{breakable,enhanced,colback=uteqAmber!10,colframe=uteqAmber!85!black,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=5pt,bottom=5pt,fonttitle=\bfseries\small,title={#1}}
+\newtcolorbox{cajaDef}[1]{breakable,enhanced,colback=uteqGreen!8,colframe=uteqGreen!80!black,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=5pt,bottom=5pt,fonttitle=\bfseries\small,title={#1}}
+
+% ---------------- Listados de codigo ----------------
+\lstdefinestyle{estiloUTEQ}{
+	basicstyle=\ttfamily\scriptsize,
+	keywordstyle=\color{uteqBlue}\bfseries,
+	commentstyle=\color{uteqGreen!55!black}\itshape,
+	stringstyle=\color{uteqAmber!80!black},
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	numbersep=7pt,
+	frame=single,
+	rulecolor=\color{uteqMid!40},
+	backgroundcolor=\color{codeBg},
+	breaklines=true,
+	breakatwhitespace=false,
+	showstringspaces=false,
+	tabsize=4,
+	captionpos=b,
+	xleftmargin=14pt,
+	framexleftmargin=14pt,
+	aboveskip=8pt,
+	belowskip=8pt
+}
+\lstset{style=estiloUTEQ}
+
+\lstdefinelanguage{JavaScript}{
+	keywords={const,let,var,function,return,if,else,for,while,await,async,new,class,try,catch,typeof,of,in,null,true,false,document,window},
+	sensitive=true,
+	morecomment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]',
+	morestring=[b]",
+	morestring=[b]`
+}
+
+\lstdefinelanguage{consola}{
+	morekeywords={},
+	sensitive=false,
+	morecomment=[l]{REM },
+	morestring=[b]"
+}
+
+% ---------------- Bibliografia ----------------
+\usepackage[backend=biber,style=ieee,sorting=nyt,maxbibnames=6,minbibnames=3]{biblatex}
+\addbibresource{references_JMS.bib}
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+
+\emergencystretch=3em
+\hfuzz=20pt
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.2}
+
+\newcommand{\clase}[1]{\texttt{#1}}
+\newcommand{\ruta}[1]{\texttt{#1}}
+
+\begin{document}
+
+% ================================================================
+% PORTADA
+% ================================================================
+\frontmatter
+\thispagestyle{empty}
+
+\begin{center}
+	{\color{uteqBlue}\rule{\textwidth}{1.6pt}}
+
+	\vspace{8pt}
+
+	{\Large\bfseries\color{uteqBlue}UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}
+
+	\vspace{4pt}
+
+	{\large\color{uteqMid}Facultad de Ciencias de la Computación}
+
+	{\large\color{uteqMid}Carrera de Ingeniería de Software}
+
+	\vspace{5pt}
+
+	{\color{uteqBlue}\rule{\textwidth}{1.6pt}}
+
+	\vspace{34pt}
+
+	{\normalsize\scshape\color{uteqTeal}Manual de laboratorio}
+
+	\vspace{16pt}
+
+	{\Huge\bfseries\color{uteqBlue}Mensajería asíncrona con JMS}
+
+	\vspace{12pt}
+
+	{\LARGE\bfseries\color{uteqMid}Cola de mensajes y publicación/suscripción}
+
+	\vspace{16pt}
+
+	{\large Guía paso a paso con Java 21, Spring Boot, Apache ActiveMQ Artemis\\[3pt] e IntelliJ IDEA --- backend y frontend completos}
+
+	\vspace{30pt}
+
+	\begin{tikzpicture}[scale=0.95,transform shape]
+		\node[draw=uteqMid,fill=uteqGrey,rounded corners=3pt,minimum width=2.4cm,minimum height=0.9cm,font=\small\bfseries] (p) {Productor};
+		\node[draw=uteqTeal,fill=uteqTeal!12,rounded corners=3pt,minimum width=2.4cm,minimum height=0.9cm,font=\small\bfseries,right=1.6cm of p] (q) {COLA};
+		\node[draw=uteqGreen!70!black,fill=uteqGreen!10,rounded corners=3pt,minimum width=2.4cm,minimum height=0.9cm,font=\small\bfseries,right=1.6cm of q] (c) {1 consumidor};
+		\draw[-{Latex[length=2mm]},uteqBlue,thick] (p) -- (q);
+		\draw[-{Latex[length=2mm]},uteqBlue,thick] (q) -- (c);
+
+		\node[draw=uteqMid,fill=uteqGrey,rounded corners=3pt,minimum width=2.4cm,minimum height=0.9cm,font=\small\bfseries,below=1.5cm of p] (p2) {Publicador};
+		\node[draw=uteqAmber!85!black,fill=uteqAmber!12,rounded corners=3pt,minimum width=2.4cm,minimum height=0.9cm,font=\small\bfseries,below=1.5cm of q] (t) {TÓPICO};
+		\node[draw=uteqGreen!70!black,fill=uteqGreen!10,rounded corners=3pt,minimum width=2.4cm,minimum height=0.9cm,font=\small\bfseries,below=1.5cm of c] (s) {N suscriptores};
+		\draw[-{Latex[length=2mm]},uteqBlue,thick] (p2) -- (t);
+		\draw[-{Latex[length=2mm]},uteqBlue,thick] (t) -- ([yshift=3mm]s.west);
+		\draw[-{Latex[length=2mm]},uteqBlue,thick] (t) -- (s.west);
+		\draw[-{Latex[length=2mm]},uteqBlue,thick] (t) -- ([yshift=-3mm]s.west);
+	\end{tikzpicture}
+\end{center}
+
+\vfill
+
+\begin{center}
+	\begin{tabular}{@{}rl@{}}
+		\toprule
+		\textbf{Asignatura:}        & Aplicaciones Distribuidas (ISR-701) \\
+		\textbf{Nivel:}             & Séptimo nivel -- Ingeniería de Software \\
+		\textbf{Período académico:} & 2026--2027 PPA \\
+		\textbf{Autor:}             & Prof. Gleiston C. Guerrero-Ulloa, M.Sc. \\
+		\textbf{Versión:}           & v1.0 -- 30 de julio de 2026 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{10pt}
+
+\begin{center}
+	\footnotesize\color{uteqMid} Documento elaborado en \LaTeX{} (pdflatex + biber)
+\end{center}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\chapter*{Cómo usar este manual}
+\addcontentsline{toc}{chapter}{Cómo usar este manual}
+\markboth{Cómo usar este manual}{}
+
+Este manual está escrito para alguien que nunca ha usado JMS y que quiere entender \emph{por qué} cada línea está donde está, no solo copiarla.
+Por esa razón explica tanto el lenguaje (qué es un \clase{record}, qué hace una anotación, por qué se inyecta por constructor) como la tecnología (qué es un \emph{broker}, qué es una sesión JMS, por qué una suscripción durable necesita un identificador de cliente).
+
+El recorrido tiene cinco partes.
+La Parte~\ref{parte:problema} plantea el problema y demuestra, con un razonamiento paso a paso, que hacen falta \emph{los dos} modelos de mensajería y no uno solo.
+La Parte~\ref{parte:teoria} desarrolla el fundamento teórico completo de JMS.
+La Parte~\ref{parte:entorno} prepara el entorno de trabajo en Windows.
+La Parte~\ref{parte:construccion} construye la aplicación completa, archivo por archivo y línea por línea, en IntelliJ IDEA.
+La Parte~\ref{parte:pruebas} contiene siete experimentos que hacen visible la diferencia entre cola y tópico, más un catálogo de errores frecuentes.
+
+\begin{cajaNota}{Convenciones tipográficas}
+	Lo que aparece en \texttt{tipografía monoespaciada} es texto que se escribe literalmente: un comando, un nombre de archivo, una clase o una propiedad.
+	Los bloques numerados son código completo, listo para copiar; el número de línea sirve para que el texto explicativo pueda referirse a una línea concreta.
+	Los comentarios dentro del código se escriben sin tildes de forma deliberada, porque algunos editores y consolas de Windows todavía manejan mal la codificación de caracteres en archivos fuente.
+	Las cajas rojas señalan errores que romperán la aplicación; las amarillas, consejos prácticos; las verdes, definiciones formales; las grises, notas de contexto.
+\end{cajaNota}
+
+\begin{cajaTip}{Si algo no funciona}
+	Antes de reescribir código, ve al Capítulo~\ref{cap:errores}.
+	Recoge los quince fallos que aparecen con más frecuencia en el laboratorio, con el mensaje de error exacto que produce cada uno y su causa real.
+	La mayoría de los problemas de un primer proyecto JMS no están en la lógica sino en tres sitios: el \emph{broker} no está levantado, la propiedad \texttt{pubSubDomain} no coincide con el tipo de destino, o el conversor de mensajes no sabe serializar una fecha.
+\end{cajaTip}
+
+\mainmatter
+
+% ================================================================
+\part{El problema y por qué necesita dos modelos de mensajería}
+\label{parte:problema}
+% ================================================================
+
+\chapter{El escenario: la mesa de ayuda de un proveedor de Internet}
+\label{cap:problema}
+
+\section{Enunciado}
+
+Un proveedor de servicios de Internet (ISP) opera una mesa de ayuda.
+El escenario corresponde al dominio del Proyecto Fin de Curso \textbf{ACC --- Soporte Técnico ISP}, pero el razonamiento se traslada sin cambios a los otros tres dominios del período, como se muestra en el Capítulo~\ref{cap:extensiones}.
+
+Cuando un cliente reporta una avería ---por ejemplo, ``no tengo Internet desde las 14:00''--- el sistema debe hacer dos cosas muy distintas entre sí:
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=4pt,topsep=4pt]
+	\item \textbf{Asignar el ticket a un técnico.} Hay tres técnicos de turno. El ticket lo debe atender \emph{exactamente uno}. Si lo atienden dos, se duplica el trabajo, se llama dos veces al cliente y se descuadra la métrica de productividad. Si no lo atiende ninguno, el cliente queda sin respuesta.
+	\item \textbf{Avisar a todos los sistemas interesados en el cambio de estado.} Cuando el ticket pasa a ``EN\_ATENCION'' hay tres sistemas que deben enterarse \emph{a la vez} y que no tienen nada que ver entre sí: el notificador que envía un correo o un mensaje al cliente, el monitor de acuerdos de nivel de servicio (SLA) que arranca el cronómetro de cumplimiento, y el registro de auditoría que deja constancia para reclamos posteriores.
+\end{enumerate}
+
+Estos dos requisitos parecen del mismo tipo ---``mandar un aviso''--- pero su semántica es opuesta.
+El primero exige entrega \emph{a uno}; el segundo exige entrega \emph{a todos}.
+Esa oposición es exactamente la que separa los dos dominios de mensajería que define JMS, y es la razón por la que este laboratorio no es un ejercicio artificial: un sistema real de mesa de ayuda necesita los dos.
+
+\section{Primer intento: llamada síncrona directa}
+
+Supongamos que resolvemos todo con llamadas directas, del tipo HTTP síncrono o invocación de método.
+El controlador que recibe el ticket llamaría, uno tras otro, a los servicios implicados.
+
+\begin{lstlisting}[language=Java,caption={Solución ingenua: acoplamiento total (no usar)},label={lst:ingenua}]
+// ATENCION: este codigo ilustra el problema. NO es la solucion.
+public void registrarTicket(Ticket t) {
+	Tecnico libre = servicioTecnicos.buscarTecnicoLibre();   // 1
+	servicioTecnicos.asignar(libre, t);                      // 2
+	servicioCorreo.notificarCliente(t);                      // 3
+	servicioSla.iniciarCronometro(t);                        // 4
+	servicioAuditoria.registrar(t);                          // 5
+}
+\end{lstlisting}
+
+Este código tiene cinco defectos graves, y conviene nombrarlos con precisión porque cada uno se corresponde con una propiedad concreta que la mensajería asíncrona sí ofrece.
+
+\begin{description}[leftmargin=1.6em,style=nextline,itemsep=4pt]
+	\item[Acoplamiento espacial.] El emisor conoce por nombre a los cuatro destinatarios. Si mañana el área de calidad pide un cuarto interesado ---por ejemplo, un tablero de estadísticas--- hay que \emph{modificar y volver a desplegar} el código del emisor. Eso viola el principio de abierto/cerrado y convierte cada nuevo consumidor en un cambio de riesgo en el núcleo del sistema.
+	\item[Acoplamiento temporal.] Los cinco pasos ocurren en el mismo instante. Si el servicio de correo está caído, la línea 3 lanza una excepción y el ticket \emph{no se registra}, aunque registrar el ticket no dependa en absoluto del correo. Una funcionalidad secundaria tumba una funcionalidad crítica.
+	\item[Acoplamiento de sincronización.] El hilo que atiende la petición HTTP del cliente queda bloqueado hasta que terminen los cinco pasos. Si el monitor de SLA tarda dos segundos, el cliente espera dos segundos de más. Con carga alta, el conjunto de hilos del servidor se agota.
+	\item[Pérdida bajo indisponibilidad.] Si los tres técnicos están ocupados o el servicio de asignación está reiniciándose, la línea 1 falla y el ticket se pierde. No hay ningún sitio donde el trabajo quede \emph{en espera}.
+	\item[Ausencia de balanceo.] Nada garantiza que el trabajo se reparta. La lógica de ``buscar técnico libre'' hay que escribirla, mantenerla y hacerla segura frente a concurrencia; dos peticiones simultáneas pueden elegir al mismo técnico.
+\end{description}
+
+\begin{cajaDef}{Las tres formas de desacoplamiento}
+	La literatura clásica sobre publicación/suscripción identifica precisamente estas tres dimensiones de desacoplamiento como la aportación central del paradigma: desacoplamiento en el \emph{espacio} (las partes no se conocen entre sí), en el \emph{tiempo} (no necesitan estar activas simultáneamente) y en la \emph{sincronización} (el emisor no se bloquea esperando al receptor)~\cite{eugster2003manyfaces}.
+	Todo lo que vamos a construir en este manual es, en el fondo, una manera de comprar esas tres propiedades a cambio de introducir un intermediario.
+\end{cajaDef}
+
+\section{Segundo intento: ¿resolvemos todo con una cola?}
+
+Podríamos poner una cola entre el emisor y cada destinatario.
+Funciona bien para el primer requisito: los tres técnicos escuchan la \emph{misma} cola y el intermediario reparte los tickets entre ellos, uno cada vez.
+Ese patrón tiene nombre propio en el catálogo de patrones de integración: \emph{Competing Consumers}, consumidores en competencia~\cite{hohpe2003eip}.
+
+Pero falla para el segundo requisito.
+Si los tres sistemas interesados en el cambio de estado escuchan la misma cola, cada evento llegaría solo a uno de ellos: el cliente recibiría el correo pero no se registraría la auditoría, o se registraría la auditoría pero no arrancaría el cronómetro de SLA.
+El resultado sería un sistema que pierde información de forma silenciosa y no determinista.
+
+La alternativa sería crear \emph{una cola por cada interesado}: \texttt{eventos.correo}, \texttt{eventos.sla}, \texttt{eventos.auditoria}.
+Entonces el emisor tendría que enviar el mismo mensaje tres veces, a tres destinos que debe conocer por nombre.
+Es decir, volvemos al acoplamiento espacial del primer intento: añadir un cuarto interesado obliga a modificar el emisor.
+Hemos ganado desacoplamiento temporal, pero no espacial.
+
+\section{Tercer intento: ¿resolvemos todo con un tópico?}
+
+Podríamos poner un tópico para todo.
+Funciona perfectamente para el segundo requisito: el emisor publica una vez, sin saber quién escucha, y los tres suscriptores reciben cada uno su propia copia.
+Añadir un cuarto interesado es dar de alta un nuevo suscriptor, sin tocar una línea del emisor.
+
+Pero falla estrepitosamente para el primero.
+Si los tres técnicos se suscriben al mismo tópico, \emph{los tres} reciben \emph{todos} los tickets.
+Tres técnicos llamarían al mismo cliente por la misma avería.
+El tópico difunde; no reparte.
+
+\section{Conclusión: se necesitan los dos}
+
+El razonamiento anterior no es retórico: cada uno de los tres intentos falla por una razón estructural distinta, y ninguna combinación de un solo modelo resuelve ambos requisitos sin reintroducir acoplamiento.
+La solución correcta usa cada modelo donde su semántica corresponde.
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{4.2cm}XX@{}}
+		\toprule
+		& \textbf{Asignar ticket a técnico} & \textbf{Avisar del cambio de estado} \\
+		\midrule
+		Semántica requerida         & Exactamente un receptor           & Todos los interesados \\
+		Modelo JMS correcto         & \textbf{Cola} (punto a punto)     & \textbf{Tópico} (publicación/suscripción) \\
+		Patrón de integración       & Consumidores en competencia       & Canal de publicación/suscripción \\
+		Qué aporta                  & Balanceo de carga y entrega única & Extensibilidad sin tocar al emisor \\
+		Qué pasa si no hay receptor & El mensaje espera en la cola      & Se pierde, salvo suscripción durable \\
+		Si se añade un receptor     & Aumenta el rendimiento del reparto & Recibe una copia adicional \\
+		Riesgo si se elige el otro  & Trabajo triplicado                & Información perdida de forma silenciosa \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\begin{cajaNota}{La regla de decisión, en una frase}
+	Si el mensaje representa \textbf{una orden de trabajo} que alguien debe ejecutar, va a una \textbf{cola}.
+	Si el mensaje representa \textbf{un hecho que ya ocurrió} y del que otros pueden querer enterarse, va a un \textbf{tópico}.
+	``Atiende este ticket'' es una orden. ``El ticket cambió de estado'' es un hecho.
+	Esta distinción entre comando y evento es la que gobierna casi todas las decisiones de diseño de mensajería en sistemas reales~\cite{newman2021microservices}.
+\end{cajaNota}
+
+\section{Arquitectura objetivo}
+
+La Figura~\ref{fig:arquitectura} muestra lo que vamos a construir.
+El navegador envía el ticket por HTTP; el controlador lo deposita en la cola; uno de los tres técnicos lo toma; al terminar, publica un evento en el tópico; los tres suscriptores reciben ese evento; y todo lo que ocurre se refleja en el navegador en tiempo real mediante un canal de eventos servidor-cliente.
+
+\begin{figure}[htbp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tikzpicture}[
+		font=\small,
+		nodo/.style={draw=uteqMid,fill=uteqGrey,rounded corners=3pt,minimum width=2.5cm,minimum height=0.95cm,align=center},
+		cola/.style={draw=uteqTeal,fill=uteqTeal!12,rounded corners=3pt,minimum width=2.6cm,minimum height=0.95cm,align=center,font=\small\bfseries},
+		topico/.style={draw=uteqAmber!85!black,fill=uteqAmber!14,rounded corners=3pt,minimum width=2.6cm,minimum height=0.95cm,align=center,font=\small\bfseries},
+		cons/.style={draw=uteqGreen!70!black,fill=uteqGreen!10,rounded corners=3pt,minimum width=2.7cm,minimum height=0.8cm,align=center},
+		fl/.style={-{Latex[length=2.2mm]},uteqBlue,thick}
+	]
+		\node[nodo] (nav) {Navegador\\\scriptsize (HTML + JS)};
+		\node[nodo,right=1.5cm of nav] (ctrl) {Controlador REST\\\scriptsize Spring Boot};
+		\node[cola,right=1.6cm of ctrl] (q) {COLA\\\scriptsize soporte.tickets.cola};
+
+		\node[cons,right=1.6cm of q,yshift=1.15cm] (t1) {Técnico TEC-01};
+		\node[cons,right=1.6cm of q] (t2) {Técnico TEC-02};
+		\node[cons,right=1.6cm of q,yshift=-1.15cm] (t3) {Técnico TEC-03};
+
+		\node[topico,below=2.6cm of q] (tp) {TÓPICO\\\scriptsize soporte.tickets.eventos};
+
+		\node[cons,left=1.6cm of tp,yshift=1.15cm] (s1) {Notificador};
+		\node[cons,left=1.6cm of tp] (s2) {Monitor SLA};
+		\node[cons,left=1.6cm of tp,yshift=-1.15cm] (s3) {Auditoría};
+
+		\draw[fl] (nav) -- node[above,font=\scriptsize]{POST} (ctrl);
+		\draw[fl] (ctrl) -- node[above,font=\scriptsize]{send} (q);
+		\draw[fl] (q) -- node[above,font=\scriptsize,sloped]{solo uno} (t1);
+		\draw[fl] (q) -- (t2);
+		\draw[fl] (q) -- (t3);
+
+		\draw[fl,uteqAmber!80!black] (t2.east) to[out=0,in=0,looseness=1.7] node[right,font=\scriptsize,pos=0.28]{publish} (tp.east);
+		\draw[fl,uteqAmber!80!black] (tp) -- node[above,font=\scriptsize,sloped]{copia} (s1);
+		\draw[fl,uteqAmber!80!black] (tp) -- (s2);
+		\draw[fl,uteqAmber!80!black] (tp) -- (s3);
+
+		\draw[fl,uteqGreen!60!black,dashed] (s2) to[out=180,in=-90] node[left,font=\scriptsize]{SSE} (nav);
+
+		\begin{scope}[on background layer]
+			\node[draw=uteqBlue!35,dashed,rounded corners=5pt,inner sep=10pt,fit=(q)(t1)(t3)] (cajaq) {};
+			\node[above,font=\scriptsize\bfseries,color=uteqTeal] at (cajaq.north) {DOMINIO PUNTO A PUNTO};
+			\node[draw=uteqAmber!60,dashed,rounded corners=5pt,inner sep=10pt,fit=(tp)(s1)(s3)] (cajat) {};
+			\node[below,font=\scriptsize\bfseries,color=uteqAmber!85!black] at (cajat.south) {DOMINIO PUBLICACIÓN/SUSCRIPCIÓN};
+		\end{scope}
+	\end{tikzpicture}}
+	\caption{Arquitectura objetivo de la aplicación. La cola reparte cada ticket a un único técnico; el tópico entrega una copia del evento a cada suscriptor.}
+	\label{fig:arquitectura}
+\end{figure}
+
+\begin{cajaTip}{Por qué todo va en un solo proyecto}
+	En un sistema real, cada técnico y cada suscriptor serían procesos independientes, quizá en máquinas distintas.
+	Aquí conviven en una sola aplicación Spring Boot por una razón puramente pedagógica: así puedes ver los seis consumidores trabajando a la vez en una sola consola y en una sola pantalla, sin tener que arrancar seis terminales.
+	La semántica de JMS es idéntica en ambos casos: al \emph{broker} le da igual si sus clientes están en un proceso o en veinte.
+	En el Capítulo~\ref{cap:extensiones} se explica cómo separarlos.
+\end{cajaTip}
+
+% ================================================================
+\part{Fundamento teórico de JMS}
+\label{parte:teoria}
+% ================================================================
+
+\chapter{Qué es JMS y qué no es}
+
+\section{Una especificación, no un producto}
+
+JMS (\emph{Java Message Service}) es una \textbf{especificación}: un contrato de interfaces que describe cómo un programa Java crea, envía, recibe y lee mensajes.
+No es un servidor, ni una librería que haga el trabajo, ni un producto que se pueda descargar y ejecutar.
+
+Esta distinción es la primera fuente de confusión y conviene fijarla con una analogía.
+JDBC es una especificación para hablar con bases de datos relacionales; PostgreSQL es el producto que implementa el otro lado, y el \emph{driver} de PostgreSQL es la pieza que traduce entre ambos.
+De igual modo, JMS es la especificación; Apache ActiveMQ Artemis es el producto ---llamado \textbf{proveedor JMS} o, coloquialmente, \textbf{broker}--- y el cliente Artemis es el \emph{driver} que traduce.
+
+\begin{cajaDef}{Vocabulario mínimo}
+	\textbf{Especificación JMS:} conjunto de interfaces del paquete \clase{jakarta.jms} (antes \clase{javax.jms}).\\
+	\textbf{Proveedor JMS o broker:} el servidor de mensajería que implementa esas interfaces y que realmente almacena y entrega los mensajes. Ejemplos: Apache ActiveMQ Artemis, IBM MQ, Oracle WebLogic JMS, Amazon SQS mediante su cliente JMS.\\
+	\textbf{Cliente JMS:} cualquier aplicación que produce o consume mensajes a través de esas interfaces.\\
+	\textbf{Destino (\emph{destination}):} el buzón lógico donde se depositan los mensajes. Solo hay dos tipos: \clase{Queue} y \clase{Topic}.\\
+	\textbf{Mensaje:} la unidad de información que viaja. Tiene cabeceras, propiedades y cuerpo.
+\end{cajaDef}
+
+La consecuencia práctica de que JMS sea una especificación es enorme: el código que escribiremos en este manual funciona, sin cambios en la lógica de negocio, contra cualquier proveedor compatible.
+Cambiar de Artemis a IBM MQ es cambiar una dependencia y unas cuantas propiedades de conexión.
+Esa portabilidad es la razón de ser de la especificación.
+
+\section{El cambio de \texttt{javax} a \texttt{jakarta}}
+
+Durante veinte años los paquetes de JMS se llamaron \clase{javax.jms}.
+Cuando Oracle donó Java EE a la Fundación Eclipse, la marca ``Java'' no pudo cederse, y todos los paquetes de la plataforma se renombraron a \clase{jakarta}.
+Desde Jakarta EE 9 la interfaz es \clase{jakarta.jms}, y la versión vigente de la especificación en la plataforma Jakarta EE 10 es \textbf{Jakarta Messaging 3.1}~\cite{jakartamessaging31}.
+
+\begin{cajaAviso}{El error número uno al seguir tutoriales antiguos}
+	Spring Boot 3.x usa exclusivamente \clase{jakarta.jms}.
+	Si copias un ejemplo de Internet escrito para Spring Boot 2.x, sus importaciones dirán \clase{javax.jms.Message} y el compilador dará un error del tipo \texttt{package javax.jms does not exist}, o peor, compilará contra una dependencia antigua y fallará en tiempo de ejecución con \texttt{ClassNotFoundException}.
+	La corrección es mecánica: cambiar \clase{javax.jms} por \clase{jakarta.jms} en todos los \texttt{import}.
+	En IntelliJ IDEA basta con borrar la línea del \texttt{import} y pulsar \texttt{Alt+Enter} sobre el tipo subrayado para que ofrezca el paquete correcto.
+\end{cajaAviso}
+
+\section{Por qué Artemis y no otro broker}
+
+Para este laboratorio se usa Apache ActiveMQ Artemis por tres motivos concretos.
+Primero, implementa JMS de forma nativa y completa, incluidos tópicos y suscripciones durables, cosa que no ocurre con todos los intermediarios populares: Apache Kafka, por ejemplo, no expone una API JMS estándar y su modelo de consumo por grupos no coincide con la semántica de \clase{Topic} de JMS.
+Segundo, se levanta con un único contenedor Docker y trae una consola web que permite \emph{ver} las colas, los tópicos y los mensajes retenidos, lo cual es didácticamente decisivo.
+Tercero, es la línea de evolución oficial del proyecto ActiveMQ y está evaluada en la literatura arbitrada de comparación de intermediarios sobre la máquina virtual de Java, junto con Kafka, Pulsar y RocketMQ~\cite{chy2023jvmqueues}.
+
+\begin{cajaNota}{Sobre la elección de intermediario en un proyecto real}
+	La elección no es trivial y depende del perfil de carga.
+	Los estudios comparativos disponibles miden latencia, rendimiento, uso de CPU y comportamiento del recolector de basura, y coinciden en que no existe un ganador universal: Kafka domina en rendimiento bruto para flujos de altísimo volumen, mientras que los intermediarios orientados a colas ofrecen mejores garantías transaccionales por mensaje y una semántica de reintento más rica~\cite{chy2023jvmqueues}.
+	Para una mesa de ayuda, donde el volumen es moderado pero cada mensaje importa individualmente, un intermediario JMS es la elección natural.
+\end{cajaNota}
+
+\chapter{Anatomía de la API JMS}
+\label{cap:anatomia}
+
+Aunque Spring Boot nos ahorrará escribir casi todo este código a mano, hay que conocerlo: cuando algo falle, el mensaje de error hablará de estos objetos, no de las abstracciones de Spring.
+
+\section{La cadena de objetos}
+
+Para enviar un solo mensaje en JMS puro hay que atravesar una cadena de cinco objetos.
+Cada uno tiene una responsabilidad y un ciclo de vida distinto.
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{3.2cm}Xp{3.4cm}@{}}
+		\toprule
+		\textbf{Objeto} & \textbf{Qué es y para qué sirve} & \textbf{Coste} \\
+		\midrule
+		\clase{ConnectionFactory} & Fábrica de conexiones. Guarda la dirección del \emph{broker} y las credenciales. Es el único objeto que se obtiene ``de fuera'': lo crea el proveedor o lo inyecta el contenedor. Es seguro compartirlo entre hilos. & Se crea una vez para toda la aplicación. \\
+		\clase{Connection} & Conexión física al \emph{broker}, sobre TCP. Es cara de crear porque implica apretón de manos de red y autenticación. Es segura entre hilos. & Cara. Se reutiliza. \\
+		\clase{Session} & Contexto de trabajo de un solo hilo. Define si el trabajo es transaccional y qué modo de acuse de recibo se usa. \textbf{No es segura entre hilos}: cada hilo necesita la suya. & Barata, pero no compartible. \\
+		\clase{Destination} & Referencia al buzón: \clase{Queue} o \clase{Topic}. Se obtiene de la sesión por nombre. & Trivial. \\
+		\clase{MessageProducer} / \clase{MessageConsumer} & El emisor y el receptor propiamente dichos. Se crean a partir de una sesión y de un destino. & Barato. \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\begin{cajaAviso}{\clase{Session} no es segura entre hilos}
+	Esta es la regla que más código de producción rompe.
+	Una \clase{Session} pertenece a un hilo.
+	Si dos hilos comparten una sesión, el comportamiento es indefinido: mensajes duplicados, mensajes perdidos o excepciones aparentemente aleatorias.
+	Spring resuelve esto por nosotros creando una sesión por operación y almacenándolas en caché con \clase{CachingConnectionFactory}, pero si algún día escribes JMS a mano, recuérdalo.
+\end{cajaAviso}
+
+\section{El mismo envío, en JMS puro y con Spring}
+
+Comparar ambos códigos deja clarísimo qué está haciendo Spring por nosotros.
+Primero, JMS puro:
+
+\begin{lstlisting}[language=Java,caption={Envío a una cola con la API JMS pura (referencia, no lo usaremos)},label={lst:jmspuro}]
+// try-with-resources: Java cierra automaticamente los recursos al salir del bloque.
+// Connection y Session implementan AutoCloseable, por eso pueden ir aqui.
+try (Connection conexion = fabrica.createConnection("distapp", "distapp2026");
+	 Session sesion = conexion.createSession(false, Session.AUTO_ACKNOWLEDGE)) {
+
+	// 1. Hay que arrancar la conexion de forma explicita para poder RECIBIR.
+	//    Para enviar no es obligatorio, pero se suele hacer igual.
+	conexion.start();
+
+	// 2. Se obtiene el destino por su nombre. createQueue no crea nada en el
+	//    broker si ya existe: devuelve una referencia al buzon.
+	Destination destino = sesion.createQueue("soporte.tickets.cola");
+
+	// 3. Se crea el productor asociado a ese destino.
+	MessageProducer productor = sesion.createProducer(destino);
+
+	// 4. Se construye el mensaje. TextMessage lleva una cadena en el cuerpo.
+	TextMessage mensaje = sesion.createTextMessage("{\"id\":\"TK-001\"}");
+
+	// 5. Las propiedades son metadatos definidos por la aplicacion.
+	mensaje.setStringProperty("prioridad", "ALTA");
+
+	// 6. Envio efectivo.
+	productor.send(mensaje);
+
+} catch (JMSException e) {
+	// JMSException es una excepcion COMPROBADA: el compilador obliga a tratarla.
+	throw new IllegalStateException("Fallo al enviar el ticket", e);
+}
+\end{lstlisting}
+
+Y ahora exactamente lo mismo con Spring:
+
+\begin{lstlisting}[language=Java,caption={El mismo envío con \clase{JmsTemplate}},label={lst:jmsspring}]
+plantillaCola.convertAndSend("soporte.tickets.cola", ticket,
+		mensaje -> {
+			mensaje.setStringProperty("prioridad", "ALTA");
+			return mensaje;
+		});
+\end{lstlisting}
+
+Spring ha absorbido seis responsabilidades: obtener la conexión, abrir y cerrar la sesión, resolver el destino, crear el productor, convertir el objeto Java a un mensaje JMS y traducir la \clase{JMSException} comprobada a una excepción no comprobada de su propia jerarquía.
+Lo que \emph{no} ha absorbido, y por eso hay que entenderlo, es la decisión de si ese nombre designa una cola o un tópico.
+
+\chapter{Los dos dominios de mensajería}
+\label{cap:dominios}
+
+\section{Dominio punto a punto: la cola}
+
+En el dominio punto a punto el destino es una \clase{Queue}.
+Sus reglas son las siguientes, y todas ellas importan.
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt,topsep=3pt]
+	\item Un mensaje depositado en una cola se entrega a \textbf{un único} consumidor, aunque haya diez escuchando.
+	\item Si hay varios consumidores, el \emph{broker} los trata como consumidores en competencia y reparte los mensajes entre ellos. Añadir consumidores aumenta el rendimiento del sistema.
+	\item El mensaje \textbf{permanece en la cola} hasta que alguien lo consume y lo confirma, o hasta que caduca. Si no hay ningún consumidor activo, el mensaje espera.
+	\item Si el mensaje es persistente y el \emph{broker} se reinicia, el mensaje sigue ahí.
+	\item El consumidor \textbf{confirma} la recepción. Si no confirma ---por ejemplo, porque su código lanzó una excepción--- el mensaje vuelve a la cola y se reintenta.
+\end{enumerate}
+
+El punto 3 es el que resuelve el acoplamiento temporal, y el punto 5 el que da la garantía de no perder trabajo.
+El punto 2 es el que resuelve el balanceo sin escribir ni una línea de lógica de reparto.
+
+\section{Dominio publicación/suscripción: el tópico}
+
+En el dominio de publicación/suscripción el destino es un \clase{Topic}.
+Sus reglas son casi opuestas.
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt,topsep=3pt]
+	\item Un mensaje publicado en un tópico se entrega a \textbf{todos} los suscriptores activos; cada uno recibe su propia copia.
+	\item El publicador no sabe cuántos suscriptores hay, ni quiénes son, ni si hay alguno. Publicar en un tópico sin suscriptores es una operación válida y silenciosa.
+	\item Por defecto, la suscripción es \textbf{no durable}: solo se reciben los mensajes publicados mientras el suscriptor está conectado. Lo que se publicó mientras estaba caído, se perdió para él.
+	\item Añadir un suscriptor no cambia nada en el publicador ni en los demás suscriptores.
+\end{enumerate}
+
+El punto 3 sorprende siempre a quien viene de las colas y es el origen de la mitad de las preguntas del laboratorio: ``publiqué diez eventos y mi suscriptor no recibió nada''.
+Casi siempre la causa es que el suscriptor arrancó después.
+
+\section{Tabla comparativa completa}
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{4.0cm}XX@{}}
+		\toprule
+		\textbf{Aspecto} & \textbf{Cola (punto a punto)} & \textbf{Tópico (pub/sub)} \\
+		\midrule
+		Interfaz JMS & \clase{Queue} & \clase{Topic} \\
+		Cardinalidad & Uno a uno & Uno a muchos \\
+		Receptores por mensaje & Exactamente uno & Todos los suscriptores \\
+		Efecto de añadir receptores & Reparte la carga & Multiplica las copias \\
+		Si no hay receptor activo & El mensaje espera & Se descarta (salvo durable) \\
+		Persistencia tras reinicio & Sí, si el mensaje es persistente & Solo con suscripción durable \\
+		Reintento tras fallo & Sí, vuelve a la cola & Sí, para ese suscriptor \\
+		Semántica típica & Comando, orden de trabajo & Evento, notificación de hecho \\
+		Acoplamiento del emisor & Conoce la cola destino & No conoce a nadie \\
+		Caso de nuestro laboratorio & Asignar ticket a un técnico & Avisar del cambio de estado \\
+		Propiedad de Spring & \texttt{pubSubDomain = false} & \texttt{pubSubDomain = true} \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\begin{cajaAviso}{El mismo nombre no basta}
+	En JMS, \texttt{soporte.eventos} como cola y \texttt{soporte.eventos} como tópico son \textbf{dos destinos distintos}.
+	El nombre no determina el tipo; lo determina el método que se usa para resolverlo (\clase{createQueue} frente a \clase{createTopic}) o, en Spring, la propiedad \texttt{pubSubDomain}.
+	Si el productor publica con \texttt{pubSubDomain = true} y el consumidor escucha con \texttt{pubSubDomain = false}, no habrá ningún error visible: simplemente el consumidor esperará eternamente en una cola vacía mientras los mensajes se difunden por un tópico que nadie escucha.
+	Este es, con diferencia, el fallo más difícil de diagnosticar para un principiante, porque no produce excepción alguna.
+\end{cajaAviso}
+
+\chapter{El mensaje por dentro}
+\label{cap:mensaje}
+
+Un mensaje JMS tiene exactamente tres zonas.
+Saber cuál es cuál permite decidir dónde poner cada dato.
+
+\section{Cabeceras}
+
+Las cabeceras son campos predefinidos por la especificación.
+Casi todas las escribe el proveedor automáticamente al enviar.
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{3.9cm}p{2.0cm}X@{}}
+		\toprule
+		\textbf{Cabecera} & \textbf{La escribe} & \textbf{Significado} \\
+		\midrule
+		\texttt{JMSMessageID}     & El proveedor  & Identificador único del mensaje dentro del \emph{broker}. \\
+		\texttt{JMSTimestamp}     & El proveedor  & Instante en que el mensaje se entregó al proveedor para su envío. \\
+		\texttt{JMSDestination}   & El proveedor  & Destino al que se envió. \\
+		\texttt{JMSDeliveryMode}  & El productor  & \texttt{PERSISTENT} o \texttt{NON\_PERSISTENT}. \\
+		\texttt{JMSPriority}      & El productor  & Entero de 0 a 9. De 0 a 4 es prioridad normal; de 5 a 9, expedita. El valor por omisión es 4. \\
+		\texttt{JMSExpiration}    & El proveedor  & Instante de caducidad, calculado a partir del tiempo de vida indicado. Cero significa que no caduca. \\
+		\texttt{JMSCorrelationID} & La aplicación & Sirve para enlazar una respuesta con su petición. \\
+		\texttt{JMSReplyTo}       & La aplicación & Destino donde el receptor debe contestar. \\
+		\texttt{JMSRedelivered}   & El proveedor  & \texttt{true} si este mensaje ya se intentó entregar antes. Muy útil para detectar reintentos. \\
+		\texttt{JMSType}          & La aplicación & Etiqueta libre de tipo. \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\begin{cajaTip}{\texttt{JMSPriority} no es una promesa}
+	La especificación pide que el proveedor \emph{intente} entregar antes los mensajes de mayor prioridad, pero no lo garantiza de forma estricta.
+	Si tu lógica de negocio depende de un orden exacto, no confíes en la prioridad: usa colas separadas o un selector.
+\end{cajaTip}
+
+\section{Propiedades}
+
+Las propiedades son pares nombre-valor que define la aplicación.
+Admiten tipos primitivos y \clase{String}.
+Su utilidad principal es doble: llevar metadatos que el consumidor puede leer sin deserializar el cuerpo, y servir de criterio a los \emph{selectores} de mensajes.
+
+\begin{lstlisting}[language=Java,caption={Escritura y lectura de propiedades},label={lst:props}]
+// Al enviar
+mensaje.setStringProperty("prioridad", "CRITICA");
+mensaje.setIntProperty("intentos", 0);
+mensaje.setBooleanProperty("clienteVip", true);
+
+// Al recibir
+String prioridad = mensaje.getStringProperty("prioridad");
+boolean vip = mensaje.getBooleanProperty("clienteVip");
+\end{lstlisting}
+
+\section{Cuerpo}
+
+El cuerpo lleva la carga útil.
+La especificación define cinco tipos, y elegir bien tiene consecuencias reales.
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{3.2cm}Xp{3.6cm}@{}}
+		\toprule
+		\textbf{Tipo} & \textbf{Contenido} & \textbf{Cuándo usarlo} \\
+		\midrule
+		\clase{TextMessage}   & Una cadena de texto. & \textbf{El más recomendable.} JSON o XML dentro de una cadena. Interoperable con clientes no Java. \\
+		\clase{ObjectMessage} & Un objeto Java serializado. & Solo entre aplicaciones Java idénticas. Frágil y con riesgo de seguridad. \\
+		\clase{MapMessage}    & Pares nombre-valor tipados. & Estructuras planas sencillas. \\
+		\clase{BytesMessage}  & Secuencia de bytes en bruto. & Archivos, imágenes, formatos binarios. \\
+		\clase{StreamMessage} & Secuencia de valores primitivos. & Poco usado en la práctica. \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\begin{cajaAviso}{Por qué evitaremos \clase{ObjectMessage}}
+	\clase{ObjectMessage} usa la serialización nativa de Java.
+	Eso implica tres problemas.
+	El emisor y el receptor deben compartir exactamente la misma clase, con el mismo \texttt{serialVersionUID}: cambiar un campo rompe la compatibilidad y el mensaje deja de poder leerse.
+	Ningún cliente escrito en Python, C\# o JavaScript podrá interpretarlo.
+	Y, sobre todo, deserializar objetos Java procedentes de una fuente externa es un vector de ejecución remota de código bien documentado, motivo por el cual los proveedores modernos exigen listas blancas de paquetes para permitirlo.
+	En este manual usaremos \clase{TextMessage} con JSON, que es la práctica estándar.
+\end{cajaAviso}
+
+\chapter{Garantías de entrega}
+\label{cap:garantias}
+
+\section{Modo de entrega: persistente o no persistente}
+
+\begin{description}[leftmargin=1.6em,style=nextline,itemsep=3pt]
+	\item[\texttt{PERSISTENT} (valor por omisión).] El \emph{broker} escribe el mensaje en almacenamiento estable \emph{antes} de confirmar el envío al productor. Si el \emph{broker} se apaga y vuelve, el mensaje sigue ahí. Es más lento porque implica una escritura a disco.
+	\item[\texttt{NON\_PERSISTENT}.] El mensaje vive solo en memoria. Es mucho más rápido, pero si el \emph{broker} cae, el mensaje se pierde. Apropiado para telemetría de alta frecuencia donde perder una muestra es irrelevante.
+\end{description}
+
+Para nuestros tickets, la persistencia no es negociable: perder un ticket es perder un cliente.
+Para los eventos de tablero podría discutirse, pero mantendremos el valor por omisión.
+
+\section{Modos de acuse de recibo}
+
+El acuse de recibo (\emph{acknowledgement}) es la señal con la que el consumidor le dice al \emph{broker} ``ya puedes borrar este mensaje''.
+Hasta que llega esa señal, el \emph{broker} considera el mensaje pendiente y podrá reintentarlo.
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{4.4cm}X@{}}
+		\toprule
+		\textbf{Modo} & \textbf{Comportamiento} \\
+		\midrule
+		\texttt{AUTO\_ACKNOWLEDGE} & La sesión confirma automáticamente cuando el método receptor termina \emph{sin lanzar excepción}. Si lanza excepción, no confirma y el mensaje se reintenta. Es el valor por omisión y el que usaremos. \\
+		\texttt{CLIENT\_ACKNOWLEDGE} & El consumidor decide cuándo confirmar llamando a \clase{message.acknowledge()}. Da control fino, pero confirma \emph{todos} los mensajes recibidos hasta ese punto en la sesión, no solo el actual. \\
+		\texttt{DUPS\_OK\_ACKNOWLEDGE} & Confirmación perezosa y agrupada. Más rápido, a costa de aceptar duplicados ocasionales. \\
+		Sesión transaccional & Los envíos y recepciones se agrupan; nada surte efecto hasta \clase{commit()}, y \clase{rollback()} lo deshace todo. \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\begin{cajaDef}{La consecuencia práctica de \texttt{AUTO\_ACKNOWLEDGE}}
+	Con este modo, \textbf{lanzar una excepción dentro del método consumidor equivale a rechazar el mensaje}.
+	El \emph{broker} lo devolverá a la cola y lo volverá a entregar, posiblemente a otro consumidor.
+	Esto es exactamente lo que queremos para un ticket que no se pudo procesar por un fallo transitorio.
+	Pero también significa que un error \emph{permanente} ---por ejemplo, un mensaje mal formado--- entrará en un bucle infinito de reintentos, y de ahí la necesidad del apartado siguiente.
+\end{cajaDef}
+
+\section{Reintentos y cola de mensajes muertos}
+
+Ningún proveedor reintenta indefinidamente.
+Tras un número configurable de intentos fallidos, el mensaje se desvía a una \textbf{cola de mensajes muertos} (\emph{Dead Letter Queue}, DLQ), donde queda a disposición de un operador para su análisis.
+En Artemis, la DLQ por omisión se llama \texttt{DLQ} y el número de reintentos por omisión es diez.
+
+Este mecanismo convierte un fallo silencioso en un fallo observable, y es un requisito de la característica de \emph{fiabilidad} del modelo de calidad de producto de la norma ISO/IEC 25010, que en su edición vigente organiza la calidad en nueve características~\cite{iso25010_2023}.
+
+\section{Idempotencia: la responsabilidad que JMS no asume}
+
+JMS garantiza entrega \emph{al menos una vez} en el caso general.
+No garantiza \emph{exactamente una vez}, porque eso es imposible de asegurar en un sistema distribuido sin coordinación adicional: si el consumidor procesa el mensaje y cae justo antes de confirmar, el mensaje se reentregará y se procesará dos veces.
+
+La consecuencia es una regla de diseño que hay que interiorizar: \textbf{el consumidor debe ser idempotente}, es decir, procesar el mismo mensaje dos veces debe producir el mismo resultado que procesarlo una vez.
+La técnica habitual es llevar un registro de identificadores ya procesados y descartar los repetidos.
+El problema general de las garantías de entrega y de la duplicación en sistemas distribuidos está tratado en profundidad en la literatura de referencia de la asignatura~\cite{kleppmann2017designing,vansteen2023distributed}.
+
+\chapter{Suscripciones durables y selectores}
+\label{cap:durables}
+
+\section{El problema de la suscripción no durable}
+
+Una suscripción no durable existe solo mientras el suscriptor está conectado.
+En cuanto se desconecta, el \emph{broker} olvida que existía y descarta todo lo que se publique después.
+Para el notificador de correo esto puede ser aceptable: si el sistema de correo estuvo caído diez minutos, quizá no queramos inundar al cliente con avisos atrasados.
+
+Para la auditoría, en cambio, es inaceptable.
+Un registro de auditoría con huecos no sirve como evidencia.
+
+\section{La suscripción durable}
+
+Una suscripción durable le pide al \emph{broker} que \emph{recuerde} al suscriptor por su nombre y que le guarde los mensajes publicados mientras estuvo ausente.
+Al reconectarse, el suscriptor recibe todo lo que se perdió.
+
+Para que funcione hacen falta dos cosas, y omitir cualquiera de las dos produce un fallo:
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt,topsep=3pt]
+	\item Un \textbf{identificador de cliente} (\emph{client ID}) único y estable en la conexión. Es la manera que tiene el \emph{broker} de reconocer que el que vuelve es el mismo de antes.
+	\item Un \textbf{nombre de suscripción} estable. La pareja identificador de cliente más nombre de suscripción es la clave que identifica la suscripción durable.
+\end{enumerate}
+
+\begin{cajaAviso}{Dos consecuencias incómodas de las suscripciones durables}
+	Primera: el identificador de cliente debe ser único en todo el \emph{broker}. Si arrancas dos instancias de la misma aplicación con el mismo identificador, la segunda fallará con un error del tipo \texttt{client-id already added}.
+	Segunda: una suscripción durable \textbf{acumula mensajes indefinidamente} mientras el suscriptor no se conecte. Si un suscriptor durable queda olvidado, su cola interna crecerá hasta agotar el disco del \emph{broker}. Las suscripciones durables abandonadas hay que borrarlas de forma explícita desde la consola de administración.
+\end{cajaAviso}
+
+\section{Selectores de mensajes}
+
+Un selector es un filtro que se aplica \emph{en el broker}, del lado del servidor, antes de entregar nada.
+Se escribe con una sintaxis parecida a la cláusula \texttt{WHERE} de SQL92 y opera sobre las \emph{propiedades} y las \emph{cabeceras} del mensaje, nunca sobre el cuerpo.
+
+\begin{lstlisting}[language=Java,caption={Ejemplos de selectores},label={lst:selectores}]
+// Solo tickets criticos
+"prioridad = 'CRITICA'"
+
+// Tickets criticos o altos, de clientes VIP
+"prioridad IN ('CRITICA','ALTA') AND clienteVip = TRUE"
+
+// Reentregas: mensajes que ya fallaron alguna vez
+"JMSRedelivered = TRUE"
+
+// Rango numerico
+"intentos >= 3"
+\end{lstlisting}
+
+\begin{cajaTip}{Por qué el selector no puede mirar el cuerpo}
+	El \emph{broker} trata el cuerpo como una secuencia opaca de bytes; no sabe si dentro hay JSON, XML o una imagen.
+	Las propiedades, en cambio, están indexadas y son legibles para él.
+	Por eso, si un dato va a servir de criterio de filtrado, hay que \textbf{duplicarlo} como propiedad además de llevarlo en el cuerpo.
+	Es una redundancia deliberada y correcta.
+\end{cajaTip}
+
+% ================================================================
+\part{Preparación del entorno en Windows}
+\label{parte:entorno}
+% ================================================================
+
+\chapter{Requisitos e instalación}
+\label{cap:entorno}
+
+Todo el manual asume Windows 10 u 11 y el intérprete de comandos clásico \texttt{cmd.exe}, no PowerShell.
+La razón es práctica: la sintaxis de escape de comillas y variables difiere entre ambos, y todos los comandos que siguen están probados para \texttt{cmd.exe}.
+
+\begin{cajaTip}{Cómo abrir \texttt{cmd.exe}}
+	Pulsa \texttt{Windows + R}, escribe \texttt{cmd} y pulsa Intro.
+	No uses la terminal de PowerShell ni la de Windows Terminal configurada con PowerShell por omisión.
+	Dentro de IntelliJ IDEA, la terminal integrada se cambia en \texttt{File > Settings > Tools > Terminal > Shell path}, poniendo \texttt{cmd.exe}.
+\end{cajaTip}
+
+\section{Paso 1.1 --- Instalar el JDK 21}
+
+Java 21 es una versión de soporte extendido y es la que exige Spring Boot 3 como mínimo razonable.
+Descarga un JDK 21 de cualquier distribución (Eclipse Temurin, Oracle, Amazon Corretto o Azul Zulu) e instálalo con las opciones por omisión.
+
+Verifica la instalación abriendo \texttt{cmd.exe} y escribiendo:
+
+\begin{lstlisting}[language=consola,caption={Verificación del JDK},label={lst:verjdk}]
+java -version
+javac -version
+\end{lstlisting}
+
+La salida debe mostrar una versión que empiece por \texttt{21}.
+Si dice ``no se reconoce como un comando interno o externo'', el instalador no añadió Java al \texttt{PATH}: reinstala marcando la opción correspondiente, o añade manualmente la carpeta \texttt{bin} del JDK a la variable de entorno \texttt{Path}.
+
+\begin{cajaNota}{JDK y JRE no son lo mismo}
+	El JRE (\emph{Java Runtime Environment}) solo ejecuta programas Java.
+	El JDK (\emph{Java Development Kit}) además los compila: incluye \texttt{javac}, el compilador.
+	Si \texttt{java -version} funciona pero \texttt{javac -version} no, tienes un JRE y necesitas un JDK.
+\end{cajaNota}
+
+\section{Paso 1.2 --- Instalar IntelliJ IDEA}
+
+Descarga IntelliJ IDEA en su edición Community, que es gratuita y suficiente para todo este manual.
+Si eres estudiante puedes solicitar una licencia académica de la edición Ultimate, que añade herramientas visuales para Spring, pero no las necesitaremos.
+
+\begin{cajaNota}{Qué es un IDE y qué nos aporta aquí}
+	Un IDE (entorno de desarrollo integrado) es un editor que además entiende el lenguaje.
+	Las tres funciones que más usaremos son: completado de código con \texttt{Ctrl+Espacio}, importación automática de clases con \texttt{Alt+Enter} sobre un tipo desconocido, y navegación al origen de un símbolo con \texttt{Ctrl+clic}.
+	La tercera es especialmente útil en este laboratorio: pulsando \texttt{Ctrl+clic} sobre \clase{JmsTemplate} podrás leer directamente el código fuente de Spring y comprobar por ti mismo lo que este manual afirma.
+\end{cajaNota}
+
+\section{Paso 1.3 --- Instalar Docker Desktop}
+
+Docker nos permite levantar el \emph{broker} Artemis sin instalarlo, sin configurarlo y sin ensuciar el sistema.
+Instala Docker Desktop y, cuando termine, verifica:
+
+\begin{lstlisting}[language=consola,caption={Verificación de Docker},label={lst:verdocker}]
+docker --version
+docker compose version
+\end{lstlisting}
+
+\begin{cajaAviso}{Docker Desktop debe estar \emph{ejecutándose}}
+	No basta con haberlo instalado.
+	El icono de la ballena debe estar visible en la bandeja del sistema y en estado ``Engine running''.
+	Si no lo está, todos los comandos \texttt{docker} fallarán con un mensaje del tipo \texttt{error during connect: ... The system cannot find the file specified}.
+	En Windows, Docker Desktop requiere además que WSL 2 esté habilitado; el propio instalador lo propone.
+\end{cajaAviso}
+
+\chapter{Levantar el broker Apache ActiveMQ Artemis}
+\label{cap:broker}
+
+\section{Paso 2.1 --- Crear la carpeta de trabajo}
+
+Abre \texttt{cmd.exe} y crea la estructura del laboratorio:
+
+\begin{lstlisting}[language=consola,caption={Creación de la carpeta de trabajo},label={lst:carpeta}]
+C:\> mkdir C:\labs\distapp-jms
+C:\> cd C:\labs\distapp-jms
+\end{lstlisting}
+
+\section{Paso 2.2 --- Escribir el archivo \texttt{docker-compose.yml}}
+
+Dentro de \ruta{C:\textbackslash labs\textbackslash distapp-jms} crea un archivo llamado \ruta{docker-compose.yml} con el contenido siguiente.
+Puedes crearlo desde el Bloc de notas o, más adelante, desde el propio IntelliJ.
+
+\begin{lstlisting}[language=bash,caption={\ruta{docker-compose.yml} --- definición del broker},label={lst:compose}]
+services:
+  artemis:
+    image: apache/activemq-artemis:2.37.0
+    container_name: artemis-distapp
+    environment:
+      # Credenciales con las que se conectara nuestra aplicacion.
+      ARTEMIS_USER: distapp
+      ARTEMIS_PASSWORD: distapp2026
+      # Prohibimos el acceso anonimo: obliga a autenticarse siempre.
+      ANONYMOUS_LOGIN: "false"
+      # Hace que la consola web escuche en todas las interfaces del
+      # contenedor; sin esto solo escucharia en localhost DEL CONTENEDOR
+      # y no seria accesible desde Windows.
+      EXTRA_ARGS: "--http-host 0.0.0.0 --relax-jolokia"
+    ports:
+      # 61616: puerto del protocolo de mensajeria (el que usa nuestra app).
+      - "61616:61616"
+      # 8161: consola web de administracion.
+      - "8161:8161"
+    volumes:
+      # Persiste los datos del broker entre reinicios del contenedor.
+      - artemis-datos:/var/lib/artemis-instance
+
+volumes:
+  artemis-datos:
+\end{lstlisting}
+
+\subsection*{Explicación línea por línea}
+
+\begin{description}[leftmargin=1.6em,style=nextline,itemsep=3pt]
+	\item[\texttt{services:}] Bloque que enumera los contenedores que forman la aplicación. Aquí solo hay uno.
+	\item[\texttt{image:}] Imagen que se descargará de Docker Hub. Fijamos la versión de forma explícita en lugar de usar \texttt{latest}, porque \texttt{latest} cambia sin aviso y rompería la reproducibilidad del laboratorio.
+	\item[\texttt{container\_name:}] Nombre legible del contenedor, para poder referirse a él en comandos posteriores.
+	\item[\texttt{environment:}] Variables de entorno que la imagen lee al arrancar para configurarse.
+	\item[\texttt{ports:}] Mapeo \texttt{puertoWindows:puertoContenedor}. El puerto 61616 es por el que hablará nuestra aplicación Java; el 8161 es la consola web.
+	\item[\texttt{volumes:}] Un volumen con nombre para que los mensajes persistentes sobrevivan a \texttt{docker compose down}.
+\end{description}
+
+\begin{cajaTip}{Si tu versión de la imagen no existe}
+	Si al arrancar aparece \texttt{manifest for apache/activemq-artemis:2.37.0 not found}, la etiqueta ha cambiado.
+	Consulta las etiquetas disponibles en Docker Hub y sustituye por una versión 2.x existente.
+	Las variables de entorno pueden variar entre versiones de la imagen; si la consola no abre, revisa la documentación de la imagen concreta que hayas descargado.
+\end{cajaTip}
+
+\section{Paso 2.3 --- Arrancar el broker}
+
+\begin{lstlisting}[language=consola,caption={Arranque del broker},label={lst:arranque}]
+C:\labs\distapp-jms> docker compose up -d
+\end{lstlisting}
+
+La opción \texttt{-d} significa \emph{detached}: el contenedor queda en segundo plano y devuelve el control de la consola.
+La primera vez tardará porque tiene que descargar la imagen.
+
+Comprueba que está vivo:
+
+\begin{lstlisting}[language=consola,caption={Comprobación del estado},label={lst:estado}]
+C:\labs\distapp-jms> docker compose ps
+C:\labs\distapp-jms> docker compose logs -f artemis
+\end{lstlisting}
+
+En los registros debes ver una línea que indique que el servidor está activo y aceptando conexiones.
+Pulsa \texttt{Ctrl+C} para dejar de seguir los registros; eso \emph{no} detiene el contenedor.
+
+\section{Paso 2.4 --- Abrir la consola de administración}
+
+Abre el navegador en \url{http://localhost:8161/console} y entra con el usuario \texttt{distapp} y la contraseña \texttt{distapp2026}.
+
+Esta consola es la herramienta de diagnóstico más valiosa del laboratorio.
+Desde ella podrás, en la sección de direcciones y colas, ver cuántos mensajes hay pendientes, cuántos se han entregado, cuántos consumidores están conectados y qué contiene cada mensaje retenido.
+Cuando algo no funcione, la primera pregunta siempre será: ¿el mensaje llegó al \emph{broker}?
+La consola responde a esa pregunta en cinco segundos.
+
+\begin{cajaNota}{Direcciones, colas y tópicos en Artemis}
+	Artemis tiene un modelo interno ligeramente distinto al de JMS clásico y conviene conocerlo para no desorientarse en la consola.
+	Internamente todo son \emph{direcciones} (\emph{addresses}), y cada dirección tiene un modo de enrutamiento: \texttt{ANYCAST} o \texttt{MULTICAST}.
+	Una \clase{Queue} de JMS es una dirección \texttt{ANYCAST} con una cola asociada.
+	Un \clase{Topic} de JMS es una dirección \texttt{MULTICAST}: cada suscriptor genera dentro de ella su propia cola interna, y por eso cada uno recibe su copia.
+	Cuando en la consola veas que tu tópico tiene tres colas hijas con nombres largos y aparentemente aleatorios, eso es exactamente lo que estás viendo: los tres suscriptores no durables.
+\end{cajaNota}
+
+\section{Comandos útiles del ciclo de vida}
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{6.6cm}X@{}}
+		\toprule
+		\textbf{Comando} & \textbf{Efecto} \\
+		\midrule
+		\texttt{docker compose up -d}    & Arranca el \emph{broker} en segundo plano. \\
+		\texttt{docker compose stop}     & Lo detiene conservando los datos. \\
+		\texttt{docker compose start}    & Lo vuelve a arrancar. \\
+		\texttt{docker compose down}     & Lo detiene y borra el contenedor; el volumen se conserva. \\
+		\texttt{docker compose down -v}  & Lo detiene y borra también el volumen: \textbf{se pierden todos los mensajes}. \\
+		\texttt{docker compose logs -f artemis} & Muestra los registros en vivo. \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+% ================================================================
+\part{Construcción de la aplicación}
+\label{parte:construccion}
+% ================================================================
+
+\chapter{Crear el proyecto en IntelliJ IDEA}
+\label{cap:proyecto}
+
+\section{Paso 3.1 --- Nuevo proyecto Spring Boot}
+
+En IntelliJ IDEA, elige \texttt{File > New > Project}.
+En la lista de la izquierda selecciona \textbf{Spring Boot} (en la edición Community aparece como \emph{Spring Initializr} tras instalar el complemento correspondiente; si no está disponible, usa la alternativa del apartado~\ref{sec:initializrweb}).
+
+Rellena la primera pantalla exactamente así:
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{4.2cm}X@{}}
+		\toprule
+		\textbf{Campo} & \textbf{Valor y por qué} \\
+		\midrule
+		Name             & \texttt{mesa-ayuda-jms} \\
+		Location         & \ruta{C:\textbackslash labs\textbackslash distapp-jms} \\
+		Language         & Java \\
+		Type             & Maven --- gestor de dependencias y de compilación. \\
+		Group            & \texttt{ec.edu.uteq.distapp} --- identificador de la organización, en notación de dominio invertido. \\
+		Artifact         & \texttt{mesa-ayuda-jms} --- nombre del artefacto compilado. \\
+		Package name     & \texttt{ec.edu.uteq.distapp.jms} --- paquete raíz del código. \\
+		JDK              & 21 \\
+		Java             & 21 \\
+		Packaging        & Jar \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\begin{cajaDef}{Qué es un paquete y por qué se escribe al revés}
+	Un paquete en Java es una carpeta lógica que agrupa clases y evita colisiones de nombres.
+	Por convención se usa el dominio de la organización invertido: el dominio \texttt{uteq.edu.ec} da el paquete \texttt{ec.edu.uteq}.
+	Así, si dos librerías distintas definen una clase llamada \clase{Ticket}, sus nombres completos serán distintos y no habrá ambigüedad.
+	La estructura de carpetas en disco debe coincidir con la del paquete: el paquete \texttt{ec.edu.uteq.distapp.jms} vive en \ruta{src/main/java/ec/edu/uteq/distapp/jms}.
+\end{cajaDef}
+
+\section{Paso 3.2 --- Elegir la versión de Spring Boot y las dependencias}
+
+En la segunda pantalla, selecciona la versión \textbf{más reciente de la rama 3.x} (por ejemplo 3.4.x).
+
+\begin{cajaAviso}{No selecciones una versión 4.x}
+	Este manual está escrito y verificado para Spring Boot 3.x.
+	Las versiones 4.x introducen cambios en la configuración automática de Jackson y en algunas propiedades de JMS que harían que varios pasos de este manual no funcionasen tal cual están escritos.
+	Si el asistente solo te ofrece versiones 4.x, escribe la versión 3.x a mano en el \ruta{pom.xml} como se indica en el Capítulo~\ref{cap:pom}.
+\end{cajaAviso}
+
+Marca estas dependencias:
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{4.6cm}X@{}}
+		\toprule
+		\textbf{Dependencia} & \textbf{Para qué la necesitamos} \\
+		\midrule
+		Spring Web            & Servidor HTTP embebido (Tomcat), controladores REST y servicio de archivos estáticos para el frontend. \\
+		Spring for Apache ActiveMQ Artemis & Cliente JMS de Artemis más la configuración automática de Spring: \clase{ConnectionFactory}, \clase{JmsTemplate} y contenedores de escucha. \\
+		Validation            & Anotaciones de validación como \texttt{@NotBlank} para comprobar los datos que llegan del formulario. \\
+		Spring Boot DevTools  & Reinicio automático al guardar cambios. Opcional pero muy cómodo. \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+Pulsa \texttt{Create}.
+IntelliJ generará el proyecto y Maven empezará a descargar dependencias; la primera vez puede tardar varios minutos.
+
+\section{Paso 3.3 --- Alternativa sin asistente}
+\label{sec:initializrweb}
+
+Si tu edición de IntelliJ no ofrece el asistente, ve a \url{https://start.spring.io} en el navegador, rellena los mismos campos, marca las mismas dependencias, pulsa \texttt{Generate}, descomprime el \texttt{.zip} en \ruta{C:\textbackslash labs\textbackslash distapp-jms} y ábrelo en IntelliJ con \texttt{File > Open}, seleccionando la carpeta que contiene el \ruta{pom.xml}.
+
+\chapter{El archivo \texttt{pom.xml} explicado}
+\label{cap:pom}
+
+\section{Contenido completo}
+
+\begin{lstlisting}[language=XML,caption={\ruta{pom.xml} completo},label={lst:pom}]
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- El POM padre aporta las versiones coherentes de TODAS las
+         dependencias de Spring Boot. Gracias a el, mas abajo no hace
+         falta escribir <version> en cada dependencia. -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.5</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>ec.edu.uteq.distapp</groupId>
+    <artifactId>mesa-ayuda-jms</artifactId>
+    <version>1.0.0</version>
+    <name>mesa-ayuda-jms</name>
+    <description>Mesa de ayuda ISP con JMS: cola y publicacion/suscripcion</description>
+
+    <properties>
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!-- Servidor HTTP embebido, controladores REST, archivos estaticos
+             y Jackson para JSON. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Cliente JMS de Artemis y autoconfiguracion JMS de Spring.
+             Esta es LA dependencia clave de este laboratorio. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-artemis</artifactId>
+        </dependency>
+
+        <!-- Anotaciones de validacion: @NotBlank, @Size, @NotNull. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Reinicio automatico al guardar. Opcional. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- JUnit 5 y utilidades de prueba. Solo en el ambito de test. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Permite ejecutar la aplicacion con "mvn spring-boot:run" y
+                 empaquetarla como jar ejecutable con "mvn package". -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+\end{lstlisting}
+
+\section{Qué significa cada bloque}
+
+\begin{description}[leftmargin=1.6em,style=nextline,itemsep=4pt]
+	\item[\texttt{<parent>}] Maven soporta herencia de configuración. Al declarar como padre el \texttt{spring-boot-\allowbreak{}starter-\allowbreak{}parent}, heredamos una lista enorme de versiones compatibles entre sí, la configuración del compilador (incluida la opción \texttt{-parameters}, que resultará importante) y la codificación UTF-8. Por eso las dependencias de abajo no llevan \texttt{<version>}: la hereda del padre.
+	\item[\texttt{<groupId>}, \texttt{<artifactId>}, \texttt{<version>}] Las tres coordenadas que identifican de forma única un artefacto en el repositorio de Maven.
+	\item[\texttt{<properties>}] Variables del proyecto. \texttt{java.version} le dice al padre qué versión del lenguaje compilar.
+	\item[\texttt{starter}] Un \emph{starter} no es una librería, sino un paquete de dependencias coherentes. \texttt{spring-boot-\allowbreak{}starter-\allowbreak{}web} arrastra Tomcat, Spring MVC, Jackson y una veintena de artefactos más. Es una comodidad, no una capa mágica.
+	\item[\texttt{<scope>}] Delimita cuándo está disponible la dependencia. \texttt{test} significa que solo se usa al compilar y ejecutar pruebas, y que no acaba en el \texttt{jar} final. \texttt{runtime} significa que no hace falta para compilar, solo para ejecutar.
+	\item[\texttt{spring-boot-maven-plugin}] Empaqueta la aplicación como un \texttt{jar} ejecutable que incluye el servidor web dentro. Es lo que permite ejecutar el sistema con un simple \texttt{java -jar}.
+\end{description}
+
+\begin{cajaTip}{Recargar Maven tras editar el \texttt{pom.xml}}
+	Cada vez que modifiques el \ruta{pom.xml}, IntelliJ mostrará un icono flotante de Maven en la esquina superior derecha del editor.
+	Púlsalo, o usa \texttt{Ctrl+Shift+O}, para que descargue las dependencias nuevas.
+	Si no lo haces, seguirás viendo errores de compilación por clases que ``no existen'' aunque la dependencia ya esté declarada.
+\end{cajaTip}
+
+\chapter{Configuración de la aplicación}
+\label{cap:properties}
+
+Abre \ruta{src/main/resources/application.properties} y sustituye su contenido por lo siguiente.
+
+\begin{lstlisting}[language=bash,caption={\ruta{application.properties}},label={lst:properties}]
+# --- Identidad de la aplicacion -------------------------------------
+spring.application.name=mesa-ayuda-jms
+server.port=8080
+
+# --- Conexion al broker Artemis -------------------------------------
+# mode=native significa: conectarse a un broker EXTERNO ya en marcha.
+# La alternativa, embedded, arrancaria un broker dentro del proceso Java;
+# no la usamos porque queremos ver el broker de verdad en la consola web.
+spring.artemis.mode=native
+spring.artemis.broker-url=tcp://localhost:61616
+spring.artemis.user=distapp
+spring.artemis.password=distapp2026
+
+# --- Cache de conexiones JMS ----------------------------------------
+# Reutiliza conexiones y sesiones en lugar de abrirlas y cerrarlas en
+# cada envio. Sin esto, el rendimiento cae en picado.
+spring.jms.cache.enabled=true
+spring.jms.cache.session-cache-size=10
+
+# --- Registro de lo que ocurre --------------------------------------
+# Nivel INFO para nuestro codigo; asi veremos los mensajes del laboratorio.
+logging.level.ec.edu.uteq.distapp.jms=INFO
+# Formato compacto y con hora, para leer bien la consola.
+logging.pattern.console=%d{HH:mm:ss.SSS} %-5level [%15.15thread] %-42logger{0} : %msg%n
+\end{lstlisting}
+
+\begin{cajaAviso}{La propiedad que deliberadamente NO ponemos}
+	Existe una propiedad global \texttt{spring.jms.pub-sub-domain} que fija el dominio para \emph{toda} la aplicación.
+	\textbf{No la usaremos}, y es importante entender por qué: nuestra aplicación necesita los dos dominios a la vez.
+	Si la pusiéramos a \texttt{true}, las colas dejarían de funcionar; si a \texttt{false}, dejarían de funcionar los tópicos.
+	En su lugar configuraremos el dominio \emph{por cada componente}, en el Capítulo~\ref{cap:jmsconfig}.
+	Buena parte de los tutoriales de Internet usan esta propiedad global precisamente porque solo demuestran uno de los dos modelos.
+\end{cajaAviso}
+
+\begin{cajaNota}{El significado del patrón de registro}
+	La cadena de \texttt{logging.pattern.console} es una plantilla.
+	\texttt{\%d\{HH:mm:ss.SSS\}} imprime la hora con milisegundos, que necesitaremos para ver el orden real de los eventos.
+	\texttt{\%-5level} imprime el nivel alineado a cinco caracteres.
+	\texttt{\%15.15thread} imprime el nombre del hilo recortado a quince caracteres: será fundamental, porque nos permitirá comprobar que cada consumidor trabaja en su propio hilo.
+	\texttt{\%-42logger\{0\}} imprime el nombre simple de la clase que emite el registro.
+	\texttt{\%msg\%n} imprime el mensaje y un salto de línea.
+\end{cajaNota}
+
+\chapter{Estructura de paquetes y repaso del lenguaje}
+\label{cap:lenguaje}
+
+\section{Estructura que vamos a crear}
+
+\begin{lstlisting}[language=bash,caption={Estructura completa del proyecto},label={lst:estructura}]
+mesa-ayuda-jms/
+|-- docker-compose.yml
+|-- pom.xml
+'-- src/
+    '-- main/
+        |-- java/ec/edu/uteq/distapp/jms/
+        |   |-- MesaAyudaJmsApplication.java      (arranque)
+        |   |-- config/
+        |   |   '-- JmsConfig.java                (destinos, plantillas, fabricas)
+        |   |-- dominio/
+        |   |   |-- Prioridad.java                (enum)
+        |   |   |-- Ticket.java                   (record: el comando)
+        |   |   |-- EventoTicket.java             (record: el evento)
+        |   |   '-- SolicitudTicket.java          (record: entrada del formulario)
+        |   |-- mensajeria/
+        |   |   |-- TicketProductor.java          (envia a cola y publica en topico)
+        |   |   |-- TecnicoConsumidor.java        (3 consumidores de la COLA)
+        |   |   '-- SuscriptoresEventos.java      (3 suscriptores del TOPICO)
+        |   '-- web/
+        |       |-- TicketControlador.java        (REST + SSE)
+        |       |-- TableroSse.java               (difusion al navegador)
+        |       '-- FilaTablero.java              (record de la fila del tablero)
+        '-- resources/
+            |-- application.properties
+            '-- static/
+                |-- index.html
+                |-- estilos.css
+                '-- app.js
+\end{lstlisting}
+
+\begin{cajaTip}{Cómo crear paquetes y clases en IntelliJ}
+	En el panel de proyecto, clic derecho sobre \ruta{ec.edu.uteq.distapp.jms} y luego \texttt{New > Package} para los paquetes.
+	Para las clases, clic derecho sobre el paquete y \texttt{New > Java Class}; en el cuadro de diálogo puedes elegir \texttt{Class}, \texttt{Record}, \texttt{Enum} o \texttt{Interface}.
+	Para los archivos del frontend, clic derecho sobre \ruta{static} y \texttt{New > File}, escribiendo el nombre con su extensión.
+\end{cajaTip}
+
+\section{Los elementos del lenguaje que vamos a usar}
+
+Antes de escribir código, conviene tener claros los ocho elementos de Java que aparecerán una y otra vez.
+
+\subsection{Paquete e importaciones}
+
+\begin{lstlisting}[language=Java,caption={Encabezado de cualquier archivo Java},label={lst:encabezado}]
+package ec.edu.uteq.distapp.jms.dominio;   // A que paquete pertenece ESTA clase.
+
+import java.time.Instant;                   // Traer una clase de otro paquete.
+import java.util.List;
+\end{lstlisting}
+
+La línea \texttt{package} debe ser la primera instrucción del archivo y debe coincidir con la ruta de carpetas.
+Los \texttt{import} evitan tener que escribir el nombre completo (\texttt{java.time.Instant}) cada vez.
+
+\subsection{\texttt{record}: datos inmutables sin ceremonia}
+
+Un \clase{record} es una clase cuyo único propósito es transportar datos.
+El compilador genera automáticamente el constructor, los métodos de acceso, \texttt{equals}, \texttt{hashCode} y \texttt{toString}.
+
+\begin{lstlisting}[language=Java,caption={Un record y su equivalente en clase tradicional},label={lst:record}]
+// Version moderna: una linea.
+public record Punto(int x, int y) { }
+
+// Lo que el compilador genera por debajo, aproximadamente:
+public final class Punto {
+	private final int x;
+	private final int y;
+	public Punto(int x, int y) { this.x = x; this.y = y; }
+	public int x() { return x; }          // OJO: se llama x(), no getX()
+	public int y() { return y; }
+	// mas equals, hashCode y toString
+}
+\end{lstlisting}
+
+\begin{cajaAviso}{Los métodos de acceso de un record no llevan \texttt{get}}
+	Si el componente se llama \texttt{prioridad}, el método de acceso es \texttt{prioridad()}, no \texttt{getPrioridad()}.
+	Escribir \texttt{ticket.getPrioridad()} produce el error \texttt{cannot find symbol}.
+	Los \clase{record} son además \textbf{inmutables}: no existen métodos \texttt{set}. Una vez creado, un \clase{record} no cambia.
+	Esa inmutabilidad es exactamente lo que se quiere en un mensaje, porque un mensaje describe algo que ya ocurrió y no debe poder alterarse en tránsito.
+\end{cajaAviso}
+
+\subsection{\texttt{enum}: un conjunto cerrado de valores}
+
+\begin{lstlisting}[language=Java,caption={Un enum con datos asociados},label={lst:enum}]
+public enum Prioridad {
+	BAJA(1), MEDIA(2), ALTA(3), CRITICA(4);   // Las cuatro unicas instancias.
+
+	private final int peso;                    // Cada instancia lleva un dato.
+
+	Prioridad(int peso) { this.peso = peso; }  // Constructor, siempre privado.
+
+	public int peso() { return peso; }
+}
+\end{lstlisting}
+
+La ventaja frente a usar cadenas sueltas es que el compilador impide escribir \texttt{Prioridad.URGENTE} si esa constante no existe, mientras que la cadena \texttt{"URGENTE"} compilaría y fallaría en ejecución.
+
+\subsection{Anotaciones}
+
+Una anotación es un metadato que se adjunta a una clase, método o parámetro.
+Por sí sola no ejecuta nada: es una marca que otro programa lee.
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{4.4cm}X@{}}
+		\toprule
+		\textbf{Anotación} & \textbf{Qué le dice a Spring} \\
+		\midrule
+		\texttt{@SpringBootApplication} & Esta es la clase de arranque; busca componentes desde aquí hacia abajo. \\
+		\texttt{@Configuration}         & Esta clase define objetos gestionados (\emph{beans}). \\
+		\texttt{@Bean}                  & El objeto que devuelve este método debe quedar bajo gestión de Spring. \\
+		\texttt{@Component}, \texttt{@Service} & Crea una instancia única de esta clase y guárdala. \texttt{@Service} es \texttt{@Component} con intención semántica. \\
+		\texttt{@RestController}        & Esta clase atiende peticiones HTTP y devuelve datos, no vistas. \\
+		\texttt{@PostMapping}, \texttt{@GetMapping} & Asocia este método a una ruta y a un verbo HTTP. \\
+		\texttt{@RequestBody}           & Convierte el JSON del cuerpo de la petición en este objeto Java. \\
+		\texttt{@JmsListener}           & \textbf{Clave.} Suscribe este método a un destino JMS; se invocará solo cada vez que llegue un mensaje. \\
+		\texttt{@Qualifier}             & Cuando hay varios objetos del mismo tipo, indica cuál se quiere. \\
+		\texttt{@Primary}               & Marca cuál es el preferido si nadie especifica. \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\subsection{Inyección por constructor}
+
+Spring crea las instancias y las entrega a quien las necesite.
+La forma correcta de recibirlas es por constructor.
+
+\begin{lstlisting}[language=Java,caption={Inyección por constructor},label={lst:inyeccion}]
+@Service
+public class TicketProductor {
+
+	// final: se asigna una sola vez, en el constructor, y no cambia mas.
+	private final JmsTemplate plantillaCola;
+
+	// Si la clase tiene UN SOLO constructor, Spring lo usa automaticamente
+	// sin necesidad de @Autowired.
+	public TicketProductor(JmsTemplate plantillaCola) {
+		this.plantillaCola = plantillaCola;
+	}
+}
+\end{lstlisting}
+
+\begin{cajaTip}{Por qué constructor y no \texttt{@Autowired} sobre el campo}
+	Con inyección por constructor, el objeto nunca puede existir en un estado incompleto, los campos pueden ser \texttt{final} y la clase se puede instanciar en una prueba unitaria sin levantar Spring.
+	La inyección sobre el campo con \texttt{@Autowired} no permite nada de eso y está desaconsejada desde hace años.
+\end{cajaTip}
+
+\subsection{Lambdas e interfaces funcionales}
+
+Una lambda es una función escrita en línea.
+Se puede usar allí donde se espera una interfaz con un único método abstracto.
+
+\begin{lstlisting}[language=Java,caption={La misma lógica con clase anónima y con lambda},label={lst:lambda}]
+// Forma antigua, con clase anonima:
+plantilla.convertAndSend(destino, ticket, new MessagePostProcessor() {
+	@Override
+	public Message postProcessMessage(Message mensaje) throws JMSException {
+		mensaje.setStringProperty("prioridad", "ALTA");
+		return mensaje;
+	}
+});
+
+// Forma moderna, con lambda: hace exactamente lo mismo.
+plantilla.convertAndSend(destino, ticket, mensaje -> {
+	mensaje.setStringProperty("prioridad", "ALTA");
+	return mensaje;
+});
+\end{lstlisting}
+
+\subsection{\texttt{var}, \texttt{final} y \texttt{static final}}
+
+\texttt{var} deja que el compilador deduzca el tipo de una variable local; el tipo sigue siendo estricto, solo se ahorra escribirlo.
+\texttt{final} sobre un campo significa que solo se asigna una vez.
+\texttt{static final} define una constante compartida por todas las instancias, que es como declararemos los nombres de los destinos.
+
+\subsection{Excepciones comprobadas y no comprobadas}
+
+\clase{JMSException} es \emph{comprobada}: el compilador obliga a capturarla o a declararla.
+Spring la convierte en \clase{JmsException}, que es \emph{no comprobada} y no obliga a nada.
+Esa conversión es una de las razones por las que el código con \clase{JmsTemplate} es tan corto.
+
+\chapter{El dominio: los objetos que viajarán}
+\label{cap:dominio}
+
+Vamos a escribir cuatro tipos.
+Tres viajan por la red como mensajes; el cuarto solo entra desde el formulario.
+
+\section{Paso 4.1 --- \texttt{Prioridad.java}}
+
+Crea el paquete \ruta{dominio} y dentro un \texttt{enum} llamado \clase{Prioridad}.
+
+\begin{lstlisting}[language=Java,caption={\ruta{dominio/Prioridad.java}},label={lst:cprioridad}]
+package ec.edu.uteq.distapp.jms.dominio;
+
+/**
+ * Nivel de urgencia de un ticket de soporte.
+ * El campo minutosSla indica en cuantos minutos debe atenderse
+ * segun el acuerdo de nivel de servicio del ISP.
+ */
+public enum Prioridad {
+
+	BAJA(480),
+	MEDIA(240),
+	ALTA(60),
+	CRITICA(15);
+
+	private final int minutosSla;
+
+	Prioridad(int minutosSla) {
+		this.minutosSla = minutosSla;
+	}
+
+	public int minutosSla() {
+		return minutosSla;
+	}
+}
+\end{lstlisting}
+
+\section{Paso 4.2 --- \texttt{Ticket.java}, el comando}
+
+\begin{lstlisting}[language=Java,caption={\ruta{dominio/Ticket.java}},label={lst:cticket}]
+package ec.edu.uteq.distapp.jms.dominio;
+
+import java.time.Instant;
+
+/**
+ * Orden de trabajo que viaja por la COLA.
+ * Semanticamente es un COMANDO: "atiende este ticket".
+ * Por eso va a una cola y lo debe recibir un unico tecnico.
+ */
+public record Ticket(
+		String id,
+		String cliente,
+		String servicio,
+		Prioridad prioridad,
+		String descripcion,
+		Instant creadoEn) {
+}
+\end{lstlisting}
+
+\section{Paso 4.3 --- \texttt{EventoTicket.java}, el evento}
+
+\begin{lstlisting}[language=Java,caption={\ruta{dominio/EventoTicket.java}},label={lst:cevento}]
+package ec.edu.uteq.distapp.jms.dominio;
+
+import java.time.Instant;
+
+/**
+ * Hecho consumado que viaja por el TOPICO.
+ * Semanticamente es un EVENTO: "el ticket cambio de estado".
+ * Por eso va a un topico y lo reciben TODOS los interesados.
+ *
+ * Notese el tiempo verbal de los campos: describe algo que YA paso.
+ */
+public record EventoTicket(
+		String ticketId,
+		String cliente,
+		Prioridad prioridad,
+		String estadoAnterior,
+		String estadoNuevo,
+		String tecnico,
+		Instant ocurridoEn) {
+}
+\end{lstlisting}
+
+\begin{cajaNota}{Por qué el evento no lleva el ticket entero}
+	Un evento debe llevar lo que sus consumidores necesitan, no todo lo que el emisor tiene.
+	El monitor de SLA necesita la prioridad y el instante; el notificador necesita el cliente; la auditoría necesita el cambio de estado y el técnico.
+	Nadie necesita la descripción larga de la avería, así que no viaja.
+	Este criterio ---enviar el mínimo necesario--- reduce el ancho de banda y, sobre todo, disminuye el acoplamiento: cuanto menos comparta el evento, menos se romperán los consumidores cuando el emisor evolucione.
+\end{cajaNota}
+
+\section{Paso 4.4 --- \texttt{SolicitudTicket.java}, la entrada del formulario}
+
+\begin{lstlisting}[language=Java,caption={\ruta{dominio/SolicitudTicket.java}},label={lst:csolicitud}]
+package ec.edu.uteq.distapp.jms.dominio;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+/**
+ * Lo que llega desde el formulario del navegador.
+ * No lleva id ni fecha: esos los genera el servidor, nunca el cliente.
+ */
+public record SolicitudTicket(
+
+		@NotBlank(message = "El cliente es obligatorio")
+		@Size(max = 60)
+		String cliente,
+
+		@NotBlank(message = "El servicio es obligatorio")
+		String servicio,
+
+		@NotNull(message = "La prioridad es obligatoria")
+		Prioridad prioridad,
+
+		@NotBlank(message = "La descripcion es obligatoria")
+		@Size(max = 200)
+		String descripcion) {
+}
+\end{lstlisting}
+
+\begin{cajaTip}{Nunca confíes en el identificador que envía el cliente}
+	Si el navegador pudiera fijar el \texttt{id} del ticket, un usuario malicioso podría sobrescribir tickets ajenos enviando un identificador existente.
+	Generar el identificador en el servidor es una regla básica de diseño seguro.
+\end{cajaTip}
+
+\chapter{La configuración JMS: el corazón del laboratorio}
+\label{cap:jmsconfig}
+
+Este es el capítulo más importante del manual.
+Aquí es donde se decide, componente por componente, qué habla con la cola y qué habla con el tópico.
+
+\section{Paso 5.1 --- \texttt{JmsConfig.java}}
+
+\begin{lstlisting}[language=Java,caption={\ruta{config/JmsConfig.java}},label={lst:cjmsconfig}]
+package ec.edu.uteq.distapp.jms.config;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.jms.ConnectionFactory;
+import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
+
+@Configuration
+public class JmsConfig {
+
+	// ---------------------------------------------------------------
+	// NOMBRES DE LOS DESTINOS
+	// Son constantes (static final) porque @JmsListener exige valores
+	// conocidos en tiempo de compilacion.
+	// ---------------------------------------------------------------
+
+	/** COLA: cada ticket lo atiende UN SOLO tecnico. */
+	public static final String COLA_TICKETS = "soporte.tickets.cola";
+
+	/** TOPICO: cada evento lo reciben TODOS los suscriptores. */
+	public static final String TOPICO_EVENTOS = "soporte.tickets.eventos";
+
+	// ---------------------------------------------------------------
+	// CONVERSOR: objeto Java  <-->  mensaje JMS
+	// ---------------------------------------------------------------
+
+	/**
+	 * Convierte nuestros records a JSON dentro de un TextMessage.
+	 *
+	 * IMPORTANTE: recibimos por parametro el ObjectMapper que Spring Boot
+	 * ya ha configurado. Si dejaramos que MappingJackson2MessageConverter
+	 * creara el suyo propio, ese no tendria registrado el modulo de
+	 * fechas de Java 8 y al enviar un Instant fallaria con:
+	 *   InvalidDefinitionException: Java 8 date/time type
+	 *   `java.time.Instant` not supported by default
+	 */
+	@Bean
+	public MessageConverter conversorJackson(ObjectMapper objectMapper) {
+		MappingJackson2MessageConverter conversor = new MappingJackson2MessageConverter();
+		conversor.setObjectMapper(objectMapper);
+
+		// El cuerpo sera texto (JSON), no bytes ni objeto serializado.
+		conversor.setTargetType(MessageType.TEXT);
+
+		// El conversor escribe en esta propiedad el nombre de la clase,
+		// para que el consumidor sepa a que tipo deserializar.
+		conversor.setTypeIdPropertyName("_tipo");
+
+		return conversor;
+	}
+
+	// ---------------------------------------------------------------
+	// PLANTILLAS DE ENVIO
+	// Dos plantillas distintas porque pubSubDomain es una propiedad
+	// del objeto, no del metodo. Una plantilla habla SIEMPRE con colas
+	// o SIEMPRE con topicos.
+	// ---------------------------------------------------------------
+
+	/** Plantilla para COLAS. @Primary evita ambiguedad al inyectar. */
+	@Bean
+	@Primary
+	public JmsTemplate plantillaCola(ConnectionFactory fabricaConexiones,
+									 MessageConverter conversorJackson) {
+		JmsTemplate plantilla = new JmsTemplate(fabricaConexiones);
+		plantilla.setPubSubDomain(false);          // <-- COLA
+		plantilla.setMessageConverter(conversorJackson);
+		return plantilla;
+	}
+
+	/** Plantilla para TOPICOS. */
+	@Bean
+	public JmsTemplate plantillaTopico(ConnectionFactory fabricaConexiones,
+									   MessageConverter conversorJackson) {
+		JmsTemplate plantilla = new JmsTemplate(fabricaConexiones);
+		plantilla.setPubSubDomain(true);           // <-- TOPICO
+		plantilla.setMessageConverter(conversorJackson);
+		return plantilla;
+	}
+
+	// ---------------------------------------------------------------
+	// FABRICAS DE CONTENEDORES DE ESCUCHA
+	// Cada @JmsListener elige su fabrica por nombre. La fabrica decide
+	// si escucha una cola o un topico.
+	// ---------------------------------------------------------------
+
+	/** Fabrica para escuchar COLAS. */
+	@Bean
+	public DefaultJmsListenerContainerFactory fabricaCola(
+			ConnectionFactory fabricaConexiones,
+			DefaultJmsListenerContainerFactoryConfigurer configurador,
+			MessageConverter conversorJackson) {
+
+		DefaultJmsListenerContainerFactory fabrica = new DefaultJmsListenerContainerFactory();
+
+		// Primero aplicamos lo que venga de application.properties...
+		configurador.configure(fabrica, fabricaConexiones);
+
+		// ...y DESPUES fijamos lo nuestro, para que no lo sobrescriba.
+		fabrica.setPubSubDomain(false);            // <-- COLA
+		fabrica.setMessageConverter(conversorJackson);
+
+		return fabrica;
+	}
+
+	/** Fabrica para escuchar TOPICOS con suscripcion NO durable. */
+	@Bean
+	public DefaultJmsListenerContainerFactory fabricaTopico(
+			ConnectionFactory fabricaConexiones,
+			DefaultJmsListenerContainerFactoryConfigurer configurador,
+			MessageConverter conversorJackson) {
+
+		DefaultJmsListenerContainerFactory fabrica = new DefaultJmsListenerContainerFactory();
+		configurador.configure(fabrica, fabricaConexiones);
+
+		fabrica.setPubSubDomain(true);             // <-- TOPICO
+		fabrica.setSubscriptionDurable(false);     // no durable
+		fabrica.setMessageConverter(conversorJackson);
+
+		return fabrica;
+	}
+
+	/**
+	 * Fabrica para escuchar TOPICOS con suscripcion DURABLE.
+	 * El identificador de cliente debe ser unico en todo el broker.
+	 */
+	@Bean
+	public DefaultJmsListenerContainerFactory fabricaTopicoDurable(
+			ConnectionFactory fabricaConexiones,
+			DefaultJmsListenerContainerFactoryConfigurer configurador,
+			MessageConverter conversorJackson) {
+
+		DefaultJmsListenerContainerFactory fabrica = new DefaultJmsListenerContainerFactory();
+		configurador.configure(fabrica, fabricaConexiones);
+
+		fabrica.setPubSubDomain(true);             // <-- TOPICO
+		fabrica.setSubscriptionDurable(true);      // <-- DURABLE
+		fabrica.setClientId("auditoria-mesa-ayuda");
+		fabrica.setMessageConverter(conversorJackson);
+
+		return fabrica;
+	}
+}
+\end{lstlisting}
+
+\section{Las cuatro decisiones de este archivo}
+
+\subsection{Por qué dos \texttt{JmsTemplate} y no uno}
+
+\texttt{pubSubDomain} es un atributo del objeto \clase{JmsTemplate}, no un parámetro de sus métodos.
+No existe ningún \texttt{convertAndSend} que reciba ``y esto va a un tópico''.
+Por tanto, una plantilla habla siempre con colas o siempre con tópicos, y una aplicación que necesite los dos necesita dos plantillas.
+
+Como habrá dos objetos del mismo tipo \clase{JmsTemplate}, Spring no sabría cuál inyectar si alguien pidiera simplemente ``un \clase{JmsTemplate}''.
+Se resuelve de dos formas complementarias: \texttt{@Primary} designa la preferida por omisión, y \texttt{@Qualifier} permite pedir una concreta por su nombre, que es lo que haremos en el productor.
+
+\subsection{Por qué el orden importa en las fábricas}
+
+Fíjate en que \texttt{configurador.configure(...)} se llama \emph{antes} de \texttt{setPubSubDomain}.
+Ese configurador aplica los valores que vengan de \ruta{application.properties}, incluida la propiedad global \texttt{spring.jms.pub-sub-domain}.
+Si invirtiéramos el orden, el configurador sobrescribiría nuestra decisión y volveríamos al problema de tener un solo dominio para toda la aplicación.
+
+\begin{cajaAviso}{Este es un error real y silencioso}
+	Invertir esas dos líneas no produce ningún error de compilación ni ninguna excepción.
+	Simplemente, la mitad de la aplicación deja de recibir mensajes sin explicación aparente.
+	Si algún día tu tópico no entrega nada, revisa este orden.
+\end{cajaAviso}
+
+\subsection{Por qué se inyecta el \clase{ObjectMapper}}
+
+En una aplicación Spring Boot con \texttt{spring-boot-starter-web} conviven dos serializadores JSON potenciales: el \clase{ObjectMapper} que Spring configura para los controladores REST, con soporte para fechas de Java 8 ya registrado, y el que \clase{MappingJackson2MessageConverter} crearía por su cuenta si no le dijéramos nada, que no lo tiene.
+Como nuestros \clase{record} llevan campos \clase{Instant}, usar el segundo produce un fallo en el primer envío.
+Inyectar el primero resuelve el problema y además garantiza que el JSON de la API REST y el JSON de los mensajes tengan exactamente el mismo formato.
+
+\subsection{Por qué \texttt{setTypeIdPropertyName}}
+
+El conversor escribe en una propiedad del mensaje ---aquí llamada \texttt{\_tipo}--- el nombre completo de la clase original.
+Al recibir, lee esa propiedad y sabe a qué tipo deserializar.
+Sin ella, el consumidor recibiría el JSON pero no sabría si construir un \clase{Ticket} o un \clase{EventoTicket}.
+
+\begin{cajaNota}{Si el productor y el consumidor están en aplicaciones distintas}
+	Cuando emisor y receptor son procesos separados con paquetes distintos, el nombre completo de la clase no coincidirá y la deserialización fallará.
+	La solución es registrar un mapa de tipos con \texttt{conversor.setTypeIdMappings(...)}, que traduce un identificador lógico corto como \texttt{"ticket"} a la clase local de cada lado.
+	En nuestro laboratorio todo vive en un proyecto, así que no hace falta.
+\end{cajaNota}
+
+\chapter{El productor}
+\label{cap:productor}
+
+\section{Paso 6.1 --- \texttt{TicketProductor.java}}
+
+\begin{lstlisting}[language=Java,caption={\ruta{mensajeria/TicketProductor.java}},label={lst:cproductor}]
+package ec.edu.uteq.distapp.jms.mensajeria;
+
+import ec.edu.uteq.distapp.jms.config.JmsConfig;
+import ec.edu.uteq.distapp.jms.dominio.EventoTicket;
+import ec.edu.uteq.distapp.jms.dominio.Ticket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.stereotype.Service;
+
+/**
+ * Unico punto de la aplicacion que ENVIA mensajes.
+ * Concentrar aqui los dos envios deja a la vista la diferencia
+ * entre mandar un comando a una cola y publicar un evento en un topico.
+ */
+@Service
+public class TicketProductor {
+
+	private static final Logger log = LoggerFactory.getLogger(TicketProductor.class);
+
+	private final JmsTemplate plantillaCola;
+	private final JmsTemplate plantillaTopico;
+
+	/**
+	 * @Qualifier es OBLIGATORIO aqui: hay dos beans de tipo JmsTemplate
+	 * y sin el, Spring inyectaria la marcada con @Primary en los dos
+	 * parametros, y los eventos acabarian en una cola.
+	 */
+	public TicketProductor(@Qualifier("plantillaCola") JmsTemplate plantillaCola,
+						   @Qualifier("plantillaTopico") JmsTemplate plantillaTopico) {
+		this.plantillaCola = plantillaCola;
+		this.plantillaTopico = plantillaTopico;
+	}
+
+	// ---------------------------------------------------------------
+	// ENVIO A LA COLA  (punto a punto)
+	// ---------------------------------------------------------------
+
+	/**
+	 * Deposita el ticket en la cola. Un solo tecnico lo recibira.
+	 * El metodo retorna de inmediato: NO espera a que nadie lo atienda.
+	 */
+	public void encolarTicket(Ticket ticket) {
+
+		plantillaCola.convertAndSend(
+				JmsConfig.COLA_TICKETS,      // destino
+				ticket,                       // objeto que se convertira a JSON
+				mensaje -> {
+					// Duplicamos la prioridad como PROPIEDAD del mensaje
+					// para que pueda usarse en selectores del lado del broker.
+					mensaje.setStringProperty("prioridad", ticket.prioridad().name());
+					mensaje.setStringProperty("servicio", ticket.servicio());
+					return mensaje;
+				});
+
+		log.info("--> COLA    | ticket {} encolado (prioridad {})",
+				ticket.id(), ticket.prioridad());
+	}
+
+	// ---------------------------------------------------------------
+	// PUBLICACION EN EL TOPICO  (publicacion / suscripcion)
+	// ---------------------------------------------------------------
+
+	/**
+	 * Publica el evento. Lo reciben TODOS los suscriptores activos.
+	 * Si no hay ninguno, la operacion es valida y no ocurre nada.
+	 */
+	public void publicarEvento(EventoTicket evento) {
+
+		plantillaTopico.convertAndSend(
+				JmsConfig.TOPICO_EVENTOS,
+				evento,
+				mensaje -> {
+					mensaje.setStringProperty("estadoNuevo", evento.estadoNuevo());
+					mensaje.setStringProperty("prioridad", evento.prioridad().name());
+					return mensaje;
+				});
+
+		log.info("--> TOPICO  | evento {} -> {} del ticket {} publicado",
+				evento.estadoAnterior(), evento.estadoNuevo(), evento.ticketId());
+	}
+}
+\end{lstlisting}
+
+\begin{cajaAviso}{Sin \texttt{@Qualifier}, el laboratorio falla en silencio}
+	Si olvidas los \texttt{@Qualifier}, Spring inyectará la plantilla marcada con \texttt{@Primary} en \emph{ambos} campos.
+	El código compilará, la aplicación arrancará y los eventos se enviarán a una \emph{cola} llamada \texttt{soporte.tickets.eventos}.
+	Los tres suscriptores, que escuchan el \emph{tópico} del mismo nombre, no recibirán nada, y no habrá ninguna excepción que lo delate.
+	Esta es la segunda causa más frecuente de ``no me llega nada'' en el laboratorio.
+\end{cajaAviso}
+
+\begin{cajaNota}{Qué hace exactamente \texttt{convertAndSend}}
+	Es un método de conveniencia que encadena cuatro pasos: obtiene una sesión del \emph{pool}, resuelve el destino usando \texttt{pubSubDomain} para decidir si es cola o tópico, aplica el \clase{MessageConverter} para transformar el objeto en un \clase{TextMessage} con JSON, ejecuta el \emph{post-procesador} que le hemos pasado como lambda ---donde añadimos las propiedades--- y por último envía.
+	Si algo falla, lanza una excepción no comprobada de la jerarquía \clase{JmsException}.
+\end{cajaNota}
+
+\chapter{Los consumidores de la cola: los tres técnicos}
+\label{cap:tecnicos}
+
+\section{Paso 7.1 --- \texttt{TecnicoConsumidor.java}}
+
+\begin{lstlisting}[language=Java,caption={\ruta{mensajeria/TecnicoConsumidor.java}},label={lst:ctecnico}]
+package ec.edu.uteq.distapp.jms.mensajeria;
+
+import ec.edu.uteq.distapp.jms.config.JmsConfig;
+import ec.edu.uteq.distapp.jms.dominio.EventoTicket;
+import ec.edu.uteq.distapp.jms.dominio.Ticket;
+import ec.edu.uteq.distapp.jms.web.FilaTablero;
+import ec.edu.uteq.distapp.jms.web.TableroSse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Component;
+
+import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * Tres tecnicos escuchando LA MISMA COLA.
+ *
+ * Patron: Competing Consumers. El broker entrega cada ticket a UNO SOLO
+ * de los tres. Repartir la carga NO requiere ni una linea de logica
+ * nuestra: lo hace el broker.
+ */
+@Component
+public class TecnicoConsumidor {
+
+	private static final Logger log = LoggerFactory.getLogger(TecnicoConsumidor.class);
+
+	private final TicketProductor productor;
+	private final TableroSse tablero;
+
+	// Contadores para demostrar el reparto. AtomicInteger es seguro
+	// entre hilos: cada tecnico corre en un hilo distinto.
+	private final AtomicInteger totalTec01 = new AtomicInteger();
+	private final AtomicInteger totalTec02 = new AtomicInteger();
+	private final AtomicInteger totalTec03 = new AtomicInteger();
+
+	public TecnicoConsumidor(TicketProductor productor, TableroSse tablero) {
+		this.productor = productor;
+		this.tablero = tablero;
+	}
+
+	// ---------------------------------------------------------------
+	// LOS TRES OYENTES: mismo destino, misma fabrica, metodos distintos
+	// ---------------------------------------------------------------
+
+	@JmsListener(destination = JmsConfig.COLA_TICKETS, containerFactory = "fabricaCola")
+	public void tecnicoUno(Ticket ticket) {
+		atender("TEC-01", ticket, totalTec01.incrementAndGet());
+	}
+
+	@JmsListener(destination = JmsConfig.COLA_TICKETS, containerFactory = "fabricaCola")
+	public void tecnicoDos(Ticket ticket) {
+		atender("TEC-02", ticket, totalTec02.incrementAndGet());
+	}
+
+	@JmsListener(destination = JmsConfig.COLA_TICKETS, containerFactory = "fabricaCola")
+	public void tecnicoTres(Ticket ticket) {
+		atender("TEC-03", ticket, totalTec03.incrementAndGet());
+	}
+
+	// ---------------------------------------------------------------
+	// LOGICA COMPARTIDA
+	// ---------------------------------------------------------------
+
+	private void atender(String tecnico, Ticket ticket, int acumulado) {
+
+		log.info("<-- COLA    | {} recibe el ticket {} (lleva {}) [hilo {}]",
+				tecnico, ticket.id(), acumulado, Thread.currentThread().getName());
+
+		// El navegador ve al instante quien lo tomo.
+		tablero.difundir("cola", new FilaTablero(
+				"cola", tecnico, ticket.id(), ticket.cliente(),
+				"Ticket asignado a " + tecnico, Instant.now().toString()));
+
+		// Simulamos el trabajo real del tecnico.
+		simularTrabajo(700);
+
+		// Terminado el trabajo, se PUBLICA el hecho en el topico.
+		// Aqui es donde la cola se convierte en topico.
+		productor.publicarEvento(new EventoTicket(
+				ticket.id(),
+				ticket.cliente(),
+				ticket.prioridad(),
+				"NUEVO",
+				"EN_ATENCION",
+				tecnico,
+				Instant.now()));
+	}
+
+	private void simularTrabajo(long milisegundos) {
+		try {
+			Thread.sleep(milisegundos);
+		} catch (InterruptedException e) {
+			// Buena practica: restaurar la marca de interrupcion del hilo.
+			Thread.currentThread().interrupt();
+		}
+	}
+}
+\end{lstlisting}
+
+\section{Qué está pasando por debajo}
+
+\subsection{\texttt{@JmsListener} no es una llamada, es una suscripción}
+
+Al arrancar la aplicación, Spring recorre todos los \emph{beans} buscando métodos anotados con \texttt{@JmsListener}.
+Por cada uno crea un \emph{contenedor de escucha}: un objeto que abre una conexión al \emph{broker}, crea una sesión, crea un \clase{MessageConsumer} sobre el destino indicado y arranca un hilo que se queda esperando.
+Cuando llega un mensaje, el contenedor lo convierte con el \clase{MessageConverter} y llama a nuestro método.
+
+Es decir, nuestro método nunca se invoca desde nuestro código: lo invoca la infraestructura, desde otro hilo.
+Por eso en el registro veremos nombres de hilo distintos para cada técnico.
+
+\subsection{Por qué los contadores son \clase{AtomicInteger}}
+
+Los tres métodos corren en hilos distintos y de forma simultánea.
+Si los contadores fueran un simple \texttt{int} y dos hilos hicieran \texttt{contador++} a la vez, se perderían incrementos, porque \texttt{++} no es una operación atómica: son tres pasos (leer, sumar, escribir).
+\clase{AtomicInteger} garantiza que \texttt{incrementAndGet()} sea indivisible.
+
+\subsection{Por qué el parámetro es directamente un \clase{Ticket}}
+
+Podríamos haber declarado el parámetro como \clase{jakarta.jms.Message} y deserializar a mano.
+Al declararlo como \clase{Ticket}, Spring aplica automáticamente el \clase{MessageConverter} configurado en la fábrica.
+Si necesitáramos además las propiedades o las cabeceras, la firma podría ser:
+
+\begin{lstlisting}[language=Java,caption={Firma alternativa con acceso a cabeceras},label={lst:firmaalt}]
+@JmsListener(destination = JmsConfig.COLA_TICKETS, containerFactory = "fabricaCola")
+public void tecnicoUno(@Payload Ticket ticket,
+					   @Header("prioridad") String prioridad,
+					   @Header(JmsHeaders.REDELIVERED) boolean reintento) {
+	// ...
+}
+\end{lstlisting}
+
+\begin{cajaTip}{Alternativa: un solo método con concurrencia}
+	En producción no se escriben tres métodos idénticos: se escribe uno y se le indica cuántas instancias concurrentes debe tener el contenedor.
+	\begin{lstlisting}[language=Java,numbers=none]
+@JmsListener(destination = JmsConfig.COLA_TICKETS,
+             containerFactory = "fabricaCola",
+             concurrency = "3-10")
+public void atenderTicket(Ticket ticket) { ... }
+	\end{lstlisting}
+	La cadena \texttt{"3-10"} significa: mantén al menos tres consumidores y crece hasta diez si la cola se acumula.
+	Aquí escribimos tres métodos separados solo para poder etiquetar a cada técnico con un nombre y hacer visible el reparto en pantalla.
+\end{cajaTip}
+
+\chapter{Los suscriptores del tópico}
+\label{cap:suscriptores}
+
+\section{Paso 8.1 --- \texttt{SuscriptoresEventos.java}}
+
+\begin{lstlisting}[language=Java,caption={\ruta{mensajeria/SuscriptoresEventos.java}},label={lst:csuscriptores}]
+package ec.edu.uteq.distapp.jms.mensajeria;
+
+import ec.edu.uteq.distapp.jms.config.JmsConfig;
+import ec.edu.uteq.distapp.jms.dominio.EventoTicket;
+import ec.edu.uteq.distapp.jms.web.FilaTablero;
+import ec.edu.uteq.distapp.jms.web.TableroSse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Component;
+
+import java.time.Instant;
+
+/**
+ * Tres suscriptores INDEPENDIENTES al MISMO TOPICO.
+ *
+ * Cada uno recibe SU PROPIA COPIA de cada evento.
+ * Ninguno sabe que los otros existen. El publicador tampoco.
+ *
+ * Prueba de extensibilidad: para anadir un cuarto interesado basta con
+ * escribir otro metodo con @JmsListener aqui abajo. Ni el productor ni
+ * los otros tres suscriptores se enteran ni cambian.
+ */
+@Component
+public class SuscriptoresEventos {
+
+	private static final Logger log = LoggerFactory.getLogger(SuscriptoresEventos.class);
+
+	private final TableroSse tablero;
+
+	public SuscriptoresEventos(TableroSse tablero) {
+		this.tablero = tablero;
+	}
+
+	// ---------------------------------------------------------------
+	// SUSCRIPTOR 1: notificacion al cliente. NO durable.
+	// Si estuvo caido, no queremos inundar al cliente con avisos viejos.
+	// ---------------------------------------------------------------
+
+	@JmsListener(destination = JmsConfig.TOPICO_EVENTOS, containerFactory = "fabricaTopico")
+	public void notificarCliente(EventoTicket evento) {
+
+		String detalle = "Correo a " + evento.cliente()
+				+ ": su ticket " + evento.ticketId() + " esta " + evento.estadoNuevo();
+
+		log.info("<-- TOPICO  | NOTIFICADOR  | {}", detalle);
+		publicar("NOTIFICADOR", evento, detalle);
+	}
+
+	// ---------------------------------------------------------------
+	// SUSCRIPTOR 2: monitor de acuerdos de nivel de servicio. NO durable.
+	// ---------------------------------------------------------------
+
+	@JmsListener(destination = JmsConfig.TOPICO_EVENTOS, containerFactory = "fabricaTopico")
+	public void monitorearSla(EventoTicket evento) {
+
+		int limite = evento.prioridad().minutosSla();
+		String detalle = "Cronometro SLA iniciado: " + limite
+				+ " min para el ticket " + evento.ticketId();
+
+		log.info("<-- TOPICO  | MONITOR SLA  | {}", detalle);
+		publicar("MONITOR SLA", evento, detalle);
+	}
+
+	// ---------------------------------------------------------------
+	// SUSCRIPTOR 3: auditoria. DURABLE.
+	// Un registro de auditoria con huecos no sirve como evidencia,
+	// asi que este suscriptor SI debe recibir lo que se publico
+	// mientras estuvo desconectado.
+	// ---------------------------------------------------------------
+
+	@JmsListener(destination = JmsConfig.TOPICO_EVENTOS,
+				 containerFactory = "fabricaTopicoDurable",
+				 subscription = "suscripcion-auditoria")
+	public void registrarAuditoria(EventoTicket evento) {
+
+		String detalle = "AUDIT " + evento.ocurridoEn() + " | ticket " + evento.ticketId()
+				+ " | " + evento.estadoAnterior() + " -> " + evento.estadoNuevo()
+				+ " | por " + evento.tecnico();
+
+		log.info("<-- TOPICO  | AUDITORIA    | {}", detalle);
+		publicar("AUDITORIA", evento, detalle);
+	}
+
+	// ---------------------------------------------------------------
+
+	private void publicar(String suscriptor, EventoTicket evento, String detalle) {
+		tablero.difundir("topico", new FilaTablero(
+				"topico", suscriptor, evento.ticketId(), evento.cliente(),
+				detalle, Instant.now().toString()));
+	}
+}
+\end{lstlisting}
+
+\section{El detalle decisivo: \texttt{subscription}}
+
+El atributo \texttt{subscription} del tercer oyente le da nombre a la suscripción durable.
+Junto con el identificador de cliente que fijamos en \texttt{fabricaTopicoDurable}, forma la clave con la que el \emph{broker} reconoce a este suscriptor cuando vuelve tras una desconexión.
+
+\begin{cajaAviso}{Tres condiciones que deben cumplirse a la vez}
+	Para que la suscripción durable funcione, las tres cosas siguientes deben ser ciertas simultáneamente:
+	la fábrica debe tener \texttt{setSubscriptionDurable(true)};
+	la fábrica debe tener un \texttt{clientId} fijado y único;
+	y el oyente debe declarar un \texttt{subscription} con nombre estable.
+	Si falta cualquiera de las tres, Artemis creará una suscripción no durable sin quejarse, y el Experimento~\ref{exp:durable} fallará sin dar ninguna pista.
+\end{cajaAviso}
+
+\begin{cajaTip}{Cómo comprobarlo en la consola}
+	Entra en la consola de Artemis y navega hasta la dirección \texttt{soporte.tickets.eventos}.
+	Verás tres colas hijas.
+	Dos tendrán nombres largos generados automáticamente: son los suscriptores no durables.
+	Una tendrá un nombre que contiene \texttt{auditoria-mesa-ayuda} y \texttt{suscripcion-auditoria}: esa es la durable.
+	Si detienes la aplicación, las dos primeras desaparecen y la tercera permanece. Ese es exactamente el concepto, hecho visible.
+\end{cajaTip}
+
+\chapter{La capa web: REST y eventos hacia el navegador}
+\label{cap:web}
+
+Necesitamos que el navegador \emph{vea} lo que ocurre en el instante en que ocurre.
+La técnica que usaremos se llama SSE (\emph{Server-Sent Events}): un canal HTTP que el servidor deja abierto y por el que va empujando eventos.
+
+\begin{cajaNota}{Por qué SSE y no WebSocket ni sondeo}
+	El sondeo periódico ---preguntar cada segundo si hay novedades--- desperdicia peticiones y añade latencia.
+	WebSocket es bidireccional y potente, pero requiere una configuración adicional y un protocolo encima, como STOMP.
+	SSE es unidireccional del servidor al cliente, que es exactamente lo que necesitamos, viaja sobre HTTP normal, se implementa en el navegador con una sola clase (\texttt{EventSource}) y reconecta solo si se corta.
+	Para un tablero de observación es la herramienta correcta.
+\end{cajaNota}
+
+\section{Paso 9.1 --- \texttt{FilaTablero.java}}
+
+\begin{lstlisting}[language=Java,caption={\ruta{web/FilaTablero.java}},label={lst:cfila}]
+package ec.edu.uteq.distapp.jms.web;
+
+/**
+ * Una linea del tablero del navegador.
+ * canal vale "cola" o "topico" y decide en que columna se pinta.
+ */
+public record FilaTablero(
+		String canal,
+		String actor,
+		String ticketId,
+		String cliente,
+		String detalle,
+		String instante) {
+}
+\end{lstlisting}
+
+\section{Paso 9.2 --- \texttt{TableroSse.java}}
+
+\begin{lstlisting}[language=Java,caption={\ruta{web/TableroSse.java}},label={lst:csse}]
+package ec.edu.uteq.distapp.jms.web;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+/**
+ * Mantiene la lista de navegadores conectados y les empuja eventos.
+ *
+ * No tiene NADA que ver con JMS: es solo el cable entre el backend y
+ * la pantalla. Se ha separado a proposito para que quede claro donde
+ * termina la mensajeria y donde empieza la interfaz.
+ */
+@Component
+public class TableroSse {
+
+	private static final Logger log = LoggerFactory.getLogger(TableroSse.class);
+
+	/**
+	 * CopyOnWriteArrayList es una lista segura entre hilos, optimizada
+	 * para muchas lecturas y pocas escrituras: justo nuestro caso,
+	 * porque los seis consumidores leen constantemente y solo se
+	 * escribe cuando un navegador se conecta o se va.
+	 */
+	private final List<SseEmitter> emisores = new CopyOnWriteArrayList<>();
+
+	/** Registra un navegador nuevo y le devuelve su canal. */
+	public SseEmitter registrar() {
+
+		// 0L significa "sin tiempo de expiracion".
+		SseEmitter emisor = new SseEmitter(0L);
+
+		emisor.onCompletion(() -> emisores.remove(emisor));
+		emisor.onTimeout(() -> emisores.remove(emisor));
+		emisor.onError(error -> emisores.remove(emisor));
+
+		emisores.add(emisor);
+		log.info("Tablero: navegador conectado. Total: {}", emisores.size());
+		return emisor;
+	}
+
+	/**
+	 * Envia una fila a TODOS los navegadores conectados.
+	 * El parametro canal se convierte en el nombre del evento SSE,
+	 * que el JavaScript usara para decidir en que columna pintarlo.
+	 */
+	public void difundir(String canal, FilaTablero fila) {
+		for (SseEmitter emisor : emisores) {
+			try {
+				emisor.send(SseEmitter.event().name(canal).data(fila));
+			} catch (IOException e) {
+				// El navegador cerro la pestana. No es un error real.
+				emisores.remove(emisor);
+			}
+		}
+	}
+}
+\end{lstlisting}
+
+\begin{cajaNota}{Una analogía que ayuda}
+	Fíjate en que \clase{TableroSse} es, en pequeño, un tópico: mantiene una lista de suscriptores y entrega una copia a cada uno.
+	La diferencia es que vive dentro de un solo proceso, en memoria, y no sobrevive a un reinicio.
+	Eso es justamente lo que un \emph{broker} añade: persistencia, distribución entre máquinas y garantías de entrega.
+	Comparar ambas piezas es una buena manera de entender qué se está comprando al introducir un intermediario.
+\end{cajaNota}
+
+\section{Paso 9.3 --- \texttt{TicketControlador.java}}
+
+\begin{lstlisting}[language=Java,caption={\ruta{web/TicketControlador.java}},label={lst:ccontrolador}]
+package ec.edu.uteq.distapp.jms.web;
+
+import ec.edu.uteq.distapp.jms.dominio.SolicitudTicket;
+import ec.edu.uteq.distapp.jms.dominio.Ticket;
+import ec.edu.uteq.distapp.jms.mensajeria.TicketProductor;
+import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
+
+@RestController
+@RequestMapping("/api")
+public class TicketControlador {
+
+	private final TicketProductor productor;
+	private final TableroSse tablero;
+
+	// Numerador simple de tickets. En produccion vendria de la base de datos.
+	private final AtomicInteger secuencia = new AtomicInteger(1000);
+
+	public TicketControlador(TicketProductor productor, TableroSse tablero) {
+		this.productor = productor;
+		this.tablero = tablero;
+	}
+
+	/**
+	 * Recibe el formulario y ENCOLA el ticket.
+	 *
+	 * Observa que el metodo responde de inmediato, sin esperar a que
+	 * ningun tecnico lo atienda: eso es el desacoplamiento de
+	 * sincronizacion en accion.
+	 */
+	@PostMapping(path = "/tickets", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Ticket> crear(@Valid @RequestBody SolicitudTicket solicitud) {
+
+		Ticket ticket = new Ticket(
+				"TK-" + secuencia.incrementAndGet(),
+				solicitud.cliente(),
+				solicitud.servicio(),
+				solicitud.prioridad(),
+				solicitud.descripcion(),
+				Instant.now());
+
+		productor.encolarTicket(ticket);
+
+		// 202 Accepted es el codigo correcto: "lo he aceptado y lo
+		// procesare", no "ya esta hecho". Devolver 200 OK seria mentir.
+		return ResponseEntity.accepted().body(ticket);
+	}
+
+	/**
+	 * Genera varios tickets de golpe para ver el reparto entre tecnicos.
+	 */
+	@PostMapping("/tickets/lote/{cantidad}")
+	public ResponseEntity<String> lote(@PathVariable int cantidad) {
+
+		int total = Math.min(Math.max(cantidad, 1), 20);   // limite de seguridad
+
+		for (int i = 1; i <= total; i++) {
+			productor.encolarTicket(new Ticket(
+					"TK-" + secuencia.incrementAndGet(),
+					"Cliente " + i,
+					"Internet Fibra",
+					ec.edu.uteq.distapp.jms.dominio.Prioridad.MEDIA,
+					"Averia generada automaticamente numero " + i,
+					Instant.now()));
+		}
+		return ResponseEntity.accepted().body(total + " tickets encolados");
+	}
+
+	/**
+	 * Canal de eventos hacia el navegador.
+	 * El tipo de contenido text/event-stream es lo que convierte esta
+	 * respuesta en un canal SSE.
+	 */
+	@GetMapping(path = "/flujo", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public SseEmitter flujo() {
+		return tablero.registrar();
+	}
+}
+\end{lstlisting}
+
+\begin{cajaTip}{Por qué 202 y no 200}
+	El código HTTP 202 (\emph{Accepted}) significa literalmente ``he recibido tu petición y la procesaré, pero todavía no está hecha''.
+	Es el código semánticamente correcto para toda API que delega el trabajo a una cola.
+	Devolver 200 OK daría a entender al cliente que el ticket ya fue atendido, lo cual es falso: en ese instante solo está encolado.
+	Esta clase de precisión importa cuando otro equipo consume tu API.
+\end{cajaTip}
+
+\section{Paso 9.4 --- La clase de arranque}
+
+IntelliJ ya la generó. Compruébala:
+
+\begin{lstlisting}[language=Java,caption={\ruta{MesaAyudaJmsApplication.java}},label={lst:capp}]
+package ec.edu.uteq.distapp.jms;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * Punto de entrada.
+ *
+ * @SpringBootApplication equivale a tres anotaciones a la vez:
+ *   @Configuration        -> esta clase puede definir beans
+ *   @EnableAutoConfiguration -> configura Tomcat, JMS, Jackson... solo
+ *   @ComponentScan        -> busca @Component, @Service, @RestController
+ *                            en ESTE paquete y en todos los de debajo
+ *
+ * De ahi que TODO el codigo deba colgar de ec.edu.uteq.distapp.jms:
+ * una clase colocada fuera de ese arbol seria ignorada por completo.
+ */
+@SpringBootApplication
+public class MesaAyudaJmsApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MesaAyudaJmsApplication.class, args);
+	}
+}
+\end{lstlisting}
+
+\begin{cajaAviso}{No hace falta \texttt{@EnableJms}}
+	En Spring Boot, la presencia de \texttt{spring-boot-starter-artemis} activa automáticamente el procesamiento de \texttt{@JmsListener}.
+	Añadir \texttt{@EnableJms} a mano no rompe nada, pero es redundante.
+	Lo que sí rompe todo es colocar una clase con \texttt{@JmsListener} fuera del paquete raíz: no se detectará y el oyente jamás se suscribirá, sin mensaje de error alguno.
+\end{cajaAviso}
+
+\chapter{El frontend}
+\label{cap:frontend}
+
+Todo lo que pongamos en \ruta{src/main/resources/static} lo sirve Spring Boot automáticamente en la raíz del sitio.
+No hace falta Node, ni npm, ni ningún empaquetador.
+
+\section{Paso 10.1 --- \texttt{index.html}}
+
+\begin{lstlisting}[language=HTML,caption={\ruta{static/index.html}},label={lst:chtml}]
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mesa de ayuda ISP - JMS: cola y topico</title>
+	<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<header>
+	<h1>Mesa de ayuda ISP</h1>
+	<p class="sub">Demostracion JMS: <strong>cola</strong> (uno) frente a
+		<strong>topico</strong> (todos)</p>
+	<span id="estado" class="estado desconectado">Conectando...</span>
+</header>
+
+<main>
+
+	<!-- ============ COLUMNA 1: emisor ============ -->
+	<section class="panel">
+		<h2>1. Registrar averia</h2>
+
+		<label for="cliente">Cliente</label>
+		<input id="cliente" type="text" value="Maria Zambrano">
+
+		<label for="servicio">Servicio</label>
+		<select id="servicio">
+			<option>Internet Fibra</option>
+			<option>Internet Radioenlace</option>
+			<option>Television IP</option>
+			<option>Telefonia</option>
+		</select>
+
+		<label for="prioridad">Prioridad</label>
+		<select id="prioridad">
+			<option value="BAJA">BAJA (8 h)</option>
+			<option value="MEDIA" selected>MEDIA (4 h)</option>
+			<option value="ALTA">ALTA (1 h)</option>
+			<option value="CRITICA">CRITICA (15 min)</option>
+		</select>
+
+		<label for="descripcion">Descripcion</label>
+		<textarea id="descripcion" rows="3">Sin servicio desde las 14:00</textarea>
+
+		<button id="btnEnviar" class="primario">Enviar a la COLA</button>
+		<button id="btnLote" class="secundario">Enviar 9 tickets de golpe</button>
+		<button id="btnLimpiar" class="terciario">Limpiar tableros</button>
+
+		<p class="ayuda">
+			El boton de lote sirve para ver el reparto: nueve tickets
+			deberian repartirse aproximadamente a partes iguales entre
+			los tres tecnicos.
+		</p>
+	</section>
+
+	<!-- ============ COLUMNA 2: la cola ============ -->
+	<section class="panel cola">
+		<h2>2. COLA <span class="etiqueta">punto a punto</span></h2>
+		<p class="regla">Cada ticket lo recibe <strong>UN SOLO</strong> tecnico.</p>
+
+		<div class="contadores">
+			<div class="contador"><span id="cTec01">0</span><small>TEC-01</small></div>
+			<div class="contador"><span id="cTec02">0</span><small>TEC-02</small></div>
+			<div class="contador"><span id="cTec03">0</span><small>TEC-03</small></div>
+		</div>
+
+		<ul id="listaCola" class="registro"></ul>
+	</section>
+
+	<!-- ============ COLUMNA 3: el topico ============ -->
+	<section class="panel topico">
+		<h2>3. TOPICO <span class="etiqueta">publicacion / suscripcion</span></h2>
+		<p class="regla">Cada evento lo reciben <strong>LOS TRES</strong> suscriptores.</p>
+
+		<div class="contadores">
+			<div class="contador"><span id="cNot">0</span><small>NOTIFICADOR</small></div>
+			<div class="contador"><span id="cSla">0</span><small>MONITOR SLA</small></div>
+			<div class="contador"><span id="cAud">0</span><small>AUDITORIA</small></div>
+		</div>
+
+		<ul id="listaTopico" class="registro"></ul>
+	</section>
+
+</main>
+
+<footer>
+	<p>Aplicaciones Distribuidas (ISR-701) - Facultad de Ciencias de la
+		Computacion - UTEQ</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
+\end{lstlisting}
+
+\section{Paso 10.2 --- \texttt{estilos.css}}
+
+\begin{lstlisting}[language=HTML,caption={\ruta{static/estilos.css}},label={lst:ccss}]
+:root {
+	--azul:  #0E3F7E;
+	--medio: #1E5AA8;
+	--verde: #4FAE60;
+	--ambar: #F2A413;
+	--gris:  #F4F6F9;
+	--rojo:  #B3261E;
+	--borde: #D8DEE7;
+}
+
+* { box-sizing: border-box; }
+
+body {
+	margin: 0;
+	font-family: "Segoe UI", system-ui, sans-serif;
+	background: var(--gris);
+	color: #1B2430;
+}
+
+header {
+	background: var(--azul);
+	color: #fff;
+	padding: 18px 26px;
+	position: relative;
+}
+header h1 { margin: 0; font-size: 1.5rem; }
+header .sub { margin: 4px 0 0; opacity: .85; font-size: .9rem; }
+
+.estado {
+	position: absolute; right: 26px; top: 22px;
+	padding: 5px 12px; border-radius: 12px;
+	font-size: .78rem; font-weight: 600;
+}
+.estado.conectado    { background: var(--verde); color: #fff; }
+.estado.desconectado { background: var(--rojo);  color: #fff; }
+
+main {
+	display: grid;
+	grid-template-columns: 1fr 1.25fr 1.25fr;
+	gap: 16px;
+	padding: 18px 26px;
+	align-items: start;
+}
+
+.panel {
+	background: #fff;
+	border: 1px solid var(--borde);
+	border-radius: 8px;
+	padding: 16px;
+}
+.panel h2 { margin: 0 0 4px; font-size: 1.05rem; color: var(--azul); }
+.panel.cola   { border-top: 4px solid var(--medio); }
+.panel.topico { border-top: 4px solid var(--ambar); }
+
+.etiqueta {
+	font-size: .68rem; font-weight: 600; text-transform: uppercase;
+	background: var(--gris); border: 1px solid var(--borde);
+	padding: 2px 7px; border-radius: 10px; vertical-align: middle;
+}
+.regla  { font-size: .84rem; color: #55617A; margin: 0 0 12px; }
+.ayuda  { font-size: .78rem; color: #6B7688; margin-top: 12px; }
+
+label {
+	display: block; margin: 10px 0 4px;
+	font-size: .78rem; font-weight: 600; color: #55617A;
+}
+input, select, textarea {
+	width: 100%; padding: 8px 10px;
+	border: 1px solid var(--borde); border-radius: 5px;
+	font-family: inherit; font-size: .88rem;
+}
+
+button {
+	width: 100%; margin-top: 10px; padding: 10px;
+	border: 0; border-radius: 5px; cursor: pointer;
+	font-size: .88rem; font-weight: 600;
+}
+.primario  { background: var(--azul);  color: #fff; }
+.secundario{ background: var(--ambar); color: #3A2A00; }
+.terciario { background: #fff; color: #55617A; border: 1px solid var(--borde); }
+button:hover { opacity: .9; }
+
+.contadores { display: flex; gap: 8px; margin-bottom: 12px; }
+.contador {
+	flex: 1; text-align: center; padding: 8px 4px;
+	background: var(--gris); border: 1px solid var(--borde); border-radius: 6px;
+}
+.contador span  { display: block; font-size: 1.4rem; font-weight: 700; color: var(--azul); }
+.contador small { font-size: .64rem; color: #6B7688; letter-spacing: .5px; }
+
+.registro {
+	list-style: none; margin: 0; padding: 0;
+	max-height: 420px; overflow-y: auto;
+	font-size: .8rem;
+}
+.registro li {
+	padding: 7px 9px; margin-bottom: 5px; border-radius: 5px;
+	background: var(--gris); border-left: 3px solid var(--medio);
+	animation: entra .28s ease-out;
+}
+.panel.topico .registro li { border-left-color: var(--ambar); }
+.registro .actor { font-weight: 700; color: var(--azul); }
+.registro .hora  { float: right; color: #8A93A3; font-size: .72rem; }
+
+@keyframes entra {
+	from { opacity: 0; transform: translateY(-6px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+footer {
+	text-align: center; padding: 14px;
+	font-size: .76rem; color: #6B7688;
+}
+
+@media (max-width: 980px) {
+	main { grid-template-columns: 1fr; }
+}
+\end{lstlisting}
+
+\section{Paso 10.3 --- \texttt{app.js}}
+
+\begin{lstlisting}[language=JavaScript,caption={\ruta{static/app.js}},label={lst:cjs}]
+// ===================================================================
+// 1. CANAL DE EVENTOS DEL SERVIDOR (SSE)
+// ===================================================================
+
+// EventSource abre una conexion HTTP que el servidor NO cierra, y por
+// la que va empujando eventos. Reconecta sola si se corta.
+const flujo = new EventSource("/api/flujo");
+
+const estado = document.getElementById("estado");
+
+flujo.onopen = () => {
+	estado.textContent = "Conectado";
+	estado.className = "estado conectado";
+};
+
+flujo.onerror = () => {
+	estado.textContent = "Desconectado";
+	estado.className = "estado desconectado";
+};
+
+// El nombre del evento ("cola" u "topico") lo puso el backend en
+// SseEmitter.event().name(...). Por eso podemos escuchar cada uno
+// por separado y pintarlos en columnas distintas.
+flujo.addEventListener("cola",   e => pintar("cola",   JSON.parse(e.data)));
+flujo.addEventListener("topico", e => pintar("topico", JSON.parse(e.data)));
+
+// ===================================================================
+// 2. PINTADO DE FILAS
+// ===================================================================
+
+const contadores = {
+	"TEC-01":      document.getElementById("cTec01"),
+	"TEC-02":      document.getElementById("cTec02"),
+	"TEC-03":      document.getElementById("cTec03"),
+	"NOTIFICADOR": document.getElementById("cNot"),
+	"MONITOR SLA": document.getElementById("cSla"),
+	"AUDITORIA":   document.getElementById("cAud")
+};
+
+function pintar(canal, fila) {
+
+	const lista = document.getElementById(
+		canal === "cola" ? "listaCola" : "listaTopico");
+
+	const li = document.createElement("li");
+	li.innerHTML =
+		'<span class="hora">' + hora(fila.instante) + '</span>' +
+		'<span class="actor">' + fila.actor + '</span> &middot; ' +
+		fila.ticketId + '<br>' + fila.detalle;
+
+	// insertBefore con firstChild pone lo nuevo ARRIBA.
+	lista.insertBefore(li, lista.firstChild);
+
+	const c = contadores[fila.actor];
+	if (c) c.textContent = parseInt(c.textContent, 10) + 1;
+}
+
+function hora(instante) {
+	// El backend envia un Instant serializado en ISO-8601.
+	return new Date(instante).toLocaleTimeString("es-EC");
+}
+
+// ===================================================================
+// 3. ENVIO DE TICKETS
+// ===================================================================
+
+document.getElementById("btnEnviar").addEventListener("click", async () => {
+
+	const cuerpo = {
+		cliente:     document.getElementById("cliente").value,
+		servicio:    document.getElementById("servicio").value,
+		prioridad:   document.getElementById("prioridad").value,
+		descripcion: document.getElementById("descripcion").value
+	};
+
+	const respuesta = await fetch("/api/tickets", {
+		method:  "POST",
+		headers: { "Content-Type": "application/json" },
+		body:    JSON.stringify(cuerpo)
+	});
+
+	if (!respuesta.ok) {
+		alert("Error al enviar el ticket: " + respuesta.status);
+	}
+	// No hace falta hacer nada mas: la respuesta visible llegara por SSE
+	// cuando un tecnico tome el ticket. Eso ES el desacoplamiento.
+});
+
+document.getElementById("btnLote").addEventListener("click", async () => {
+	await fetch("/api/tickets/lote/9", { method: "POST" });
+});
+
+document.getElementById("btnLimpiar").addEventListener("click", () => {
+	document.getElementById("listaCola").innerHTML = "";
+	document.getElementById("listaTopico").innerHTML = "";
+	Object.values(contadores).forEach(c => c.textContent = "0");
+});
+\end{lstlisting}
+
+\begin{cajaNota}{Lo que el frontend enseña sin decirlo}
+	Cuando pulses ``Enviar a la COLA'', la respuesta HTTP volverá en pocos milisegundos, pero la primera línea del tablero de la cola aparecerá un instante después, y la del tópico casi un segundo más tarde.
+	Ese desfase visible es el desacoplamiento de sincronización: el navegador no esperó a que el técnico terminara.
+	Merece la pena hacer notar esto en clase, porque es la primera vez que muchos estudiantes \emph{ven} que una petición puede terminar antes que el trabajo que desencadena.
+\end{cajaNota}
+
+% ================================================================
+\part{Ejecución, experimentos y diagnóstico}
+\label{parte:pruebas}
+% ================================================================
+
+\chapter{Ejecutar la aplicación}
+\label{cap:ejecutar}
+
+\section{Paso 11.1 --- Comprobar que el broker está vivo}
+
+\begin{lstlisting}[language=consola,caption={Verificación previa},label={lst:previa}]
+C:\labs\distapp-jms> docker compose ps
+\end{lstlisting}
+
+El contenedor \texttt{artemis-distapp} debe aparecer en estado \texttt{running}.
+Si no, arráncalo con \texttt{docker compose up -d}.
+
+\section{Paso 11.2 --- Arrancar desde IntelliJ}
+
+Abre \ruta{MesaAyudaJmsApplication.java}, haz clic en el triángulo verde del margen izquierdo, junto a la declaración de la clase o del método \texttt{main}, y elige \texttt{Run}.
+
+También puedes usar Maven desde la terminal:
+
+\begin{lstlisting}[language=consola,caption={Arranque desde la línea de comandos},label={lst:mvnrun}]
+C:\labs\distapp-jms\mesa-ayuda-jms> mvnw.cmd spring-boot:run
+\end{lstlisting}
+
+\section{Paso 11.3 --- Leer el arranque}
+
+En la consola deben aparecer, entre otras, líneas equivalentes a estas:
+
+\begin{lstlisting}[language=consola,caption={Salida esperada al arrancar},label={lst:arranquesalida}]
+Tomcat initialized with port 8080 (http)
+Started MesaAyudaJmsApplication in 2.841 seconds
+\end{lstlisting}
+
+Lo que \textbf{no} debe aparecer es ninguna traza que mencione \texttt{Connection refused}, \texttt{AMQ219007} o \texttt{Could not refresh JMS Connection}: todas ellas significan que la aplicación no encuentra el \emph{broker}.
+
+\section{Paso 11.4 --- Abrir el tablero}
+
+Ve a \url{http://localhost:8080}.
+Deberías ver las tres columnas y, arriba a la derecha, la etiqueta verde \texttt{Conectado}.
+Si dice \texttt{Desconectado} en rojo, el canal SSE no se estableció; revisa la consola del navegador con \texttt{F12}.
+
+\chapter{Siete experimentos}
+\label{cap:experimentos}
+
+Los experimentos están ordenados: cada uno se apoya en lo aprendido en el anterior.
+Conviene hacerlos con la consola de IntelliJ y el navegador visibles a la vez.
+
+\section{Experimento 1 --- La cola reparte}
+
+\textbf{Acción.} Pulsa ``Enviar 9 tickets de golpe''.
+
+\textbf{Qué observar.} En la columna de la cola, los tres contadores suben hasta sumar nueve, repartidos aproximadamente a partes iguales.
+Ningún ticket aparece dos veces.
+En la consola, cada línea \texttt{<-- COLA} lleva un nombre de hilo distinto.
+
+\textbf{Qué demuestra.} Entrega única y balanceo automático.
+No hemos escrito ni una línea de lógica de reparto: la hace el \emph{broker}.
+
+\begin{cajaTip}{Si el reparto sale muy desigual}
+	Es normal que no sea exactamente 3-3-3.
+	El \emph{broker} entrega al primer consumidor disponible, y como cada técnico tarda 700 milisegundos simulados, el reparto depende del azar de la planificación de hilos.
+	Lo relevante no es la igualdad exacta, sino que la \emph{suma} sea exactamente nueve.
+\end{cajaTip}
+
+\section{Experimento 2 --- El tópico difunde}
+
+\textbf{Acción.} Envía un solo ticket con el botón principal.
+
+\textbf{Qué observar.} En la columna de la cola aparece \emph{una} línea.
+Al cabo de menos de un segundo, en la columna del tópico aparecen \emph{tres} líneas ---notificador, monitor de SLA y auditoría--- todas referidas al \emph{mismo} ticket.
+Los tres contadores del tópico suben en uno.
+
+\textbf{Qué demuestra.} Un único evento publicado se convierte en tres entregas independientes.
+Es la diferencia semántica esencial frente a la cola.
+
+\section{Experimento 3 --- Extensibilidad sin tocar al emisor}
+
+\textbf{Acción.} Añade un cuarto suscriptor al final de \clase{SuscriptoresEventos}:
+
+\begin{lstlisting}[language=Java,caption={Cuarto suscriptor: tablero de estadísticas},label={lst:cuarto}]
+@JmsListener(destination = JmsConfig.TOPICO_EVENTOS, containerFactory = "fabricaTopico")
+public void alimentarEstadisticas(EventoTicket evento) {
+	String detalle = "Metrica registrada para " + evento.tecnico();
+	log.info("<-- TOPICO  | ESTADISTICAS | {}", detalle);
+	publicar("ESTADISTICAS", evento, detalle);
+}
+\end{lstlisting}
+
+Guarda, deja que DevTools reinicie y envía otro ticket.
+
+\textbf{Qué observar.} El nuevo suscriptor recibe los eventos inmediatamente.
+Ahora cuenta cuántos archivos has tenido que modificar: exactamente uno, y no es el productor.
+\clase{TicketProductor}, \clase{TecnicoConsumidor} y \clase{JmsConfig} siguen intactos.
+
+\textbf{Qué demuestra.} Desacoplamiento espacial.
+Con la solución síncrona del Listado~\ref{lst:ingenua} habría hecho falta modificar el emisor y volver a desplegarlo.
+
+\section{Experimento 4 --- La cola conserva; el tópico no}
+
+\textbf{Acción.} Detén la aplicación en IntelliJ, pero \emph{deja el broker corriendo}.
+Entra en la consola de Artemis, busca la dirección \texttt{soporte.tickets.cola} y usa la opción de envío manual para depositar tres mensajes.
+Después arranca de nuevo la aplicación.
+
+\textbf{Qué observar.} En cuanto la aplicación arranca, los tres mensajes se consumen de golpe.
+Estaban esperando.
+
+Ahora repite el ejercicio pero enviando a la dirección \texttt{soporte.tickets.eventos}, con enrutamiento \texttt{MULTICAST}.
+Al arrancar la aplicación, el notificador y el monitor de SLA \emph{no} reciben nada: sus suscripciones no durables no existían en el momento de la publicación.
+
+\textbf{Qué demuestra.} La cola almacena hasta que alguien consume; el tópico no durable descarta si no hay nadie escuchando.
+Este es el experimento que más veces hay que repetir para que el concepto se asiente.
+
+\section{Experimento 5 --- La suscripción durable sí conserva}
+\label{exp:durable}
+
+\textbf{Acción.} En el experimento anterior, fíjate en el suscriptor de auditoría.
+
+\textbf{Qué observar.} A diferencia de los otros dos, la auditoría \emph{sí} recibe los eventos publicados mientras la aplicación estuvo apagada.
+En la consola de Artemis, la cola interna correspondiente a \texttt{auditoria-mesa-ayuda} sigue existiendo con la aplicación parada, y su contador de mensajes pendientes crece.
+
+\textbf{Qué demuestra.} Que la durabilidad de una suscripción es una decisión por suscriptor, no una propiedad del tópico.
+Tres suscriptores del mismo tópico pueden tener garantías distintas, y eso es exactamente lo que el negocio pedía: al cliente no le interesan los avisos atrasados, pero a la auditoría sí.
+
+\section{Experimento 6 --- Selectores}
+
+\textbf{Acción.} Añade un suscriptor que solo se interese por lo crítico:
+
+\begin{lstlisting}[language=Java,caption={Suscriptor con selector},label={lst:conselector}]
+@JmsListener(destination = JmsConfig.TOPICO_EVENTOS,
+			 containerFactory = "fabricaTopico",
+			 selector = "prioridad = 'CRITICA'")
+public void escalarCriticos(EventoTicket evento) {
+	log.info("<-- TOPICO  | ESCALADO     | Aviso al supervisor: {}", evento.ticketId());
+	publicar("ESCALADO", evento, "Escalado al supervisor de turno");
+}
+\end{lstlisting}
+
+Envía dos tickets, uno con prioridad \texttt{MEDIA} y otro con \texttt{CRITICA}.
+
+\textbf{Qué observar.} El nuevo suscriptor solo reacciona al segundo.
+Y el filtrado ocurrió \emph{en el broker}: el mensaje de prioridad media nunca viajó por la red hasta este consumidor.
+
+\textbf{Qué demuestra.} Que se puede filtrar sin ensuciar el código con condicionales, y que la propiedad que añadimos en el productor no era decorativa.
+Comprueba además que si intentas escribir \texttt{selector = "descripcion LIKE '\%fibra\%'"} no funcionará: la descripción está en el cuerpo, y los selectores no ven el cuerpo.
+
+\section{Experimento 7 --- Reintento y cola de mensajes muertos}
+
+\textbf{Acción.} Provoca un fallo controlado en el técnico uno:
+
+\begin{lstlisting}[language=Java,caption={Fallo deliberado para observar el reintento},label={lst:fallo}]
+@JmsListener(destination = JmsConfig.COLA_TICKETS, containerFactory = "fabricaCola")
+public void tecnicoUno(Ticket ticket) {
+	if (ticket.prioridad() == Prioridad.CRITICA) {
+		throw new IllegalStateException("Fallo simulado atendiendo " + ticket.id());
+	}
+	atender("TEC-01", ticket, totalTec01.incrementAndGet());
+}
+\end{lstlisting}
+
+Envía un ticket con prioridad \texttt{CRITICA}.
+
+\textbf{Qué observar.} En la consola aparece la excepción, y acto seguido el mismo ticket vuelve a entregarse.
+Puede caer en el mismo técnico o en otro.
+Tras varios intentos, Artemis lo mueve a la cola \texttt{DLQ}, que puedes ver en la consola de administración.
+
+\textbf{Qué demuestra.} Que con \texttt{AUTO\_ACKNOWLEDGE} lanzar una excepción equivale a rechazar el mensaje, que el trabajo no se pierde por un fallo transitorio, y que existe un límite: los mensajes irrecuperables acaban en la DLQ en lugar de bloquear la cola para siempre.
+
+\begin{cajaTip}{Detectar una reentrega desde el código}
+	Añade el parámetro de cabecera \texttt{@Header(JmsHeaders.REDELIVERED) boolean reintento} a la firma del método.
+	Si vale \texttt{true}, ese mensaje ya falló antes.
+	Es la manera estándar de decidir si conviene volver a intentarlo o desviarlo directamente a un tratamiento especial.
+\end{cajaTip}
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{1.1cm}p{5.0cm}X@{}}
+		\toprule
+		\textbf{Exp.} & \textbf{Qué se hace} & \textbf{Concepto que queda demostrado} \\
+		\midrule
+		1 & Nueve tickets a la vez & Entrega única y balanceo automático en la cola \\
+		2 & Un ticket, tres reacciones & Difusión uno a muchos en el tópico \\
+		3 & Añadir un suscriptor & Desacoplamiento espacial: el emisor no cambia \\
+		4 & Publicar con la app parada & La cola conserva; el tópico no durable descarta \\
+		5 & Observar la auditoría & La durabilidad se decide por suscriptor \\
+		6 & Filtrar por prioridad & Selectores del lado del servidor sobre propiedades \\
+		7 & Lanzar una excepción & Reintento, idempotencia y cola de mensajes muertos \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\chapter{Errores frecuentes y cómo diagnosticarlos}
+\label{cap:errores}
+
+\section{Método general de diagnóstico}
+
+Ante cualquier fallo, recorre estas cuatro preguntas en orden.
+Casi siempre el problema se localiza antes de llegar a la cuarta.
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt,topsep=3pt]
+	\item ¿Está el \emph{broker} arriba? \texttt{docker compose ps}.
+	\item ¿Llegó el mensaje al \emph{broker}? Míralo en la consola de Artemis: si el contador de mensajes de la dirección no sube, el fallo está en el productor.
+	\item ¿Hay consumidores conectados a esa dirección? La consola lo indica. Si el mensaje llegó pero nadie lo consume, el fallo está en el oyente o en el dominio.
+	\item ¿Coinciden productor y consumidor en el dominio? Este es el fallo silencioso por excelencia.
+\end{enumerate}
+
+\section{Catálogo de errores}
+
+\begin{center}
+	\footnotesize
+	\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+		\toprule
+		\textbf{Síntoma o mensaje} & \textbf{Causa real} & \textbf{Solución} \\
+		\midrule
+		\endfirsthead
+		\toprule
+		\textbf{Síntoma o mensaje} & \textbf{Causa real} & \textbf{Solución} \\
+		\midrule
+		\endhead
+		\midrule
+		\multicolumn{3}{r}{\scriptsize\itshape continúa} \\
+		\endfoot
+		\bottomrule
+		\endlastfoot
+
+		\texttt{Could not refresh JMS Connection}, \texttt{Connection refused} &
+		El \emph{broker} no está arrancado o el puerto no coincide. &
+		\texttt{docker compose up -d}; comprobar que \texttt{broker-url} apunta a \texttt{tcp://localhost:61616}. \\
+
+		\texttt{AMQ229031: Unable to validate user} &
+		Usuario o contraseña distintos de los del \ruta{docker-compose.yml}. &
+		Igualar \texttt{spring.artemis.user} y \texttt{password} con \texttt{ARTEMIS\_USER} y \texttt{ARTEMIS\_PASSWORD}. \\
+
+		\texttt{package javax.jms does not exist} &
+		Código copiado de un tutorial de Spring Boot 2.x. &
+		Cambiar todos los \texttt{import javax.jms} por \texttt{jakarta.jms}. \\
+
+		\texttt{Java 8 date/time type java.time.Instant not supported by default} &
+		El conversor creó su propio \clase{ObjectMapper} sin el módulo de fechas. &
+		Inyectar el \clase{ObjectMapper} de Spring con \texttt{setObjectMapper}, como en el Listado~\ref{lst:cjmsconfig}. \\
+
+		El productor envía, no hay excepción, pero \textbf{nadie recibe}. &
+		Desajuste de dominio: uno usa cola y el otro tópico. &
+		Comprobar \texttt{pubSubDomain} en la plantilla y en la fábrica; comprobar los \texttt{@Qualifier}. \\
+
+		Los tres suscriptores del tópico reciben, pero los técnicos \textbf{reciben el mismo ticket tres veces}. &
+		La cola se configuró como tópico. &
+		\texttt{fabricaCola} debe tener \texttt{setPubSubDomain(false)}. \\
+
+		Un solo técnico recibe \textbf{todo}. &
+		Solo hay un contenedor de escucha activo, o los otros dos métodos no se detectaron. &
+		Verificar que las tres anotaciones \texttt{@JmsListener} están en una clase con \texttt{@Component} dentro del paquete raíz. \\
+
+		\texttt{NoUnique\allowbreak{}Bean\allowbreak{}Definition\allowbreak{}Exception: expected single matching bean but found 2} &
+		Dos \clase{JmsTemplate} y ningún \texttt{@Primary} ni \texttt{@Qualifier}. &
+		Marcar uno con \texttt{@Primary} y cualificar en el punto de inyección. \\
+
+		\texttt{client-id already added} o \texttt{Cannot create a subscriber on the durable subscription} &
+		Dos instancias de la aplicación con el mismo \texttt{clientId}, o dos oyentes compartiendo la fábrica durable. &
+		Un \texttt{clientId} único por instancia; una sola suscripción durable por fábrica. \\
+
+		La suscripción durable no conserva nada. &
+		Falta \texttt{clientId}, falta \texttt{subscriptionDurable(true)} o falta \texttt{subscription}. &
+		Las tres condiciones deben cumplirse a la vez. \\
+
+		El mismo mensaje se procesa \textbf{en bucle infinito}. &
+		El consumidor lanza siempre una excepción para ese mensaje. &
+		Es el comportamiento esperado hasta agotar reintentos; revisar la configuración de la DLQ y hacer el consumidor idempotente. \\
+
+		El navegador dice \texttt{Desconectado}. &
+		La ruta del canal SSE no coincide, o el tipo de contenido no es \texttt{text/event-stream}. &
+		Comprobar que el \texttt{@GetMapping} declara \texttt{produces = TEXT\_EVENT\_STREAM\_VALUE} y que el JavaScript apunta a \texttt{/api/flujo}. \\
+
+		El tablero solo se actualiza al recargar la página. &
+		Se está usando \texttt{fetch} en bucle en lugar de \texttt{EventSource}. &
+		Usar \texttt{EventSource}, como en el Listado~\ref{lst:cjs}. \\
+
+		\texttt{Whitelabel Error Page} al abrir \texttt{localhost:8080}. &
+		Los archivos del frontend no están en \ruta{src/main/resources/static}. &
+		Moverlos a esa ruta exacta y reiniciar. \\
+
+		Los cambios en el código no surten efecto. &
+		DevTools no está activo o la compilación automática está deshabilitada. &
+		Recompilar con \texttt{Ctrl+F9} o reiniciar la aplicación. \\
+
+	\end{xltabular}
+\end{center}
+
+\chapter{Extensiones y aplicación a los proyectos del período}
+\label{cap:extensiones}
+
+\section{Cómo separar los componentes en procesos distintos}
+
+Todo lo construido vive en un proceso por comodidad didáctica.
+Separarlo es sorprendentemente barato, y ese es precisamente el argumento de la mensajería.
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt,topsep=3pt]
+	\item Crea un segundo proyecto Spring Boot con las mismas dependencias JMS y el mismo \ruta{application.properties}, salvo \texttt{server.port}, que debe ser distinto.
+	\item Copia \clase{JmsConfig} y los \clase{record} del dominio.
+	\item Lleva a ese proyecto uno de los suscriptores.
+	\item Arranca ambos a la vez.
+\end{enumerate}
+
+No hay que cambiar ni una línea del productor.
+Ese es el resultado que conviene subrayar: el productor nunca supo, ni sabrá, dónde vive su audiencia.
+
+\begin{cajaAviso}{El detalle que sí hay que cuidar al separar}
+	Cuando emisor y receptor son proyectos distintos, sus \clase{record} estarán en paquetes distintos, y el identificador de tipo que escribe el conversor dejará de coincidir.
+	Hay que registrar un mapa de tipos en ambos lados:
+	\begin{lstlisting}[language=Java,numbers=none]
+Map<String, Class<?>> tipos = new HashMap<>();
+tipos.put("evento-ticket", EventoTicket.class);
+conversor.setTypeIdMappings(tipos);
+	\end{lstlisting}
+	Con ese mapa, el mensaje viaja con la etiqueta lógica \texttt{"evento-ticket"} y cada lado la traduce a su propia clase.
+\end{cajaAviso}
+
+\section{Traslado a los cuatro dominios del período}
+
+El mismo esqueleto se aplica a cualquiera de los proyectos vigentes.
+Lo único que cambia es qué mensaje es un comando y qué mensaje es un evento.
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{2.5cm}XX@{}}
+		\toprule
+		\textbf{PFC} & \textbf{Cola: comando, un solo receptor} & \textbf{Tópico: evento, todos los interesados} \\
+		\midrule
+		AGLS\newline TiendaTech &
+		Reservar el inventario de un pedido: debe hacerlo un único proceso, o se vendería dos veces la misma unidad. &
+		``Pedido confirmado'': lo consumen facturación, notificación al comprador, analítica de ventas y el motor de recomendación. \\
+		\addlinespace
+		BCEL\newline SGA Escuela &
+		Generar el certificado de matrícula en PDF: tarea pesada que debe ejecutarse una vez por solicitud. &
+		``Nota registrada'': lo consumen el cálculo de promedios, el aviso al representante y el registro académico. \\
+		\addlinespace
+		FUVV\newline Laboratorios &
+		Confirmar una reserva de laboratorio: debe resolverla un único proceso para evitar reservas dobles. &
+		``Laboratorio ocupado'': lo consumen el tablero de disponibilidad, el control de acceso y las estadísticas de uso. \\
+		\addlinespace
+		ACC\newline Soporte ISP &
+		Asignar el ticket a un técnico (el caso de este manual). &
+		``Ticket cambió de estado'': notificación, monitor de SLA y auditoría. \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\begin{cajaTip}{La prueba del algodón para decidir}
+	Pregúntate qué ocurriría si \emph{dos} procesos ejecutaran el mensaje.
+	Si el resultado sería incorrecto ---dos reservas, dos facturas, dos llamadas al cliente--- es un comando y va a una cola.
+	Si el resultado sería simplemente redundante o irrelevante, probablemente sea un evento y vaya a un tópico.
+\end{cajaTip}
+
+\section{Relación con la calidad del producto}
+
+Las decisiones de este manual no son solo técnicas: cada una se corresponde con una característica del modelo de calidad de producto de la norma vigente~\cite{iso25010_2023}.
+
+\begin{center}
+	\small
+	\begin{tabularx}{\textwidth}{@{}p{3.6cm}X@{}}
+		\toprule
+		\textbf{Característica} & \textbf{Qué aporta la mensajería en este diseño} \\
+		\midrule
+		Fiabilidad & La cola conserva el trabajo si el consumidor cae; el reintento recupera fallos transitorios; la DLQ hace observables los fallos permanentes. \\
+		Eficiencia de desempeño & El hilo HTTP se libera de inmediato; añadir consumidores aumenta el rendimiento sin tocar código. \\
+		Mantenibilidad & Añadir un consumidor no modifica al emisor; el acoplamiento se reduce a un contrato de mensaje. \\
+		Compatibilidad & El uso de \clase{TextMessage} con JSON permite que un consumidor escrito en otro lenguaje se integre sin cambios en el emisor. \\
+		Seguridad & Evitar \clase{ObjectMessage} elimina un vector conocido de ejecución remota de código por deserialización. \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\section{Hacia dónde seguir}
+
+Tres extensiones naturales, en orden de dificultad creciente.
+
+\begin{description}[leftmargin=1.6em,style=nextline,itemsep=4pt]
+	\item[Persistencia e idempotencia.] Guardar los tickets en PostgreSQL y llevar un registro de identificadores ya procesados, de modo que una reentrega no duplique el trabajo. Es el paso imprescindible antes de llevar nada de esto a producción.
+	\item[Transacciones y el patrón \emph{outbox}.] Escribir en la base de datos y enviar el mensaje son dos operaciones sobre sistemas distintos; si una tiene éxito y la otra falla, el estado queda inconsistente. El patrón de bandeja de salida transaccional resuelve el problema sin recurrir a transacciones distribuidas, y está descrito con detalle en la literatura de referencia~\cite{kleppmann2017designing,newman2021microservices}.
+	\item[Despliegue distribuido real.] Empaquetar cada componente en su propio contenedor y orquestarlos, momento en el que los patrones de composición de sistemas distribuidos cobran sentido pleno~\cite{burns2024designing}.
+\end{description}
+
+\begin{cajaNota}{Una última observación sobre el catálogo de patrones}
+	Prácticamente todo lo que aparece en este manual tiene nombre propio en el catálogo clásico de patrones de integración empresarial: \emph{Point-to-Point Channel}, \emph{Publish-Subscribe Channel}, \emph{Competing Consumers}, \emph{Message Selector}, \emph{Dead Letter Channel}, \emph{Durable Subscriber}~\cite{hohpe2003eip}.
+	Conocer esos nombres no es erudición: es lo que permite discutir un diseño con otro equipo sin tener que dibujarlo entero cada vez.
+\end{cajaNota}
+
+\backmatter
+
+\printbibliography[title={Bibliografía},heading=bibintoc]
+
+\end{document}
