@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: sistema-facturacion
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/facturacion
+    username: facturacion
+    password: ${DB_PASSWORD:facturacion}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      pool-name: FacturacionHikariPool
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.jdbc.time_zone: America/Guayaquil
+      hibernate.format_sql: true
+    open-in-view: false
+    show-sql: false
+
+  flyway:
+    enabled: true
+    user: postgres
+    password: ${FLYWAY_PASSWORD:postgres}
+    baseline-on-migrate: false
+    validate-on-migrate: true
+    locations: classpath:db/migration
+    fail-on-missing-locations: true
+
+  jackson:
+    default-property-inclusion: NON_NULL
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    root: INFO
+    ec.edu.uteq.facturacion: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.flywaydb: INFO

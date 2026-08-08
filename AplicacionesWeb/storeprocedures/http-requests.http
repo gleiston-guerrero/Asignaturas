@@ -1,0 +1,130 @@
+### Variables
+@host = http://localhost:8080
+@base = {{host}}/api/v1
+
+### ============================================================
+### CLIENTES - CRUD JPA
+### ============================================================
+
+### Listar clientes
+GET {{base}}/clientes?page=0&size=10
+
+### Crear cliente
+POST {{base}}/clientes
+Content-Type: application/json
+
+{
+  "cedulaRuc": "1205559999",
+  "nombres": "Ana Lucia Mendoza",
+  "email": "amendoza@correo.ec",
+  "telefono": "0991112233",
+  "direccion": "Quevedo, Los Rios"
+}
+
+### Obtener cliente
+GET {{base}}/clientes/1
+
+### Actualizar cliente
+PUT {{base}}/clientes/1
+Content-Type: application/json
+
+{
+  "cedulaRuc": "1205551234",
+  "nombres": "Maria Fernanda Vera Loor",
+  "email": "mfvera-nuevo@correo.ec",
+  "telefono": "0987654321",
+  "direccion": "Quevedo, Los Rios",
+  "activo": true
+}
+
+### Eliminar cliente (soft delete)
+DELETE {{base}}/clientes/1
+
+### ============================================================
+### PROVEEDORES - CRUD JPA
+### ============================================================
+
+### Listar proveedores
+GET {{base}}/proveedores
+
+### Crear proveedor
+POST {{base}}/proveedores
+Content-Type: application/json
+
+{
+  "ruc": "1791111111001",
+  "razonSocial": "Tecnologia del Litoral S.A.",
+  "email": "ventas@litoral.ec",
+  "telefono": "042999888"
+}
+
+### ============================================================
+### PRODUCTOS - CRUD JPA + operaciones via SP
+### ============================================================
+
+### Listar productos
+GET {{base}}/productos
+
+### Crear producto
+POST {{base}}/productos
+Content-Type: application/json
+
+{
+  "codigo": "P-005",
+  "descripcion": "Auriculares Bluetooth con cancelacion de ruido",
+  "precioUnitario": 95.00,
+  "stock": 40,
+  "proveedorId": 1
+}
+
+### FN05 - Validar stock disponible
+GET {{base}}/productos/1/stock/validar?cantidad=5
+
+### SP04 - Actualizar precios de proveedor (+10%)
+PATCH {{base}}/productos/proveedor/1/precios?porcentaje=10
+
+### ============================================================
+### FACTURAS - lectura JPA + operaciones via SP
+### ============================================================
+
+### SP07 - Registrar factura completa (SP transaccional)
+POST {{base}}/facturas
+Content-Type: application/json
+
+{
+  "clienteId": 1,
+  "detalles": [
+    { "productoId": 1, "cantidad": 1 },
+    { "productoId": 2, "cantidad": 3 },
+    { "productoId": 3, "cantidad": 2 }
+  ]
+}
+
+### SP01 - Obtener factura completa (cabecera + cliente + detalles)
+GET {{base}}/facturas/1/completa
+
+### FN02 - Total facturado a cliente en rango
+GET {{base}}/facturas/cliente/1/total?desde=2026-01-01&hasta=2026-12-31
+
+### Listar facturas
+GET {{base}}/facturas
+
+### Anular factura
+DELETE {{base}}/facturas/1
+
+### ============================================================
+### REPORTES - via SP
+### ============================================================
+
+### SP03 - Ventas por producto en periodo
+GET {{base}}/reportes/ventas/por-periodo?desde=2026-01-01&hasta=2026-12-31
+
+### ============================================================
+### SWAGGER / ACTUATOR
+### ============================================================
+
+### Swagger UI
+GET {{host}}/swagger-ui.html
+
+### Health
+GET {{host}}/actuator/health
