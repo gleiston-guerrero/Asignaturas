@@ -1,0 +1,829 @@
+%============================================================
+% FORM-TL-05 -- Taller de Revision Tecnica Cruzada de Codigo del PFC
+% Aplicaciones Distribuidas (ISR-701) -- UTEQ -- Periodo 2026-2027
+% Compilacion: pdflatex -> biber -> pdflatex -> pdflatex
+%============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noquoting]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,top=2.2cm,bottom=2.2cm,left=2.2cm,right=2.2cm,headheight=14pt]{geometry}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{pdflscape}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+
+\addbibresource{references_U5.bib}
+
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{7000}
+
+%------------------------------------------------------------
+% Paleta institucional UTEQ
+%------------------------------------------------------------
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqRed}{HTML}{B02418}
+\definecolor{uteqSoft}{HTML}{EAF1FA}
+\definecolor{uteqGray}{HTML}{F5F6F8}
+
+%------------------------------------------------------------
+% Encabezado y pie
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{uteqBlue}UTEQ $\cdot$ Ingenieria de Software $\cdot$ Aplicaciones Distribuidas (ISR-701)}
+\fancyhead[R]{\footnotesize\color{uteqBlue}\textbf{FORM-TL-05}}
+\fancyfoot[C]{\footnotesize Periodo 2026--2027 $\cdot$ Prof. PhD. Gleiston C. Guerrero-Ulloa $\cdot$ Pagina \thepage}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+%------------------------------------------------------------
+% Titulos
+%------------------------------------------------------------
+\titleformat{\section}{\normalfont\large\bfseries\color{uteqBlue}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\color{uteqMid}}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\small\bfseries\color{uteqTeal}}{\thesubsubsection.}{0.6em}{}
+
+%------------------------------------------------------------
+% Cajas semanticas
+%------------------------------------------------------------
+\newtcolorbox{uteqbox}[1]{
+    enhanced,
+    colback=uteqSoft,
+    colframe=uteqBlue,
+    fonttitle=\bfseries\small,
+    title={#1},
+    boxrule=0.8pt,
+    arc=2pt,
+    left=5pt, right=5pt, top=4pt, bottom=4pt
+}
+
+\newtcolorbox{pisoBox}[1]{
+    enhanced,
+    colback=uteqRed!6,
+    colframe=uteqRed,
+    fonttitle=\bfseries\small,
+    title={#1},
+    boxrule=1.0pt,
+    arc=2pt,
+    left=5pt, right=5pt, top=4pt, bottom=4pt
+}
+
+\newtcolorbox{defBox}[1]{
+    enhanced,
+    colback=uteqGreen!7,
+    colframe=uteqGreen,
+    fonttitle=\bfseries\small,
+    title={Definicion: #1},
+    boxrule=0.7pt,
+    arc=2pt,
+    left=5pt, right=5pt, top=3pt, bottom=3pt
+}
+
+\newtcolorbox{avisoBox}[1]{
+    enhanced,
+    colback=uteqAmber!10,
+    colframe=uteqAmber,
+    fonttitle=\bfseries\small,
+    title={#1},
+    boxrule=0.8pt,
+    arc=2pt,
+    left=5pt, right=5pt, top=4pt, bottom=4pt
+}
+
+%------------------------------------------------------------
+% Codigo (ASCII estricto)
+%------------------------------------------------------------
+\lstset{
+    basicstyle=\ttfamily\scriptsize,
+    backgroundcolor=\color{uteqGray},
+    frame=single,
+    rulecolor=\color{uteqBlue!40},
+    breaklines=true,
+    columns=flexible,
+    showstringspaces=false,
+    keywordstyle=\color{uteqBlue}\bfseries,
+    commentstyle=\color{uteqTeal}\itshape,
+    numbers=none,
+    xleftmargin=4pt,
+    xrightmargin=4pt
+}
+
+\setlist[itemize]{leftmargin=1.4em,itemsep=1pt,topsep=2pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=1pt,topsep=2pt}
+
+\renewcommand{\tabularxcolumn}[1]{>{\RaggedRight}p{#1}}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{document}
+
+%============================================================
+% PORTADA
+%============================================================
+\begin{center}
+    {\Large\bfseries\color{uteqBlue} UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}\\[2pt]
+    {\normalsize Facultad de Ciencias de la Computacion}\\[1pt]
+    {\normalsize Carrera de Ingenieria de Software}\\[10pt]
+    \rule{\linewidth}{1.2pt}\\[6pt]
+    {\Large\bfseries GUIA Y RUBRICA DE EVALUACION --- FORM-TL-05}\\[5pt]
+    {\large\bfseries\color{uteqMid} Taller de Revision Tecnica Cruzada del Codigo del PFC}\\[3pt]
+    {\normalsize\itshape Principios SOLID, patrones de diseno, separacion de capas, manejo de excepciones distribuidas y observabilidad}\\[3pt]
+    {\small\bfseries\color{uteqTeal} Cada equipo revisa el PFC de OTRO equipo (revision por pares cruzada)}\\[4pt]
+    \rule{\linewidth}{1.2pt}
+\end{center}
+
+\vspace{2pt}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries\color{uteqBlue}}p{3.5cm} X >{\bfseries\color{uteqBlue}}p{3.2cm} X@{}}
+    \toprule
+    Codigo & FORM-TL-05 & Unidad & U5 --- Desarrollo en Capas y Calidad \\
+    Modalidad & Grupal (equipos de 3--4) & Caracter & Formativa (no sumativa) \\
+    Semana & 16 & Duracion & 2 h de laboratorio $+$ 4 h autonomas \\
+    Prepara para & PE-U5 / GA-SUM-06 y TA-PFC-E4 & Calificacion & 0 --- 10 puntos (retroalimentacion) \\
+    Entregable & Informe de revision en LaTeX $+$ issues abiertos en el repositorio revisado & Fecha limite & Ultimo dia de la Semana 16 \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4.6cm} X@{}}
+    \toprule
+    \multicolumn{2}{@{}l}{\bfseries\color{uteqBlue} Datos del equipo REVISOR (quien realiza el taller)} \\
+    \midrule
+    Equipo revisor (sigla) & \rule{9cm}{0.3pt} \\
+    Integrante 1 --- Rol & \rule{9cm}{0.3pt} \\
+    Integrante 2 --- Rol & \rule{9cm}{0.3pt} \\
+    Integrante 3 --- Rol & \rule{9cm}{0.3pt} \\
+    Integrante 4 --- Rol & \rule{9cm}{0.3pt} \\
+    \midrule
+    \multicolumn{2}{@{}l}{\bfseries\color{uteqBlue} Datos del PFC REVISADO (equipo ajeno)} \\
+    \midrule
+    Equipo revisado (sigla) & \rule{9cm}{0.3pt} \\
+    Nombre del sistema & \rule{9cm}{0.3pt} \\
+    URL del repositorio revisado & \rule{9cm}{0.3pt} \\
+    Commit auditado (SHA corto) & \rule{9cm}{0.3pt} \\
+    Fecha y hora de la auditoria & \rule{9cm}{0.3pt} \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{8pt}
+
+\begin{avisoBox}{Lea esto antes de empezar}
+    Usted NO revisa su propio proyecto. Revisa el codigo del Proyecto Fin de Curso (PFC) de otro equipo, segun la rotacion de la Seccion~\ref{sec:rotacion}. El objetivo no es senalar culpables: es producir evidencia tecnica accionable que el equipo autor pueda resolver antes de la Semana~17. Un informe que solo diga ``el codigo esta bien'' o ``el codigo esta mal'' sin evidencia localizada (archivo, clase, linea, commit) no acredita la actividad.
+\end{avisoBox}
+
+\vspace{4pt}
+
+\tableofcontents
+
+\clearpage
+
+%============================================================
+\section{Proposito del taller y por que la revision es cruzada}
+%============================================================
+
+Este taller entrena la practica profesional conocida como revision moderna de codigo, es decir, la inspeccion ligera, asincrona y apoyada en herramientas que hoy constituye la norma tanto en proyectos de codigo abierto como en la industria.
+La evidencia empirica sobre esta practica muestra que su valor real excede la deteccion de defectos: los estudios sobre equipos industriales documentan que los beneficios dominantes son la transferencia de conocimiento, el aumento de la conciencia colectiva sobre el sistema y la generacion de soluciones alternativas de diseno~\cite{BacchelliBird2013CodeReview}.
+El estudio a gran escala del proceso de revision en Google refuerza esa conclusion y anade dos hallazgos que gobiernan el diseno de este taller: las revisiones eficaces son pequenas, acotadas y rapidas, y la comprension del cambio es el cuello de botella cognitivo del revisor~\cite{Sadowski2018ModernCodeReview}.
+
+De ahi la decision metodologica central: usted revisa el codigo de otro equipo.
+Revisar el propio proyecto reproduce los sesgos que ya lo hicieron invisible al defecto; revisar un sistema ajeno lo obliga a leer sin el contexto que usted mismo construyo, que es exactamente la condicion en la que trabaja un revisor real.
+Ademas, la revision cruzada distribuye entre los cuatro equipos el conocimiento de los cuatro dominios del curso y prepara la defensa de la Entrega~4, en la que cada equipo debera justificar decisiones de diseno ante interlocutores que no participaron en su construccion.
+
+\begin{uteqbox}{Objetivos de aprendizaje}
+    \begin{enumerate}
+        \item Aplicar una lista de verificacion de calidad sobre un sistema distribuido ajeno, produciendo hallazgos localizados y reproducibles.
+        \item Verificar al menos tres principios SOLID sobre codigo real, distinguiendo la violacion estructural de la simple preferencia estilistica.
+        \item Reconocer patrones de diseno correcta e incorrectamente aplicados, y detectar antipatrones propios de arquitecturas distribuidas.
+        \item Evaluar la separacion de capas, el manejo de excepciones distribuidas y la trazabilidad (logging y correlacion) del sistema revisado.
+        \item Convertir cada hallazgo en un \emph{issue} de GitHub accionable, con responsable asignado y fecha de resolucion anterior a la Semana~17.
+        \item Redactar retroalimentacion tecnica profesional: especifica, verificable y no personal.
+    \end{enumerate}
+\end{uteqbox}
+
+%============================================================
+\section{Rotacion de asignacion entre equipos}
+\label{sec:rotacion}
+%============================================================
+
+La asignacion es ciclica y no negociable. Ningun equipo revisa el proyecto que revisa a su revisor, para evitar acuerdos reciprocos de complacencia.
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{2.2cm} X >{\bfseries}p{2.4cm} X@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Equipo revisor} & \textbf{\color{uteqBlue}Su propio PFC (NO lo revisa aqui)} & \textbf{\color{uteqBlue}Revisa a} & \textbf{\color{uteqBlue}Sistema que debe auditar} \\
+    \midrule
+    AGLS & TiendaTech (comercio electronico) & BCEL & SGA Escuela Provincias Unidas (gestion academica) \\
+    BCEL & SGA Escuela Provincias Unidas & FUVV & Laboratorios Informaticos (reserva y monitoreo) \\
+    FUVV & Laboratorios Informaticos & ACC & Soporte Tecnico ISP (gestion de tickets) \\
+    ACC & Soporte Tecnico ISP & AGLS & TiendaTech (comercio electronico) \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+
+\begin{pisoBox}{Regla de asignacion}
+    Entregar una revision del propio PFC, o del PFC de un equipo distinto al asignado en esta tabla, se evalua con CERO. El equipo revisado tampoco puede pedir al revisor que omita hallazgos; hacerlo se trata como falta de integridad academica y afecta a ambos equipos.
+\end{pisoBox}
+
+%============================================================
+\section{Marco conceptual minimo}
+%============================================================
+
+Esta seccion fija el vocabulario con el que se redactan los hallazgos. Todo termino usado en el informe debe entenderse en el sentido aqui definido.
+
+\subsection{Principios SOLID}
+
+\begin{defBox}{SOLID}
+    Conjunto de cinco principios de diseno orientado a objetos --- Responsabilidad Unica (SRP), Abierto/Cerrado (OCP), Sustitucion de Liskov (LSP), Segregacion de Interfaces (ISP) e Inversion de Dependencias (DIP) --- cuyo proposito comun es producir estructuras que toleren el cambio: modulos que se puedan extender sin modificar y componentes de alto nivel que no dependan de detalles de bajo nivel~\cite{Martin2017CleanArchitecture}.
+\end{defBox}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{1.2cm} >{\RaggedRight}p{3.4cm} X@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Sigla} & \textbf{\color{uteqBlue}Principio} & \textbf{\color{uteqBlue}Sintoma tipico de violacion en un sistema distribuido} \\
+    \midrule
+    SRP & Responsabilidad unica & Un controlador REST que valida, consulta la base de datos, transforma DTO, publica en la cola y arma el correo de notificacion. \\
+    OCP & Abierto/cerrado & Cadena de \texttt{if}/\texttt{switch} sobre el tipo de evento, servicio o metodo de pago que hay que editar cada vez que aparece un caso nuevo. \\
+    LSP & Sustitucion de Liskov & Subclase o implementacion que lanza \texttt{UnsupportedOperationException} en un metodo de la interfaz, o que endurece precondiciones del contrato. \\
+    ISP & Segregacion de interfaces & Interfaz de servicio con quince metodos de la que cada cliente usa dos, obligando a implementaciones vacias. \\
+    DIP & Inversion de dependencias & La capa de dominio importa el cliente HTTP concreto, el driver de la base de datos o la clase de sesion del framework. \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+
+\begin{avisoBox}{Criterio de honestidad tecnica}
+    Un principio SOLID no se ``verifica'' declarando que se cumple. Se verifica exhibiendo el fragmento de codigo que lo sostiene o que lo rompe, con archivo y linea, y explicando que cambio futuro concreto se abarata o se encarece. Una afirmacion sin esa evidencia se puntua como ausente.
+\end{avisoBox}
+
+\subsection{Patrones de diseno y antipatrones}
+
+\begin{defBox}{Patron de diseno}
+    Solucion reutilizable y nombrada a un problema recurrente de diseno, descrita mediante su contexto, su estructura de clases y sus consecuencias; el catalogo canonico distingue patrones creacionales, estructurales y de comportamiento~\cite{Gamma1994DesignPatterns}.
+\end{defBox}
+
+\begin{defBox}{Antipatron de microservicios}
+    Practica de diseno recurrente que parece razonable pero degrada la mantenibilidad, la evolucion o el rendimiento del sistema distribuido; la literatura reciente cataloga y clasifica decenas de ellos junto con sus tecnicas de deteccion~\cite{Cerny2023TertiaryStudy,Tighilt2023MicroserviceAntipatterns}.
+\end{defBox}
+
+En un PFC de esta asignatura los patrones que con mayor frecuencia aparecen bien o mal aplicados son Repository, Factory Method, Strategy, Observer, Proxy, Decorator y, en el plano distribuido, API Gateway, Circuit Breaker, Database per Service y Saga~\cite{Richardson2018Patterns,Newman2021Microservices}.
+Los antipatrones que conviene buscar de forma explicita son los descritos en la literatura como base de datos compartida entre servicios, servicios excesivamente acoplados por llamadas sincronas en cadena, ausencia de puerta de enlace, servicios ``nano'' sin cohesion y servicios que exponen su modelo interno de datos~\cite{TaibiLenarduzzi2018BadSmells,Cerny2023TertiaryStudy}.
+Los estudios de reingenieria hacia microservicios muestran ademas que la evaluacion de estas decisiones debe apoyarse en criterios explicitos de acoplamiento y cohesion, y no en la impresion del revisor~\cite{Mohottige2025Reengineering}.
+
+\subsection{Separacion de capas, excepciones distribuidas y trazabilidad}
+
+\begin{defBox}{Separacion de capas}
+    Organizacion del codigo en niveles con dependencias dirigidas hacia el dominio (presentacion o API, aplicacion, dominio, infraestructura o persistencia), de modo que las reglas de negocio no dependan de la interfaz de usuario, del framework ni de la base de datos~\cite{Martin2017CleanArchitecture}.
+\end{defBox}
+
+\begin{defBox}{Excepcion distribuida}
+    Condicion de error que se origina en un nodo o servicio distinto del que la observa, e incluye fallos parciales que no existen en un sistema centralizado: expiracion de tiempo de espera, indisponibilidad temporal del par, respuesta parcial y reintento con efecto duplicado.
+\end{defBox}
+
+\begin{defBox}{Trazabilidad (identificador de correlacion)}
+    Capacidad de reconstruir el recorrido completo de una peticion a traves de varios servicios asociando a todos los registros generados un mismo identificador propagado en la cabecera de cada llamada, de forma que los eventos de nodos distintos puedan unirse en una sola linea temporal.
+\end{defBox}
+
+Estos tres ejes concentran la mayor parte de los defectos que se descubren tarde en los PFC.
+La separacion de capas es la que sostiene la testabilidad exigida en la Unidad~5; el manejo de excepciones distribuidas es lo que diferencia un prototipo de un sistema tolerante a fallos parciales; y la trazabilidad es la condicion previa para el diagnostico, porque sin identificador de correlacion los registros de cada servicio son islas no reconciliables.
+La norma vigente de calidad de producto de software ofrece el vocabulario formal para nombrar los atributos afectados por cada hallazgo --- mantenibilidad, fiabilidad, eficiencia de desempeno, seguridad --- y se usara en el informe para clasificar el impacto~\cite{ISO25010:2023}.
+
+%============================================================
+\section{Metodologia del taller}
+%============================================================
+
+El taller se ejecuta en cinco fases. Los tiempos son orientativos, salvo la Fase~5, cuya fecha es rigida.
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{1.1cm} >{\RaggedRight\bfseries}p{3.4cm} X >{\centering\arraybackslash}p{1.5cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Fase} & \textbf{\color{uteqBlue}Actividad} & \textbf{\color{uteqBlue}Que se hace y que evidencia produce} & \textbf{\color{uteqBlue}Tiempo} \\
+    \midrule
+    F1 & Preparacion y congelacion del objeto & Clonar el repositorio asignado, registrar el SHA del ultimo commit, verificar que el sistema levanta segun el README y anotar las desviaciones. Toda la revision se hace sobre ese commit. & 45 min \\
+    F2 & Recorrido de arquitectura & Reconstruir el mapa de modulos, servicios y capas del sistema ajeno a partir del codigo, no de la documentacion. Producir un diagrama propio de una pagina. & 45 min \\
+    F3 & Revision con la lista de verificacion & Recorrer los cinco bloques de la Seccion~\ref{sec:checklist} y registrar cada hallazgo en la tabla del Anexo~B con evidencia localizada. & 2 h \\
+    F4 & Apertura de issues & Convertir cada hallazgo en un issue en el repositorio revisado, con la plantilla del Anexo~A, etiqueta, responsable del equipo autor y fecha limite. & 1 h \\
+    F5 & Informe, entrega y replica & Compilar el informe LaTeX, subir el PDF de una pagina al LMS y notificar al equipo autor. El equipo autor responde cada issue antes del cierre de la Semana~17. & 1{,}5 h \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+
+\begin{avisoBox}{Reparto de roles dentro del equipo revisor}
+    Se recomienda repartir los bloques de la lista de verificacion entre los integrantes (por ejemplo: SOLID y patrones a dos personas, capas y excepciones a una, trazabilidad a otra) y luego consolidar en una reunion. El historial de commits del informe debe reflejar ese reparto: un informe con un unico commit de un solo autor se penaliza en la dimension D6.
+\end{avisoBox}
+
+%============================================================
+\section{Lista de verificacion de calidad}
+\label{sec:checklist}
+%============================================================
+
+La lista tiene cinco bloques obligatorios. Cada item se marca como Cumple (C), Cumple parcialmente (P), No cumple (N) o No aplica (NA), y toda marca distinta de C exige evidencia localizada: ruta del archivo, clase o funcion, numero de linea y SHA del commit auditado. Una marca NA debe justificarse en una linea; NA sin justificacion se computa como item no revisado.
+
+\subsection{Bloque A --- Principios SOLID (minimo 3 verificados)}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.9cm} X >{\centering\arraybackslash}p{2.4cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Item} & \textbf{\color{uteqBlue}Que se verifica en el codigo del equipo revisado} & \textbf{\color{uteqBlue}C/P/N/NA} \\
+    \midrule
+    A1 & SRP: ninguna clase concentra reglas de negocio, acceso a datos, serializacion y comunicacion remota. Se identifica la clase mas sobrecargada y se cuentan sus responsabilidades. & \\
+    A2 & OCP: la incorporacion de un nuevo caso (tipo de usuario, estado, metodo de pago, tipo de recurso o categoria de ticket) no obliga a editar codigo existente en mas de un punto. & \\
+    A3 & LSP: toda implementacion de una interfaz o subclase honra el contrato; no hay metodos que lancen excepciones de ``no soportado'' ni que devuelvan nulo donde el contrato promete una coleccion. & \\
+    A4 & ISP: las interfaces de servicio son especificas del cliente; no existen implementaciones con metodos vacios o con cuerpo trivial solo para satisfacer la firma. & \\
+    A5 & DIP: la capa de dominio no importa clases de framework, driver, cliente HTTP ni ORM; las dependencias se inyectan por constructor o por contenedor. & \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{4pt}
+\noindent\textit{Minimo exigido: tres items verificados con evidencia. Verificar los cinco eleva el nivel de D1, pero tres bien evidenciados valen mas que cinco declarados sin prueba.}
+
+\subsection{Bloque B --- Patrones de diseno aplicados}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.9cm} X >{\centering\arraybackslash}p{2.4cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Item} & \textbf{\color{uteqBlue}Que se verifica en el codigo del equipo revisado} & \textbf{\color{uteqBlue}C/P/N/NA} \\
+    \midrule
+    B1 & Se identifican al menos dos patrones efectivamente implementados, nombrandolos y senalando las clases que cumplen cada rol de la estructura del patron. & \\
+    B2 & Cada patron identificado resuelve un problema real del dominio y no es decoracion: se explica que alternativa mas simple se descarto y por que. & \\
+    B3 & No hay patrones mal aplicados: fabrica que solo envuelve un \texttt{new}, repositorio que expone consultas SQL crudas al controlador, estrategia con una unica implementacion permanente. & \\
+    B4 & Patrones distribuidos: se revisa la presencia y correccion de puerta de enlace, disyuntor, base de datos por servicio o coordinacion de transacciones de larga duracion, segun corresponda a la arquitectura. & \\
+    B5 & Antipatrones: se busca de forma explicita base de datos compartida entre servicios, cadena sincrona de llamadas, servicio que expone su modelo interno y acoplamiento por biblioteca compartida de entidades. & \\
+    \bottomrule
+\end{tabularx}
+
+\subsection{Bloque C --- Separacion de capas}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.9cm} X >{\centering\arraybackslash}p{2.4cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Item} & \textbf{\color{uteqBlue}Que se verifica en el codigo del equipo revisado} & \textbf{\color{uteqBlue}C/P/N/NA} \\
+    \midrule
+    C1 & Las capas existen como estructura real de paquetes o modulos, no solo como nombres de carpetas: se dibuja el grafo de dependencias entre ellas. & \\
+    C2 & La direccion de las dependencias apunta hacia el dominio; no hay importaciones de la capa de infraestructura dentro de la capa de dominio. & \\
+    C3 & Las entidades de persistencia no se exponen directamente en la interfaz publica; existen objetos de transferencia o de respuesta bien delimitados. & \\
+    C4 & La logica de negocio no reside en controladores, en la vista ni en procedimientos almacenados no documentados. & \\
+    C5 & La configuracion (credenciales, URL de servicios, puertos) esta externalizada y no incrustada en el codigo fuente ni versionada en claro. & \\
+    \bottomrule
+\end{tabularx}
+
+\subsection{Bloque D --- Manejo de excepciones distribuidas}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.9cm} X >{\centering\arraybackslash}p{2.4cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Item} & \textbf{\color{uteqBlue}Que se verifica en el codigo del equipo revisado} & \textbf{\color{uteqBlue}C/P/N/NA} \\
+    \midrule
+    D1 & No existen bloques que capturen la excepcion generica y la descarten en silencio; toda captura registra o propaga con contexto. & \\
+    D2 & Toda llamada remota tiene tiempo de espera explicito y politica definida ante su expiracion; no se depende del valor por omision de la biblioteca. & \\
+    D3 & Los reintentos, si existen, son acotados, con espera creciente, y solo sobre operaciones cuya repeticion no altera el resultado. & \\
+    D4 & Existe una respuesta de degradacion o un valor de reserva cuando un servicio del que se depende no responde; el fallo no se propaga como error interno al usuario. & \\
+    D5 & Los errores expuestos al cliente usan codigos y formato uniformes en todos los servicios, y no filtran trazas de pila ni nombres internos de tablas. & \\
+    \bottomrule
+\end{tabularx}
+
+\subsection{Bloque E --- Logging y trazabilidad}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.9cm} X >{\centering\arraybackslash}p{2.4cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Item} & \textbf{\color{uteqBlue}Que se verifica en el codigo del equipo revisado} & \textbf{\color{uteqBlue}C/P/N/NA} \\
+    \midrule
+    E1 & Se usa una biblioteca de registro y no impresion por consola; los niveles (error, aviso, informacion, depuracion) se emplean con criterio y no todo es informacion. & \\
+    E2 & Existe identificador de correlacion generado en el borde del sistema y propagado en las cabeceras de cada llamada entre servicios. & \\
+    E3 & El registro es estructurado (por ejemplo, en formato de objeto con campos) y permite filtrar por servicio, operacion e identificador de correlacion. & \\
+    E4 & No se registran datos sensibles: contrasenas, credenciales, tokens, numeros de tarjeta ni datos personales innecesarios. & \\
+    E5 & Los eventos criticos del dominio (creacion de pedido, matricula, reserva, apertura y cierre de ticket) dejan huella suficiente para auditar el flujo completo. & \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+
+\begin{uteqbox}{Clasificacion obligatoria de cada hallazgo}
+    Cada hallazgo registrado debe llevar tres etiquetas: (i) bloque y numero de item; (ii) severidad --- Critica, Mayor, Menor o Sugerencia; (iii) atributo de calidad afectado segun la norma de calidad de producto (mantenibilidad, fiabilidad, eficiencia de desempeno, seguridad, compatibilidad, usabilidad, portabilidad o adecuacion funcional)~\cite{ISO25010:2023}. Un informe sin severidad ni atributo de calidad no supera el nivel~2 en D1.
+\end{uteqbox}
+
+%============================================================
+\section{Apertura de issues en GitHub}
+%============================================================
+
+Cada hallazgo con severidad Critica, Mayor o Menor se convierte en un issue \emph{en el repositorio del equipo revisado}, no en el del equipo revisor. Las sugerencias pueden agruparse en un unico issue de mejoras menores.
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4.2cm} X@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Elemento del issue} & \textbf{\color{uteqBlue}Regla} \\
+    \midrule
+    Titulo & Imperativo, concreto y localizado. Ejemplo aceptable: ``Extraer la logica de facturacion de PedidoController (SRP)''. Ejemplo no aceptable: ``Mejorar el codigo''. \\
+    Cuerpo & Plantilla del Anexo~A: contexto, evidencia con ruta y linea, principio o patron afectado, severidad, atributo de calidad, propuesta de correccion y criterio de aceptacion. \\
+    Etiquetas & Al menos dos: una de bloque (\texttt{solid}, \texttt{patrones}, \texttt{capas}, \texttt{excepciones}, \texttt{observabilidad}) y una de severidad (\texttt{critica}, \texttt{mayor}, \texttt{menor}, \texttt{sugerencia}). \\
+    Responsable & Un integrante del equipo AUTOR (el revisado), asignado nominalmente mediante la funcion \emph{assignee}. No se asigna al equipo revisor. \\
+    Fecha de resolucion & Anterior al cierre de la Semana~17, declarada en el cuerpo del issue y, cuando el repositorio lo permita, mediante un hito con esa fecha. \\
+    Reparto & Los issues deben repartirse entre los integrantes del equipo autor de forma equilibrada; concentrar todos en una sola persona invalida el reparto y se observa en la evaluacion. \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+
+\begin{avisoBox}{Cantidad y calidad}
+    Se espera un minimo de seis issues, con al menos uno por cada uno de los cinco bloques y al menos dos de severidad Critica o Mayor. La cantidad no compensa la calidad: seis issues accionables valen mas que veinte issues genericos, y los issues duplicados o triviales abiertos para inflar el conteo se descuentan del computo.
+\end{avisoBox}
+
+\vspace{4pt}
+
+\noindent\textbf{Verificacion previa del objeto revisado.} Antes de abrir cualquier issue, ejecute y registre en el informe la salida de los siguientes comandos, que fijan el commit auditado y evitan revisar una version distinta de la que el equipo autor entrego.
+
+\begin{lstlisting}
+git clone <URL-del-repositorio-revisado> revision-pfc
+cd revision-pfc
+git log -1 --format="%H | %aI | %an"
+git rev-parse --short HEAD
+git ls-files | wc -l
+\end{lstlisting}
+
+%============================================================
+\section{Entregables y formato}
+%============================================================
+
+\begin{enumerate}
+    \item \textbf{Informe de revision en LaTeX} (archivo \texttt{.tex} $+$ PDF compilado), alojado en el repositorio del EQUIPO REVISOR, con la estructura minima: portada; datos del equipo revisor y del PFC revisado con commit auditado; mapa de arquitectura reconstruido; tabla consolidada de hallazgos (Anexo~B); analisis por bloque A--E; tabla de issues abiertos con enlace, responsable y fecha; conclusiones y recomendacion priorizada; declaracion de uso de inteligencia artificial generativa; y referencias en formato IEEE.
+    \item \textbf{Extension:} minimo 6 y maximo 12 paginas de contenido, sin portada ni bibliografia.
+    \item \textbf{Referencias:} minimo cuatro, verificadas, con identificador digital de objeto resoluble cuando exista, y citadas en el cuerpo del texto.
+    \item \textbf{Issues abiertos} en el repositorio del equipo revisado, conforme a la Seccion anterior.
+    \item \textbf{Documento en el LMS (SGA):} un PDF de UNA sola pagina, que contenga unicamente la caratula con los datos de identificacion y la URL del repositorio del equipo revisor en una sola linea, sin cortes.
+    \item \textbf{README.md} en el repositorio del equipo revisor, con las instrucciones completas de compilacion: compilador, orden de comandos, archivo principal y dependencias.
+\end{enumerate}
+
+\begin{pisoBox}{Criterios de piso --- su incumplimiento implica calificacion CERO}
+    \begin{enumerate}
+        \item El equipo debe subir al LMS (SGA) un documento PDF con caratula que muestre claramente, en una sola linea, la URL del repositorio donde se encuentra el trabajo desarrollado. Si la URL esta rota, el repositorio no es accesible, o no se cumple esta directriz, la calificacion es CERO.
+        \item Si el PDF no se genera correctamente a partir del LaTeX mediante clonacion del repositorio y compilacion del archivo \texttt{.tex}, la calificacion es CERO. Las instrucciones de compilacion (compilador, orden de comandos, archivo principal, dependencias) deben estar documentadas en el archivo \texttt{README.md} del repositorio.
+        \item Revisar el propio PFC, o un PFC distinto del asignado en la Seccion~\ref{sec:rotacion}: CERO.
+        \item No existir ningun issue abierto por el equipo revisor en el repositorio revisado: CERO.
+        \item Informe sin evidencia localizada (sin rutas de archivo ni lineas) en ningun bloque: CERO, por tratarse de una revision no verificable.
+        \item Plagio verificado, o informe que reproduce el texto de otro equipo revisor: CERO.
+    \end{enumerate}
+\end{pisoBox}
+
+\vspace{4pt}
+
+\begin{uteqbox}{Penalizaciones no eliminatorias (se aplican sobre la nota previa)}
+    $-0.3$: sin declaracion de uso de inteligencia artificial generativa. \quad
+    $-0.5$ por cada identificador digital de objeto invalido o mal asignado. \quad
+    $-0.5$: issues sin responsable asignado o sin fecha de resolucion. \quad
+    $-0.5$: menos de seis issues abiertos, o ausencia de issues en alguno de los cinco bloques. \quad
+    $-25\%$ del total: referencias fabricadas o no verificables. \quad
+    La nota previa y la nota final se informan siempre por separado.
+\end{uteqbox}
+
+\clearpage
+%============================================================
+\section{Rubrica de evaluacion}
+%============================================================
+
+\subsection{Escala y formula}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.0cm} X >{\centering\arraybackslash}p{2.7cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Nivel} & \textbf{\color{uteqBlue}Descripcion general} & \textbf{\color{uteqBlue}Equivalencia / 10} \\
+    \midrule
+    4 --- Sobresaliente & El indicador se cubre al 100\% en calidad y cantidad; la revision es de calidad profesional y directamente accionable. & 9.0 --- 10.0 \\
+    3 --- Satisfactorio & Se cubre con solidez; deficiencias menores de profundidad, evidencia o formato. & 7.5 --- 8.9 \\
+    2 --- En desarrollo & Se cubre parcialmente; requiere mejoras sustanciales en evidencia o analisis. & 6.0 --- 7.4 \\
+    1 --- Insuficiente & No alcanza el minimo: revision superficial, afirmaciones sin respaldo. & 4.0 --- 5.9 \\
+    0 --- Ausente & El criterio no se desarrolla, no se entrega o hay deshonestidad academica. & $<$ 4.0 \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+
+\begin{uteqbox}{Formula de calificacion}
+    \[
+        \text{Nota} \;=\; \frac{\displaystyle\sum_{i=1}^{n} \left( p_i \times \eta_i \right)}{4}, \qquad \text{con } \sum_{i=1}^{n} p_i = 10 \ \text{y}\ \eta_i \in \{0,1,2,3,4\}
+    \]
+    donde $p_i$ es el peso del criterio $i$ en puntos y $\eta_i$ su nivel alcanzado. Ejemplo: un criterio de peso $1.5$ evaluado en nivel~3 aporta $3 \times (1.5/4) = 1.125$ puntos.
+\end{uteqbox}
+
+\subsection{Distribucion de pesos por dimension}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{1.5cm} X >{\centering\arraybackslash}p{1.7cm} >{\centering\arraybackslash}p{1.4cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Codigo} & \textbf{\color{uteqBlue}Dimension} & \textbf{\color{uteqBlue}Peso (pts)} & \textbf{\color{uteqBlue}Peso (\%)} \\
+    \midrule
+    D1 & Cobertura y rigor de la lista de verificacion \textbf{[NUCLEO]} & 2.5 & 25\% \\
+    D2 & Analisis de principios SOLID y patrones de diseno & 2.0 & 20\% \\
+    D3 & Analisis de capas, excepciones distribuidas y trazabilidad & 2.0 & 20\% \\
+    D4 & Gestion de issues: accionabilidad, asignacion y plazo & 1.5 & 15\% \\
+    D5 & Calidad del documento LaTeX y de las evidencias & 1.0 & 10\% \\
+    D6 & Etica de la revision, referencias e integridad & 1.0 & 10\% \\
+    \midrule
+    & \textbf{TOTAL} & \textbf{10.0} & \textbf{100\%} \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+
+\begin{uteqbox}{Justificacion de los pesos}
+    D1 concentra el 25\% porque el nucleo formativo del taller es aplicar una lista de verificacion completa y producir evidencia localizada; sin ella, ningun analisis posterior es verificable.
+    D2 y D3 (20\% cada una) reparten por igual el analisis de diseno orientado a objetos y el analisis de las propiedades propiamente distribuidas, que son los dos ejes de la Unidad~5.
+    D4 (15\%) evalua la traduccion del hallazgo en trabajo asignable y con plazo, que es la contribucion real de la revision al equipo autor~\cite{Sadowski2018ModernCodeReview}.
+    D5 (10\%) exige un documento profesional y reproducible; D6 (10\%) protege la calidad de la retroalimentacion entre pares y la integridad academica, que es el riesgo especifico de una revision cruzada.
+\end{uteqbox}
+
+\begin{landscape}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+
+\subsection{Rubrica detallada por dimension}
+
+\begin{xltabular}{\linewidth}{@{}>{\RaggedRight}p{3.4cm} >{\RaggedRight}p{5.6cm} >{\RaggedRight}X >{\RaggedRight}p{4.4cm} >{\centering\arraybackslash}p{1.1cm}@{}}
+    \multicolumn{5}{@{}l}{\textbf{\color{uteqBlue}D1 --- Cobertura y rigor de la lista de verificacion (2.5 pts)}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{4 --- Sobresaliente} & \textbf{3--2 --- Satisfactorio / En desarrollo} & \textbf{1--0 --- Insuficiente / Ausente} & \textbf{Peso} \\
+    \midrule
+    \endhead
+    1.1 Cobertura de los cinco bloques (1.5 pt) & Los cinco bloques A--E se recorren completos; cada item lleva marca C/P/N/NA y las marcas NA estan justificadas. Se revisan los cinco principios SOLID. & Se recorren los cinco bloques con algun item sin marcar o con NA sin justificar (3). Se omite un bloque completo o se verifican solo tres principios SOLID sin justificar la omision (2). & Se recorren dos bloques o menos (1). No hay lista de verificacion reconocible (0). & 1.5 \\
+    \midrule
+    1.2 Evidencia localizada y clasificacion (1.0 pt) & Todo hallazgo indica ruta, clase o funcion, linea y SHA del commit auditado, y lleva severidad y atributo de calidad de la norma vigente. & La mayoria de hallazgos tiene evidencia localizada, con omisiones puntuales de linea o de atributo de calidad (3). Hay evidencia solo en algunos bloques o falta sistematicamente la severidad (2). & Hallazgos descritos en terminos generales, sin ubicacion en el codigo (1). Sin evidencia alguna (0). \emph{Ausencia total de evidencia localizada activa la regla de piso.} & 1.0 \\
+    \bottomrule
+\end{xltabular}
+
+\vspace{8pt}
+
+\begin{xltabular}{\linewidth}{@{}>{\RaggedRight}p{3.4cm} >{\RaggedRight}p{5.6cm} >{\RaggedRight}X >{\RaggedRight}p{4.4cm} >{\centering\arraybackslash}p{1.1cm}@{}}
+    \multicolumn{5}{@{}l}{\textbf{\color{uteqBlue}D2 --- Analisis de principios SOLID y patrones de diseno (2.0 pts)}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{4 --- Sobresaliente} & \textbf{3--2 --- Satisfactorio / En desarrollo} & \textbf{1--0 --- Insuficiente / Ausente} & \textbf{Peso} \\
+    \midrule
+    \endhead
+    2.1 Verificacion de principios SOLID (1.0 pt) & Se verifican al menos tres principios con fragmentos de codigo del sistema revisado; cada juicio explica que cambio futuro concreto se abarata o se encarece. No se confunde violacion estructural con preferencia de estilo. & Tres principios verificados con evidencia, con una argumentacion algo generica sobre las consecuencias (3). Los principios se nombran y se ilustran, pero el analisis no distingue violacion de estilo (2). & Los principios se enuncian sin aplicarlos al codigo revisado (1). Ausentes (0). & 1.0 \\
+    \midrule
+    2.2 Patrones y antipatrones (1.0 pt) & Se identifican al menos dos patrones implementados nombrando las clases que ocupan cada rol, se valora si estan bien aplicados y se detecta al menos un antipatron distribuido reconocido en la literatura, con su tecnica de deteccion. & Se identifican dos patrones con roles correctos y se menciona algun antipatron sin caracterizarlo (3). Se nombran patrones sin mapear roles, o el antipatron se afirma sin evidencia (2). & Solo se enumeran nombres de patrones (1). Ausente (0). & 1.0 \\
+    \bottomrule
+\end{xltabular}
+
+\vspace{8pt}
+
+\begin{xltabular}{\linewidth}{@{}>{\RaggedRight}p{3.4cm} >{\RaggedRight}p{5.6cm} >{\RaggedRight}X >{\RaggedRight}p{4.4cm} >{\centering\arraybackslash}p{1.1cm}@{}}
+    \multicolumn{5}{@{}l}{\textbf{\color{uteqBlue}D3 --- Capas, excepciones distribuidas y trazabilidad (2.0 pts)}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{4 --- Sobresaliente} & \textbf{3--2 --- Satisfactorio / En desarrollo} & \textbf{1--0 --- Insuficiente / Ausente} & \textbf{Peso} \\
+    \midrule
+    \endhead
+    3.1 Separacion de capas (0.7 pt) & Se reconstruye el grafo de dependencias entre capas a partir del codigo y se identifica cada dependencia invertida, con la ruta del archivo que la produce. La configuracion externalizada se verifica explicitamente. & El grafo se reconstruye con precision razonable y se detectan algunas dependencias invertidas (3). Las capas se describen por nombre de carpeta sin verificar dependencias reales (2). & Se afirma que hay o no hay capas sin analisis (1). Ausente (0). & 0.7 \\
+    \midrule
+    3.2 Excepciones distribuidas (0.7 pt) & Se revisan capturas silenciosas, tiempos de espera explicitos, politica de reintentos acotados sobre operaciones repetibles, degradacion ante indisponibilidad y uniformidad del error expuesto. Cada carencia se ilustra con codigo. & Se revisan al menos tres de los cinco aspectos con evidencia (3). Se revisan uno o dos, o se tratan como errores genericos sin la dimension distribuida (2). & Se menciona el manejo de errores sin distinguir el fallo parcial (1). Ausente (0). & 0.7 \\
+    \midrule
+    3.3 Logging y trazabilidad (0.6 pt) & Se verifica biblioteca de registro, uso correcto de niveles, identificador de correlacion propagado entre servicios, registro estructurado y ausencia de datos sensibles. Se muestra un ejemplo real de registro del sistema revisado. & Se verifican tres o cuatro aspectos, incluido el identificador de correlacion (3). Solo se comprueba que existe registro, sin analizar correlacion ni niveles (2). & Se afirma que hay o no hay registro sin evidencia (1). Ausente (0). & 0.6 \\
+    \bottomrule
+\end{xltabular}
+
+\vspace{8pt}
+
+\begin{xltabular}{\linewidth}{@{}>{\RaggedRight}p{3.4cm} >{\RaggedRight}p{5.6cm} >{\RaggedRight}X >{\RaggedRight}p{4.4cm} >{\centering\arraybackslash}p{1.1cm}@{}}
+    \multicolumn{5}{@{}l}{\textbf{\color{uteqBlue}D4 --- Gestion de issues en GitHub (1.5 pts)}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{4 --- Sobresaliente} & \textbf{3--2 --- Satisfactorio / En desarrollo} & \textbf{1--0 --- Insuficiente / Ausente} & \textbf{Peso} \\
+    \midrule
+    \endhead
+    4.1 Accionabilidad y trazabilidad (0.8 pt) & Al menos seis issues, uno por bloque como minimo y dos de severidad Critica o Mayor. Cada uno sigue la plantilla, enlaza la evidencia y declara un criterio de aceptacion verificable. La tabla del informe enlaza cada issue con su hallazgo. & Seis o mas issues correctos con uno o dos sin criterio de aceptacion (3). Menos de seis issues, o cobertura incompleta de bloques, o titulos genericos (2). & Uno o dos issues sin plantilla (1). Ninguno (0). \emph{Ausencia total de issues activa la regla de piso.} & 0.8 \\
+    \midrule
+    4.2 Asignacion, plazo y reparto (0.7 pt) & Todos los issues tienen responsable nominal del equipo autor, fecha de resolucion anterior al cierre de la Semana~17 y reparto equilibrado entre los integrantes; se usan etiquetas de bloque y severidad. & Todos asignados y con fecha, con reparto desigual o etiquetado incompleto (3). Parte de los issues sin responsable o sin fecha (2). & Sin asignacion ni fecha (1). Asignados al propio equipo revisor (0). & 0.7 \\
+    \bottomrule
+\end{xltabular}
+
+\vspace{8pt}
+
+\begin{xltabular}{\linewidth}{@{}>{\RaggedRight}p{3.4cm} >{\RaggedRight}p{5.6cm} >{\RaggedRight}X >{\RaggedRight}p{4.4cm} >{\centering\arraybackslash}p{1.1cm}@{}}
+    \multicolumn{5}{@{}l}{\textbf{\color{uteqBlue}D5 --- Calidad del documento LaTeX y de las evidencias (1.0 pt) \quad D6 --- Etica, referencias e integridad (1.0 pt)}}\\[2pt]
+    \toprule
+    \rowcolor{uteqSoft}\textbf{Criterio (peso)} & \textbf{4 --- Sobresaliente} & \textbf{3--2 --- Satisfactorio / En desarrollo} & \textbf{1--0 --- Insuficiente / Ausente} & \textbf{Peso} \\
+    \midrule
+    \endhead
+    5.1 Compilacion, estructura y formato (0.6 pt) & El \texttt{.tex} compila desde un clon limpio sin errores ni referencias sin resolver; estructura completa, tablas en formato profesional, figuras con leyenda y referencia cruzada, sin desbordes de margen. & Compila con avisos no criticos y estructura ordenada (3). Compila con errores menores corregibles o rutas locales de imagenes (2). & Compila con errores que impiden la lectura (1). No compila (0). \emph{No compilar desde clon limpio activa la regla de piso.} & 0.6 \\
+    \midrule
+    5.2 Calidad de las evidencias incorporadas (0.4 pt) & Fragmentos de codigo legibles y minimos, capturas de issues, salida de los comandos de verificacion del commit y tabla consolidada de hallazgos completa. & Evidencias presentes con alguna omision (3). Evidencias escasas o poco legibles (2). & Casi sin evidencia grafica ni de codigo (1). Ausente (0). & 0.4 \\
+    \midrule
+    6.1 Etica y tono de la revision (0.5 pt) & La retroalimentacion es tecnica, especifica y no personal; critica el codigo y no a las personas; reconoce explicitamente los aciertos del equipo revisado ademas de los defectos. & Tono correcto con alguna formulacion imprecisa o generalizadora (3). Tono descriptivo pero sin reconocimiento de aciertos, o juicios sin matiz (2). & Comentarios personales, despectivos o descalificadores (1). Revision complaciente pactada o difamatoria (0). & 0.5 \\
+    \midrule
+    6.2 Referencias, autoria y declaracion de IA (0.5 pt) & Cuatro o mas referencias verificadas y citadas, en formato IEEE, con identificador digital resoluble cuando exista; historial de commits que evidencia el aporte de todos los integrantes; declaracion de uso de inteligencia artificial presente y especifica. & Referencias correctas con una imprecision de campo, o reparto de commits algo desigual (3). Referencias incompletas o formato inconsistente (2). & Menos de cuatro referencias o citacion ausente (1). Referencias fabricadas o plagio (0). & 0.5 \\
+    \bottomrule
+\end{xltabular}
+
+\end{landscape}
+
+\clearpage
+%============================================================
+\section{Hoja de puntuacion del evaluador}
+%============================================================
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}p{7.4cm} c c c X@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Criterio} & \textbf{\color{uteqBlue}Nivel} & \textbf{\color{uteqBlue}Peso} & \textbf{\color{uteqBlue}Pts.} & \textbf{\color{uteqBlue}Observacion} \\
+    & \small (0--4) & \small (pts) & \small obtenidos & \\
+    \midrule
+    \multicolumn{5}{@{}l}{\bfseries D1 --- Cobertura y rigor de la lista de verificacion (2.5 pts)} \\
+    \quad 1.1 Cobertura de los cinco bloques & \rule{0.8cm}{0.3pt} & 1.5 & \rule{1.3cm}{0.3pt} & \\
+    \quad 1.2 Evidencia localizada y clasificacion & \rule{0.8cm}{0.3pt} & 1.0 & \rule{1.3cm}{0.3pt} & \\
+    \midrule
+    \multicolumn{5}{@{}l}{\bfseries D2 --- SOLID y patrones de diseno (2.0 pts)} \\
+    \quad 2.1 Verificacion de principios SOLID & \rule{0.8cm}{0.3pt} & 1.0 & \rule{1.3cm}{0.3pt} & \\
+    \quad 2.2 Patrones y antipatrones & \rule{0.8cm}{0.3pt} & 1.0 & \rule{1.3cm}{0.3pt} & \\
+    \midrule
+    \multicolumn{5}{@{}l}{\bfseries D3 --- Capas, excepciones y trazabilidad (2.0 pts)} \\
+    \quad 3.1 Separacion de capas & \rule{0.8cm}{0.3pt} & 0.7 & \rule{1.3cm}{0.3pt} & \\
+    \quad 3.2 Excepciones distribuidas & \rule{0.8cm}{0.3pt} & 0.7 & \rule{1.3cm}{0.3pt} & \\
+    \quad 3.3 Logging y trazabilidad & \rule{0.8cm}{0.3pt} & 0.6 & \rule{1.3cm}{0.3pt} & \\
+    \midrule
+    \multicolumn{5}{@{}l}{\bfseries D4 --- Gestion de issues (1.5 pts)} \\
+    \quad 4.1 Accionabilidad y trazabilidad & \rule{0.8cm}{0.3pt} & 0.8 & \rule{1.3cm}{0.3pt} & \\
+    \quad 4.2 Asignacion, plazo y reparto & \rule{0.8cm}{0.3pt} & 0.7 & \rule{1.3cm}{0.3pt} & \\
+    \midrule
+    \multicolumn{5}{@{}l}{\bfseries D5 --- Documento LaTeX y evidencias (1.0 pt)} \\
+    \quad 5.1 Compilacion, estructura y formato & \rule{0.8cm}{0.3pt} & 0.6 & \rule{1.3cm}{0.3pt} & \\
+    \quad 5.2 Calidad de las evidencias & \rule{0.8cm}{0.3pt} & 0.4 & \rule{1.3cm}{0.3pt} & \\
+    \midrule
+    \multicolumn{5}{@{}l}{\bfseries D6 --- Etica, referencias e integridad (1.0 pt)} \\
+    \quad 6.1 Etica y tono de la revision & \rule{0.8cm}{0.3pt} & 0.5 & \rule{1.3cm}{0.3pt} & \\
+    \quad 6.2 Referencias, autoria y declaracion de IA & \rule{0.8cm}{0.3pt} & 0.5 & \rule{1.3cm}{0.3pt} & \\
+    \midrule
+    \multicolumn{2}{@{}l}{\bfseries NOTA PREVIA (suma de criterios)} & \bfseries 10.0 & \rule{1.3cm}{0.3pt} & \\
+    \multicolumn{2}{@{}l}{Penalizaciones aplicadas ($-$)} & & \rule{1.3cm}{0.3pt} & \\
+    \multicolumn{2}{@{}l}{Regla de piso activada (si / no)} & & \rule{1.3cm}{0.3pt} & \\
+    \midrule
+    \multicolumn{2}{@{}l}{\bfseries\color{uteqBlue} NOTA FINAL (sobre 10)} & & \bfseries\rule{1.3cm}{0.3pt} & Firma: \rule{2.2cm}{0.3pt} \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+
+\begin{avisoBox}{Doble informe de nota}
+    La nota previa se comunica siempre, aunque una regla de piso lleve la nota final a cero. El equipo debe conocer el valor de su trabajo tecnico con independencia del incumplimiento formal que anula la calificacion.
+\end{avisoBox}
+
+%============================================================
+\section{Derecho de replica del equipo autor}
+%============================================================
+
+La revision no termina con la entrega del informe. El equipo revisado dispone hasta el cierre de la Semana~17 para responder cada issue con una de tres acciones, dejando constancia escrita en el propio issue:
+
+\begin{enumerate}
+    \item \textbf{Aceptar y corregir:} enlazar el commit o la solicitud de incorporacion que resuelve el hallazgo y cerrar el issue.
+    \item \textbf{Aceptar y diferir:} reconocer el hallazgo, justificar por que no se corrige en esta entrega y registrarlo como deuda tecnica en el documento acumulativo de la Entrega~4.
+    \item \textbf{Rebatir:} argumentar tecnicamente por que el hallazgo no procede, con evidencia del codigo. Un rebate fundamentado no perjudica al equipo revisor si su hallazgo era razonable a partir del codigo disponible.
+\end{enumerate}
+
+\noindent
+Los issues sin respuesta al cierre de la Semana~17 se contabilizan como deuda tecnica no gestionada en la evaluacion de la Entrega~4 del equipo autor.
+
+%============================================================
+\section{Nota metodologica}
+%============================================================
+
+Este instrumento se deriva de la consigna del taller formativo de la Semana~16 de la Unidad~5 y del rol preparatorio que cumple frente a la practica experimental PE-U5 / GA-SUM-06 y a la Entrega~4 del Proyecto Fin de Curso.
+La escala de cinco niveles, la formula ponderada sobre 10 y el sistema de reglas de piso mantienen coherencia con los demas instrumentos de la asignatura (FORM-IC-02, TA-IND-01, TA-IND-02, PE-U1 y GA-SUM-03).
+Se adopta el formato de seis dimensiones propio de las practicas grupales, con el nucleo desplazado hacia la cobertura de la lista de verificacion (D1) porque el objeto evaluado no es el sistema revisado sino la calidad del acto de revision.
+La decision de conservar el caracter formativo responde a la evidencia de que el valor principal de la revision moderna de codigo esta en la transferencia de conocimiento y no en el veredicto sobre el trabajo ajeno~\cite{BacchelliBird2013CodeReview,Sadowski2018ModernCodeReview}; calificar de forma sumativa el hallazgo de defectos en el proyecto de un companero introduciria un incentivo perverso que este diseno evita explicitamente mediante la dimension D6.
+Las listas de antipatrones que orientan el Bloque~B se apoyan en catalogos publicados y no en criterios ad hoc, para que el equipo revisor pueda justificar cada senalamiento con literatura verificable~\cite{Cerny2023TertiaryStudy,Tighilt2023MicroserviceAntipatterns,TaibiLenarduzzi2018BadSmells}.
+
+\clearpage
+%============================================================
+\appendix
+\section*{Anexos}
+\addcontentsline{toc}{section}{Anexos}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\setcounter{subsection}{0}
+
+\subsection{Plantilla obligatoria de issue}
+
+\begin{lstlisting}
+Titulo: <verbo en imperativo> <objeto> (<principio o patron>)
+
+## Contexto
+Sistema revisado: <PFC / equipo autor>
+Commit auditado: <SHA corto>
+Bloque e item de la lista de verificacion: <A3, B5, C2, D1, E2, ...>
+
+## Evidencia
+Archivo: <ruta/relativa/al/archivo>
+Clase o funcion: <nombre>
+Lineas: <inicio-fin>
+Fragmento:
+    <3 a 10 lineas de codigo, las minimas necesarias>
+
+## Diagnostico
+Principio, patron o antipatron afectado: <SRP / OCP / Repository / base de datos compartida / ...>
+Severidad: <Critica | Mayor | Menor | Sugerencia>
+Atributo de calidad afectado: <mantenibilidad | fiabilidad | eficiencia | seguridad | ...>
+Consecuencia concreta: <que cambio futuro se encarece o que fallo puede producirse>
+
+## Propuesta de correccion
+<1 a 3 pasos concretos; no "refactorizar", sino que extraer, adonde y con que contrato>
+
+## Criterio de aceptacion
+<condicion verificable que permite cerrar el issue: prueba que pasa, dependencia que desaparece,
+ comando que devuelve el resultado esperado>
+
+## Gestion
+Responsable (equipo autor): @<usuario>
+Fecha de resolucion: <fecha anterior al cierre de la Semana 17>
+Etiquetas: <bloque> + <severidad>
+\end{lstlisting}
+
+\subsection{Tabla consolidada de hallazgos (obligatoria en el informe)}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{1.0cm} >{\centering\arraybackslash}p{1.0cm} X >{\RaggedRight}p{2.4cm} >{\centering\arraybackslash}p{2.1cm} >{\centering\arraybackslash}p{1.6cm}@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}ID} & \textbf{\color{uteqBlue}Item} & \textbf{\color{uteqBlue}Hallazgo (una linea)} & \textbf{\color{uteqBlue}Evidencia (ruta:linea)} & \textbf{\color{uteqBlue}Severidad} & \textbf{\color{uteqBlue}Issue} \\
+    \midrule
+    H01 & A1 & & & & \#\rule{0.6cm}{0.3pt} \\
+    H02 & & & & & \#\rule{0.6cm}{0.3pt} \\
+    H03 & & & & & \#\rule{0.6cm}{0.3pt} \\
+    H04 & & & & & \#\rule{0.6cm}{0.3pt} \\
+    H05 & & & & & \#\rule{0.6cm}{0.3pt} \\
+    H06 & & & & & \#\rule{0.6cm}{0.3pt} \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{4pt}
+\noindent\textit{Amplie la tabla segun el numero de hallazgos. La columna Issue debe enlazar al issue correspondiente en el repositorio revisado.}
+
+\subsection{Preguntas de analisis obligatorias en el informe}
+
+\begin{enumerate}
+    \item De las violaciones de principios SOLID detectadas, cual encarece mas el cambio que el sistema revisado debera afrontar en la Entrega~4, y por que.
+    \item Que patron de diseno introduciria usted en el sistema revisado que hoy no esta, y que problema concreto del dominio resolveria. Justifique tambien por que una solucion mas simple no basta.
+    \item Si un servicio del que depende el sistema revisado deja de responder durante treinta segundos, que ocurre exactamente con la peticion del usuario segun el codigo actual. Rastree el camino y senale el punto de fallo.
+    \item Con los registros que hoy produce el sistema revisado, seria posible reconstruir la traza completa de una operacion que atraviesa dos o mas servicios. Justifique con un ejemplo de salida real.
+    \item Que aprendio de la arquitectura del equipo revisado que piensa aplicar en su propio PFC antes de la Entrega~4.
+\end{enumerate}
+
+\subsection{Glosario}
+
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4.0cm} X@{}}
+    \toprule
+    \rowcolor{uteqSoft}\textbf{\color{uteqBlue}Termino} & \textbf{\color{uteqBlue}Definicion operativa en este instrumento} \\
+    \midrule
+    Antipatron & Practica de diseno recurrente que degrada la mantenibilidad o la evolucion del sistema pese a parecer razonable. \\
+    Commit auditado & Instantanea exacta del repositorio, identificada por su SHA, sobre la que se realiza toda la revision. \\
+    Deuda tecnica & Hallazgo reconocido cuya correccion se pospone de forma explicita y documentada. \\
+    Disyuntor (circuit breaker) & Patron que interrumpe temporalmente las llamadas a un servicio que falla de forma reiterada, para evitar la propagacion del fallo. \\
+    Fallo parcial & Situacion en la que unos componentes del sistema distribuido funcionan y otros no, sin que exista una vision global inmediata del estado. \\
+    Hallazgo & Observacion localizada y verificable sobre el codigo revisado, con severidad y atributo de calidad asignados. \\
+    Identificador de correlacion & Valor unico por peticion, propagado en cabeceras, que permite unir los registros generados en servicios distintos. \\
+    Issue & Unidad de trabajo registrada en el repositorio, con titulo, descripcion, responsable, etiquetas y fecha. \\
+    Operacion repetible & Operacion cuya ejecucion multiple produce el mismo efecto que una sola ejecucion, condicion necesaria para reintentar sin riesgo. \\
+    Revision cruzada & Modalidad de revision por pares en la que el equipo revisor no es autor del codigo revisado. \\
+    Severidad & Grado de impacto del hallazgo: Critica, Mayor, Menor o Sugerencia. \\
+    \bottomrule
+\end{tabularx}
+
+\subsection{Instrucciones de compilacion (para el README.md del equipo)}
+
+\begin{lstlisting}
+pdflatex informe_revision.tex
+biber informe_revision
+pdflatex informe_revision.tex
+pdflatex informe_revision.tex
+\end{lstlisting}
+
+\noindent
+Dependencias minimas: distribucion TeX completa (MiKTeX o TeX Live) con los paquetes \texttt{babel}, \texttt{geometry}, \texttt{booktabs}, \texttt{tabularx}, \texttt{xltabular}, \texttt{tcolorbox}, \texttt{listings}, \texttt{xurl}, \texttt{hyperref} y \texttt{biblatex} con \texttt{biber}. Las imagenes deben referenciarse con rutas relativas dentro del repositorio; las rutas locales del equipo impiden la compilacion desde un clon limpio y activan la regla de piso.
+
+\clearpage
+\printbibliography[title={Referencias}]
+
+\end{document}
