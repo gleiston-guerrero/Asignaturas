@@ -1,0 +1,386 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Evaluación PFC 2B — SIGCB-QR</title><style>body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f5;color:#1e2a24}
+header{background:#006633;color:#fff;padding:22px 36px}header h1{margin:0;font-size:22px}header p{margin:6px 0 0;opacity:.9;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:24px 36px}
+h2{color:#006633;border-bottom:3px solid #CC9900;padding-bottom:6px;margin-top:44px}
+h3{color:#006633;margin-top:30px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}th,td{border:1px solid #cfd8d3;padding:6px 9px;text-align:left;vertical-align:top}th{background:#e3efe8}
+td.n,th.n{text-align:right;white-space:nowrap}
+.box{position:relative;background:#fff;border:1px solid #cfd8d3;border-left:5px solid #006633;border-radius:6px;margin:14px 0 6px}
+pre{margin:0;padding:18px 16px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:Consolas,Courier New,monospace;font-size:12.6px;line-height:1.45;max-height:640px;overflow:auto}
+.copy{position:sticky;top:8px;float:right;margin:8px 10px 0 0;background:#CC9900;color:#1e2a24;border:0;border-radius:4px;padding:7px 14px;font-weight:600;cursor:pointer;z-index:2}.copy:hover{background:#b58600}
+.doc{background:#fff8e6;border:1px solid #e6c766;border-radius:6px;padding:12px 16px;margin:0 0 26px;font-size:13.5px}.doc b{color:#7a5a00}
+.lv100{background:#d7f0dc}.lv75{background:#e9f5df}.lv50{background:#fff3cd}.lv25{background:#fde2d2}.lv0{background:#f8d0d0}
+.crit{font-size:12.5px}details{margin:8px 0 16px}summary{cursor:pointer;color:#006633;font-weight:600}
+.badge{display:inline-block;background:#006633;color:#fff;border-radius:12px;padding:2px 10px;font-size:12px;margin-left:8px}
+</style><script>function cp(id,btn){var t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(function(){btn.textContent='Copiado';setTimeout(function(){btn.textContent='Copiar informe'},1800)});}</script></head><body>
+<header><h1>SIGCB-QR — Sistema Integral de Gestión Bibliotecaria con QR<span class="badge">5.42 / 10</span></h1><p>PFC Entrega Final (2B) · Aplicaciones Web (Quinto nivel) · UTEQ · Revisión del 5 de septiembre de 2026 · Repositorio auditado: <a style="color:#fff" href="https://github.com/a1l2i3s4o5n6/-SIGCB-QR-Biblioteca">https://github.com/a1l2i3s4o5n6/-SIGCB-QR-Biblioteca</a> · commit <code>d5ab0c4</code></p></header><main>
+<h2>Niveles por criterio</h2><table class="crit"><tr><th>Criterio</th><th class="n">Peso</th><th class="n">Nivel</th><th>Justificación</th></tr>
+<tr><td><b>P0</b> Aplicación de observaciones acumuladas</td><td class="n">5</td><td class="n lv50">En desarrollo 50</td><td>24 códigos OBS, 16 hashes citados y los 16 existen, 27 marcas de resuelto. Falta la etiqueta v1.0.0, que el descriptor exige.</td></tr>
+<tr><td><b>P1</b> Cierre funcional, cobertura y acceso a datos</td><td class="n">7</td><td class="n lv25">Insuficiente 25</td><td>JaCoCo recalculado: 42,51 % de líneas y 16,84 % de ramas; controladores 50,3/29,3, servicios 32,1/13,3, dominio 22,0/0. CI verde en las diez últimas corridas. Trece procedimientos en db/procs/, nueve invocados con @Procedure desde los repositorios y catalogados con tipo_acceso; cuatro sin invocar (fn_contar_prestamos_entre_fechas, sp_dashboard_estadisticas, sp_prestamos_entre_fechas, sp_top_usuarios_prestamos). Cobertura por debajo del 50 %.</td></tr>
+<tr><td><b>P2</b> Rendimiento con evidencia estadística</td><td class="n">6</td><td class="n lv75">Satisfactorio 75</td><td>Cinco corridas de consola k6 a 50 VU durante 30 s contra GET /api/libros autenticado, con fecha, commit y versión de k6 en cabecera; p95 entre 4,7 y 7,6 ms. Además tres corridas de caché fría y caliente. IC 95 % reportado; no hay NDJSON crudo ni test inferencial.</td></tr>
+<tr><td><b>P3</b> Seguridad OWASP + ZAP + auditoría de acceso a datos</td><td class="n">7</td><td class="n lv75">Satisfactorio 75</td><td>OWASP-AUDIT.md con salida cruda del 3 de septiembre; ZAP de API y de frontend sin hallazgos altos (1 y 4 medios); SpotBugs archivado; audit-sql-dynamic.json. Faltan las cabeceras HSTS y X-Frame-Options en el código.</td></tr>
+<tr><td><b>P4</b> Calidad web Lighthouse</td><td class="n">5</td><td class="n lv75">Satisfactorio 75</td><td>Seis corridas (3 desktop, 3 mobile): performance 96-97 y 85-89, accesibilidad 98, SEO 91, buenas prácticas 78 en todas. Tres de cuatro categorías cumplen en ambos perfiles y el informe lo declara.</td></tr>
+<tr><td><b>P5</b> Puesta en producción accesible</td><td class="n">5</td><td class="n lv25">Insuficiente 25</td><td>No hay despliegue público; DEPLOYMENT.md, RUNBOOK.md y BACKUP.md existen en la raíz, no en docs/despliegue/.</td></tr>
+<tr><td><b>D0R</b> Culminación de la ingeniería de requisitos</td><td class="n">8</td><td class="n lv50">En desarrollo 50</td><td>docs/requisitos/SRS.pdf de 7 páginas, once Must, sin firma del docente-director y sin el nombre SRS-v1.0.0.pdf que exige la guía.</td></tr>
+<tr><td><b>D1</b> Estructura IMRaD y secciones obligatorias</td><td class="n">6</td><td class="n lv75">Satisfactorio 75</td><td>33 páginas con las secciones obligatorias, resumen y abstract, capítulo de RE, anexos. Secciones de resultados organizadas por bloques.</td></tr>
+<tr><td><b>D2</b> Trabajos relacionados y brecha</td><td class="n">5</td><td class="n lv75">Satisfactorio 75</td><td>Estrategia de búsqueda, tabla comparativa y brecha explícita; diagrama PRISMA parcial.</td></tr>
+<tr><td><b>D3</b> Metodología y protocolo experimental</td><td class="n">7</td><td class="n lv50">En desarrollo 50</td><td>DSR y GQM mencionados con instanciación breve; el protocolo SUS está descrito pero no ejecutado.</td></tr>
+<tr><td><b>D4</b> Análisis estadístico riguroso</td><td class="n">6</td><td class="n lv25">Insuficiente 25</td><td>El SUS está declarado sin medir y con cero participantes, de forma explícita y honesta; la estadística se limita a k6 con IC. Por descriptor, Insuficiente.</td></tr>
+<tr><td><b>D5</b> Amenazas a la validez y discusión</td><td class="n">4</td><td class="n lv75">Satisfactorio 75</td><td>Cuatro categorías con mitigación y discusión que responde las RQ.</td></tr>
+<tr><td><b>D6</b> Bibliografía y calidad de citas</td><td class="n">4</td><td class="n lv75">Satisfactorio 75</td><td>46 referencias, 41 citadas, 24 con DOI; los 24 DOI verificados contra Crossref son correctos.</td></tr>
+<tr><td><b>R1</b> Reproducción end-to-end (make all)</td><td class="n">8</td><td class="n lv50">En desarrollo 50</td><td>make all encadena verify, up, docs-check, test y audit; no compila el PDF ni regenera mediciones.</td></tr>
+<tr><td><b>R2</b> Datos con DOI, diccionario y provenance</td><td class="n">6</td><td class="n lv25">Insuficiente 25</td><td>Sin DOI de software ni de dataset; DATA-PROVENANCE.md de 4,8 KB en la raíz; no existe DATA-DICTIONARY.md.</td></tr>
+<tr><td><b>R3</b> Metadatos, CRediT y ORCID</td><td class="n">6</td><td class="n lv25">Insuficiente 25</td><td>CITATION.cff sin autores con ORCID válido (0000-0000-0000-0000 de relleno) y sin DOI; CONTRIBUTORS.md con catorce roles CRediT.</td></tr>
+<tr><td><b>R4</b> Cumplimiento de estándares de reporte</td><td class="n">5</td><td class="n lv100">Excelente 100</td><td>Checklists INCOSE (19/2), Ralph (21/4), PRISMA (18/9) y FAIR (10/3) rellenados ítem por ítem con evidencia.</td></tr>
+<tr><th colspan="2">Nota del equipo</th><th class="n">5.42 / 10</th><th>Sin pisos ni reglas transversales de sanción aplicados a la nota; estado de los pisos declarado en cada informe.</th></tr></table>
+<h2>Pendientes antes del examen final (semana 19, 7 al 11 de septiembre)</h2><ol><li>Coloquen la etiqueta v1.0.0 sobre el commit que van a defender.</li><li>Suban la cobertura de servicios y controladores; hoy 32 % y 50 % de líneas.</li><li>Invoquen o retiren las cuatro rutinas sin uso de db/procs/.</li><li>Añadan HSTS y X-Frame-Options y suban buenas prácticas de Lighthouse a 90.</li><li>Registren los ORCID reales, depositen en Zenodo y creen DATA-DICTIONARY.md.</li><li>Renombren el SRS a SRS-v1.0.0.pdf y muevan DEPLOYMENT, RUNBOOK y BACKUP a docs/despliegue/.</li><li>Apliquen el SUS a quince participantes reales con consentimiento.</li></ol>
+<h2>Informes individuales</h2><p>Cada informe incluye la revisión completa del equipo y la valoración del aporte individual. El botón copia el texto íntegro.</p>
+<h3>Zambrano Moreira Alison Ariana <span class="badge">6.85 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SIGCB-QR_0',this)">Copiar informe</button><pre id="SIGCB-QR_0">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: SIGCB-QR — Sistema Integral de Gestión Bibliotecaria con QR
+Repositorio auditado: https://github.com/a1l2i3s4o5n6/-SIGCB-QR-Biblioteca
+Rama: main | Commit evaluado: d5ab0c4 | Fecha del commit: 2026-09-04T21:11:26-05:00
+Estado del arbol: 129 commits, 464 archivos, 3 identidades Git para 2 personas activas; etiquetas v0.7.0, v0.7.1 y v0.9.0-rc; NO existe v1.0.0.
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: CUMPLE. docs/caratula/caratula.pdf tiene una página con la URL completa en una línea, más commit y digest SHA-256 del manifiesto.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. El README documenta el paso previo python scripts/entrega-digest.py, que genera commit.tex y digest.tex, y luego latexmk sobre docs/informe/informe-tecnico.tex: código de salida cero, 33 páginas, cero citas indefinidas, cero referencias sin resolver, siete desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel En desarrollo (50%)
+  24 códigos OBS, 16 hashes citados y los 16 existen, 27 marcas de resuelto. Falta la etiqueta v1.0.0, que el descriptor exige.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel Insuficiente (25%)
+  JaCoCo recalculado: 42,51 % de líneas y 16,84 % de ramas; controladores 50,3/29,3, servicios 32,1/13,3, dominio 22,0/0. CI verde en las diez últimas corridas. Trece procedimientos en db/procs/, nueve invocados con @Procedure desde los repositorios y catalogados con tipo_acceso; cuatro sin invocar (fn_contar_prestamos_entre_fechas, sp_dashboard_estadisticas, sp_prestamos_entre_fechas, sp_top_usuarios_prestamos). Cobertura por debajo del 50 %.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Satisfactorio (75%)
+  Cinco corridas de consola k6 a 50 VU durante 30 s contra GET /api/libros autenticado, con fecha, commit y versión de k6 en cabecera; p95 entre 4,7 y 7,6 ms. Además tres corridas de caché fría y caliente. IC 95 % reportado; no hay NDJSON crudo ni test inferencial.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  OWASP-AUDIT.md con salida cruda del 3 de septiembre; ZAP de API y de frontend sin hallazgos altos (1 y 4 medios); SpotBugs archivado; audit-sql-dynamic.json. Faltan las cabeceras HSTS y X-Frame-Options en el código.
+P4. Calidad web Lighthouse | Peso 5% | Nivel Satisfactorio (75%)
+  Seis corridas (3 desktop, 3 mobile): performance 96-97 y 85-89, accesibilidad 98, SEO 91, buenas prácticas 78 en todas. Tres de cuatro categorías cumplen en ambos perfiles y el informe lo declara.
+P5. Puesta en producción accesible | Peso 5% | Nivel Insuficiente (25%)
+  No hay despliegue público; DEPLOYMENT.md, RUNBOOK.md y BACKUP.md existen en la raíz, no en docs/despliegue/.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  docs/requisitos/SRS.pdf de 7 páginas, once Must, sin firma del docente-director y sin el nombre SRS-v1.0.0.pdf que exige la guía.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Satisfactorio (75%)
+  33 páginas con las secciones obligatorias, resumen y abstract, capítulo de RE, anexos. Secciones de resultados organizadas por bloques.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel Satisfactorio (75%)
+  Estrategia de búsqueda, tabla comparativa y brecha explícita; diagrama PRISMA parcial.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel En desarrollo (50%)
+  DSR y GQM mencionados con instanciación breve; el protocolo SUS está descrito pero no ejecutado.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel Insuficiente (25%)
+  El SUS está declarado sin medir y con cero participantes, de forma explícita y honesta; la estadística se limita a k6 con IC. Por descriptor, Insuficiente.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel Satisfactorio (75%)
+  Cuatro categorías con mitigación y discusión que responde las RQ.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Satisfactorio (75%)
+  46 referencias, 41 citadas, 24 con DOI; los 24 DOI verificados contra Crossref son correctos.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel En desarrollo (50%)
+  make all encadena verify, up, docs-check, test y audit; no compila el PDF ni regenera mediciones.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Insuficiente (25%)
+  Sin DOI de software ni de dataset; DATA-PROVENANCE.md de 4,8 KB en la raíz; no existe DATA-DICTIONARY.md.
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Insuficiente (25%)
+  CITATION.cff sin autores con ORCID válido (0000-0000-0000-0000 de relleno) y sin DOI; CONTRIBUTORS.md con catorce roles CRediT.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel Excelente (100%)
+  Checklists INCOSE (19/2), Ralph (21/4), PRISMA (18/9) y FAIR (10/3) rellenados ítem por ítem con evidencia.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Coloquen la etiqueta v1.0.0 sobre el commit que van a defender.
+  2. Suban la cobertura de servicios y controladores; hoy 32 % y 50 % de líneas.
+  3. Invoquen o retiren las cuatro rutinas sin uso de db/procs/.
+  4. Añadan HSTS y X-Frame-Options y suban buenas prácticas de Lighthouse a 90.
+  5. Registren los ORCID reales, depositen en Zenodo y creen DATA-DICTIONARY.md.
+  6. Renombren el SRS a SRS-v1.0.0.pdf y muevan DEPLOYMENT, RUNBOOK y BACKUP a docs/despliegue/.
+  7. Apliquen el SUS a quince participantes reales con consentimiento.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.50 + 7x0.25 + 6x0.75 + 7x0.75 + 5x0.75 + 5x0.25 + 8x0.50 + 6x0.75 + 5x0.75 + 7x0.50 + 6x0.25 + 4x0.75 + 4x0.75 + 8x0.50 + 6x0.25 + 6x0.25 + 5x1.00 = 54.20
+Nota del equipo ............. 5.42 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: ZAMBRANO MOREIRA ALISON ARIANA
+Equipo: SIGCB-QR
+Rol verificado: Propietaria del repositorio, documento, infraestructura, backend
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+63 commits sin merges en 7 días distintos entre el 16 de julio y el 4 de septiembre, +53.447 / -10.256 líneas sobre 480 archivos. Correo institucional azambranom17@uteq.edu.ec, identidad única.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): documentación 20.281, backend 4.640, frontend 4.163, infraestructura 3.606, pruebas 2.114, base de datos 1.103.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 4/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 4/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 2/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 4/4
+
+ANALISIS DE SU CONTRIBUCION
+  Autora del informe, de la carátula con digest, de las mediciones y de la bitácora. I3 en 2 porque 63 commits en siete jornadas concentran el trabajo en pocos días. Le reconozco la integridad de declarar el SUS sin medir en lugar de inventarlo.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x4 + 25x4 + 20x2 + 25x4 = 360
+Nota del aporte individual = 360 / 4 / 10 = 9.00
+Nota global del equipo ....... 5.42  (peso 60%)
+Nota del aporte individual ... 9.00  (peso 40%)
+Calificacion ponderada ....... 5.42 x 0,60 + 9.00 x 0,40 = 6.85
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 6.85 / 10
+----------------------------------------------------------------------------</pre></div>
+<h3>Romero Mendez Bryam Steven <span class="badge">6.00 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SIGCB-QR_1',this)">Copiar informe</button><pre id="SIGCB-QR_1">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: SIGCB-QR — Sistema Integral de Gestión Bibliotecaria con QR
+Repositorio auditado: https://github.com/a1l2i3s4o5n6/-SIGCB-QR-Biblioteca
+Rama: main | Commit evaluado: d5ab0c4 | Fecha del commit: 2026-09-04T21:11:26-05:00
+Estado del arbol: 129 commits, 464 archivos, 3 identidades Git para 2 personas activas; etiquetas v0.7.0, v0.7.1 y v0.9.0-rc; NO existe v1.0.0.
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: CUMPLE. docs/caratula/caratula.pdf tiene una página con la URL completa en una línea, más commit y digest SHA-256 del manifiesto.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. El README documenta el paso previo python scripts/entrega-digest.py, que genera commit.tex y digest.tex, y luego latexmk sobre docs/informe/informe-tecnico.tex: código de salida cero, 33 páginas, cero citas indefinidas, cero referencias sin resolver, siete desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel En desarrollo (50%)
+  24 códigos OBS, 16 hashes citados y los 16 existen, 27 marcas de resuelto. Falta la etiqueta v1.0.0, que el descriptor exige.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel Insuficiente (25%)
+  JaCoCo recalculado: 42,51 % de líneas y 16,84 % de ramas; controladores 50,3/29,3, servicios 32,1/13,3, dominio 22,0/0. CI verde en las diez últimas corridas. Trece procedimientos en db/procs/, nueve invocados con @Procedure desde los repositorios y catalogados con tipo_acceso; cuatro sin invocar (fn_contar_prestamos_entre_fechas, sp_dashboard_estadisticas, sp_prestamos_entre_fechas, sp_top_usuarios_prestamos). Cobertura por debajo del 50 %.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Satisfactorio (75%)
+  Cinco corridas de consola k6 a 50 VU durante 30 s contra GET /api/libros autenticado, con fecha, commit y versión de k6 en cabecera; p95 entre 4,7 y 7,6 ms. Además tres corridas de caché fría y caliente. IC 95 % reportado; no hay NDJSON crudo ni test inferencial.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  OWASP-AUDIT.md con salida cruda del 3 de septiembre; ZAP de API y de frontend sin hallazgos altos (1 y 4 medios); SpotBugs archivado; audit-sql-dynamic.json. Faltan las cabeceras HSTS y X-Frame-Options en el código.
+P4. Calidad web Lighthouse | Peso 5% | Nivel Satisfactorio (75%)
+  Seis corridas (3 desktop, 3 mobile): performance 96-97 y 85-89, accesibilidad 98, SEO 91, buenas prácticas 78 en todas. Tres de cuatro categorías cumplen en ambos perfiles y el informe lo declara.
+P5. Puesta en producción accesible | Peso 5% | Nivel Insuficiente (25%)
+  No hay despliegue público; DEPLOYMENT.md, RUNBOOK.md y BACKUP.md existen en la raíz, no en docs/despliegue/.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  docs/requisitos/SRS.pdf de 7 páginas, once Must, sin firma del docente-director y sin el nombre SRS-v1.0.0.pdf que exige la guía.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Satisfactorio (75%)
+  33 páginas con las secciones obligatorias, resumen y abstract, capítulo de RE, anexos. Secciones de resultados organizadas por bloques.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel Satisfactorio (75%)
+  Estrategia de búsqueda, tabla comparativa y brecha explícita; diagrama PRISMA parcial.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel En desarrollo (50%)
+  DSR y GQM mencionados con instanciación breve; el protocolo SUS está descrito pero no ejecutado.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel Insuficiente (25%)
+  El SUS está declarado sin medir y con cero participantes, de forma explícita y honesta; la estadística se limita a k6 con IC. Por descriptor, Insuficiente.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel Satisfactorio (75%)
+  Cuatro categorías con mitigación y discusión que responde las RQ.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Satisfactorio (75%)
+  46 referencias, 41 citadas, 24 con DOI; los 24 DOI verificados contra Crossref son correctos.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel En desarrollo (50%)
+  make all encadena verify, up, docs-check, test y audit; no compila el PDF ni regenera mediciones.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Insuficiente (25%)
+  Sin DOI de software ni de dataset; DATA-PROVENANCE.md de 4,8 KB en la raíz; no existe DATA-DICTIONARY.md.
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Insuficiente (25%)
+  CITATION.cff sin autores con ORCID válido (0000-0000-0000-0000 de relleno) y sin DOI; CONTRIBUTORS.md con catorce roles CRediT.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel Excelente (100%)
+  Checklists INCOSE (19/2), Ralph (21/4), PRISMA (18/9) y FAIR (10/3) rellenados ítem por ítem con evidencia.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Coloquen la etiqueta v1.0.0 sobre el commit que van a defender.
+  2. Suban la cobertura de servicios y controladores; hoy 32 % y 50 % de líneas.
+  3. Invoquen o retiren las cuatro rutinas sin uso de db/procs/.
+  4. Añadan HSTS y X-Frame-Options y suban buenas prácticas de Lighthouse a 90.
+  5. Registren los ORCID reales, depositen en Zenodo y creen DATA-DICTIONARY.md.
+  6. Renombren el SRS a SRS-v1.0.0.pdf y muevan DEPLOYMENT, RUNBOOK y BACKUP a docs/despliegue/.
+  7. Apliquen el SUS a quince participantes reales con consentimiento.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.50 + 7x0.25 + 6x0.75 + 7x0.75 + 5x0.75 + 5x0.25 + 8x0.50 + 6x0.75 + 5x0.75 + 7x0.50 + 6x0.25 + 4x0.75 + 4x0.75 + 8x0.50 + 6x0.25 + 6x0.25 + 5x1.00 = 54.20
+Nota del equipo ............. 5.42 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: ROMERO MENDEZ BRYAM STEVEN
+Equipo: SIGCB-QR
+Rol verificado: Frontend, backend y pruebas
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+56 commits sin merges en dos identidades con el mismo correo romerosteven553@gmail.com (JuniorSoft363 51, BryBryst 5), en 10 días distintos entre el 31 de julio y el 4 de septiembre, +13.696 / -993 líneas sobre 344 archivos.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): frontend 6.291, documentación 3.433, backend 1.825, pruebas 896, base de datos 574.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 3/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 3/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 3/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 2/4
+
+ANALISIS DE SU CONTRIBUCION
+  Aporte real en las cuatro capas y presencia en la ronda final; sin firma sobre mediciones ni sobre el documento académico salvo tres archivos.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x3 + 25x3 + 20x3 + 25x2 = 275
+Nota del aporte individual = 275 / 4 / 10 = 6.88
+Nota global del equipo ....... 5.42  (peso 60%)
+Nota del aporte individual ... 6.88  (peso 40%)
+Calificacion ponderada ....... 5.42 x 0,60 + 6.88 x 0,40 = 6.00
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 6.00 / 10
+----------------------------------------------------------------------------</pre></div>
+<h3>Arias Moreira Maybelin Gregoria <span class="badge">3.25 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SIGCB-QR_2',this)">Copiar informe</button><pre id="SIGCB-QR_2">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: SIGCB-QR — Sistema Integral de Gestión Bibliotecaria con QR
+Repositorio auditado: https://github.com/a1l2i3s4o5n6/-SIGCB-QR-Biblioteca
+Rama: main | Commit evaluado: d5ab0c4 | Fecha del commit: 2026-09-04T21:11:26-05:00
+Estado del arbol: 129 commits, 464 archivos, 3 identidades Git para 2 personas activas; etiquetas v0.7.0, v0.7.1 y v0.9.0-rc; NO existe v1.0.0.
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: CUMPLE. docs/caratula/caratula.pdf tiene una página con la URL completa en una línea, más commit y digest SHA-256 del manifiesto.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. El README documenta el paso previo python scripts/entrega-digest.py, que genera commit.tex y digest.tex, y luego latexmk sobre docs/informe/informe-tecnico.tex: código de salida cero, 33 páginas, cero citas indefinidas, cero referencias sin resolver, siete desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel En desarrollo (50%)
+  24 códigos OBS, 16 hashes citados y los 16 existen, 27 marcas de resuelto. Falta la etiqueta v1.0.0, que el descriptor exige.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel Insuficiente (25%)
+  JaCoCo recalculado: 42,51 % de líneas y 16,84 % de ramas; controladores 50,3/29,3, servicios 32,1/13,3, dominio 22,0/0. CI verde en las diez últimas corridas. Trece procedimientos en db/procs/, nueve invocados con @Procedure desde los repositorios y catalogados con tipo_acceso; cuatro sin invocar (fn_contar_prestamos_entre_fechas, sp_dashboard_estadisticas, sp_prestamos_entre_fechas, sp_top_usuarios_prestamos). Cobertura por debajo del 50 %.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Satisfactorio (75%)
+  Cinco corridas de consola k6 a 50 VU durante 30 s contra GET /api/libros autenticado, con fecha, commit y versión de k6 en cabecera; p95 entre 4,7 y 7,6 ms. Además tres corridas de caché fría y caliente. IC 95 % reportado; no hay NDJSON crudo ni test inferencial.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  OWASP-AUDIT.md con salida cruda del 3 de septiembre; ZAP de API y de frontend sin hallazgos altos (1 y 4 medios); SpotBugs archivado; audit-sql-dynamic.json. Faltan las cabeceras HSTS y X-Frame-Options en el código.
+P4. Calidad web Lighthouse | Peso 5% | Nivel Satisfactorio (75%)
+  Seis corridas (3 desktop, 3 mobile): performance 96-97 y 85-89, accesibilidad 98, SEO 91, buenas prácticas 78 en todas. Tres de cuatro categorías cumplen en ambos perfiles y el informe lo declara.
+P5. Puesta en producción accesible | Peso 5% | Nivel Insuficiente (25%)
+  No hay despliegue público; DEPLOYMENT.md, RUNBOOK.md y BACKUP.md existen en la raíz, no en docs/despliegue/.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  docs/requisitos/SRS.pdf de 7 páginas, once Must, sin firma del docente-director y sin el nombre SRS-v1.0.0.pdf que exige la guía.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Satisfactorio (75%)
+  33 páginas con las secciones obligatorias, resumen y abstract, capítulo de RE, anexos. Secciones de resultados organizadas por bloques.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel Satisfactorio (75%)
+  Estrategia de búsqueda, tabla comparativa y brecha explícita; diagrama PRISMA parcial.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel En desarrollo (50%)
+  DSR y GQM mencionados con instanciación breve; el protocolo SUS está descrito pero no ejecutado.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel Insuficiente (25%)
+  El SUS está declarado sin medir y con cero participantes, de forma explícita y honesta; la estadística se limita a k6 con IC. Por descriptor, Insuficiente.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel Satisfactorio (75%)
+  Cuatro categorías con mitigación y discusión que responde las RQ.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Satisfactorio (75%)
+  46 referencias, 41 citadas, 24 con DOI; los 24 DOI verificados contra Crossref son correctos.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel En desarrollo (50%)
+  make all encadena verify, up, docs-check, test y audit; no compila el PDF ni regenera mediciones.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Insuficiente (25%)
+  Sin DOI de software ni de dataset; DATA-PROVENANCE.md de 4,8 KB en la raíz; no existe DATA-DICTIONARY.md.
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Insuficiente (25%)
+  CITATION.cff sin autores con ORCID válido (0000-0000-0000-0000 de relleno) y sin DOI; CONTRIBUTORS.md con catorce roles CRediT.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel Excelente (100%)
+  Checklists INCOSE (19/2), Ralph (21/4), PRISMA (18/9) y FAIR (10/3) rellenados ítem por ítem con evidencia.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Coloquen la etiqueta v1.0.0 sobre el commit que van a defender.
+  2. Suban la cobertura de servicios y controladores; hoy 32 % y 50 % de líneas.
+  3. Invoquen o retiren las cuatro rutinas sin uso de db/procs/.
+  4. Añadan HSTS y X-Frame-Options y suban buenas prácticas de Lighthouse a 90.
+  5. Registren los ORCID reales, depositen en Zenodo y creen DATA-DICTIONARY.md.
+  6. Renombren el SRS a SRS-v1.0.0.pdf y muevan DEPLOYMENT, RUNBOOK y BACKUP a docs/despliegue/.
+  7. Apliquen el SUS a quince participantes reales con consentimiento.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.50 + 7x0.25 + 6x0.75 + 7x0.75 + 5x0.75 + 5x0.25 + 8x0.50 + 6x0.75 + 5x0.75 + 7x0.50 + 6x0.25 + 4x0.75 + 4x0.75 + 8x0.50 + 6x0.25 + 6x0.25 + 5x1.00 = 54.20
+Nota del equipo ............. 5.42 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: ARIAS MOREIRA MAYBELIN GREGORIA
+Equipo: SIGCB-QR
+Rol verificado: Sin rol verificable
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+Cero commits en las 129 revisiones del historial. Sin firma sobre ningún archivo.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): ninguna.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 0/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 0/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 0/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 0/4
+
+ANALISIS DE SU CONTRIBUCION
+  No hay evidencia de aporte en el repositorio. Si trabajó bajo otra cuenta, debe presentar la evidencia.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x0 + 25x0 + 20x0 + 25x0 = 0
+Nota del aporte individual = 0 / 4 / 10 = 0.00
+Nota global del equipo ....... 5.42  (peso 60%)
+Nota del aporte individual ... 0.00  (peso 40%)
+Calificacion ponderada ....... 5.42 x 0,60 + 0.00 x 0,40 = 3.25
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 3.25 / 10
+----------------------------------------------------------------------------</pre></div>
+<p style="font-size:12.5px;color:#555;margin-top:36px">Rúbrica: Guía de la Cuarta Entrega (Entrega Final) del PFC, 17 criterios, 3 ejes. Nota individual = 60 % nota del equipo + 40 % aporte individual (I1 30, I2 25, I3 20, I4 25). Las reclamaciones se atienden con evidencia del repositorio.</p></main></body></html>
