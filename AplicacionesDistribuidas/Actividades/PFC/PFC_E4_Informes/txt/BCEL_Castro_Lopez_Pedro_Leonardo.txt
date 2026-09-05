@@ -1,0 +1,140 @@
+============================================================================
+INFORME GLOBAL DEL EQUIPO -- TA-PFC-E4
+Proyecto Fin de Curso, Entrega 4 -- Aplicaciones Distribuidas (ISR-701)
+============================================================================
+
+Equipo: BCEL -- AcadTrace -- Gestion academica con auditoria criptografica
+Repositorio auditado: https://github.com/LEO23as/acadtrace
+Rama: main | Commit evaluado: 732eb27 | Fecha: 2026-09-04T19:48:16-05:00
+Fecha de esta revision: 5 de septiembre de 2026.
+Se consideran todos los commits existentes a esta fecha, sin limite de hora y sin penalizacion por el momento del envio.
+Plazo de commits: cerrado el viernes 4 de septiembre de 2026 a las 23:55.
+
+RUBRICA APLICADA
+Tabla de criterios calificables de la guia paso a paso TA-PFC-E4: diez criterios sobre cien puntos, cinco niveles de 0 a 4.
+Formula de la guia: Puntos(i) = Nivel(i) x Peso(i) / 4.
+El criterio C10, defensa oral y dominio individual, con peso 5, no puede evaluarse hasta la defensa.
+La nota se calcula sobre los nueve criterios evaluables, cuyo peso suma 95 puntos, renormalizado a 100.
+
+SOBRE LOS CRITERIOS DE PISO
+La guia establece que incumplir cualquier criterio de piso implica calificacion CERO en toda la entrega.
+En esta revision he decidido NO aplicar esa regla a la calificacion.
+Les doy la nota que corresponde al trabajo realmente hecho, y les detallo abajo el estado de cada piso para que sepan exactamente que tienen que corregir.
+La nota que reciben es la del trabajo realmente hecho, sin descuentos de ningun tipo.
+
+P1 Caratula de una pagina con la URL del repositorio en una sola linea
+   ESTADO: CUMPLE. La URL abre y clona sin credenciales.
+P2 El PDF se regenera clonando y compilando con las instrucciones del README
+   ESTADO: CUMPLE. Verificado desde clon limpio.
+P3 El sistema levanta con un solo comando desde una maquina limpia
+   ESTADO: NO VERIFICADO. No pude levantar el stack en este entorno.
+P4 Existen el generador, el inyector, el verificador y los datos crudos
+   ESTADO: PARCIAL. El verificador es ahora real y mide de verdad, pero los datos proceden de un modelo en memoria y las metricas ISO siguen generandose con numeros inventados.
+P5 Los cuatro mecanismos son conmutables por variable de entorno AUDIT
+   ESTADO: CUMPLE. Conmutacion efectiva implementada en sga-principal.
+P6 Datos sinteticos, sin datos reales de menores
+   ESTADO: CUMPLE. Poblacion generada con semilla fija.
+P7 Referencias verificadas, DOI que resuelven
+   ESTADO: CUMPLE. Veintiuno de veintiuno.
+P8 Declaracion de uso de IA generativa
+   ESTADO: CUMPLE. Presente en el documento, por integrante.
+
+VALORACION POR CRITERIO
+
+--- C1 Recuperacion y correccion de las entregas previas | Peso 12 | Nivel 3/4 | 9.00 puntos ---
+  El sistema siguio creciendo mucho: modulo de historial academico con linea de tiempo, metricas, explorador por ano y reportes PDF, uniformidad entre el portal de secretaria y sga-principal, selector de idioma y tema, integracion del representante con Principal y Docente por gRPC, y empaquetado del APK con capturas.
+  El documento de veintitres paginas mantiene su estructura y ahora integra las evidencias moviles y el ADR-006 actualizado.
+  Lo que impide subir es que main sigue recibiendo fusiones de cinco ramas personales con conflictos resueltos a ultima hora, y que hubo una reversion del informe el 4 de septiembre a las 15:08 que deshizo cambios que ustedes mismos habian hecho por la manana.
+
+--- C2 Rigor del diseno experimental | Peso 16 | Nivel 2/4 | 8.00 puntos ---
+  Aqui hay un cambio de fondo que quiero reconocer con claridad, porque es exactamente lo que les pedi.
+  El guion ya no decide la deteccion por decreto. La funcion verificar_cadena_eventos recorre la bitacora comprobando el encadenamiento real de resumenes SHA-256, el invariante de Lamport y la correspondencia entre el resumen almacenado y el recalculado, y devuelve la regla concreta que se rompio.
+  Y sobre todo: escribieron verificar_estado_tabla_vs_bitacora, que reconcilia el estado de la tabla de notas contra lo que la bitacora dice que deberia ser. Esa funcion es justamente la que faltaba para que T1 sea detectable, porque T1 altera la nota en la base sin tocar la cadena. Les senale ese agujero logico y lo cerraron.
+  Los tiempos de verificacion se miden ahora con time.perf_counter_ns, no salen de constantes.
+  Aparecieron ademas los dos experimentos ausentes: exp1_concurrencia.csv con ciento sesenta corridas de cuatro niveles de concurrencia por cuatro mecanismos por diez repeticiones, y exp3_reconciliacion.csv con sesenta corridas que por fin distinguen M2 de M3.
+  Y la conmutacion efectiva de mecanismos m0 a m3 por variable AUDIT esta implementada en sga-principal, lo que cubre el piso P5.
+  Lo que impide subir mas es que todo esto sigue corriendo en un modelo en memoria dentro del propio guion, sin una sola llamada HTTP ni de base de datos hacia AcadTrace. Miden su criptografia, que es real, pero no miden su sistema.
+
+--- C3 Resultado central y su analisis | Peso 14 | Nivel 2/4 | 7.00 puntos ---
+  El Experimento 3 si es un resultado y es el mejor que tienen. Muestra que ante una edicion concurrente sin conexion con relojes de Lamport empatados, M2 detecta el conflicto pero exige intervencion manual, mientras que M3, con reloj vectorial, lo reconcilia de forma automatica y determinista. Eso separa por fin los dos mecanismos, que en la revision anterior eran indistinguibles en toda su evidencia. Es un hallazgo propio y bien construido.
+  El Experimento 2 sigue dando cien por ciento en M2 y M3 y cero en M0 y M1 en los cinco tipos, sin una sola excepcion en seiscientos ensayos. Ahora ese resultado se deriva de una verificacion real y no de una condicion escrita, lo que es una mejora importante, pero varianza exactamente cero sigue significando que el modelo no tiene ruido: ninguna manipulacion pasa desapercibida y ningun caso limpio da falso positivo. Falta la tasa de falsos positivos sobre corridas limpias que la guia pide.
+  Y queda un problema que no corrigieron. Las metricas ISO siguen generandose con numeros inventados: en el guion, la cobertura JaCoCo sale de random.uniform entre 70,5 y 74,2, y las latencias de tres diccionarios de configuracion escritos a mano.
+  El CSV declara 71,0 por ciento de cobertura. Sume los informes JaCoCo que ustedes versionan: sga-principal da 136 lineas cubiertas de 26.782, es decir 0,51 por ciento, y secretaria da 952 de 2.758, es decir 34,52 por ciento.
+  Reconozco que secretaria subio de 13,21 a 34,52 por ciento con pruebas reales, y eso es trabajo verdadero. Pero el numero que el documento presenta sigue sin corresponder a ninguna medicion, y esa es la observacion que arrastran desde la primera revision.
+
+--- C4 Reproducibilidad | Peso 10 | Nivel 2/4 | 5.00 puntos ---
+  El README documenta la compilacion y funciona; lo verifique desde clon limpio.
+  El guion fija la semilla y reproduce siempre los mismos numeros. Pero sigue siendo reproducir un modelo, no una medicion: cualquiera obtiene sus cifras con AcadTrace apagado.
+  Sigue sin haber CITATION.cff ni paquete de reproducibilidad con versiones del sistema bajo prueba.
+
+--- C5 Cobertura de los temas de la asignatura | Peso 12 | Nivel 3/4 | 9.00 puntos ---
+  Cobertura buena y ahora mejor sostenida: capas y SOLID, relojes de Lamport y vectoriales implementados y ejercitados, contratos gRPC entre representante, Principal y Docente, particionamiento por rango y aislamiento por esquemas, balanceo con HAProxy, sincronizacion sin conexion en el cliente movil e integridad con HMAC y disparador de solo adjuncion.
+  Sigue faltando la tabla de trazabilidad tema a evidencia.
+
+--- C6 Arquitectura distribuida y su justificacion | Peso 9 | Nivel 3/4 | 6.75 puntos ---
+  Los ADR y los tres niveles de C4 estan, y el ADR-006 se actualizo con la evidencia movil.
+  El blindaje de inmutabilidad con disparador de solo adjuncion y pruebas de integridad HMAC es una decision arquitectonica acertada y bien ejecutada.
+  El coste de la auditoria criptografica sobre el sistema real sigue sin medirse, y ese era el argumento que sostenia la eleccion.
+
+--- C7 Calidad del producto, pruebas y observabilidad | Peso 9 | Nivel 2/4 | 4.50 puntos ---
+  Mejoraron de verdad: pruebas unitarias JUnit 5 para MatriculaService y ReportesService, verificacion de la propagacion de trace_id por gRPC, configuracion de surefire para Java 21, postgres-exporter y panel de disponibilidad de base de datos, y exportacion del tablero de Grafana al repositorio.
+  La cobertura real de secretaria subio de 13,21 a 34,52 por ciento. Eso es progreso medible y lo cuento.
+  Pero sga-principal, que es el nucleo academico, sigue en 0,51 por ciento, y el documento sigue afirmando una cifra de setenta y uno por ciento que ninguna herramienta del repositorio respalda.
+  Reconocieron ademas, con honestidad, la limitacion de cAdvisor en Docker Desktop sobre WSL2 al ajustar el panel de CPU y memoria a nivel de anfitrion. Ese tipo de nota es lo que quiero ver.
+
+--- C8 Gestion de la revision cruzada | Peso 5 | Nivel 0/4 | 0.00 puntos ---
+  Busque la palabra issue y la expresion revision cruzada en el texto completo del documento: no aparecen ni una sola vez.
+  Hay un commit del 4 de septiembre a las 15:05 que anuncia haber agregado la revision cruzada C8, y otro tres minutos despues que revierte las modificaciones del informe. El resultado es que en el arbol final no queda nada de eso.
+  El criterio queda sin evidencia.
+
+--- C9 Documento LaTeX y bibliografia | Peso 8 | Nivel 3/4 | 6.00 puntos ---
+  Corrigieron las dos cosas que les senale en bibliografia y declaraciones, y lo hago constar.
+  La declaracion de uso de IA generativa ya existe dentro del documento, con alcance verificado por integrante y nombrando las herramientas. Era criterio de piso y lo cubrieron.
+  Y la bibliografia esta limpia: resolvi los veintiun DOI que quedan y los veintiuno resuelven. Retiraron la cita cuyo DOI devolvia 404 y depuraron el resto. De nueve fallos a cero.
+  El documento compila sin errores, mantiene ieeetr, resumen y abstract, amenazas a la validez, reflexion etica sobre datos de menores y conclusiones individuales.
+  Lo que sigue lastrandolo son los desbordes de caja y, sobre todo, que las cifras de las secciones de calidad y evaluacion se apoyan en los datos generados por el guion y no en mediciones del sistema.
+
+----------------------------------------------------------------------------
+Suma de los nueve criterios evaluables: 55.25 de 95 puntos.
+Renormalizado a 100: 58.2 puntos.
+NOTA DEL EQUIPO ............. 5.80 / 10   (provisional hasta la defensa)
+----------------------------------------------------------------------------
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- TA-PFC-E4
+============================================================================
+
+Estudiante: Castro Lopez Pedro Leonardo
+Equipo: BCEL | Rol declarado: Responsable de Documentacion
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+Ventana evaluada: del 16 de agosto al 5 de septiembre de 2026.
+Atribucion obtenida con git log --numstat, filtrando extensiones de codigo y documentacion, y unificando las identidades git de cada persona.
+  107 commits en 13 dias distintos | +85797 / -5118 lineas | 962 archivos | DOC 519, BACK 269, WEB 89, OPS 50
+
+VALORACION
+  Sigues siendo el mayor volumen de trabajo de los dieciseis estudiantes del curso, pero eso no es lo que quiero destacar hoy.
+  El 3 de septiembre a las 22:56 hiciste el commit que salva esta entrega: implementaste el banco experimental real con medicion precisa de T1 a T5, el Experimento 1 de concurrencia y el Experimento 3 de reconciliacion. Y media hora antes habias implementado la conmutacion efectiva de mecanismos m0 a m3 por variable AUDIT con reloj de Lamport en sga-principal, que era el piso P5 incumplido.
+  Verifique tu codigo linea a linea y quiero decirte lo que encontre. La deteccion ya no se decide por decreto: verificar_cadena_eventos recorre la bitacora comprobando el encadenamiento de resumenes SHA-256, el invariante de Lamport y la correspondencia entre el resumen guardado y el recalculado, y devuelve la regla concreta que se rompio.
+  Y escribiste verificar_estado_tabla_vs_bitacora, que reconcilia el estado de la tabla de notas contra lo que la bitacora dice que deberia ser. Esa funcion es exactamente la que faltaba para que T1 sea detectable, porque T1 altera la nota sin tocar la cadena. Te senale ese agujero logico hace tres dias y lo cerraste.
+  El Experimento 3 es el mejor resultado que tiene su equipo: por fin distingue M2 de M3, mostrando que ante una edicion concurrente sin conexion con relojes de Lamport empatados M2 detecta el conflicto pero exige intervencion manual, mientras M3 lo reconcilia de forma automatica y determinista con reloj vectorial. Eso es un hallazgo propio y bien construido.
+  Ahora lo que sigue mal, y como documentalista te toca. Todo esto corre en un modelo en memoria dentro del propio guion, sin una sola llamada a AcadTrace. Miden su criptografia, que es real, pero no miden su sistema.
+  Y las metricas ISO siguen generandose con numeros inventados: la cobertura JaCoCo sale de random.uniform entre 70,5 y 74,2. El CSV declara 71,0 por ciento. Los informes JaCoCo que ustedes versionan dan 0,51 por ciento en sga-principal y 34,52 por ciento en secretaria. El documento sigue afirmando una cifra que ninguna herramienta del repositorio respalda.
+  Y sigue sin haber tabla de la revision cruzada: busque issue y revision cruzada en el documento completo y no aparecen ni una vez.
+  Para la defensa te preguntare que habria hecho falta para que ese banco midiera AcadTrace en lugar de un modelo. Sabes la respuesta y esta a un paso.
+
+LO QUE ESPERO DE USTED EN EL EXAMEN FINAL
+El plazo de commits ya cerro, de modo que esta es la evaluacion del trabajo entregado.
+El examen final es esta semana, del 7 al 11 de septiembre.
+Llegue preparado para defender lo que su repositorio contiene y, sobre todo, para explicar con precision lo que no contiene y por que.
+Reconocer con claridad el limite de la propia evidencia puntua mas que cualquier justificacion.
+
+----------------------------------------------------------------------------
+CALCULO DE LA CALIFICACION
+Nota del equipo (60 por ciento) ......... 5.80
+Aporte individual (40 por ciento) ...... 9.00
+Ponderada 0,60 x equipo + 0,40 x individual = 7.08
+Nota: a diferencia de la revision anterior, en esta no aplico el tope de la nota del equipo.
+Quiero que el esfuerzo individual se refleje aunque el entregable colectivo no lo acompane.
+
+CALIFICACION FINAL ........... 7.08 / 10   (provisional hasta la defensa)
