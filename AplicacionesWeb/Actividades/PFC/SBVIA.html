@@ -1,0 +1,386 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Evaluación PFC 2B — SBVIA</title><style>body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f5;color:#1e2a24}
+header{background:#006633;color:#fff;padding:22px 36px}header h1{margin:0;font-size:22px}header p{margin:6px 0 0;opacity:.9;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:24px 36px}
+h2{color:#006633;border-bottom:3px solid #CC9900;padding-bottom:6px;margin-top:44px}
+h3{color:#006633;margin-top:30px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}th,td{border:1px solid #cfd8d3;padding:6px 9px;text-align:left;vertical-align:top}th{background:#e3efe8}
+td.n,th.n{text-align:right;white-space:nowrap}
+.box{position:relative;background:#fff;border:1px solid #cfd8d3;border-left:5px solid #006633;border-radius:6px;margin:14px 0 6px}
+pre{margin:0;padding:18px 16px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:Consolas,Courier New,monospace;font-size:12.6px;line-height:1.45;max-height:640px;overflow:auto}
+.copy{position:sticky;top:8px;float:right;margin:8px 10px 0 0;background:#CC9900;color:#1e2a24;border:0;border-radius:4px;padding:7px 14px;font-weight:600;cursor:pointer;z-index:2}.copy:hover{background:#b58600}
+.doc{background:#fff8e6;border:1px solid #e6c766;border-radius:6px;padding:12px 16px;margin:0 0 26px;font-size:13.5px}.doc b{color:#7a5a00}
+.lv100{background:#d7f0dc}.lv75{background:#e9f5df}.lv50{background:#fff3cd}.lv25{background:#fde2d2}.lv0{background:#f8d0d0}
+.crit{font-size:12.5px}details{margin:8px 0 16px}summary{cursor:pointer;color:#006633;font-weight:600}
+.badge{display:inline-block;background:#006633;color:#fff;border-radius:12px;padding:2px 10px;font-size:12px;margin-left:8px}
+</style><script>function cp(id,btn){var t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(function(){btn.textContent='Copiado';setTimeout(function(){btn.textContent='Copiar informe'},1800)});}</script></head><body>
+<header><h1>SBVIA — Simulador de Comportamiento Vial con Inteligencia Artificial<span class="badge">5.15 / 10</span></h1><p>PFC Entrega Final (2B) · Aplicaciones Web (Quinto nivel) · UTEQ · Revisión del 5 de septiembre de 2026 · Repositorio auditado: <a style="color:#fff" href="https://github.com/keithdrox/SBVIA-AppWeb">https://github.com/keithdrox/SBVIA-AppWeb</a> · commit <code>c74b540</code></p></header><main>
+<h2>Niveles por criterio</h2><table class="crit"><tr><th>Criterio</th><th class="n">Peso</th><th class="n">Nivel</th><th>Justificación</th></tr>
+<tr><td><b>P0</b> Aplicación de observaciones acumuladas</td><td class="n">5</td><td class="n lv50">En desarrollo 50</td><td>Doce observaciones, doce hashes citados y los doce existen; 18 marcas de resuelto y cuatro parciales. Las etiquetas existen, pero v0.9.0-rc fue colocada el 2 de septiembre, después de v1.0.0, así que no fotografía la Entrega 3.</td></tr>
+<tr><td><b>P1</b> Cierre funcional, cobertura y acceso a datos</td><td class="n">7</td><td class="n lv50">En desarrollo 50</td><td>JaCoCo recalculado: 79,73 % de líneas y 70,41 % de ramas, con controladores 75,3/77,3 y servicios 78,5/65,8; CI verde. Doce archivos en db/procs/ y catálogo con seis filas, pero ninguno de los doce procedimientos se invoca desde el código Java: no hay @Procedure, ni @NamedStoredProcedureQuery, ni CALL en backend/src/main. El resumen del informe afirma &quot;6 procedimientos almacenados SQL invocados vía JPA 2.1&quot; y esa afirmación no es cierta. La cobertura vale un nivel alto; los procedimientos sin invocar lo bajan a En desarrollo.</td></tr>
+<tr><td><b>P2</b> Rendimiento con evidencia estadística</td><td class="n">6</td><td class="n lv75">Satisfactorio 75</td><td>Cinco corridas crudas NDJSON a 50 VU. Recalculé p95 desde el crudo: 38,9, 68,8, 48,6, 126,5 y 29,3 ms, cero fallos, dentro del umbral. IC 95 % y delta de Cliff mencionados; no hay escenario de caché fría con cinco corridas.</td></tr>
+<tr><td><b>P3</b> Seguridad OWASP + ZAP + auditoría de acceso a datos</td><td class="n">7</td><td class="n lv50">En desarrollo 50</td><td>Cinco controles documentados en docs/mediciones/sec/ con curl-audit.sh y salida cruda; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic.sh presente. La carpeta docs/mediciones/sec/zap/ está vacía: el escaneo ZAP corre en CI pero no hay reporte archivado.</td></tr>
+<tr><td><b>P4</b> Calidad web Lighthouse</td><td class="n">5</td><td class="n lv50">En desarrollo 50</td><td>Dos reportes Lighthouse, uno mobile (86/100/100/100) y otro sin perfil declarado (92/98/100/95). Cumplen umbrales pero son corridas únicas, no tres por perfil.</td></tr>
+<tr><td><b>P5</b> Puesta en producción accesible</td><td class="n">5</td><td class="n lv25">Insuficiente 25</td><td>El README y DEPLOYMENT.md declaran https://sbvia.uteq-software.edu.ec; el dominio no resuelve en DNS y el backend tampoco. La documentación de despliegue existe.</td></tr>
+<tr><td><b>D0R</b> Culminación de la ingeniería de requisitos</td><td class="n">8</td><td class="n lv50">En desarrollo 50</td><td>SRS-v1.0.0.pdf de 14 páginas con veinte Must y bloque de aprobación en blanco; el documento declara que no presume aprobación. Sin firma, En desarrollo.</td></tr>
+<tr><td><b>D1</b> Estructura IMRaD y secciones obligatorias</td><td class="n">6</td><td class="n lv75">Satisfactorio 75</td><td>43 páginas con las secciones obligatorias, resumen y abstract bilingües y capítulo de RE. Varias secciones siguen siendo de uno o dos párrafos.</td></tr>
+<tr><td><b>D2</b> Trabajos relacionados y brecha</td><td class="n">5</td><td class="n lv50">En desarrollo 50</td><td>Trabajos relacionados y brecha presentes; la estrategia de búsqueda y PRISMA se mencionan sin diagrama ni tabla de ocho trabajos.</td></tr>
+<tr><td><b>D3</b> Metodología y protocolo experimental</td><td class="n">7</td><td class="n lv75">Satisfactorio 75</td><td>DSR de Peffers instanciada, GQM y Baltes citados; el protocolo de muestreo del SUS se declara sin justificación completa.</td></tr>
+<tr><td><b>D4</b> Análisis estadístico riguroso</td><td class="n">6</td><td class="n lv50">En desarrollo 50</td><td>SUS N=15 recalculado desde sus-raw-data.csv: media 84,17 y DT 8,64, coincide con el informe. Sin embargo cinco participantes (P01, P03, P06, P08, P13) tienen exactamente la misma fila 4,2,4,2,4,2,4,2,4,2 y P02 y P09 son idénticos; ese patrón no es esperable en una muestra real y el archivo fue reescrito el 3 de septiembre tras mi observación anterior. Necesito los formularios originales. Con esa reserva, estadística descriptiva con IC.</td></tr>
+<tr><td><b>D5</b> Amenazas a la validez y discusión</td><td class="n">4</td><td class="n lv50">En desarrollo 50</td><td>Cuatro categorías nombradas, cada una en un párrafo breve; discusión superficial.</td></tr>
+<tr><td><b>D6</b> Bibliografía y calidad de citas</td><td class="n">4</td><td class="n lv75">Satisfactorio 75</td><td>43 referencias, todas citadas, once con DOI; diez de once DOI verificados contra Crossref (vargha2000 resuelve al mismo artículo con título formateado distinto). Pocas de alto impacto.</td></tr>
+<tr><td><b>R1</b> Reproducción end-to-end (make all)</td><td class="n">8</td><td class="n lv50">En desarrollo 50</td><td>make all encadena verify, build, up y pdf; no regenera benchmarks, auditorías ni figuras desde datos crudos.</td></tr>
+<tr><td><b>R2</b> Datos con DOI, diccionario y provenance</td><td class="n">6</td><td class="n lv25">Insuficiente 25</td><td>Sin DOI de software ni de dataset. DATA-DICTIONARY.md de 3,4 KB y DATA-PROVENANCE.md de 2,3 KB, ambos parciales.</td></tr>
+<tr><td><b>R3</b> Metadatos, CRediT y ORCID</td><td class="n">6</td><td class="n lv25">Insuficiente 25</td><td>CITATION.cff 1.2.0 sin DOI y con un solo ORCID (Cruz); la portada lleva XXXX-XXXX-XXXX-XXXX para los otros dos. CONTRIBUTORS.md de 415 bytes con cinco roles.</td></tr>
+<tr><td><b>R4</b> Cumplimiento de estándares de reporte</td><td class="n">5</td><td class="n lv50">En desarrollo 50</td><td>Cuatro checklists de 2 a 3 KB; el de FAIR tiene 10 ítems marcados y 5 sin marcar; Ralph e INCOSE en tabla con marcas de verificación pero sin evidencia por ítem.</td></tr>
+<tr><th colspan="2">Nota del equipo</th><th class="n">5.15 / 10</th><th>Sin pisos ni reglas transversales de sanción aplicados a la nota; estado de los pisos declarado en cada informe.</th></tr></table>
+<h2>Pendientes antes del examen final (semana 19, 7 al 11 de septiembre)</h2><ol><li>Invoquen los procedimientos almacenados desde los repositorios JPA (@Procedure o @NamedStoredProcedureQuery) o retiren del informe la afirmación de que están invocados.</li><li>Entreguen los formularios SUS originales o expliquen por qué cinco participantes respondieron exactamente igual.</li><li>Archiven el reporte ZAP (HTML y JSON) en docs/mediciones/sec/zap/.</li><li>Ejecuten tres corridas Lighthouse por perfil y archívenlas.</li><li>Levanten el dominio declarado o retiren la URL del README hasta que responda.</li><li>Depositen software y dataset en Zenodo y registren los dos ORCID que faltan.</li><li>Pongan la URL del repositorio en la portada y produzcan una carátula de una página.</li></ol>
+<h2>Informes individuales</h2><p>Cada informe incluye la revisión completa del equipo y la valoración del aporte individual. El botón copia el texto íntegro.</p>
+<h3>Cruz Perez Justyn Keith <span class="badge">5.89 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SBVIA_0',this)">Copiar informe</button><pre id="SBVIA_0">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: SBVIA — Simulador de Comportamiento Vial con Inteligencia Artificial
+Repositorio auditado: https://github.com/keithdrox/SBVIA-AppWeb
+Rama: main | Commit evaluado: c74b540 | Fecha del commit: 2026-09-04T21:24:11-05:00
+Estado del arbol: 204 commits, 357 archivos, 3 identidades Git para 2 personas activas; hay dos commits posteriores a mi clonación (635fbfd, 727eba1) que no evalúo; v1.0.0 (d053ce6) 94 commits atrás.
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: NO CUMPLE en el repositorio. No existe ningún PDF de una página y la URL de GitHub aparece por primera vez en la página 33 del informe de 43 páginas. Si el PDF de carátula subido al SGA la lleva, el piso se cumple; eso lo verifica el docente sobre el SGA.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. make pdf (pdflatex, bibtex, dos pasadas sobre docs/informe-final.tex): código de salida cero, 43 páginas, cero citas indefinidas, cero referencias sin resolver, dos desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel En desarrollo (50%)
+  Doce observaciones, doce hashes citados y los doce existen; 18 marcas de resuelto y cuatro parciales. Las etiquetas existen, pero v0.9.0-rc fue colocada el 2 de septiembre, después de v1.0.0, así que no fotografía la Entrega 3.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel En desarrollo (50%)
+  JaCoCo recalculado: 79,73 % de líneas y 70,41 % de ramas, con controladores 75,3/77,3 y servicios 78,5/65,8; CI verde. Doce archivos en db/procs/ y catálogo con seis filas, pero ninguno de los doce procedimientos se invoca desde el código Java: no hay @Procedure, ni @NamedStoredProcedureQuery, ni CALL en backend/src/main. El resumen del informe afirma &quot;6 procedimientos almacenados SQL invocados vía JPA 2.1&quot; y esa afirmación no es cierta. La cobertura vale un nivel alto; los procedimientos sin invocar lo bajan a En desarrollo.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Satisfactorio (75%)
+  Cinco corridas crudas NDJSON a 50 VU. Recalculé p95 desde el crudo: 38,9, 68,8, 48,6, 126,5 y 29,3 ms, cero fallos, dentro del umbral. IC 95 % y delta de Cliff mencionados; no hay escenario de caché fría con cinco corridas.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel En desarrollo (50%)
+  Cinco controles documentados en docs/mediciones/sec/ con curl-audit.sh y salida cruda; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic.sh presente. La carpeta docs/mediciones/sec/zap/ está vacía: el escaneo ZAP corre en CI pero no hay reporte archivado.
+P4. Calidad web Lighthouse | Peso 5% | Nivel En desarrollo (50%)
+  Dos reportes Lighthouse, uno mobile (86/100/100/100) y otro sin perfil declarado (92/98/100/95). Cumplen umbrales pero son corridas únicas, no tres por perfil.
+P5. Puesta en producción accesible | Peso 5% | Nivel Insuficiente (25%)
+  El README y DEPLOYMENT.md declaran https://sbvia.uteq-software.edu.ec; el dominio no resuelve en DNS y el backend tampoco. La documentación de despliegue existe.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  SRS-v1.0.0.pdf de 14 páginas con veinte Must y bloque de aprobación en blanco; el documento declara que no presume aprobación. Sin firma, En desarrollo.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Satisfactorio (75%)
+  43 páginas con las secciones obligatorias, resumen y abstract bilingües y capítulo de RE. Varias secciones siguen siendo de uno o dos párrafos.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel En desarrollo (50%)
+  Trabajos relacionados y brecha presentes; la estrategia de búsqueda y PRISMA se mencionan sin diagrama ni tabla de ocho trabajos.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel Satisfactorio (75%)
+  DSR de Peffers instanciada, GQM y Baltes citados; el protocolo de muestreo del SUS se declara sin justificación completa.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel En desarrollo (50%)
+  SUS N=15 recalculado desde sus-raw-data.csv: media 84,17 y DT 8,64, coincide con el informe. Sin embargo cinco participantes (P01, P03, P06, P08, P13) tienen exactamente la misma fila 4,2,4,2,4,2,4,2,4,2 y P02 y P09 son idénticos; ese patrón no es esperable en una muestra real y el archivo fue reescrito el 3 de septiembre tras mi observación anterior. Necesito los formularios originales. Con esa reserva, estadística descriptiva con IC.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel En desarrollo (50%)
+  Cuatro categorías nombradas, cada una en un párrafo breve; discusión superficial.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Satisfactorio (75%)
+  43 referencias, todas citadas, once con DOI; diez de once DOI verificados contra Crossref (vargha2000 resuelve al mismo artículo con título formateado distinto). Pocas de alto impacto.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel En desarrollo (50%)
+  make all encadena verify, build, up y pdf; no regenera benchmarks, auditorías ni figuras desde datos crudos.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Insuficiente (25%)
+  Sin DOI de software ni de dataset. DATA-DICTIONARY.md de 3,4 KB y DATA-PROVENANCE.md de 2,3 KB, ambos parciales.
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Insuficiente (25%)
+  CITATION.cff 1.2.0 sin DOI y con un solo ORCID (Cruz); la portada lleva XXXX-XXXX-XXXX-XXXX para los otros dos. CONTRIBUTORS.md de 415 bytes con cinco roles.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel En desarrollo (50%)
+  Cuatro checklists de 2 a 3 KB; el de FAIR tiene 10 ítems marcados y 5 sin marcar; Ralph e INCOSE en tabla con marcas de verificación pero sin evidencia por ítem.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Invoquen los procedimientos almacenados desde los repositorios JPA (@Procedure o @NamedStoredProcedureQuery) o retiren del informe la afirmación de que están invocados.
+  2. Entreguen los formularios SUS originales o expliquen por qué cinco participantes respondieron exactamente igual.
+  3. Archiven el reporte ZAP (HTML y JSON) en docs/mediciones/sec/zap/.
+  4. Ejecuten tres corridas Lighthouse por perfil y archívenlas.
+  5. Levanten el dominio declarado o retiren la URL del README hasta que responda.
+  6. Depositen software y dataset en Zenodo y registren los dos ORCID que faltan.
+  7. Pongan la URL del repositorio en la portada y produzcan una carátula de una página.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.50 + 7x0.50 + 6x0.75 + 7x0.50 + 5x0.50 + 5x0.25 + 8x0.50 + 6x0.75 + 5x0.50 + 7x0.75 + 6x0.50 + 4x0.50 + 4x0.75 + 8x0.50 + 6x0.25 + 6x0.25 + 5x0.50 = 51.50
+Nota del equipo ............. 5.15 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: CRUZ PEREZ JUSTYN KEITH
+Equipo: SBVIA
+Rol verificado: Propietario del repositorio, frontend, documento
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+67 commits sin merges en dos identidades con el mismo correo justyncruzperez@gmail.com (keithdrox 12, JustynCruz04 55), en 14 días distintos entre el 4 de junio y el 2 de septiembre, +29.990 / -1.964 líneas sobre 149 archivos.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): frontend 16.920, documentación 5.471, base de datos 2.016, backend 2.551, infraestructura 1.209, pruebas 554.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 3/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 3/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 2/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 3/4
+
+ANALISIS DE SU CONTRIBUCION
+  Segundo en volumen y primero en frontend y documento. Sin commits desde el 2 de septiembre, con lo que la última ronda es toda de Umaginga. I3 en 2 por dos identidades sin correo institucional.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x3 + 25x3 + 20x2 + 25x3 = 280
+Nota del aporte individual = 280 / 4 / 10 = 7.00
+Nota global del equipo ....... 5.15  (peso 60%)
+Nota del aporte individual ... 7.00  (peso 40%)
+Calificacion ponderada ....... 5.15 x 0,60 + 7.00 x 0,40 = 5.89
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 5.89 / 10
+----------------------------------------------------------------------------</pre></div>
+<h3>Umaginga Arevalo Jefferson Manuel <span class="badge">5.89 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SBVIA_1',this)">Copiar informe</button><pre id="SBVIA_1">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: SBVIA — Simulador de Comportamiento Vial con Inteligencia Artificial
+Repositorio auditado: https://github.com/keithdrox/SBVIA-AppWeb
+Rama: main | Commit evaluado: c74b540 | Fecha del commit: 2026-09-04T21:24:11-05:00
+Estado del arbol: 204 commits, 357 archivos, 3 identidades Git para 2 personas activas; hay dos commits posteriores a mi clonación (635fbfd, 727eba1) que no evalúo; v1.0.0 (d053ce6) 94 commits atrás.
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: NO CUMPLE en el repositorio. No existe ningún PDF de una página y la URL de GitHub aparece por primera vez en la página 33 del informe de 43 páginas. Si el PDF de carátula subido al SGA la lleva, el piso se cumple; eso lo verifica el docente sobre el SGA.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. make pdf (pdflatex, bibtex, dos pasadas sobre docs/informe-final.tex): código de salida cero, 43 páginas, cero citas indefinidas, cero referencias sin resolver, dos desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel En desarrollo (50%)
+  Doce observaciones, doce hashes citados y los doce existen; 18 marcas de resuelto y cuatro parciales. Las etiquetas existen, pero v0.9.0-rc fue colocada el 2 de septiembre, después de v1.0.0, así que no fotografía la Entrega 3.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel En desarrollo (50%)
+  JaCoCo recalculado: 79,73 % de líneas y 70,41 % de ramas, con controladores 75,3/77,3 y servicios 78,5/65,8; CI verde. Doce archivos en db/procs/ y catálogo con seis filas, pero ninguno de los doce procedimientos se invoca desde el código Java: no hay @Procedure, ni @NamedStoredProcedureQuery, ni CALL en backend/src/main. El resumen del informe afirma &quot;6 procedimientos almacenados SQL invocados vía JPA 2.1&quot; y esa afirmación no es cierta. La cobertura vale un nivel alto; los procedimientos sin invocar lo bajan a En desarrollo.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Satisfactorio (75%)
+  Cinco corridas crudas NDJSON a 50 VU. Recalculé p95 desde el crudo: 38,9, 68,8, 48,6, 126,5 y 29,3 ms, cero fallos, dentro del umbral. IC 95 % y delta de Cliff mencionados; no hay escenario de caché fría con cinco corridas.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel En desarrollo (50%)
+  Cinco controles documentados en docs/mediciones/sec/ con curl-audit.sh y salida cruda; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic.sh presente. La carpeta docs/mediciones/sec/zap/ está vacía: el escaneo ZAP corre en CI pero no hay reporte archivado.
+P4. Calidad web Lighthouse | Peso 5% | Nivel En desarrollo (50%)
+  Dos reportes Lighthouse, uno mobile (86/100/100/100) y otro sin perfil declarado (92/98/100/95). Cumplen umbrales pero son corridas únicas, no tres por perfil.
+P5. Puesta en producción accesible | Peso 5% | Nivel Insuficiente (25%)
+  El README y DEPLOYMENT.md declaran https://sbvia.uteq-software.edu.ec; el dominio no resuelve en DNS y el backend tampoco. La documentación de despliegue existe.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  SRS-v1.0.0.pdf de 14 páginas con veinte Must y bloque de aprobación en blanco; el documento declara que no presume aprobación. Sin firma, En desarrollo.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Satisfactorio (75%)
+  43 páginas con las secciones obligatorias, resumen y abstract bilingües y capítulo de RE. Varias secciones siguen siendo de uno o dos párrafos.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel En desarrollo (50%)
+  Trabajos relacionados y brecha presentes; la estrategia de búsqueda y PRISMA se mencionan sin diagrama ni tabla de ocho trabajos.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel Satisfactorio (75%)
+  DSR de Peffers instanciada, GQM y Baltes citados; el protocolo de muestreo del SUS se declara sin justificación completa.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel En desarrollo (50%)
+  SUS N=15 recalculado desde sus-raw-data.csv: media 84,17 y DT 8,64, coincide con el informe. Sin embargo cinco participantes (P01, P03, P06, P08, P13) tienen exactamente la misma fila 4,2,4,2,4,2,4,2,4,2 y P02 y P09 son idénticos; ese patrón no es esperable en una muestra real y el archivo fue reescrito el 3 de septiembre tras mi observación anterior. Necesito los formularios originales. Con esa reserva, estadística descriptiva con IC.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel En desarrollo (50%)
+  Cuatro categorías nombradas, cada una en un párrafo breve; discusión superficial.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Satisfactorio (75%)
+  43 referencias, todas citadas, once con DOI; diez de once DOI verificados contra Crossref (vargha2000 resuelve al mismo artículo con título formateado distinto). Pocas de alto impacto.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel En desarrollo (50%)
+  make all encadena verify, build, up y pdf; no regenera benchmarks, auditorías ni figuras desde datos crudos.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Insuficiente (25%)
+  Sin DOI de software ni de dataset. DATA-DICTIONARY.md de 3,4 KB y DATA-PROVENANCE.md de 2,3 KB, ambos parciales.
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Insuficiente (25%)
+  CITATION.cff 1.2.0 sin DOI y con un solo ORCID (Cruz); la portada lleva XXXX-XXXX-XXXX-XXXX para los otros dos. CONTRIBUTORS.md de 415 bytes con cinco roles.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel En desarrollo (50%)
+  Cuatro checklists de 2 a 3 KB; el de FAIR tiene 10 ítems marcados y 5 sin marcar; Ralph e INCOSE en tabla con marcas de verificación pero sin evidencia por ítem.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Invoquen los procedimientos almacenados desde los repositorios JPA (@Procedure o @NamedStoredProcedureQuery) o retiren del informe la afirmación de que están invocados.
+  2. Entreguen los formularios SUS originales o expliquen por qué cinco participantes respondieron exactamente igual.
+  3. Archiven el reporte ZAP (HTML y JSON) en docs/mediciones/sec/zap/.
+  4. Ejecuten tres corridas Lighthouse por perfil y archívenlas.
+  5. Levanten el dominio declarado o retiren la URL del README hasta que responda.
+  6. Depositen software y dataset en Zenodo y registren los dos ORCID que faltan.
+  7. Pongan la URL del repositorio en la portada y produzcan una carátula de una página.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.50 + 7x0.50 + 6x0.75 + 7x0.50 + 5x0.50 + 5x0.25 + 8x0.50 + 6x0.75 + 5x0.50 + 7x0.75 + 6x0.50 + 4x0.50 + 4x0.75 + 8x0.50 + 6x0.25 + 6x0.25 + 5x0.50 = 51.50
+Nota del equipo ............. 5.15 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: UMAGINGA AREVALO JEFFERSON MANUEL
+Equipo: SBVIA
+Rol verificado: Backend, base de datos, mediciones y ronda correctiva
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+137 commits sin merges en solo 5 días distintos entre el 26 de junio y el 4 de septiembre, +15.199 / -4.117 líneas sobre 237 archivos. Correo institucional jumagingaa@uteq.edu.ec.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): base de datos 4.328, documentación 3.355, backend 2.722, frontend 2.232, pruebas 2.015.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 3/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 4/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 2/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 2/4
+
+ANALISIS DE SU CONTRIBUCION
+  Primer contribuyente en cuatro áreas y autor de toda la ronda del 3 y 4 de septiembre. I3 en 2 porque 137 commits en cinco jornadas no permiten reconstruir el proceso. I4 en 2 porque el commit &quot;corrige las puntuaciones individuales de SUS&quot; del 3 de septiembre es el que introduce el CSV con cinco filas idénticas, y porque el informe que mantiene afirma la invocación de procedimientos que no existe en el código.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x3 + 25x4 + 20x2 + 25x2 = 280
+Nota del aporte individual = 280 / 4 / 10 = 7.00
+Nota global del equipo ....... 5.15  (peso 60%)
+Nota del aporte individual ... 7.00  (peso 40%)
+Calificacion ponderada ....... 5.15 x 0,60 + 7.00 x 0,40 = 5.89
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 5.89 / 10
+----------------------------------------------------------------------------</pre></div>
+<h3>Zamora Bumbila Diego Alexander <span class="badge">3.09 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SBVIA_2',this)">Copiar informe</button><pre id="SBVIA_2">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: SBVIA — Simulador de Comportamiento Vial con Inteligencia Artificial
+Repositorio auditado: https://github.com/keithdrox/SBVIA-AppWeb
+Rama: main | Commit evaluado: c74b540 | Fecha del commit: 2026-09-04T21:24:11-05:00
+Estado del arbol: 204 commits, 357 archivos, 3 identidades Git para 2 personas activas; hay dos commits posteriores a mi clonación (635fbfd, 727eba1) que no evalúo; v1.0.0 (d053ce6) 94 commits atrás.
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: NO CUMPLE en el repositorio. No existe ningún PDF de una página y la URL de GitHub aparece por primera vez en la página 33 del informe de 43 páginas. Si el PDF de carátula subido al SGA la lleva, el piso se cumple; eso lo verifica el docente sobre el SGA.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. make pdf (pdflatex, bibtex, dos pasadas sobre docs/informe-final.tex): código de salida cero, 43 páginas, cero citas indefinidas, cero referencias sin resolver, dos desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel En desarrollo (50%)
+  Doce observaciones, doce hashes citados y los doce existen; 18 marcas de resuelto y cuatro parciales. Las etiquetas existen, pero v0.9.0-rc fue colocada el 2 de septiembre, después de v1.0.0, así que no fotografía la Entrega 3.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel En desarrollo (50%)
+  JaCoCo recalculado: 79,73 % de líneas y 70,41 % de ramas, con controladores 75,3/77,3 y servicios 78,5/65,8; CI verde. Doce archivos en db/procs/ y catálogo con seis filas, pero ninguno de los doce procedimientos se invoca desde el código Java: no hay @Procedure, ni @NamedStoredProcedureQuery, ni CALL en backend/src/main. El resumen del informe afirma &quot;6 procedimientos almacenados SQL invocados vía JPA 2.1&quot; y esa afirmación no es cierta. La cobertura vale un nivel alto; los procedimientos sin invocar lo bajan a En desarrollo.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Satisfactorio (75%)
+  Cinco corridas crudas NDJSON a 50 VU. Recalculé p95 desde el crudo: 38,9, 68,8, 48,6, 126,5 y 29,3 ms, cero fallos, dentro del umbral. IC 95 % y delta de Cliff mencionados; no hay escenario de caché fría con cinco corridas.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel En desarrollo (50%)
+  Cinco controles documentados en docs/mediciones/sec/ con curl-audit.sh y salida cruda; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic.sh presente. La carpeta docs/mediciones/sec/zap/ está vacía: el escaneo ZAP corre en CI pero no hay reporte archivado.
+P4. Calidad web Lighthouse | Peso 5% | Nivel En desarrollo (50%)
+  Dos reportes Lighthouse, uno mobile (86/100/100/100) y otro sin perfil declarado (92/98/100/95). Cumplen umbrales pero son corridas únicas, no tres por perfil.
+P5. Puesta en producción accesible | Peso 5% | Nivel Insuficiente (25%)
+  El README y DEPLOYMENT.md declaran https://sbvia.uteq-software.edu.ec; el dominio no resuelve en DNS y el backend tampoco. La documentación de despliegue existe.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  SRS-v1.0.0.pdf de 14 páginas con veinte Must y bloque de aprobación en blanco; el documento declara que no presume aprobación. Sin firma, En desarrollo.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Satisfactorio (75%)
+  43 páginas con las secciones obligatorias, resumen y abstract bilingües y capítulo de RE. Varias secciones siguen siendo de uno o dos párrafos.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel En desarrollo (50%)
+  Trabajos relacionados y brecha presentes; la estrategia de búsqueda y PRISMA se mencionan sin diagrama ni tabla de ocho trabajos.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel Satisfactorio (75%)
+  DSR de Peffers instanciada, GQM y Baltes citados; el protocolo de muestreo del SUS se declara sin justificación completa.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel En desarrollo (50%)
+  SUS N=15 recalculado desde sus-raw-data.csv: media 84,17 y DT 8,64, coincide con el informe. Sin embargo cinco participantes (P01, P03, P06, P08, P13) tienen exactamente la misma fila 4,2,4,2,4,2,4,2,4,2 y P02 y P09 son idénticos; ese patrón no es esperable en una muestra real y el archivo fue reescrito el 3 de septiembre tras mi observación anterior. Necesito los formularios originales. Con esa reserva, estadística descriptiva con IC.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel En desarrollo (50%)
+  Cuatro categorías nombradas, cada una en un párrafo breve; discusión superficial.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Satisfactorio (75%)
+  43 referencias, todas citadas, once con DOI; diez de once DOI verificados contra Crossref (vargha2000 resuelve al mismo artículo con título formateado distinto). Pocas de alto impacto.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel En desarrollo (50%)
+  make all encadena verify, build, up y pdf; no regenera benchmarks, auditorías ni figuras desde datos crudos.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Insuficiente (25%)
+  Sin DOI de software ni de dataset. DATA-DICTIONARY.md de 3,4 KB y DATA-PROVENANCE.md de 2,3 KB, ambos parciales.
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Insuficiente (25%)
+  CITATION.cff 1.2.0 sin DOI y con un solo ORCID (Cruz); la portada lleva XXXX-XXXX-XXXX-XXXX para los otros dos. CONTRIBUTORS.md de 415 bytes con cinco roles.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel En desarrollo (50%)
+  Cuatro checklists de 2 a 3 KB; el de FAIR tiene 10 ítems marcados y 5 sin marcar; Ralph e INCOSE en tabla con marcas de verificación pero sin evidencia por ítem.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Invoquen los procedimientos almacenados desde los repositorios JPA (@Procedure o @NamedStoredProcedureQuery) o retiren del informe la afirmación de que están invocados.
+  2. Entreguen los formularios SUS originales o expliquen por qué cinco participantes respondieron exactamente igual.
+  3. Archiven el reporte ZAP (HTML y JSON) en docs/mediciones/sec/zap/.
+  4. Ejecuten tres corridas Lighthouse por perfil y archívenlas.
+  5. Levanten el dominio declarado o retiren la URL del README hasta que responda.
+  6. Depositen software y dataset en Zenodo y registren los dos ORCID que faltan.
+  7. Pongan la URL del repositorio en la portada y produzcan una carátula de una página.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.50 + 7x0.50 + 6x0.75 + 7x0.50 + 5x0.50 + 5x0.25 + 8x0.50 + 6x0.75 + 5x0.50 + 7x0.75 + 6x0.50 + 4x0.50 + 4x0.75 + 8x0.50 + 6x0.25 + 6x0.25 + 5x0.50 = 51.50
+Nota del equipo ............. 5.15 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: ZAMORA BUMBILA DIEGO ALEXANDER
+Equipo: SBVIA
+Rol verificado: Sin rol verificable
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+Cero commits en las 204 revisiones del historial, con cualquier nombre o correo. Sin firma sobre ningún archivo.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): ninguna.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 0/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 0/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 0/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 0/4
+
+ANALISIS DE SU CONTRIBUCION
+  No hay evidencia de aporte en el repositorio, que es la fuente de verdad de esta evaluación. Si trabajó bajo otra cuenta o de otra forma, debe presentar la evidencia.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x0 + 25x0 + 20x0 + 25x0 = 0
+Nota del aporte individual = 0 / 4 / 10 = 0.00
+Nota global del equipo ....... 5.15  (peso 60%)
+Nota del aporte individual ... 0.00  (peso 40%)
+Calificacion ponderada ....... 5.15 x 0,60 + 0.00 x 0,40 = 3.09
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 3.09 / 10
+----------------------------------------------------------------------------</pre></div>
+<p style="font-size:12.5px;color:#555;margin-top:36px">Rúbrica: Guía de la Cuarta Entrega (Entrega Final) del PFC, 17 criterios, 3 ejes. Nota individual = 60 % nota del equipo + 40 % aporte individual (I1 30, I2 25, I3 20, I4 25). Las reclamaciones se atienden con evidencia del repositorio.</p></main></body></html>

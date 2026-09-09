@@ -1,0 +1,383 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Evaluación PFC 2B — ARTISYNC</title><style>body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f5;color:#1e2a24}
+header{background:#006633;color:#fff;padding:22px 36px}header h1{margin:0;font-size:22px}header p{margin:6px 0 0;opacity:.9;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:24px 36px}
+h2{color:#006633;border-bottom:3px solid #CC9900;padding-bottom:6px;margin-top:44px}
+h3{color:#006633;margin-top:30px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}th,td{border:1px solid #cfd8d3;padding:6px 9px;text-align:left;vertical-align:top}th{background:#e3efe8}
+td.n,th.n{text-align:right;white-space:nowrap}
+.box{position:relative;background:#fff;border:1px solid #cfd8d3;border-left:5px solid #006633;border-radius:6px;margin:14px 0 6px}
+pre{margin:0;padding:18px 16px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:Consolas,Courier New,monospace;font-size:12.6px;line-height:1.45;max-height:640px;overflow:auto}
+.copy{position:sticky;top:8px;float:right;margin:8px 10px 0 0;background:#CC9900;color:#1e2a24;border:0;border-radius:4px;padding:7px 14px;font-weight:600;cursor:pointer;z-index:2}.copy:hover{background:#b58600}
+.doc{background:#fff8e6;border:1px solid #e6c766;border-radius:6px;padding:12px 16px;margin:0 0 26px;font-size:13.5px}.doc b{color:#7a5a00}
+.lv100{background:#d7f0dc}.lv75{background:#e9f5df}.lv50{background:#fff3cd}.lv25{background:#fde2d2}.lv0{background:#f8d0d0}
+.crit{font-size:12.5px}details{margin:8px 0 16px}summary{cursor:pointer;color:#006633;font-weight:600}
+.badge{display:inline-block;background:#006633;color:#fff;border-radius:12px;padding:2px 10px;font-size:12px;margin-left:8px}
+</style><script>function cp(id,btn){var t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(function(){btn.textContent='Copiado';setTimeout(function(){btn.textContent='Copiar informe'},1800)});}</script></head><body>
+<header><h1>ARTISYNC — Plataforma de intermediación entre creadores de contenido digital y clientes<span class="badge">8.15 / 10</span></h1><p>PFC Entrega Final (2B) · Aplicaciones Web (Quinto nivel) · UTEQ · Revisión del 5 de septiembre de 2026 · Repositorio auditado: <a style="color:#fff" href="https://github.com/JohanCarvajal04/Proyecto-WEB-ARTISYNC">https://github.com/JohanCarvajal04/Proyecto-WEB-ARTISYNC</a> · commit <code>dcc98fb</code></p></header><main>
+<h2>Niveles por criterio</h2><table class="crit"><tr><th>Criterio</th><th class="n">Peso</th><th class="n">Nivel</th><th>Justificación</th></tr>
+<tr><td><b>P0</b> Aplicación de observaciones acumuladas</td><td class="n">5</td><td class="n lv75">Satisfactorio 75</td><td>29 observaciones con código OBS, 29 hashes de commit citados y los 29 existen. Cuatro figuran como pendientes y tres como parciales. Las cinco etiquetas existen; v0.9.0-rc y v0.7.1 apuntan al mismo commit, con lo que no fotografían estados distintos.</td></tr>
+<tr><td><b>P1</b> Cierre funcional, cobertura y acceso a datos</td><td class="n">7</td><td class="n lv75">Satisfactorio 75</td><td>JaCoCo recalculado desde docs/mediciones/jacoco/html/jacoco.xml: 80,29 % de líneas y 66,44 % de ramas; por capa, controladores 83,8/72,0, servicios 82,6/70,1. Las ramas globales quedan por debajo del 70 %. CI verde en las diez últimas corridas. 29 rutinas en db/procs/, 26 invocadas desde Java con @Procedure o @NamedStoredProcedureQuery, 37 filas en CATALOGO-SP.md y columna tipo_acceso en la matriz. Tres rutinas sin invocar: fn_actualizar_portada_creador, fn_listar_creadores_seguidos_novedades y el archivo V8 de estructuras.</td></tr>
+<tr><td><b>P2</b> Rendimiento con evidencia estadística</td><td class="n">6</td><td class="n lv100">Excelente 100</td><td>16 corridas crudas en NDJSON a 50 VU (auth, auth-cold, cold y base). Recalculé p95 desde el crudo: caliente entre 30,0 y 75,2 ms, frío entre 86,9 y 166,3 ms, cero fallos. IC 95 %, Mann-Whitney, d de Cohen y corrección de Holm en el capítulo de resultados.</td></tr>
+<tr><td><b>P3</b> Seguridad OWASP + ZAP + auditoría de acceso a datos</td><td class="n">7</td><td class="n lv100">Excelente 100</td><td>Seis archivos de evidencia curl en docs/mediciones/sec/owasp/ (A01, A02, A03, A05, A07, A09); ZAP baseline del 17-08 sin hallazgos altos y 2 medios; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic.sh sin hallazgos en db/procs/.</td></tr>
+<tr><td><b>P4</b> Calidad web Lighthouse</td><td class="n">5</td><td class="n lv75">Satisfactorio 75</td><td>36 corridas por perfil el 4 de septiembre contra el despliegue público. En /auth/login las cuatro categorías cumplen en ambos perfiles con tres corridas. En /explorar y /explorar/creadores la accesibilidad queda en 87 a 89 y en /explorar el performance desktop en 73 a 75. Tres de cuatro categorías cumplen en ambos perfiles; el informe lo declara con honestidad.</td></tr>
+<tr><td><b>P5</b> Puesta en producción accesible</td><td class="n">5</td><td class="n lv100">Excelente 100</td><td>https://artisync-frontend.onrender.com responde 200 con certificado válido y https://artisync-backend.onrender.com/actuator/health devuelve UP; lo comprobé en vivo. DEPLOYMENT.md, RUNBOOK.md y BACKUP.md completos; ADR-005 de despliegue.</td></tr>
+<tr><td><b>D0R</b> Culminación de la ingeniería de requisitos</td><td class="n">8</td><td class="n lv50">En desarrollo 50</td><td>SRS-v1.0.0.pdf de 12 páginas con 37 requisitos, 31 Must, estado por requisito y CHANGELOG-REQ.md continuo. Sin firma del docente-director, lo que limita el criterio a En desarrollo.</td></tr>
+<tr><td><b>D1</b> Estructura IMRaD y secciones obligatorias</td><td class="n">6</td><td class="n lv100">Excelente 100</td><td>79 páginas con las secciones obligatorias, resumen y abstract estructurados con palabras clave, capítulo de RE, declaraciones completas y anexos.</td></tr>
+<tr><td><b>D2</b> Trabajos relacionados y brecha</td><td class="n">5</td><td class="n lv50">En desarrollo 50</td><td>Estrategia de búsqueda y PRISMA declarados y tabla comparativa presente. El problema es de fondo: cuatro de las obras comparadas no existen (ver D6), con lo que la brecha se apoya en parte en literatura inventada.</td></tr>
+<tr><td><b>D3</b> Metodología y protocolo experimental</td><td class="n">7</td><td class="n lv100">Excelente 100</td><td>DSR de Peffers instanciada, GQM presentado, muestreo justificado con Baltes y Ralph, estadística declarada a priori, semillas y versiones capturadas.</td></tr>
+<tr><td><b>D4</b> Análisis estadístico riguroso</td><td class="n">6</td><td class="n lv100">Excelente 100</td><td>SUS N=16 recalculado con la fórmula de Brooke desde sus-raw.csv: media 61,25 y DT 22,08, idénticos a los del informe. IC 95 % en las tablas, tests con tamaño de efecto y corrección múltiple documentada.</td></tr>
+<tr><td><b>D5</b> Amenazas a la validez y discusión</td><td class="n">4</td><td class="n lv100">Excelente 100</td><td>Constructo, interna, externa y conclusión tratadas con mitigación explícita; la discusión responde las RQ una a una.</td></tr>
+<tr><td><b>D6</b> Bibliografía y calidad de citas</td><td class="n">4</td><td class="n lv25">Insuficiente 25</td><td>41 entradas, 38 citadas, 24 con DOI. Verifiqué los 24 DOI contra Crossref: 18 correctos. KUMAR2023 (10.5281/zenodo.1234567), PARK2023 (10.1109/ACCESS.2023.1234567) y CHEN2021 (10.1145/3412345) no existen y llevan DOI de relleno; RAO2022 resuelve a un registro de comité organizador; HALFOND2005 resuelve a un título distinto. Esas cuatro obras inexistentes se citan diez veces en el capítulo de trabajos relacionados. El descriptor con referencias fabricadas es Insuficiente; la regla transversal 6 llevaría el criterio a cero.</td></tr>
+<tr><td><b>R1</b> Reproducción end-to-end (make all)</td><td class="n">8</td><td class="n lv75">Satisfactorio 75</td><td>make all encadena up, test, bench, audit, audit-sql-dynamic, audit-zap, lighthouse, sus, perf-stats, srs y docs; hay cuaderno de reproducción añadido el 4 de septiembre. No pude ejecutarlo de punta a punta en este entorno; la cadena requiere Docker, k6, Chrome y TeX Live instalados.</td></tr>
+<tr><td><b>R2</b> Datos con DOI, diccionario y provenance</td><td class="n">6</td><td class="n lv100">Excelente 100</td><td>DOI de software 10.5281/zenodo.21978572 (v1.0.0) y DOI de dataset 10.5281/zenodo.22236251 con CC BY 4.0, ambos resuelven y el dataset está separado. DATA-DICTIONARY.md (11,7 KB) y DATA-PROVENANCE.md (5,4 KB).</td></tr>
+<tr><td><b>R3</b> Metadatos, CRediT y ORCID</td><td class="n">6</td><td class="n lv75">Satisfactorio 75</td><td>CITATION.cff 1.2.0 con DOI y ORCID de los cuatro autores; CONTRIBUTORS.md nombra roles pero no usa la taxonomía CRediT completa; declaraciones presentes en el informe, incluida la de uso de IA.</td></tr>
+<tr><td><b>R4</b> Cumplimiento de estándares de reporte</td><td class="n">5</td><td class="n lv75">Satisfactorio 75</td><td>Checklist Ralph 2021 con 9 ítems marcados y 5 sin marcar, INCOSE 11/4, FAIR 13/3; el de PRISMA es un archivo de 628 bytes sin contenido real.</td></tr>
+<tr><th colspan="2">Nota del equipo</th><th class="n">8.15 / 10</th><th>Sin pisos ni reglas transversales de sanción aplicados a la nota; estado de los pisos declarado en cada informe.</th></tr></table>
+<h2>Pendientes antes del examen final (semana 19, 7 al 11 de septiembre)</h2><ol><li>Sustituyan las cuatro referencias inexistentes (Kumar 2023, Park 2023, Chen 2021, Rao 2022) por obras reales verificadas y corrijan el DOI de Halfond 2005; reescriban los párrafos de trabajos relacionados que se apoyan en ellas.</li><li>Suban la accesibilidad de /explorar y /explorar/creadores a 90 y el performance desktop de /explorar a 80.</li><li>Lleven las ramas globales al 70 %: hoy 66,44 %.</li><li>Invoquen o retiren las dos funciones sin uso de db/procs/.</li><li>Completen el checklist PRISMA, que hoy está vacío, y los cinco ítems sin marcar de Ralph.</li><li>Formalicen la composición del equipo: Bone Arroyo figura en la portada, en Zenodo y en el historial con 16 commits.</li></ol>
+<h2>Informes individuales</h2><p>Cada informe incluye la revisión completa del equipo y la valoración del aporte individual. El botón copia el texto íntegro.</p>
+<h3>Carvajal Loor Johan Stalin <span class="badge">8.44 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('ARTISYNC_0',this)">Copiar informe</button><pre id="ARTISYNC_0">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: ARTISYNC — Plataforma de intermediación entre creadores de contenido digital y clientes
+Repositorio auditado: https://github.com/JohanCarvajal04/Proyecto-WEB-ARTISYNC
+Rama: main | Commit evaluado: dcc98fb | Fecha del commit: 2026-09-04T19:57:18-05:00
+Estado del arbol: 433 commits, 1.753 archivos, 6 identidades Git para 4 personas, etiquetas v0.7.0, v0.7.1, v0.9.0-rc, v1.0.0 (d07656b) y v1.1.0 (671a392).
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: CUMPLE. docs/informe-final/caratula.pdf tiene una página y la línea &quot;Repositorio: https://github.com/JohanCarvajal04/Proyecto-WEB-ARTISYNC&quot; completa; la portada del informe también la lleva.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. Seguí el README (pdflatex, bibtex, dos pasadas sobre docs/informe-final/main.tex): código de salida cero, 79 páginas, cero citas indefinidas, cero referencias sin resolver, 15 desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel Satisfactorio (75%)
+  29 observaciones con código OBS, 29 hashes de commit citados y los 29 existen. Cuatro figuran como pendientes y tres como parciales. Las cinco etiquetas existen; v0.9.0-rc y v0.7.1 apuntan al mismo commit, con lo que no fotografían estados distintos.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  JaCoCo recalculado desde docs/mediciones/jacoco/html/jacoco.xml: 80,29 % de líneas y 66,44 % de ramas; por capa, controladores 83,8/72,0, servicios 82,6/70,1. Las ramas globales quedan por debajo del 70 %. CI verde en las diez últimas corridas. 29 rutinas en db/procs/, 26 invocadas desde Java con @Procedure o @NamedStoredProcedureQuery, 37 filas en CATALOGO-SP.md y columna tipo_acceso en la matriz. Tres rutinas sin invocar: fn_actualizar_portada_creador, fn_listar_creadores_seguidos_novedades y el archivo V8 de estructuras.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Excelente (100%)
+  16 corridas crudas en NDJSON a 50 VU (auth, auth-cold, cold y base). Recalculé p95 desde el crudo: caliente entre 30,0 y 75,2 ms, frío entre 86,9 y 166,3 ms, cero fallos. IC 95 %, Mann-Whitney, d de Cohen y corrección de Holm en el capítulo de resultados.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel Excelente (100%)
+  Seis archivos de evidencia curl en docs/mediciones/sec/owasp/ (A01, A02, A03, A05, A07, A09); ZAP baseline del 17-08 sin hallazgos altos y 2 medios; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic.sh sin hallazgos en db/procs/.
+P4. Calidad web Lighthouse | Peso 5% | Nivel Satisfactorio (75%)
+  36 corridas por perfil el 4 de septiembre contra el despliegue público. En /auth/login las cuatro categorías cumplen en ambos perfiles con tres corridas. En /explorar y /explorar/creadores la accesibilidad queda en 87 a 89 y en /explorar el performance desktop en 73 a 75. Tres de cuatro categorías cumplen en ambos perfiles; el informe lo declara con honestidad.
+P5. Puesta en producción accesible | Peso 5% | Nivel Excelente (100%)
+  https://artisync-frontend.onrender.com responde 200 con certificado válido y https://artisync-backend.onrender.com/actuator/health devuelve UP; lo comprobé en vivo. DEPLOYMENT.md, RUNBOOK.md y BACKUP.md completos; ADR-005 de despliegue.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  SRS-v1.0.0.pdf de 12 páginas con 37 requisitos, 31 Must, estado por requisito y CHANGELOG-REQ.md continuo. Sin firma del docente-director, lo que limita el criterio a En desarrollo.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Excelente (100%)
+  79 páginas con las secciones obligatorias, resumen y abstract estructurados con palabras clave, capítulo de RE, declaraciones completas y anexos.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel En desarrollo (50%)
+  Estrategia de búsqueda y PRISMA declarados y tabla comparativa presente. El problema es de fondo: cuatro de las obras comparadas no existen (ver D6), con lo que la brecha se apoya en parte en literatura inventada.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel Excelente (100%)
+  DSR de Peffers instanciada, GQM presentado, muestreo justificado con Baltes y Ralph, estadística declarada a priori, semillas y versiones capturadas.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel Excelente (100%)
+  SUS N=16 recalculado con la fórmula de Brooke desde sus-raw.csv: media 61,25 y DT 22,08, idénticos a los del informe. IC 95 % en las tablas, tests con tamaño de efecto y corrección múltiple documentada.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel Excelente (100%)
+  Constructo, interna, externa y conclusión tratadas con mitigación explícita; la discusión responde las RQ una a una.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Insuficiente (25%)
+  41 entradas, 38 citadas, 24 con DOI. Verifiqué los 24 DOI contra Crossref: 18 correctos. KUMAR2023 (10.5281/zenodo.1234567), PARK2023 (10.1109/ACCESS.2023.1234567) y CHEN2021 (10.1145/3412345) no existen y llevan DOI de relleno; RAO2022 resuelve a un registro de comité organizador; HALFOND2005 resuelve a un título distinto. Esas cuatro obras inexistentes se citan diez veces en el capítulo de trabajos relacionados. El descriptor con referencias fabricadas es Insuficiente; la regla transversal 6 llevaría el criterio a cero.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel Satisfactorio (75%)
+  make all encadena up, test, bench, audit, audit-sql-dynamic, audit-zap, lighthouse, sus, perf-stats, srs y docs; hay cuaderno de reproducción añadido el 4 de septiembre. No pude ejecutarlo de punta a punta en este entorno; la cadena requiere Docker, k6, Chrome y TeX Live instalados.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Excelente (100%)
+  DOI de software 10.5281/zenodo.21978572 (v1.0.0) y DOI de dataset 10.5281/zenodo.22236251 con CC BY 4.0, ambos resuelven y el dataset está separado. DATA-DICTIONARY.md (11,7 KB) y DATA-PROVENANCE.md (5,4 KB).
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Satisfactorio (75%)
+  CITATION.cff 1.2.0 con DOI y ORCID de los cuatro autores; CONTRIBUTORS.md nombra roles pero no usa la taxonomía CRediT completa; declaraciones presentes en el informe, incluida la de uso de IA.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel Satisfactorio (75%)
+  Checklist Ralph 2021 con 9 ítems marcados y 5 sin marcar, INCOSE 11/4, FAIR 13/3; el de PRISMA es un archivo de 628 bytes sin contenido real.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Sustituyan las cuatro referencias inexistentes (Kumar 2023, Park 2023, Chen 2021, Rao 2022) por obras reales verificadas y corrijan el DOI de Halfond 2005; reescriban los párrafos de trabajos relacionados que se apoyan en ellas.
+  2. Suban la accesibilidad de /explorar y /explorar/creadores a 90 y el performance desktop de /explorar a 80.
+  3. Lleven las ramas globales al 70 %: hoy 66,44 %.
+  4. Invoquen o retiren las dos funciones sin uso de db/procs/.
+  5. Completen el checklist PRISMA, que hoy está vacío, y los cinco ítems sin marcar de Ralph.
+  6. Formalicen la composición del equipo: Bone Arroyo figura en la portada, en Zenodo y en el historial con 16 commits.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.75 + 7x0.75 + 6x1.00 + 7x1.00 + 5x0.75 + 5x1.00 + 8x0.50 + 6x1.00 + 5x0.50 + 7x1.00 + 6x1.00 + 4x1.00 + 4x0.25 + 8x0.75 + 6x1.00 + 6x0.75 + 5x0.75 = 81.50
+Nota del equipo ............. 8.15 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: CARVAJAL LOOR JOHAN STALIN
+Equipo: ARTISYNC
+Rol verificado: Propietario del repositorio, frontend y backend
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+169 commits sin merges (151 con la identidad Johan_Loor noreply y 18 con carvajalstalin.10@gmail.com) en 14 días distintos entre el 4 de junio y el 4 de septiembre, +35.841 / -4.173 líneas sobre 448 archivos. Ninguna de sus dos identidades usa correo institucional.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): frontend 19.371, backend 7.915, pruebas 4.220, documentación 1.942, base de datos 1.856.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 4/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 4/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 3/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 3/4
+
+ANALISIS DE SU CONTRIBUCION
+  Segundo contribuyente en volumen y primero en frontend. Participa en todas las rondas correctivas, incluida la del 4 de septiembre. I3 en 3 por las dos identidades sin correo institucional. I4 en 3 porque la evidencia medida y el documento llevan mayoritariamente la firma de Figueroa.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x4 + 25x4 + 20x3 + 25x3 = 355
+Nota del aporte individual = 355 / 4 / 10 = 8.88
+Nota global del equipo ....... 8.15  (peso 60%)
+Nota del aporte individual ... 8.88  (peso 40%)
+Calificacion ponderada ....... 8.15 x 0,60 + 8.88 x 0,40 = 8.44
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 8.44 / 10
+----------------------------------------------------------------------------</pre></div>
+<h3>Figueroa Morales Bryan Javier <span class="badge">8.89 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('ARTISYNC_1',this)">Copiar informe</button><pre id="ARTISYNC_1">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: ARTISYNC — Plataforma de intermediación entre creadores de contenido digital y clientes
+Repositorio auditado: https://github.com/JohanCarvajal04/Proyecto-WEB-ARTISYNC
+Rama: main | Commit evaluado: dcc98fb | Fecha del commit: 2026-09-04T19:57:18-05:00
+Estado del arbol: 433 commits, 1.753 archivos, 6 identidades Git para 4 personas, etiquetas v0.7.0, v0.7.1, v0.9.0-rc, v1.0.0 (d07656b) y v1.1.0 (671a392).
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: CUMPLE. docs/informe-final/caratula.pdf tiene una página y la línea &quot;Repositorio: https://github.com/JohanCarvajal04/Proyecto-WEB-ARTISYNC&quot; completa; la portada del informe también la lleva.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. Seguí el README (pdflatex, bibtex, dos pasadas sobre docs/informe-final/main.tex): código de salida cero, 79 páginas, cero citas indefinidas, cero referencias sin resolver, 15 desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel Satisfactorio (75%)
+  29 observaciones con código OBS, 29 hashes de commit citados y los 29 existen. Cuatro figuran como pendientes y tres como parciales. Las cinco etiquetas existen; v0.9.0-rc y v0.7.1 apuntan al mismo commit, con lo que no fotografían estados distintos.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  JaCoCo recalculado desde docs/mediciones/jacoco/html/jacoco.xml: 80,29 % de líneas y 66,44 % de ramas; por capa, controladores 83,8/72,0, servicios 82,6/70,1. Las ramas globales quedan por debajo del 70 %. CI verde en las diez últimas corridas. 29 rutinas en db/procs/, 26 invocadas desde Java con @Procedure o @NamedStoredProcedureQuery, 37 filas en CATALOGO-SP.md y columna tipo_acceso en la matriz. Tres rutinas sin invocar: fn_actualizar_portada_creador, fn_listar_creadores_seguidos_novedades y el archivo V8 de estructuras.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Excelente (100%)
+  16 corridas crudas en NDJSON a 50 VU (auth, auth-cold, cold y base). Recalculé p95 desde el crudo: caliente entre 30,0 y 75,2 ms, frío entre 86,9 y 166,3 ms, cero fallos. IC 95 %, Mann-Whitney, d de Cohen y corrección de Holm en el capítulo de resultados.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel Excelente (100%)
+  Seis archivos de evidencia curl en docs/mediciones/sec/owasp/ (A01, A02, A03, A05, A07, A09); ZAP baseline del 17-08 sin hallazgos altos y 2 medios; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic.sh sin hallazgos en db/procs/.
+P4. Calidad web Lighthouse | Peso 5% | Nivel Satisfactorio (75%)
+  36 corridas por perfil el 4 de septiembre contra el despliegue público. En /auth/login las cuatro categorías cumplen en ambos perfiles con tres corridas. En /explorar y /explorar/creadores la accesibilidad queda en 87 a 89 y en /explorar el performance desktop en 73 a 75. Tres de cuatro categorías cumplen en ambos perfiles; el informe lo declara con honestidad.
+P5. Puesta en producción accesible | Peso 5% | Nivel Excelente (100%)
+  https://artisync-frontend.onrender.com responde 200 con certificado válido y https://artisync-backend.onrender.com/actuator/health devuelve UP; lo comprobé en vivo. DEPLOYMENT.md, RUNBOOK.md y BACKUP.md completos; ADR-005 de despliegue.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  SRS-v1.0.0.pdf de 12 páginas con 37 requisitos, 31 Must, estado por requisito y CHANGELOG-REQ.md continuo. Sin firma del docente-director, lo que limita el criterio a En desarrollo.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Excelente (100%)
+  79 páginas con las secciones obligatorias, resumen y abstract estructurados con palabras clave, capítulo de RE, declaraciones completas y anexos.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel En desarrollo (50%)
+  Estrategia de búsqueda y PRISMA declarados y tabla comparativa presente. El problema es de fondo: cuatro de las obras comparadas no existen (ver D6), con lo que la brecha se apoya en parte en literatura inventada.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel Excelente (100%)
+  DSR de Peffers instanciada, GQM presentado, muestreo justificado con Baltes y Ralph, estadística declarada a priori, semillas y versiones capturadas.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel Excelente (100%)
+  SUS N=16 recalculado con la fórmula de Brooke desde sus-raw.csv: media 61,25 y DT 22,08, idénticos a los del informe. IC 95 % en las tablas, tests con tamaño de efecto y corrección múltiple documentada.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel Excelente (100%)
+  Constructo, interna, externa y conclusión tratadas con mitigación explícita; la discusión responde las RQ una a una.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Insuficiente (25%)
+  41 entradas, 38 citadas, 24 con DOI. Verifiqué los 24 DOI contra Crossref: 18 correctos. KUMAR2023 (10.5281/zenodo.1234567), PARK2023 (10.1109/ACCESS.2023.1234567) y CHEN2021 (10.1145/3412345) no existen y llevan DOI de relleno; RAO2022 resuelve a un registro de comité organizador; HALFOND2005 resuelve a un título distinto. Esas cuatro obras inexistentes se citan diez veces en el capítulo de trabajos relacionados. El descriptor con referencias fabricadas es Insuficiente; la regla transversal 6 llevaría el criterio a cero.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel Satisfactorio (75%)
+  make all encadena up, test, bench, audit, audit-sql-dynamic, audit-zap, lighthouse, sus, perf-stats, srs y docs; hay cuaderno de reproducción añadido el 4 de septiembre. No pude ejecutarlo de punta a punta en este entorno; la cadena requiere Docker, k6, Chrome y TeX Live instalados.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Excelente (100%)
+  DOI de software 10.5281/zenodo.21978572 (v1.0.0) y DOI de dataset 10.5281/zenodo.22236251 con CC BY 4.0, ambos resuelven y el dataset está separado. DATA-DICTIONARY.md (11,7 KB) y DATA-PROVENANCE.md (5,4 KB).
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Satisfactorio (75%)
+  CITATION.cff 1.2.0 con DOI y ORCID de los cuatro autores; CONTRIBUTORS.md nombra roles pero no usa la taxonomía CRediT completa; declaraciones presentes en el informe, incluida la de uso de IA.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel Satisfactorio (75%)
+  Checklist Ralph 2021 con 9 ítems marcados y 5 sin marcar, INCOSE 11/4, FAIR 13/3; el de PRISMA es un archivo de 628 bytes sin contenido real.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Sustituyan las cuatro referencias inexistentes (Kumar 2023, Park 2023, Chen 2021, Rao 2022) por obras reales verificadas y corrijan el DOI de Halfond 2005; reescriban los párrafos de trabajos relacionados que se apoyan en ellas.
+  2. Suban la accesibilidad de /explorar y /explorar/creadores a 90 y el performance desktop de /explorar a 80.
+  3. Lleven las ramas globales al 70 %: hoy 66,44 %.
+  4. Invoquen o retiren las dos funciones sin uso de db/procs/.
+  5. Completen el checklist PRISMA, que hoy está vacío, y los cinco ítems sin marcar de Ralph.
+  6. Formalicen la composición del equipo: Bone Arroyo figura en la portada, en Zenodo y en el historial con 16 commits.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.75 + 7x0.75 + 6x1.00 + 7x1.00 + 5x0.75 + 5x1.00 + 8x0.50 + 6x1.00 + 5x0.50 + 7x1.00 + 6x1.00 + 4x1.00 + 4x0.25 + 8x0.75 + 6x1.00 + 6x0.75 + 5x0.75 = 81.50
+Nota del equipo ............. 8.15 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: FIGUEROA MORALES BRYAN JAVIER
+Equipo: ARTISYNC
+Rol verificado: Documento académico, mediciones, pruebas, base de datos
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+171 commits sin merges en 33 días distintos entre el 4 de junio y el 4 de septiembre, el mayor número de jornadas activas del curso, +99.205 / -28.720 líneas sobre 1.022 archivos. Correo institucional bfigueroam@uteq.edu.ec, identidad única.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): documentación 33.069, frontend 21.412, pruebas 17.215, backend 12.397, base de datos 10.703, infraestructura 1.701.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 4/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 4/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 4/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 4/4
+
+ANALISIS DE SU CONTRIBUCION
+  Primer contribuyente en seis de las siete áreas, autor del informe, del cuaderno de reproducción y de la mayoría de las mediciones. Historial limpio, identidad única e institucional. La responsabilidad sobre las referencias fabricadas del capítulo 3 recae en el equipo, pero el archivo referencias.bib lleva principalmente su firma; se lo digo por escrito para que lo corrija.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x4 + 25x4 + 20x4 + 25x4 = 400
+Nota del aporte individual = 400 / 4 / 10 = 10.00
+Nota global del equipo ....... 8.15  (peso 60%)
+Nota del aporte individual ... 10.00  (peso 40%)
+Calificacion ponderada ....... 8.15 x 0,60 + 10.00 x 0,40 = 8.89
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 8.89 / 10
+----------------------------------------------------------------------------</pre></div>
+<h3>Rios Cuyabazo Jhon Kevin <span class="badge">7.34 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('ARTISYNC_2',this)">Copiar informe</button><pre id="ARTISYNC_2">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: ARTISYNC — Plataforma de intermediación entre creadores de contenido digital y clientes
+Repositorio auditado: https://github.com/JohanCarvajal04/Proyecto-WEB-ARTISYNC
+Rama: main | Commit evaluado: dcc98fb | Fecha del commit: 2026-09-04T19:57:18-05:00
+Estado del arbol: 433 commits, 1.753 archivos, 6 identidades Git para 4 personas, etiquetas v0.7.0, v0.7.1, v0.9.0-rc, v1.0.0 (d07656b) y v1.1.0 (671a392).
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: CUMPLE. docs/informe-final/caratula.pdf tiene una página y la línea &quot;Repositorio: https://github.com/JohanCarvajal04/Proyecto-WEB-ARTISYNC&quot; completa; la portada del informe también la lleva.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. Seguí el README (pdflatex, bibtex, dos pasadas sobre docs/informe-final/main.tex): código de salida cero, 79 páginas, cero citas indefinidas, cero referencias sin resolver, 15 desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel Satisfactorio (75%)
+  29 observaciones con código OBS, 29 hashes de commit citados y los 29 existen. Cuatro figuran como pendientes y tres como parciales. Las cinco etiquetas existen; v0.9.0-rc y v0.7.1 apuntan al mismo commit, con lo que no fotografían estados distintos.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  JaCoCo recalculado desde docs/mediciones/jacoco/html/jacoco.xml: 80,29 % de líneas y 66,44 % de ramas; por capa, controladores 83,8/72,0, servicios 82,6/70,1. Las ramas globales quedan por debajo del 70 %. CI verde en las diez últimas corridas. 29 rutinas en db/procs/, 26 invocadas desde Java con @Procedure o @NamedStoredProcedureQuery, 37 filas en CATALOGO-SP.md y columna tipo_acceso en la matriz. Tres rutinas sin invocar: fn_actualizar_portada_creador, fn_listar_creadores_seguidos_novedades y el archivo V8 de estructuras.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Excelente (100%)
+  16 corridas crudas en NDJSON a 50 VU (auth, auth-cold, cold y base). Recalculé p95 desde el crudo: caliente entre 30,0 y 75,2 ms, frío entre 86,9 y 166,3 ms, cero fallos. IC 95 %, Mann-Whitney, d de Cohen y corrección de Holm en el capítulo de resultados.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel Excelente (100%)
+  Seis archivos de evidencia curl en docs/mediciones/sec/owasp/ (A01, A02, A03, A05, A07, A09); ZAP baseline del 17-08 sin hallazgos altos y 2 medios; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic.sh sin hallazgos en db/procs/.
+P4. Calidad web Lighthouse | Peso 5% | Nivel Satisfactorio (75%)
+  36 corridas por perfil el 4 de septiembre contra el despliegue público. En /auth/login las cuatro categorías cumplen en ambos perfiles con tres corridas. En /explorar y /explorar/creadores la accesibilidad queda en 87 a 89 y en /explorar el performance desktop en 73 a 75. Tres de cuatro categorías cumplen en ambos perfiles; el informe lo declara con honestidad.
+P5. Puesta en producción accesible | Peso 5% | Nivel Excelente (100%)
+  https://artisync-frontend.onrender.com responde 200 con certificado válido y https://artisync-backend.onrender.com/actuator/health devuelve UP; lo comprobé en vivo. DEPLOYMENT.md, RUNBOOK.md y BACKUP.md completos; ADR-005 de despliegue.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  SRS-v1.0.0.pdf de 12 páginas con 37 requisitos, 31 Must, estado por requisito y CHANGELOG-REQ.md continuo. Sin firma del docente-director, lo que limita el criterio a En desarrollo.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Excelente (100%)
+  79 páginas con las secciones obligatorias, resumen y abstract estructurados con palabras clave, capítulo de RE, declaraciones completas y anexos.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel En desarrollo (50%)
+  Estrategia de búsqueda y PRISMA declarados y tabla comparativa presente. El problema es de fondo: cuatro de las obras comparadas no existen (ver D6), con lo que la brecha se apoya en parte en literatura inventada.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel Excelente (100%)
+  DSR de Peffers instanciada, GQM presentado, muestreo justificado con Baltes y Ralph, estadística declarada a priori, semillas y versiones capturadas.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel Excelente (100%)
+  SUS N=16 recalculado con la fórmula de Brooke desde sus-raw.csv: media 61,25 y DT 22,08, idénticos a los del informe. IC 95 % en las tablas, tests con tamaño de efecto y corrección múltiple documentada.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel Excelente (100%)
+  Constructo, interna, externa y conclusión tratadas con mitigación explícita; la discusión responde las RQ una a una.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Insuficiente (25%)
+  41 entradas, 38 citadas, 24 con DOI. Verifiqué los 24 DOI contra Crossref: 18 correctos. KUMAR2023 (10.5281/zenodo.1234567), PARK2023 (10.1109/ACCESS.2023.1234567) y CHEN2021 (10.1145/3412345) no existen y llevan DOI de relleno; RAO2022 resuelve a un registro de comité organizador; HALFOND2005 resuelve a un título distinto. Esas cuatro obras inexistentes se citan diez veces en el capítulo de trabajos relacionados. El descriptor con referencias fabricadas es Insuficiente; la regla transversal 6 llevaría el criterio a cero.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel Satisfactorio (75%)
+  make all encadena up, test, bench, audit, audit-sql-dynamic, audit-zap, lighthouse, sus, perf-stats, srs y docs; hay cuaderno de reproducción añadido el 4 de septiembre. No pude ejecutarlo de punta a punta en este entorno; la cadena requiere Docker, k6, Chrome y TeX Live instalados.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Excelente (100%)
+  DOI de software 10.5281/zenodo.21978572 (v1.0.0) y DOI de dataset 10.5281/zenodo.22236251 con CC BY 4.0, ambos resuelven y el dataset está separado. DATA-DICTIONARY.md (11,7 KB) y DATA-PROVENANCE.md (5,4 KB).
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Satisfactorio (75%)
+  CITATION.cff 1.2.0 con DOI y ORCID de los cuatro autores; CONTRIBUTORS.md nombra roles pero no usa la taxonomía CRediT completa; declaraciones presentes en el informe, incluida la de uso de IA.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel Satisfactorio (75%)
+  Checklist Ralph 2021 con 9 ítems marcados y 5 sin marcar, INCOSE 11/4, FAIR 13/3; el de PRISMA es un archivo de 628 bytes sin contenido real.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Sustituyan las cuatro referencias inexistentes (Kumar 2023, Park 2023, Chen 2021, Rao 2022) por obras reales verificadas y corrijan el DOI de Halfond 2005; reescriban los párrafos de trabajos relacionados que se apoyan en ellas.
+  2. Suban la accesibilidad de /explorar y /explorar/creadores a 90 y el performance desktop de /explorar a 80.
+  3. Lleven las ramas globales al 70 %: hoy 66,44 %.
+  4. Invoquen o retiren las dos funciones sin uso de db/procs/.
+  5. Completen el checklist PRISMA, que hoy está vacío, y los cinco ítems sin marcar de Ralph.
+  6. Formalicen la composición del equipo: Bone Arroyo figura en la portada, en Zenodo y en el historial con 16 commits.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.75 + 7x0.75 + 6x1.00 + 7x1.00 + 5x0.75 + 5x1.00 + 8x0.50 + 6x1.00 + 5x0.50 + 7x1.00 + 6x1.00 + 4x1.00 + 4x0.25 + 8x0.75 + 6x1.00 + 6x0.75 + 5x0.75 = 81.50
+Nota del equipo ............. 8.15 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: RIOS CUYABAZO JHON KEVIN
+Equipo: ARTISYNC
+Rol verificado: Backend y pruebas unitarias
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+45 commits sin merges en 10 días distintos entre el 4 de junio y el 4 de septiembre, +7.987 / -935 líneas sobre 177 archivos. Correo JhonRios_180@hotmail.com y una segunda identidad noreply. Sus dos commits más recientes son del 4 de septiembre: pruebas Mockito de controladores y justificación técnica de rutinas.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): backend 5.101, pruebas 1.180, frontend 998, documentación 550.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 2/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 3/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 3/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 2/4
+
+ANALISIS DE SU CONTRIBUCION
+  Aporte real en backend y pruebas, con presencia en la ronda final, pero muy por debajo del volumen de sus compañeros y sin firma sobre mediciones ni sobre el documento. Es el que menos jornadas activas registra.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x2 + 25x3 + 20x3 + 25x2 = 245
+Nota del aporte individual = 245 / 4 / 10 = 6.12
+Nota global del equipo ....... 8.15  (peso 60%)
+Nota del aporte individual ... 6.12  (peso 40%)
+Calificacion ponderada ....... 8.15 x 0,60 + 6.12 x 0,40 = 7.34
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 7.34 / 10
+----------------------------------------------------------------------------</pre></div>
+<p style="font-size:12.5px;color:#555;margin-top:36px">Rúbrica: Guía de la Cuarta Entrega (Entrega Final) del PFC, 17 criterios, 3 ejes. Nota individual = 60 % nota del equipo + 40 % aporte individual (I1 30, I2 25, I3 20, I4 25). Las reclamaciones se atienden con evidencia del repositorio.</p></main></body></html>

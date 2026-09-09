@@ -1,0 +1,170 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TA-PFC-E4 &mdash; Urbina Romero Isaias Abraham</title>
+<style>
+:root{--tinta:#10233B;--azul:#0E3F7E;--medio:#1E5AA8;--teal:#2E86A1;--papel:#F6F8FB;--blanco:#fff;--linea:#D3DCE8;--suave:#EAF1F9;--verde:#4FAE60;--rojo:#B03030;--gris:#5B6B80;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:"Inter","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+
+body{background:var(--papel);padding:0}
+.solo{max-width:900px;margin:0 auto;padding:28px 34px 70px}
+.ph{display:flex;align-items:flex-start;gap:20px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid var(--azul)}
+.ph h2{margin:0;font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em}
+.meta{margin:5px 0 0;font-size:13px;color:var(--gris)}.meta b{color:var(--tinta)}
+.copy{flex:none;background:var(--azul);color:#fff;border:0;border-radius:2px;padding:9px 17px;font:600 13.5px/1 var(--sans);cursor:pointer}
+.copy:hover{background:var(--medio)}.copy.ok{background:var(--verde)}
+pre{margin:20px 0 0;background:var(--blanco);border:1px solid var(--linea);padding:22px 24px;font-family:var(--mono);font-size:12px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+.pie{margin-top:26px;font-size:12px;color:var(--gris);border-top:1px solid var(--linea);padding-top:12px}
+@media(max-width:700px){.solo{padding:18px}.ph{flex-direction:column}}
+</style></head><body>
+<div class="solo">
+<header class="ph">
+  <div><h2>Urbina Romero Isaias Abraham</h2>
+  <p class="meta">TA-PFC-E4 &nbsp;&middot;&nbsp; Aplicaciones Distribuidas (ISR-701) &nbsp;&middot;&nbsp; Equipo FUVV &nbsp;&middot;&nbsp; SCLI -- Control de laboratorios informaticos</p>
+  <p class="meta">Equipo 6.10 &nbsp;&middot;&nbsp; aporte individual 8.00 &nbsp;&middot;&nbsp; <b>calificacion final 6.86</b> &nbsp;&middot;&nbsp; provisional hasta la defensa</p></div>
+  <button class="copy">Copiar informe</button>
+</header>
+<pre id="r">============================================================================
+INFORME GLOBAL DEL EQUIPO -- TA-PFC-E4
+Proyecto Fin de Curso, Entrega 4 -- Aplicaciones Distribuidas (ISR-701)
+============================================================================
+
+Equipo: FUVV -- SCLI -- Control de laboratorios informaticos
+Repositorio auditado: https://github.com/ffarinangog2/Entrega-final-del-PFC
+Rama: feature/entrega-4 | Commit evaluado: e43967e | Fecha: 2026-09-04T19:21:48-05:00
+Fecha de esta revision: 5 de septiembre de 2026.
+Se consideran todos los commits existentes a esta fecha, sin limite de hora y sin penalizacion por el momento del envio.
+Plazo de commits: cerrado el viernes 4 de septiembre de 2026 a las 23:55.
+
+RUBRICA APLICADA
+Tabla de criterios calificables de la guia paso a paso TA-PFC-E4: diez criterios sobre cien puntos, cinco niveles de 0 a 4.
+Formula de la guia: Puntos(i) = Nivel(i) x Peso(i) / 4.
+El criterio C10, defensa oral y dominio individual, con peso 5, no puede evaluarse hasta la defensa.
+La nota se calcula sobre los nueve criterios evaluables, cuyo peso suma 95 puntos, renormalizado a 100.
+
+SOBRE LOS CRITERIOS DE PISO
+La guia establece que incumplir cualquier criterio de piso implica calificacion CERO en toda la entrega.
+En esta revision he decidido NO aplicar esa regla a la calificacion.
+Les doy la nota que corresponde al trabajo realmente hecho, y les detallo abajo el estado de cada piso para que sepan exactamente que tienen que corregir.
+La nota que reciben es la del trabajo realmente hecho, sin descuentos de ningun tipo.
+
+P1 Caratula de una pagina con la URL del repositorio en una sola linea
+   ESTADO: CUMPLE con reserva. La URL abre y clona, pero la caratula sigue diciendo TiendaTech y comercio electronico de hardware, que es el proyecto de otro equipo.
+P2 El PDF se regenera clonando y compilando con las instrucciones del README
+   ESTADO: PARCIAL. El README ya documenta la compilacion, pero docs/main.tex no compila por dos figuras ausentes.
+P3 El sistema levanta con un solo comando desde una maquina limpia
+   ESTADO: NO VERIFICADO. No pude levantar el stack en este entorno.
+P4 Existen el generador de rafagas, el oraculo y los datos crudos del experimento
+   ESTADO: PARCIAL. El generador y el oraculo ya existen y son correctos; los datos no: 0 de 130 corridas.
+P5 Las cinco estrategias son conmutables por variable de entorno ARBITER
+   ESTADO: CUMPLE. Verificado en application.yml y docker-compose.prod.yml.
+P6 Datos sinteticos, sin datos reales de personas
+   ESTADO: CUMPLE. Fixtures generados.
+P7 Referencias verificadas, DOI que resuelven
+   ESTADO: CUMPLE. Diecinueve de diecinueve entre los dos documentos.
+P8 Declaracion de uso de IA generativa
+   ESTADO: PARCIAL. Existe en el README, no dentro del documento.
+
+VALORACION POR CRITERIO
+
+--- C1 Recuperacion y correccion de las entregas previas | Peso 12 | Nivel 3/4 | 9.00 puntos ---
+  El producto siguio creciendo hasta el ultimo dia: administracion global institucional, flujo academico y de asistencia del estudiante, experiencia docente en web y movil, planificacion por ciclos y niveles, y separacion de modulos administrativos por ruta.
+  Cerraron ademas cosas finas: ciclo de vida de Room en pruebas instrumentadas, alineacion de tipos con Hibernate, publicacion de imagenes en GHCR.
+  Lo que impide subir es que la entrega sigue llegando con dos documentos distintos, uno de veintidos paginas y otro de veinticinco, y que main sigue congelada mientras todo vive en feature/entrega-4.
+
+--- C2 Rigor del diseno experimental | Peso 16 | Nivel 2/4 | 8.00 puntos ---
+  Construyeron el aparato experimental completo, y quiero reconocerlo con detalle porque es un giro de ciento ochenta grados respecto de lo que revise el 2 de septiembre.
+  Las cinco estrategias existen como clases Java reales dentro del servicio de reservas: S0SinArbitraje, S1Optimista, S2Pesimista, S3BullyLamport y S4SerializableQuorum. La conmutacion es efectiva por variable de entorno: application.yml lee ARBITER y docker-compose.prod.yml la expone.
+  El generador de rafagas usa una barrera de sincronizacion real, threading.Barrier con agentes mas uno, y libera toda la rafaga desde un unico punto, que es exactamente lo que hacia falta para garantizar simultaneidad.
+  El oraculo implementa las cinco invariantes: sin doble adjudicacion, exactamente un adjudicatario, nada de equipo en mantenimiento, una liberacion por cancelacion y acceso solo con adjudicacion vigente. Esta bien escrito.
+  Estan tambien el inyector de caida del coordinador, el orquestador de campana de 409 lineas, el nucleo de arbitraje de 359 lineas, las pruebas del arbitro y la validacion del experimento en el pipeline.
+  Pero no lo ejecutaron. Y lo dicen ustedes mismos, en el README de la carpeta de resultados: existen 0 de 130 corridas, y los tests unitarios no constituyen evidencia experimental.
+  Esa frase, escrita por ustedes, es lo mas honesto de esta entrega y la razon por la que este criterio no baja mas. Construyeron el instrumento correcto y se quedaron sin tiempo para usarlo.
+
+--- C3 Resultado central y su analisis | Peso 14 | Nivel 1/4 | 3.50 puntos ---
+  No hay resultado. Cero corridas significa cero tasa de doble adjudicacion, cero indice de equidad de Jain, cero rechazos innecesarios, cero tiempo de reeleccion y ninguna comparacion estadistica.
+  Y en experimentos/resultados/iso25010.csv sigue exactamente igual que hace tres dias: de las veinte filas, las diez del escenario de fiabilidad de una hora estan vacias en todas sus columnas. Era una corrida desatendida de sesenta minutos. Tuvieron tres noches.
+  Lo unico que si midieron sigue siendo el escenario de eficiencia: diez repeticiones validas con percentiles reales de Prometheus. Es real y lo cuento.
+  Y sigue sin comentarse el dato mas interesante que tienen: el p99 oscila entre 53 y 2200 milisegundos en corridas identicas, un factor de cuarenta. Se lo senale y no lo tocaron. Ese numero es un hallazgo esperando a que alguien lo explique.
+
+--- C4 Reproducibilidad | Peso 10 | Nivel 3/4 | 7.50 puntos ---
+  Corrigieron dos de las tres cosas que les pedi. El README ya documenta la compilacion del informe, con pdflatex, bibtex y las dos pasadas finales, y explica para que sirve cada una. Y ya existe el CITATION.cff.
+  La gestion de evidencia cruda sigue siendo la mejor del curso: ciento noventa y cuatro archivos por repeticion con metadatos, SHA del commit congelado, consultas PromQL versionadas junto a sus resultados y un SHA256SUMS publicado por ustedes.
+  Lo que no corrigieron: docs/main.tex sigue sin compilar desde un clon limpio porque pide figuras/panel-monitoreo.png y figuras/qr-scan.png, y el directorio docs/figuras sigue sin existir. Es el mismo fallo que les senale hace tres dias y cuesta dos minutos.
+
+--- C5 Cobertura de los temas de la asignatura | Peso 12 | Nivel 3/4 | 9.00 puntos ---
+  Cobertura amplia: capas y SOLID, siete patrones GoF documentados, consenso con Raft, fragmentacion, Spark, seguridad con JWT y politicas por ambito, observabilidad completa e ISO/IEC 25010.
+  Y ahora ademas relojes de Lamport y eleccion tipo Bully implementados de verdad dentro del arbitro experimental, que antes no estaban.
+  Sigue faltando la tabla que ate cada tema a su evidencia localizable.
+
+--- C6 Arquitectura distribuida y su justificacion | Peso 9 | Nivel 3/4 | 6.75 puntos ---
+  Los ADR sostienen bien las decisiones y ahora el ADR de arbitraje tiene respaldo en codigo real.
+  La posicion CAP por agregado sigue sin dato propio que la sostenga, porque las corridas no existen.
+
+--- C7 Calidad del producto, pruebas y observabilidad | Peso 9 | Nivel 4/4 | 9.00 puntos ---
+  Sigue siendo su criterio mas fuerte y lo reforzaron: recuperaron cobertura y contexto de seguridad en el pipeline, anadieron el harness del oraculo con su protocolo y la validacion del experimento como paso de integracion continua.
+  Diez trabajos mas uno reutilizable, ciento veintisiete archivos de prueba Java, pruebas de web, extremo a extremo con Playwright, contratos Pact, Testcontainers, instrumentadas en emulador y carga con Locust. Observabilidad con ocho objetivos, tres tuberias de OpenTelemetry y dieciseis paneles.
+  Actualizaron ademas seguridad, compatibilidad y mantenibilidad en la evaluacion ISO.
+
+--- C8 Gestion de la revision cruzada | Peso 5 | Nivel 1/4 | 1.25 puntos ---
+  Sigue sin existir la tabla de issues de la revision cruzada con la accion tomada y el enlace que la prueba. Es el mismo hueco de la revision anterior y no se toco.
+  Y sigue sin haber una sola fusion a main: toda la entrega vive en feature/entrega-4 y main quedo congelada. Sin solicitudes de incorporacion no hay revision de pares dentro del propio equipo.
+
+--- C9 Documento LaTeX y bibliografia | Peso 8 | Nivel 2/4 | 4.00 puntos ---
+  Corrigieron lo que costaba una linea y lo agradezco: docs/entrega-4/main.tex ya usa ieeetr, que es el estilo IEEE que la guia exige, y la bibliografia paso de seis a quince entradas, por encima del minimo de doce. Los seis DOI declarados resuelven.
+  El documento crecio a veinticinco paginas y compila limpio, sin errores ni referencias sin resolver.
+  Pero sigue teniendo solo cuatro secciones: arquitectura, aplicaciones, pruebas y CI/CD, y observabilidad e ISO. Faltan catorce de las dieciocho obligatorias, empezando por portada institucional, resumen bilingue, estado del arte, diseno del estudio, resultados, discusion, amenazas a la validez, revision cruzada, conclusiones, conclusiones individuales y reflexion etica.
+  Hay ademas treinta y ocho desbordes de caja, y siguen entregando dos documentos en conflicto sin declarar cual es el bueno.
+  La declaracion de uso de IA aparece ahora en el README, pero la guia la pide dentro del documento.
+
+----------------------------------------------------------------------------
+Suma de los nueve criterios evaluables: 58.00 de 95 puntos.
+Renormalizado a 100: 61.1 puntos.
+NOTA DEL EQUIPO ............. 6.10 / 10   (provisional hasta la defensa)
+----------------------------------------------------------------------------
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- TA-PFC-E4
+============================================================================
+
+Estudiante: Urbina Romero Isaias Abraham
+Equipo: FUVV | Rol declarado: Responsable de Desarrollo
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+Ventana evaluada: del 16 de agosto al 5 de septiembre de 2026.
+Atribucion obtenida con git log --numstat, filtrando extensiones de codigo y documentacion, y unificando las identidades git de cada persona.
+  50 commits en 15 dias distintos | +14671 / -826 lineas | 502 archivos | BACK 178, OPS 91, TEST 90, MOVIL 73, WEB 41
+
+VALORACION
+  Quince dias distintos, quinientos dos archivos y el mayor aporte del equipo en operaciones y observabilidad. Esa pila, con ocho objetivos de Prometheus, tres tuberias de OpenTelemetry y dieciseis paneles de Grafana, es el criterio mas fuerte que tiene FUVV y es en buena parte tuyo.
+  En el tramo final configuraste el modo experimental seguro del arbitro, recuperaste cobertura y contexto de seguridad en el pipeline y actualizaste reproducibilidad y metadatos.
+  El CITATION.cff que ahora existe es un cierre que te corresponde y que faltaba desde la revision anterior.
+  Lo que no ocurrio es lo mismo para todos: cero corridas del experimento. El modo experimental seguro que configuraste no llego a usarse ni una vez.
+  Y sigue faltando la tabla de la revision cruzada. No aparece en ningun sitio del repositorio, y ademas main sigue congelada sin una sola fusion desde el 15 de agosto: toda la entrega vive en feature/entrega-4. Sin solicitudes de incorporacion no hay revision de pares ni siquiera dentro del equipo.
+  Para la defensa: prepara como demostrarias, con su instrumentacion actual, que doscientas peticiones llegaron realmente simultaneas. La barrera esta implementada; sabes la respuesta.
+
+LO QUE ESPERO DE USTED EN EL EXAMEN FINAL
+El plazo de commits ya cerro, de modo que esta es la evaluacion del trabajo entregado.
+El examen final es esta semana, del 7 al 11 de septiembre.
+Llegue preparado para defender lo que su repositorio contiene y, sobre todo, para explicar con precision lo que no contiene y por que.
+Reconocer con claridad el limite de la propia evidencia puntua mas que cualquier justificacion.
+
+----------------------------------------------------------------------------
+CALCULO DE LA CALIFICACION
+Nota del equipo (60 por ciento) ......... 6.10
+Aporte individual (40 por ciento) ...... 8.00
+Ponderada 0,60 x equipo + 0,40 x individual = 6.86
+Nota: a diferencia de la revision anterior, en esta no aplico el tope de la nota del equipo.
+Quiero que el esfuerzo individual se refleje aunque el entregable colectivo no lo acompane.
+
+CALIFICACION FINAL ........... 6.86 / 10   (provisional hasta la defensa)</pre>
+<p class="pie">Revision del 5 de septiembre de 2026 &middot; Rubrica de criterios calificables de la guia paso a paso TA-PFC-E4 &middot; PhD. Gleiston Ciceron Guerrero-Ulloa</p>
+</div><script>
+(function(){var b=document.querySelector('.copy');if(!b)return;
+b.addEventListener('click',function(){var t=document.getElementById('r').textContent;
+var ok=function(){var o=b.textContent;b.textContent='Copiado';b.classList.add('ok');
+setTimeout(function(){b.textContent=o;b.classList.remove('ok');},1600);};
+function fb(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';
+document.body.appendChild(a);a.select();try{document.execCommand('copy');ok();}catch(e){}document.body.removeChild(a);}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}});})();
+</script></body></html>

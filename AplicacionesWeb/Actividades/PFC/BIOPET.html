@@ -1,0 +1,383 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Evaluación PFC 2B — BIOPET</title><style>body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f5;color:#1e2a24}
+header{background:#006633;color:#fff;padding:22px 36px}header h1{margin:0;font-size:22px}header p{margin:6px 0 0;opacity:.9;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:24px 36px}
+h2{color:#006633;border-bottom:3px solid #CC9900;padding-bottom:6px;margin-top:44px}
+h3{color:#006633;margin-top:30px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}th,td{border:1px solid #cfd8d3;padding:6px 9px;text-align:left;vertical-align:top}th{background:#e3efe8}
+td.n,th.n{text-align:right;white-space:nowrap}
+.box{position:relative;background:#fff;border:1px solid #cfd8d3;border-left:5px solid #006633;border-radius:6px;margin:14px 0 6px}
+pre{margin:0;padding:18px 16px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:Consolas,Courier New,monospace;font-size:12.6px;line-height:1.45;max-height:640px;overflow:auto}
+.copy{position:sticky;top:8px;float:right;margin:8px 10px 0 0;background:#CC9900;color:#1e2a24;border:0;border-radius:4px;padding:7px 14px;font-weight:600;cursor:pointer;z-index:2}.copy:hover{background:#b58600}
+.doc{background:#fff8e6;border:1px solid #e6c766;border-radius:6px;padding:12px 16px;margin:0 0 26px;font-size:13.5px}.doc b{color:#7a5a00}
+.lv100{background:#d7f0dc}.lv75{background:#e9f5df}.lv50{background:#fff3cd}.lv25{background:#fde2d2}.lv0{background:#f8d0d0}
+.crit{font-size:12.5px}details{margin:8px 0 16px}summary{cursor:pointer;color:#006633;font-weight:600}
+.badge{display:inline-block;background:#006633;color:#fff;border-radius:12px;padding:2px 10px;font-size:12px;margin-left:8px}
+</style><script>function cp(id,btn){var t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(function(){btn.textContent='Copiado';setTimeout(function(){btn.textContent='Copiar informe'},1800)});}</script></head><body>
+<header><h1>BIOPET — Sistema web de gestión veterinaria<span class="badge">8.68 / 10</span></h1><p>PFC Entrega Final (2B) · Aplicaciones Web (Quinto nivel) · UTEQ · Revisión del 5 de septiembre de 2026 · Repositorio auditado: <a style="color:#fff" href="https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET">https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET</a> · commit <code>8d00e32</code></p></header><main>
+<h2>Niveles por criterio</h2><table class="crit"><tr><th>Criterio</th><th class="n">Peso</th><th class="n">Nivel</th><th>Justificación</th></tr>
+<tr><td><b>P0</b> Aplicación de observaciones acumuladas</td><td class="n">5</td><td class="n lv75">Satisfactorio 75</td><td>Bitácora de 83 KB con quince códigos OBS, 25 de los 25 hashes de commit existen, 65 marcas de CERRADO, seis parciales y dos pendientes. Cinco etiquetas correctas. Alrededor del 90 % cerrado con trazabilidad.</td></tr>
+<tr><td><b>P1</b> Cierre funcional, cobertura y acceso a datos</td><td class="n">7</td><td class="n lv75">Satisfactorio 75</td><td>JaCoCo recalculado desde docs/mediciones/jacoco/jacoco.xml: 91,8 % de líneas y 79,4 % de ramas; controladores 90,7 % de líneas, servicios 89,5/71,6, dominio 100/100. Las exclusiones del pom son solo DTO, Rol y OpenApiConfig, razonables. Seis procedimientos en db/procs/ invocados desde ProcedimientoBiopetRepository, catalogados y trazados con tipo_acceso. Lo que resta: la CI tuvo cuatro corridas rojas el 4 de septiembre antes de volver a verde.</td></tr>
+<tr><td><b>P2</b> Rendimiento con evidencia estadística</td><td class="n">6</td><td class="n lv100">Excelente 100</td><td>Veinte corridas crudas NDJSON a 50 VU (cinco calientes y cinco frías para v0.9.0-rc y para v1.0.0). Recalculé p95 desde el crudo: caliente entre 6,8 y 20,2 ms, frío entre 17,2 y 22,1 ms, cero fallos. IC 95 % y Wilcoxon reportados.</td></tr>
+<tr><td><b>P3</b> Seguridad OWASP + ZAP + auditoría de acceso a datos</td><td class="n">7</td><td class="n lv75">Satisfactorio 75</td><td>ZAP baseline y ZAP autenticado sin ningún hallazgo; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic con hash SHA-256 de la salida. La evidencia OWASP por control está resumida en un README y no como salidas curl separadas por control.</td></tr>
+<tr><td><b>P4</b> Calidad web Lighthouse</td><td class="n">5</td><td class="n lv100">Excelente 100</td><td>Corridas del 3 de septiembre contra el despliegue en Render: 100/91/100/100 en desktop y mobile con tres corridas por perfil. Umbrales cumplidos.</td></tr>
+<tr><td><b>P5</b> Puesta en producción accesible</td><td class="n">5</td><td class="n lv100">Excelente 100</td><td>https://biopet-frontend.onrender.com responde 200 con certificado válido y https://biopet-backend-dh5e.onrender.com/actuator/health devuelve UP; comprobado en vivo. DEPLOYMENT.md, RUNBOOK.md y BACKUP.md completos; ADR-005 de despliegue.</td></tr>
+<tr><td><b>D0R</b> Culminación de la ingeniería de requisitos</td><td class="n">8</td><td class="n lv50">En desarrollo 50</td><td>SRS-v1.0.0.pdf de 19 páginas, 29 Must, INVEST y Cockburn aplicados, CHANGELOG-REQ.md continuo. El propio documento declara que no está firmado por el docente-director, lo que limita el criterio a En desarrollo.</td></tr>
+<tr><td><b>D1</b> Estructura IMRaD y secciones obligatorias</td><td class="n">6</td><td class="n lv100">Excelente 100</td><td>101 páginas con todas las secciones obligatorias, resumen y abstract, capítulo de RE, siete anexos. Los 148 desbordes de caja afean el PDF y deben corregirse.</td></tr>
+<tr><td><b>D2</b> Trabajos relacionados y brecha</td><td class="n">5</td><td class="n lv100">Excelente 100</td><td>Estrategia de búsqueda, diagrama PRISMA generado desde .dot, tabla comparativa y brecha explícita.</td></tr>
+<tr><td><b>D3</b> Metodología y protocolo experimental</td><td class="n">7</td><td class="n lv100">Excelente 100</td><td>DSR instanciada, GQM, muestreo justificado, estadística declarada a priori, semillas y versiones capturadas.</td></tr>
+<tr><td><b>D4</b> Análisis estadístico riguroso</td><td class="n">6</td><td class="n lv75">Satisfactorio 75</td><td>SUS N=18 recalculado desde sus-raw.csv: media 74,44 y DT 22,35. IC 95 % en la mayoría de tablas y Wilcoxon; no hay corrección por comparaciones múltiples.</td></tr>
+<tr><td><b>D5</b> Amenazas a la validez y discusión</td><td class="n">4</td><td class="n lv75">Satisfactorio 75</td><td>Cuatro categorías presentes con mitigación; tratamiento breve para un informe de 101 páginas.</td></tr>
+<tr><td><b>D6</b> Bibliografía y calidad de citas</td><td class="n">4</td><td class="n lv100">Excelente 100</td><td>41 referencias, las 41 citadas, 26 con DOI; 25 de 26 DOI verificados contra Crossref, el restante es un DOI de arXiv (DataCite), válido.</td></tr>
+<tr><td><b>R1</b> Reproducción end-to-end (make all)</td><td class="n">8</td><td class="n lv75">Satisfactorio 75</td><td>make all encadena frontend, backend, traceability, pdf, perf, stats, lighthouse, sql-audit, security-static y zap. No pude ejecutarlo de punta a punta en este entorno.</td></tr>
+<tr><td><b>R2</b> Datos con DOI, diccionario y provenance</td><td class="n">6</td><td class="n lv100">Excelente 100</td><td>DOI de software 10.5281/zenodo.21988746 y DOI de dataset 10.5281/zenodo.21988785, ambos CC BY 4.0, separados y resolviendo. DATA-DICTIONARY.md de 34,7 KB y DATA-PROVENANCE.md de 18,2 KB.</td></tr>
+<tr><td><b>R3</b> Metadatos, CRediT y ORCID</td><td class="n">6</td><td class="n lv100">Excelente 100</td><td>CITATION.cff 1.2.0 con DOI y ORCID de los tres autores; CONTRIBUTORS.md con catorce roles CRediT; declaraciones completas.</td></tr>
+<tr><td><b>R4</b> Cumplimiento de estándares de reporte</td><td class="n">5</td><td class="n lv100">Excelente 100</td><td>Checklists INCOSE (22 ítems), Ralph engineering research (23 KB), PRISMA (28 KB) y FAIR rellenados ítem por ítem.</td></tr>
+<tr><th colspan="2">Nota del equipo</th><th class="n">8.68 / 10</th><th>Sin pisos ni reglas transversales de sanción aplicados a la nota; estado de los pisos declarado en cada informe.</th></tr></table>
+<h2>Pendientes antes del examen final (semana 19, 7 al 11 de septiembre)</h2><ol><li>Corrijan los 148 desbordes de caja del informe.</li><li>Expliquen las cuatro corridas rojas de CI del 4 de septiembre en la bitácora.</li><li>Separen la evidencia OWASP en un archivo de salida curl por control.</li><li>Añadan la corrección por comparaciones múltiples donde hay más de un contraste.</li><li>Muevan v1.0.0 o etiqueten v1.0.1 sobre el commit que van a defender.</li><li>Unifiquen las identidades Git de Mariscal bajo el correo institucional.</li></ol>
+<h2>Informes individuales</h2><p>Cada informe incluye la revisión completa del equipo y la valoración del aporte individual. El botón copia el texto íntegro.</p>
+<h3>Mariscal Cabrera Jaime Josue <span class="badge">8.56 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('BIOPET_0',this)">Copiar informe</button><pre id="BIOPET_0">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: BIOPET — Sistema web de gestión veterinaria
+Repositorio auditado: https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET
+Rama: main | Commit evaluado: 8d00e32 | Fecha del commit: 2026-09-04T18:53:09-05:00
+Estado del arbol: 414 commits, 649 archivos, 9 identidades Git para 3 integrantes más dos externos con 2 commits cada uno, v1.0.0 (0d5cd52) 414 commits atrás en el recuento de main.
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: CUMPLE. docs/informe/caratula-entrega-final.pdf tiene una página y la URL completa en una línea; la portada del informe también la lleva.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. make pdf (latexmk sobre docs/informe/informe-final-v1.0.0.tex) en copia limpia: código de salida cero, 101 páginas, cero citas indefinidas, cero referencias sin resolver, 148 desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel Satisfactorio (75%)
+  Bitácora de 83 KB con quince códigos OBS, 25 de los 25 hashes de commit existen, 65 marcas de CERRADO, seis parciales y dos pendientes. Cinco etiquetas correctas. Alrededor del 90 % cerrado con trazabilidad.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  JaCoCo recalculado desde docs/mediciones/jacoco/jacoco.xml: 91,8 % de líneas y 79,4 % de ramas; controladores 90,7 % de líneas, servicios 89,5/71,6, dominio 100/100. Las exclusiones del pom son solo DTO, Rol y OpenApiConfig, razonables. Seis procedimientos en db/procs/ invocados desde ProcedimientoBiopetRepository, catalogados y trazados con tipo_acceso. Lo que resta: la CI tuvo cuatro corridas rojas el 4 de septiembre antes de volver a verde.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Excelente (100%)
+  Veinte corridas crudas NDJSON a 50 VU (cinco calientes y cinco frías para v0.9.0-rc y para v1.0.0). Recalculé p95 desde el crudo: caliente entre 6,8 y 20,2 ms, frío entre 17,2 y 22,1 ms, cero fallos. IC 95 % y Wilcoxon reportados.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  ZAP baseline y ZAP autenticado sin ningún hallazgo; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic con hash SHA-256 de la salida. La evidencia OWASP por control está resumida en un README y no como salidas curl separadas por control.
+P4. Calidad web Lighthouse | Peso 5% | Nivel Excelente (100%)
+  Corridas del 3 de septiembre contra el despliegue en Render: 100/91/100/100 en desktop y mobile con tres corridas por perfil. Umbrales cumplidos.
+P5. Puesta en producción accesible | Peso 5% | Nivel Excelente (100%)
+  https://biopet-frontend.onrender.com responde 200 con certificado válido y https://biopet-backend-dh5e.onrender.com/actuator/health devuelve UP; comprobado en vivo. DEPLOYMENT.md, RUNBOOK.md y BACKUP.md completos; ADR-005 de despliegue.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  SRS-v1.0.0.pdf de 19 páginas, 29 Must, INVEST y Cockburn aplicados, CHANGELOG-REQ.md continuo. El propio documento declara que no está firmado por el docente-director, lo que limita el criterio a En desarrollo.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Excelente (100%)
+  101 páginas con todas las secciones obligatorias, resumen y abstract, capítulo de RE, siete anexos. Los 148 desbordes de caja afean el PDF y deben corregirse.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel Excelente (100%)
+  Estrategia de búsqueda, diagrama PRISMA generado desde .dot, tabla comparativa y brecha explícita.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel Excelente (100%)
+  DSR instanciada, GQM, muestreo justificado, estadística declarada a priori, semillas y versiones capturadas.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel Satisfactorio (75%)
+  SUS N=18 recalculado desde sus-raw.csv: media 74,44 y DT 22,35. IC 95 % en la mayoría de tablas y Wilcoxon; no hay corrección por comparaciones múltiples.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel Satisfactorio (75%)
+  Cuatro categorías presentes con mitigación; tratamiento breve para un informe de 101 páginas.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Excelente (100%)
+  41 referencias, las 41 citadas, 26 con DOI; 25 de 26 DOI verificados contra Crossref, el restante es un DOI de arXiv (DataCite), válido.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel Satisfactorio (75%)
+  make all encadena frontend, backend, traceability, pdf, perf, stats, lighthouse, sql-audit, security-static y zap. No pude ejecutarlo de punta a punta en este entorno.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Excelente (100%)
+  DOI de software 10.5281/zenodo.21988746 y DOI de dataset 10.5281/zenodo.21988785, ambos CC BY 4.0, separados y resolviendo. DATA-DICTIONARY.md de 34,7 KB y DATA-PROVENANCE.md de 18,2 KB.
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Excelente (100%)
+  CITATION.cff 1.2.0 con DOI y ORCID de los tres autores; CONTRIBUTORS.md con catorce roles CRediT; declaraciones completas.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel Excelente (100%)
+  Checklists INCOSE (22 ítems), Ralph engineering research (23 KB), PRISMA (28 KB) y FAIR rellenados ítem por ítem.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Corrijan los 148 desbordes de caja del informe.
+  2. Expliquen las cuatro corridas rojas de CI del 4 de septiembre en la bitácora.
+  3. Separen la evidencia OWASP en un archivo de salida curl por control.
+  4. Añadan la corrección por comparaciones múltiples donde hay más de un contraste.
+  5. Muevan v1.0.0 o etiqueten v1.0.1 sobre el commit que van a defender.
+  6. Unifiquen las identidades Git de Mariscal bajo el correo institucional.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.75 + 7x0.75 + 6x1.00 + 7x0.75 + 5x1.00 + 5x1.00 + 8x0.50 + 6x1.00 + 5x1.00 + 7x1.00 + 6x0.75 + 4x0.75 + 4x1.00 + 8x0.75 + 6x1.00 + 6x1.00 + 5x1.00 = 86.80
+Nota del equipo ............. 8.68 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: MARISCAL CABRERA JAIME JOSUE
+Equipo: BIOPET
+Rol verificado: Propietario del repositorio, documento, infraestructura y pruebas
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+146 commits sin merges repartidos en cinco identidades Git y dos correos (mariscaljaime34@gmail.com y jmariscalc@uteq.edu.ec), en 15 días distintos entre el 20 de junio y el 4 de septiembre, +41.215 / -5.435 líneas. Presente en la ronda correctiva del 3 y 4 de septiembre.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): documentación 29.317, pruebas 4.087, infraestructura 3.292, backend 3.218, base de datos 598.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 4/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 3/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 2/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 4/4
+
+ANALISIS DE SU CONTRIBUCION
+  Autor principal del informe y de gran parte de la infraestructura de medición. I3 en 2 por las cinco identidades y dos correos, que obligan a unificar a mano para reconstruir su aporte.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x4 + 25x3 + 20x2 + 25x4 = 335
+Nota del aporte individual = 335 / 4 / 10 = 8.38
+Nota global del equipo ....... 8.68  (peso 60%)
+Nota del aporte individual ... 8.38  (peso 40%)
+Calificacion ponderada ....... 8.68 x 0,60 + 8.38 x 0,40 = 8.56
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 8.56 / 10
+----------------------------------------------------------------------------</pre></div>
+<h3>Beltran Montiel Fred Adrian <span class="badge">8.91 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('BIOPET_1',this)">Copiar informe</button><pre id="BIOPET_1">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: BIOPET — Sistema web de gestión veterinaria
+Repositorio auditado: https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET
+Rama: main | Commit evaluado: 8d00e32 | Fecha del commit: 2026-09-04T18:53:09-05:00
+Estado del arbol: 414 commits, 649 archivos, 9 identidades Git para 3 integrantes más dos externos con 2 commits cada uno, v1.0.0 (0d5cd52) 414 commits atrás en el recuento de main.
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: CUMPLE. docs/informe/caratula-entrega-final.pdf tiene una página y la URL completa en una línea; la portada del informe también la lleva.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. make pdf (latexmk sobre docs/informe/informe-final-v1.0.0.tex) en copia limpia: código de salida cero, 101 páginas, cero citas indefinidas, cero referencias sin resolver, 148 desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel Satisfactorio (75%)
+  Bitácora de 83 KB con quince códigos OBS, 25 de los 25 hashes de commit existen, 65 marcas de CERRADO, seis parciales y dos pendientes. Cinco etiquetas correctas. Alrededor del 90 % cerrado con trazabilidad.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  JaCoCo recalculado desde docs/mediciones/jacoco/jacoco.xml: 91,8 % de líneas y 79,4 % de ramas; controladores 90,7 % de líneas, servicios 89,5/71,6, dominio 100/100. Las exclusiones del pom son solo DTO, Rol y OpenApiConfig, razonables. Seis procedimientos en db/procs/ invocados desde ProcedimientoBiopetRepository, catalogados y trazados con tipo_acceso. Lo que resta: la CI tuvo cuatro corridas rojas el 4 de septiembre antes de volver a verde.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Excelente (100%)
+  Veinte corridas crudas NDJSON a 50 VU (cinco calientes y cinco frías para v0.9.0-rc y para v1.0.0). Recalculé p95 desde el crudo: caliente entre 6,8 y 20,2 ms, frío entre 17,2 y 22,1 ms, cero fallos. IC 95 % y Wilcoxon reportados.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  ZAP baseline y ZAP autenticado sin ningún hallazgo; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic con hash SHA-256 de la salida. La evidencia OWASP por control está resumida en un README y no como salidas curl separadas por control.
+P4. Calidad web Lighthouse | Peso 5% | Nivel Excelente (100%)
+  Corridas del 3 de septiembre contra el despliegue en Render: 100/91/100/100 en desktop y mobile con tres corridas por perfil. Umbrales cumplidos.
+P5. Puesta en producción accesible | Peso 5% | Nivel Excelente (100%)
+  https://biopet-frontend.onrender.com responde 200 con certificado válido y https://biopet-backend-dh5e.onrender.com/actuator/health devuelve UP; comprobado en vivo. DEPLOYMENT.md, RUNBOOK.md y BACKUP.md completos; ADR-005 de despliegue.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  SRS-v1.0.0.pdf de 19 páginas, 29 Must, INVEST y Cockburn aplicados, CHANGELOG-REQ.md continuo. El propio documento declara que no está firmado por el docente-director, lo que limita el criterio a En desarrollo.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Excelente (100%)
+  101 páginas con todas las secciones obligatorias, resumen y abstract, capítulo de RE, siete anexos. Los 148 desbordes de caja afean el PDF y deben corregirse.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel Excelente (100%)
+  Estrategia de búsqueda, diagrama PRISMA generado desde .dot, tabla comparativa y brecha explícita.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel Excelente (100%)
+  DSR instanciada, GQM, muestreo justificado, estadística declarada a priori, semillas y versiones capturadas.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel Satisfactorio (75%)
+  SUS N=18 recalculado desde sus-raw.csv: media 74,44 y DT 22,35. IC 95 % en la mayoría de tablas y Wilcoxon; no hay corrección por comparaciones múltiples.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel Satisfactorio (75%)
+  Cuatro categorías presentes con mitigación; tratamiento breve para un informe de 101 páginas.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Excelente (100%)
+  41 referencias, las 41 citadas, 26 con DOI; 25 de 26 DOI verificados contra Crossref, el restante es un DOI de arXiv (DataCite), válido.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel Satisfactorio (75%)
+  make all encadena frontend, backend, traceability, pdf, perf, stats, lighthouse, sql-audit, security-static y zap. No pude ejecutarlo de punta a punta en este entorno.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Excelente (100%)
+  DOI de software 10.5281/zenodo.21988746 y DOI de dataset 10.5281/zenodo.21988785, ambos CC BY 4.0, separados y resolviendo. DATA-DICTIONARY.md de 34,7 KB y DATA-PROVENANCE.md de 18,2 KB.
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Excelente (100%)
+  CITATION.cff 1.2.0 con DOI y ORCID de los tres autores; CONTRIBUTORS.md con catorce roles CRediT; declaraciones completas.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel Excelente (100%)
+  Checklists INCOSE (22 ítems), Ralph engineering research (23 KB), PRISMA (28 KB) y FAIR rellenados ítem por ítem.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Corrijan los 148 desbordes de caja del informe.
+  2. Expliquen las cuatro corridas rojas de CI del 4 de septiembre en la bitácora.
+  3. Separen la evidencia OWASP en un archivo de salida curl por control.
+  4. Añadan la corrección por comparaciones múltiples donde hay más de un contraste.
+  5. Muevan v1.0.0 o etiqueten v1.0.1 sobre el commit que van a defender.
+  6. Unifiquen las identidades Git de Mariscal bajo el correo institucional.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.75 + 7x0.75 + 6x1.00 + 7x0.75 + 5x1.00 + 5x1.00 + 8x0.50 + 6x1.00 + 5x1.00 + 7x1.00 + 6x0.75 + 4x0.75 + 4x1.00 + 8x0.75 + 6x1.00 + 6x1.00 + 5x1.00 = 86.80
+Nota del equipo ............. 8.68 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: BELTRAN MONTIEL FRED ADRIAN
+Equipo: BIOPET
+Rol verificado: Base de datos, procedimientos almacenados, pruebas, ADR
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+87 commits sin merges en 11 días distintos entre el 20 de junio y el 3 de septiembre, +8.842 / -830 líneas sobre 118 archivos. Correo institucional fbeltranm@uteq.edu.ec, identidad única.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): documentación 3.047, pruebas 2.453, infraestructura 1.210, base de datos 763, backend 749.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 3/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 4/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 4/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 4/4
+
+ANALISIS DE SU CONTRIBUCION
+  Menor volumen bruto pero el mejor colocado sobre lo que la rúbrica premia: procedimientos almacenados, pruebas, k6, ADR y checklists. Historial limpio con identidad única e institucional.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x3 + 25x4 + 20x4 + 25x4 = 370
+Nota del aporte individual = 370 / 4 / 10 = 9.25
+Nota global del equipo ....... 8.68  (peso 60%)
+Nota del aporte individual ... 9.25  (peso 40%)
+Calificacion ponderada ....... 8.68 x 0,60 + 9.25 x 0,40 = 8.91
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 8.91 / 10
+----------------------------------------------------------------------------</pre></div>
+<h3>Taipe Mora Zaida Melissa <span class="badge">8.26 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('BIOPET_2',this)">Copiar informe</button><pre id="BIOPET_2">============================================================================
+INFORME DE REVISION -- PFC ENTREGA FINAL (2B)
+Aplicaciones Web (Quinto nivel) -- Proyecto Fin de Curso
+============================================================================
+Equipo: BIOPET — Sistema web de gestión veterinaria
+Repositorio auditado: https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET
+Rama: main | Commit evaluado: 8d00e32 | Fecha del commit: 2026-09-04T18:53:09-05:00
+Estado del arbol: 414 commits, 649 archivos, 9 identidades Git para 3 integrantes más dos externos con 2 commits cada uno, v1.0.0 (0d5cd52) 414 commits atrás en el recuento de main.
+Fecha de esta revision: 5 de septiembre de 2026.
+
+RUBRICA APLICADA
+Guia de la Cuarta Entrega (Entrega Final) del PFC: diecisiete criterios en tres ejes.
+Eje 1 Producto software 35 por ciento (P0 a P5); Eje 2 Documento tecnico academico 40 por ciento (D0R y D1 a D6); Eje 3 Reproducibilidad, datos y publicabilidad 25 por ciento (R1 a R4).
+Cinco niveles por criterio: Excelente 100, Satisfactorio 75, En desarrollo 50, Insuficiente 25, Ausente 0.
+Formula: Nota_100 = suma de (peso_i x nivel_i); Nota_10 = Nota_100 / 10.
+En esta revision no aplico los criterios de piso ni las reglas transversales de sancion a la nota; cada criterio se califica por su descriptor y el estado de los pisos se declara para que lo corrijan.
+
+METODO
+Clone el repositorio en limpio, compile el informe siguiendo el README, recalcule la cobertura desde el XML o CSV de JaCoCo, recalcule los percentiles k6 desde los archivos crudos cuando existen, recalcule las puntuaciones SUS con la formula de Brooke, verifique los DOI bibliograficos contra Crossref, resolvi los DOI de Zenodo, consulte el estado de GitHub Actions y comprobe con peticiones reales las URL publicas declaradas.
+Lo que no pude comprobar lo declaro como no verificable y no lo cuento ni a favor ni en contra.
+
+CRITERIOS DE PISO -- ESTADO REAL, SIN EFECTO EN LA NOTA
+Piso 1, carátula PDF de una página con la URL del repositorio en una sola línea: CUMPLE. docs/informe/caratula-entrega-final.pdf tiene una página y la URL completa en una línea; la portada del informe también la lleva.
+Piso 2, el PDF se regenera clonando y compilando con las instrucciones del README: CUMPLE. make pdf (latexmk sobre docs/informe/informe-final-v1.0.0.tex) en copia limpia: código de salida cero, 101 páginas, cero citas indefinidas, cero referencias sin resolver, 148 desbordes de caja.
+
+VALORACION POR CRITERIO
+
+--- EJE 1: PRODUCTO SOFTWARE (35 por ciento) ---
+P0. Aplicación de observaciones acumuladas | Peso 5% | Nivel Satisfactorio (75%)
+  Bitácora de 83 KB con quince códigos OBS, 25 de los 25 hashes de commit existen, 65 marcas de CERRADO, seis parciales y dos pendientes. Cinco etiquetas correctas. Alrededor del 90 % cerrado con trazabilidad.
+P1. Cierre funcional, cobertura y acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  JaCoCo recalculado desde docs/mediciones/jacoco/jacoco.xml: 91,8 % de líneas y 79,4 % de ramas; controladores 90,7 % de líneas, servicios 89,5/71,6, dominio 100/100. Las exclusiones del pom son solo DTO, Rol y OpenApiConfig, razonables. Seis procedimientos en db/procs/ invocados desde ProcedimientoBiopetRepository, catalogados y trazados con tipo_acceso. Lo que resta: la CI tuvo cuatro corridas rojas el 4 de septiembre antes de volver a verde.
+P2. Rendimiento con evidencia estadística | Peso 6% | Nivel Excelente (100%)
+  Veinte corridas crudas NDJSON a 50 VU (cinco calientes y cinco frías para v0.9.0-rc y para v1.0.0). Recalculé p95 desde el crudo: caliente entre 6,8 y 20,2 ms, frío entre 17,2 y 22,1 ms, cero fallos. IC 95 % y Wilcoxon reportados.
+P3. Seguridad OWASP + ZAP + auditoría de acceso a datos | Peso 7% | Nivel Satisfactorio (75%)
+  ZAP baseline y ZAP autenticado sin ningún hallazgo; HSTS, CSP, X-Frame-Options y XCTO presentes; SpotBugs archivado; audit-sql-dynamic con hash SHA-256 de la salida. La evidencia OWASP por control está resumida en un README y no como salidas curl separadas por control.
+P4. Calidad web Lighthouse | Peso 5% | Nivel Excelente (100%)
+  Corridas del 3 de septiembre contra el despliegue en Render: 100/91/100/100 en desktop y mobile con tres corridas por perfil. Umbrales cumplidos.
+P5. Puesta en producción accesible | Peso 5% | Nivel Excelente (100%)
+  https://biopet-frontend.onrender.com responde 200 con certificado válido y https://biopet-backend-dh5e.onrender.com/actuator/health devuelve UP; comprobado en vivo. DEPLOYMENT.md, RUNBOOK.md y BACKUP.md completos; ADR-005 de despliegue.
+
+--- EJE 2: DOCUMENTO TECNICO ACADEMICO (40 por ciento) ---
+D0R. Culminación de la ingeniería de requisitos | Peso 8% | Nivel En desarrollo (50%)
+  SRS-v1.0.0.pdf de 19 páginas, 29 Must, INVEST y Cockburn aplicados, CHANGELOG-REQ.md continuo. El propio documento declara que no está firmado por el docente-director, lo que limita el criterio a En desarrollo.
+D1. Estructura IMRaD y secciones obligatorias | Peso 6% | Nivel Excelente (100%)
+  101 páginas con todas las secciones obligatorias, resumen y abstract, capítulo de RE, siete anexos. Los 148 desbordes de caja afean el PDF y deben corregirse.
+D2. Trabajos relacionados y brecha | Peso 5% | Nivel Excelente (100%)
+  Estrategia de búsqueda, diagrama PRISMA generado desde .dot, tabla comparativa y brecha explícita.
+D3. Metodología y protocolo experimental | Peso 7% | Nivel Excelente (100%)
+  DSR instanciada, GQM, muestreo justificado, estadística declarada a priori, semillas y versiones capturadas.
+D4. Análisis estadístico riguroso | Peso 6% | Nivel Satisfactorio (75%)
+  SUS N=18 recalculado desde sus-raw.csv: media 74,44 y DT 22,35. IC 95 % en la mayoría de tablas y Wilcoxon; no hay corrección por comparaciones múltiples.
+D5. Amenazas a la validez y discusión | Peso 4% | Nivel Satisfactorio (75%)
+  Cuatro categorías presentes con mitigación; tratamiento breve para un informe de 101 páginas.
+D6. Bibliografía y calidad de citas | Peso 4% | Nivel Excelente (100%)
+  41 referencias, las 41 citadas, 26 con DOI; 25 de 26 DOI verificados contra Crossref, el restante es un DOI de arXiv (DataCite), válido.
+
+--- EJE 3: REPRODUCIBILIDAD, DATOS Y PUBLICABILIDAD (25 por ciento) ---
+R1. Reproducción end-to-end (make all) | Peso 8% | Nivel Satisfactorio (75%)
+  make all encadena frontend, backend, traceability, pdf, perf, stats, lighthouse, sql-audit, security-static y zap. No pude ejecutarlo de punta a punta en este entorno.
+R2. Datos con DOI, diccionario y provenance | Peso 6% | Nivel Excelente (100%)
+  DOI de software 10.5281/zenodo.21988746 y DOI de dataset 10.5281/zenodo.21988785, ambos CC BY 4.0, separados y resolviendo. DATA-DICTIONARY.md de 34,7 KB y DATA-PROVENANCE.md de 18,2 KB.
+R3. Metadatos, CRediT y ORCID | Peso 6% | Nivel Excelente (100%)
+  CITATION.cff 1.2.0 con DOI y ORCID de los tres autores; CONTRIBUTORS.md con catorce roles CRediT; declaraciones completas.
+R4. Cumplimiento de estándares de reporte | Peso 5% | Nivel Excelente (100%)
+  Checklists INCOSE (22 ítems), Ralph engineering research (23 KB), PRISMA (28 KB) y FAIR rellenados ítem por ítem.
+
+LO QUE ESPERO DE USTEDES ANTES DEL EXAMEN FINAL
+El examen final es la semana 19, del 7 al 11 de septiembre. Lo que corrijan hasta entonces cuenta.
+  1. Corrijan los 148 desbordes de caja del informe.
+  2. Expliquen las cuatro corridas rojas de CI del 4 de septiembre en la bitácora.
+  3. Separen la evidencia OWASP en un archivo de salida curl por control.
+  4. Añadan la corrección por comparaciones múltiples donde hay más de un contraste.
+  5. Muevan v1.0.0 o etiqueten v1.0.1 sobre el commit que van a defender.
+  6. Unifiquen las identidades Git de Mariscal bajo el correo institucional.
+
+CALCULO DE LA NOTA DEL EQUIPO
+Nota_100 = 5x0.75 + 7x0.75 + 6x1.00 + 7x0.75 + 5x1.00 + 5x1.00 + 8x0.50 + 6x1.00 + 5x1.00 + 7x1.00 + 6x0.75 + 4x0.75 + 4x1.00 + 8x0.75 + 6x1.00 + 6x1.00 + 5x1.00 = 86.80
+Nota del equipo ............. 8.68 / 10
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- PFC ENTREGA FINAL (2B)
+============================================================================
+Estudiante: TAIPE MORA ZAIDA MELISSA
+Equipo: BIOPET
+Rol verificado: Frontend, figuras y capítulos del informe
+Fecha de esta revision: 5 de septiembre de 2026.
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+84 commits sin merges en 9 días distintos entre el 20 de junio y el 4 de septiembre, +76.475 / -52.144 líneas sobre 141 archivos. Correo institucional ztaipem@uteq.edu.ec.
+Autoria verificada con git log --no-merges --numstat, excluyendo artefactos de medicion (HTML de JaCoCo, JSON de k6 y Lighthouse, PDF, imagenes).
+Reparto por area (lineas anadidas): frontend 64.446, documentación 10.337, infraestructura 745, backend 340, pruebas 278.
+
+VALORACION POR DIMENSION
+Cuatro dimensiones, escala de cero a cuatro, ponderadas segun el peso indicado.
+I1 -- Volumen y sustancia de la contribucion | Peso 30 | Nivel 4/4
+I2 -- Alcance tecnico sobre los modulos de la guia | Peso 25 | Nivel 2/4
+I3 -- Trazabilidad y calidad del historial | Peso 20 | Nivel 3/4
+I4 -- Aporte a la evidencia medida y al documento | Peso 25 | Nivel 3/4
+
+ANALISIS DE SU CONTRIBUCION
+  Primera contribuyente en frontend con diferencia y autora de figuras y capítulos del informe. I2 en 2 porque su aporte casi no toca backend, pruebas ni base de datos, que son los módulos que la guía evalúa con más peso.
+
+CALCULO DE LA CALIFICACION
+Suma ponderada de dimensiones = 30x4 + 25x2 + 20x3 + 25x3 = 305
+Nota del aporte individual = 305 / 4 / 10 = 7.62
+Nota global del equipo ....... 8.68  (peso 60%)
+Nota del aporte individual ... 7.62  (peso 40%)
+Calificacion ponderada ....... 8.68 x 0,60 + 7.62 x 0,40 = 8.26
+No aplico tope de la nota del equipo ni criterios de piso ni reglas transversales de sancion.
+
+----------------------------------------------------------------------------
+CALIFICACION FINAL ........... 8.26 / 10
+----------------------------------------------------------------------------</pre></div>
+<p style="font-size:12.5px;color:#555;margin-top:36px">Rúbrica: Guía de la Cuarta Entrega (Entrega Final) del PFC, 17 criterios, 3 ejes. Nota individual = 60 % nota del equipo + 40 % aporte individual (I1 30, I2 25, I3 20, I4 25). Las reclamaciones se atienden con evidencia del repositorio.</p></main></body></html>

@@ -1,0 +1,128 @@
+============================================================================
+INFORME GLOBAL DEL EQUIPO -- TA-PFC-E4
+Proyecto Fin de Curso, Entrega 4 -- Aplicaciones Distribuidas (ISR-701)
+============================================================================
+
+Equipo: ACC -- Soporte Tecnico ISP -- Gestion de solicitudes
+Repositorio auditado: https://github.com/carlospatroner-boop/PFC-SOPORTE-ISP
+Rama: main | Commit evaluado: 6981302 | Fecha: 2026-09-04T14:42:27-05:00
+Fecha de esta revision: 5 de septiembre de 2026.
+Se consideran todos los commits existentes a esta fecha, sin limite de hora y sin penalizacion por el momento del envio.
+Plazo de commits: cerrado el viernes 4 de septiembre de 2026 a las 23:55.
+
+RUBRICA APLICADA
+Tabla de criterios calificables de la guia paso a paso TA-PFC-E4: diez criterios sobre cien puntos, cinco niveles de 0 a 4.
+Formula de la guia: Puntos(i) = Nivel(i) x Peso(i) / 4.
+El criterio C10, defensa oral y dominio individual, con peso 5, no puede evaluarse hasta la defensa.
+La nota se calcula sobre los nueve criterios evaluables, cuyo peso suma 95 puntos, renormalizado a 100.
+
+SOBRE LOS CRITERIOS DE PISO
+La guia establece que incumplir cualquier criterio de piso implica calificacion CERO en toda la entrega.
+En esta revision he decidido NO aplicar esa regla a la calificacion.
+Les doy la nota que corresponde al trabajo realmente hecho, y les detallo abajo el estado de cada piso para que sepan exactamente que tienen que corregir.
+La nota que reciben es la del trabajo realmente hecho, sin descuentos de ningun tipo.
+
+P1 Caratula de una pagina con la URL del repositorio en una sola linea
+   ESTADO: CUMPLE. La URL abre y clona sin credenciales.
+P2 El PDF se regenera clonando y compilando con las instrucciones del README
+   ESTADO: CUMPLE. Corregido; verificado desde clon limpio.
+P3 El sistema levanta con un solo comando desde una maquina limpia
+   ESTADO: NO VERIFICADO. No pude levantar el stack en este entorno.
+P4 Existe el inyector con verdad de campo y el oraculo
+   ESTADO: NO CUMPLE. El inyector existe; el archivo de verdad de campo sigue sin versionarse.
+P5 Las tres estrategias son conmutables por variable de entorno
+   ESTADO: CUMPLE. CORREL con tres estrategias en el servicio.
+P6 Datos sinteticos, sin datos reales de abonados
+   ESTADO: CUMPLE. Topologia y abonados generados.
+P7 Referencias verificadas, DOI que resuelven
+   ESTADO: PARCIAL. Diecisiete de dieciocho; uno con prefijo no registrado.
+P8 Declaracion de uso de IA generativa
+   ESTADO: CUMPLE. Actualizada de la Entrega 3 a la Entrega 4.
+
+VALORACION POR CRITERIO
+
+--- C1 Recuperacion y correccion de las entregas previas | Peso 12 | Nivel 3/4 | 9.00 puntos ---
+  El documento dejo de ser la memoria de la Entrega 3 ampliada y ya es un documento de Entrega 4: cuarenta y nueve paginas y dieciocho secciones incluidas resumen y abstract propios, arquitectura del sistema de esta entrega con C4 nivel 1 y nivel 2 redibujados, aplicacion web, aplicacion movil, pruebas y CI/CD, observabilidad distribuida, evaluacion ISO/IEC 25010, discusion, amenazas a la validez y conclusiones de la entrega.
+  Ese trabajo se hizo el 4 de septiembre entre los cuatro, con reparto claro por secciones, y cerro seis de los huecos que les senale.
+  Anadieron ademas el schema.sql consolidado y las actas de reunion.
+
+--- C2 Rigor del diseno experimental | Peso 16 | Nivel 2/4 | 8.00 puntos ---
+  Mantienen el merito tecnico que ya les reconoci: las tres estrategias de correlacion son clases Java reales dentro del servicio, conmutables por la variable CORREL, y no un banco aparte. Refactorizaron ademas auth-service y report-service a arquitectura hexagonal de cuatro capas.
+  Pero el experimento sigue sin ejecutarse. No hay noventa corridas, no hay dieciocho condiciones por cinco repeticiones.
+  Y sigue sin existir experimentos/resultados/verdad_campo.csv, el archivo que su propio analizador necesita para comparar el agrupamiento observado contra la verdad de campo. Lo busque en todo el repositorio y no esta. Se lo senale hace tres dias.
+  Es la misma situacion que en la revision anterior: tienen el mecanismo montado dentro del sistema, que es la parte dificil, y no dieron el paso de correrlo.
+
+--- C3 Resultado central y su analisis | Peso 14 | Nivel 1/4 | 3.50 puntos ---
+  No hay resultado del experimento de esta entrega. Sin incidencias efectivas, sin precision, sin exhaustividad y sin tasa de fusion erronea, la pregunta que da sentido a la entrega sigue sin respuesta.
+  Y el error que les senale hace tres dias sigue publicado sin corregir. En docs/experimentos/resultados/stats_test.json el p valor es 5,0166 por diez elevado a menos diez y la conclusion escrita sigue diciendo que no se rechaza la hipotesis nula por no haber diferencia significativa al noventa y cinco por ciento.
+  Con ese p valor la hipotesis nula se rechaza sin discusion. La conclusion contradice al estadistico que tiene encima, y ahora ademas contradice a la hipotesis H1 que el mismo archivo declara. Ese archivo esta en el repositorio que van a defender.
+  Sigue siendo una prueba t pareada donde la guia exige Mann-Whitney y tamano del efecto, sigue justificandose la normalidad con un Shapiro-Wilk sobre ocho datos y siguen descartandose dos de cada diez corridas sin regla declarada a priori.
+
+--- C4 Reproducibilidad | Peso 10 | Nivel 3/4 | 7.50 puntos ---
+  Corrigieron lo esencial. El README ya trae las instrucciones de compilacion del .tex con la secuencia correcta, y las dos figuras C4 que faltaban ya existen: el documento compila desde un clon limpio, cosa que hace tres dias no ocurria.
+  Hicieron ademas algo que quiero destacar: reemplazaron una captura fabricada por una real tomada contra el stack en ejecucion, y lo registraron asi en el mensaje del commit. Retirar evidencia propia por no ser autentica es la decision correcta y la valoro.
+  Falta el CITATION.cff y falta un cuaderno que regenere las figuras.
+
+--- C5 Cobertura de los temas de la asignatura | Peso 12 | Nivel 3/4 | 9.00 puntos ---
+  Cobertura amplia: gRPC, saga por coreografia sobre Kafka, CQRS, fragmentacion en CockroachDB, Spark y Amdahl, patron Observer, arquitectura hexagonal y observabilidad con Prometheus, Grafana, Tempo y OpenTelemetry.
+  Sigue faltando la tabla de trazabilidad que lleve de cada tema a su archivo.
+
+--- C6 Arquitectura distribuida y su justificacion | Peso 9 | Nivel 3/4 | 6.75 puntos ---
+  La seccion de arquitectura de la Entrega 4 esta bien construida y los diagramas C4 redibujados corresponden a lo que existe.
+  La posicion arquitectonica se argumenta con criterio pero no con dato propio, porque el experimento que la convertiria en medicion no se corrio.
+
+--- C7 Calidad del producto, pruebas y observabilidad | Peso 9 | Nivel 3/4 | 6.75 puntos ---
+  Anadieron pruebas de verdad en el ultimo tramo: CorrelationService, los tres observadores del patron Observer, GlobalExceptionHandler y el mapper, adaptador y controlador de Incidencia, mas la exclusion de codigo generado de protobuf y gRPC en JaCoCo, que es lo correcto.
+  Documentaron los puntos de entrada de integracion, extremo a extremo y contrato, y anadieron la seccion de observabilidad distribuida.
+  El 81,1 por ciento de cobertura que declaran esta escrito en una tabla de un archivo Markdown, con 542 lineas cubiertas de 668. No encontre en el repositorio el informe de JaCoCo que lo respalde. La cifra es plausible dado el trabajo de pruebas que si veo, pero mientras no este el informe publicado es una cifra autodeclarada y asi la trato.
+
+--- C8 Gestion de la revision cruzada | Peso 5 | Nivel 1/4 | 1.25 puntos ---
+  Sigue sin aparecer la tabla de issues de la revision cruzada con la accion tomada y el enlace que la prueba.
+  El repositorio muestra once solicitudes de incorporacion de cambios y ramas fusionadas, lo que indica revision entre ustedes y por eso el criterio no queda en cero, pero eso no es la revision cruzada, que es un ejercicio con otro equipo y con registro exigido.
+
+--- C9 Documento LaTeX y bibliografia | Peso 8 | Nivel 3/4 | 6.00 puntos ---
+  Salto claro: de treinta y dos a cuarenta y nueve paginas, con las secciones obligatorias que faltaban ya escritas, y compilando desde clon limpio sin errores, cosa que antes fallaba.
+  Queda una referencia cruzada sin resolver, sec:arquitectura en la pagina 42, que deja un signo de interrogacion impreso. Se debe a que el documento incluye dos veces secciones/fundamento_teorico; revisen esa duplicacion.
+  Hay treinta y cuatro desbordes de caja.
+  En bibliografia crecieron a dieciocho DOI y diecisiete resuelven. El unico que falla sigue siendo 10.5555/2643634.2643666, cuyo prefijo no esta registrado y por tanto no es resoluble. Se lo senale hace tres dias y sigue ahi; se corrige sustituyendolo por el identificador real o retirando el campo.
+
+----------------------------------------------------------------------------
+Suma de los nueve criterios evaluables: 57.75 de 95 puntos.
+Renormalizado a 100: 60.8 puntos.
+NOTA DEL EQUIPO ............. 6.10 / 10   (provisional hasta la defensa)
+----------------------------------------------------------------------------
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- TA-PFC-E4
+============================================================================
+
+Estudiante: Pacheco Cardenas Cristhian Daniel
+Equipo: ACC | Rol declarado: Arquitecto
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+Ventana evaluada: del 16 de agosto al 5 de septiembre de 2026.
+Atribucion obtenida con git log --numstat, filtrando extensiones de codigo y documentacion, y unificando las identidades git de cada persona.
+  39 commits en 7 dias distintos | +5319 / -205348 lineas | 1432 archivos | BACK 1267, TEST 70, CI 38, OPS 30, DOC 18
+
+VALORACION
+  Tu trabajo en el cierre fue el correcto para tu rol: redibujaste el C4 nivel 1 y el C4 nivel 2 con la arquitectura de la Entrega 4, mejoraste la seccion de arquitectura, escribiste el resumen y el abstract, la seccion de evaluacion ISO/IEC 25010 y la de conclusiones, y agregaste referencias nuevas.
+  El documento paso de treinta y dos a cuarenta y nueve paginas y ahora compila desde un clon limpio, cosa que hace tres dias fallaba por dos figuras ausentes. Ese hueco lo cerraste tu.
+  Quedan dos cosas de forma que te corresponden. Sigue habiendo una referencia cruzada sin resolver, sec:arquitectura en la pagina 42, que imprime un signo de interrogacion en el PDF; se debe a que main.tex incluye dos veces secciones/fundamento_teorico. Y hay treinta y cuatro desbordes de caja.
+  En bibliografia siguen con el DOI 10.5555/2643634.2643666, cuyo prefijo no esta registrado y por tanto no resuelve. Se lo senale hace tres dias. Se corrige sustituyendolo o retirando el campo.
+  Y como arquitecto te toca la pregunta de fondo: la posicion arquitectonica del proyecto sigue argumentada pero no medida, porque el experimento no se corrio. Prepara para la defensa que dato concreto habria cambiado su decision de diseno.
+
+LO QUE ESPERO DE USTED EN EL EXAMEN FINAL
+El plazo de commits ya cerro, de modo que esta es la evaluacion del trabajo entregado.
+El examen final es esta semana, del 7 al 11 de septiembre.
+Llegue preparado para defender lo que su repositorio contiene y, sobre todo, para explicar con precision lo que no contiene y por que.
+Reconocer con claridad el limite de la propia evidencia puntua mas que cualquier justificacion.
+
+----------------------------------------------------------------------------
+CALCULO DE LA CALIFICACION
+Nota del equipo (60 por ciento) ......... 6.10
+Aporte individual (40 por ciento) ...... 8.20
+Ponderada 0,60 x equipo + 0,40 x individual = 6.94
+Nota: a diferencia de la revision anterior, en esta no aplico el tope de la nota del equipo.
+Quiero que el esfuerzo individual se refleje aunque el entregable colectivo no lo acompane.
+
+CALIFICACION FINAL ........... 6.94 / 10   (provisional hasta la defensa)

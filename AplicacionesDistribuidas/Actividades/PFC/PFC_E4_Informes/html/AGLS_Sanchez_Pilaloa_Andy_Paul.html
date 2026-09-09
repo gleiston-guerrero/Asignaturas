@@ -1,0 +1,176 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TA-PFC-E4 &mdash; Sanchez Pilaloa Andy Paul</title>
+<style>
+:root{--tinta:#10233B;--azul:#0E3F7E;--medio:#1E5AA8;--teal:#2E86A1;--papel:#F6F8FB;--blanco:#fff;--linea:#D3DCE8;--suave:#EAF1F9;--verde:#4FAE60;--rojo:#B03030;--gris:#5B6B80;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:"Inter","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+
+body{background:var(--papel);padding:0}
+.solo{max-width:900px;margin:0 auto;padding:28px 34px 70px}
+.ph{display:flex;align-items:flex-start;gap:20px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid var(--azul)}
+.ph h2{margin:0;font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em}
+.meta{margin:5px 0 0;font-size:13px;color:var(--gris)}.meta b{color:var(--tinta)}
+.copy{flex:none;background:var(--azul);color:#fff;border:0;border-radius:2px;padding:9px 17px;font:600 13.5px/1 var(--sans);cursor:pointer}
+.copy:hover{background:var(--medio)}.copy.ok{background:var(--verde)}
+pre{margin:20px 0 0;background:var(--blanco);border:1px solid var(--linea);padding:22px 24px;font-family:var(--mono);font-size:12px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+.pie{margin-top:26px;font-size:12px;color:var(--gris);border-top:1px solid var(--linea);padding-top:12px}
+@media(max-width:700px){.solo{padding:18px}.ph{flex-direction:column}}
+</style></head><body>
+<div class="solo">
+<header class="ph">
+  <div><h2>Sanchez Pilaloa Andy Paul</h2>
+  <p class="meta">TA-PFC-E4 &nbsp;&middot;&nbsp; Aplicaciones Distribuidas (ISR-701) &nbsp;&middot;&nbsp; Equipo AGLS &nbsp;&middot;&nbsp; TiendaTech -- Comercio electronico de hardware</p>
+  <p class="meta">Equipo 8.40 &nbsp;&middot;&nbsp; aporte individual 9.50 &nbsp;&middot;&nbsp; <b>calificacion final 8.84</b> &nbsp;&middot;&nbsp; provisional hasta la defensa</p></div>
+  <button class="copy">Copiar informe</button>
+</header>
+<pre id="r">============================================================================
+INFORME GLOBAL DEL EQUIPO -- TA-PFC-E4
+Proyecto Fin de Curso, Entrega 4 -- Aplicaciones Distribuidas (ISR-701)
+============================================================================
+
+Equipo: AGLS -- TiendaTech -- Comercio electronico de hardware
+Repositorio auditado: https://github.com/JoseLozanoMorales/TiendaTech
+Rama: main | Commit evaluado: d55b894 | Fecha: 2026-09-04T19:50:59-05:00
+Fecha de esta revision: 5 de septiembre de 2026.
+Se consideran todos los commits existentes a esta fecha, sin limite de hora y sin penalizacion por el momento del envio.
+Plazo de commits: cerrado el viernes 4 de septiembre de 2026 a las 23:55.
+
+RUBRICA APLICADA
+Tabla de criterios calificables de la guia paso a paso TA-PFC-E4: diez criterios sobre cien puntos, cinco niveles de 0 a 4.
+Formula de la guia: Puntos(i) = Nivel(i) x Peso(i) / 4.
+El criterio C10, defensa oral y dominio individual, con peso 5, no puede evaluarse hasta la defensa.
+La nota se calcula sobre los nueve criterios evaluables, cuyo peso suma 95 puntos, renormalizado a 100.
+
+SOBRE LOS CRITERIOS DE PISO
+La guia establece que incumplir cualquier criterio de piso implica calificacion CERO en toda la entrega.
+En esta revision he decidido NO aplicar esa regla a la calificacion.
+Les doy la nota que corresponde al trabajo realmente hecho, y les detallo abajo el estado de cada piso para que sepan exactamente que tienen que corregir.
+La nota que reciben es la del trabajo realmente hecho, sin descuentos de ningun tipo.
+
+P1 Caratula de una pagina con la URL del repositorio en una sola linea
+   ESTADO: CUMPLE. La URL abre y clona sin credenciales.
+P2 El PDF se regenera clonando y compilando con las instrucciones del README
+   ESTADO: CUMPLE. Verificado desde clon limpio.
+P3 El sistema levanta con un solo comando desde una maquina limpia
+   ESTADO: NO VERIFICADO. No pude levantar el stack en este entorno; queda para la defensa.
+P4 Existen los datos crudos del experimento y el oraculo
+   ESTADO: CUMPLE. Ciento veinte corridas reales con validacion estructural publicada.
+P5 Las dos estrategias son conmutables por variable de entorno
+   ESTADO: CUMPLE. COORD=2pc|saga, sin ramas divergentes.
+P6 Datos sinteticos, sin datos reales de clientes
+   ESTADO: CUMPLE. Catalogo y compradores generados por semilla.
+P7 Referencias verificadas, DOI que resuelven
+   ESTADO: CUMPLE. Cincuenta y seis de cincuenta y seis.
+P8 Declaracion de uso de IA generativa
+   ESTADO: CUMPLE. Actualizada al cierre, con detalle por integrante.
+
+VALORACION POR CRITERIO
+
+--- C1 Recuperacion y correccion de las entregas previas | Peso 12 | Nivel 4/4 | 12.00 puntos ---
+  El documento pasa de treinta y nueve a cincuenta y cinco paginas y ahora es un documento acumulativo completo, con catorce secciones que van de la introduccion a la reflexion etica pasando por estado del arte, diseno del estudio, resultados, discusion, amenazas a la validez, calidad del producto, gestion de la revision cruzada y conclusiones individuales.
+  Incorporaron el registro de cambios frente a la Entrega 1 que les pedi, con la comparacion criterio por criterio de lo que habia antes y lo que hay ahora. Eso era lo unico que les faltaba en este criterio y lo cerraron.
+  Anadieron ademas trazabilidad-temas.tex y estado-arte-2pc-saga.tex, es decir, atacaron precisamente los dos huecos que les senale.
+
+--- C2 Rigor del diseno experimental | Peso 16 | Nivel 3/4 | 12.00 puntos ---
+  Ejecutaron una campana real contra el sistema real y quiero detallar lo que verifique, porque es el trabajo mas serio que he visto en este curso.
+  La campana oficial-v4-20260904 tiene ciento veinte corridas con ciento veinte claves unicas, veinticuatro condiciones con exactamente cinco repeticiones cada una. Lo recalcule desde el CSV crudo y cuadra.
+  Corrigieron los tres parametros que les objete. delay-seconds pasa de 0,05 a 5,0, que es el valor de la rubrica. warmup pasa de 0 a 60 segundos y se descarta. La medicion es de 90 segundos. Las ciento veinte filas registran los mismos parametros, sin excepcion.
+  Eliminaron el candado global de coordination_lab.py y ademas declararon que SQLite conserva escritor unico, por lo que retiran los pilotos locales como evidencia de C2, C3 y C6. Retirar evidencia propia porque no es valida es una decision que muy poca gente toma.
+  La campana corre contra el API Gateway y los microservicios de Pedidos, Ventas e Inventario sobre CockroachDB, con Locust como generador, reinicio de los seis servicios entre corridas, orden por repeticion completa y escritura incremental reanudable. Las marcas de tiempo abarcan unas diez horas de reloj y suman mas de tres horas de medicion efectiva.
+  Declaran ademas la desviacion que introdujeron: corridas de dos minutos y medio en lugar de cinco, por ventana de ejecucion. La declaran como desviacion deliberada y como amenaza a la validez, que es como se hace.
+  Lo que impide el nivel maximo son dos decisiones de diseno, y quiero ser preciso porque el resto del trabajo es sobresaliente.
+  La primera es la duracion: la guia fija corridas de cinco minutos y ustedes usaron dos y medio. Esta declarada, pero declarar una desviacion no la convierte en cumplimiento.
+  La segunda es mas importante y es la que explica el resultado. Arrancaron la matriz en cincuenta usuarios concurrentes sin una corrida piloto previa que verificara que el flujo de compra estaba sano en vacio. Un ensayo de dos minutos con un usuario habria mostrado que el checkout ya fallaba, y habrian ajustado antes de gastar diez horas de maquina.
+  Un diseno experimental riguroso incluye la comprobacion de que el sistema bajo prueba responde antes de someterlo a carga. Esa pieza falto, y es la unica razon por la que este criterio no llega a cuatro.
+
+--- C3 Resultado central y su analisis | Peso 14 | Nivel 2/4 | 7.00 puntos ---
+  Y aqui esta el problema, que no es de honestidad ni de esfuerzo sino de resultado.
+  La campana registro 76.022 solicitudes de las cuales 56.353 fallaron: una tasa de error del 74 por ciento. Se alcanzo el paso de compra en 401 ocasiones, de las que 398 fallaron y solo 3 se confirmaron, y las tres en una unica corrida. La mediana de compras confirmadas es cero en las veinticuatro condiciones.
+  Eso significa que el sistema colapso bajo la carga y que la variable central de la entrega, la conservacion de invariantes entre 2PC y saga, sigue sin medirse. No por un artefacto del banco como en la revision anterior, sino porque el flujo de compra no llego a completarse casi nunca.
+  Lo que si valoro, y mucho, es que ustedes lo dicen. Su informe final escribe que la cantidad de compras confirmadas es insuficiente para atribuir conservacion de invariantes o superioridad de rendimiento a una estrategia, y advierte de forma expresa que la ausencia de confirmaciones no debe interpretarse como equivalencia entre las dos. Es exactamente la lectura correcta.
+  Tambien corrigieron el problema de potencia: incorporaron la U de Mann-Whitney exacta y la correccion de Bonferroni, y subieron a doce repeticiones en la campana de rubrica. La herramienta ya esta bien.
+  El diagnostico honesto de esta entrega es este: tienen el mejor instrumento del curso y no tienen medicion, porque el sistema bajo prueba no aguanto. La causa mas probable, mirando sus propios codigos HTTP, es que la maquina de carga y el stack compartian recursos y que arrancaron en 50 usuarios cuando el flujo basal ya no estaba sano. Su propia recomendacion, empezar con concurrencias menores y escalar tras demostrar un flujo basal saludable, es la correcta.
+
+--- C4 Reproducibilidad | Peso 10 | Nivel 4/4 | 10.00 puntos ---
+  Clone el repositorio en una carpeta vacia, segui el README y el documento compilo a la primera: cincuenta y cinco paginas, cero errores, cero desbordes de caja, cero referencias sin resolver.
+  Estan el CITATION.cff, el cuaderno de analisis con su ejecutor, los datos crudos, las bases auditables por corrida, el archivo validacion.json que acredita la integridad estructural de la matriz y el EVIDENCIA-REAL.md que declara cual es la evidencia canonica y cual no debe usarse.
+  Ese ultimo archivo es una practica que quiero destacar: decir explicitamente que artefactos no valen como evidencia es tan importante como publicar los que si valen.
+
+--- C5 Cobertura de los temas de la asignatura | Peso 12 | Nivel 4/4 | 12.00 puntos ---
+  Con trazabilidad-temas.tex cerraron el hueco que les senale: ahora se puede ir de cada tema de la asignatura a su archivo y su evidencia sin buscarlo.
+  La cobertura abarca capas y SOLID, patrones, contratos y gRPC, fragmentacion y clUster, Spark y ley de Amdahl, CAP por agregado, seguridad, CI/CD y observabilidad.
+
+--- C6 Arquitectura distribuida y su justificacion | Peso 9 | Nivel 3/4 | 6.75 puntos ---
+  Los ADR estan bien construidos y la comparacion entre 2PC y saga se argumenta con criterio.
+  Lo que sigue sin poder sostenerse con dato propio es la posicion CAP por agregado, y no por falta de trabajo sino porque la campana no produjo compras confirmadas suficientes. Es una consecuencia directa de C3.
+
+--- C7 Calidad del producto, pruebas y observabilidad | Peso 9 | Nivel 3/4 | 6.75 puntos ---
+  Cubrieron los tres huecos que les senale. Esta la pareja de ejecuciones en rojo y en verde del Paso 9, esta la evaluacion ISO/IEC 25010 del Paso 11 y esta la corrida conjunta de observabilidad bajo carga con panel, traza y generador a la vez.
+  Anadieron ademas pruebas Pact y de extremo a extremo, y propagacion de trazas con inyeccion de fallos en los microservicios.
+  No subo mas porque sigo sin ver publicado el informe de cobertura con el umbral del setenta por ciento comprobable desde el repositorio.
+
+--- C8 Gestion de la revision cruzada | Peso 5 | Nivel 4/4 | 5.00 puntos ---
+  Cerraron con evidencia los issues duplicados que quedaban sin respuesta, que era la unica deuda que tenian en este criterio.
+  Es la mejor gestion de revision cruzada del curso y lo sostengo: registro completo, cierre con enlace al commit que resuelve y diferidos justificados.
+
+--- C9 Documento LaTeX y bibliografia | Peso 8 | Nivel 4/4 | 8.00 puntos ---
+  Cincuenta y cinco paginas, biblatex con biber y estilo IEEE, cero desbordes de caja, cero referencias sin resolver y compilacion limpia desde clon limpio.
+  Resolvi contra el registrador los cincuenta y seis DOI de su bibliografia, uno por uno: los cincuenta y seis resuelven y corresponden a la obra citada. Cero fallos. Son el unico equipo del curso que llega a la entrega final con integridad bibliografica total.
+  Y cubrieron el reproche que les hice: el estado del arte ya tiene una seccion propia sobre saga frente a confirmacion en dos fases, con su matriz de referencias.
+
+----------------------------------------------------------------------------
+Suma de los nueve criterios evaluables: 79.50 de 95 puntos.
+Renormalizado a 100: 83.7 puntos.
+NOTA DEL EQUIPO ............. 8.40 / 10   (provisional hasta la defensa)
+----------------------------------------------------------------------------
+
+============================================================================
+INFORME DEL APORTE INDIVIDUAL -- TA-PFC-E4
+============================================================================
+
+Estudiante: Sanchez Pilaloa Andy Paul
+Equipo: AGLS | Rol declarado: Responsable de Calidad y Pruebas
+
+EVIDENCIA DE AUTORIA EN EL HISTORIAL
+Ventana evaluada: del 16 de agosto al 5 de septiembre de 2026.
+Atribucion obtenida con git log --numstat, filtrando extensiones de codigo y documentacion, y unificando las identidades git de cada persona.
+  53 commits en 8 dias distintos | +11313 / -30558 lineas | 497 archivos | BACK 148, OPS 33, EXP 29, TEST 22, DOC 21
+
+VALORACION
+  El commit del 4 de septiembre que completa el Paso 8 con parametros reales es tuyo, y es el trabajo mas serio que se hizo en este curso. Quiero que sepas exactamente que verifique.
+  Corregiste los tres parametros que te objete. delay-seconds pasa de 0,05 a 5,0. warmup pasa de 0 a 60 segundos y se descarta. La medicion es de 90 segundos. Las ciento veinte filas registran los mismos valores sin una sola excepcion.
+  La campana corre contra el gateway y los microservicios reales sobre CockroachDB, con reinicio de los seis servicios entre corridas, orden por repeticion completa y escritura reanudable desde puntos de control. Las marcas de tiempo abarcan unas diez horas de reloj. Eso es una noche entera de trabajo de maquina y de vigilancia.
+  Recalcule la estructura: ciento veinte filas, ciento veinte claves unicas, veinticuatro condiciones con exactamente cinco repeticiones cada una. Todo cuadra.
+  Y ahora lo duro, que no es sobre ti sino sobre lo que salio. La campana registro 76.022 solicitudes con 56.353 fallos, un 74 por ciento de error. Se llego al paso de compra 401 veces: 398 fallaron y 3 se confirmaron, las tres en una sola corrida. La mediana de compras confirmadas es cero en las veinticuatro condiciones.
+  El sistema colapso bajo la carga, y por eso la variable central de la entrega sigue sin medirse. No por un artefacto del banco, como en la revision anterior, sino porque el flujo de compra casi nunca llego al final.
+  Lo que hiciste a continuacion es lo que me hace calificarte tan alto pese a eso: escribiste que la cantidad de compras confirmadas es insuficiente para atribuir conservacion de invariantes o superioridad a ninguna estrategia, y advertiste de forma expresa que la ausencia de confirmaciones no debe leerse como equivalencia. Es la lectura correcta y muy poca gente la escribe cuando le cuesta la nota.
+  Dicho todo eso, la critica de metodo que te hago es concreta y la vas a poder usar el resto de tu carrera: lanzaste la matriz completa en cincuenta usuarios concurrentes sin una corrida piloto previa que verificara que el flujo de compra funcionaba en vacio. Un ensayo de dos minutos con un solo usuario te habria mostrado que el checkout ya fallaba, y habrias ajustado antes de gastar diez horas de maquina.
+  Comprobar que el sistema responde antes de someterlo a carga es parte del diseno experimental, no un paso previo opcional. Es lo unico que separa tu trabajo de una campana impecable.
+  Para la defensa prepara esa respuesta: por que arrancaron en cincuenta usuarios sin verificar antes el flujo basal, y que habrian hecho distinto. Tu propio informe ya lo dice; sostenlo con seguridad.
+
+LO QUE ESPERO DE USTED EN EL EXAMEN FINAL
+El plazo de commits ya cerro, de modo que esta es la evaluacion del trabajo entregado.
+El examen final es esta semana, del 7 al 11 de septiembre.
+Llegue preparado para defender lo que su repositorio contiene y, sobre todo, para explicar con precision lo que no contiene y por que.
+Reconocer con claridad el limite de la propia evidencia puntua mas que cualquier justificacion.
+
+----------------------------------------------------------------------------
+CALCULO DE LA CALIFICACION
+Nota del equipo (60 por ciento) ......... 8.40
+Aporte individual (40 por ciento) ...... 9.50
+Ponderada 0,60 x equipo + 0,40 x individual = 8.84
+Nota: a diferencia de la revision anterior, en esta no aplico el tope de la nota del equipo.
+Quiero que el esfuerzo individual se refleje aunque el entregable colectivo no lo acompane.
+
+CALIFICACION FINAL ........... 8.84 / 10   (provisional hasta la defensa)</pre>
+<p class="pie">Revision del 5 de septiembre de 2026 &middot; Rubrica de criterios calificables de la guia paso a paso TA-PFC-E4 &middot; PhD. Gleiston Ciceron Guerrero-Ulloa</p>
+</div><script>
+(function(){var b=document.querySelector('.copy');if(!b)return;
+b.addEventListener('click',function(){var t=document.getElementById('r').textContent;
+var ok=function(){var o=b.textContent;b.textContent='Copiado';b.classList.add('ok');
+setTimeout(function(){b.textContent=o;b.classList.remove('ok');},1600);};
+function fb(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';
+document.body.appendChild(a);a.select();try{document.execCommand('copy');ok();}catch(e){}document.body.removeChild(a);}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}});})();
+</script></body></html>
