@@ -1,0 +1,453 @@
+% =====================================================================
+%  GUIA Y RUBRICA -- PROYECTO FIN DE CURSO -- ENTREGA 2 (1B)
+%  ERS/SRS Parcial -- Ingenieria de Requerimientos [20303] -- UTEQ
+%  2026-2027 PPA
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[a4paper, top=3.1cm, bottom=2.4cm, left=2cm, right=2cm, headheight=62pt, headsep=10pt]{geometry}
+\usepackage[table]{xcolor}
+\definecolor{uteqgreen}{HTML}{1D6B36}
+\definecolor{uteqgold}{HTML}{D4A017}
+\definecolor{uteqblue}{HTML}{1A5276}
+\definecolor{teal1}{HTML}{0E7C7B}
+\definecolor{rowgray}{HTML}{F0F0F0}
+\definecolor{secdark}{HTML}{1A3A6B}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{amsmath}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false, pdftitle={Guia y Rubrica PFC Entrega 2 (1B) ISR-401 UTEQ}}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\setlist{leftmargin=1.5em, topsep=2pt, itemsep=1pt}
+
+% ---- Encabezado / pie ------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[C]{\includegraphics[width=\textwidth]{logoband.png}}
+\fancyfoot[L]{\raisebox{-2pt}{\includegraphics[width=0.86\textwidth]{footband.png}}}
+\fancyfoot[R]{\footnotesize Página \thepage\ / \pageref{LastPage}}
+
+% ---- Banda de seccion (verde) ---------------------------------------
+\newcounter{secc}
+\newcommand{\secband}[1]{%
+  \stepcounter{secc}\par\vspace{9pt}\noindent
+  {\setlength{\fboxsep}{0pt}%
+   \colorbox{uteqgold}{\parbox[c][20pt][c]{0.05\textwidth}{\centering\textbf{\color{white}\small \arabic{secc}}}}%
+   \colorbox{uteqgreen}{\parbox[c][20pt][c]{0.95\textwidth}{\hspace{8pt}\textbf{\color{white}\small #1}}}%
+  }\par\vspace{5pt}}
+\newcommand{\submark}[1]{\par\vspace{4pt}\noindent
+  {\color{uteqgreen}\rule[-1pt]{3.5pt}{12pt}}\hspace{6pt}\textbf{\color{uteqgreen}#1}\par\vspace{2pt}}
+
+% ---- Insignias de entrega -------------------------------------------
+\newcommand{\bA}{{\setlength{\fboxsep}{1.5pt}\colorbox{uteqgold}{\scriptsize\bfseries\color{white}1A}}}
+\newcommand{\bB}{{\setlength{\fboxsep}{1.5pt}\colorbox{teal1}{\scriptsize\bfseries\color{white}NUEVO EN 1B}}}
+
+% ---- Cajas -----------------------------------------------------------
+\newtcolorbox{notabox}[1][]{colback=uteqgreen!6,colframe=uteqgreen,boxrule=0.8pt,arc=2pt,
+  left=7pt,right=7pt,top=5pt,bottom=5pt,fonttitle=\bfseries\color{white},coltitle=white,colbacktitle=uteqgreen,#1}
+\newtcolorbox{alertbox}[1][]{colback=red!4,colframe=red!60!black,boxrule=0.8pt,arc=2pt,
+  left=7pt,right=7pt,top=5pt,bottom=5pt,fonttitle=\bfseries\color{white},coltitle=white,colbacktitle=red!60!black,#1}
+\newtcolorbox{evidbox}[1][]{colback=teal1!7,colframe=teal1,boxrule=0.8pt,arc=2pt,
+  left=7pt,right=7pt,top=5pt,bottom=5pt,fonttitle=\bfseries\color{white},coltitle=white,colbacktitle=teal1,#1}
+
+\newcommand{\hh}[1]{\cellcolor{uteqgreen}\textbf{\color{white}\small #1}}
+\newcommand{\hg}[1]{\cellcolor{rowgray}\textbf{\color{uteqgreen}\small #1}}
+
+\begin{document}
+
+% =====================================================================
+%  PORTADA
+% =====================================================================
+\begin{center}
+  {\large\bfseries\color{secdark}FACULTAD DE CIENCIAS DE LA COMPUTACIÓN}\\[2pt]
+  {\small\color{secdark}GUÍA Y RÚBRICA DE EVALUACIÓN — PROYECTO FIN DE CURSO}\\[4pt]
+  \textcolor{uteqgold}{\rule{0.7\textwidth}{1.4pt}}\\[8pt]
+  {\LARGE\bfseries\color{uteqgreen}ENTREGA 2 (1B): ESPECIFICACIÓN DE REQUISITOS}\\[2pt]
+  {\LARGE\bfseries\color{uteqgreen}DE SOFTWARE (ERS/SRS) PARCIAL}\\[6pt]
+\end{center}
+
+\begin{notabox}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries\color{uteqgreen}}L{0.26\linewidth} X@{}}
+Asignatura: & Ingeniería de Requerimientos [20303] · 4to Nivel\\
+Carrera: & Software (Rediseño) — UTEQ\\
+Estándar: & IEEE/ISO/IEC 29148:2018 (estructura del ERS/SRS)\\
+Modalidad: & Grupal (3–4 integrantes) · sistema de software \textbf{real}\\
+Repositorio: & GitHub obligatorio (enlace en la portada del documento)\\
+Entregable: & Documento ERS/SRS parcial (PDF) + carpeta de evidencias\\
+Período: & 2026–2027 PPA\\
+\end{tabularx}
+\end{notabox}
+
+\vspace{4pt}
+\renewcommand{\arraystretch}{1.3}
+\noindent\begin{tabularx}{\linewidth}{|C{0.10\linewidth}|L{0.30\linewidth}|C{0.26\linewidth}|X|}
+\hline
+\hh{Entrega} & \hh{Semana / Fecha límite} & \hh{Contenido} & \hh{Regla}\\
+\hline
+\textbf{1A} & Semana 4 (25–31 may.) · Dom 31/05/2026 23:59 & Planificación + Elicitación & Base\\
+\hline
+\rowcolor{rowgray}\textbf{2 (1B)} & Semana 10 (6–12 jul.) · Dom 12/07/2026 23:59 & ERS/SRS Parcial & \textbf{Acumula y reemplaza a 1A}\\
+\hline
+\end{tabularx}
+
+\begin{alertbox}[title={Regla de acumulación}]
+\small La \textbf{Entrega 2 (1B) contiene y reemplaza} a la Entrega 1A. El equipo debe \textbf{incorporar las correcciones} del docente sobre la 1A, \textbf{ampliar} las secciones existentes y \textbf{agregar} las secciones nuevas marcadas con \bB. Se entrega \textbf{un solo documento unificado} (no dos archivos).
+\end{alertbox}
+
+\newpage
+% =====================================================================
+%  1 DESCRIPCION GENERAL
+% =====================================================================
+\secband{DESCRIPCIÓN GENERAL DEL PROYECTO}
+El Proyecto Fin de Curso (PFC) consiste en elaborar de forma progresiva un documento de \textbf{Especificación de Requisitos de Software (ERS/SRS)} para un sistema \textbf{real}, siguiendo la estructura de IEEE/ISO/IEC 29148:2018. La Entrega 2 (1B) consolida la planificación y la elicitación de la 1A y construye la \textbf{especificación parcial}: requisitos formalizados, modelado UML inicial y priorización.
+
+\begin{notabox}[title={Sistema objetivo (obligatorio)}]
+\small Cada equipo selecciona un sistema de software \textbf{real} para una organización local (empresa, institución pública, emprendimiento, ONG, finca, cooperativa). \textbf{No se aceptan} sistemas ficticios ni genéricos sin cliente identificable. El sistema debe tener \textbf{al menos 3 tipos de usuarios} y \textbf{$\ge$15 requisitos funcionales} identificables.
+\end{notabox}
+
+\submark{Roles del equipo (deben evidenciarse)}
+\noindent\begin{tabularx}{\linewidth}{|L{0.24\linewidth}|X|}
+\hline
+\hg{Analista líder} & Coordina, valida con el cliente, redacta requisitos, gestiona el repositorio.\\
+\hline
+\rowcolor{rowgray}\hg{Modelador} & Construye los diagramas UML (casos de uso y clases) y la trazabilidad.\\
+\hline
+\hg{Documentador} & Estructura el ERS según IEEE 29148, glosario, formato y referencias.\\
+\hline
+\rowcolor{rowgray}\hg{Verificador} & Controla calidad: verificabilidad, consistencia, no ambigüedad y completitud.\\
+\hline
+\end{tabularx}
+
+% =====================================================================
+%  2 ESQUEMA DEL DOCUMENTO
+% =====================================================================
+\secband{ESQUEMA DEL DOCUMENTO ERS/SRS (qué va en cada entrega)}
+Las secciones con \bA{} ya debían existir en la 1A (revísense y amplíense con las correcciones); las marcadas con \bB{} se agregan en esta entrega.
+
+\renewcommand{\arraystretch}{1.25}
+\noindent\begin{tabularx}{\linewidth}{|L{0.62\linewidth}|C{0.30\linewidth}|}
+\hline
+\hh{Sección del ERS/SRS (IEEE 29148:2018)} & \hh{Entrega}\\
+\hline
+Portada (con enlace GitHub), historial de versiones & \bA\\\hline
+\rowcolor{rowgray}1. Introducción: propósito, alcance, glosario, referencias & \bA\\\hline
+2. Descripción general: perspectiva, funciones, usuarios, restricciones, supuestos & \bA\\\hline
+\rowcolor{rowgray}3.1 Interfaces externas (usuario, hardware, software) con \textit{mockups} & \bB\\\hline
+3.2 Requisitos funcionales (plantilla de 8 atributos) & \bB\\\hline
+\rowcolor{rowgray}3.3 Requisitos no funcionales cuantificables (ISO/IEC 25010) & \bB\\\hline
+3.4 Restricciones de diseño & \bB\\\hline
+\rowcolor{rowgray}4. Modelado UML: CU general, $\ge$5 CU detallados, clases conceptual & \bB\\\hline
+Apéndice A: Plan del proyecto de IR & \bA\\\hline
+\rowcolor{rowgray}Apéndice B: Evidencias de elicitación reales (trabajo de campo) & \bA\,$\rightarrow$\,\bB\\\hline
+Apéndice C: Clasificación y priorización MoSCoW & \bB\\\hline
+\rowcolor{rowgray}Apéndice D: Matriz de trazabilidad parcial (evidencia $\rightarrow$ requisito $\rightarrow$ CU) & \bB\\\hline
+Apéndice E: Repositorio GitHub (estructura y commits) & \bA\,$\rightarrow$\,\bB\\\hline
+\end{tabularx}
+
+% =====================================================================
+%  3 CONTENIDO NUEVO DE LA 1B
+% =====================================================================
+\secband{CONTENIDO ESPECÍFICO DE LA ENTREGA 2 (1B)}
+\submark{3.1 Interfaces externas y \textit{mockups}}
+Describir las interfaces de usuario (pantallas principales con \textit{mockups} de baja/alta fidelidad), de hardware y de software (integraciones, APIs, formatos de intercambio). Cada \textit{mockup} debe vincularse a los RF que soporta.
+
+\submark{3.2 Requisitos funcionales — plantilla de 8 atributos}
+Cada RF se documenta con: \textbf{(1)} identificador único, \textbf{(2)} nombre, \textbf{(3)} descripción, \textbf{(4)} actor/origen (evidencia), \textbf{(5)} entradas/salidas, \textbf{(6)} precondiciones/postcondiciones, \textbf{(7)} prioridad (MoSCoW), \textbf{(8)} criterio de verificación. Mínimo \textbf{15 RF}.
+
+\submark{3.3 Requisitos no funcionales cuantificables (ISO/IEC 25010)}
+Mínimo \textbf{6 NFR}, cada uno asociado a una característica de ISO/IEC 25010 y \textbf{cuantificado} con métrica y criterio de verificación. Términos vagos (``rápido'', ``seguro'', ``amigable'') sin cuantificar no se aceptan.
+
+\submark{3.4 Modelado UML}
+Diagrama de \textbf{casos de uso general} (todos los actores y el límite del sistema) + \textbf{$\ge$5 CU detallados textualmente} (flujo principal, alternativos, precondiciones/postcondiciones) y \textbf{diagrama de clases conceptual} ($\ge$8 clases con relaciones y multiplicidad). Todos los diagramas en herramienta CASE, en alta resolución.
+
+\submark{3.5 Clasificación, priorización y trazabilidad (Apéndices C y D)}
+Clasificar todos los requisitos (RF/NFR/restricción), priorizarlos con \textbf{MoSCoW} (justificando Must y Won't) y construir la \textbf{matriz de trazabilidad parcial} que enlace \textbf{evidencia de campo $\rightarrow$ requisito $\rightarrow$ caso de uso}.
+
+% =====================================================================
+%  4 TRABAJO DE CAMPO Y EVIDENCIAS
+% =====================================================================
+\secband{TRABAJO DE CAMPO Y EVIDENCIAS OBLIGATORIAS}
+La elicitación debe sustentarse en \textbf{trabajo de campo real} con la organización. Toda necesidad o requisito debe poder rastrearse hasta una \textbf{evidencia verificable}. La ausencia de evidencias reales es causal de inadmisión (ver Sección 6).
+
+\submark{Tipos de evidencia requeridos y mínimos}
+\renewcommand{\arraystretch}{1.25}
+\noindent\begin{tabularx}{\linewidth}{|L{0.20\linewidth}|X|C{0.17\linewidth}|}
+\hline
+\hh{Tipo} & \hh{Qué capturar} & \hh{Mínimo}\\
+\hline
+Fotografías & Entorno de la organización, proceso/sistema actual (AS-IS), sesiones de elicitación, documentos físicos. Fechadas. & $\ge$10\\
+\hline
+\rowcolor{rowgray}Video & Recorrido del proceso actual o demostración del sistema \textit{legacy} / competidor. & $\ge$1 ($\ge$2 min)\\
+\hline
+Audio & Grabación de entrevista(s), con consentimiento previo. & $\ge$1 entrevista completa\\
+\hline
+\rowcolor{rowgray}Documentos & Formularios, reportes, manuales o capturas de sistemas existentes que entrega la organización. & $\ge$3 (anonimizados)\\
+\hline
+Plantillas / formularios & Guía de entrevista, cuestionario, acta de entrevista \textbf{firmada}, acta de taller, registro de observación. & Todos los aplicados ($\ge$2 actas)\\
+\hline
+\rowcolor{rowgray}Cuestionario digital & Aplicado en línea, con exportación de resultados y capturas. & $\ge$3 respondientes\\
+\hline
+Consentimiento informado & Formulario firmado por cada persona grabada o identificable. & 1 por participante\\
+\hline
+\end{tabularx}
+
+\begin{evidbox}[title={Ética, consentimiento y protección de datos}]
+\small Toda grabación de audio/video o fotografía con personas identificables requiere \textbf{consentimiento informado firmado}. Anonimice datos sensibles (nombres de pacientes/clientes, números de identificación, datos de salud o financieros) en los documentos de la organización. El uso de la información es \textbf{exclusivamente académico}.
+\end{evidbox}
+
+\submark{Registro de evidencias (plantilla — Apéndice B)}
+Cada evidencia se cataloga y se vincula a los requisitos que originó:\par\vspace{3pt}
+\renewcommand{\arraystretch}{1.3}
+\noindent\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|L{0.13\linewidth}|C{0.10\linewidth}|X|C{0.18\linewidth}|C{0.11\linewidth}|}
+\hline
+\hh{ID-EV} & \hh{Tipo} & \hh{Fecha} & \hh{Fuente / participante (rol)} & \hh{Req. derivados (IDs)} & \hh{Consent. (S/N)}\\
+\hline
+EV-01 & & & & & \\\hline
+EV-02 & & & & & \\\hline
+EV-03 & & & & & \\\hline
+\end{tabularx}
+
+\begin{alertbox}[title={Autenticidad (anti-fraude)}]
+\small Las evidencias deben ser \textbf{reales y verificables}: fechas coherentes con el calendario del proyecto, metadatos conservados y fuente identificable. Evidencias fabricadas, descargadas de internet o genéricas (no del sistema objetivo) invalidan la entrega.
+\end{alertbox}
+
+\submark{Almacenamiento en el repositorio (GitHub)}
+Estructura recomendada de carpetas y nomenclatura de archivos:
+\begin{itemize}[itemsep=0pt]
+\item \texttt{/ERS.pdf} \quad y \quad \texttt{/diagramas/}
+\item \texttt{/evidencias/} con subcarpetas \texttt{fotos/}, \texttt{video/}, \texttt{audio/}, \texttt{documentos/} y \texttt{formularios/}
+\item Nombrar cada archivo con \texttt{fecha\_fuente\_tipo} — p. ej. \texttt{2026-06-20\_gerente\_entrevista.m4a}
+\end{itemize}
+
+% =====================================================================
+%  5 REQUISITOS MINIMOS
+% =====================================================================
+\secband{REQUISITOS MÍNIMOS CUANTIFICADOS DE LA ENTREGA 2 (1B)}
+\noindent\begin{tabularx}{\linewidth}{@{}p{0.48\linewidth} @{\hspace{0.02\linewidth}} p{0.48\linewidth}@{}}
+\begin{minipage}[t]{\linewidth}\vspace{-6pt}
+\textbf{\color{uteqgreen}Documento ERS/SRS}
+\begin{itemize}
+\item $\ge$30 páginas (sin anexos extensos)
+\item $\ge$15 requisitos funcionales (plantilla de 8 atributos)
+\item $\ge$6 NFR cuantificados (ISO 25010)
+\item $\ge$10 casos de uso (1 general + $\ge$5 detallados)
+\item $\ge$8 clases en el diagrama conceptual
+\item MoSCoW de todos los requisitos
+\item Matriz de trazabilidad parcial ($\ge$20 filas)
+\item $\ge$20 commits en GitHub
+\end{itemize}\end{minipage}
+&
+\begin{minipage}[t]{\linewidth}\vspace{-6pt}
+\textbf{\color{teal1}Evidencias de campo}
+\begin{itemize}
+\item $\ge$10 fotografías fechadas
+\item $\ge$1 video ($\ge$2 min)
+\item $\ge$1 entrevista grabada (audio/video)
+\item $\ge$3 documentos reales de la organización
+\item $\ge$2 actas de entrevista firmadas
+\item Cuestionario aplicado a $\ge$3 personas
+\item Consentimiento firmado por participante grabado
+\end{itemize}\end{minipage}
+\end{tabularx}
+
+% =====================================================================
+%  6 GATEKEEPERS
+% =====================================================================
+\secband{REQUISITOS PREVIOS DE ADMISIÓN (GATEKEEPERS)}
+\begin{alertbox}
+\small Si \emph{cualquiera} de estas condiciones no se cumple, la entrega recibe \textbf{1,0/10} y no se evalúa con la rúbrica:
+\begin{enumerate}[label=\textbf{G\arabic*.},itemsep=1pt]
+\item Entrega en plazo (Dom 12/07/2026) con nombre correcto y \textbf{enlace GitHub} en la portada.
+\item Documento \textbf{unificado} que acumula la 1A con las correcciones incorporadas.
+\item Sistema \textbf{real} con cliente identificable y $\ge$3 tipos de usuarios.
+\item \textbf{Evidencias de campo reales y verificables}: al menos 1 entrevista grabada con consentimiento, 2 actas firmadas, fotos fechadas y documentos de la organización.
+\item Mínimos cuantificados cumplidos (RF, NFR, CU, clases, páginas, commits, evidencias).
+\item \textbf{Consentimiento informado} firmado para todo material con personas identificables.
+\item Citas en formato IEEE y \textbf{matriz de trazabilidad evidencia$\rightarrow$requisito} presente.
+\end{enumerate}
+\end{alertbox}
+
+\submark{Criterios transversales de calidad (descuentan en cualquier criterio)}
+Verificabilidad · consistencia · completitud · trazabilidad · no ambigüedad · redacción técnica · UML correcto · uso del sistema real (no genérico).
+
+% =====================================================================
+%  7 ERRORES FRECUENTES
+% =====================================================================
+\secband{ERRORES FRECUENTES Y CÓMO EVITARLOS}
+\renewcommand{\arraystretch}{1.25}
+\noindent\begin{tabularx}{\linewidth}{|L{0.42\linewidth}|X|}
+\hline
+\hh{Error} & \hh{Corrección}\\
+\hline
+NFR sin cuantificar (``debe ser rápido'') & Métrica + valor + criterio de verificación (ISO 25010).\\
+\hline
+\rowcolor{rowgray}Requisitos sin trazar a evidencia & Cada requisito debe citar su ID-EV en la matriz de trazabilidad.\\
+\hline
+Evidencias genéricas o de internet & Solo material propio del sistema objetivo, fechado y verificable.\\
+\hline
+\rowcolor{rowgray}CU como simple lista de funciones & CU con actor, flujo principal, alternativos y poscondiciones.\\
+\hline
+Clases = tablas de base de datos & Modelo conceptual del dominio, no diseño físico.\\
+\hline
+\rowcolor{rowgray}Grabar sin consentimiento & Formulario firmado antes de grabar; anonimizar datos sensibles.\\
+\hline
+No incorporar correcciones de la 1A & La 1B parte de la 1A corregida, no de cero.\\
+\hline
+\rowcolor{rowgray}Commits ``en bloque'' al final & Historial de $\ge$20 commits distribuido en el tiempo.\\
+\hline
+\end{tabularx}
+
+% =====================================================================
+%  8 RUBRICA
+% =====================================================================
+\clearpage
+\secband{RÚBRICA DE EVALUACIÓN — ENTREGA 2 (1B)}
+\small
+La rúbrica se organiza en los \textbf{tres tipos de artefactos de Pohl}: Contexto (2,0 pts), Requisitos (6,0 pts) y Proceso (2,0 pts). \textbf{Total 10,0 pts.}\quad
+Cada criterio se evalúa en 4 niveles que otorgan un porcentaje de su puntaje: \textbf{Excelente 100\% · Bueno 75\% · Suficiente 50\% · Insuficiente $\le$25\%}.\quad
+\textbf{Nota = $\sum$ puntos otorgados $\times$ factor individual.} El factor individual ($0{,}7$–$1{,}0$) ajusta por la contribución demostrada de cada integrante.
+
+\begin{landscape}
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{3pt}
+\newcommand{\rh}[1]{\cellcolor{uteqgreen}\textbf{\color{white}\small #1}}
+\newcommand{\rb}[1]{\cellcolor{uteqgold!25}\textbf{\color{uteqgreen}\small #1}}
+\newcommand{\rc}[1]{\cellcolor{rowgray}\textbf{\color{uteqgreen}\footnotesize #1}}
+\begin{longtable}{|L{0.155\linewidth}|C{0.045\linewidth}|L{0.185\linewidth}|L{0.185\linewidth}|L{0.185\linewidth}|L{0.145\linewidth}|}
+\hline
+\rh{Criterio} & \rh{Pts} & \rh{Excelente (100\%)} & \rh{Bueno (75\%)} & \rh{Suficiente (50\%)} & \rh{Insuficiente ($\le$25\%)}\\
+\hline
+\endhead
+\multicolumn{6}{|l|}{\rb{BLOQUE A — Artefactos de contexto (2,0 pts)}}\\
+\hline
+\rc{C1. Límite, visión y descripción general} & 1,0
+& \footnotesize Límite preciso; visión y descripción general completas y coherentes con el sistema real.
+& \footnotesize Completas con omisiones menores.
+& \footnotesize Parciales o poco precisas.
+& \footnotesize Ausentes o genéricas.\\
+\hline
+\rc{C2. Stakeholders, perfiles y glosario} & 1,0
+& \footnotesize $\ge$4 stakeholders clasificados; perfiles de usuario claros; glosario consistente.
+& \footnotesize Correctos con fallas menores.
+& \footnotesize Incompletos.
+& \footnotesize Ausentes.\\
+\hline
+\multicolumn{6}{|l|}{\rb{BLOQUE B — Artefactos de requisitos (6,0 pts)}}\\
+\hline
+\rc{C3. Requisitos funcionales (plantilla 8 atributos)} & 1,5
+& \footnotesize $\ge$15 RF con los 8 atributos completos; claros, atómicos y verificables.
+& \footnotesize $\ge$15 RF con 1–2 atributos débiles.
+& \footnotesize $<$15 RF o atributos incompletos.
+& \footnotesize RF ausentes o mal formulados.\\
+\hline
+\rc{C4. NFR cuantificables (ISO 25010)} & 1,0
+& \footnotesize $\ge$6 NFR por característica, con métrica y criterio de verificación.
+& \footnotesize Mayoría cuantificados.
+& \footnotesize Varios sin cuantificar.
+& \footnotesize NFR vagos o ausentes.\\
+\hline
+\rc{C5. Interfaces externas y \textit{mockups}} & 0,5
+& \footnotesize Interfaces y \textit{mockups} claros, vinculados a RF.
+& \footnotesize Presentes con fallas menores.
+& \footnotesize Incompletos.
+& \footnotesize Ausentes.\\
+\hline
+\rc{C6. Modelado UML (CU + clases)} & 1,5
+& \footnotesize CU general + $\ge$5 detallados correctos; clases conceptual $\ge$8 con relaciones/multiplicidad.
+& \footnotesize Correctos con omisiones menores.
+& \footnotesize Incompletos o con errores de notación.
+& \footnotesize Ausentes o incorrectos.\\
+\hline
+\rc{C7. Clasificación y priorización MoSCoW} & 1,0
+& \footnotesize Clasificación correcta; MoSCoW justificado (Must/Won't argumentados).
+& \footnotesize Correcta con imprecisiones.
+& \footnotesize Parcial o sin justificar.
+& \footnotesize Ausente o incorrecta.\\
+\hline
+\rc{C8. Calidad y trazabilidad parcial} & 0,5
+& \footnotesize Requisitos verificables, consistentes y sin ambigüedad; matriz parcial coherente.
+& \footnotesize Buenos con fallas menores.
+& \footnotesize Deficiencias notorias.
+& \footnotesize Sin trazabilidad.\\
+\hline
+\multicolumn{6}{|l|}{\rb{BLOQUE C — Artefactos de proceso (2,0 pts)}}\\
+\hline
+\rc{C9. Plan IR, gestión y GitHub} & 0,5
+& \footnotesize Plan claro; roles evidenciados; $\ge$20 commits distribuidos.
+& \footnotesize Adecuado con fallas menores.
+& \footnotesize Parcial; commits escasos.
+& \footnotesize Ausente.\\
+\hline
+\rc{C10. Trabajo de campo y evidencias} & 1,5
+& \footnotesize Evidencias reales y completas (fotos, video, audio, documentos, formularios); consentimiento firmado; cada evidencia trazada a requisitos.
+& \footnotesize Evidencias completas con omisiones menores.
+& \footnotesize Evidencias parciales o sin trazar; falta algún consentimiento.
+& \footnotesize Evidencias insuficientes, genéricas o sin consentimiento.\\
+\hline
+\end{longtable}
+\end{landscape}
+
+\vspace{2pt}
+\submark{Hoja de calificación}
+\renewcommand{\arraystretch}{1.3}
+\noindent\begin{tabularx}{\linewidth}{|L{0.06\linewidth}|X|C{0.12\linewidth}|C{0.13\linewidth}|C{0.14\linewidth}|}
+\hline
+\hh{Bloque} & \hh{Criterio} & \hh{Pts máx.} & \hh{Nivel (\%)} & \hh{Puntos}\\
+\hline
+A & C1 Límite, visión y descripción & 1,0 & & \\\hline
+A & C2 Stakeholders, perfiles, glosario & 1,0 & & \\\hline
+B & C3 Requisitos funcionales & 1,5 & & \\\hline
+B & C4 NFR cuantificables (ISO 25010) & 1,0 & & \\\hline
+B & C5 Interfaces y mockups & 0,5 & & \\\hline
+B & C6 Modelado UML (CU + clases) & 1,5 & & \\\hline
+B & C7 Priorización MoSCoW & 1,0 & & \\\hline
+B & C8 Calidad y trazabilidad parcial & 0,5 & & \\\hline
+C & C9 Plan IR, gestión y GitHub & 0,5 & & \\\hline
+C & C10 Trabajo de campo y evidencias & 1,5 & & \\\hline
+\multicolumn{2}{|r|}{\hg{Subtotal (suma de puntos):}} & \textbf{10,0} & & \\\hline
+\multicolumn{2}{|r|}{\hg{Factor individual (0,7–1,0):}} & \multicolumn{3}{c|}{}\\\hline
+\multicolumn{2}{|r|}{\hg{NOTA INDIVIDUAL = Subtotal × factor:}} & \multicolumn{3}{c|}{}\\\hline
+\end{tabularx}
+
+\vspace{4pt}
+\noindent\textbf{Observaciones / retroalimentación:}\quad\rule[-2pt]{0.6\linewidth}{0.5pt}\\[10pt]
+\noindent\textbf{Firma del docente:} \underline{\hspace{5cm}}\qquad \textbf{Fecha:} \underline{\hspace{4cm}}
+
+% =====================================================================
+%  9 REFERENCIAS
+% =====================================================================
+\secband{REFERENCIAS}
+\small
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2.6em]
+\item IEEE/ISO/IEC 29148:2018 — \textit{Systems and software engineering — Requirements engineering}. IEEE, 2018.
+\item ISO/IEC 25010:2023 — \textit{Systems and Software Quality (SQuaRE)}. ISO, 2023.
+\item K. Pohl, \textit{Requirements Engineering: Fundamentals, Principles and Techniques}. Springer.
+\item H. Washizaki (Ed.), \textit{SWEBOK Guide v4.0}. IEEE Computer Society, 2024.
+\item I. Sommerville, \textit{Software Engineering}, 10.\textsuperscript{a} ed. Pearson.
+\item K. E. Wiegers and J. Beatty, \textit{Software Requirements}, 3.\textsuperscript{a} ed. Microsoft Press, 2013.
+\item IREB, \textit{CPRE Foundation Level Syllabus v3.1}. IREB, 2023.
+\end{enumerate}
+
+\end{document}

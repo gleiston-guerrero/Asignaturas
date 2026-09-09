@@ -1,0 +1,284 @@
+\documentclass[10pt]{article}
+
+% ───────────────────────── Paquetes ─────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.6cm,bottom=1.8cm,left=1.6cm,right=1.6cm]{geometry}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{pdflscape}
+\usepackage{ragged2e}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{multirow}
+
+% ───────────────────────── Colores UTEQ ─────────────────────────
+\definecolor{uteqverde}{HTML}{1D6B36}
+\definecolor{uteqazul}{HTML}{1A5276}
+\definecolor{uteqoro}{HTML}{B8860B}
+\definecolor{filaazul}{HTML}{EAF2F8}
+\definecolor{filaoro}{HTML}{FCF3DC}
+\definecolor{filaverde}{HTML}{E8F4EC}
+\definecolor{grisclaro}{HTML}{F4F6F7}
+\definecolor{grisborde}{HTML}{BDC3C7}
+\definecolor{rojoadm}{HTML}{922B21}
+
+% ───────────────────────── Tipos de columna ─────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ───────────────────────── Encabezado / pie ─────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{uteqazul}ISR-401 Ingenier\'ia de Requisitos · 2026--2027 PPA}
+\fancyfoot[C]{}
+\fancyfoot[R]{\footnotesize\color{uteqazul}P\'ag.\ \thepage/\pageref{LastPage}}
+
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.25}
+
+% ───────────────────────── Comandos auxiliares ─────────────────────────
+\newcommand{\nivelhead}[2]{\cellcolor{#1}\textcolor{white}{\textbf{#2}}}
+
+\begin{document}
+
+% ════════════════════ TÍTULO ════════════════════
+\begin{tcolorbox}[colback=uteqverde,colframe=uteqverde,sharp corners,boxrule=0pt,
+  left=10pt,right=10pt,top=8pt,bottom=8pt]
+  \begin{center}
+    {\large\textbf{\textcolor{white}{UNIVERSIDAD T\'ECNICA ESTATAL DE QUEVEDO}}}\\[2pt]
+    {\small\textcolor{white}{Facultad de Ciencias de la Computaci\'on y Dise\~no Digital — Carrera de Ingenier\'ia en Software}}\\[6pt]
+    {\Large\textbf{\textcolor{white}{R\'UBRICA DE EVALUACI\'ON — EXPOSICI\'ON}}}\\[3pt]
+    {\normalsize\textcolor{white}{«Herramientas Automatizadas para la Ingenier\'ia de Requisitos» (Herramientas CASE — Segundo Corte)}}
+  \end{center}
+\end{tcolorbox}
+
+\vspace{4pt}
+
+% ════════════════════ DATOS GENERALES ════════════════════
+\noindent\begin{tabularx}{\linewidth}{|L{0.16\linewidth}|X|L{0.16\linewidth}|X|}
+\hline
+\cellcolor{filaazul}\textbf{Asignatura} & ISR-401 Ingenier\'ia de Requisitos &
+\cellcolor{filaazul}\textbf{Per\'iodo} & 2026--2027 PPA \\
+\hline
+\cellcolor{filaazul}\textbf{Docente} & Guerrero Ulloa Gleiston Cicer\'on &
+\cellcolor{filaazul}\textbf{Paralelo} & \rule{2.5cm}{0.4pt} \\
+\hline
+\cellcolor{filaazul}\textbf{Equipo / N.\textsuperscript{o}} & \rule{4cm}{0.4pt} &
+\cellcolor{filaazul}\textbf{Fecha} & \rule{2.5cm}{0.4pt} \\
+\hline
+\cellcolor{filaazul}\textbf{Integrantes} & \multicolumn{3}{X|}{\rule{0pt}{12pt}} \\
+\hline
+\end{tabularx}
+
+\vspace{8pt}
+
+% ════════════════════ CRITERIOS DE ADMISIÓN ════════════════════
+\begin{tcolorbox}[colback=white,colframe=rojoadm,sharp corners,boxrule=1pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  title={\textbf{CRITERIOS DE ADMISI\'ON (\textit{gatekeeper})}},
+  coltitle=white,colbacktitle=rojoadm,fonttitle=\bfseries]
+  El incumplimiento de \textbf{cualquiera} de los siguientes criterios fija la nota en el
+  \textbf{m\'inimo} (10\,\% del m\'aximo) y la r\'ubrica no se eval\'ua.
+  \begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=3pt]
+    \item[\textbf{A1.}] Entrega del informe escrito \textbf{y} de las diapositivas.
+    \item[\textbf{A2.}] Identificaci\'on completa del equipo (integrantes, curso/paralelo y docente).
+    \item[\textbf{A3.}] An\'alisis de al menos \textbf{dos (2)} herramientas automatizadas de IR.
+    \item[\textbf{A4.}] Exposici\'on realizada en la fecha y turno asignados.
+  \end{itemize}
+\end{tcolorbox}
+
+\vspace{6pt}
+
+% ════════════════════ ESCALA DE VALORACIÓN ════════════════════
+\noindent\textbf{\textcolor{uteqazul}{Escala de valoraci\'on por criterio}}\\[3pt]
+\noindent\begin{tabularx}{\linewidth}{|C{0.10\linewidth}|L{0.24\linewidth}|X|}
+\hline
+\rowcolor{uteqazul}\textcolor{white}{\textbf{Nivel}} & \textcolor{white}{\textbf{Denominaci\'on}} & \textcolor{white}{\textbf{Valor}} \\
+\hline
+\cellcolor{filaverde}\textbf{N4} & Excelente & 4 — equivale al 100\,\% del peso del criterio \\
+\hline
+\cellcolor{filaazul}\textbf{N3} & Satisfactorio & 3 — equivale al 75\,\% del peso del criterio \\
+\hline
+\cellcolor{filaoro}\textbf{N2} & En desarrollo & 2 — equivale al 50\,\% del peso del criterio \\
+\hline
+\cellcolor{grisclaro}\textbf{N1} & Insuficiente & 1 — equivale al 25\,\% del peso del criterio \\
+\hline
+\end{tabularx}
+
+\vspace{10pt}
+\begin{center}
+\textit{\small La tabla anal\'itica de criterios contin\'ua en la siguiente p\'agina (orientaci\'on horizontal).}
+\end{center}
+
+% ════════════════════ TABLA ANALÍTICA (LANDSCAPE) ════════════════════
+\begin{landscape}
+\thispagestyle{fancy}
+\begin{center}
+{\large\textbf{\textcolor{uteqazul}{Tabla anal\'itica de criterios de evaluaci\'on}}}
+\end{center}
+\vspace{2pt}
+\footnotesize
+\renewcommand{\arraystretch}{1.18}
+\setlength{\tabcolsep}{4pt}
+
+\begin{longtable}{|L{3.0cm}|L{5.7cm}|L{5.4cm}|L{4.9cm}|L{4.3cm}|}
+\hline
+\rowcolor{uteqazul}
+\textcolor{white}{\textbf{Criterio (peso)}} &
+\nivelhead{uteqverde}{N4 — Excelente (100\%)} &
+\nivelhead{uteqazul}{N3 — Satisfactorio (75\%)} &
+\nivelhead{uteqoro}{N2 — En desarrollo (50\%)} &
+\nivelhead{rojoadm}{N1 — Insuficiente (25\%)} \\
+\hline
+\endfirsthead
+\hline
+\rowcolor{uteqazul}
+\textcolor{white}{\textbf{Criterio (peso)}} &
+\nivelhead{uteqverde}{N4 — Excelente} &
+\nivelhead{uteqazul}{N3 — Satisfactorio} &
+\nivelhead{uteqoro}{N2 — En desarrollo} &
+\nivelhead{rojoadm}{N1 — Insuficiente} \\
+\hline
+\endhead
+
+% ---------- C1 ----------
+\cellcolor{filaazul}\textbf{C1. Dominio del contenido t\'ecnico}\newline\textit{(20\%)} &
+Describe cada herramienta con precisi\'on conceptual; funcionalidades fundamentadas en literatura (Pohl 2010, IEEE 29148:2018, SWEBOK v4, art\'iculos indexados); terminolog\'ia de IR correcta y uniforme. &
+Contenido correcto y fundamentado, con profundidad desigual entre herramientas o errores menores de terminolog\'ia/redacci\'on. &
+Descripci\'on superficial tipo folleto comercial; escasa fundamentaci\'on acad\'emica. &
+Contenido err\'oneo, copiado o sin fundamentaci\'on. \\
+\hline
+
+% ---------- C2 ----------
+\cellcolor{filaazul}\textbf{C2. Comparativa de funcionalidades}\newline\textit{(15\%)} &
+Tabla comparativa con $\geq 5$ criterios pertinentes (trazabilidad, gesti\'on de cambios, colaboraci\'on, IA, costo, facilidad de uso), con an\'alisis interpretativo y conclusi\'on fundamentada. &
+Tabla completa pero an\'alisis interpretativo breve o parcial. &
+Tabla con criterios insuficientes o sin an\'alisis. &
+Sin comparativa. \\
+\hline
+
+% ---------- C3 ----------
+\cellcolor{filaazul}\textbf{C3. Ventajas y limitaciones basadas en evidencia}\newline\textit{(15\%)} &
+Ventajas y limitaciones de \textbf{todas} las herramientas, cada afirmaci\'on respaldada con cita verificable; sin juicios gratuitos. &
+Cobertura completa pero con afirmaciones parcialmente sin respaldo. &
+Listas gen\'ericas sin citas o incompletas para alguna herramienta. &
+Ausentes o triviales. \\
+\hline
+
+% ---------- C4 ----------
+\cellcolor{filaazul}\textbf{C4. Aplicabilidad al Proyecto Fin de Curso (PFC)}\newline\textit{(15\%)} &
+Vincula funcionalidades concretas de cada herramienta con requisitos y artefactos \textbf{reales} del PFC (m\'odulos, RNF, normativa del dominio), indicando en qu\'e actividad del proceso de IR aporta. &
+Vinculaci\'on concreta pero solo para parte de las herramientas o sin mapear a actividades del proceso de IR. &
+Aplicabilidad gen\'erica, v\'alida para cualquier proyecto. &
+Ausente. \\
+\hline
+
+% ---------- C5 ----------
+\cellcolor{filaazul}\textbf{C5. Manual de usuario con capturas de pantalla}\newline\textit{(20\%)} &
+El documento incluye una secci\'on tipo manual de usuario: pasos de instalaci\'on/acceso y uso de al menos una herramienta, con capturas \textbf{propias} del equipo (datos/requisitos del PFC visibles), numeradas como figuras y referenciadas en el texto. &
+Manual con capturas propias pero pasos incompletos o capturas sin numerar/referenciar. &
+Solo capturas aisladas o im\'agenes del sitio oficial/stock, sin secuencia de pasos ni evidencia de uso propio. &
+Sin manual ni capturas de uso. \\
+\hline
+
+% ---------- C6 ----------
+\cellcolor{filaazul}\textbf{C6. Material de exposici\'on (diapositivas)}\newline\textit{(10\%)} &
+Dise\~no consistente y profesional; jerarqu\'ia visual clara; texto sint\'etico; tablas legibles; im\'agenes licenciadas/propias sin marcas de agua; secuencia l\'ogica completa. &
+Dise\~no correcto con sobrecarga de texto o desbalance puntual. &
+Inconsistencias notorias, im\'agenes con marca de agua, texto duplicado o ilegible. &
+Diapositivas improvisadas o ausentes. \\
+\hline
+
+% ---------- C7 ----------
+\cellcolor{filaazul}\textbf{C7. Referencias y rigor acad\'emico}\newline\textit{(5\%)} &
+Formato IEEE uniforme; todas las referencias verificables y con datos internamente consistentes (autores–t\'itulo–\textit{venue}–DOI); sin duplicados; todas citadas en el texto. &
+IEEE correcto con fallas puntuales (duplicados, 1--2 entradas incompletas o no citadas). &
+M\'ultiples referencias incompletas, no verificables o no citadas. &
+Sin referencias o no verificables en su mayor\'ia. \\
+\hline
+
+\end{longtable}
+\end{landscape}
+
+% ════════════════════ HOJA DE CÁLCULO ════════════════════
+\noindent\textbf{\textcolor{uteqazul}{Hoja de c\'alculo de la nota}}\\[4pt]
+\noindent\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|X|C{0.12\linewidth}|C{0.14\linewidth}|C{0.18\linewidth}|}
+\hline
+\rowcolor{uteqazul}
+\textcolor{white}{\textbf{Crit.}} & \textcolor{white}{\textbf{Descripci\'on}} &
+\textcolor{white}{\textbf{Peso}} & \textcolor{white}{\textbf{Nivel (1--4)}} &
+\textcolor{white}{\textbf{Aporte (Nivel\,$\times$\,Peso)}} \\
+\hline
+C1 & Dominio del contenido t\'ecnico & 0.20 & & \\ \hline
+\rowcolor{grisclaro} C2 & Comparativa de funcionalidades & 0.15 & & \\ \hline
+C3 & Ventajas y limitaciones basadas en evidencia & 0.15 & & \\ \hline
+\rowcolor{grisclaro} C4 & Aplicabilidad al PFC & 0.15 & & \\ \hline
+C5 & Manual de usuario con capturas de pantalla & 0.20 & & \\ \hline
+\rowcolor{grisclaro} C6 & Material de exposici\'on (diapositivas) & 0.10 & & \\ \hline
+C7 & Referencias y rigor acad\'emico & 0.05 & & \\ \hline
+\multicolumn{2}{|r|}{\cellcolor{filaazul}\textbf{Suma de aportes}} & \cellcolor{filaazul}\textbf{1.00} & &
+\cellcolor{filaazul}\rule{0pt}{12pt} \\ \hline
+\end{tabularx}
+
+\vspace{8pt}
+
+% ════════════════════ FÓRMULA ════════════════════
+\begin{tcolorbox}[colback=filaverde,colframe=uteqverde,sharp corners,boxrule=0.8pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt]
+  \textbf{F\'ormula de c\'alculo}
+  \[
+  \text{Nota} \;=\; \left( \frac{\displaystyle\sum_{i=1}^{7} \text{Nivel}_i \times \text{Peso}_i}{4} \right) \times E
+  \]
+  donde $\text{Nivel}_i \in \{1,2,3,4\}$, $\text{Peso}_i$ es la fracci\'on del criterio ($\sum \text{Peso}_i = 1$)
+  y $E$ es el factor de escala:
+  \begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+    \item $E = 10$ \;\; escala decimal (0--10).
+    \item $E = 3$ \;\; exposici\'on del Segundo Corte (m\'aximo \textbf{3.00} puntos).
+  \end{itemize}
+  \textit{Piso por gatekeeper:} si se incumple un criterio de admisi\'on, $\text{Nota} = 0.10 \times E$
+  (1.0 en escala 10; 0.30 en escala 3).
+\end{tcolorbox}
+
+\vspace{6pt}
+
+% ════════════════════ INTERPRETACIÓN ════════════════════
+\noindent\textbf{\textcolor{uteqazul}{Interpretaci\'on de la nota}}\\[4pt]
+\noindent\begin{tabularx}{\linewidth}{|L{0.32\linewidth}|C{0.28\linewidth}|>{\centering\arraybackslash}X|}
+\hline
+\rowcolor{uteqazul}
+\textcolor{white}{\textbf{Desempe\~no}} & \textcolor{white}{\textbf{\% del m\'aximo}} & \textcolor{white}{\textbf{Equivalente en escala 3.0}} \\
+\hline
+\cellcolor{filaverde}Excelente & $\geq 90\,\%$ & $\geq 2.70$ \\ \hline
+\cellcolor{filaazul}Satisfactorio & $70\%$ -- $89\%$ & $2.10$ -- $2.69$ \\ \hline
+\cellcolor{filaoro}En desarrollo & $50\%$ -- $69\%$ & $1.50$ -- $2.09$ \\ \hline
+\cellcolor{grisclaro}Insuficiente & $< 50\,\%$ & $< 1.50$ \\ \hline
+\end{tabularx}
+
+\vspace{10pt}
+
+% ════════════════════ OBSERVACIONES / FIRMA ════════════════════
+\noindent\begin{tabularx}{\linewidth}{|X|}
+\hline
+\cellcolor{filaazul}\textbf{Observaciones / retroalimentaci\'on} \\
+\hline
+\rule{0pt}{40pt} \\
+\hline
+\end{tabularx}
+
+\vspace{18pt}
+\noindent\begin{tabularx}{\linewidth}{C{0.5\linewidth}C{0.5\linewidth}}
+\rule{6cm}{0.4pt} & \rule{6cm}{0.4pt} \\
+Nota final (sobre 3.00) & Firma del docente \\
+\end{tabularx}
+
+\end{document}

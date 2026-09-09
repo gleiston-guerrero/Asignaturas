@@ -1,0 +1,511 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% EXAMEN PARCIAL — UNIDADES 1 Y 2 (evaluación integral) — VERSIÓN B
+% Fundamentos y Proceso de Requisitos (U1, 30%) ·
+% Elicitación y Análisis de Requisitos (U2, 70%)
+% Ingeniería de Requisitos (ISR-401) · UTEQ · 2026-2027 PPA
+% Caso: SIGEDEFA — Cadena de Farmacias Comunitarias «Salud Total»
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% babel no disponible en este entorno
+\usepackage[a4paper,top=2cm,bottom=2.2cm,left=1.6cm,right=1.6cm]{geometry}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+\definecolor{lvlexc}{HTML}{DCEFE3}
+\definecolor{lvlsat}{HTML}{EAF1F7}
+\definecolor{lvldev}{HTML}{FBF3E2}
+\definecolor{lvlins}{HTML}{F7E6E6}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ---------- Encabezado / pie ----------
+\setlength{\headheight}{30pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textbf{Ingeniería de Requisitos (ISR-401)} \,\textcolor{gold}{$\bullet$}\, Versión B}
+\rhead{\footnotesize UTEQ \,\textcolor{gold}{$\bullet$}\, 2026--2027 PPA}
+\lfoot{\footnotesize Examen Parcial --- Unidades 1 y 2 \,$\cdot$\, Uso exclusivo académico}
+\rfoot{\footnotesize Página \thepage}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\bhdr}[1]{\cellcolor{midblue}\textcolor{white}{\textbf{#1}}}
+\newcommand{\pts}[1]{\hfill{\normalsize\textbf{\textcolor{utegreendk}{#1 pts}}}}
+
+\begin{document}
+
+% ============================================================
+% PORTADA
+% ============================================================
+\begin{center}
+{\large\textbf{\textcolor{utegreendk}{UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}}}\\[2pt]
+{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software}\\[10pt]
+{\LARGE\textbf{\textcolor{utegreendk}{EXAMEN PARCIAL --- VERSIÓN B}}}\\[4pt]
+{\large\textbf{UNIDADES 1 Y 2 — Evaluación integral}}\\[2pt]
+{\normalsize Fundamentos y Proceso de Requisitos \,$\cdot$\, Elicitación y Análisis de Requisitos}
+\end{center}
+
+\vspace{4pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+\vspace{6pt}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.24\linewidth}|X|}
+\hline
+\thdr{Asignatura} & Ingeniería de Requisitos (ISR-401) --- 4.º nivel, Carrera de Software\\
+\hline
+\rowcolor{rowgray}\thdr{Docente} & Guerrero Ulloa Gleiston Cicerón\\
+\hline
+\thdr{Resultados de aprendizaje evaluados} &
+\textbf{RA1 (Unidad 1):} Aplica los fundamentos teóricos de la IR identificando tipos, propiedades y el proceso de requisitos para analizar su aplicabilidad en proyectos de software reales.\newline
+\textbf{RA2 (Unidad 2):} Aplica técnicas de elicitación y análisis de requisitos para identificar, clasificar y modelar los requisitos funcionales y no funcionales, asegurando completitud y coherencia.\\
+\hline
+\rowcolor{rowgray}\thdr{Ponderación por unidad} & Unidad 1: \textbf{3{,}0 puntos} (30\,\%) \quad$\cdot$\quad Unidad 2: \textbf{7{,}0 puntos} (70\,\%)\\
+\hline
+\thdr{Modalidad / tiempo} & Individual \,$\cdot$\, Presencial \,$\cdot$\, 120 minutos\\
+\hline
+\rowcolor{rowgray}\thdr{Puntaje total} & 10{,}0 puntos\\
+\hline
+\thdr{Período} & 2026--2027 PPA\\
+\hline
+\rowcolor{rowgray}\thdr{Referentes} & ISO/IEC/IEEE 29148:2018; Pohl (2010); ISO/IEC 25010; SWEBOK v4.0 (KA Software Requirements); IREB CPRE FL v3.1.\\
+\hline
+\end{tabularx}
+
+\vspace{8pt}
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|X|}
+\hline
+\bhdr{Apellidos y Nombres} & \rule{0pt}{14pt}\\
+\hline
+\bhdr{Cédula / ID} & \rule{0pt}{14pt}\\
+\hline
+\bhdr{Paralelo \quad / \quad Fecha} & \rule{0pt}{14pt}\\
+\hline
+\end{tabularx}
+
+% ============================================================
+% ALINEACIÓN CURRICULAR
+% ============================================================
+\section*{\textcolor{utegreendk}{1. ALINEACIÓN CURRICULAR DE LA EVALUACIÓN}}
+
+Esta evaluación es \textbf{integral}: cada tarea se deriva de un único caso de estudio y se alinea con los objetivos específicos de la asignatura, los resultados de aprendizaje de las unidades 1 y 2 y los niveles de la taxonomía de Bloom, conforme al plan analítico vigente.
+
+\vspace{6pt}
+\noindent\begin{tabularx}{\linewidth}{|C{0.08\linewidth}|X|C{0.10\linewidth}|C{0.13\linewidth}|L{0.22\linewidth}|C{0.10\linewidth}|}
+\hline
+\thdr{Tarea} & \thdr{Objetivo específico de la asignatura al que tributa} & \thdr{RA} & \thdr{Unidad} & \thdr{Nivel de Bloom} & \thdr{Puntos}\\
+\hline
+T1 & OE1: Identificar fundamentos, tipos, clasificaciones y propiedades de los requisitos y su rol en el ciclo de vida. & RA1 & Unidad 1 & Comprender $\rightarrow$ Analizar & 1{,}5\\
+\hline
+\rowcolor{rowgray}T2 & OE1: Comprender el proceso de requisitos, sus actores y el framework de IR para seleccionar el modelo adecuado. & RA1 & Unidad 1 & Analizar $\rightarrow$ Evaluar & 1{,}5\\
+\hline
+T3 & OE2: Aplicar técnicas de elicitación para descubrir requisitos funcionales y no funcionales desde diversas fuentes. & RA2 & Unidad 2 & Aplicar $\rightarrow$ Crear & 2{,}0\\
+\hline
+\rowcolor{rowgray}T4 & OE2 y OE3: Analizar, clasificar, priorizar y negociar requisitos asegurando completitud y coherencia. & RA2 & Unidad 2 & Analizar $\rightarrow$ Evaluar & 2{,}0\\
+\hline
+T5 & OE3: Modelar conceptualmente los requisitos mediante metas, escenarios, casos de uso y user stories. & RA2 & Unidad 2 & Crear & 2{,}0\\
+\hline
+\rowcolor{rowgray}T6 & OE4: Formular requisitos no funcionales cuantificados y verificables (ISO/IEC 25010) como base de una ERS de calidad. & RA2 & Unidad 2 & Aplicar & 1{,}0\\
+\hline
+\multicolumn{5}{|r|}{\cellcolor{lightgold}\textbf{Total}} & \cellcolor{lightgold}\textbf{10{,}0}\\
+\hline
+\end{tabularx}
+
+% ============================================================
+% INSTRUCCIONES Y ADMISIÓN
+% ============================================================
+\section*{\textcolor{utegreendk}{2. INSTRUCCIONES GENERALES}}
+
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item Lea cuidadosamente el \textbf{caso de estudio completo} antes de responder cualquier tarea.
+  \item Todas las tareas se derivan del mismo contexto; sus respuestas deben ser \textbf{coherentes entre sí} (mismos actores, requisitos e identificadores).
+  \item Fundamente cada respuesta con la \textbf{terminología técnica de la IR} de las unidades 1 y 2.
+  \item Las respuestas sin justificación o con términos vagos sin cuantificar («rápido», «seguro», «confiable») no obtendrán el puntaje completo.
+  \item No se permite consulta de material externo, dispositivos electrónicos ni comunicación con terceros.
+  \item Escriba con letra legible. Si la tarea provee tabla, respétela; si redacta párrafos, organícelos con claridad.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=lightred,colframe=red!60!black,
+  title=\textbf{Condiciones de admisión (gatekeeper) --- verificación previa a la calificación},
+  fonttitle=\bfseries,boxrule=0.8pt,arc=2mm]
+El incumplimiento de \textbf{cualquiera} de las siguientes condiciones suspende la revisión con la rúbrica y asigna la \textbf{calificación mínima de 1{,}0/10}. La decisión final de aplicación corresponde al docente y, en el caso 3, al procedimiento disciplinario institucional.
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item \textbf{Identificación completa} del estudiante (nombres, cédula, paralelo y fecha) en la portada.
+  \item \textbf{Pertinencia al caso:} las respuestas se construyen sobre el caso SIGEDEFA provisto; respuestas exclusivamente teóricas o de un contexto ajeno no son admisibles.
+  \item \textbf{Probidad académica:} evidencia de copia, uso de material no autorizado o suplantación invalida el examen.
+\end{enumerate}
+\end{tcolorbox}
+
+\newpage
+% ============================================================
+% CASO DE ESTUDIO
+% ============================================================
+\section*{\textcolor{utegreendk}{3. CASO DE ESTUDIO: SISTEMA DE GESTIÓN DE LA CADENA DE FARMACIAS COMUNITARIAS «SALUD TOTAL» (SIGEDEFA)}}
+
+\subsection*{Contexto general}
+
+La cadena «Salud Total» opera \textbf{ocho farmacias comunitarias} en zonas urbano-rurales, atiende en promedio 400 clientes diarios por sucursal y cuenta con un catálogo de unos 4\,800 productos farmacéuticos y de cuidado personal. Hoy, cada sucursal opera con un software de escritorio aislado: el inventario y las ventas no se consolidan en tiempo real, lo que provoca rupturas de stock no detectadas, medicamentos próximos a vencer que no se retiran a tiempo, errores de facturación frente a recetas médicas y, sobre todo, \textbf{imposibilidad de demostrar la trazabilidad de los lotes} ante las inspecciones del ente regulador sanitario.
+
+La propietaria ha decidido contratar el desarrollo del \textbf{Sistema de Gestión de la Cadena de Farmacias Comunitarias (SIGEDEFA)}. Usted ha sido designado \textbf{analista líder de requisitos} del proyecto. En las primeras reuniones con los stakeholders recopiló las siguientes declaraciones:
+
+\begin{tcolorbox}[colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm]
+\textbf{D1 --- Lic. Vélez, propietaria y gerenta general:}\\
+«El sistema debe consolidar en tiempo real las ventas y el inventario de las ocho sucursales, y debe permitirme ver desde mi oficina indicadores diarios por sucursal. Además, el equipo de desarrollo nos presentará \textbf{demos funcionales mensuales} y aplicará la \textbf{metodología SCRUM}, porque la cooperación financiera que apoya el proyecto lo audita y exige avances revisables.»
+
+\vspace{4pt}
+\textbf{D2 --- Q.F. Mendoza, farmacéutico de turno:}\\
+«En las horas pico atiendo a un cliente cada dos minutos. El sistema debe ser \textbf{rápido} en el despacho; si me demora más que el actual, se forma cola, perdemos ventas y, francamente, no lo voy a usar bien.»
+
+\vspace{4pt}
+\textbf{D3 --- Sra. Pinargote, paciente frecuente adulta mayor:}\\
+«Quiero ver desde el celular los medicamentos que he tomado, los que me recetó el doctor y un recordatorio de cuándo tomarlos. Eso sí: las letras deben ser \textbf{grandes} porque casi no veo bien, y debe seguir funcionando aunque el \textbf{internet en mi barrio sea malo}.»
+
+\vspace{4pt}
+\textbf{D4 --- Dr. Quimís, médico prescriptor referente:}\\
+«Cuando emito una receta electrónica, el sistema debe verificar automáticamente \textbf{alergias e interacciones medicamentosas} del paciente y alertar al farmacéutico antes del despacho. La información clínica debe quedar \textbf{segura}: solo el personal autorizado puede consultar el historial.»
+
+\vspace{4pt}
+\textbf{D5 --- CPA. Espinoza, contadora general de la cadena:}\\
+«Los reportes contables deben ser \textbf{confiables} y exportarse al sistema tributario según la normativa vigente. Necesito reportes mensuales de ventas por sucursal, por categoría de producto y por médico prescriptor, para los cierres y para la directiva.»
+
+\vspace{4pt}
+\textbf{D6 --- Lic. Vélez, segunda reunión:}\\
+«Ah, y el sistema debe ejecutarse en los equipos que ya tenemos en las farmacias (Windows 10, Intel i3, 4 GB de RAM) y respetar la normativa local de protección de datos personales para los datos clínicos de nuestros pacientes.»
+\end{tcolorbox}
+
+\subsection*{Lista preliminar de requisitos identificados}
+
+A partir de las reuniones, el equipo elaboró esta lista preliminar (sin depurar):
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.10\linewidth}|X|}
+\hline
+\thdr{ID} & \thdr{Enunciado preliminar}\\
+\hline
+R-01 & El sistema registrará cada venta con producto, lote, cantidad, precio unitario, total, farmacéutico, sucursal y fecha-hora.\\
+\hline
+\rowcolor{rowgray}R-02 & El sistema descontará automáticamente del inventario los productos vendidos y alertará cuando el stock caiga bajo el mínimo definido.\\
+\hline
+R-03 & El paciente podrá consultar su historial de compras y recordatorios de medicación desde una aplicación móvil.\\
+\hline
+\rowcolor{rowgray}R-04 & El sistema generará un código de trazabilidad por lote, vinculado al proveedor, número de lote, fecha de fabricación y de vencimiento.\\
+\hline
+R-05 & El sistema verificará automáticamente alergias e interacciones medicamentosas al despachar una receta electrónica.\\
+\hline
+\rowcolor{rowgray}R-06 & El sistema se integrará con la balanza electrónica del área de preparados magistrales para capturar pesos automáticamente.\\
+\hline
+R-07 & El usuario podrá personalizar los colores y los íconos de la pantalla de inicio de la aplicación móvil.\\
+\hline
+\rowcolor{rowgray}R-08 & El sistema exportará los reportes contables al sistema tributario en el formato y la periodicidad que disponga la normativa vigente.\\
+\hline
+\end{tabularx}
+
+\newpage
+% ============================================================
+% TAREAS — UNIDAD 1
+% ============================================================
+\section*{\textcolor{utegreendk}{4. TAREAS DE LA UNIDAD 1 \,(3{,}0 puntos)}}
+
+\subsection*{T1. Sistema, contexto y visión \pts{1{,}5}}
+
+\begin{enumerate}[label=\textbf{T1.\arabic*},leftmargin=26pt,itemsep=3pt]
+  \item \textbf{(0{,}4)} Clasifique el SIGEDEFA según los tipos de sistemas estudiados (información, embebido, software-intensivo, adaptativo) y \textbf{justifique} con dos características del caso. Indique una \textbf{consecuencia} de esa clasificación para la IR del proyecto.
+  \item \textbf{(0{,}4)} Defina el \textbf{límite del sistema} y el \textbf{contexto}: mencione dos elementos que quedan \emph{dentro} del sistema, dos que pertenecen al \emph{contexto} y uno que esté en la \emph{frontera} (interfaz), justificando este último.
+  \item \textbf{(0{,}3)} Formule la \textbf{visión del sistema} en un único enunciado, alineada con el problema central del caso.
+  \item \textbf{(0{,}4)} Seleccione \textbf{tres perspectivas de contexto} (de las ocho estudiadas) pertinentes al SIGEDEFA y sustente cada una con evidencia textual del caso.
+\end{enumerate}
+
+\subsection*{T2. Tipos de requisitos, proceso y framework de IR \pts{1{,}5}}
+
+\begin{enumerate}[label=\textbf{T2.\arabic*},leftmargin=26pt,itemsep=3pt]
+  \item \textbf{(0{,}5)} Clasifique las declaraciones \textbf{D1 a D6} distinguiendo: requisito funcional, requisito no funcional, restricción y \textbf{requisito de proceso} (vs.\ requisito de producto). Una misma declaración puede contener más de un tipo; identifíquelos por separado en una tabla.
+  \item \textbf{(0{,}5)} Recomiende el \textbf{modelo de proceso de requisitos} (cascada, iterativo o ágil) más adecuado para el SIGEDEFA con \textbf{tres razones contextualizadas} al caso (considere la exigencia explícita de demos mensuales con SCRUM y la diversidad de perfiles de usuarios).
+  \item \textbf{(0{,}5)} Aplique el \textbf{framework de IR}: identifique los \textbf{actores del proceso} de requisitos del proyecto, señale en qué \textbf{actividad core} se originó la declaración D6, a qué \textbf{tipo de artefacto} (contexto, requisitos o proceso) corresponde cada parte de D6 y qué \textbf{actividad transversal} debe activarse al incorporarla.
+\end{enumerate}
+
+% ============================================================
+% TAREAS — UNIDAD 2
+% ============================================================
+\section*{\textcolor{utegreendk}{5. TAREAS DE LA UNIDAD 2 \,(7{,}0 puntos)}}
+
+\subsection*{T3. Planificación de la elicitación \pts{2{,}0}}
+
+\begin{enumerate}[label=\textbf{T3.\arabic*},leftmargin=26pt,itemsep=3pt]
+  \item \textbf{(0{,}8)} Construya la \textbf{matriz fuente $\rightarrow$ técnica}: para al menos \textbf{cuatro fuentes de requisitos} del caso (stakeholders, documentos, sistemas actuales de escritorio, normativa sanitaria y tributaria), seleccione la \textbf{técnica de elicitación} principal más adecuada (debe usar al menos \textbf{tres técnicas distintas}) y justifique cada selección considerando el perfil de la fuente.
+  \item \textbf{(0{,}8)} Diseñe el \textbf{guion de entrevista semiestructurada} al Dr.\ Quimís (médico prescriptor) con \textbf{cinco preguntas}: combine correctamente preguntas abiertas y cerradas, ordénelas con lógica de embudo y oriéntelas a descubrir el flujo de la prescripción electrónica y los criterios clínicos de verificación de alergias e interacciones.
+  \item \textbf{(0{,}4)} Proponga \textbf{una técnica de apoyo} (brainstorming, prototipado, KJ, mapas mentales o checklists) para abordar la resistencia del Q.F.\ Mendoza («no lo voy a usar bien») y describa \textbf{cómo} la aplicaría en una sesión concreta.
+\end{enumerate}
+
+\subsection*{T4. Análisis, priorización y negociación \pts{2{,}0}}
+
+\begin{enumerate}[label=\textbf{T4.\arabic*},leftmargin=26pt,itemsep=3pt]
+  \item \textbf{(0{,}8)} Priorice los requisitos \textbf{R-01 a R-08} con la técnica \textbf{MoSCoW} para una primera versión del SIGEDEFA. Justifique expresamente por qué los clasificados como \emph{Must} son imprescindibles y por qué los \emph{Won't} pueden posponerse.
+  \item \textbf{(0{,}6)} Clasifique \textbf{R-02, R-05 y R-07} según el \textbf{modelo de Kano} (básico/obligatorio, de desempeño/unidimensional, atractivo/de deleite) y justifique cada clasificación desde la perspectiva del paciente y del farmacéutico.
+  \item \textbf{(0{,}6)} Las declaraciones \textbf{D2 y D4} generan un \textbf{conflicto de requisitos} (despacho mínimo y veloz vs.\ verificación clínica automática que añade pasos). Tipifique el conflicto según las causas estudiadas, y proponga una \textbf{resolución win-win} concreta y técnicamente viable, indicando qué cede y qué gana cada parte.
+\end{enumerate}
+
+\subsection*{T5. Metas, escenarios y casos de uso \pts{2{,}0}}
+
+\begin{enumerate}[label=\textbf{T5.\arabic*},leftmargin=26pt,itemsep=3pt]
+  \item \textbf{(0{,}6)} Formule la \textbf{meta principal} del SIGEDEFA y constrúyale una \textbf{descomposición AND/OR} con al menos \textbf{dos niveles} y \textbf{cinco submetas}, indicando explícitamente qué descomposiciones son AND y cuáles OR.
+  \item \textbf{(0{,}4)} Documente \textbf{textualmente} la meta principal aplicando las \textbf{reglas de documentación de metas} estudiadas (identificador, enunciado verificable, justificación y stakeholder responsable, entre otras).
+  \item \textbf{(0{,}6)} Especifique el \textbf{caso de uso} «Despachar receta electrónica con verificación clínica» en formato detallado: actor primario, precondiciones, \textbf{flujo principal de al menos seis pasos}, \textbf{un flujo alternativo} (p.\ ej., alerta de interacción medicamentosa detectada) y poscondiciones, coherente con R-01, R-04 y R-05.
+  \item \textbf{(0{,}4)} Redacte \textbf{una user story} para la Sra.\ Pinargote (paciente adulta mayor) derivada de R-03, con el formato canónico y \textbf{tres criterios de aceptación} verificables.
+\end{enumerate}
+
+\subsection*{T6. Requisitos no funcionales cuantificados \pts{1{,}0}}
+
+\begin{enumerate}[label=\textbf{T6.\arabic*},leftmargin=26pt,itemsep=3pt]
+  \item \textbf{(1{,}0)} Reescriba las necesidades vagas de \textbf{D2} («rápido»), \textbf{D3} («letras grandes» e «internet malo»), \textbf{D4} («segura») y \textbf{D5} («confiables») como \textbf{requisitos no funcionales cuantificados}: para cada uno indique la \textbf{característica de calidad ISO/IEC 25010}, la \textbf{métrica}, el \textbf{valor objetivo} y el \textbf{criterio de verificación}. (Mínimo cuatro NFR.)
+\end{enumerate}
+
+\newpage
+% ============================================================
+% RÚBRICA — RESUMEN POR TAREA
+% ============================================================
+\section*{\textcolor{utegreendk}{6. RÚBRICA DE EVALUACIÓN — CAPACIDADES E INDICADORES DE LOGRO}}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|L{0.28\linewidth}|X|C{0.09\linewidth}|}
+\hline
+\thdr{Tarea} & \thdr{Capacidad evaluada} & \thdr{Indicadores de logro} & \thdr{Peso}\\
+\hline
+T1 & Clasifica el sistema, delimita el contexto, formula la visión e identifica perspectivas de contexto. & Tipo de sistema correcto con consecuencia para la IR; límite/contexto/frontera diferenciados con precisión; visión alineada al problema central; perspectivas pertinentes con evidencia textual del caso. & 1{,}5\\
+\hline
+\rowcolor{rowgray}T2 & Distingue tipos de requisitos (producto vs.\ proceso), selecciona el modelo de proceso y aplica el framework de IR. & Clasificación correcta de D1--D6 incluyendo el requisito de proceso de D1 (demos mensuales + SCRUM); recomendación con tres razones contextualizadas; actores, actividad core, tipos de artefacto y actividad transversal correctamente identificados. & 1{,}5\\
+\hline
+T3 & Planifica la elicitación seleccionando técnicas según la fuente y diseña instrumentos. & Matriz fuente$\rightarrow$técnica con $\geq$4 fuentes y $\geq$3 técnicas justificadas por perfil; guion de 5 preguntas con combinación abierta/cerrada y lógica de embudo; técnica de apoyo aplicada a la resistencia del stakeholder con procedimiento concreto. & 2{,}0\\
+\hline
+\rowcolor{rowgray}T4 & Prioriza con MoSCoW y Kano y resuelve conflictos mediante negociación win-win. & MoSCoW completo (R-01--R-08) con justificación de Must y Won't; Kano correcto y argumentado para R-02, R-05 y R-07; conflicto D2/D4 tipificado y resuelto con propuesta win-win viable y balanceada. & 2{,}0\\
+\hline
+T5 & Modela metas (AND/OR), escenarios, casos de uso y user stories coherentes con los requisitos. & Descomposición AND/OR con $\geq$2 niveles y $\geq$5 submetas correctamente tipificadas; meta documentada según las reglas textuales; caso de uso detallado completo y coherente con R-01/R-04/R-05; user story canónica con 3 criterios de aceptación verificables. & 2{,}0\\
+\hline
+\rowcolor{rowgray}T6 & Especifica NFR cuantificados según ISO/IEC 25010. & $\geq$4 NFR con característica ISO 25010 correcta, métrica, valor objetivo y criterio de verificación; eliminación efectiva de la ambigüedad de origen. & 1{,}0\\
+\hline
+\multicolumn{3}{|r|}{\cellcolor{lightgold}\textbf{Total}} & \cellcolor{lightgold}\textbf{10{,}0}\\
+\hline
+\end{tabularx}
+
+% ============================================================
+% ESCALA Y FÓRMULA
+% ============================================================
+\section*{\textcolor{utegreendk}{7. ESCALA DE NIVELES Y FÓRMULA DE CALIFICACIÓN}}
+
+\noindent\colorbox{boxgray}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small
+\textbf{Escala de niveles.} Cada tarea tiene un \emph{peso} en puntos. El nivel alcanzado determina la fracción del peso obtenida:\\[2pt]
+\colorbox{lvlexc}{\textbf{Excelente (N4)} = 100\,\%}\quad
+\colorbox{lvlsat}{\textbf{Satisfactorio (N3)} = 75\,\%}\quad
+\colorbox{lvldev}{\textbf{En desarrollo (N2)} = 50\,\%}\quad
+\colorbox{lvlins}{\textbf{Insuficiente (N1)} = 25\,\%}\quad
+\textbf{No respondida} = 0\,\%.\\[4pt]
+\textbf{Fórmula.}\;
+$\text{Nota} = \sum_{i=1}^{6} \dfrac{\text{Nivel}_i}{4} \times \text{Peso}_i$,\;
+con $\text{Nivel}_i \in \{0,1,2,3,4\}$ y $\sum \text{Peso}_i = 10{,}0$.\\[2pt]
+\textbf{Piso por gatekeeper:} si se incumple una condición de admisión, $\text{Nota} = 1{,}0$ y no se aplica la rúbrica.
+}}
+
+\vspace{6pt}
+\begin{center}
+\textit{\small La tabla analítica de niveles por tarea continúa en la siguiente página (orientación horizontal).}
+\end{center}
+
+% ============================================================
+% TABLA ANALÍTICA (LANDSCAPE)
+% ============================================================
+\begin{landscape}
+\thispagestyle{fancy}
+\begin{center}
+{\large\textbf{\textcolor{utegreendk}{Tabla analítica de niveles de desempeño por tarea}}}
+\end{center}
+\vspace{1pt}
+{\scriptsize
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{3pt}
+
+\begin{longtable}{|L{3.2cm}|L{5.6cm}|L{5.3cm}|L{4.9cm}|L{4.3cm}|}
+\hline
+\rowcolor{utegreen}
+\textcolor{white}{\textbf{Tarea (peso)}} &
+\cellcolor{utegreendk}\textcolor{white}{\textbf{N4 — Excelente (100\%)}} &
+\cellcolor{midblue}\textcolor{white}{\textbf{N3 — Satisfactorio (75\%)}} &
+\cellcolor{gold}\textcolor{white}{\textbf{N2 — En desarrollo (50\%)}} &
+\cellcolor{red!60!black}\textcolor{white}{\textbf{N1 — Insuficiente (25\%)}} \\
+\hline
+\endfirsthead
+\hline
+\rowcolor{utegreen}
+\textcolor{white}{\textbf{Tarea (peso)}} &
+\cellcolor{utegreendk}\textcolor{white}{\textbf{N4 — Excelente}} &
+\cellcolor{midblue}\textcolor{white}{\textbf{N3 — Satisfactorio}} &
+\cellcolor{gold}\textcolor{white}{\textbf{N2 — En desarrollo}} &
+\cellcolor{red!60!black}\textcolor{white}{\textbf{N1 — Insuficiente}} \\
+\hline
+\endhead
+
+% ---------- T1 ----------
+\cellcolor{lightblue}\textbf{T1. Sistema, contexto y visión}\newline\textit{(1{,}5 — U1)} &
+Clasificación correcta y justificada con consecuencia explícita para la IR; dentro/contexto/frontera diferenciados sin errores; visión sintética alineada al problema; tres perspectivas pertinentes con evidencia textual. &
+Clasificación y límite correctos con justificaciones parciales; visión válida pero genérica; perspectivas pertinentes con evidencia incompleta. &
+Confusión parcial entre límite y contexto, o perspectivas enunciadas sin evidencia del caso; visión que describe funciones en lugar de propósito. &
+Clasificación errónea, límite/contexto indistintos o respuestas teóricas sin uso del caso. \\
+\hline
+
+% ---------- T2 ----------
+\cellcolor{lightblue}\textbf{T2. Tipos de requisitos, proceso y framework}\newline\textit{(1{,}5 — U1)} &
+Clasificación completa de D1--D6 que distingue el requisito de \textbf{proceso} en D1 (demos mensuales + SCRUM); modelo recomendado con tres razones del caso; actores, actividad core, tipos de artefacto y actividad transversal correctos para D6. &
+Clasificación mayormente correcta con una omisión (p.\ ej., el requisito de proceso); recomendación válida con razones parcialmente genéricas; framework aplicado con un error menor. &
+Clasificación con varios errores u omisión del análisis producto vs.\ proceso; recomendación sin contextualizar; framework identificado de forma incompleta. &
+Clasificación incorrecta en su mayoría; sin recomendación fundamentada; framework ausente o erróneo. \\
+\hline
+
+% ---------- T3 ----------
+\cellcolor{lightblue}\textbf{T3. Planificación de la elicitación}\newline\textit{(2{,}0 — U2)} &
+Matriz con $\geq$4 fuentes y $\geq$3 técnicas justificadas según el perfil de cada fuente; guion de 5 preguntas con combinación abierta/cerrada y embudo correcto; técnica de apoyo con procedimiento concreto orientado a la resistencia del stakeholder. &
+Matriz completa con justificaciones breves o una técnica subóptima; guion correcto con orden mejorable; técnica de apoyo adecuada pero con aplicación descrita superficialmente. &
+Matriz incompleta o con técnicas asignadas sin justificar; preguntas predominantemente cerradas o genéricas; técnica de apoyo solo nombrada. &
+Sin matriz o con técnicas inadecuadas a las fuentes; guion ausente o impertinente al caso. \\
+\hline
+
+% ---------- T4 ----------
+\cellcolor{lightblue}\textbf{T4. Análisis, priorización y negociación}\newline\textit{(2{,}0 — U2)} &
+MoSCoW completo y defendible con Must y Won't justificados; Kano correcto y argumentado desde la perspectiva del paciente y del farmacéutico; conflicto D2/D4 tipificado con propuesta win-win viable que explicita cesiones y ganancias de ambas partes. &
+MoSCoW completo con 1--2 asignaciones discutibles sin justificar; Kano con un error de categoría; resolución win-win válida pero asimétrica o poco concreta. &
+MoSCoW parcial o sin justificación de Must/Won't; Kano confundido en dos casos; conflicto identificado pero resuelto por imposición (gana una sola parte). &
+Priorización arbitraria o ausente; Kano incorrecto; conflicto no identificado o sin propuesta de resolución. \\
+\hline
+
+% ---------- T5 ----------
+\cellcolor{lightblue}\textbf{T5. Metas, escenarios y casos de uso}\newline\textit{(2{,}0 — U2)} &
+AND/OR con $\geq$2 niveles y $\geq$5 submetas correctamente tipificadas; meta documentada según las reglas textuales; caso de uso completo (actor, pre, $\geq$6 pasos, alternativo, post) coherente con R-01/R-04/R-05; user story canónica con 3 criterios verificables. &
+Modelado completo con errores menores (una relación AND/OR confusa, un paso ambiguo del flujo o un criterio de aceptación no verificable). &
+Descomposición plana o sin tipificar AND/OR; caso de uso reducido a lista de funciones; user story sin formato canónico o con criterios genéricos. &
+Artefactos ausentes, incoherentes entre sí o sin relación con los requisitos del caso. \\
+\hline
+
+% ---------- T6 ----------
+\cellcolor{lightblue}\textbf{T6. NFR cuantificados (ISO/IEC 25010)}\newline\textit{(1{,}0 — U2)} &
+$\geq$4 NFR con característica correcta, métrica, valor objetivo y criterio de verificación; la ambigüedad de origen queda totalmente eliminada. &
+NFR completos con una característica mal asignada o un criterio de verificación débil. &
+NFR con métricas pero sin valores objetivo, o con características ISO 25010 confundidas en dos o más casos. &
+Reescrituras que mantienen los términos vagos o sin estructura de NFR cuantificado. \\
+\hline
+
+\end{longtable}
+}
+\end{landscape}
+
+% ============================================================
+% HOJA DE CÁLCULO
+% ============================================================
+\section*{\textcolor{utegreendk}{8. HOJA DE CÁLCULO DE LA NOTA}}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.08\linewidth}|X|C{0.10\linewidth}|C{0.10\linewidth}|C{0.14\linewidth}|C{0.20\linewidth}|}
+\hline
+\bhdr{Tarea} & \bhdr{Descripción} & \bhdr{Unidad} & \bhdr{Peso} & \bhdr{Nivel (0--4)} & \bhdr{Aporte (Nivel/4 $\times$ Peso)}\\
+\hline
+T1 & Sistema, contexto y visión & U1 & 1{,}5 & & \\
+\hline
+\rowcolor{rowgray}T2 & Tipos de requisitos, proceso y framework de IR & U1 & 1{,}5 & & \\
+\hline
+T3 & Planificación de la elicitación & U2 & 2{,}0 & & \\
+\hline
+\rowcolor{rowgray}T4 & Análisis, priorización y negociación & U2 & 2{,}0 & & \\
+\hline
+T5 & Metas, escenarios y casos de uso & U2 & 2{,}0 & & \\
+\hline
+\rowcolor{rowgray}T6 & NFR cuantificados (ISO/IEC 25010) & U2 & 1{,}0 & & \\
+\hline
+\multicolumn{3}{|r|}{\cellcolor{lightgold}\textbf{Total}} & \cellcolor{lightgold}\textbf{10{,}0} & &
+\cellcolor{lightgold}\rule{0pt}{12pt}\\
+\hline
+\end{tabularx}
+
+\vspace{6pt}
+\noindent\textit{\small Subtotales de control: Unidad 1 = T1 + T2 (máx.\ 3{,}0) \quad$\cdot$\quad Unidad 2 = T3 + T4 + T5 + T6 (máx.\ 7{,}0).}
+
+% ============================================================
+% CRITERIOS TRANSVERSALES
+% ============================================================
+\section*{\textcolor{utegreendk}{9. CRITERIOS TRANSVERSALES DE CALIDAD}}
+
+\begin{tcolorbox}[colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm]
+Aplican a todas las tareas y pueden reducir el nivel asignado dentro de cada una:
+\begin{itemize}[leftmargin=18pt,itemsep=2pt]
+  \item \textbf{Pertinencia:} las respuestas deben usar el contexto del SIGEDEFA, no ejemplos genéricos.
+  \item \textbf{Fundamentación:} uso correcto y preciso de la terminología técnica de la IR (unidades 1 y 2).
+  \item \textbf{Coherencia:} las respuestas de distintas tareas deben ser consistentes entre sí (mismos actores, requisitos, identificadores y decisiones; p.\ ej., el caso de uso de T5 debe respetar la priorización de T4).
+  \item \textbf{Cuantificación:} todo requisito formulado o reformulado debe incluir métricas verificables; los términos vagos sin cuantificar reducen el puntaje proporcionalmente.
+  \item \textbf{Extensión:} ni tan breve que carezca de sustento, ni tan extensa que exceda el tiempo disponible.
+\end{itemize}
+\end{tcolorbox}
+
+% ============================================================
+% INTERPRETACIÓN
+% ============================================================
+\section*{\textcolor{utegreendk}{10. INTERPRETACIÓN DE RESULTADOS}}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.25\linewidth}|X|}
+\hline
+\thdr{Banda (nota /10)} & \thdr{Interpretación}\\
+\hline
+\cellcolor{lvlexc}9{,}0 -- 10{,}0 & Dominio sobresaliente: integra los fundamentos (U1) con la elicitación y el análisis (U2); está en condiciones de liderar la construcción de la ERS del PFC.\\
+\hline
+\cellcolor{lvlsat}7{,}0 -- 8{,}9 & Dominio satisfactorio: aplica correctamente las técnicas con imprecisiones menores de justificación o cuantificación.\\
+\hline
+\cellcolor{lvldev}5{,}0 -- 6{,}9 & Dominio parcial: persisten errores conceptuales (clasificación de requisitos, semántica AND/OR, NFR sin cuantificar) que deben corregirse con retroalimentación antes de la Entrega 1B del PFC.\\
+\hline
+\cellcolor{lvlins}$<$ 5{,}0 & Dominio insuficiente: se recomienda tutoría de refuerzo de los temas 2--7 y reelaboración guiada de los artefactos centrales.\\
+\hline
+\end{tabularx}
+
+\vspace{14pt}
+\noindent\begin{tabularx}{\linewidth}{|X|}
+\hline
+\cellcolor{lightblue}\textbf{Observaciones / retroalimentación} \\
+\hline
+\rule{0pt}{42pt} \\
+\hline
+\end{tabularx}
+
+\vspace{18pt}
+\noindent\begin{tabularx}{\linewidth}{C{0.5\linewidth}C{0.5\linewidth}}
+\rule{6cm}{0.4pt} & \rule{6cm}{0.4pt} \\
+Nota final (sobre 10{,}0) & Firma del docente \\
+\end{tabularx}
+
+\vspace{10pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+\begin{center}
+\footnotesize Documento de uso académico --- Ingeniería de Requisitos (ISR-401) --- UTEQ, 2026--2027 PPA --- Versión B.
+\end{center}
+
+\end{document}

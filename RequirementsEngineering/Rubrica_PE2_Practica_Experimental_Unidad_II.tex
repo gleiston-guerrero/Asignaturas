@@ -1,0 +1,312 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% RÚBRICA PE2 — Práctica Experimental Unidad II
+% Elicitación y análisis de requisitos aplicados al sistema
+% del Proyecto Fin de Curso (PFC)
+% Ingeniería de Requisitos (ISR-401) · UTEQ · 2026-2027 PPA
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[a4paper,top=2cm,bottom=2.2cm,left=1.6cm,right=1.6cm]{geometry}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+\definecolor{lvlexc}{HTML}{DCEFE3}
+\definecolor{lvlsat}{HTML}{EAF1F7}
+\definecolor{lvldev}{HTML}{FBF3E2}
+\definecolor{lvlins}{HTML}{F7E6E6}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ---------- Encabezado / pie ----------
+\setlength{\headheight}{30pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\textbf{Ingeniería de Requisitos (ISR-401)}}
+\rhead{\footnotesize UTEQ \,\textcolor{gold}{$\bullet$}\, 2026--2027 PPA}
+\lfoot{\footnotesize Rúbrica PE2 --- Práctica Experimental Unidad II}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\bhdr}[1]{\cellcolor{midblue}\textcolor{white}{\textbf{#1}}}
+
+\renewcommand{\arraystretch}{1.25}
+
+\begin{document}
+
+% ============================================================
+% PORTADA / TÍTULO
+% ============================================================
+\begin{center}
+{\large\textbf{\textcolor{utegreendk}{UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}}}\\[2pt]
+{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software}\\[8pt]
+{\LARGE\textbf{\textcolor{utegreendk}{Rúbrica de Evaluación --- PE2}}}\\[4pt]
+{\large Práctica Experimental Unidad II: \textit{Elicitación y análisis de requisitos aplicados al sistema del Proyecto Fin de Curso}}\\[2pt]
+{\small Actividad de gestión de aula --- Práctica experimental}
+\end{center}
+
+\vspace{4pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+% ============================================================
+% 1. DATOS GENERALES
+% ============================================================
+\section*{\textcolor{utegreendk}{1. DATOS GENERALES DE LA ACTIVIDAD}}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.28\linewidth}|X|}
+\hline
+\multicolumn{2}{|l|}{\cellcolor{utegreen}\textcolor{white}{\textbf{DATOS GENERALES DE LA ACTIVIDAD}}}\\
+\hline
+\textbf{Asignatura} & Ingeniería de Requisitos (ISR-401) -- 4.º nivel, Carrera de Software\\
+\hline
+\rowcolor{rowgray}\textbf{Unidad} & Unidad 2: Elicitación y Análisis de Requisitos\\
+\hline
+\textbf{Resultado de aprendizaje} & Aplica técnicas de elicitación y análisis de requisitos para identificar, clasificar y modelar los requisitos funcionales y no funcionales, asegurando completitud y coherencia.\\
+\hline
+\rowcolor{rowgray}\textbf{Actividad evaluada} & Práctica experimental: planificación y ejecución de técnicas de elicitación (entrevista y cuestionario) sobre el sistema del PFC seleccionado por el equipo, con análisis, clasificación y consolidación de los requisitos obtenidos, modelado de dependencias estratégicas en i*~2.0 y modelado de escenarios (casos de uso y user stories).\\
+\hline
+\textbf{Modalidad} & Trabajo en equipos de práctica experimental. \textbf{Nota sobre conformación:} los equipos de la PE2 no necesariamente coinciden con los equipos del PFC; cada equipo selecciona el sistema del PFC de \textbf{uno} de sus integrantes, lo que habilita la revisión cruzada (\textit{peer review}) entre proyectos.\\
+\hline
+\rowcolor{rowgray}\textbf{Producto entregable} & Informe en PDF subido al repositorio establecido, con: plan de elicitación, instrumentos aplicados, registros y evidencias de campo, lista consolidada de requisitos, modelo i*~2.0, diagrama de casos de uso, user stories y conclusiones.\\
+\hline
+\textbf{Mínimos cuantificados} & Guion de entrevista con $\geq$10 preguntas; cuestionario con $\geq$12 ítems; $\geq$30 requisitos brutos elicitados; $\geq$20 requisitos únicos consolidados; modelo i*~2.0 con $\geq$4 actores; diagrama con $\geq$8 casos de uso.\\
+\hline
+\rowcolor{rowgray}\textbf{Referentes} & ISO/IEC/IEEE 29148:2018 (procesos de elicitación y características de calidad); Pohl (2010), técnicas de elicitación asistidas y de apoyo, metas y escenarios; ISO/IEC 25010 (cuantificación de NFR); SWEBOK v4.0 (KA Software Requirements); IREB CPRE FL v3.1 (UD~3 y UD~4).\\
+\hline
+\end{tabularx}
+
+% ============================================================
+% 2. CRITERIOS DE ADMISIÓN (GATEKEEPER)
+% ============================================================
+\section*{\textcolor{utegreendk}{2. CRITERIOS DE ADMISIÓN (GATEKEEPER)}}
+
+\begin{tcolorbox}[colback=lightred,colframe=red!60!black,
+  title=\textbf{CRITERIOS DE ADMISIÓN --- verificación previa a la revisión},
+  fonttitle=\bfseries,boxrule=0.8pt,arc=2mm]
+El incumplimiento de \textbf{cualquiera} de los siguientes criterios suspende la revisión detallada del trabajo y asigna la \textbf{nota mínima (25\,\% del puntaje, equivalente a nivel Insuficiente en todos los criterios)}. La decisión final de aplicación de la penalización corresponde al docente.
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item \textbf{Vinculación al PFC:} la práctica se aplicó sobre el sistema del Proyecto Fin de Curso de uno de los integrantes del equipo (no sobre un caso inventado, de tutorial o ajeno al curso), con identificación explícita del sistema y del integrante titular.
+  \item \textbf{Autenticidad de la aplicación:} la entrevista y el cuestionario se aplicaron a \textbf{stakeholders reales} (no simulaciones entre integrantes del propio equipo). Se exige evidencia verificable: fotografías o grabaciones de la sesión de entrevista, respuestas originales del cuestionario y \textbf{consentimiento informado firmado} por cada participante externo.
+  \item \textbf{Registro de evidencias:} el informe incluye el registro de evidencias con fecha, lugar, participantes y referencia al archivo de evidencia, conforme a las disposiciones de autenticidad y antifraude del PFC.
+  \item \textbf{Entrega en plazo y formato:} informe en PDF subido al repositorio del equipo en la carpeta y con la convención de nombres establecidas, dentro del plazo definido.
+\end{enumerate}
+\end{tcolorbox}
+
+% ============================================================
+% 3. ESCALA Y FÓRMULA DE CALIFICACIÓN
+% ============================================================
+\section*{\textcolor{utegreendk}{3. ESCALA Y FÓRMULA DE CALIFICACIÓN}}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.22\linewidth}|C{0.16\linewidth}|X|}
+\hline
+\thdr{Nivel} & \thdr{Valor} & \thdr{Descripción general}\\
+\hline
+\cellcolor{lvlexc}\textbf{Excelente} & 4 (100\,\%) & Cumplimiento pleno del criterio, con calidad profesional y sin errores relevantes.\\
+\hline
+\cellcolor{lvlsat}\textbf{Satisfactorio} & 3 (75\,\%) & Cumplimiento sustancial con errores menores que no comprometen la validez del artefacto.\\
+\hline
+\cellcolor{lvldev}\textbf{En desarrollo} & 2 (50\,\%) & Cumplimiento parcial con errores conceptuales o de completitud que requieren corrección.\\
+\hline
+\cellcolor{lvlins}\textbf{Insuficiente} & 1 (25\,\%) & Cumplimiento mínimo, ausente o con errores graves que invalidan el artefacto.\\
+\hline
+\end{tabularx}
+
+\begin{tcolorbox}[colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm]
+\textbf{Fórmula de calificación:}
+\[
+\text{Nota}_{\text{individual}} \;=\; \left( \frac{\sum_{i=1}^{7} \text{Nivel}_i \times \text{Peso}_i}{4} \right) \times \text{Escala} \times \text{FAI}
+\]
+donde \(\text{Nivel}_i \in \{1,2,3,4\}\) es el nivel alcanzado en el criterio \(i\); \(\text{Peso}_i\) su ponderación (\(\sum \text{Peso}_i = 1\)); \(\text{Escala}\) el puntaje máximo de la actividad definido en el plan de evaluación del curso (p.~ej., 10 puntos); y \(\text{FAI} \in [0{,}7,\, 1{,}0]\) el \textbf{factor de ajuste individual}, asignado por el docente según la contribución verificable de cada integrante (registro de tareas, participación en evidencias de campo y defensa oral). Con contribución equilibrada, \(\text{FAI} = 1{,}0\) para todo el equipo.
+\end{tcolorbox}
+
+% ============================================================
+% 4. RÚBRICA ANALÍTICA (APAISADA)
+% ============================================================
+\begin{landscape}
+
+\section*{\textcolor{utegreendk}{4. RÚBRICA ANALÍTICA DE EVALUACIÓN}}
+
+{\small
+\begin{longtable}{|L{3.3cm}|L{4.75cm}|L{4.75cm}|L{4.75cm}|L{4.75cm}|}
+\hline
+\thdr{Criterio (peso)} &
+\cellcolor{lvlexc}\textbf{Excelente (4)} &
+\cellcolor{lvlsat}\textbf{Satisfactorio (3)} &
+\cellcolor{lvldev}\textbf{En desarrollo (2)} &
+\cellcolor{lvlins}\textbf{Insuficiente (1)}\\
+\hline
+\endfirsthead
+\hline
+\thdr{Criterio (peso)} &
+\cellcolor{lvlexc}\textbf{Excelente (4)} &
+\cellcolor{lvlsat}\textbf{Satisfactorio (3)} &
+\cellcolor{lvldev}\textbf{En desarrollo (2)} &
+\cellcolor{lvlins}\textbf{Insuficiente (1)}\\
+\hline
+\endhead
+\hline
+\multicolumn{5}{r}{\footnotesize\textit{Continúa en la página siguiente\ldots}}\\
+\endfoot
+\hline
+\endlastfoot
+
+\textbf{C1. Planificación de la elicitación}\newline\cellcolor{lightgold}(15\,\%) &
+Plan de elicitación completo: objetivos por técnica, stakeholders seleccionados con justificación de su relevancia para el PFC, cronograma, riesgos de la elicitación y criterios de suficiencia; guion de entrevista con $\geq$10 preguntas abiertas/cerradas balanceadas y trazadas a objetivos; cuestionario con $\geq$12 ítems con escalas adecuadas y prueba piloto documentada. &
+Plan con objetivos, stakeholders y cronograma; guion y cuestionario cumplen los mínimos cuantificados con desbalances menores (preguntas redundantes, alguna escala inadecuada); prueba piloto mencionada sin documentar. &
+Plan incompleto (sin riesgos ni criterios de suficiencia) o instrumentos por debajo de los mínimos (8--9 preguntas; 10--11 ítems); preguntas sesgadas o inductivas en varios casos; selección de stakeholders sin justificación. &
+Sin plan de elicitación reconocible; instrumentos improvisados, muy por debajo de los mínimos o copiados de plantillas genéricas sin adaptación al PFC.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C2. Ejecución de las técnicas y evidencias de campo}\newline\cellcolor{lightgold}(15\,\%) &
+Entrevista y cuestionario aplicados a stakeholders reales y pertinentes; registro fiel de la entrevista (transcripción o minuta detallada) y tabulación completa de respuestas del cuestionario; evidencias de campo completas (fotografías o grabaciones, consentimientos firmados, registro de evidencias con fecha, lugar y participantes); reflexión sobre incidencias de la aplicación. &
+Ambas técnicas aplicadas con registros completos; evidencias presentes con omisiones menores (un consentimiento tardío, registro de evidencias incompleto en un campo); tabulación correcta con presentación mejorable. &
+Una de las técnicas con aplicación débil (entrevista breve y superficial, cuestionario con muy pocas respuestas válidas); registros parciales; evidencias incompletas que dificultan la verificación de autenticidad. &
+Aplicación no verificable o simulada; sin registros ni tabulación; evidencias ausentes (caso que activa además el gatekeeper).\\
+\hline
+
+\textbf{C3. Análisis, clasificación y consolidación de requisitos}\newline\cellcolor{lightgold}(20\,\%) &
+$\geq$30 requisitos brutos trazados a su fuente y $\geq$20 requisitos únicos consolidados con identificador; eliminación justificada de duplicados y conflictos detectados entre stakeholders; clasificación correcta en RF / NFR / restricciones distinguiendo requisitos de producto y de proceso; NFR cuantificados con métricas verificables alineadas a ISO/IEC 25010; redacción conforme a las características de calidad de ISO/IEC/IEEE 29148. &
+Mínimos cuantificados cumplidos; clasificación mayormente correcta con errores puntuales; la mayoría de NFR cuantificados; consolidación documentada aunque sin análisis de conflictos; ambigüedades puntuales de redacción. &
+Por debajo de los mínimos (20--29 brutos o 15--19 únicos) o clasificación con errores frecuentes; NFR mayoritariamente vagos («rápido», «seguro») sin métrica; sin distinción producto/proceso; trazabilidad a fuentes inconsistente. &
+Lista escasa ($<$15 únicos), genérica o no derivable de la elicitación realizada; sin identificadores, sin clasificación, sin cuantificación; evidente redacción de plantilla ajena al PFC.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C4. Modelado de dependencias estratégicas (i*~2.0)}\newline\cellcolor{lightgold}(15\,\%) &
+Modelo SD en i*~2.0 con $\geq$4 actores derivados de los stakeholders reales; dependencias tipificadas correctamente (meta, meta blanda, tarea, recurso) con dirección \textit{depender}~$\rightarrow$~\textit{dependee} correcta; metas blandas conectadas con NFR de la lista consolidada; lectura interpretativa del modelo (qué vulnerabilidades o dependencias críticas revela para el PFC). &
+Modelo con $\geq$4 actores y dependencias mayormente bien tipificadas; a lo sumo dos errores de tipo o dirección; conexión con los NFR mencionada sin desarrollarse; interpretación breve. &
+Modelo con 3 actores o con errores repetidos de tipificación (todas las dependencias como metas, recursos tratados como tareas); actores no derivados de los stakeholders reales; sin interpretación. &
+Modelo ausente, con notación ajena a i* (organigrama, diagrama de flujo) o incoherente con el sistema del PFC.\\
+\hline
+
+\textbf{C5. Modelado de escenarios: casos de uso y user stories}\newline\cellcolor{lightgold}(15\,\%) &
+Diagrama UML con $\geq$8 casos de uso correctamente nombrados, actores coherentes con el modelo i* y los stakeholders elicitados; relaciones \texttt{include}/\texttt{extend} con semántica correcta; user stories en plantilla Connextra con criterios de aceptación verificables; trazabilidad explícita requisito~$\rightarrow$~caso de uso~$\rightarrow$~user story. &
+Diagrama con el mínimo cumplido y nombres mayormente correctos; a lo sumo un error de semántica en relaciones; user stories en formato correcto con criterios de aceptación mejorables en una historia; trazabilidad presente con vacíos menores. &
+Diagrama con 6--7 casos de uso o errores repetidos en relaciones; inconsistencia de actores entre artefactos; user stories con formato incompleto o criterios de aceptación no verificables; trazabilidad parcial. &
+Diagrama ausente o con descomposición funcional en lugar de casos de uso; user stories ausentes o indistinguibles de requisitos tradicionales; artefactos desconectados de la elicitación.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C6. Fundamento teórico y justificación metodológica}\newline\cellcolor{lightgold}(10\,\%) &
+Justificación fundamentada de la selección de técnicas para el contexto del PFC (por qué entrevista y cuestionario, qué aporta cada una, qué limitaciones se asumieron) con uso correcto y preciso de la terminología de la IR; vinculación explícita con los referentes del curso (Pohl, ISO/IEC/IEEE 29148, SWEBOK); análisis comparativo de lo elicitado por cada técnica. &
+Justificación correcta aunque general; terminología precisa con deslices puntuales; referencias a los referentes del curso presentes; comparación entre técnicas descriptiva. &
+Justificación superficial («se eligió la entrevista porque es la más usada»); errores conceptuales puntuales; sin vinculación con los referentes del curso; sin comparación entre técnicas. &
+Sin fundamento teórico, o con errores conceptuales graves; texto genérico desconectado de la práctica realizada.\\
+\hline
+
+\textbf{C7. Calidad documental del informe}\newline\cellcolor{lightgold}(10\,\%) &
+Informe completo con todas las secciones del entregable, estructura lógica, figuras y tablas numeradas y referenciadas, redacción técnica clara y sin errores ortográficos relevantes; portada con metadatos correctos; distribución del trabajo entre integrantes documentada. &
+Informe completo con detalles menores de forma (alguna figura sin referenciar, erratas puntuales); metadatos correctos. &
+Secciones faltantes o desordenadas; figuras ilegibles o sin numerar; errores frecuentes de redacción; metadatos incorrectos en la portada; distribución del trabajo ausente. &
+Informe desorganizado, ilegible o reducido a anexos sin cuerpo analítico.\\
+\hline
+
+\end{longtable}
+}
+
+\end{landscape}
+
+% ============================================================
+% 5. HOJA DE CÁLCULO DE LA NOTA
+% ============================================================
+\section*{\textcolor{utegreendk}{5. HOJA DE CÁLCULO DE LA NOTA}}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|X|C{0.10\linewidth}|C{0.14\linewidth}|C{0.20\linewidth}|}
+\hline
+\bhdr{Crit.} & \bhdr{Descripción} & \bhdr{Peso} & \bhdr{Nivel (1--4)} & \bhdr{Aporte (Nivel\,$\times$\,Peso)}\\
+\hline
+C1 & Planificación de la elicitación & 0.15 & & \\
+\hline
+\rowcolor{rowgray} C2 & Ejecución de las técnicas y evidencias de campo & 0.15 & & \\
+\hline
+C3 & Análisis, clasificación y consolidación de requisitos & 0.20 & & \\
+\hline
+\rowcolor{rowgray} C4 & Modelado de dependencias estratégicas (i*~2.0) & 0.15 & & \\
+\hline
+C5 & Modelado de escenarios: casos de uso y user stories & 0.15 & & \\
+\hline
+\rowcolor{rowgray} C6 & Fundamento teórico y justificación metodológica & 0.10 & & \\
+\hline
+C7 & Calidad documental del informe & 0.10 & & \\
+\hline
+\multicolumn{2}{|r|}{\cellcolor{lightgold}\textbf{Suma de aportes}} & \cellcolor{lightgold}\textbf{1.00} & & \cellcolor{lightgold}\rule{0pt}{12pt}\\
+\hline
+\multicolumn{4}{|r|}{\cellcolor{lightblue}\textbf{Factor de ajuste individual (FAI, 0.7--1.0)}} & \cellcolor{lightblue}\rule{0pt}{12pt}\\
+\hline
+\multicolumn{4}{|r|}{\cellcolor{lvlexc}\textbf{Nota final = (Suma / 4) $\times$ Escala $\times$ FAI}} & \cellcolor{lvlexc}\rule{0pt}{12pt}\\
+\hline
+\end{tabularx}
+
+% ============================================================
+% 6. INTERPRETACIÓN DE RESULTADOS
+% ============================================================
+\section*{\textcolor{utegreendk}{6. INTERPRETACIÓN DE RESULTADOS}}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.25\linewidth}|X|}
+\hline
+\thdr{Banda (\% del puntaje)} & \thdr{Interpretación}\\
+\hline
+\cellcolor{lvlexc}90--100\,\% & Dominio sobresaliente de la elicitación y el análisis de requisitos; los artefactos pueden integrarse directamente a la Entrega 1B del PFC del integrante titular.\\
+\hline
+\cellcolor{lvlsat}75--89\,\% & Dominio satisfactorio; los artefactos requieren ajustes menores antes de su integración al PFC.\\
+\hline
+\cellcolor{lvldev}50--74\,\% & Dominio parcial; existen errores conceptuales (clasificación, cuantificación de NFR, semántica de i* o de relaciones UML) que deben corregirse con retroalimentación del docente.\\
+\hline
+\cellcolor{lvlins}$<$50\,\% & Dominio insuficiente; el equipo debe rehacer los artefactos centrales y se recomienda tutoría antes de la siguiente actividad evaluada.\\
+\hline
+\end{tabularx}
+
+% ============================================================
+% 7. CRITERIOS TRANSVERSALES
+% ============================================================
+\section*{\textcolor{utegreendk}{7. CRITERIOS TRANSVERSALES DE CALIDAD}}
+
+\begin{tcolorbox}[colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm]
+Aplican a todos los criterios de la rúbrica:
+\begin{itemize}[leftmargin=18pt,itemsep=2pt]
+  \item \textbf{Pertinencia:} todas las respuestas y artefactos deben derivarse del sistema del PFC seleccionado, no de ejemplos genéricos.
+  \item \textbf{Fundamentación:} uso correcto y preciso de la terminología técnica de la IR (Unidad 2).
+  \item \textbf{Coherencia:} los artefactos deben ser consistentes entre sí (mismos actores, roles, identificadores y conceptos del dominio en la lista de requisitos, el modelo i*, los casos de uso y las user stories).
+  \item \textbf{Cuantificación:} todo requisito no funcional debe incluir métricas verificables. Términos vagos como «rápido», «seguro» o «confiable» sin cuantificar reducen el puntaje proporcionalmente.
+  \item \textbf{Autenticidad:} las disposiciones antifraude del PFC aplican a toda la práctica; los hallazgos deben ser verificables contra las evidencias de campo.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{10pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+\begin{center}
+\footnotesize Documento de uso académico --- Ingeniería de Requisitos (ISR-401) --- UTEQ, 2026--2027 PPA.
+\end{center}
+
+\end{document}

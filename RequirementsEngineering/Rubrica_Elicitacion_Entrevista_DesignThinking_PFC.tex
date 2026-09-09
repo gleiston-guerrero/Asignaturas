@@ -1,0 +1,267 @@
+% ============================================================
+% RÚBRICA — Aplicación de técnicas de elicitación
+% (entrevista estructurada y design thinking) al sistema del PFC
+% Ingeniería de Requisitos ISR-401 · UTEQ · 2026-2027 PPA
+% ============================================================
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% babel no disponible en el entorno
+\usepackage[top=2.2cm,bottom=2.2cm,left=2.0cm,right=2.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{pdflscape}
+\usepackage{array}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{amsmath}
+
+% ---------- Colores institucionales ----------
+\definecolor{uteqgreen}{RGB}{0,104,56}
+\definecolor{uteqgold}{RGB}{197,160,40}
+\definecolor{midblue}{RGB}{31,73,125}
+\definecolor{rowgray}{RGB}{242,242,242}
+\definecolor{lightgreen}{RGB}{226,239,218}
+\definecolor{lightgold}{RGB}{252,243,212}
+\definecolor{lightred}{RGB}{250,225,222}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ---------- Encabezado / pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[L]{\small\textbf{\textcolor{uteqgreen}{UTEQ -- Facultad de Ciencias de la Computación}}}
+\fancyhead[R]{\small Ingeniería de Requisitos (ISR-401)}
+\fancyfoot[L]{\small Período 2026--2027 PPA}
+\fancyfoot[C]{\small Página \thepage\ de \pageref{LastPage}}
+\fancyfoot[R]{\small Uso exclusivo académico}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+% ============================================================
+% PORTADA / DATOS GENERALES
+% ============================================================
+\begin{center}
+{\color{uteqgreen}\Large\bfseries RÚBRICA DE EVALUACIÓN}\\[4pt]
+{\large\bfseries Aplicación de técnicas de elicitación al sistema del Proyecto Fin de Curso}\\[2pt]
+{\normalsize Entrevista estructurada y Design Thinking}\\[2pt]
+{\color{uteqgold}\rule{0.85\linewidth}{1.2pt}}
+\end{center}
+
+\vspace{4pt}
+\begin{tabularx}{\linewidth}{|L{0.28\linewidth}|X|}
+\hline
+\rowcolor{uteqgreen}\multicolumn{2}{|l|}{\textcolor{white}{\textbf{1. DATOS GENERALES DE LA ACTIVIDAD}}}\\
+\hline
+\textbf{Asignatura} & Ingeniería de Requisitos (ISR-401) -- 4.º nivel, Carrera de Software\\
+\hline
+\rowcolor{rowgray}\textbf{Unidad} & Unidad 2: Elicitación y Análisis de Requisitos\\
+\hline
+\textbf{Resultado de aprendizaje} & Aplica técnicas de elicitación y análisis de requisitos para identificar, clasificar y modelar los requisitos funcionales y no funcionales, asegurando completitud y coherencia.\\
+\hline
+\rowcolor{rowgray}\textbf{Actividad evaluada} & Aplicación de la \textbf{entrevista estructurada} y de una sesión de \textbf{design thinking} a stakeholders reales del sistema del Proyecto Fin de Curso (PFC), con consolidación de los requisitos elicitados.\\
+\hline
+\textbf{Modalidad} & Trabajo en equipo (equipos del PFC). Aplicación en campo y consolidación documental.\\
+\hline
+\rowcolor{rowgray}\textbf{Producto entregable} & Informe de elicitación (PDF en el repositorio GitHub del equipo) que contiene: guion y registro de la entrevista, artefactos de la sesión de design thinking, lista consolidada de requisitos elicitados y matriz de trazabilidad hallazgo~$\rightarrow$~requisito, acompañado del registro de evidencias.\\
+\hline
+\textbf{Referentes} & ISO/IEC/IEEE 29148:2018 (§6.2, procesos de elicitación); Pohl (2025), técnicas de elicitación asistidas y de apoyo; SWEBOK v4.0 (KA Software Requirements); IREB CPRE FL v3.1 (UD~3).\\
+\hline
+\end{tabularx}
+
+\vspace{8pt}
+% ============================================================
+% CRITERIOS DE ADMISIÓN (GATEKEEPER)
+% ============================================================
+\begin{tcolorbox}[colback=lightred,colframe=red!60!black,
+  title=\textbf{2. CRITERIOS DE ADMISIÓN (GATEKEEPER) --- verificación previa a la revisión},
+  fonttitle=\bfseries,boxrule=0.8pt,arc=2mm]
+El incumplimiento de \textbf{cualquiera} de los siguientes criterios suspende la revisión detallada del trabajo y asigna la \textbf{nota mínima (25\,\% del puntaje, equivalente a nivel Insuficiente en todos los criterios)}. La decisión final de aplicación de la penalización corresponde al docente.
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+  \item \textbf{Autenticidad de la aplicación:} la entrevista y la sesión de design thinking se realizaron con \textbf{stakeholders reales del PFC} (no simulaciones entre integrantes del propio equipo). Se exige al menos una evidencia verificable por técnica: fotografías de la sesión, grabación de audio o video, y \textbf{consentimiento informado firmado} por cada participante externo.
+  \item \textbf{Registro de evidencias:} el informe incluye el registro de evidencias con fecha, lugar, participantes y referencia al archivo de evidencia, conforme a las disposiciones de autenticidad y antifraude del PFC.
+  \item \textbf{Entrega en plazo y formato:} informe en PDF subido al repositorio GitHub del equipo en la carpeta y con la convención de nombres establecidas, dentro del plazo definido.
+  \item \textbf{Vinculación al PFC:} el sistema objeto de la elicitación es el mismo sistema aprobado para el PFC del equipo (coherente con la Entrega 1A).
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{4pt}
+% ============================================================
+% ESQUEMA DE PONDERACIÓN
+% ============================================================
+\textbf{\textcolor{uteqgreen}{3. ESQUEMA DE PONDERACIÓN}}
+
+\vspace{2pt}
+La ponderación privilegia la \textbf{aplicación real de las técnicas y sus resultados} (criterios C3 a C6, 80\,\% del peso), por ser los componentes que impactan directamente el desarrollo del PFC y alimentan la Entrega 1B (artefactos de requisitos). El diseño previo (C1, C2) pondera el 20\,\% restante.
+
+\vspace{4pt}
+\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|X|C{0.10\linewidth}|C{0.22\linewidth}|}
+\hline
+\rowcolor{uteqgreen}\textcolor{white}{\textbf{Cód.}} & \textcolor{white}{\textbf{Criterio}} & \textcolor{white}{\textbf{Peso}} & \textcolor{white}{\textbf{Bloque}}\\
+\hline
+C1 & Diseño de la entrevista estructurada & 10\,\% & Preparación\\
+\hline
+\rowcolor{rowgray}C2 & Diseño de la sesión de design thinking & 10\,\% & Preparación\\
+\hline
+C3 & Ejecución y registro de la entrevista estructurada & 20\,\% & \cellcolor{lightgold}Aplicación y resultados\\
+\hline
+\rowcolor{rowgray}C4 & Ejecución y artefactos del design thinking & 20\,\% & \cellcolor{lightgold}Aplicación y resultados\\
+\hline
+C5 & Requisitos elicitados para el PFC & 25\,\% & \cellcolor{lightgold}Aplicación y resultados\\
+\hline
+\rowcolor{rowgray}C6 & Trazabilidad e integración al desarrollo del PFC & 15\,\% & \cellcolor{lightgold}Aplicación y resultados\\
+\hline
+\multicolumn{2}{|r|}{\textbf{TOTAL}} & \textbf{100\,\%} & \\
+\hline
+\end{tabularx}
+
+\vspace{6pt}
+\begin{tcolorbox}[colback=lightgreen,colframe=uteqgreen,boxrule=0.8pt,arc=2mm,
+  title=\textbf{Fórmula de calificación},fonttitle=\bfseries]
+Cada criterio se valora en uno de cuatro niveles: \textbf{Excelente} (4 = 100\,\%), \textbf{Satisfactorio} (3 = 75\,\%), \textbf{En desarrollo} (2 = 50\,\%), \textbf{Insuficiente} (1 = 25\,\%).
+\[
+\text{Nota} \;=\; \left(\frac{\sum_{i=1}^{6} \text{Nivel}_i \times \text{Peso}_i}{4}\right)\times 10
+\qquad \text{(escala 0--10)}
+\]
+\textbf{Bandas de interpretación:} 9.0--10.0 Dominio pleno · 7.0--8.9 Logro satisfactorio · 5.0--6.9 En desarrollo · $<$\,5.0 Insuficiente.
+\end{tcolorbox}
+
+% ============================================================
+% MATRIZ ANALÍTICA (APAISADA)
+% ============================================================
+\begin{landscape}
+\begin{center}
+{\color{uteqgreen}\large\bfseries 4. MATRIZ ANALÍTICA DE EVALUACIÓN}
+\end{center}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{|L{2.9cm}|L{5.0cm}|L{5.0cm}|L{5.0cm}|L{5.0cm}|}
+\hline
+\rowcolor{uteqgreen}
+\textcolor{white}{\textbf{Criterio (peso)}} &
+\textcolor{white}{\textbf{Excelente (4) --- 100\,\%}} &
+\textcolor{white}{\textbf{Satisfactorio (3) --- 75\,\%}} &
+\textcolor{white}{\textbf{En desarrollo (2) --- 50\,\%}} &
+\textcolor{white}{\textbf{Insuficiente (1) --- 25\,\%}}\\
+\hline
+\endfirsthead
+\hline
+\rowcolor{uteqgreen}
+\textcolor{white}{\textbf{Criterio (peso)}} &
+\textcolor{white}{\textbf{Excelente (4) --- 100\,\%}} &
+\textcolor{white}{\textbf{Satisfactorio (3) --- 75\,\%}} &
+\textcolor{white}{\textbf{En desarrollo (2) --- 50\,\%}} &
+\textcolor{white}{\textbf{Insuficiente (1) --- 25\,\%}}\\
+\hline
+\endhead
+\hline
+\multicolumn{5}{r}{\small\textit{Continúa en la página siguiente}}\\
+\endfoot
+\hline
+\endlastfoot
+
+\textbf{C1. Diseño de la entrevista estructurada}\newline(10\,\%) &
+Guion completo con objetivo de elicitación explícito; stakeholders seleccionados con justificación basada en la tabla de stakeholders del PFC (1A); 12 o más preguntas organizadas por bloques temáticos, con tipología correcta (abiertas, cerradas, de sondeo) y secuencia lógica embudo; preguntas neutrales, sin sesgo ni tecnicismos inadecuados para el entrevistado. &
+Guion con objetivo y stakeholders identificados; 8--11 preguntas con tipología mayormente correcta; organización temática presente aunque con secuencia mejorable; sesgos menores en una o dos preguntas. &
+Guion incompleto o con objetivo difuso; menos de 8 preguntas o tipología confusa; selección de stakeholders sin justificación; varias preguntas inducidas o ambiguas. &
+No existe guion previo o es una lista improvisada de preguntas sin estructura; stakeholders no vinculados al PFC; preguntas predominantemente sesgadas o irrelevantes.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C2. Diseño de la sesión de design thinking}\newline(10\,\%) &
+Plan de sesión que cubre las cinco fases (empatizar, definir, idear, prototipar, testear) con técnica, material, tiempo y responsable por fase; participantes externos definidos; instrumentos preparados (mapa de empatía, plantilla POV/HMW, materiales de prototipado). &
+Plan que cubre al menos cuatro fases con técnicas y materiales identificados; roles definidos parcialmente; instrumentos preparados con omisiones menores. &
+Plan que cubre solo dos o tres fases, o fases enunciadas sin técnica ni material asociado; sin asignación de roles ni tiempos. &
+No hay plan de sesión; el design thinking se reduce a una lluvia de ideas sin fases ni instrumentos.\\
+\hline
+
+\textbf{C3. Ejecución y registro de la entrevista estructurada}\newline\cellcolor{lightgold}(20\,\%) &
+Entrevista aplicada a dos o más stakeholders reales del PFC; registro completo (transcripción o minuta detallada) con citas textuales relevantes; evidencias auténticas (audio/foto + consentimiento) referenciadas; manejo documentado de repreguntas y hallazgos emergentes; síntesis de hallazgos por bloque temático con identificación de necesidades explícitas. &
+Entrevista aplicada a al menos un stakeholder real; registro suficiente aunque con pasajes resumidos en exceso; evidencias completas; síntesis de hallazgos presente pero sin distinguir todos los bloques temáticos. &
+Entrevista aplicada pero con registro superficial (notas sueltas sin estructura); evidencias incompletas aunque la aplicación real es verificable; hallazgos enunciados sin conexión con las preguntas del guion. &
+Aplicación no verificable o claramente simulada; registro inexistente o reconstruido a posteriori; sin síntesis de hallazgos. \textit{(Caso típico de activación del gatekeeper.)}\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C4. Ejecución y artefactos del design thinking}\newline\cellcolor{lightgold}(20\,\%) &
+Sesión ejecutada con participantes externos; artefactos completos y auténticos de cada fase: mapa de empatía con datos reales, declaración POV/HMW derivada de la fase de empatía, evidencia de ideación (fotos del tablero o equivalente), prototipo de baja fidelidad y registro del testeo con retroalimentación del usuario; al menos una \textbf{necesidad latente} (no expresada en la entrevista) descubierta y documentada. &
+Sesión ejecutada con artefactos de cuatro fases; prototipo presente y testeado, aunque la retroalimentación del usuario esté poco documentada; conexión empatizar~$\rightarrow$~definir verificable; necesidades latentes insinuadas pero sin documentación explícita. &
+Artefactos de solo dos o tres fases; prototipo sin testeo o testeo sin usuario externo; mapa de empatía genérico (no derivado de datos reales de la sesión). &
+Sin artefactos verificables; fases simuladas o realizadas únicamente por el equipo sin participación de usuarios; prototipo ausente.\\
+\hline
+
+\textbf{C5. Requisitos elicitados para el PFC}\newline\cellcolor{lightgold}(25\,\%) &
+Lista consolidada de 15 o más requisitos con identificador único (convención del PFC), clasificados correctamente en RF / NFR / restricciones, distinguiendo requisitos de producto y de proceso; cada NFR cuantificado con métrica verificable (alineado a ISO/IEC 25010); fuente registrada por requisito (entrevista o design thinking, con referencia al hallazgo); redacción conforme a las características de calidad de ISO/IEC/IEEE 29148 (no ambiguo, singular, verificable, factible). &
+Lista de 10--14 requisitos identificados y clasificados, con errores menores de clasificación; la mayoría de NFR cuantificados; fuente registrada en la mayoría de requisitos; redacción mayormente conforme a 29148 con ambigüedades puntuales. &
+Lista de 6--9 requisitos o clasificación con errores frecuentes; NFR mayoritariamente vagos («rápido», «seguro») sin métrica; fuentes registradas de forma inconsistente; sin distinción producto/proceso. &
+Menos de 6 requisitos, o requisitos genéricos no derivables de la elicitación realizada; sin identificadores, sin clasificación, sin cuantificación; evidente redacción de plantilla ajena al PFC.\\
+\hline
+
+\rowcolor{rowgray}
+\textbf{C6. Trazabilidad e integración al desarrollo del PFC}\newline\cellcolor{lightgold}(15\,\%) &
+Matriz de trazabilidad hallazgo~$\rightarrow$~requisito completa (todo requisito tiene origen y todo hallazgo relevante tiene destino o descarte justificado); análisis comparativo fundamentado de lo que aportó cada técnica al PFC (qué elicitó la entrevista que el design thinking no, y viceversa); requisitos integrados al repositorio GitHub en la estructura prevista para la Entrega 1B; identificación de al menos dos requisitos que modifican o precisan el alcance definido en 1A, con su impacto explicado. &
+Matriz de trazabilidad que cubre la mayoría de requisitos; análisis comparativo presente aunque descriptivo; requisitos integrados al repositorio; impacto sobre el alcance del PFC mencionado sin profundizar. &
+Trazabilidad parcial (menos de la mitad de los requisitos con origen identificado); comparación de técnicas superficial o ausente; integración al repositorio incompleta o fuera de la estructura. &
+Sin matriz de trazabilidad; requisitos desconectados de los hallazgos; sin integración al repositorio del PFC; sin análisis del impacto sobre el proyecto.\\
+\hline
+\end{longtable}
+\end{landscape}
+
+% ============================================================
+% HOJA DE CALIFICACIÓN
+% ============================================================
+\textbf{\textcolor{uteqgreen}{5. HOJA DE CALIFICACIÓN DEL EQUIPO}}
+
+\vspace{4pt}
+\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|X|}
+\hline
+\textbf{Equipo / Paralelo} & \\[8pt]
+\hline
+\textbf{Sistema del PFC} & \\[8pt]
+\hline
+\textbf{Fecha de evaluación} & \\[8pt]
+\hline
+\end{tabularx}
+
+\vspace{6pt}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|X|C{0.09\linewidth}|C{0.12\linewidth}|C{0.16\linewidth}|}
+\hline
+\rowcolor{uteqgreen}\textcolor{white}{\textbf{Cód.}} & \textcolor{white}{\textbf{Criterio}} & \textcolor{white}{\textbf{Peso}} & \textcolor{white}{\textbf{Nivel (1--4)}} & \textcolor{white}{\textbf{Contribución}\newline\textbf{(Nivel$\times$Peso/4)}}\\
+\hline
+C1 & Diseño de la entrevista estructurada & 0.10 & & \\
+\hline
+\rowcolor{rowgray}C2 & Diseño de la sesión de design thinking & 0.10 & & \\
+\hline
+C3 & Ejecución y registro de la entrevista & 0.20 & & \\
+\hline
+\rowcolor{rowgray}C4 & Ejecución y artefactos del design thinking & 0.20 & & \\
+\hline
+C5 & Requisitos elicitados para el PFC & 0.25 & & \\
+\hline
+\rowcolor{rowgray}C6 & Trazabilidad e integración al PFC & 0.15 & & \\
+\hline
+\multicolumn{4}{|r|}{\textbf{Suma de contribuciones} ($\times$10 = Nota /10)} & \\[6pt]
+\hline
+\multicolumn{4}{|r|}{\textbf{NOTA FINAL (0--10)}} & \\[6pt]
+\hline
+\end{tabularx}
+
+\vspace{6pt}
+\begin{tcolorbox}[colback=white,colframe=midblue,boxrule=0.6pt,arc=2mm,
+  title=\textbf{Observaciones del docente (fortalezas / aspectos por mejorar)},fonttitle=\bfseries]
+\vspace{2.2cm}
+\end{tcolorbox}
+
+\end{document}
