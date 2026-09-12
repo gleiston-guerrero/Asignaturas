@@ -1,23 +1,29 @@
 Estimado/a Alvarez Parraga Jeremy Alexis:
 
 Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
-Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3.
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3 del 11 de septiembre de 2026.
 
-Han hecho un trabajo de correccion ejemplar y quiero que conste.
-Los ocho elementos pendientes alcanzan su minimo, el producto de factores vale uno y por tanto la nota es limpiamente la suma ponderada, sin castigo alguno.
-Comprobe una por una las correcciones: la cobertura se reporta ahora con las tres cifras nombradas y las recalcule desde el informe de la herramienta; los dos guiones escriben archivos distintos y validan cabecera; los tres manifiestos de verificacion dan cuarenta y cinco de cuarenta y cinco correctos; el instalable movil esta firmado de verdad con tres esquemas y el pipeline lo firma el mismo; y no queda un solo archivo de evidencia vacio.
-Ejecute ademas el generador del reporte de correlacion y regenero el JSON y la tabla LaTeX identicos byte a byte a lo versionado, que es reproducibilidad real y no declarada.
-Les senalo dos cosas que si debe corregir el equipo.
-La primera es que el PDF entregado va un commit por detras de la fuente y sigue mostrando la tabla de contribucion antigua, la que omite por completo a un integrante, que es justamente el defecto que ustedes corrigieron en el .tex: recompilen y vuelvan a subir el PDF.
-La segunda es que la fijacion de finales de linea no cubre el codigo fuente, y se nota, porque una de las veintitres secciones del manuscrito esta versionada con finales de linea distintos a las demas.
-Ninguna de las dos afecta a la validez del trabajo, pero las dos afectan a lo que un lector externo recibe.
+Su trabajo de correccion es el mas ordenado de los cuatro equipos y quiero reconocerlo con detalle.
+La cobertura se reporta con las tres cifras nombradas en una sola tabla y las recalcule desde el informe crudo de la herramienta: coinciden, incluida la afirmacion puntual de que un paquete concreto tiene cero de treinta y ocho lineas cubiertas.
+Los tres manifiestos de verificacion dan cuarenta y cinco de cuarenta y cinco correctos, cubren los resultados por completo, y su generacion es realmente el ultimo paso del guion que produce los datos.
+El instalable esta firmado con los tres esquemas y el flujo lo firma el mismo, descifrando el almacen desde un secreto y verificando al final.
+No queda un solo archivo de evidencia vacio en los setecientos setenta y dos versionados.
+Y la pieza que mas me convence: ejecute su generador del reporte de correlacion y regenero el analisis y la tabla del documento byte a byte identicos a lo versionado.
+Eso es reproducibilidad real, no declarada, y es exactamente lo que se les pide.
+Lo que deben corregir es poco pero importa.
+El PDF que ustedes entregan va un commit por detras del codigo fuente y sigue mostrando la tabla de contribucion anterior, la que omite por completo a uno de los cuatro integrantes, que es justo el defecto que ya corrigieron en el archivo fuente.
+Se resuelve recompilando y volviendo a subir el PDF, y es el archivo que un lector externo abre.
+Les queda tambien extender la fijacion de finales de linea al codigo fuente, porque una de las veintitres secciones del manuscrito esta versionada con finales distintos a las demas, y enganchar la verificacion de sumas al flujo automatico, que hoy solo comprueba la del instalable.
 
 Detalle de la calificacion:
-Suma ponderada de los elementos pendientes: 8,47 sobre 10.
-Producto de los factores: 1,000000.
-Nota de la rubrica: 8,47 sobre 10.
-Aporte del trabajo del equipo (80 %): 6,776.
+De los 44 elementos exigidos al proyecto, 36 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 8,47 sobre 10.
+Producto de los factores: 0,220450.
+Nota del equipo: 1,87 sobre 10.
+Su aporte a esta entrega: 18,2 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 1,36 sobre 10.
+Aporte del trabajo (80 %): 1,090.
 Nota del cuestionario del SGA (20 %): pendiente de registrar.
-Nota final: 6,776 mas su nota del cuestionario multiplicada por 0,20.
+Nota final: 1,090 mas su nota del cuestionario multiplicada por 0,20.
 
 Ing. Gleiston Ciceron Guerrero Ulloa, PhD

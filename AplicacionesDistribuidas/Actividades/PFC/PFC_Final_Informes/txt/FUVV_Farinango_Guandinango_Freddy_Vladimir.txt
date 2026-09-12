@@ -1,24 +1,33 @@
 Estimado/a Farinango Guandinango Freddy Vladimir:
 
 Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
-Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit e6ec484.
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit 445e5b0 del 12 de septiembre de 2026.
 
-Reconozco el trabajo hecho desde la ultima revision, y es mucho: la campana de fiabilidad de diez repeticiones de una hora esta ejecutada de verdad, con 270 archivos crudos que comprobe uno a uno, y reproduje una de las filas desde el dato bruto sin que discrepara un digito.
-Las preguntas de investigacion ya existen, estan bien formuladas y una de ellas se responde reconociendo que el resultado no favorece a la hipotesis, que es exactamente lo que se espera de un trabajo serio.
-El manifiesto de integridad verifica 468 de 468 archivos y la aplicacion web pasa sus 280 pruebas.
-Dicho eso, tengo que senalarles lo que mas pesa en la nota, y no es una omision sino lo contrario: la subseccion ARBITER del documento presenta ciento treinta corridas, dos tablas y un contraste estadistico completo, mientras el archivo README del directorio donde deberia estar esa evidencia dice, con todas sus letras, que existen cero de ciento treinta corridas.
-Ninguna de esas cifras esta en archivo alguno del repositorio.
-Eso no es un descuido de forma: es una seccion de resultados que el propio repositorio desmiente, y en un trabajo cuyo merito principal es la honestidad de sus mediciones resulta especialmente costoso.
-A eso se suma que tres de las cinco caracteristicas de calidad siguen sin una sola medicion pese a tener ya el protocolo y la herramienta escritos, que la carpeta del instalable movil sigue conteniendo unicamente un archivo vacio, que no existe ni un acta de reunion, y que los dos README se contradicen sobre cual es el documento vigente, con el agravante de que el que uno de ellos llama PDF final afirma que la fiabilidad no se ejecuto.
-Seis de los ocho elementos quedaron por debajo de su minimo, y como cada elemento multiplica, el producto de los factores hunde la nota.
-Les pido que retiren o respalden la seccion ARBITER antes que cualquier otra cosa: es lo unico que esta en juego mas alla de la nota.
+La campana experimental de este proyecto es la mas solida del curso y quiero que conste con precision por que.
+Recalcule las veinticuatro comparaciones desde los datos crudos y reproducen sin una sola discrepancia; los dieciseis mil quinientos valores de latencia son todos distintos; cada latencia coincide con la resta de sus propias marcas de tiempo con error cero; ninguna decision del servidor precede al envio del cliente; y el registro de la campana termina con el rastro real del fallo del operador.
+Nadie fabrica su propio fallo: esa evidencia resistiria el escrutinio de un tercero, y el manifiesto de la campana verifica trescientas quince de trescientas quince entradas.
+La prueba de fiabilidad de una hora se ejecuto de verdad, diez veces, con doscientos setenta archivos crudos preservados, y reproduje una de las filas desde el dato bruto sin que discrepara un digito.
+Las cinco caracteristicas de calidad tienen valor, intervalo y umbral, y comprobe lo que mas importa: que los umbrales se declararon antes de medir y no se tocaron despues.
+Los cinco contratos de interfaz estan completos y se validan automaticamente, y el instalable esta firmado de verdad, con la firma verificada criptograficamente y no solo comprobada por la presencia del bloque.
+Ahora lo que deben corregir, y empiezo por lo que mas les perjudica a ustedes mismos.
+La primera pregunta de investigacion esta sesgada en su contra: el percentil que la hace fallar sale de la fila agregada, que incluye los inicios de sesion de siete a ocho segundos y un setenta y cinco por ciento de respuestas rechazadas.
+Recalculado sobre la poblacion que la propia pregunta declara, el umbral se cumple.
+Eso un revisor lo lee como descontrol de poblacion, no como prudencia.
+El texto sigue afirmando que el manifiesto enumera ciento noventa y ocho archivos cuando contiene cuatrocientos sesenta y ocho, y uno de esos hashes ya no coincide.
+Los errores HTTP se concentran de forma asimetrica en las estrategias comparadas, hasta un veintiseis por ciento frente al cero por ciento de la de referencia, y eso debilita la comparacion principal sin que el documento lo mencione.
+Y les pido atencion especial a las actas: tres de las cinco datan reuniones ocurridas despues del commit que las registra, una de ellas quince horas y media despues.
+Un registro que no puede haber existido cuando se escribio resta credibilidad a los que si son correctos.
+Prefiero decirselo con claridad: no construyan evidencia hacia atras, aunque el requisito la pida.
 
 Detalle de la calificacion:
-Suma ponderada de los elementos pendientes: 5,25 sobre 10.
-Producto de los factores: 0,019048.
-Nota de la rubrica: 0,10 sobre 10.
-Aporte del trabajo del equipo (80 %): 0,080.
+De los 37 elementos exigidos al proyecto, 29 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 7,65 sobre 10.
+Producto de los factores: 0,091750.
+Nota del equipo: 0,70 sobre 10.
+Su aporte a esta entrega: 55,6 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,70 sobre 10.
+Aporte del trabajo (80 %): 0,562.
 Nota del cuestionario del SGA (20 %): pendiente de registrar.
-Nota final: 0,080 mas su nota del cuestionario multiplicada por 0,20.
+Nota final: 0,562 mas su nota del cuestionario multiplicada por 0,20.
 
 Ing. Gleiston Ciceron Guerrero Ulloa, PhD

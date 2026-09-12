@@ -1,28 +1,37 @@
 Estimado/a Bedon Viteri Keyla Betzabe:
 
 Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
-Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit 5e011896.
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit ff6f68ba del 12 de septiembre de 2026.
 
-Tengo que darles la evaluacion mas dura de las cuatro, y quiero explicarles exactamente por que, porque el volumen de trabajo que hay en este repositorio no es el problema.
-Verifique cada elemento en el codigo, no en el mensaje del commit, y el resultado es que varios de los arreglos anunciados no estan hechos.
-El verificador del experimento sigue calculando el hash de una forma distinta a la del sistema real, y su ultimo cambio es anterior a todo este trabajo; el guion que genera los resultados publicados usa incluso una tercera formula que ni siquiera encadena.
-Las claves siguen en el repositorio: el secreto de firma completo, la clave de cifrado, la contrasena de base y un token en codigo de produccion, en mas de cuarenta sitios, y el historial esta intacto.
-El lado Java sigue sin campo de hash anterior -- cero coincidencias en todo el repositorio -- y el reloj vectorial sigue escrito a mano como un literal, ahora ademas consagrado por una prueba.
-Las pruebas de navegador arrancan y pasan con el sistema apagado, porque los cuatro casos escriben el HTML que despues comprueban: no tocan la aplicacion, asi que no pueden fallar.
-No existe ninguna prueba con contenedores efimeros, y ese elemento quedo en cero.
-Aqui esta la consecuencia que quiero que entiendan: la rubrica que recibieron dice que cada elemento es un factor y que un solo cero anula la calificacion completa.
-La suma ponderada de su trabajo daba dos coma ocho seis sobre diez; con un elemento en cero, el producto es cero y la nota de la rubrica es cero.
-Lo mas grave, sin embargo, no es aritmetico.
-El manuscrito afirma que se eliminaron por completo las contrasenas del repositorio, que todo pull request fue aprobado por un integrante distinto del autor, y que el escenario dos tuvo cien por ciento de fallo mientras en otra pagina declara noventa y nueve coma noventa y ocho por ciento de disponibilidad del mismo escenario.
-Las tres afirmaciones son falsas y son comprobables como falsas abriendo los archivos del propio repositorio.
-Escribir en un informe algo que el repositorio desmiente es el error mas caro que se puede cometer en este trabajo, y les pido que lo corrijan con prioridad sobre cualquier otra cosa.
-Reconozco, porque es justo, que el microservicio en Python es la parte mas sana del proyecto: noventa pruebas en verde y casi ochenta por ciento de cobertura real, una cifra que ni siquiera aparece en su propia tabla de calidad.
+Este proyecto tiene el mayor volumen construido del curso y varias piezas de verdadera calidad, y quiero empezar por ellas.
+El verificador del experimento usa la funcion del sistema en produccion y sus seis casos de prueba pasan, aceptando una cadena real y rechazando contenido manipulado, hash roto, reloj no monotonico y edicion directa del estado.
+Las pruebas de navegador navegan de verdad y fallan cuando el sistema no esta levantado, que es exactamente lo que deben hacer.
+Hay dos suites con contenedores efimeros que migran el esquema, persisten un evento y comprueban el rechazo de modificacion y borrado.
+El arbol de trabajo esta limpio de claves y existe un documento de rotacion serio.
+Y el microservicio en Python es la pieza mas sana del curso, con noventa y cinco pruebas y casi ochenta por ciento de cobertura real.
+Dicho eso, la calificacion es la que es por razones que estan enteramente en su mano.
+La primera y mas costosa: encontre veintinueve commits sin fusionar repartidos en siete de sus diez ramas, y lo que contienen es precisamente la correccion de los resultados de carga, del certificado de reproducibilidad, de las cifras de cobertura y de los finales de linea.
+El trabajo esta escrito y no esta entregado, y lo que no esta en la rama principal no forma parte de la entrega.
+Integrarlo moveria cuatro criterios a la vez.
+La segunda: el detector de secretos esta configurado para no detectar.
+Su archivo de configuracion permite expresamente los cuatro valores que se filtraron y excluye las carpetas donde estaban.
+Lo ejecute de las dos maneras: con la configuracion de ustedes no encuentra ninguna fuga en setecientos setenta y ocho commits; con la de fabrica encuentra veintisiete.
+Una compuerta de seguridad que no puede fallar no es una compuerta, y un revisor que lo advierta desconfiara de todo lo demas.
+La tercera: el guion de reproducibilidad solo genera sumas y no las verifica nunca, y aun asi termina imprimiendo que todo es cien por cien verificable y determinista; de doce comprobaciones, nueve fallan.
+La cuarta: el informe afirma en la misma pagina que un escenario tuvo cien por ciento de fallo y que ese mismo escenario tuvo noventa y nueve coma noventa y ocho por ciento de disponibilidad.
+Y una advertencia tecnica que va mas alla de la nota, porque afecta a la contribucion que el proyecto reivindica como propia.
+El servicio de auditoria lee la cabeza de la cadena sin bloqueo y despues escribe, de modo que bajo concurrencia dos eventos leen la misma cabeza y la cadena se bifurca.
+Su registro de decision afirma un bloqueo pesimista que no existe en el codigo.
+Eso compromete el no repudio justo bajo la carga que su propio experimento mide, y es lo primero que yo arreglaria.
 
 Detalle de la calificacion:
-Suma ponderada de los elementos pendientes: 2,86 sobre 10.
-Producto de los factores: 0,000000.
-Nota de la rubrica: 0,00 sobre 10.
-Aporte del trabajo del equipo (80 %): 0,000.
+De los 51 elementos exigidos al proyecto, 34 estaban resueltos y verificados, y 17 quedaban pendientes.
+Suma de los elementos calificados: 5,40 sobre 10.
+Producto de los factores: 0,000003.
+Nota del equipo: 0,00 sobre 10.
+Su aporte a esta entrega: 14,6 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,00 sobre 10.
+Aporte del trabajo (80 %): 0,000.
 Nota del cuestionario del SGA (20 %): pendiente de registrar.
 Nota final: 0,000 mas su nota del cuestionario multiplicada por 0,20.
 

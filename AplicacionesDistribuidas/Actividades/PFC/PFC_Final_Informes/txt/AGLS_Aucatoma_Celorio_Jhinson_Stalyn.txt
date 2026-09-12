@@ -1,24 +1,29 @@
 Estimado/a Aucatoma Celorio Jhinson Stalyn:
 
 Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
-Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 24d27fc.
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 75aeac6 del 12 de septiembre de 2026.
 
-El trabajo de correccion ha sido solido y se nota en casi todos los frentes.
-La aplicacion web ya tiene pruebas de verdad, y lo digo habiendolas leido: verifican aritmetica del carrito, los topes de cantidad, el rollback tras un fallo y la maquina de estados completa del pedido, sin una sola prueba de relleno.
-El revisor de codigo esta configurado con reglas sustantivas, lo ejecute y da cero errores y cero advertencias, y ademas regenere su evidencia y quedo identica a la versionada.
-La migracion al registro de imagenes que pide la guia esta completa, sin una sola referencia al registro anterior y sin la etiqueta que se mueve.
-El manuscrito compila a cincuenta y nueve paginas sin un solo error ni una sola caja desbordada, y el PDF versionado se corresponde con la fuente.
-Lo que impide que la nota sea mas alta es un solo elemento que se quedo por debajo de su minimo: las referencias de evidencia.
-Tres enlaces del PDF apuntan a un commit en el que esos archivos todavia no existian, de modo que al lector le devuelven un error, y el archivo de resultados de calidad sigue citando una evidencia que no existe en ninguna rama, dandola ademas por cumplida al cien por cien.
-Que ustedes mismos lo declaren pendiente en su registro de cambios en lugar de taparlo cuenta a su favor, pero el elemento sigue sin cerrarse y su factor reduce la nota del conjunto.
-Les senalo aparte, porque no entra en la nota pero conviene que lo sepan hoy, que un commit del once de septiembre anadio el servicio de facturacion sin cobertura suficiente y eso deja en rojo la puerta de calidad del pipeline, que es precisamente la que habilita la publicacion de imagenes.
+Este proyecto entrega el manuscrito mas limpio del curso y la evidencia mejor trazada, y conviene decir por que.
+Compila desde copia limpia a cincuenta y nueve paginas sin un solo error, sin citas ni referencias indefinidas y sin una sola caja desbordada, y el hash del PDF versionado coincide exactamente con el que ustedes declaran en su archivo de verificacion.
+El archivo de evidencia de seguridad procede de una ejecucion real: corri su prueba de integracion del gateway y sus once casos pasan, con una prueba parametrizada que recorre exactamente las mismas ocho rutas comprobando el rechazo.
+Comprobe todas las citas del manuscrito contra el commit al que apuntan, que es la comprobacion que de verdad importa, y las veintiocho resuelven.
+Y su validador automatico hace lo que promete: le inyecte cuatro defectos distintos, incluida una cita apuntada a un commit anterior, y fallo en los cuatro; ademas corre en el flujo antes de compilar.
+Sus pruebas de la aplicacion web ejercitan logica real y comprobe que pueden fallar alterando el tope de cantidad en el componente.
+La mejor pieza del paquete son las pruebas de resiliencia: restaure los archivos a su version previa y obtuve exactamente los mismos tres fallos con los mismos nombres que ustedes declaran.
+Lo que deben corregir es un patron que se repite en tres sitios y que un lector externo detecta enseguida: el alcance de lo que miden.
+La cobertura de la aplicacion web esta limitada por configuracion a tres de las once vistas; la compuerta del backend filtra a un solo paquete; y el manifiesto de verificacion cubre un archivo de datos de sesenta.
+Nada de eso esta oculto y ustedes lo declaran, pero una medicion que elige su propio alcance favorable vale menos que una peor medida sobre el conjunto.
+Queda ademas la carpeta de configuracion del entorno de desarrollo versionada con ocho archivos, contradiciendo la propia regla del repositorio que declara ignorarla.
 
 Detalle de la calificacion:
-Suma ponderada de los elementos pendientes: 8,22 sobre 10.
-Producto de los factores: 0,875000.
-Nota de la rubrica: 7,19 sobre 10.
-Aporte del trabajo del equipo (80 %): 5,754.
+De los 46 elementos exigidos al proyecto, 37 estaban resueltos y verificados, y 9 quedaban pendientes.
+Suma de los elementos calificados: 8,70 sobre 10.
+Producto de los factores: 0,223949.
+Nota del equipo: 1,95 sobre 10.
+Su aporte a esta entrega: 0,0 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,00 sobre 10.
+Aporte del trabajo (80 %): 0,000.
 Nota del cuestionario del SGA: 7,11 sobre 10, que aporta 1,422.
-Nota final: 7,18 sobre 10,00.
+Nota final: 1,42 sobre 10,00.
 
 Ing. Gleiston Ciceron Guerrero Ulloa, PhD
