@@ -1,0 +1,56 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evaluacion final PFC &mdash; Villamarin Cuenca Ivan Andres</title>
+<style>
+:root{--tinta:#10233B;--azul:#0E3F7E;--medio:#1E5AA8;--teal:#2E86A1;--papel:#F6F8FB;--blanco:#fff;--linea:#D3DCE8;--verde:#4FAE60;--gris:#5B6B80;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:"Inter","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0}
+.solo{max-width:900px;margin:0 auto;padding:28px 34px 70px}
+.ph{display:flex;align-items:flex-start;gap:20px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid var(--azul)}
+.ph h2{margin:0;font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em}
+.meta{margin:5px 0 0;font-size:13px;color:var(--gris)}.meta b{color:var(--tinta)}
+.copy{flex:none;background:var(--azul);color:#fff;border:0;border-radius:2px;padding:9px 17px;font:600 13.5px/1 var(--sans);cursor:pointer}
+.copy:hover{background:var(--medio)}.copy.ok{background:var(--verde)}
+pre{margin:20px 0 0;background:var(--blanco);border:1px solid var(--linea);padding:22px 24px;font-family:var(--mono);font-size:12px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+.pie{margin-top:26px;font-size:12px;color:var(--gris);border-top:1px solid var(--linea);padding-top:12px}
+@media(max-width:700px){.solo{padding:18px}.ph{flex-direction:column}}
+</style></head><body>
+<div class="solo">
+<header class="ph">
+  <div><h2>Villamarin Cuenca Ivan Andres</h2>
+  <p class="meta">Evaluacion final del PFC &nbsp;&middot;&nbsp; Aplicaciones Distribuidas (ISR-701) &nbsp;&middot;&nbsp; Equipo FUVV &nbsp;&middot;&nbsp; SCLI -- Sistema de Control de Laboratorios Informaticos</p>
+  <p class="meta">equipo 0,08 &middot; cuestionario 5,53 &middot; <b>calificacion final 1,19</b></p></div>
+  <button class="copy" type="button">Copiar informe</button>
+</header>
+<pre id="r">Estimado/a Villamarin Cuenca Ivan Andres:
+
+Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit e6ec484.
+
+Reconozco el trabajo hecho desde la ultima revision, y es mucho: la campana de fiabilidad de diez repeticiones de una hora esta ejecutada de verdad, con 270 archivos crudos que comprobe uno a uno, y reproduje una de las filas desde el dato bruto sin que discrepara un digito.
+Las preguntas de investigacion ya existen, estan bien formuladas y una de ellas se responde reconociendo que el resultado no favorece a la hipotesis, que es exactamente lo que se espera de un trabajo serio.
+El manifiesto de integridad verifica 468 de 468 archivos y la aplicacion web pasa sus 280 pruebas.
+Dicho eso, tengo que senalarles lo que mas pesa en la nota, y no es una omision sino lo contrario: la subseccion ARBITER del documento presenta ciento treinta corridas, dos tablas y un contraste estadistico completo, mientras el archivo README del directorio donde deberia estar esa evidencia dice, con todas sus letras, que existen cero de ciento treinta corridas.
+Ninguna de esas cifras esta en archivo alguno del repositorio.
+Eso no es un descuido de forma: es una seccion de resultados que el propio repositorio desmiente, y en un trabajo cuyo merito principal es la honestidad de sus mediciones resulta especialmente costoso.
+A eso se suma que tres de las cinco caracteristicas de calidad siguen sin una sola medicion pese a tener ya el protocolo y la herramienta escritos, que la carpeta del instalable movil sigue conteniendo unicamente un archivo vacio, que no existe ni un acta de reunion, y que los dos README se contradicen sobre cual es el documento vigente, con el agravante de que el que uno de ellos llama PDF final afirma que la fiabilidad no se ejecuto.
+Seis de los ocho elementos quedaron por debajo de su minimo, y como cada elemento multiplica, el producto de los factores hunde la nota.
+Les pido que retiren o respalden la seccion ARBITER antes que cualquier otra cosa: es lo unico que esta en juego mas alla de la nota.
+
+Detalle de la calificacion:
+Suma ponderada de los elementos pendientes: 5,25 sobre 10.
+Producto de los factores: 0,019048.
+Nota de la rubrica: 0,10 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,080.
+Nota del cuestionario del SGA: 5,53 sobre 10, que aporta 1,106.
+Nota final: 1,19 sobre 10,00.
+
+Ing. Gleiston Ciceron Guerrero Ulloa, PhD</pre>
+<p class="pie">Evaluacion realizada sobre el commit e6ec484 del repositorio del equipo, verificando el contenido archivo por archivo, compilando el documento desde copia limpia y ejecutando las pruebas y los guiones de analisis.</p>
+</div>
+<script>var b=document.querySelector('.copy'),r=document.getElementById('r');
+b.addEventListener('click',function(){var t=r.innerText;
+var ok=function(){b.textContent='Copiado';b.classList.add('ok');setTimeout(function(){b.textContent='Copiar informe';b.classList.remove('ok')},1600)};
+function fb(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else{fb()}});</script>
+</body></html>

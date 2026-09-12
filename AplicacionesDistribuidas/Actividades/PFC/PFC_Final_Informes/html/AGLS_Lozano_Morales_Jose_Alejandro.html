@@ -1,0 +1,56 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evaluacion final PFC &mdash; Lozano Morales Jose Alejandro</title>
+<style>
+:root{--tinta:#10233B;--azul:#0E3F7E;--medio:#1E5AA8;--teal:#2E86A1;--papel:#F6F8FB;--blanco:#fff;--linea:#D3DCE8;--verde:#4FAE60;--gris:#5B6B80;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:"Inter","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0}
+.solo{max-width:900px;margin:0 auto;padding:28px 34px 70px}
+.ph{display:flex;align-items:flex-start;gap:20px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid var(--azul)}
+.ph h2{margin:0;font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em}
+.meta{margin:5px 0 0;font-size:13px;color:var(--gris)}.meta b{color:var(--tinta)}
+.copy{flex:none;background:var(--azul);color:#fff;border:0;border-radius:2px;padding:9px 17px;font:600 13.5px/1 var(--sans);cursor:pointer}
+.copy:hover{background:var(--medio)}.copy.ok{background:var(--verde)}
+pre{margin:20px 0 0;background:var(--blanco);border:1px solid var(--linea);padding:22px 24px;font-family:var(--mono);font-size:12px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+.pie{margin-top:26px;font-size:12px;color:var(--gris);border-top:1px solid var(--linea);padding-top:12px}
+@media(max-width:700px){.solo{padding:18px}.ph{flex-direction:column}}
+</style></head><body>
+<div class="solo">
+<header class="ph">
+  <div><h2>Lozano Morales Jose Alejandro</h2>
+  <p class="meta">Evaluacion final del PFC &nbsp;&middot;&nbsp; Aplicaciones Distribuidas (ISR-701) &nbsp;&middot;&nbsp; Equipo AGLS &nbsp;&middot;&nbsp; TiendaTech -- Comercio electronico distribuido con asistente de armado</p>
+  <p class="meta">equipo 5,75 &middot; cuestionario 8,67 &middot; <b>calificacion final 7,49</b></p></div>
+  <button class="copy" type="button">Copiar informe</button>
+</header>
+<pre id="r">Estimado/a Lozano Morales Jose Alejandro:
+
+Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 24d27fc.
+
+El trabajo de correccion ha sido solido y se nota en casi todos los frentes.
+La aplicacion web ya tiene pruebas de verdad, y lo digo habiendolas leido: verifican aritmetica del carrito, los topes de cantidad, el rollback tras un fallo y la maquina de estados completa del pedido, sin una sola prueba de relleno.
+El revisor de codigo esta configurado con reglas sustantivas, lo ejecute y da cero errores y cero advertencias, y ademas regenere su evidencia y quedo identica a la versionada.
+La migracion al registro de imagenes que pide la guia esta completa, sin una sola referencia al registro anterior y sin la etiqueta que se mueve.
+El manuscrito compila a cincuenta y nueve paginas sin un solo error ni una sola caja desbordada, y el PDF versionado se corresponde con la fuente.
+Lo que impide que la nota sea mas alta es un solo elemento que se quedo por debajo de su minimo: las referencias de evidencia.
+Tres enlaces del PDF apuntan a un commit en el que esos archivos todavia no existian, de modo que al lector le devuelven un error, y el archivo de resultados de calidad sigue citando una evidencia que no existe en ninguna rama, dandola ademas por cumplida al cien por cien.
+Que ustedes mismos lo declaren pendiente en su registro de cambios en lugar de taparlo cuenta a su favor, pero el elemento sigue sin cerrarse y su factor reduce la nota del conjunto.
+Les senalo aparte, porque no entra en la nota pero conviene que lo sepan hoy, que un commit del once de septiembre anadio el servicio de facturacion sin cobertura suficiente y eso deja en rojo la puerta de calidad del pipeline, que es precisamente la que habilita la publicacion de imagenes.
+
+Detalle de la calificacion:
+Suma ponderada de los elementos pendientes: 8,22 sobre 10.
+Producto de los factores: 0,875000.
+Nota de la rubrica: 7,19 sobre 10.
+Aporte del trabajo del equipo (80 %): 5,754.
+Nota del cuestionario del SGA: 8,67 sobre 10, que aporta 1,734.
+Nota final: 7,49 sobre 10,00.
+
+Ing. Gleiston Ciceron Guerrero Ulloa, PhD</pre>
+<p class="pie">Evaluacion realizada sobre el commit 24d27fc del repositorio del equipo, verificando el contenido archivo por archivo, compilando el documento desde copia limpia y ejecutando las pruebas y los guiones de analisis.</p>
+</div>
+<script>var b=document.querySelector('.copy'),r=document.getElementById('r');
+b.addEventListener('click',function(){var t=r.innerText;
+var ok=function(){b.textContent='Copiado';b.classList.add('ok');setTimeout(function(){b.textContent='Copiar informe';b.classList.remove('ok')},1600)};
+function fb(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else{fb()}});</script>
+</body></html>

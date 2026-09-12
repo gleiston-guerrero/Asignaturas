@@ -1,0 +1,29 @@
+Estimado/a Bedon Viteri Keyla Betzabe:
+
+Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit 5e011896.
+
+Tengo que darles la evaluacion mas dura de las cuatro, y quiero explicarles exactamente por que, porque el volumen de trabajo que hay en este repositorio no es el problema.
+Verifique cada elemento en el codigo, no en el mensaje del commit, y el resultado es que varios de los arreglos anunciados no estan hechos.
+El verificador del experimento sigue calculando el hash de una forma distinta a la del sistema real, y su ultimo cambio es anterior a todo este trabajo; el guion que genera los resultados publicados usa incluso una tercera formula que ni siquiera encadena.
+Las claves siguen en el repositorio: el secreto de firma completo, la clave de cifrado, la contrasena de base y un token en codigo de produccion, en mas de cuarenta sitios, y el historial esta intacto.
+El lado Java sigue sin campo de hash anterior -- cero coincidencias en todo el repositorio -- y el reloj vectorial sigue escrito a mano como un literal, ahora ademas consagrado por una prueba.
+Las pruebas de navegador arrancan y pasan con el sistema apagado, porque los cuatro casos escriben el HTML que despues comprueban: no tocan la aplicacion, asi que no pueden fallar.
+No existe ninguna prueba con contenedores efimeros, y ese elemento quedo en cero.
+Aqui esta la consecuencia que quiero que entiendan: la rubrica que recibieron dice que cada elemento es un factor y que un solo cero anula la calificacion completa.
+La suma ponderada de su trabajo daba dos coma ocho seis sobre diez; con un elemento en cero, el producto es cero y la nota de la rubrica es cero.
+Lo mas grave, sin embargo, no es aritmetico.
+El manuscrito afirma que se eliminaron por completo las contrasenas del repositorio, que todo pull request fue aprobado por un integrante distinto del autor, y que el escenario dos tuvo cien por ciento de fallo mientras en otra pagina declara noventa y nueve coma noventa y ocho por ciento de disponibilidad del mismo escenario.
+Las tres afirmaciones son falsas y son comprobables como falsas abriendo los archivos del propio repositorio.
+Escribir en un informe algo que el repositorio desmiente es el error mas caro que se puede cometer en este trabajo, y les pido que lo corrijan con prioridad sobre cualquier otra cosa.
+Reconozco, porque es justo, que el microservicio en Python es la parte mas sana del proyecto: noventa pruebas en verde y casi ochenta por ciento de cobertura real, una cifra que ni siquiera aparece en su propia tabla de calidad.
+
+Detalle de la calificacion:
+Suma ponderada de los elementos pendientes: 2,86 sobre 10.
+Producto de los factores: 0,000000.
+Nota de la rubrica: 0,00 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 mas su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Ciceron Guerrero Ulloa, PhD

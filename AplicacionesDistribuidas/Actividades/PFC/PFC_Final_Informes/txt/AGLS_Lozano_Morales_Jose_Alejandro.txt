@@ -1,0 +1,24 @@
+Estimado/a Lozano Morales Jose Alejandro:
+
+Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 24d27fc.
+
+El trabajo de correccion ha sido solido y se nota en casi todos los frentes.
+La aplicacion web ya tiene pruebas de verdad, y lo digo habiendolas leido: verifican aritmetica del carrito, los topes de cantidad, el rollback tras un fallo y la maquina de estados completa del pedido, sin una sola prueba de relleno.
+El revisor de codigo esta configurado con reglas sustantivas, lo ejecute y da cero errores y cero advertencias, y ademas regenere su evidencia y quedo identica a la versionada.
+La migracion al registro de imagenes que pide la guia esta completa, sin una sola referencia al registro anterior y sin la etiqueta que se mueve.
+El manuscrito compila a cincuenta y nueve paginas sin un solo error ni una sola caja desbordada, y el PDF versionado se corresponde con la fuente.
+Lo que impide que la nota sea mas alta es un solo elemento que se quedo por debajo de su minimo: las referencias de evidencia.
+Tres enlaces del PDF apuntan a un commit en el que esos archivos todavia no existian, de modo que al lector le devuelven un error, y el archivo de resultados de calidad sigue citando una evidencia que no existe en ninguna rama, dandola ademas por cumplida al cien por cien.
+Que ustedes mismos lo declaren pendiente en su registro de cambios en lugar de taparlo cuenta a su favor, pero el elemento sigue sin cerrarse y su factor reduce la nota del conjunto.
+Les senalo aparte, porque no entra en la nota pero conviene que lo sepan hoy, que un commit del once de septiembre anadio el servicio de facturacion sin cobertura suficiente y eso deja en rojo la puerta de calidad del pipeline, que es precisamente la que habilita la publicacion de imagenes.
+
+Detalle de la calificacion:
+Suma ponderada de los elementos pendientes: 8,22 sobre 10.
+Producto de los factores: 0,875000.
+Nota de la rubrica: 7,19 sobre 10.
+Aporte del trabajo del equipo (80 %): 5,754.
+Nota del cuestionario del SGA: 8,67 sobre 10, que aporta 1,734.
+Nota final: 7,49 sobre 10,00.
+
+Ing. Gleiston Ciceron Guerrero Ulloa, PhD

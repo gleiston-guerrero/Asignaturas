@@ -1,0 +1,55 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evaluacion final PFC &mdash; Cando Moreno Robinson Rodrigo</title>
+<style>
+:root{--tinta:#10233B;--azul:#0E3F7E;--medio:#1E5AA8;--teal:#2E86A1;--papel:#F6F8FB;--blanco:#fff;--linea:#D3DCE8;--verde:#4FAE60;--gris:#5B6B80;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:"Inter","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0}
+.solo{max-width:900px;margin:0 auto;padding:28px 34px 70px}
+.ph{display:flex;align-items:flex-start;gap:20px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid var(--azul)}
+.ph h2{margin:0;font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em}
+.meta{margin:5px 0 0;font-size:13px;color:var(--gris)}.meta b{color:var(--tinta)}
+.copy{flex:none;background:var(--azul);color:#fff;border:0;border-radius:2px;padding:9px 17px;font:600 13.5px/1 var(--sans);cursor:pointer}
+.copy:hover{background:var(--medio)}.copy.ok{background:var(--verde)}
+pre{margin:20px 0 0;background:var(--blanco);border:1px solid var(--linea);padding:22px 24px;font-family:var(--mono);font-size:12px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+.pie{margin-top:26px;font-size:12px;color:var(--gris);border-top:1px solid var(--linea);padding-top:12px}
+@media(max-width:700px){.solo{padding:18px}.ph{flex-direction:column}}
+</style></head><body>
+<div class="solo">
+<header class="ph">
+  <div><h2>Cando Moreno Robinson Rodrigo</h2>
+  <p class="meta">Evaluacion final del PFC &nbsp;&middot;&nbsp; Aplicaciones Distribuidas (ISR-701) &nbsp;&middot;&nbsp; Equipo ACC &nbsp;&middot;&nbsp; TicketFold -- Soporte tecnico distribuido para un proveedor de Internet</p>
+  <p class="meta">equipo 6,78 &middot; <b>cuestionario pendiente de registrar</b></p></div>
+  <button class="copy" type="button">Copiar informe</button>
+</header>
+<pre id="r">Estimado/a Cando Moreno Robinson Rodrigo:
+
+Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3.
+
+Han hecho un trabajo de correccion ejemplar y quiero que conste.
+Los ocho elementos pendientes alcanzan su minimo, el producto de factores vale uno y por tanto la nota es limpiamente la suma ponderada, sin castigo alguno.
+Comprobe una por una las correcciones: la cobertura se reporta ahora con las tres cifras nombradas y las recalcule desde el informe de la herramienta; los dos guiones escriben archivos distintos y validan cabecera; los tres manifiestos de verificacion dan cuarenta y cinco de cuarenta y cinco correctos; el instalable movil esta firmado de verdad con tres esquemas y el pipeline lo firma el mismo; y no queda un solo archivo de evidencia vacio.
+Ejecute ademas el generador del reporte de correlacion y regenero el JSON y la tabla LaTeX identicos byte a byte a lo versionado, que es reproducibilidad real y no declarada.
+Les senalo dos cosas que si debe corregir el equipo.
+La primera es que el PDF entregado va un commit por detras de la fuente y sigue mostrando la tabla de contribucion antigua, la que omite por completo a un integrante, que es justamente el defecto que ustedes corrigieron en el .tex: recompilen y vuelvan a subir el PDF.
+La segunda es que la fijacion de finales de linea no cubre el codigo fuente, y se nota, porque una de las veintitres secciones del manuscrito esta versionada con finales de linea distintos a las demas.
+Ninguna de las dos afecta a la validez del trabajo, pero las dos afectan a lo que un lector externo recibe.
+
+Detalle de la calificacion:
+Suma ponderada de los elementos pendientes: 8,47 sobre 10.
+Producto de los factores: 1,000000.
+Nota de la rubrica: 8,47 sobre 10.
+Aporte del trabajo del equipo (80 %): 6,776.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 6,776 mas su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Ciceron Guerrero Ulloa, PhD</pre>
+<p class="pie">Evaluacion realizada sobre el commit 28c3fb3 del repositorio del equipo, verificando el contenido archivo por archivo, compilando el documento desde copia limpia y ejecutando las pruebas y los guiones de analisis.</p>
+</div>
+<script>var b=document.querySelector('.copy'),r=document.getElementById('r');
+b.addEventListener('click',function(){var t=r.innerText;
+var ok=function(){b.textContent='Copiado';b.classList.add('ok');setTimeout(function(){b.textContent='Copiar informe';b.classList.remove('ok')},1600)};
+function fb(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else{fb()}});</script>
+</body></html>

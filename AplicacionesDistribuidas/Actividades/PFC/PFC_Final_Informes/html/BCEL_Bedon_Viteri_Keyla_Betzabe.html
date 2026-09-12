@@ -1,0 +1,61 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evaluacion final PFC &mdash; Bedon Viteri Keyla Betzabe</title>
+<style>
+:root{--tinta:#10233B;--azul:#0E3F7E;--medio:#1E5AA8;--teal:#2E86A1;--papel:#F6F8FB;--blanco:#fff;--linea:#D3DCE8;--verde:#4FAE60;--gris:#5B6B80;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:"Inter","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0}
+.solo{max-width:900px;margin:0 auto;padding:28px 34px 70px}
+.ph{display:flex;align-items:flex-start;gap:20px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid var(--azul)}
+.ph h2{margin:0;font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em}
+.meta{margin:5px 0 0;font-size:13px;color:var(--gris)}.meta b{color:var(--tinta)}
+.copy{flex:none;background:var(--azul);color:#fff;border:0;border-radius:2px;padding:9px 17px;font:600 13.5px/1 var(--sans);cursor:pointer}
+.copy:hover{background:var(--medio)}.copy.ok{background:var(--verde)}
+pre{margin:20px 0 0;background:var(--blanco);border:1px solid var(--linea);padding:22px 24px;font-family:var(--mono);font-size:12px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+.pie{margin-top:26px;font-size:12px;color:var(--gris);border-top:1px solid var(--linea);padding-top:12px}
+@media(max-width:700px){.solo{padding:18px}.ph{flex-direction:column}}
+</style></head><body>
+<div class="solo">
+<header class="ph">
+  <div><h2>Bedon Viteri Keyla Betzabe</h2>
+  <p class="meta">Evaluacion final del PFC &nbsp;&middot;&nbsp; Aplicaciones Distribuidas (ISR-701) &nbsp;&middot;&nbsp; Equipo BCEL &nbsp;&middot;&nbsp; AcadTrace -- Gestion academica con bitacora de auditoria encadenada</p>
+  <p class="meta">equipo 0,00 &middot; <b>cuestionario pendiente de registrar</b></p></div>
+  <button class="copy" type="button">Copiar informe</button>
+</header>
+<pre id="r">Estimado/a Bedon Viteri Keyla Betzabe:
+
+Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit 5e011896.
+
+Tengo que darles la evaluacion mas dura de las cuatro, y quiero explicarles exactamente por que, porque el volumen de trabajo que hay en este repositorio no es el problema.
+Verifique cada elemento en el codigo, no en el mensaje del commit, y el resultado es que varios de los arreglos anunciados no estan hechos.
+El verificador del experimento sigue calculando el hash de una forma distinta a la del sistema real, y su ultimo cambio es anterior a todo este trabajo; el guion que genera los resultados publicados usa incluso una tercera formula que ni siquiera encadena.
+Las claves siguen en el repositorio: el secreto de firma completo, la clave de cifrado, la contrasena de base y un token en codigo de produccion, en mas de cuarenta sitios, y el historial esta intacto.
+El lado Java sigue sin campo de hash anterior -- cero coincidencias en todo el repositorio -- y el reloj vectorial sigue escrito a mano como un literal, ahora ademas consagrado por una prueba.
+Las pruebas de navegador arrancan y pasan con el sistema apagado, porque los cuatro casos escriben el HTML que despues comprueban: no tocan la aplicacion, asi que no pueden fallar.
+No existe ninguna prueba con contenedores efimeros, y ese elemento quedo en cero.
+Aqui esta la consecuencia que quiero que entiendan: la rubrica que recibieron dice que cada elemento es un factor y que un solo cero anula la calificacion completa.
+La suma ponderada de su trabajo daba dos coma ocho seis sobre diez; con un elemento en cero, el producto es cero y la nota de la rubrica es cero.
+Lo mas grave, sin embargo, no es aritmetico.
+El manuscrito afirma que se eliminaron por completo las contrasenas del repositorio, que todo pull request fue aprobado por un integrante distinto del autor, y que el escenario dos tuvo cien por ciento de fallo mientras en otra pagina declara noventa y nueve coma noventa y ocho por ciento de disponibilidad del mismo escenario.
+Las tres afirmaciones son falsas y son comprobables como falsas abriendo los archivos del propio repositorio.
+Escribir en un informe algo que el repositorio desmiente es el error mas caro que se puede cometer en este trabajo, y les pido que lo corrijan con prioridad sobre cualquier otra cosa.
+Reconozco, porque es justo, que el microservicio en Python es la parte mas sana del proyecto: noventa pruebas en verde y casi ochenta por ciento de cobertura real, una cifra que ni siquiera aparece en su propia tabla de calidad.
+
+Detalle de la calificacion:
+Suma ponderada de los elementos pendientes: 2,86 sobre 10.
+Producto de los factores: 0,000000.
+Nota de la rubrica: 0,00 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 mas su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Ciceron Guerrero Ulloa, PhD</pre>
+<p class="pie">Evaluacion realizada sobre el commit 5e011896 del repositorio del equipo, verificando el contenido archivo por archivo, compilando el documento desde copia limpia y ejecutando las pruebas y los guiones de analisis.</p>
+</div>
+<script>var b=document.querySelector('.copy'),r=document.getElementById('r');
+b.addEventListener('click',function(){var t=r.innerText;
+var ok=function(){b.textContent='Copiado';b.classList.add('ok');setTimeout(function(){b.textContent='Copiar informe';b.classList.remove('ok')},1600)};
+function fb(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else{fb()}});</script>
+</body></html>
