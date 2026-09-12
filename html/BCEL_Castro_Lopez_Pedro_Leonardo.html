@@ -1,0 +1,68 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evaluacion final PFC &mdash; Castro Lopez Pedro Leonardo</title>
+<style>
+body{background:#F6F8FB;color:#10233B;font-family:"Inter","Segoe UI",-apple-system,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;margin:0}
+.solo{max-width:900px;margin:0 auto;padding:28px 34px 70px}
+.ph{display:flex;align-items:flex-start;gap:20px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid #0E3F7E}
+.ph h2{margin:0;font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:24px;font-weight:600}
+.meta{margin:5px 0 0;font-size:13px;color:#5B6B80}.meta b{color:#10233B}
+.copy{flex:none;background:#0E3F7E;color:#fff;border:0;border-radius:2px;padding:9px 17px;font:600 13.5px/1 inherit;cursor:pointer}
+.copy:hover{background:#1E5AA8}.copy.ok{background:#4FAE60}
+pre{margin:20px 0 0;background:#fff;border:1px solid #D3DCE8;padding:22px 24px;font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:12px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+.pie{margin-top:26px;font-size:12px;color:#5B6B80;border-top:1px solid #D3DCE8;padding-top:12px}
+@media(max-width:700px){.solo{padding:18px}.ph{flex-direction:column}}
+</style></head><body>
+<div class="solo">
+<header class="ph">
+  <div><h2>Castro Lopez Pedro Leonardo</h2>
+  <p class="meta">Evaluacion final del PFC &nbsp;&middot;&nbsp; Aplicaciones Distribuidas (ISR-701) &nbsp;&middot;&nbsp; Equipo BCEL &nbsp;&middot;&nbsp; AcadTrace -- Gestion academica con bitacora de auditoria encadenada</p>
+  <p class="meta">equipo 0,00 &middot; su trabajo 0,00 &middot; aporte 38,3 % &middot; <b>cuestionario pendiente</b></p></div>
+  <button class="copy" type="button">Copiar informe</button>
+</header>
+<pre id="r">Estimado/a Castro Lopez Pedro Leonardo:
+
+Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit ff6f68ba del 12 de septiembre de 2026.
+
+Este proyecto tiene el mayor volumen construido del curso y varias piezas de verdadera calidad, y quiero empezar por ellas.
+El verificador del experimento usa la funcion del sistema en produccion y sus seis casos de prueba pasan, aceptando una cadena real y rechazando contenido manipulado, hash roto, reloj no monotonico y edicion directa del estado.
+Las pruebas de navegador navegan de verdad y fallan cuando el sistema no esta levantado, que es exactamente lo que deben hacer.
+Hay dos suites con contenedores efimeros que migran el esquema, persisten un evento y comprueban el rechazo de modificacion y borrado.
+El arbol de trabajo esta limpio de claves y existe un documento de rotacion serio.
+Y el microservicio en Python es la pieza mas sana del curso, con noventa y cinco pruebas y casi ochenta por ciento de cobertura real.
+Dicho eso, la calificacion es la que es por razones que estan enteramente en su mano.
+La primera y mas costosa: encontre veintinueve commits sin fusionar repartidos en siete de sus diez ramas, y lo que contienen es precisamente la correccion de los resultados de carga, del certificado de reproducibilidad, de las cifras de cobertura y de los finales de linea.
+El trabajo esta escrito y no esta entregado, y lo que no esta en la rama principal no forma parte de la entrega.
+Integrarlo moveria cuatro criterios a la vez.
+La segunda: el detector de secretos esta configurado para no detectar.
+Su archivo de configuracion permite expresamente los cuatro valores que se filtraron y excluye las carpetas donde estaban.
+Lo ejecute de las dos maneras: con la configuracion de ustedes no encuentra ninguna fuga en setecientos setenta y ocho commits; con la de fabrica encuentra veintisiete.
+Una compuerta de seguridad que no puede fallar no es una compuerta, y un revisor que lo advierta desconfiara de todo lo demas.
+La tercera: el guion de reproducibilidad solo genera sumas y no las verifica nunca, y aun asi termina imprimiendo que todo es cien por cien verificable y determinista; de doce comprobaciones, nueve fallan.
+La cuarta: el informe afirma en la misma pagina que un escenario tuvo cien por ciento de fallo y que ese mismo escenario tuvo noventa y nueve coma noventa y ocho por ciento de disponibilidad.
+Y una advertencia tecnica que va mas alla de la nota, porque afecta a la contribucion que el proyecto reivindica como propia.
+El servicio de auditoria lee la cabeza de la cadena sin bloqueo y despues escribe, de modo que bajo concurrencia dos eventos leen la misma cabeza y la cadena se bifurca.
+Su registro de decision afirma un bloqueo pesimista que no existe en el codigo.
+Eso compromete el no repudio justo bajo la carga que su propio experimento mide, y es lo primero que yo arreglaria.
+
+Detalle de la calificacion:
+De los 51 elementos exigidos al proyecto, 34 estaban resueltos y verificados, y 17 quedaban pendientes.
+Suma de los elementos calificados: 5,40 sobre 10.
+Producto de los factores: 0,000003.
+Nota del equipo: 0,00 sobre 10.
+Su aporte a esta entrega: 38,3 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,00 sobre 10.
+Aporte del trabajo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 mas su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Ciceron Guerrero Ulloa, PhD</pre>
+<p class="pie">Evaluacion sobre el commit ff6f68ba del repositorio del equipo, verificando el contenido archivo por archivo, compilando el documento desde copia limpia y ejecutando las pruebas y los guiones de analisis.</p>
+</div>
+<script>var b=document.querySelector('.copy'),r=document.getElementById('r');
+b.addEventListener('click',function(){var t=r.innerText;
+var ok=function(){b.textContent='Copiado';b.classList.add('ok');setTimeout(function(){b.textContent='Copiar informe';b.classList.remove('ok')},1600)};
+function f(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,f)}else{f()}});</script>
+</body></html>
