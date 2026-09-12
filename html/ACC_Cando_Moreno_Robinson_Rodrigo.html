@@ -1,26 +1,147 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Evaluacion final PFC &mdash; Cando Moreno Robinson Rodrigo</title>
+<title>Evaluación final del PFC — Cando Moreno Robinson Rodrigo</title>
 <style>
-body{background:#F6F8FB;color:#10233B;font-family:"Inter","Segoe UI",-apple-system,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;margin:0}
-.solo{max-width:900px;margin:0 auto;padding:28px 34px 70px}
-.ph{display:flex;align-items:flex-start;gap:20px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid #0E3F7E}
-.ph h2{margin:0;font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:24px;font-weight:600}
-.meta{margin:5px 0 0;font-size:13px;color:#5B6B80}.meta b{color:#10233B}
-.copy{flex:none;background:#0E3F7E;color:#fff;border:0;border-radius:2px;padding:9px 17px;font:600 13.5px/1 inherit;cursor:pointer}
-.copy:hover{background:#1E5AA8}.copy.ok{background:#4FAE60}
-pre{margin:20px 0 0;background:#fff;border:1px solid #D3DCE8;padding:22px 24px;font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:12px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
-.pie{margin-top:26px;font-size:12px;color:#5B6B80;border-top:1px solid #D3DCE8;padding-top:12px}
-@media(max-width:700px){.solo{padding:18px}.ph{flex-direction:column}}
+:root{--az:#0E3F7E;--te:#2E86A1;--ok:#2A6349;--am:#96660F;--ro:#9E3324;--gr:#4B5563;--bg:#fff;--fg:#1b1f24;--mut:#5a6672;--li:#D3DCE8;--su:#F2F5F8;--cd:#eef2f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.62 "Charter",Georgia,"Times New Roman",serif}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 70px}
+header.top{background:linear-gradient(135deg,#0E3F7E,#2E86A1);color:#fff;padding:30px 20px 26px}
+header.top .in{max-width:1120px;margin:0 auto}
+header.top h1{margin:0 0 4px;font-size:1.5rem}
+header.top p{margin:2px 0;opacity:.93;font-size:.92rem}
+.parte{background:var(--az);color:#fff;padding:9px 16px;border-radius:6px;font-size:.82rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin:40px 0 4px;display:inline-block}
+h2{color:var(--az);font-size:1.26rem;border-bottom:2px solid var(--li);padding-bottom:7px;margin:14px 0 12px}
+h3{color:var(--te);font-size:1.05rem;margin:26px 0 9px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em;background:var(--cd);padding:1px 5px;border-radius:3px;word-break:break-word}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin:10px 0 16px}
+.meta div{background:var(--su);border:1px solid var(--li);border-radius:6px;padding:6px 11px;font-size:.84rem}
+.meta b{color:var(--az)}
+.tw{overflow-x:auto;border:1px solid var(--li);border-radius:8px;margin:12px 0}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:.88rem}
+th{background:var(--az);color:#fff;text-align:left;padding:9px 10px;font-size:.8rem;letter-spacing:.3px}
+td{padding:9px 10px;border-top:1px solid var(--li);vertical-align:top}
+tr:nth-child(even) td{background:#fafcfe}
+.grupo td{background:var(--su)!important;font-weight:700;color:var(--az);font-size:.84rem;letter-spacing:.4px;text-transform:uppercase;border-top:2px solid var(--az)}
+.cod{font-weight:700;color:var(--az);white-space:nowrap}
+.ev{display:block;margin-top:4px;font-size:.92em;color:var(--mut);line-height:1.5}
+.b{display:inline-block;padding:3px 9px;border-radius:11px;font-size:.75rem;font-weight:700;white-space:nowrap}
+.st-hecho{background:#e8ebef;color:var(--gr)}
+.st-com{background:#e4f1ea;color:var(--ok)}
+.st-mod{background:#fbf0dc;color:var(--am)}
+.st-ter{background:#fae5e0;color:var(--ro)}
+.st-hac{background:#3a3a3a;color:#fff}
+.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.n b{font-size:1.02rem}.n span{color:var(--mut);font-size:.85em}
+tfoot td{background:var(--su);font-weight:700;border-top:2px solid var(--az)}
+.box{border:1px solid var(--li);border-left:4px solid var(--te);background:var(--su);border-radius:6px;padding:13px 16px;margin:14px 0}
+.box.warn{border-left-color:var(--am);background:#fdf7ec}
+.box.good{border-left-color:var(--ok);background:#eef6f1}
+.box.bad{border-left-color:var(--ro);background:#fdf0ec}
+.box h4{margin:0 0 6px;color:var(--az);font-size:.95rem}
+.calc{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;background:#fff;border:1px solid var(--li);border-radius:6px;padding:12px 14px;margin:10px 0;overflow-x:auto}
+.calc div{padding:3px 0}.calc .r{border-top:1px solid var(--li);margin-top:6px;padding-top:8px;font-weight:700;color:var(--az);font-size:1rem}
+.opt{border:1px solid var(--li);border-radius:8px;padding:12px 15px;margin:10px 0;background:#fff}
+.opt.sel{border-color:var(--ok);border-left:4px solid var(--ok);background:#eef6f1}
+.opt .h{font-weight:700;color:var(--az);margin-bottom:3px}
+.opt .v{float:right;font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+.gr{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:11px;margin:13px 0}
+.card{border:1px solid var(--li);border-radius:8px;padding:12px 14px;background:var(--su)}
+.card .k{font-size:.76rem;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.card .v{font-size:1.45rem;font-weight:700;color:var(--az);font-variant-numeric:tabular-nums}
+.card .s{font-size:.79rem;color:var(--mut)}
+.fb{position:relative;margin:13px 0}
+.fb pre{background:#11161c;color:#e6edf3;padding:16px;border-radius:8px;overflow-x:auto;font:12.5px/1.72 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;margin:0}
+.fb button{position:absolute;top:9px;right:9px;background:#2E86A1;color:#fff;border:0;border-radius:5px;padding:6px 13px;font-size:.78rem;cursor:pointer;font-family:inherit}
+.fb button:hover{background:#246e86}.fb button.done{background:var(--ok)}
+ul{margin:.4em 0;padding-left:1.2em}li{margin:.28em 0}
+.foot{margin-top:42px;padding-top:14px;border-top:1px solid var(--li);color:var(--mut);font-size:.83rem}
+@media (max-width:640px){.wrap{padding:0 15px 45px}header.top{padding:24px 15px}header.top h1{font-size:1.2rem}}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1419;--fg:#e6edf3;--mut:#9aa7b4;--li:#2a3541;--su:#161c24;--cd:#1d252e}
+tr:nth-child(even) td{background:#131920}.calc,.opt{background:#0f1419}}
+
+.n.bad{color:#9E3324;font-weight:700}
+.fbh{font-weight:700;color:var(--az);margin:20px 0 0;font-size:.95rem}
 </style></head><body>
-<div class="solo">
-<header class="ph">
-  <div><h2>Cando Moreno Robinson Rodrigo</h2>
-  <p class="meta">Evaluacion final del PFC &nbsp;&middot;&nbsp; Aplicaciones Distribuidas (ISR-701) &nbsp;&middot;&nbsp; Equipo ACC &nbsp;&middot;&nbsp; TicketFold -- Soporte tecnico distribuido para un proveedor de Internet</p>
-  <p class="meta">equipo 1,87 &middot; su trabajo 1,87 &middot; aporte 26,7 % &middot; <b>cuestionario pendiente</b></p></div>
-  <button class="copy" type="button">Copiar informe</button>
-</header>
-<pre id="r">Estimado/a Cando Moreno Robinson Rodrigo:
+<header class="top"><div class="in"><h1>Cando Moreno Robinson Rodrigo</h1>
+<p>Evaluación final del Proyecto Fin de Curso · Aplicaciones Distribuidas (ISR-701)</p>
+<p>Equipo ACC · TicketFold — Soporte técnico distribuido para un proveedor de Internet</p></div></header>
+<div class="wrap">
+<div class="parte">Primera parte · El proyecto</div>
+<h2>Todo lo exigido al proyecto</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/carlospatroner-boop/PFC-SOPORTE-ISP</code></div><div><b>Rama</b> <code>main</code></div><div><b>Commit</b> <code>28c3fb3</code></div><div><b>Fecha</b> 11 de septiembre de 2026</div><div><b>Elementos</b> 44</div></div>
+<div class="box"><h4>Cómo leer la columna de estado</h4><ul style="margin-bottom:0"><li><b>Hecho</b> — resuelto y verificado con anterioridad. No puntúa aquí.</li><li><b>Completo</b> — terminado y correcto al cien por cien.</li><li><b>Modificar</b> — existe y funciona, pero tiene defectos concretos.</li><li><b>Por terminar</b> — empezado, sin alcanzar el mínimo exigido.</li><li><b>Por hacer</b> — no existe nada.</li></ul></div>
+<div class="tw"><table><thead><tr><th style="width:48%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:14%">Calificación</th><th style="width:10%">Factor</th></tr></thead><tbody>
+<tr class="grupo"><td colspan="5">Resuelto y verificado con anterioridad — no puntúa</td></tr>
+<tr><td>Refactorización en capas y principios SOLID</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Patrones de diseño documentados en registros de decisión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Vistas de arquitectura C4 (tres niveles)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Contrato de interfaz OpenAPI</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Esquema de base de datos y migraciones</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Persistencia distribuida operando</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación web funcional (construye y ejecuta)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Calidad de la aplicación web (pruebas de unidad)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación móvil funcional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capacidades de dispositivo (cámara y localización)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Integración web + móvil + backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de unidad e integración del backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de contrato</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de extremo a extremo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de carga</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pipeline de integración y despliegue con publicación etiquetada</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Observabilidad: métricas, trazas, registros y tableros</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Procesamiento paralelo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Módulo de correlación implementado y probado</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Protocolo experimental y campaña ejecutada según diseño</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Análisis estadístico con prueba no paramétrica y tamaño de efecto</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Correspondencia exacta entre el análisis y las tablas del documento</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Datos crudos preservados</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Evaluación de calidad con las características medidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Manuscrito propio de la entrega, compilable y sin referencias indefinidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Separación entre documento vivo y documento congelado</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Bibliografía verificada con identificador persistente</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Preguntas de investigación formuladas y respondidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Amenazas a la validez con mitigación declarada</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Reflexión ética referida al código de ética profesional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>README con instrucciones de compilación y reproducibilidad</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Licencia y archivo de citación</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Actas de reunión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Declaración de uso de herramientas de inteligencia artificial</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capturas de la aplicación en release, sin composiciones</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Higiene del repositorio (sin artefactos de compilación versionados)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr class="grupo"><td colspan="5">Lo pendiente — es lo que se califica, y cada uno es factor</td></tr>
+<tr><td><span class="cod">E1</span> <b>La cobertura, con los tres números</b><span class="ev">Una sola tabla reúne las tres cifras nombradas: líneas 555/684 = 81,1 %, instrucciones 2582/3582 = 72,1 % y ramas 88/154 = 57,1 %. Las recalculé desde el informe crudo de la herramienta y coinciden; incluso la afirmación puntual de «0 de 38 líneas cubiertas» en el paquete de seguridad es exacta. El único desajuste es que el informe XML publicado da 551/679 a nivel de reporte, distinto del total sumado del CSV, y el texto no lo advierte.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>1,80</b> <span>/ 2,0</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E2</span> <b>Dos programas que escriben datos experimentales</b><span class="ev">Cada guion escribe su propio archivo con su propia cabecera, y ambos la validan antes de escribir, deteniéndose con un mensaje que nombra la esperada y la encontrada. El límite es que esa validación corre después del bucle de red, de modo que cuando falla ya se crearon los tickets y se envió la telemetría.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,62</b> <span>/ 1,8</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E3</span> <b>Códigos de verificación de los datos</b><span class="ev">Tres manifiestos que cubren los resultados por completo —41 archivos y 41 entradas en la campaña de carga— y que verifiqué uno a uno: 45 de 45 correctos. La generación es de verdad el último paso del guion que produce los datos, con el comentario que lo declara. El límite es que ningún trabajo del flujo automático ejecuta esa verificación.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,53</b> <span>/ 1,7</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E4</span> <b>Que el documento lo escriban entre todos</b><span class="ev">La fuente contiene la sección de aporte por integrante con la tabla de porcentajes, y reproduje esos porcentajes desde el historial: 75,24 / 11,87 / 10,77 / 2,12 %, exactos a dos decimales. El problema está en el entregable: el PDF versionado va un commit por detrás y muestra la tabla anterior —«C. Pacheco 77 %, R. Cando 13 %, C. Carpio 11 %»—, que omite por completo a uno de los cuatro integrantes. La corrección existe en el código fuente pero no en el archivo que un lector abre.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>0,90</b> <span>/ 1,5</span></td><td class="n bad">0,6</td></tr>
+<tr><td><span class="cod">E5</span> <b>El instalable de la aplicación móvil</b><span class="ev">Firmado con los tres esquemas, verificado con <code>jarsigner</code> en verde y certificado válido hasta 2054; la suma comprueba correctamente. El flujo lo firma él mismo: compila la versión de entrega, descifra el almacén desde un secreto, alinea, firma, verifica y borra la clave. El límite es que se publica como artefacto temporal, no como entrega estable.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">5</td><td class="n"><b>0,90</b> <span>/ 1,0</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E6</span> <b>Archivos de evidencia con contenido</b><span class="ev">Barrido de los 772 archivos versionados: los únicos de cero o un byte son los <code>__init__.py</code> de Python, que deben estar vacíos. La carpeta de evidencias contiene capturas reales de 94 a 131 kB.</span></td><td><span class="b st-com">Completo</span></td><td class="n">7</td><td class="n"><b>0,90</b> <span>/ 0,9</span></td><td class="n">1,0</td></tr>
+<tr><td><span class="cod">E7</span> <b>Fijación de finales de línea</b><span class="ev">Existe el archivo de atributos, con reglas para los datos tabulares y los binarios, y comprobé que aplica de hecho; las sumas se generaron después de ponerlo. El límite es el alcance: no cubre el código fuente, y se nota, porque una de las veintitrés secciones del manuscrito está versionada con 179 líneas en CRLF mientras las demás son LF.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>0,42</b> <span>/ 0,6</span></td><td class="n bad">0,7</td></tr>
+<tr><td><span class="cod">E8</span> <b>Decir en el README dónde están los resultados</b><span class="ev">El README nombra con enlace las dos rutas de resultados, dice qué contiene cada una y qué guion la produce, y los cuatro guiones existen. El límite es que no menciona el inyector de averías, que también escribe en esa carpeta.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>0,40</b> <span>/ 0,5</span></td><td class="n bad">0,8</td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="n">8,47 <span>/ 10,0</span></td><td class="n">0,220450</td></tr></tfoot></table></div>
+<h3>La nota del proyecto</h3>
+<p>Cada elemento pendiente cuenta dos veces: como sumando y como factor. El factor es su calificación dividida entre su máximo, de modo que solo vale 1 cuando el elemento está terminado y correcto al cien por cien.</p>
+<div class="calc">
+<div>Suma&nbsp;&nbsp;S = 8,47 sobre 10</div>
+<div>Producto de los factores&nbsp;&nbsp;0,9&nbsp;×&nbsp;0,9&nbsp;×&nbsp;0,9&nbsp;×&nbsp;0,6&nbsp;×&nbsp;0,9&nbsp;×&nbsp;1,0&nbsp;×&nbsp;0,7&nbsp;×&nbsp;0,8 = 0,220450</div>
+<div class="r" style="font-size:1.12rem">Nota del proyecto = 0,220450 × 8,47 = <b>1,87 / 10,00</b></div>
+</div>
+<div class="parte">Segunda parte · Su aporte y su nota</div>
+<h2>Aporte de cada integrante</h2>
+<p>El peso de cada elemento se reparte entre quienes lo trabajaron, según el historial del control de versiones. El reparto equitativo entre 4 integrantes es el 25 %: quien lo alcanza recibe la nota completa del proyecto, quien queda por debajo la recibe en proporción. Ningún integrante puede superar la nota del proyecto.</p>
+<div class="tw"><table><thead><tr><th style="width:32%">Integrante</th><th style="width:17%">Peso aportado</th><th style="width:17%">Participación</th><th style="width:17%">Factor</th><th style="width:17%">Nota del trabajo</th></tr></thead><tbody>
+<tr><td class="nom">Cristhian Pacheco</td><td class="n">3,46 <span>/ 10</span></td><td class="n">34,6 %</td><td class="n">1,000</td><td class="n"><b>1,87</b> <span>/ 1,87</span></td></tr>
+<tr style="background:#eef6f1"><td class="nom">Robinson Cando &larr;</td><td class="n">2,67 <span>/ 10</span></td><td class="n">26,7 %</td><td class="n">1,000</td><td class="n"><b>1,87</b> <span>/ 1,87</span></td></tr>
+<tr><td class="nom">Carlos Carpio</td><td class="n">2,05 <span>/ 10</span></td><td class="n">20,5 %</td><td class="n">0,818</td><td class="n"><b>1,53</b> <span>/ 1,87</span></td></tr>
+<tr><td class="nom">Jeremy Álvarez</td><td class="n">1,82 <span>/ 10</span></td><td class="n">18,2 %</td><td class="n">0,730</td><td class="n"><b>1,36</b> <span>/ 1,87</span></td></tr>
+</tbody></table></div>
+<h3>Su nota final</h3>
+<div class="tw"><table><thead><tr><th style="width:46%">Componente</th><th style="width:18%">Nota</th><th style="width:16%">Peso</th><th style="width:20%">Aporte</th></tr></thead><tbody>
+<tr><td><b>Trabajo en la entrega</b><span class="ev">Nota del proyecto 1,87 ajustada por su aporte del 26,7 %</span></td><td class="n">1,87 <span>/ 10</span></td><td class="n">80 %</td><td class="n"><b>1,494</b></td></tr>
+<tr><td><b>Cuestionario del SGA</b><span class="ev">Examen final práctico</span></td><td class="n"><span>pendiente</span></td><td class="n">20 %</td><td class="n"><span>pendiente</span></td></tr>
+</tbody><tfoot><tr><td>Nota final</td><td></td><td></td><td class="n"><span>1,494 + cuestionario × 0,20</span></td></tr></tfoot></table></div>
+<h3>Retroalimentación</h3>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Cando Moreno Robinson Rodrigo:
 
 Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
 Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3 del 11 de septiembre de 2026.
@@ -41,19 +162,17 @@ Detalle de la calificacion:
 De los 44 elementos exigidos al proyecto, 36 estaban resueltos y verificados, y 8 quedaban pendientes.
 Suma de los elementos calificados: 8,47 sobre 10.
 Producto de los factores: 0,220450.
-Nota del equipo: 1,87 sobre 10.
+Nota del proyecto: 1,87 sobre 10.
 Su aporte a esta entrega: 26,7 % del trabajo, frente a un reparto equitativo del 25 %.
 Nota de su trabajo: 1,87 sobre 10.
 Aporte del trabajo (80 %): 1,494.
 Nota del cuestionario del SGA (20 %): pendiente de registrar.
 Nota final: 1,494 mas su nota del cuestionario multiplicada por 0,20.
 
-Ing. Gleiston Ciceron Guerrero Ulloa, PhD</pre>
-<p class="pie">Evaluacion sobre el commit 28c3fb3 del repositorio del equipo, verificando el contenido archivo por archivo, compilando el documento desde copia limpia y ejecutando las pruebas y los guiones de analisis.</p>
-</div>
-<script>var b=document.querySelector('.copy'),r=document.getElementById('r');
-b.addEventListener('click',function(){var t=r.innerText;
-var ok=function(){b.textContent='Copiado';b.classList.add('ok');setTimeout(function(){b.textContent='Copiar informe';b.classList.remove('ok')},1600)};
+Ing. Gleiston Ciceron Guerrero Ulloa, PhD</pre></div>
+<div class="foot">Evaluación sobre el commit 28c3fb3 del repositorio del equipo, verificando el contenido archivo por archivo, compilando el documento desde copia limpia y ejecutando las pruebas y los guiones de análisis.</div>
+</div><script>document.querySelectorAll('.fb button').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentElement.querySelector('pre').innerText;
+var ok=function(){b.textContent='Copiado';b.classList.add('done');setTimeout(function(){b.textContent='Copiar';b.classList.remove('done')},1600)};
 function f(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
-if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,f)}else{f()}});</script>
-</body></html>
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,f)}else{f()}});});</script></body></html>

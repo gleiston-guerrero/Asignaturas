@@ -1,26 +1,154 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Evaluacion final PFC &mdash; Bedon Viteri Keyla Betzabe</title>
+<title>Evaluación final del PFC — Bedon Viteri Keyla Betzabe</title>
 <style>
-body{background:#F6F8FB;color:#10233B;font-family:"Inter","Segoe UI",-apple-system,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;margin:0}
-.solo{max-width:900px;margin:0 auto;padding:28px 34px 70px}
-.ph{display:flex;align-items:flex-start;gap:20px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid #0E3F7E}
-.ph h2{margin:0;font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:24px;font-weight:600}
-.meta{margin:5px 0 0;font-size:13px;color:#5B6B80}.meta b{color:#10233B}
-.copy{flex:none;background:#0E3F7E;color:#fff;border:0;border-radius:2px;padding:9px 17px;font:600 13.5px/1 inherit;cursor:pointer}
-.copy:hover{background:#1E5AA8}.copy.ok{background:#4FAE60}
-pre{margin:20px 0 0;background:#fff;border:1px solid #D3DCE8;padding:22px 24px;font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:12px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
-.pie{margin-top:26px;font-size:12px;color:#5B6B80;border-top:1px solid #D3DCE8;padding-top:12px}
-@media(max-width:700px){.solo{padding:18px}.ph{flex-direction:column}}
+:root{--az:#0E3F7E;--te:#2E86A1;--ok:#2A6349;--am:#96660F;--ro:#9E3324;--gr:#4B5563;--bg:#fff;--fg:#1b1f24;--mut:#5a6672;--li:#D3DCE8;--su:#F2F5F8;--cd:#eef2f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.62 "Charter",Georgia,"Times New Roman",serif}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 70px}
+header.top{background:linear-gradient(135deg,#0E3F7E,#2E86A1);color:#fff;padding:30px 20px 26px}
+header.top .in{max-width:1120px;margin:0 auto}
+header.top h1{margin:0 0 4px;font-size:1.5rem}
+header.top p{margin:2px 0;opacity:.93;font-size:.92rem}
+.parte{background:var(--az);color:#fff;padding:9px 16px;border-radius:6px;font-size:.82rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin:40px 0 4px;display:inline-block}
+h2{color:var(--az);font-size:1.26rem;border-bottom:2px solid var(--li);padding-bottom:7px;margin:14px 0 12px}
+h3{color:var(--te);font-size:1.05rem;margin:26px 0 9px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em;background:var(--cd);padding:1px 5px;border-radius:3px;word-break:break-word}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin:10px 0 16px}
+.meta div{background:var(--su);border:1px solid var(--li);border-radius:6px;padding:6px 11px;font-size:.84rem}
+.meta b{color:var(--az)}
+.tw{overflow-x:auto;border:1px solid var(--li);border-radius:8px;margin:12px 0}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:.88rem}
+th{background:var(--az);color:#fff;text-align:left;padding:9px 10px;font-size:.8rem;letter-spacing:.3px}
+td{padding:9px 10px;border-top:1px solid var(--li);vertical-align:top}
+tr:nth-child(even) td{background:#fafcfe}
+.grupo td{background:var(--su)!important;font-weight:700;color:var(--az);font-size:.84rem;letter-spacing:.4px;text-transform:uppercase;border-top:2px solid var(--az)}
+.cod{font-weight:700;color:var(--az);white-space:nowrap}
+.ev{display:block;margin-top:4px;font-size:.92em;color:var(--mut);line-height:1.5}
+.b{display:inline-block;padding:3px 9px;border-radius:11px;font-size:.75rem;font-weight:700;white-space:nowrap}
+.st-hecho{background:#e8ebef;color:var(--gr)}
+.st-com{background:#e4f1ea;color:var(--ok)}
+.st-mod{background:#fbf0dc;color:var(--am)}
+.st-ter{background:#fae5e0;color:var(--ro)}
+.st-hac{background:#3a3a3a;color:#fff}
+.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.n b{font-size:1.02rem}.n span{color:var(--mut);font-size:.85em}
+tfoot td{background:var(--su);font-weight:700;border-top:2px solid var(--az)}
+.box{border:1px solid var(--li);border-left:4px solid var(--te);background:var(--su);border-radius:6px;padding:13px 16px;margin:14px 0}
+.box.warn{border-left-color:var(--am);background:#fdf7ec}
+.box.good{border-left-color:var(--ok);background:#eef6f1}
+.box.bad{border-left-color:var(--ro);background:#fdf0ec}
+.box h4{margin:0 0 6px;color:var(--az);font-size:.95rem}
+.calc{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;background:#fff;border:1px solid var(--li);border-radius:6px;padding:12px 14px;margin:10px 0;overflow-x:auto}
+.calc div{padding:3px 0}.calc .r{border-top:1px solid var(--li);margin-top:6px;padding-top:8px;font-weight:700;color:var(--az);font-size:1rem}
+.opt{border:1px solid var(--li);border-radius:8px;padding:12px 15px;margin:10px 0;background:#fff}
+.opt.sel{border-color:var(--ok);border-left:4px solid var(--ok);background:#eef6f1}
+.opt .h{font-weight:700;color:var(--az);margin-bottom:3px}
+.opt .v{float:right;font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+.gr{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:11px;margin:13px 0}
+.card{border:1px solid var(--li);border-radius:8px;padding:12px 14px;background:var(--su)}
+.card .k{font-size:.76rem;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.card .v{font-size:1.45rem;font-weight:700;color:var(--az);font-variant-numeric:tabular-nums}
+.card .s{font-size:.79rem;color:var(--mut)}
+.fb{position:relative;margin:13px 0}
+.fb pre{background:#11161c;color:#e6edf3;padding:16px;border-radius:8px;overflow-x:auto;font:12.5px/1.72 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;margin:0}
+.fb button{position:absolute;top:9px;right:9px;background:#2E86A1;color:#fff;border:0;border-radius:5px;padding:6px 13px;font-size:.78rem;cursor:pointer;font-family:inherit}
+.fb button:hover{background:#246e86}.fb button.done{background:var(--ok)}
+ul{margin:.4em 0;padding-left:1.2em}li{margin:.28em 0}
+.foot{margin-top:42px;padding-top:14px;border-top:1px solid var(--li);color:var(--mut);font-size:.83rem}
+@media (max-width:640px){.wrap{padding:0 15px 45px}header.top{padding:24px 15px}header.top h1{font-size:1.2rem}}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1419;--fg:#e6edf3;--mut:#9aa7b4;--li:#2a3541;--su:#161c24;--cd:#1d252e}
+tr:nth-child(even) td{background:#131920}.calc,.opt{background:#0f1419}}
+
+.n.bad{color:#9E3324;font-weight:700}
+.fbh{font-weight:700;color:var(--az);margin:20px 0 0;font-size:.95rem}
 </style></head><body>
-<div class="solo">
-<header class="ph">
-  <div><h2>Bedon Viteri Keyla Betzabe</h2>
-  <p class="meta">Evaluacion final del PFC &nbsp;&middot;&nbsp; Aplicaciones Distribuidas (ISR-701) &nbsp;&middot;&nbsp; Equipo BCEL &nbsp;&middot;&nbsp; AcadTrace -- Gestion academica con bitacora de auditoria encadenada</p>
-  <p class="meta">equipo 0,00 &middot; su trabajo 0,00 &middot; aporte 14,6 % &middot; <b>cuestionario pendiente</b></p></div>
-  <button class="copy" type="button">Copiar informe</button>
-</header>
-<pre id="r">Estimado/a Bedon Viteri Keyla Betzabe:
+<header class="top"><div class="in"><h1>Bedon Viteri Keyla Betzabe</h1>
+<p>Evaluación final del Proyecto Fin de Curso · Aplicaciones Distribuidas (ISR-701)</p>
+<p>Equipo BCEL · AcadTrace — Gestión académica con bitácora de auditoría encadenada</p></div></header>
+<div class="wrap">
+<div class="parte">Primera parte · El proyecto</div>
+<h2>Todo lo exigido al proyecto</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/LEO23as/acadtrace</code></div><div><b>Rama</b> <code>main</code></div><div><b>Commit</b> <code>ff6f68ba</code></div><div><b>Fecha</b> 12 de septiembre de 2026</div><div><b>Elementos</b> 51</div></div>
+<div class="box"><h4>Cómo leer la columna de estado</h4><ul style="margin-bottom:0"><li><b>Hecho</b> — resuelto y verificado con anterioridad. No puntúa aquí.</li><li><b>Completo</b> — terminado y correcto al cien por cien.</li><li><b>Modificar</b> — existe y funciona, pero tiene defectos concretos.</li><li><b>Por terminar</b> — empezado, sin alcanzar el mínimo exigido.</li><li><b>Por hacer</b> — no existe nada.</li></ul></div>
+<div class="tw"><table><thead><tr><th style="width:48%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:14%">Calificación</th><th style="width:10%">Factor</th></tr></thead><tbody>
+<tr class="grupo"><td colspan="5">Resuelto y verificado con anterioridad — no puntúa</td></tr>
+<tr><td>Refactorización en capas y principios SOLID</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Patrones de diseño documentados en registros de decisión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Vistas de arquitectura C4 (tres niveles)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Contrato de interfaz OpenAPI</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Esquema de base de datos y migraciones</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Persistencia distribuida operando</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicaciones web funcionales (cuatro interfaces)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación móvil funcional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capacidades de dispositivo (biometría y notificaciones)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Integración web + móvil + backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de unidad e integración del backend Java</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas del microservicio en Python con cobertura medida</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de contrato verificadas contra servidor real</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de carga</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pipeline de integración con dependencias declaradas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Observabilidad: métricas, trazas, registros y tableros</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Procesamiento paralelo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Bitácora de auditoría encadenada (implementación en Python)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Protocolo experimental e instrumental de medición</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Datos crudos preservados</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Análisis estadístico con tamaño de efecto e intervalos</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Evaluación de calidad con las características medidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Manuscrito consolidado, compilable y sin referencias indefinidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Bibliografía verificada con identificador persistente</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Preguntas de investigación formuladas y respondidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Amenazas a la validez con mitigación declarada</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Reflexión ética referida al código de ética profesional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>README con instrucciones de compilación y reproducibilidad</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Licencia y archivo de citación</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Actas de reunión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Declaración de uso de herramientas de inteligencia artificial</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capturas de la aplicación en release</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Paquete móvil publicado en release</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Higiene del repositorio (sin artefactos de compilación versionados)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr class="grupo"><td colspan="5">Lo pendiente — es lo que se califica, y cada uno es factor</td></tr>
+<tr><td><span class="cod">E1</span> <b>Sacar las claves del repositorio</b><span class="ev">El árbol de trabajo está limpio: los secretos literales se sustituyeron por variables que fallan de forma explícita si no se suministran, los informes de cobertura ya no publican la clave de cifrado, y hay un documento de rotación de 112 líneas con inventario por secreto y matriz de suministro. El defecto es grave y está en la compuerta: el archivo de configuración del detector permite expresamente los cuatro valores reales que se filtraron y excluye las carpetas donde estaban. Lo ejecuté de las dos maneras: con la configuración del repositorio no encuentra ninguna fuga en 778 commits; con la configuración por defecto encuentra 27. Y el historial las sigue conteniendo, entre siete y catorce commits por secreto.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">8</td><td class="n"><b>0,78</b> <span>/ 1,3</span></td><td class="n bad">0,6</td></tr>
+<tr><td><span class="cod">E2</span> <b>Que el experimento verifique la cadena real</b><span class="ev">El verificador experimental es un adaptador que importa la función del sistema en producción, y el guion de experimentos importa también el cálculo de hash y la forma canónica: una sola definición. Ejecuté la prueba y sus seis casos pasan, aceptando una cadena real y rechazando un contenido manipulado, un hash anterior roto, un reloj no monotónico y una edición directa del estado académico; además comprueba que el adaptador devuelve el mismo objeto que el verificador de producción.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>1,08</b> <span>/ 1,2</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E3</span> <b>Una sola forma de auditar</b><span class="ev">El campo de hash anterior existe en la entidad, el encadenamiento está implementado y el reloj vectorial se calcula. Pero no es una sola forma: los mapas canónicos de las dos implementaciones contienen campos distintos, de modo que ninguna cadena es verificable por el verificador de la otra. El reloj vectorial es además causalmente inerte —solo se incrementa la componente propia y las otras quedan siempre en cero— y el reloj lógico no se siembra desde la base al arrancar, así que tras un reinicio vuelve a uno y rompe la monotonía que el verificador exige. El registro de decisión afirma un bloqueo pesimista que no existe: cero apariciones en todo el repositorio.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,55</b> <span>/ 1,1</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E4</span> <b>Que el disparador de inmutabilidad se cree</b><span class="ev">La migración está en la ruta correcta, sin colisión de versiones, y el SQL es correcto e idempotente. El problema es que ninguna prueba ejecutable lo demuestra: la que debía hacerlo está condicionada a una variable de entorno que el repositorio nunca define, y el informe de pruebas la reporta omitida dos de dos. La prueba con contenedor que sí arranca desactiva las migraciones y usa un esquema base sin ningún disparador. La única que lo comprueba escribe el esquema a mano dentro del test y envuelve la llamada a las migraciones en un bloque que se traga cualquier error.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,45</b> <span>/ 0,9</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E5</span> <b>Un solo juego de resultados de carga</b><span class="ev">Conviven tres juegos del mismo escenario nominal con 13.606, 12.236 y 2.419 peticiones. El informe declara «oficial» una cifra de 12.265 que no aparece en ningún archivo, aunque sus percentiles coincidan exactamente con el juego de 12.236, lo que delata una transposición. Y hay una contradicción literal dentro del mismo documento: una página afirma que el escenario de estrés tuvo 12.735 peticiones con 100 % de fallo y otra declara 99,98 % de disponibilidad y 0,024 % de error del mismo escenario, ambas derivadas de un archivo que registra 106.735 peticiones con 26 fallos.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,14</b> <span>/ 0,7</span></td><td class="n bad">0,2</td></tr>
+<tr><td><span class="cod">E6</span> <b>Quitar permisos sobre la bitácora</b><span class="ev">La prueba está bien diseñada: crea un rol sin privilegios, revoca modificación y borrado, desactiva el disparador y comprueba que la operación se rechaza por permisos. Ese es el experimento correcto. El problema es que ese rol solo existe dentro de la prueba: ninguna migración lo crea, y la aplicación se conecta como propietario del esquema, sobre el que una revocación a PUBLIC no tiene efecto.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,35</b> <span>/ 0,7</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E7</span> <b>Que el certificado cuadre con los datos</b><span class="ev">Verifiqué los dos certificados del repositorio: tres comprobaciones correctas y nueve fallidas de doce. La causa de fondo es que el guion solo genera sumas y no las verifica nunca —no hay una sola llamada de comprobación en todo el repositorio— y aun así termina imprimiendo que todo es cien por cien verificable y determinista. Las dos copias del mismo archivo de datos difieren además entre sí.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,12</b> <span>/ 0,6</span></td><td class="n bad">0,2</td></tr>
+<tr><td><span class="cod">E8</span> <b>Un solo número de cobertura</b><span class="ev">Ejecuté las cuatro suites y medí: el módulo principal da 27,46 % de instrucciones y el informe declara 30,3 %; el de secretaría da 71,28 % y el informe declara 34,5 %, subestimando a menos de la mitad su propio trabajo; los otros dos módulos, con 73,03 % y 79,55 %, no aparecen. Hay además una cifra del 90,7 % sin ningún respaldo. Y la compuerta que el documento presenta como estricta al 70 % se aplica a seis o siete clases elegidas a mano, no al módulo: por eso un módulo al 27 % «cumple» un umbral del 70 %.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,18</b> <span>/ 0,6</span></td><td class="n bad">0,3</td></tr>
+<tr><td><span class="cod">E9</span> <b>Integrar todo el trabajo a la rama principal</b><span class="ev">Hay 29 commits sin fusionar repartidos en siete de las diez ramas, y lo que contienen no es accesorio: es la corrección de los resultados de carga, del certificado de reproducibilidad, de las cifras de cobertura y de los finales de línea. El trabajo está escrito y no entregado. Además los siete pull request nuevos los confirmó el autor de la rama, mientras el documento afirma que cada uno fue auditado y aprobado por un integrante distinto.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,10</b> <span>/ 0,5</span></td><td class="n bad">0,2</td></tr>
+<tr><td><span class="cod">E10</span> <b>Pruebas que manejen un navegador</b><span class="ev">Las pruebas navegan de verdad: van a la dirección configurada, rellenan el formulario real, esperan la respuesta del servidor, comprueban su código y restauran el dato al final. El flujo falla primero si falta cualquiera de las variables de entorno. Las ejecuté y fallan por ausencia de la aplicación desplegada y del navegador, que es el comportamiento correcto: no pueden pasar con el sistema apagado.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>0,40</b> <span>/ 0,5</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E11</span> <b>Dependencias que existan de verdad</b><span class="ev">Los doce pines resuelven e instalan en un entorno limpio, comprobado contra el índice de paquetes, y las cuatro interfaces instalan. El límite es que la herramienta de carga no está declarada en ningún archivo de dependencias pese a que los guiones la invocan.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">8</td><td class="n"><b>0,32</b> <span>/ 0,4</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E12</span> <b>Que todas las interfaces se puedan instalar</b><span class="ev">Los cuatro proyectos de interfaz tienen su archivo de bloqueo versionado y comprobé la instalación reproducible en los cuatro sobre un clon limpio. El límite es que el flujo automático sigue usando la instalación que ignora el bloqueo en tres de las cuatro, de modo que la reproducibilidad no se ejercita donde debería.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">8</td><td class="n"><b>0,28</b> <span>/ 0,4</span></td><td class="n bad">0,7</td></tr>
+<tr><td><span class="cod">E13</span> <b>Pruebas con contenedores efímeros</b><span class="ev">Dos suites reales: una de 405 líneas que migra el esquema, persiste un evento de auditoría con su sello, comprueba que el disparador rechaza modificación y borrado y que la denegación de privilegios funciona con dos conexiones; y otra que verifica que el servicio real puebla los campos de la cadena. Están recogidas por el flujo normal. El límite es que ninguna ejercita el pipeline real de migraciones.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>0,21</b> <span>/ 0,3</span></td><td class="n bad">0,7</td></tr>
+<tr><td><span class="cod">E14</span> <b>Publicar todas las imágenes</b><span class="ev">El flujo publica tres imágenes de los cinco servicios con archivo de construcción propio; dos quedan sin publicar pese a que sus pruebas compilan y pasan. Además el trabajo solo se dispara en la rama principal, así que ninguna solicitud de incorporación ejercita la construcción.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,15</b> <span>/ 0,3</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E15</span> <b>Que el despliegue falle cuando falla</b><span class="ev">No hay tolerancia al error en ningún flujo y el encadenamiento bloquea de verdad: la construcción de imágenes depende de los cuatro trabajos de prueba y la integración depende de aquélla. El límite es que el despliegue termina al levantar los contenedores sin sonda de salud posterior, de modo que un contenedor que arranque y muera al instante seguiría reportando verde.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>0,16</b> <span>/ 0,2</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E16</span> <b>Un mapa de carpetas en el README</b><span class="ev">La tabla existe, con nueve filas y columna de comando de reproducción, y las nueve carpetas de destino existen. Pero probé los comandos y cuatro están rotos: dos apuntan a un arrancador que está un directorio más abajo, uno invoca un guion que no tiene punto de entrada y no imprime nada, y otro llama a un script inexistente.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,10</b> <span>/ 0,2</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E17</span> <b>Fijación de finales de línea</b><span class="ev">El archivo de atributos es correcto y completo, y el código fuente está limpio: cero archivos con finales de Windows entre los de código, consulta, documento y marcado. Pero nunca se aplicó a los datos: 25 de los 34 archivos tabulares versionados los conservan en el contenido confirmado, incluidos los que sostienen el informe. Falta la renormalización y no se verifica en ningún flujo.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,03</b> <span>/ 0,1</span></td><td class="n bad">0,3</td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="n">5,40 <span>/ 10,0</span></td><td class="n">0,000003</td></tr></tfoot></table></div>
+<h3>La nota del proyecto</h3>
+<p>Cada elemento pendiente cuenta dos veces: como sumando y como factor. El factor es su calificación dividida entre su máximo, de modo que solo vale 1 cuando el elemento está terminado y correcto al cien por cien.</p>
+<div class="calc">
+<div>Suma&nbsp;&nbsp;S = 5,40 sobre 10</div>
+<div>Producto de los factores&nbsp;&nbsp;0,6&nbsp;×&nbsp;0,9&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,2&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,2&nbsp;×&nbsp;0,3&nbsp;×&nbsp;0,2&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,7&nbsp;×&nbsp;0,7&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,3 = 0,000003</div>
+<div class="r" style="font-size:1.12rem">Nota del proyecto = 0,000003 × 5,40 = <b>0,00 / 10,00</b></div>
+</div>
+<div class="parte">Segunda parte · Su aporte y su nota</div>
+<h2>Aporte de cada integrante</h2>
+<p>El peso de cada elemento se reparte entre quienes lo trabajaron, según el historial del control de versiones. El reparto equitativo entre 4 integrantes es el 25 %: quien lo alcanza recibe la nota completa del proyecto, quien queda por debajo la recibe en proporción. Ningún integrante puede superar la nota del proyecto.</p>
+<div class="tw"><table><thead><tr><th style="width:32%">Integrante</th><th style="width:17%">Peso aportado</th><th style="width:17%">Participación</th><th style="width:17%">Factor</th><th style="width:17%">Nota del trabajo</th></tr></thead><tbody>
+<tr><td class="nom">Pedro Castro</td><td class="n">3,83 <span>/ 10</span></td><td class="n">38,3 %</td><td class="n">1,000</td><td class="n"><b>0,00</b> <span>/ 0,00</span></td></tr>
+<tr><td class="nom">Ernesto Luna</td><td class="n">3,56 <span>/ 10</span></td><td class="n">35,6 %</td><td class="n">1,000</td><td class="n"><b>0,00</b> <span>/ 0,00</span></td></tr>
+<tr style="background:#eef6f1"><td class="nom">Keyla Bedón &larr;</td><td class="n">1,46 <span>/ 10</span></td><td class="n">14,6 %</td><td class="n">0,583</td><td class="n"><b>0,00</b> <span>/ 0,00</span></td></tr>
+<tr><td class="nom">Juliana Emanuel</td><td class="n">1,15 <span>/ 10</span></td><td class="n">11,5 %</td><td class="n">0,462</td><td class="n"><b>0,00</b> <span>/ 0,00</span></td></tr>
+</tbody></table></div>
+<h3>Su nota final</h3>
+<div class="tw"><table><thead><tr><th style="width:46%">Componente</th><th style="width:18%">Nota</th><th style="width:16%">Peso</th><th style="width:20%">Aporte</th></tr></thead><tbody>
+<tr><td><b>Trabajo en la entrega</b><span class="ev">Nota del proyecto 0,00 ajustada por su aporte del 14,6 %</span></td><td class="n">0,00 <span>/ 10</span></td><td class="n">80 %</td><td class="n"><b>0,000</b></td></tr>
+<tr><td><b>Cuestionario del SGA</b><span class="ev">Examen final práctico</span></td><td class="n"><span>pendiente</span></td><td class="n">20 %</td><td class="n"><span>pendiente</span></td></tr>
+</tbody><tfoot><tr><td>Nota final</td><td></td><td></td><td class="n"><span>0,000 + cuestionario × 0,20</span></td></tr></tfoot></table></div>
+<h3>Retroalimentación</h3>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Bedon Viteri Keyla Betzabe:
 
 Evaluacion final del Proyecto Fin de Curso -- Aplicaciones Distribuidas (ISR-701).
 Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit ff6f68ba del 12 de septiembre de 2026.
@@ -50,19 +178,17 @@ Detalle de la calificacion:
 De los 51 elementos exigidos al proyecto, 34 estaban resueltos y verificados, y 17 quedaban pendientes.
 Suma de los elementos calificados: 5,40 sobre 10.
 Producto de los factores: 0,000003.
-Nota del equipo: 0,00 sobre 10.
+Nota del proyecto: 0,00 sobre 10.
 Su aporte a esta entrega: 14,6 % del trabajo, frente a un reparto equitativo del 25 %.
 Nota de su trabajo: 0,00 sobre 10.
 Aporte del trabajo (80 %): 0,000.
 Nota del cuestionario del SGA (20 %): pendiente de registrar.
 Nota final: 0,000 mas su nota del cuestionario multiplicada por 0,20.
 
-Ing. Gleiston Ciceron Guerrero Ulloa, PhD</pre>
-<p class="pie">Evaluacion sobre el commit ff6f68ba del repositorio del equipo, verificando el contenido archivo por archivo, compilando el documento desde copia limpia y ejecutando las pruebas y los guiones de analisis.</p>
-</div>
-<script>var b=document.querySelector('.copy'),r=document.getElementById('r');
-b.addEventListener('click',function(){var t=r.innerText;
-var ok=function(){b.textContent='Copiado';b.classList.add('ok');setTimeout(function(){b.textContent='Copiar informe';b.classList.remove('ok')},1600)};
+Ing. Gleiston Ciceron Guerrero Ulloa, PhD</pre></div>
+<div class="foot">Evaluación sobre el commit ff6f68ba del repositorio del equipo, verificando el contenido archivo por archivo, compilando el documento desde copia limpia y ejecutando las pruebas y los guiones de análisis.</div>
+</div><script>document.querySelectorAll('.fb button').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentElement.querySelector('pre').innerText;
+var ok=function(){b.textContent='Copiado';b.classList.add('done');setTimeout(function(){b.textContent='Copiar';b.classList.remove('done')},1600)};
 function f(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
-if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,f)}else{f()}});</script>
-</body></html>
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,f)}else{f()}});});</script></body></html>
