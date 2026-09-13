@@ -1,0 +1,202 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Examen final del PFC — SGB-SaaS</title><style>body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f5;color:#1e2a24}
+header{background:#006633;color:#fff;padding:22px 36px}header h1{margin:0;font-size:22px}
+header p{margin:6px 0 0;opacity:.9;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:24px 36px 70px}
+h2{color:#006633;border-bottom:3px solid #CC9900;padding-bottom:6px;margin-top:44px}
+h3{color:#006633;margin-top:30px}
+a{color:#006633}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th,td{border:1px solid #cfd8d3;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#e3efe8}
+td.n,th.n{text-align:right;white-space:nowrap}
+.box{position:relative;background:#fff;border:1px solid #cfd8d3;border-left:5px solid #006633;border-radius:6px;margin:14px 0 6px}
+pre{margin:0;padding:18px 16px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:Consolas,Courier New,monospace;font-size:12.6px;line-height:1.45;max-height:640px;overflow:auto}
+.copy{position:sticky;top:8px;float:right;margin:8px 10px 0 0;background:#CC9900;color:#1e2a24;border:0;border-radius:4px;padding:7px 14px;font-weight:600;cursor:pointer;z-index:2}
+.copy:hover{background:#b58600}
+.doc{background:#fff8e6;border:1px solid #e6c766;border-radius:6px;padding:12px 16px;margin:0 0 26px;font-size:13.5px}
+.doc b{color:#7a5a00}
+.lv100{background:#d7f0dc}.lv75{background:#e9f5df}.lv50{background:#fff3cd}.lv25{background:#fde2d2}.lv0{background:#f8d0d0}
+.nota{font-size:26px;font-weight:800;color:#006633}.nota.cero{color:#a32020}
+.info{background:#fff;border:1px solid #cfd8d3;border-left:5px solid #CC9900;border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13.5px}
+.meta{font-size:12.5px;color:#555}
+.badge{display:inline-block;background:#006633;color:#fff;border-radius:12px;padding:2px 10px;font-size:12px;margin-left:8px}
+.prov{color:#7a5a00;font-weight:600}
+@media(max-width:700px){main{padding:16px}table{font-size:12px}th,td{padding:4px 5px}}</style><script>function cp(id,btn){var t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(function(){btn.textContent='Copiado';setTimeout(function(){btn.textContent='Copiar informe'},1800)});}</script></head><body><header><h1>Examen final del PFC — SGB-SaaS</h1><p>Aplicaciones Web (Quinto nivel) · UTEQ · Corte: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19 · Docente: Dr. Gleiston C. Guerrero Ulloa, Ph.D.</p></header><main>
+<p><a href="index.html">&larr; Volver al índice</a></p>
+<p class="meta">Sistema de Gestión Bibliotecaria Web &middot; <a href="https://github.com/mloorm14/sgb-saas">https://github.com/mloorm14/sgb-saas</a><br>Commit evaluado: <code>fc27566e</code> (2026-09-11 19:52). El tag v1.0.0 se movió el 12-sep, después del corte; evalúo el último commit dentro del plazo.</p>
+<div class="info"><b>Criterios de piso.</b> La extensión del PDF que suben al SGA no se penaliza. Lo que exijo es que el PDF traiga la URL del repositorio y que el repositorio abra sin pedir sesión.<ul>
+<li><b>Piso 1 — URL del repositorio accesible en el PDF del SGA — CUMPLE.</b> Las carátulas llevan la URL y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.</li>
+<li><b>Piso 2 — el informe se regenera desde el README — CUMPLE.</b> informe-final.pdf, 113 páginas, cero referencias sin resolver; el README y el Makefile documentan la compilación.</li>
+<li><b>Piso 3 — autoría limpia — CUMPLE.</b> Tres identidades institucionales, sin suplantación.</li>
+</ul></div>
+<h2>Hoja de cálculo</h2>
+<table><tr><th>#</th><th>Punto</th><th class="n">Peso</th><th class="n">Nivel</th><th class="n">Puntos</th><th class="n">Factor</th><th>Qué encontré</th></tr>
+<tr><td class="n">1</td><td>El SUS: respaldarlo o retirarlo</td><td class="n">1,0</td><td class="n lv50">A medias</td><td class="n">0,500</td><td class="n">0,933</td><td>El informe ya no publica la cifra como resultado principal, pero no encontré ni el instrumento original ni los consentimientos versionados, así que el camino elegido no queda cerrado. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">2</td><td>main reconciliada y tag bien puesto</td><td class="n">0,7</td><td class="n lv50">A medias</td><td class="n">0,350</td><td class="n">0,953</td><td>main absorbió el trabajo de la rama de demostración: los 304 commits de la ventana están en la historia que evalúo. El tag, en cambio, quedó fuera de plazo.</td></tr>
+<tr><td class="n">3</td><td>Una sola cifra de cobertura y de SUS</td><td class="n">0,6</td><td class="n lv50">A medias</td><td class="n">0,300</td><td class="n">0,959</td><td>La cobertura del informe ya coincide con el XML de cierre, pero conviven tres corridas distintas en docs/mediciones/jacoco (55,25 %, 55,07 % y 65,57 %) sin que el documento diga cuál manda.</td></tr>
+<tr><td class="n">4</td><td>Procedimientos almacenados con el mecanismo exigido</td><td class="n">0,8</td><td class="n lv25">Apenas</td><td class="n">0,200</td><td class="n">0,895</td><td>Hay 8 @Procedure y 7 @NamedStoredProcedureQuery, frente a cero. Pero siguen 42 consultas con nativeQuery=true: la mayoría del acceso no usa el mecanismo exigido.</td></tr>
+<tr><td class="n">5</td><td>Cobertura sobre el 70 por ciento</td><td class="n">0,6</td><td class="n lv25">Apenas</td><td class="n">0,150</td><td class="n">0,920</td><td>La mejor corrida versionada da 65,57 % de líneas y 39,97 % de ramas. Servicios y controladores siguen por debajo del umbral en ramas.</td></tr>
+<tr><td class="n">6</td><td>Hashes rotos corregidos</td><td class="n">0,3</td><td class="n lv75">Casi</td><td class="n">0,225</td><td class="n">0,991</td><td>DATA-PROVENANCE y la bitácora se rehicieron. No pude confirmar uno a uno los cuatro hashes señalados. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">7</td><td>Cuenta demo con el rol que dicen</td><td class="n">0,4</td><td class="n lv50">A medias</td><td class="n">0,200</td><td class="n">0,973</td><td>El backend responde UP y el frontend carga, pero no pude iniciar sesión con la cuenta demo para comprobar el rol del token. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">8</td><td>Figuras dentro del documento</td><td class="n">0,5</td><td class="n lv75">Casi</td><td class="n">0,375</td><td class="n">0,986</td><td>El .tex declara 8 figuras con 7 includegraphics, y existen los C4 de los tres niveles más el DER. El diagrama de caja del SUS depende del punto 1.</td></tr>
+<tr><td class="n">9</td><td>Índices — etiquetas — desbordes</td><td class="n">0,5</td><td class="n lv75">Casi</td><td class="n">0,375</td><td class="n">0,986</td><td>Solo queda 1 etiqueta huérfana de 76, frente a 51. Los índices están. No pude contar los desbordes del .log. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">10</td><td>Zenodo: dataset y software</td><td class="n">0,5</td><td class="n lv100">Completo</td><td class="n">0,500</td><td class="n">1,000</td><td>Dos DOI distintos y vigentes: 10.5281/zenodo.22636466 declarado en CITATION.cff y 10.5281/zenodo.21712467 para el registro anterior.</td></tr>
+<tr><td class="n">11</td><td>CRediT y digest</td><td class="n">0,4</td><td class="n lv75">Casi</td><td class="n">0,300</td><td class="n">0,989</td><td>CONTRIBUTORS.md está y el CITATION.cff declara el DOI. No pude confirmar que los catorce roles lleven los conteos reales de commits. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">12</td><td>Comparaciones múltiples y citas de Peffers y Hevner</td><td class="n">0,3</td><td class="n lv75">Casi</td><td class="n">0,225</td><td class="n">0,991</td><td>La bibliografía subió a 44 claves citadas. No pude confirmar la corrección por comparaciones múltiples en el texto. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">13</td><td>Cuaderno ejecutado</td><td class="n">0,3</td><td class="n lv100">Completo</td><td class="n">0,300</td><td class="n">1,000</td><td>El Makefile incorpora la generación de documentos y el cuaderno de análisis figura con sus salidas. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">14</td><td>Higiene del repositorio</td><td class="n">0,6</td><td class="n lv50">A medias</td><td class="n">0,300</td><td class="n">0,959</td><td>El árbol de trabajo bajó a 970 archivos y desaparecieron los .msg de la raíz. Siguen 66 ramas vivas reducidas a las que usan, pero no pude confirmar la rotación declarada de la credencial de Neon. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">E1</td><td>Nombres del código en inglés</td><td class="n">1,0</td><td class="n lv25">Apenas</td><td class="n">0,250</td><td class="n">0,871</td><td>164 de 277 tipos (59,2 %) y 713 de 1.197 métodos (59,6 %) siguen con raíz española. Bajó del 81,2 %, pero sigue muy por encima del 30 %.</td></tr>
+<tr><td class="n">E2</td><td>Comentarios que generan documentación (Javadoc)</td><td class="n">1,0</td><td class="n lv75">Casi</td><td class="n">0,750</td><td class="n">0,972</td><td>361 de 485 métodos públicos (74,4 %) documentados, con 643 @param, 352 @return y 74 @throws. Venían de dos métodos en total.</td></tr>
+<tr><td class="n">E3</td><td>Figuras en inglés</td><td class="n">0,5</td><td class="n lv25">Apenas</td><td class="n">0,125</td><td class="n">0,933</td><td>Los C4 se regeneraron desde workspace.dsl, pero los gráficos de resultados siguen rotulados en español. <span class="prov">(prov.)</span></td></tr>
+<tr><th colspan="4" class="n">S = suma de puntos</th><th class="n">5,425</th><th colspan="2"></th></tr>
+<tr><th colspan="5" class="n">M = multiplicación de todos los factores</th><th class="n">0,4882</th><th></th></tr>
+<tr><th colspan="4" class="n">Nota = M × S</th><th colspan="3" class="n">2,65 / 10</th></tr>
+</table>
+<p class="nota">2,65 / 10</p>
+<h2>Informes individuales</h2>
+<p class="meta">Cada recuadro se copia entero con su botón y está listo para pegar en el espacio del estudiante en el SGA.</p>
+<h3>Cajas Ibarra Irvin Marcelo<span class="badge">2,65 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SGB_SAAS_1',this)">Copiar informe</button><pre id="SGB_SAAS_1">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Cajas Ibarra Irvin Marcelo
+Equipo: SGB-SaaS -- Sistema de Gestión Bibliotecaria Web
+Repositorio: https://github.com/mloorm14/sgb-saas
+Commit evaluado: fc27566e (2026-09-11 19:52)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 17 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 se movió el 12-sep, después del corte; evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. Las carátulas llevan la URL y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. informe-final.pdf, 113 páginas, cero referencias sin resolver; el README y el Makefile documentan la compilación.
+  Piso 3 — autoría limpia: CUMPLE. Tres identidades institucionales, sin suplantación.
+
+LO QUE SI RESOLVIERON
+  Punto 10 (Zenodo: dataset y software): Dos DOI distintos y vigentes: 10.5281/zenodo.22636466 declarado en CITATION.cff y 10.5281/zenodo.21712467 para el registro anterior.
+  Punto 13 (Cuaderno ejecutado): El Makefile incorpora la generación de documentos y el cuaderno de análisis figura con sus salidas.
+
+LO QUE LES COSTO LA NOTA
+  Punto 1 (El SUS: respaldarlo o retirarlo) quedo en A medias: El informe ya no publica la cifra como resultado principal, pero no encontré ni el instrumento original ni los consentimientos versionados, así que el camino elegido no queda cerrado.
+  Punto 2 (main reconciliada y tag bien puesto) quedo en A medias: main absorbió el trabajo de la rama de demostración: los 304 commits de la ventana están en la historia que evalúo. El tag, en cambio, quedó fuera de plazo.
+  Punto 3 (Una sola cifra de cobertura y de SUS) quedo en A medias: La cobertura del informe ya coincide con el XML de cierre, pero conviven tres corridas distintas en docs/mediciones/jacoco (55,25 %, 55,07 % y 65,57 %) sin que el documento diga cuál manda.
+  Punto 4 (Procedimientos almacenados con el mecanismo exigido) quedo en Apenas: Hay 8 @Procedure y 7 @NamedStoredProcedureQuery, frente a cero. Pero siguen 42 consultas con nativeQuery=true: la mayoría del acceso no usa el mecanismo exigido.
+  Punto 5 (Cobertura sobre el 70 por ciento) quedo en Apenas: La mejor corrida versionada da 65,57 % de líneas y 39,97 % de ramas. Servicios y controladores siguen por debajo del umbral en ramas.
+  Punto 7 (Cuenta demo con el rol que dicen) quedo en A medias: El backend responde UP y el frontend carga, pero no pude iniciar sesión con la cuenta demo para comprobar el rol del token.
+  Punto 14 (Higiene del repositorio) quedo en A medias: El árbol de trabajo bajó a 970 archivos y desaparecieron los .msg de la raíz. Siguen 66 ramas vivas reducidas a las que usan, pero no pude confirmar la rotación declarada de la credencial de Neon.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 136 commits, 42.652 lineas de fuente propia y 7 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: icajasi@msuteq.edu.ec.
+136 commits en siete días: el mayor número de commits del curso en esta ventana.
+Su cuestionario del examen final en el SGA quedo en 9,94 sobre 10.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 5,42 sobre 10.
+CALIFICACION: 2,65 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 136 commits, 42.652 líneas y 7 días activos (icajasi@msuteq.edu.ec). Nota del equipo 2,65 (suma 5,42, multiplicador 0,4882). Puntos con nivel provisional: 1, 6, 7, 9, 11, 12, 13, 14, E3. </div>
+<h3>Loor Medranda Marlon Taylor<span class="badge">2,65 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SGB_SAAS_2',this)">Copiar informe</button><pre id="SGB_SAAS_2">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Loor Medranda Marlon Taylor
+Equipo: SGB-SaaS -- Sistema de Gestión Bibliotecaria Web
+Repositorio: https://github.com/mloorm14/sgb-saas
+Commit evaluado: fc27566e (2026-09-11 19:52)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 17 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 se movió el 12-sep, después del corte; evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. Las carátulas llevan la URL y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. informe-final.pdf, 113 páginas, cero referencias sin resolver; el README y el Makefile documentan la compilación.
+  Piso 3 — autoría limpia: CUMPLE. Tres identidades institucionales, sin suplantación.
+
+LO QUE SI RESOLVIERON
+  Punto 10 (Zenodo: dataset y software): Dos DOI distintos y vigentes: 10.5281/zenodo.22636466 declarado en CITATION.cff y 10.5281/zenodo.21712467 para el registro anterior.
+  Punto 13 (Cuaderno ejecutado): El Makefile incorpora la generación de documentos y el cuaderno de análisis figura con sus salidas.
+
+LO QUE LES COSTO LA NOTA
+  Punto 1 (El SUS: respaldarlo o retirarlo) quedo en A medias: El informe ya no publica la cifra como resultado principal, pero no encontré ni el instrumento original ni los consentimientos versionados, así que el camino elegido no queda cerrado.
+  Punto 2 (main reconciliada y tag bien puesto) quedo en A medias: main absorbió el trabajo de la rama de demostración: los 304 commits de la ventana están en la historia que evalúo. El tag, en cambio, quedó fuera de plazo.
+  Punto 3 (Una sola cifra de cobertura y de SUS) quedo en A medias: La cobertura del informe ya coincide con el XML de cierre, pero conviven tres corridas distintas en docs/mediciones/jacoco (55,25 %, 55,07 % y 65,57 %) sin que el documento diga cuál manda.
+  Punto 4 (Procedimientos almacenados con el mecanismo exigido) quedo en Apenas: Hay 8 @Procedure y 7 @NamedStoredProcedureQuery, frente a cero. Pero siguen 42 consultas con nativeQuery=true: la mayoría del acceso no usa el mecanismo exigido.
+  Punto 5 (Cobertura sobre el 70 por ciento) quedo en Apenas: La mejor corrida versionada da 65,57 % de líneas y 39,97 % de ramas. Servicios y controladores siguen por debajo del umbral en ramas.
+  Punto 7 (Cuenta demo con el rol que dicen) quedo en A medias: El backend responde UP y el frontend carga, pero no pude iniciar sesión con la cuenta demo para comprobar el rol del token.
+  Punto 14 (Higiene del repositorio) quedo en A medias: El árbol de trabajo bajó a 970 archivos y desaparecieron los .msg de la raíz. Siguen 66 ramas vivas reducidas a las que usan, pero no pude confirmar la rotación declarada de la credencial de Neon.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 63 commits, 398.502 lineas de fuente propia y 8 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: mloorm14@uteq.edu.ec.
+63 commits, ocho días activos y el mayor volumen de líneas del equipo.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 5,42 sobre 10.
+CALIFICACION: 2,65 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 63 commits, 398.502 líneas y 8 días activos (mloorm14@uteq.edu.ec). Nota del equipo 2,65 (suma 5,42, multiplicador 0,4882). Puntos con nivel provisional: 1, 6, 7, 9, 11, 12, 13, 14, E3. </div>
+<h3>Panamá Murillo Moisés Antonio<span class="badge">2,65 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SGB_SAAS_3',this)">Copiar informe</button><pre id="SGB_SAAS_3">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Panamá Murillo Moisés Antonio
+Equipo: SGB-SaaS -- Sistema de Gestión Bibliotecaria Web
+Repositorio: https://github.com/mloorm14/sgb-saas
+Commit evaluado: fc27566e (2026-09-11 19:52)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 17 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 se movió el 12-sep, después del corte; evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. Las carátulas llevan la URL y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. informe-final.pdf, 113 páginas, cero referencias sin resolver; el README y el Makefile documentan la compilación.
+  Piso 3 — autoría limpia: CUMPLE. Tres identidades institucionales, sin suplantación.
+
+LO QUE SI RESOLVIERON
+  Punto 10 (Zenodo: dataset y software): Dos DOI distintos y vigentes: 10.5281/zenodo.22636466 declarado en CITATION.cff y 10.5281/zenodo.21712467 para el registro anterior.
+  Punto 13 (Cuaderno ejecutado): El Makefile incorpora la generación de documentos y el cuaderno de análisis figura con sus salidas.
+
+LO QUE LES COSTO LA NOTA
+  Punto 1 (El SUS: respaldarlo o retirarlo) quedo en A medias: El informe ya no publica la cifra como resultado principal, pero no encontré ni el instrumento original ni los consentimientos versionados, así que el camino elegido no queda cerrado.
+  Punto 2 (main reconciliada y tag bien puesto) quedo en A medias: main absorbió el trabajo de la rama de demostración: los 304 commits de la ventana están en la historia que evalúo. El tag, en cambio, quedó fuera de plazo.
+  Punto 3 (Una sola cifra de cobertura y de SUS) quedo en A medias: La cobertura del informe ya coincide con el XML de cierre, pero conviven tres corridas distintas en docs/mediciones/jacoco (55,25 %, 55,07 % y 65,57 %) sin que el documento diga cuál manda.
+  Punto 4 (Procedimientos almacenados con el mecanismo exigido) quedo en Apenas: Hay 8 @Procedure y 7 @NamedStoredProcedureQuery, frente a cero. Pero siguen 42 consultas con nativeQuery=true: la mayoría del acceso no usa el mecanismo exigido.
+  Punto 5 (Cobertura sobre el 70 por ciento) quedo en Apenas: La mejor corrida versionada da 65,57 % de líneas y 39,97 % de ramas. Servicios y controladores siguen por debajo del umbral en ramas.
+  Punto 7 (Cuenta demo con el rol que dicen) quedo en A medias: El backend responde UP y el frontend carga, pero no pude iniciar sesión con la cuenta demo para comprobar el rol del token.
+  Punto 14 (Higiene del repositorio) quedo en A medias: El árbol de trabajo bajó a 970 archivos y desaparecieron los .msg de la raíz. Siguen 66 ramas vivas reducidas a las que usan, pero no pude confirmar la rotación declarada de la credencial de Neon.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 64 commits, 10.169 lineas de fuente propia y 4 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: mpanamam@uteq.edu.ec.
+64 commits en cuatro días. Buen número de commits, con el menor volumen de código del equipo.
+Su cuestionario del examen final en el SGA quedo en 8,56 sobre 10.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 5,42 sobre 10.
+CALIFICACION: 2,65 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 64 commits, 10.169 líneas y 4 días activos (mpanamam@uteq.edu.ec). Nota del equipo 2,65 (suma 5,42, multiplicador 0,4882). Puntos con nivel provisional: 1, 6, 7, 9, 11, 12, 13, 14, E3. </div>
+<p class="meta">Además de las de Cajas (9,94) y Panamá (8,56), recibí una captura con 8,63 sin identificación del estudiante.</p>
+</main></body></html>

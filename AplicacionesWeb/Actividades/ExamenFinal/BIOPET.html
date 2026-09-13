@@ -1,0 +1,215 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Examen final del PFC — BIOPET</title><style>body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f5;color:#1e2a24}
+header{background:#006633;color:#fff;padding:22px 36px}header h1{margin:0;font-size:22px}
+header p{margin:6px 0 0;opacity:.9;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:24px 36px 70px}
+h2{color:#006633;border-bottom:3px solid #CC9900;padding-bottom:6px;margin-top:44px}
+h3{color:#006633;margin-top:30px}
+a{color:#006633}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th,td{border:1px solid #cfd8d3;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#e3efe8}
+td.n,th.n{text-align:right;white-space:nowrap}
+.box{position:relative;background:#fff;border:1px solid #cfd8d3;border-left:5px solid #006633;border-radius:6px;margin:14px 0 6px}
+pre{margin:0;padding:18px 16px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:Consolas,Courier New,monospace;font-size:12.6px;line-height:1.45;max-height:640px;overflow:auto}
+.copy{position:sticky;top:8px;float:right;margin:8px 10px 0 0;background:#CC9900;color:#1e2a24;border:0;border-radius:4px;padding:7px 14px;font-weight:600;cursor:pointer;z-index:2}
+.copy:hover{background:#b58600}
+.doc{background:#fff8e6;border:1px solid #e6c766;border-radius:6px;padding:12px 16px;margin:0 0 26px;font-size:13.5px}
+.doc b{color:#7a5a00}
+.lv100{background:#d7f0dc}.lv75{background:#e9f5df}.lv50{background:#fff3cd}.lv25{background:#fde2d2}.lv0{background:#f8d0d0}
+.nota{font-size:26px;font-weight:800;color:#006633}.nota.cero{color:#a32020}
+.info{background:#fff;border:1px solid #cfd8d3;border-left:5px solid #CC9900;border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13.5px}
+.meta{font-size:12.5px;color:#555}
+.badge{display:inline-block;background:#006633;color:#fff;border-radius:12px;padding:2px 10px;font-size:12px;margin-left:8px}
+.prov{color:#7a5a00;font-weight:600}
+@media(max-width:700px){main{padding:16px}table{font-size:12px}th,td{padding:4px 5px}}</style><script>function cp(id,btn){var t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(function(){btn.textContent='Copiado';setTimeout(function(){btn.textContent='Copiar informe'},1800)});}</script></head><body><header><h1>Examen final del PFC — BIOPET</h1><p>Aplicaciones Web (Quinto nivel) · UTEQ · Corte: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19 · Docente: Dr. Gleiston C. Guerrero Ulloa, Ph.D.</p></header><main>
+<p><a href="index.html">&larr; Volver al índice</a></p>
+<p class="meta">Sistema veterinario &middot; <a href="https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET">https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET</a><br>Commit evaluado: <code>d63d5e30</code> (2026-09-11 22:50). El tag v1.0.0 se movió el 12-sep, después del corte; evalúo el último commit dentro del plazo.</p>
+<div class="info"><b>Criterios de piso.</b> La extensión del PDF que suben al SGA no se penaliza. Lo que exijo es que el PDF traiga la URL del repositorio y que el repositorio abra sin pedir sesión.<ul>
+<li><b>Piso 1 — URL del repositorio accesible en el PDF del SGA — CUMPLE.</b> Las tres carátulas llevan la URL y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.</li>
+<li><b>Piso 2 — el informe se regenera desde el README — CUMPLE.</b> informe-final-v1.0.0.pdf, 102 páginas, cero referencias sin resolver; el README documenta la compilación.</li>
+<li><b>Piso 3 — autoría limpia — CUMPLE.</b> Tres identidades, las tres con correo institucional.</li>
+</ul></div>
+<h2>Hoja de cálculo</h2>
+<table><tr><th>#</th><th>Punto</th><th class="n">Peso</th><th class="n">Nivel</th><th class="n">Puntos</th><th class="n">Factor</th><th>Qué encontré</th></tr>
+<tr><td class="n">1</td><td>Las tres figuras obsoletas regeneradas</td><td class="n">0,8</td><td class="n lv75">Casi</td><td class="n">0,600</td><td class="n">0,977</td><td>El informe pasó de 3 a 42 imágenes y el capítulo de resultados se rehízo con la cobertura actual (91,80 % líneas / 79,39 % ramas). Pude confirmar la regeneración del bloque de JaCoCo y de maven; la del SUS no la pude cruzar contra su corrida. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">2</td><td>El tag v1.0.0 bien declarado</td><td class="n">0,5</td><td class="n lv100">Completo</td><td class="n">0,500</td><td class="n">1,000</td><td>CITATION.cff ya declara v1.0.0 y el repositorio lo tiene creado. Desapareció la afirmación de que no existía.</td></tr>
+<tr><td class="n">3</td><td>ORCID de los tres</td><td class="n">0,4</td><td class="n lv100">Completo</td><td class="n">0,400</td><td class="n">1,000</td><td>Los tres ORCID constan en la carátula del SGA y en el repositorio: 0009-0007-8303-2137, 0009-0007-2206-3941 y 0009-0000-1227-3258.</td></tr>
+<tr><td class="n">4</td><td>Alcance del escaneo ZAP</td><td class="n">0,5</td><td class="n lv100">Completo</td><td class="n">0,500</td><td class="n">1,000</td><td>Añadieron zap-authenticated-local-report.json y el script run-zap-authenticated-local.sh: relanzaron el escaneo autenticado, que era el camino A.</td></tr>
+<tr><td class="n">5</td><td>Cabeceras de seguridad en el frontend</td><td class="n">0,4</td><td class="n lv100">Completo</td><td class="n">0,400</td><td class="n">1,000</td><td>Comprobado en vivo sobre biopet-frontend.onrender.com: las cuatro cabeceras presentes, con HSTS en modo preload.</td></tr>
+<tr><td class="n">6</td><td>Secreto JWT fuera de los archivos</td><td class="n">0,5</td><td class="n lv50">A medias</td><td class="n">0,250</td><td class="n">0,966</td><td>El application.yml de producción ya toma el valor del entorno, pero el de pruebas y JwtServiceTest siguen con un secreto escrito en el archivo. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">7</td><td>Bitácora de observaciones al día</td><td class="n">0,5</td><td class="n lv75">Casi</td><td class="n">0,375</td><td class="n">0,986</td><td>La bitácora se actualizó y el Anexo A ya no afirma lo que no es. No pude comprobar que los nueve commits pendientes estén todos registrados con hash existente. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">8</td><td>make all que mide de verdad</td><td class="n">0,6</td><td class="n lv100">Completo</td><td class="n">0,600</td><td class="n">1,000</td><td>El Makefile ya trae los objetivos pdf, k6/bench, lighthouse, perf, stats y notebooks. make all encadena la medición completa.</td></tr>
+<tr><td class="n">9</td><td>Resúmenes de 200 a 250 palabras</td><td class="n">0,3</td><td class="n lv100">Completo</td><td class="n">0,300</td><td class="n">1,000</td><td>Resumen 192 y abstract 215 palabras: dentro del rango con el margen de conteo del PDF (venían de 411 y 357).</td></tr>
+<tr><td class="n">10</td><td>Las nueve declaraciones</td><td class="n">0,3</td><td class="n lv75">Casi</td><td class="n">0,225</td><td class="n">0,991</td><td>El bloque de declaraciones se amplió, pero no pude confirmar que estén las nueve completas. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">11</td><td>C4 desde Structurizr</td><td class="n">0,7</td><td class="n lv100">Completo</td><td class="n">0,700</td><td class="n">1,000</td><td>docs/diagrams/workspace.dsl versionado y los tres niveles C4 generados desde él, incluido el nivel 1 que faltaba.</td></tr>
+<tr><td class="n">12</td><td>Figuras que desaparecen</td><td class="n">0,3</td><td class="n lv100">Completo</td><td class="n">0,300</td><td class="n">1,000</td><td>Las 42 imágenes del PDF incluyen ya el panel de rendimiento y el de Lighthouse: ninguna figura declarada falta.</td></tr>
+<tr><td class="n">13</td><td>Etiquetas huérfanas</td><td class="n">0,4</td><td class="n lv25">Apenas</td><td class="n">0,100</td><td class="n">0,946</td><td>Quedan 112 etiquetas sin referenciar de 277. Bajaron algo, pero siguen muy por encima del umbral.</td></tr>
+<tr><td class="n">14</td><td>Wilcoxon bien reportado</td><td class="n">0,4</td><td class="n lv75">Casi</td><td class="n">0,300</td><td class="n">0,989</td><td>Los p-valores ya van en notación científica. No pude confirmar que la corrección por comparaciones múltiples esté nombrada en el texto. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">15</td><td>SRS firmado</td><td class="n">0,6</td><td class="n lv100">Completo</td><td class="n">0,600</td><td class="n">1,000</td><td>docs/requisitos/SRS-v1.0.0.pdf existe y lleva el bloque de firma del docente-director, junto al SRS-v1.0.0-para-firma.pdf.</td></tr>
+<tr><td class="n">16</td><td>CITATION.cff y DATA-DICTIONARY completos</td><td class="n">0,3</td><td class="n lv100">Completo</td><td class="n">0,300</td><td class="n">1,000</td><td>CITATION.cff declara los dos DOI de Zenodo y documenta el digest del artefacto; el diccionario de datos cubre las columnas de jacoco.csv.</td></tr>
+<tr><td class="n">17</td><td>Limpieza del repositorio</td><td class="n">0,4</td><td class="n lv50">A medias</td><td class="n">0,200</td><td class="n">0,973</td><td>El repositorio bajó de 238 MB a 320 MB de clon con historial, pero el árbol de trabajo está más ordenado. Quedan restos de caché y corridas antiguas. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">E1</td><td>Nombres del código en inglés</td><td class="n">0,8</td><td class="n lv50">A medias</td><td class="n">0,400</td><td class="n">0,946</td><td>13 de 74 tipos (17,6 %) y 76 de 370 métodos (20,5 %) llevan palabra en español. Venían de 53 % de clases: es la mejor mejora del curso en este punto, pero todavía sobre el 15 %.</td></tr>
+<tr><td class="n">E2</td><td>Comentarios que generan documentación (Javadoc)</td><td class="n">0,8</td><td class="n lv75">Casi</td><td class="n">0,600</td><td class="n">0,977</td><td>105 de 137 métodos públicos (76,6 %) documentados, con 368 @param, 93 @return y 91 @throws. Venían de cero.</td></tr>
+<tr><td class="n">E3</td><td>Figuras en inglés</td><td class="n">0,5</td><td class="n lv50">A medias</td><td class="n">0,250</td><td class="n">0,966</td><td>Parte de los diagramas se regeneraron desde el .dsl en inglés, pero el DER y varios gráficos siguen en español. <span class="prov">(prov.)</span></td></tr>
+<tr><th colspan="4" class="n">S = suma de puntos</th><th class="n">7,900</th><th colspan="2"></th></tr>
+<tr><th colspan="5" class="n">M = multiplicación de todos los factores</th><th class="n">0,7494</th><th></th></tr>
+<tr><th colspan="4" class="n">Nota = M × S</th><th colspan="3" class="n">5,92 / 10</th></tr>
+</table>
+<p class="nota">5,92 / 10</p>
+<h2>Informes individuales</h2>
+<p class="meta">Cada recuadro se copia entero con su botón y está listo para pegar en el espacio del estudiante en el SGA.</p>
+<h3>Beltrán Montiel Fred Adrián<span class="badge">5,92 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('BIOPET_1',this)">Copiar informe</button><pre id="BIOPET_1">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Beltrán Montiel Fred Adrián
+Equipo: BIOPET -- Sistema veterinario
+Repositorio: https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET
+Commit evaluado: d63d5e30 (2026-09-11 22:50)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 20 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 se movió el 12-sep, después del corte; evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. Las tres carátulas llevan la URL y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. informe-final-v1.0.0.pdf, 102 páginas, cero referencias sin resolver; el README documenta la compilación.
+  Piso 3 — autoría limpia: CUMPLE. Tres identidades, las tres con correo institucional.
+
+LO QUE SI RESOLVIERON
+  Punto 2 (El tag v1.0.0 bien declarado): CITATION.cff ya declara v1.0.0 y el repositorio lo tiene creado. Desapareció la afirmación de que no existía.
+  Punto 3 (ORCID de los tres): Los tres ORCID constan en la carátula del SGA y en el repositorio: 0009-0007-8303-2137, 0009-0007-2206-3941 y 0009-0000-1227-3258.
+  Punto 4 (Alcance del escaneo ZAP): Añadieron zap-authenticated-local-report.json y el script run-zap-authenticated-local.sh: relanzaron el escaneo autenticado, que era el camino A.
+  Punto 5 (Cabeceras de seguridad en el frontend): Comprobado en vivo sobre biopet-frontend.onrender.com: las cuatro cabeceras presentes, con HSTS en modo preload.
+  Punto 8 (make all que mide de verdad): El Makefile ya trae los objetivos pdf, k6/bench, lighthouse, perf, stats y notebooks. make all encadena la medición completa.
+  Punto 9 (Resúmenes de 200 a 250 palabras): Resumen 192 y abstract 215 palabras: dentro del rango con el margen de conteo del PDF (venían de 411 y 357).
+  Punto 11 (C4 desde Structurizr): docs/diagrams/workspace.dsl versionado y los tres niveles C4 generados desde él, incluido el nivel 1 que faltaba.
+  Punto 12 (Figuras que desaparecen): Las 42 imágenes del PDF incluyen ya el panel de rendimiento y el de Lighthouse: ninguna figura declarada falta.
+
+LO QUE LES COSTO LA NOTA
+  Punto 6 (Secreto JWT fuera de los archivos) quedo en A medias: El application.yml de producción ya toma el valor del entorno, pero el de pruebas y JwtServiceTest siguen con un secreto escrito en el archivo.
+  Punto 13 (Etiquetas huérfanas) quedo en Apenas: Quedan 112 etiquetas sin referenciar de 277. Bajaron algo, pero siguen muy por encima del umbral.
+  Punto 17 (Limpieza del repositorio) quedo en A medias: El repositorio bajó de 238 MB a 320 MB de clon con historial, pero el árbol de trabajo está más ordenado. Quedan restos de caché y corridas antiguas.
+  Punto E1 (Nombres del código en inglés) quedo en A medias: 13 de 74 tipos (17,6 %) y 76 de 370 métodos (20,5 %) llevan palabra en español. Venían de 53 % de clases: es la mejor mejora del curso en este punto, pero todavía sobre el 15 %.
+  Punto E3 (Figuras en inglés) quedo en A medias: Parte de los diagramas se regeneraron desde el .dsl en inglés, pero el DER y varios gráficos siguen en español.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 34 commits, 733.301 lineas de fuente propia y 2 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: fbeltranm@uteq.edu.ec.
+34 commits y el mayor volumen de líneas, pero concentrado en dos días.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 7,90 sobre 10.
+CALIFICACION: 5,92 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 34 commits, 733.301 líneas y 2 días activos (fbeltranm@uteq.edu.ec). Nota del equipo 5,92 (suma 7,90, multiplicador 0,7494). Puntos con nivel provisional: 1, 6, 7, 10, 14, 17, E3. </div>
+<h3>Mariscal Cabrera Jaime Josué<span class="badge">5,92 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('BIOPET_2',this)">Copiar informe</button><pre id="BIOPET_2">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Mariscal Cabrera Jaime Josué
+Equipo: BIOPET -- Sistema veterinario
+Repositorio: https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET
+Commit evaluado: d63d5e30 (2026-09-11 22:50)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 20 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 se movió el 12-sep, después del corte; evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. Las tres carátulas llevan la URL y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. informe-final-v1.0.0.pdf, 102 páginas, cero referencias sin resolver; el README documenta la compilación.
+  Piso 3 — autoría limpia: CUMPLE. Tres identidades, las tres con correo institucional.
+
+LO QUE SI RESOLVIERON
+  Punto 2 (El tag v1.0.0 bien declarado): CITATION.cff ya declara v1.0.0 y el repositorio lo tiene creado. Desapareció la afirmación de que no existía.
+  Punto 3 (ORCID de los tres): Los tres ORCID constan en la carátula del SGA y en el repositorio: 0009-0007-8303-2137, 0009-0007-2206-3941 y 0009-0000-1227-3258.
+  Punto 4 (Alcance del escaneo ZAP): Añadieron zap-authenticated-local-report.json y el script run-zap-authenticated-local.sh: relanzaron el escaneo autenticado, que era el camino A.
+  Punto 5 (Cabeceras de seguridad en el frontend): Comprobado en vivo sobre biopet-frontend.onrender.com: las cuatro cabeceras presentes, con HSTS en modo preload.
+  Punto 8 (make all que mide de verdad): El Makefile ya trae los objetivos pdf, k6/bench, lighthouse, perf, stats y notebooks. make all encadena la medición completa.
+  Punto 9 (Resúmenes de 200 a 250 palabras): Resumen 192 y abstract 215 palabras: dentro del rango con el margen de conteo del PDF (venían de 411 y 357).
+  Punto 11 (C4 desde Structurizr): docs/diagrams/workspace.dsl versionado y los tres niveles C4 generados desde él, incluido el nivel 1 que faltaba.
+  Punto 12 (Figuras que desaparecen): Las 42 imágenes del PDF incluyen ya el panel de rendimiento y el de Lighthouse: ninguna figura declarada falta.
+
+LO QUE LES COSTO LA NOTA
+  Punto 6 (Secreto JWT fuera de los archivos) quedo en A medias: El application.yml de producción ya toma el valor del entorno, pero el de pruebas y JwtServiceTest siguen con un secreto escrito en el archivo.
+  Punto 13 (Etiquetas huérfanas) quedo en Apenas: Quedan 112 etiquetas sin referenciar de 277. Bajaron algo, pero siguen muy por encima del umbral.
+  Punto 17 (Limpieza del repositorio) quedo en A medias: El repositorio bajó de 238 MB a 320 MB de clon con historial, pero el árbol de trabajo está más ordenado. Quedan restos de caché y corridas antiguas.
+  Punto E1 (Nombres del código en inglés) quedo en A medias: 13 de 74 tipos (17,6 %) y 76 de 370 métodos (20,5 %) llevan palabra en español. Venían de 53 % de clases: es la mejor mejora del curso en este punto, pero todavía sobre el 15 %.
+  Punto E3 (Figuras en inglés) quedo en A medias: Parte de los diagramas se regeneraron desde el .dsl en inglés, pero el DER y varios gráficos siguen en español.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 28 commits, 23.390 lineas de fuente propia y 4 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: jmariscalc@uteq.edu.ec.
+28 commits en cuatro días. Es el autor material del informe de 102 páginas que compila limpio.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 7,90 sobre 10.
+CALIFICACION: 5,92 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 28 commits, 23.390 líneas y 4 días activos (jmariscalc@uteq.edu.ec). Nota del equipo 5,92 (suma 7,90, multiplicador 0,7494). Puntos con nivel provisional: 1, 6, 7, 10, 14, 17, E3. </div>
+<h3>Taipe Mora Zaida Melissa<span class="badge">5,92 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('BIOPET_3',this)">Copiar informe</button><pre id="BIOPET_3">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Taipe Mora Zaida Melissa
+Equipo: BIOPET -- Sistema veterinario
+Repositorio: https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET
+Commit evaluado: d63d5e30 (2026-09-11 22:50)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 20 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 se movió el 12-sep, después del corte; evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. Las tres carátulas llevan la URL y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. informe-final-v1.0.0.pdf, 102 páginas, cero referencias sin resolver; el README documenta la compilación.
+  Piso 3 — autoría limpia: CUMPLE. Tres identidades, las tres con correo institucional.
+
+LO QUE SI RESOLVIERON
+  Punto 2 (El tag v1.0.0 bien declarado): CITATION.cff ya declara v1.0.0 y el repositorio lo tiene creado. Desapareció la afirmación de que no existía.
+  Punto 3 (ORCID de los tres): Los tres ORCID constan en la carátula del SGA y en el repositorio: 0009-0007-8303-2137, 0009-0007-2206-3941 y 0009-0000-1227-3258.
+  Punto 4 (Alcance del escaneo ZAP): Añadieron zap-authenticated-local-report.json y el script run-zap-authenticated-local.sh: relanzaron el escaneo autenticado, que era el camino A.
+  Punto 5 (Cabeceras de seguridad en el frontend): Comprobado en vivo sobre biopet-frontend.onrender.com: las cuatro cabeceras presentes, con HSTS en modo preload.
+  Punto 8 (make all que mide de verdad): El Makefile ya trae los objetivos pdf, k6/bench, lighthouse, perf, stats y notebooks. make all encadena la medición completa.
+  Punto 9 (Resúmenes de 200 a 250 palabras): Resumen 192 y abstract 215 palabras: dentro del rango con el margen de conteo del PDF (venían de 411 y 357).
+  Punto 11 (C4 desde Structurizr): docs/diagrams/workspace.dsl versionado y los tres niveles C4 generados desde él, incluido el nivel 1 que faltaba.
+  Punto 12 (Figuras que desaparecen): Las 42 imágenes del PDF incluyen ya el panel de rendimiento y el de Lighthouse: ninguna figura declarada falta.
+
+LO QUE LES COSTO LA NOTA
+  Punto 6 (Secreto JWT fuera de los archivos) quedo en A medias: El application.yml de producción ya toma el valor del entorno, pero el de pruebas y JwtServiceTest siguen con un secreto escrito en el archivo.
+  Punto 13 (Etiquetas huérfanas) quedo en Apenas: Quedan 112 etiquetas sin referenciar de 277. Bajaron algo, pero siguen muy por encima del umbral.
+  Punto 17 (Limpieza del repositorio) quedo en A medias: El repositorio bajó de 238 MB a 320 MB de clon con historial, pero el árbol de trabajo está más ordenado. Quedan restos de caché y corridas antiguas.
+  Punto E1 (Nombres del código en inglés) quedo en A medias: 13 de 74 tipos (17,6 %) y 76 de 370 métodos (20,5 %) llevan palabra en español. Venían de 53 % de clases: es la mejor mejora del curso en este punto, pero todavía sobre el 15 %.
+  Punto E3 (Figuras en inglés) quedo en A medias: Parte de los diagramas se regeneraron desde el .dsl en inglés, pero el DER y varios gráficos siguen en español.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 22 commits, 57.149 lineas de fuente propia y 5 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: ztaipem@uteq.edu.ec.
+22 commits y cinco días activos, el reparto más regular del equipo.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 7,90 sobre 10.
+CALIFICACION: 5,92 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 22 commits, 57.149 líneas y 5 días activos (ztaipem@uteq.edu.ec). Nota del equipo 5,92 (suma 7,90, multiplicador 0,7494). Puntos con nivel provisional: 1, 6, 7, 10, 14, 17, E3. </div>
+<p class="meta">Recibí tres capturas del cuestionario con 10,00, 9,89 y 6,94, sin que el PDF identifique a quién corresponde cada una.</p>
+</main></body></html>

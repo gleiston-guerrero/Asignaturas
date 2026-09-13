@@ -1,0 +1,206 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Examen final del PFC — SBVIA</title><style>body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f5;color:#1e2a24}
+header{background:#006633;color:#fff;padding:22px 36px}header h1{margin:0;font-size:22px}
+header p{margin:6px 0 0;opacity:.9;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:24px 36px 70px}
+h2{color:#006633;border-bottom:3px solid #CC9900;padding-bottom:6px;margin-top:44px}
+h3{color:#006633;margin-top:30px}
+a{color:#006633}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th,td{border:1px solid #cfd8d3;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#e3efe8}
+td.n,th.n{text-align:right;white-space:nowrap}
+.box{position:relative;background:#fff;border:1px solid #cfd8d3;border-left:5px solid #006633;border-radius:6px;margin:14px 0 6px}
+pre{margin:0;padding:18px 16px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:Consolas,Courier New,monospace;font-size:12.6px;line-height:1.45;max-height:640px;overflow:auto}
+.copy{position:sticky;top:8px;float:right;margin:8px 10px 0 0;background:#CC9900;color:#1e2a24;border:0;border-radius:4px;padding:7px 14px;font-weight:600;cursor:pointer;z-index:2}
+.copy:hover{background:#b58600}
+.doc{background:#fff8e6;border:1px solid #e6c766;border-radius:6px;padding:12px 16px;margin:0 0 26px;font-size:13.5px}
+.doc b{color:#7a5a00}
+.lv100{background:#d7f0dc}.lv75{background:#e9f5df}.lv50{background:#fff3cd}.lv25{background:#fde2d2}.lv0{background:#f8d0d0}
+.nota{font-size:26px;font-weight:800;color:#006633}.nota.cero{color:#a32020}
+.info{background:#fff;border:1px solid #cfd8d3;border-left:5px solid #CC9900;border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13.5px}
+.meta{font-size:12.5px;color:#555}
+.badge{display:inline-block;background:#006633;color:#fff;border-radius:12px;padding:2px 10px;font-size:12px;margin-left:8px}
+.prov{color:#7a5a00;font-weight:600}
+@media(max-width:700px){main{padding:16px}table{font-size:12px}th,td{padding:4px 5px}}</style><script>function cp(id,btn){var t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(function(){btn.textContent='Copiado';setTimeout(function(){btn.textContent='Copiar informe'},1800)});}</script></head><body><header><h1>Examen final del PFC — SBVIA</h1><p>Aplicaciones Web (Quinto nivel) · UTEQ · Corte: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19 · Docente: Dr. Gleiston C. Guerrero Ulloa, Ph.D.</p></header><main>
+<p><a href="index.html">&larr; Volver al índice</a></p>
+<p class="meta">Simulador de Comportamiento Vial con IA &middot; <a href="https://github.com/keithdrox/SBVIA-AppWeb">https://github.com/keithdrox/SBVIA-AppWeb</a><br>Commit evaluado: <code>175efe70</code> (2026-09-11 08:07). El tag v1.0.0 apunta al 1-sep, 116 commits por detrás del cierre. Evalúo el último commit dentro del plazo.</p>
+<div class="info"><b>Criterios de piso.</b> La extensión del PDF que suben al SGA no se penaliza. Lo que exijo es que el PDF traiga la URL del repositorio y que el repositorio abra sin pedir sesión.<ul>
+<li><b>Piso 1 — URL del repositorio accesible en el PDF del SGA — CUMPLE.</b> El PDF de Cruz Pérez lleva la URL en una línea y el repositorio abre sin pedir sesión. Que el PDF tenga dos páginas no se penaliza.</li>
+<li><b>Piso 2 — el informe se regenera desde el README — CUMPLE.</b> docs/informe-final.pdf, 35 páginas, cero referencias sin resolver.</li>
+<li><b>Piso 3 — autoría limpia — CUMPLE.</b> Dos identidades con trabajo real; Zamora Bumbila sigue sin commits.</li>
+</ul></div>
+<h2>Hoja de cálculo</h2>
+<table><tr><th>#</th><th>Punto</th><th class="n">Peso</th><th class="n">Nivel</th><th class="n">Puntos</th><th class="n">Factor</th><th>Qué encontré</th></tr>
+<tr><td class="n">1</td><td>Herramientas ejecutadas de verdad</td><td class="n">1,2</td><td class="n lv75">Casi</td><td class="n">0,900</td><td class="n">0,966</td><td>Ya hay salida real de JaCoCo (79,73 % líneas / 70,41 % ramas), spotbugs-report.xml, zap-report.html y lighthouse/report.json. Tres de las cuatro están completas; de Lighthouse solo hay dos informes, no tres por perfil.</td></tr>
+<tr><td class="n">2</td><td>SUS bien calculado</td><td class="n">0,6</td><td class="n lv75">Casi</td><td class="n">0,450</td><td class="n">0,983</td><td>sus-raw-data.csv tiene las 15 respuestas y el análisis se rehizo. No pude confirmar que la suma de sus-analysis.md quedara corregida. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">3</td><td>DOI de Zenodo propios</td><td class="n">0,7</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>No encontré ningún DOI de Zenodo en CITATION.cff ni en el README. Los ajenos desaparecieron, pero los propios no se depositaron.</td></tr>
+<tr><td class="n">4</td><td>SRS escrito</td><td class="n">1,0</td><td class="n lv75">Casi</td><td class="n">0,750</td><td class="n">0,972</td><td>docs/requisitos/SRS-v1.0.0.pdf ya existe, frente a la ausencia total anterior. No pude confirmar la firma del docente-director. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">5</td><td>Los ocho trabajos de la tabla identificables</td><td class="n">0,6</td><td class="n lv75">Casi</td><td class="n">0,450</td><td class="n">0,983</td><td>La bibliografía subió a 41 claves citadas y el capítulo se rehízo. No pude resolver uno a uno los ocho DOI. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">6</td><td>k6 con autenticación</td><td class="n">0,4</td><td class="n lv75">Casi</td><td class="n">0,300</td><td class="n">0,989</td><td>Hay cinco corridas k6-run1..5 versionadas. No pude confirmar que el script vuelva a iniciar sesión. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">7</td><td>Sistema desplegado</td><td class="n">0,8</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>No hay URL pública declarada en el README ni despliegue que responda.</td></tr>
+<tr><td class="n">8</td><td>Figuras y extensión del documento</td><td class="n">0,7</td><td class="n lv50">A medias</td><td class="n">0,350</td><td class="n">0,953</td><td>El informe llegó a las 35 páginas mínimas, pero sigue sin una sola imagen embebida: el .tex solo declara 4 includegraphics y el PDF no contiene ninguna.</td></tr>
+<tr><td class="n">9</td><td>GQM y muestreo</td><td class="n">0,6</td><td class="n lv75">Casi</td><td class="n">0,450</td><td class="n">0,983</td><td>El capítulo de metodología se amplió y los checklists de Ralph y FAIR están creados. No pude confirmar el bloque GQM completo. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">10</td><td>Citas en orden</td><td class="n">0,4</td><td class="n lv75">Casi</td><td class="n">0,300</td><td class="n">0,989</td><td>41 claves citadas en el texto frente a las quince que nunca aparecían. No pude revisar las dos citas mal atribuidas. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">11</td><td>Scripts ejecutables</td><td class="n">0,2</td><td class="n lv100">Completo</td><td class="n">0,200</td><td class="n">1,000</td><td>El Makefile corre desde un clon limpio con los objetivos all, verify, audit y pdf. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">12</td><td>Situación de Zamora Bumbila aclarada</td><td class="n">0,3</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>Sigue sin commits en toda la ventana del examen y no hay aclaración escrita en el repositorio.</td></tr>
+<tr><td class="n">13</td><td>Limpieza y reset seguro</td><td class="n">0,5</td><td class="n lv100">Completo</td><td class="n">0,500</td><td class="n">1,000</td><td>La raíz quedó limpia: ya no están Hasher.java, fixer.py, fixer2.py ni el archivo con espacio en el nombre.</td></tr>
+<tr><td class="n">E1</td><td>Nombres del código en inglés</td><td class="n">0,8</td><td class="n lv25">Apenas</td><td class="n">0,200</td><td class="n">0,895</td><td>36 de 105 tipos (34,3 %) y 110 de 305 métodos (36,1 %) siguen con nombre español. Bajó del 55 %, pero sigue sobre el 30 %.</td></tr>
+<tr><td class="n">E2</td><td>Comentarios que generan documentación (Javadoc)</td><td class="n">0,9</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>Cero @param, cero @return y cero @throws en 156 métodos públicos, de los que solo 19 tienen bloque de documentación. La exigencia sigue sin atenderse.</td></tr>
+<tr><td class="n">E3</td><td>Figuras en inglés</td><td class="n">0,3</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>El PDF no contiene ninguna figura, así que no hay ninguna en inglés.</td></tr>
+<tr><th colspan="4" class="n">S = suma de puntos</th><th class="n">4,850</th><th colspan="2"></th></tr>
+<tr><th colspan="5" class="n">M = multiplicación de todos los factores</th><th class="n">0,0000</th><th></th></tr>
+<tr><th colspan="4" class="n">Nota = M × S</th><th colspan="3" class="n">0,00 / 10</th></tr>
+</table>
+<p class="nota cero">0,00 / 10</p>
+<div class="info">El multiplicador vale cero porque el punto 3, 7, 12, E2, E3 quedó en <b>Nada</b>. Un solo factor en cero arrastra toda la nota.<br>Suma de puntos sin el multiplicador: <b>4,85 / 10</b>, que es la medida de cuánto trabajo hay hecho.</div>
+<h2>Informes individuales</h2>
+<p class="meta">Cada recuadro se copia entero con su botón y está listo para pegar en el espacio del estudiante en el SGA.</p>
+<h3>Umaginga Arévalo Jefferson Manuel<span class="badge">0,00 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SBVIA_1',this)">Copiar informe</button><pre id="SBVIA_1">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Umaginga Arévalo Jefferson Manuel
+Equipo: SBVIA -- Simulador de Comportamiento Vial con IA
+Repositorio: https://github.com/keithdrox/SBVIA-AppWeb
+Commit evaluado: 175efe70 (2026-09-11 08:07)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 16 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 apunta al 1-sep, 116 commits por detrás del cierre. Evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. El PDF de Cruz Pérez lleva la URL en una línea y el repositorio abre sin pedir sesión. Que el PDF tenga dos páginas no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. docs/informe-final.pdf, 35 páginas, cero referencias sin resolver.
+  Piso 3 — autoría limpia: CUMPLE. Dos identidades con trabajo real; Zamora Bumbila sigue sin commits.
+
+LO QUE SI RESOLVIERON
+  Punto 11 (Scripts ejecutables): El Makefile corre desde un clon limpio con los objetivos all, verify, audit y pdf.
+  Punto 13 (Limpieza y reset seguro): La raíz quedó limpia: ya no están Hasher.java, fixer.py, fixer2.py ni el archivo con espacio en el nombre.
+
+LO QUE LES COSTO LA NOTA
+  Punto 3 (DOI de Zenodo propios) quedo en Nada: No encontré ningún DOI de Zenodo en CITATION.cff ni en el README. Los ajenos desaparecieron, pero los propios no se depositaron.
+  Punto 7 (Sistema desplegado) quedo en Nada: No hay URL pública declarada en el README ni despliegue que responda.
+  Punto 12 (Situación de Zamora Bumbila aclarada) quedo en Nada: Sigue sin commits en toda la ventana del examen y no hay aclaración escrita en el repositorio.
+  Punto E2 (Comentarios que generan documentación (Javadoc)) quedo en Nada: Cero @param, cero @return y cero @throws en 156 métodos públicos, de los que solo 19 tienen bloque de documentación. La exigencia sigue sin atenderse.
+  Punto E3 (Figuras en inglés) quedo en Nada: El PDF no contiene ninguna figura, así que no hay ninguna en inglés.
+  Punto 8 (Figuras y extensión del documento) quedo en A medias: El informe llegó a las 35 páginas mínimas, pero sigue sin una sola imagen embebida: el .tex solo declara 4 includegraphics y el PDF no contiene ninguna.
+  Punto E1 (Nombres del código en inglés) quedo en Apenas: 36 de 105 tipos (34,3 %) y 110 de 305 métodos (36,1 %) siguen con nombre español. Bajó del 55 %, pero sigue sobre el 30 %.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 91 commits, 136.638 lineas de fuente propia y 3 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: jumagingaa@uteq.edu.ec.
+91 de los 116 commits de la ventana. Es quien levantó casi toda la recuperación del equipo.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 4,85 sobre 10.
+Multiplicador: 0, porque el punto 3, 7, 12, E2, E3 quedo en Nada.
+Por como esta construida la rubrica, un solo factor en cero deja la nota en cero aunque el resto este bien.
+CALIFICACION: 0,00 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 91 commits, 136.638 líneas y 3 días activos (jumagingaa@uteq.edu.ec). Nota del equipo 0,00 (suma 4,85, multiplicador 0,0000). El cero viene de los puntos 3, 7, 12, E2, E3. Puntos con nivel provisional: 2, 4, 5, 6, 9, 10, 11. </div>
+<h3>Cruz Pérez Justyn Keith<span class="badge">0,00 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SBVIA_2',this)">Copiar informe</button><pre id="SBVIA_2">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Cruz Pérez Justyn Keith
+Equipo: SBVIA -- Simulador de Comportamiento Vial con IA
+Repositorio: https://github.com/keithdrox/SBVIA-AppWeb
+Commit evaluado: 175efe70 (2026-09-11 08:07)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 16 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 apunta al 1-sep, 116 commits por detrás del cierre. Evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. El PDF de Cruz Pérez lleva la URL en una línea y el repositorio abre sin pedir sesión. Que el PDF tenga dos páginas no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. docs/informe-final.pdf, 35 páginas, cero referencias sin resolver.
+  Piso 3 — autoría limpia: CUMPLE. Dos identidades con trabajo real; Zamora Bumbila sigue sin commits.
+
+LO QUE SI RESOLVIERON
+  Punto 11 (Scripts ejecutables): El Makefile corre desde un clon limpio con los objetivos all, verify, audit y pdf.
+  Punto 13 (Limpieza y reset seguro): La raíz quedó limpia: ya no están Hasher.java, fixer.py, fixer2.py ni el archivo con espacio en el nombre.
+
+LO QUE LES COSTO LA NOTA
+  Punto 3 (DOI de Zenodo propios) quedo en Nada: No encontré ningún DOI de Zenodo en CITATION.cff ni en el README. Los ajenos desaparecieron, pero los propios no se depositaron.
+  Punto 7 (Sistema desplegado) quedo en Nada: No hay URL pública declarada en el README ni despliegue que responda.
+  Punto 12 (Situación de Zamora Bumbila aclarada) quedo en Nada: Sigue sin commits en toda la ventana del examen y no hay aclaración escrita en el repositorio.
+  Punto E2 (Comentarios que generan documentación (Javadoc)) quedo en Nada: Cero @param, cero @return y cero @throws en 156 métodos públicos, de los que solo 19 tienen bloque de documentación. La exigencia sigue sin atenderse.
+  Punto E3 (Figuras en inglés) quedo en Nada: El PDF no contiene ninguna figura, así que no hay ninguna en inglés.
+  Punto 8 (Figuras y extensión del documento) quedo en A medias: El informe llegó a las 35 páginas mínimas, pero sigue sin una sola imagen embebida: el .tex solo declara 4 includegraphics y el PDF no contiene ninguna.
+  Punto E1 (Nombres del código en inglés) quedo en Apenas: 36 de 105 tipos (34,3 %) y 110 de 305 métodos (36,1 %) siguen con nombre español. Bajó del 55 %, pero sigue sobre el 30 %.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 25 commits, 17.338 lineas de fuente propia y 5 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: justyncruzperez@gmail.com.
+25 commits en cinco días, el reparto más regular. Usa correo personal, no el institucional.
+Su cuestionario del examen final en el SGA quedo en 4,88 sobre 10.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 4,85 sobre 10.
+Multiplicador: 0, porque el punto 3, 7, 12, E2, E3 quedo en Nada.
+Por como esta construida la rubrica, un solo factor en cero deja la nota en cero aunque el resto este bien.
+CALIFICACION: 0,00 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 25 commits, 17.338 líneas y 5 días activos (justyncruzperez@gmail.com). Nota del equipo 0,00 (suma 4,85, multiplicador 0,0000). El cero viene de los puntos 3, 7, 12, E2, E3. Puntos con nivel provisional: 2, 4, 5, 6, 9, 10, 11. </div>
+<h3>Zamora Bumbila Diego Alexander<span class="badge">0,00 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SBVIA_3',this)">Copiar informe</button><pre id="SBVIA_3">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Zamora Bumbila Diego Alexander
+Equipo: SBVIA -- Simulador de Comportamiento Vial con IA
+Repositorio: https://github.com/keithdrox/SBVIA-AppWeb
+Commit evaluado: 175efe70 (2026-09-11 08:07)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 16 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 apunta al 1-sep, 116 commits por detrás del cierre. Evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. El PDF de Cruz Pérez lleva la URL en una línea y el repositorio abre sin pedir sesión. Que el PDF tenga dos páginas no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. docs/informe-final.pdf, 35 páginas, cero referencias sin resolver.
+  Piso 3 — autoría limpia: CUMPLE. Dos identidades con trabajo real; Zamora Bumbila sigue sin commits.
+
+LO QUE SI RESOLVIERON
+  Punto 11 (Scripts ejecutables): El Makefile corre desde un clon limpio con los objetivos all, verify, audit y pdf.
+  Punto 13 (Limpieza y reset seguro): La raíz quedó limpia: ya no están Hasher.java, fixer.py, fixer2.py ni el archivo con espacio en el nombre.
+
+LO QUE LES COSTO LA NOTA
+  Punto 3 (DOI de Zenodo propios) quedo en Nada: No encontré ningún DOI de Zenodo en CITATION.cff ni en el README. Los ajenos desaparecieron, pero los propios no se depositaron.
+  Punto 7 (Sistema desplegado) quedo en Nada: No hay URL pública declarada en el README ni despliegue que responda.
+  Punto 12 (Situación de Zamora Bumbila aclarada) quedo en Nada: Sigue sin commits en toda la ventana del examen y no hay aclaración escrita en el repositorio.
+  Punto E2 (Comentarios que generan documentación (Javadoc)) quedo en Nada: Cero @param, cero @return y cero @throws en 156 métodos públicos, de los que solo 19 tienen bloque de documentación. La exigencia sigue sin atenderse.
+  Punto E3 (Figuras en inglés) quedo en Nada: El PDF no contiene ninguna figura, así que no hay ninguna en inglés.
+  Punto 8 (Figuras y extensión del documento) quedo en A medias: El informe llegó a las 35 páginas mínimas, pero sigue sin una sola imagen embebida: el .tex solo declara 4 includegraphics y el PDF no contiene ninguna.
+  Punto E1 (Nombres del código en inglés) quedo en Apenas: 36 de 105 tipos (34,3 %) y 110 de 305 métodos (36,1 %) siguen con nombre español. Bajó del 55 %, pero sigue sobre el 30 %.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 0 commits, 0 lineas de fuente propia y 0 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: —.
+Sin ningún commit en toda la ventana del examen final, igual que en la revisión anterior.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 4,85 sobre 10.
+Multiplicador: 0, porque el punto 3, 7, 12, E2, E3 quedo en Nada.
+Por como esta construida la rubrica, un solo factor en cero deja la nota en cero aunque el resto este bien.
+CALIFICACION: 0,00 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 0 commits, 0 líneas y 0 días activos (—). Nota del equipo 0,00 (suma 4,85, multiplicador 0,0000). El cero viene de los puntos 3, 7, 12, E2, E3. <b>Sin ningún commit en la ventana del examen: punto de decisión sobre la calificación individual.</b> Puntos con nivel provisional: 2, 4, 5, 6, 9, 10, 11. </div>
+</main></body></html>

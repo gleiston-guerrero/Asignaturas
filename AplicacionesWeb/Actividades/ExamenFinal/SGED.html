@@ -1,0 +1,211 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Examen final del PFC — SGED</title><style>body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f5;color:#1e2a24}
+header{background:#006633;color:#fff;padding:22px 36px}header h1{margin:0;font-size:22px}
+header p{margin:6px 0 0;opacity:.9;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:24px 36px 70px}
+h2{color:#006633;border-bottom:3px solid #CC9900;padding-bottom:6px;margin-top:44px}
+h3{color:#006633;margin-top:30px}
+a{color:#006633}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th,td{border:1px solid #cfd8d3;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#e3efe8}
+td.n,th.n{text-align:right;white-space:nowrap}
+.box{position:relative;background:#fff;border:1px solid #cfd8d3;border-left:5px solid #006633;border-radius:6px;margin:14px 0 6px}
+pre{margin:0;padding:18px 16px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:Consolas,Courier New,monospace;font-size:12.6px;line-height:1.45;max-height:640px;overflow:auto}
+.copy{position:sticky;top:8px;float:right;margin:8px 10px 0 0;background:#CC9900;color:#1e2a24;border:0;border-radius:4px;padding:7px 14px;font-weight:600;cursor:pointer;z-index:2}
+.copy:hover{background:#b58600}
+.doc{background:#fff8e6;border:1px solid #e6c766;border-radius:6px;padding:12px 16px;margin:0 0 26px;font-size:13.5px}
+.doc b{color:#7a5a00}
+.lv100{background:#d7f0dc}.lv75{background:#e9f5df}.lv50{background:#fff3cd}.lv25{background:#fde2d2}.lv0{background:#f8d0d0}
+.nota{font-size:26px;font-weight:800;color:#006633}.nota.cero{color:#a32020}
+.info{background:#fff;border:1px solid #cfd8d3;border-left:5px solid #CC9900;border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13.5px}
+.meta{font-size:12.5px;color:#555}
+.badge{display:inline-block;background:#006633;color:#fff;border-radius:12px;padding:2px 10px;font-size:12px;margin-left:8px}
+.prov{color:#7a5a00;font-weight:600}
+@media(max-width:700px){main{padding:16px}table{font-size:12px}th,td{padding:4px 5px}}</style><script>function cp(id,btn){var t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(function(){btn.textContent='Copiado';setTimeout(function(){btn.textContent='Copiar informe'},1800)});}</script></head><body><header><h1>Examen final del PFC — SGED</h1><p>Aplicaciones Web (Quinto nivel) · UTEQ · Corte: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19 · Docente: Dr. Gleiston C. Guerrero Ulloa, Ph.D.</p></header><main>
+<p><a href="index.html">&larr; Volver al índice</a></p>
+<p class="meta">Sistema de Gestión para la Escuela Deportiva ProFútbol &middot; <a href="https://github.com/DarwinSM21/SGED_APPWEB">https://github.com/DarwinSM21/SGED_APPWEB</a><br>Commit evaluado: <code>1fa63fd9</code> (2026-09-11 23:27). Dentro del plazo etiquetaron v1.0.1, v1.0.2 y v1.0.3; v1.0.0 lo movieron el 12-sep. Evalúo el último commit dentro del plazo.</p>
+<div class="info"><b>Criterios de piso.</b> La extensión del PDF que suben al SGA no se penaliza. Lo que exijo es que el PDF traiga la URL del repositorio y que el repositorio abra sin pedir sesión.<ul>
+<li><b>Piso 1 — URL del repositorio accesible en el PDF del SGA — CUMPLE.</b> Las carátulas llevan la URL completa y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.</li>
+<li><b>Piso 2 — el informe se regenera desde el README — CUMPLE.</b> informe-final.pdf, 70 páginas, cero referencias sin resolver; make.bat y Makefile documentados.</li>
+<li><b>Piso 3 — autoría limpia — CUMPLE.</b> Cuatro identidades que corresponden a los tres integrantes (Arcalle usa dos correos).</li>
+</ul></div>
+<h2>Hoja de cálculo</h2>
+<table><tr><th>#</th><th>Punto</th><th class="n">Peso</th><th class="n">Nivel</th><th class="n">Puntos</th><th class="n">Factor</th><th>Qué encontré</th></tr>
+<tr><td class="n">1</td><td>El hallazgo alto de ZAP</td><td class="n">0,8</td><td class="n lv100">Completo</td><td class="n">0,800</td><td class="n">1,000</td><td>Camino A cumplido: zap-report.json ya no tiene ni un hallazgo con riskcode 3, y añadieron el escaneo autenticado. La afirmación del documento ya coincide con su evidencia.</td></tr>
+<tr><td class="n">2</td><td>Una sola cifra de cobertura y el umbral correcto</td><td class="n">0,5</td><td class="n lv75">Casi</td><td class="n">0,375</td><td class="n">0,986</td><td>Hay un único jacoco.xml versionado, con 88,38 % de líneas y 74,20 % de ramas. No pude confirmar que el texto haya sustituido el umbral del 60 % por el del 70 %. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">4</td><td>Validador de trazabilidad que sí puede fallar</td><td class="n">0,5</td><td class="n lv75">Casi</td><td class="n">0,375</td><td class="n">0,986</td><td>Los scripts de trazabilidad se rehicieron y el CI los ejecuta. No pude forzar un fallo para comprobar que el validador devuelve error. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">5</td><td>Carátula recompilada</td><td class="n">0,2</td><td class="n lv100">Completo</td><td class="n">0,200</td><td class="n">1,000</td><td>caratula-standalone.pdf ya dice «Entrega Final». Corregido.</td></tr>
+<tr><td class="n">6</td><td>Tag sobre el commit a defender</td><td class="n">0,4</td><td class="n lv50">A medias</td><td class="n">0,200</td><td class="n">0,973</td><td>Dentro del plazo movieron el tag tres veces (v1.0.1 el 7-sep, v1.0.2 el 8-sep, v1.0.3 el 10-sep), pero el v1.0.0 que la portada declara quedó fuera de plazo.</td></tr>
+<tr><td class="n">7</td><td>ORCID y roles CRediT</td><td class="n">0,5</td><td class="n lv50">A medias</td><td class="n">0,250</td><td class="n">0,966</td><td>Aparecen 6 identificadores ORCID en el repositorio y CONTRIBUTORS.md está creado. No pude confirmar los catorce roles con conteos reales. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">8</td><td>DATA-PROVENANCE con hashes reales</td><td class="n">0,4</td><td class="n lv75">Casi</td><td class="n">0,300</td><td class="n">0,989</td><td>El archivo se rehizo en esta ronda. No pude comprobar uno a uno que todos los hashes existan en los 376 commits. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">9</td><td>Zenodo: dataset y software</td><td class="n">0,5</td><td class="n lv100">Completo</td><td class="n">0,500</td><td class="n">1,000</td><td>Cinco DOI de Zenodo en el árbol, con software y dataset separados; el README luce el 10.5281/zenodo.22714477 como versión vigente.</td></tr>
+<tr><td class="n">10</td><td>Backend desplegado y URL declarada</td><td class="n">0,8</td><td class="n lv100">Completo</td><td class="n">0,800</td><td class="n">1,000</td><td>Comprobado en vivo: sged-backend-2p05.onrender.com/actuator/health devuelve UP con la base de datos arriba, el frontend responde 200 y ambas URL están en el README.</td></tr>
+<tr><td class="n">11</td><td>Cobertura del dominio y de los controladores en cero</td><td class="n">0,6</td><td class="n lv100">Completo</td><td class="n">0,600</td><td class="n">1,000</td><td>El jacoco.xml de cierre da 88,38 % de líneas y 74,20 % de ramas en el conjunto: ya no queda ningún controlador en cero.</td></tr>
+<tr><td class="n">12</td><td>Anexos — ISO 25010 — etiquetas</td><td class="n">0,4</td><td class="n lv100">Completo</td><td class="n">0,400</td><td class="n">1,000</td><td>Cero etiquetas huérfanas de 85, con 32 tablas y los seis listados etiquetados.</td></tr>
+<tr><td class="n">13</td><td>Resúmenes de 200 a 250 palabras</td><td class="n">0,3</td><td class="n lv100">Completo</td><td class="n">0,300</td><td class="n">1,000</td><td>Resumen 226 y abstract 208 palabras. Dentro de rango.</td></tr>
+<tr><td class="n">14</td><td>Rendimiento y SUS con estadística correcta</td><td class="n">0,6</td><td class="n lv50">A medias</td><td class="n">0,300</td><td class="n">0,959</td><td>Están las corridas k6 y el directorio de mediciones. No encontré el escenario de caché fría ni pude confirmar el intervalo del SUS con t de Student. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">15</td><td>SRS firmado con MoSCoW</td><td class="n">0,6</td><td class="n lv75">Casi</td><td class="n">0,450</td><td class="n">0,983</td><td>docs/requisitos/SRS-v1.0.0.pdf ya existe junto al SRS.md. No pude confirmar la firma del docente-director ni el campo MoSCoW en cada requisito. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">16</td><td>CORS cerrado</td><td class="n">0,4</td><td class="n lv75">Casi</td><td class="n">0,300</td><td class="n">0,989</td><td>La configuración de seguridad se reescribió en esta ronda. No pude comprobar el rechazo de un origen no permitido contra el despliegue. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">E1</td><td>Nombres del código en inglés</td><td class="n">0,9</td><td class="n lv75">Casi</td><td class="n">0,675</td><td class="n">0,974</td><td>32 de 277 tipos (11,6 %) y solo 12 de 1.079 métodos (1,1 %) conservan término español. Es el mejor resultado del curso en este punto; el porcentaje de clases queda apenas sobre el 5 %.</td></tr>
+<tr><td class="n">E2</td><td>Javadoc de verdad (incluye el punto 3)</td><td class="n">1,2</td><td class="n lv50">A medias</td><td class="n">0,600</td><td class="n">0,920</td><td>Revirtieron el borrado: hoy hay 643 @param, 389 @return y 274 @throws, y 274 de 463 métodos públicos (59,2 %) documentados. Interpretaron bien la directriz, pero falta cubrir el resto.</td></tr>
+<tr><td class="n">E3</td><td>Figuras en inglés</td><td class="n">0,4</td><td class="n lv50">A medias</td><td class="n">0,200</td><td class="n">0,973</td><td>Los diagramas se regeneraron en esta ronda; parte del rotulado sigue en español. <span class="prov">(prov.)</span></td></tr>
+<tr><th colspan="4" class="n">S = suma de puntos</th><th class="n">7,625</th><th colspan="2"></th></tr>
+<tr><th colspan="5" class="n">M = multiplicación de todos los factores</th><th class="n">0,7336</th><th></th></tr>
+<tr><th colspan="4" class="n">Nota = M × S</th><th colspan="3" class="n">5,59 / 10</th></tr>
+</table>
+<p class="nota">5,59 / 10</p>
+<h2>Informes individuales</h2>
+<p class="meta">Cada recuadro se copia entero con su botón y está listo para pegar en el espacio del estudiante en el SGA.</p>
+<h3>Arcalle Grefa Darwin Orlando<span class="badge">5,59 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SGED_1',this)">Copiar informe</button><pre id="SGED_1">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Arcalle Grefa Darwin Orlando
+Equipo: SGED -- Sistema de Gestión para la Escuela Deportiva ProFútbol
+Repositorio: https://github.com/DarwinSM21/SGED_APPWEB
+Commit evaluado: 1fa63fd9 (2026-09-11 23:27)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 18 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+Dentro del plazo etiquetaron v1.0.1, v1.0.2 y v1.0.3; v1.0.0 lo movieron el 12-sep. Evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. Las carátulas llevan la URL completa y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. informe-final.pdf, 70 páginas, cero referencias sin resolver; make.bat y Makefile documentados.
+  Piso 3 — autoría limpia: CUMPLE. Cuatro identidades que corresponden a los tres integrantes (Arcalle usa dos correos).
+
+LO QUE SI RESOLVIERON
+  Punto 1 (El hallazgo alto de ZAP): Camino A cumplido: zap-report.json ya no tiene ni un hallazgo con riskcode 3, y añadieron el escaneo autenticado. La afirmación del documento ya coincide con su evidencia.
+  Punto 5 (Carátula recompilada): caratula-standalone.pdf ya dice «Entrega Final». Corregido.
+  Punto 9 (Zenodo: dataset y software): Cinco DOI de Zenodo en el árbol, con software y dataset separados; el README luce el 10.5281/zenodo.22714477 como versión vigente.
+  Punto 10 (Backend desplegado y URL declarada): Comprobado en vivo: sged-backend-2p05.onrender.com/actuator/health devuelve UP con la base de datos arriba, el frontend responde 200 y ambas URL están en el README.
+  Punto 11 (Cobertura del dominio y de los controladores en cero): El jacoco.xml de cierre da 88,38 % de líneas y 74,20 % de ramas en el conjunto: ya no queda ningún controlador en cero.
+  Punto 12 (Anexos — ISO 25010 — etiquetas): Cero etiquetas huérfanas de 85, con 32 tablas y los seis listados etiquetados.
+  Punto 13 (Resúmenes de 200 a 250 palabras): Resumen 226 y abstract 208 palabras. Dentro de rango.
+
+LO QUE LES COSTO LA NOTA
+  Punto 6 (Tag sobre el commit a defender) quedo en A medias: Dentro del plazo movieron el tag tres veces (v1.0.1 el 7-sep, v1.0.2 el 8-sep, v1.0.3 el 10-sep), pero el v1.0.0 que la portada declara quedó fuera de plazo.
+  Punto 7 (ORCID y roles CRediT) quedo en A medias: Aparecen 6 identificadores ORCID en el repositorio y CONTRIBUTORS.md está creado. No pude confirmar los catorce roles con conteos reales.
+  Punto 14 (Rendimiento y SUS con estadística correcta) quedo en A medias: Están las corridas k6 y el directorio de mediciones. No encontré el escenario de caché fría ni pude confirmar el intervalo del SUS con t de Student.
+  Punto E2 (Javadoc de verdad (incluye el punto 3)) quedo en A medias: Revirtieron el borrado: hoy hay 643 @param, 389 @return y 274 @throws, y 274 de 463 métodos públicos (59,2 %) documentados. Interpretaron bien la directriz, pero falta cubrir el resto.
+  Punto E3 (Figuras en inglés) quedo en A medias: Los diagramas se regeneraron en esta ronda; parte del rotulado sigue en español.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 84 commits, 45.130 lineas de fuente propia y 8 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: darcalleg@uteq.edu.ec + darwinarcalle@gmail.com.
+84 commits entre sus dos identidades y ocho días activos, el aporte más sostenido del equipo.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 7,62 sobre 10.
+CALIFICACION: 5,59 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 84 commits, 45.130 líneas y 8 días activos (darcalleg@uteq.edu.ec + darwinarcalle@gmail.com). Nota del equipo 5,59 (suma 7,62, multiplicador 0,7336). Puntos con nivel provisional: 2, 4, 7, 8, 14, 15, 16, E3. </div>
+<h3>Pallo Pinto Daniel Alejandro<span class="badge">5,59 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SGED_2',this)">Copiar informe</button><pre id="SGED_2">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Pallo Pinto Daniel Alejandro
+Equipo: SGED -- Sistema de Gestión para la Escuela Deportiva ProFútbol
+Repositorio: https://github.com/DarwinSM21/SGED_APPWEB
+Commit evaluado: 1fa63fd9 (2026-09-11 23:27)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 18 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+Dentro del plazo etiquetaron v1.0.1, v1.0.2 y v1.0.3; v1.0.0 lo movieron el 12-sep. Evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. Las carátulas llevan la URL completa y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. informe-final.pdf, 70 páginas, cero referencias sin resolver; make.bat y Makefile documentados.
+  Piso 3 — autoría limpia: CUMPLE. Cuatro identidades que corresponden a los tres integrantes (Arcalle usa dos correos).
+
+LO QUE SI RESOLVIERON
+  Punto 1 (El hallazgo alto de ZAP): Camino A cumplido: zap-report.json ya no tiene ni un hallazgo con riskcode 3, y añadieron el escaneo autenticado. La afirmación del documento ya coincide con su evidencia.
+  Punto 5 (Carátula recompilada): caratula-standalone.pdf ya dice «Entrega Final». Corregido.
+  Punto 9 (Zenodo: dataset y software): Cinco DOI de Zenodo en el árbol, con software y dataset separados; el README luce el 10.5281/zenodo.22714477 como versión vigente.
+  Punto 10 (Backend desplegado y URL declarada): Comprobado en vivo: sged-backend-2p05.onrender.com/actuator/health devuelve UP con la base de datos arriba, el frontend responde 200 y ambas URL están en el README.
+  Punto 11 (Cobertura del dominio y de los controladores en cero): El jacoco.xml de cierre da 88,38 % de líneas y 74,20 % de ramas en el conjunto: ya no queda ningún controlador en cero.
+  Punto 12 (Anexos — ISO 25010 — etiquetas): Cero etiquetas huérfanas de 85, con 32 tablas y los seis listados etiquetados.
+  Punto 13 (Resúmenes de 200 a 250 palabras): Resumen 226 y abstract 208 palabras. Dentro de rango.
+
+LO QUE LES COSTO LA NOTA
+  Punto 6 (Tag sobre el commit a defender) quedo en A medias: Dentro del plazo movieron el tag tres veces (v1.0.1 el 7-sep, v1.0.2 el 8-sep, v1.0.3 el 10-sep), pero el v1.0.0 que la portada declara quedó fuera de plazo.
+  Punto 7 (ORCID y roles CRediT) quedo en A medias: Aparecen 6 identificadores ORCID en el repositorio y CONTRIBUTORS.md está creado. No pude confirmar los catorce roles con conteos reales.
+  Punto 14 (Rendimiento y SUS con estadística correcta) quedo en A medias: Están las corridas k6 y el directorio de mediciones. No encontré el escenario de caché fría ni pude confirmar el intervalo del SUS con t de Student.
+  Punto E2 (Javadoc de verdad (incluye el punto 3)) quedo en A medias: Revirtieron el borrado: hoy hay 643 @param, 389 @return y 274 @throws, y 274 de 463 métodos públicos (59,2 %) documentados. Interpretaron bien la directriz, pero falta cubrir el resto.
+  Punto E3 (Figuras en inglés) quedo en A medias: Los diagramas se regeneraron en esta ronda; parte del rotulado sigue en español.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 54 commits, 30.429 lineas de fuente propia y 7 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: dpallop@uteq.edu.ec.
+54 commits en siete días y la nota más alta del cuestionario del curso.
+Su cuestionario del examen final en el SGA quedo en 10,00 sobre 10.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 7,62 sobre 10.
+CALIFICACION: 5,59 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 54 commits, 30.429 líneas y 7 días activos (dpallop@uteq.edu.ec). Nota del equipo 5,59 (suma 7,62, multiplicador 0,7336). Puntos con nivel provisional: 2, 4, 7, 8, 14, 15, 16, E3. </div>
+<h3>Vélez López Ricardo Elías<span class="badge">5,59 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('SGED_3',this)">Copiar informe</button><pre id="SGED_3">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Vélez López Ricardo Elías
+Equipo: SGED -- Sistema de Gestión para la Escuela Deportiva ProFútbol
+Repositorio: https://github.com/DarwinSM21/SGED_APPWEB
+Commit evaluado: 1fa63fd9 (2026-09-11 23:27)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 18 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+Dentro del plazo etiquetaron v1.0.1, v1.0.2 y v1.0.3; v1.0.0 lo movieron el 12-sep. Evalúo el último commit dentro del plazo.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: CUMPLE. Las carátulas llevan la URL completa y el repositorio abre sin pedir sesión. La extensión del PDF no se penaliza.
+  Piso 2 — el informe se regenera desde el README: CUMPLE. informe-final.pdf, 70 páginas, cero referencias sin resolver; make.bat y Makefile documentados.
+  Piso 3 — autoría limpia: CUMPLE. Cuatro identidades que corresponden a los tres integrantes (Arcalle usa dos correos).
+
+LO QUE SI RESOLVIERON
+  Punto 1 (El hallazgo alto de ZAP): Camino A cumplido: zap-report.json ya no tiene ni un hallazgo con riskcode 3, y añadieron el escaneo autenticado. La afirmación del documento ya coincide con su evidencia.
+  Punto 5 (Carátula recompilada): caratula-standalone.pdf ya dice «Entrega Final». Corregido.
+  Punto 9 (Zenodo: dataset y software): Cinco DOI de Zenodo en el árbol, con software y dataset separados; el README luce el 10.5281/zenodo.22714477 como versión vigente.
+  Punto 10 (Backend desplegado y URL declarada): Comprobado en vivo: sged-backend-2p05.onrender.com/actuator/health devuelve UP con la base de datos arriba, el frontend responde 200 y ambas URL están en el README.
+  Punto 11 (Cobertura del dominio y de los controladores en cero): El jacoco.xml de cierre da 88,38 % de líneas y 74,20 % de ramas en el conjunto: ya no queda ningún controlador en cero.
+  Punto 12 (Anexos — ISO 25010 — etiquetas): Cero etiquetas huérfanas de 85, con 32 tablas y los seis listados etiquetados.
+  Punto 13 (Resúmenes de 200 a 250 palabras): Resumen 226 y abstract 208 palabras. Dentro de rango.
+
+LO QUE LES COSTO LA NOTA
+  Punto 6 (Tag sobre el commit a defender) quedo en A medias: Dentro del plazo movieron el tag tres veces (v1.0.1 el 7-sep, v1.0.2 el 8-sep, v1.0.3 el 10-sep), pero el v1.0.0 que la portada declara quedó fuera de plazo.
+  Punto 7 (ORCID y roles CRediT) quedo en A medias: Aparecen 6 identificadores ORCID en el repositorio y CONTRIBUTORS.md está creado. No pude confirmar los catorce roles con conteos reales.
+  Punto 14 (Rendimiento y SUS con estadística correcta) quedo en A medias: Están las corridas k6 y el directorio de mediciones. No encontré el escenario de caché fría ni pude confirmar el intervalo del SUS con t de Student.
+  Punto E2 (Javadoc de verdad (incluye el punto 3)) quedo en A medias: Revirtieron el borrado: hoy hay 643 @param, 389 @return y 274 @throws, y 274 de 463 métodos públicos (59,2 %) documentados. Interpretaron bien la directriz, pero falta cubrir el resto.
+  Punto E3 (Figuras en inglés) quedo en A medias: Los diagramas se regeneraron en esta ronda; parte del rotulado sigue en español.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 18 commits, 127.240 lineas de fuente propia y 5 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: rvelezl3@uteq.edu.ec.
+18 commits pero el mayor volumen de líneas del equipo, en cinco días distintos. Cambió de ritmo respecto de la revisión anterior.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 7,62 sobre 10.
+CALIFICACION: 5,59 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 18 commits, 127.240 líneas y 5 días activos (rvelezl3@uteq.edu.ec). Nota del equipo 5,59 (suma 7,62, multiplicador 0,7336). Puntos con nivel provisional: 2, 4, 7, 8, 14, 15, 16, E3. </div>
+<p class="meta">Además de la de Pallo Pinto (10,00), recibí una captura con 6,37 sin identificación del estudiante.</p>
+</main></body></html>

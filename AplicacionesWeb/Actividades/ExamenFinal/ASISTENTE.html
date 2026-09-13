@@ -1,0 +1,171 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Examen final del PFC — Asistente Virtual</title><style>body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f5;color:#1e2a24}
+header{background:#006633;color:#fff;padding:22px 36px}header h1{margin:0;font-size:22px}
+header p{margin:6px 0 0;opacity:.9;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:24px 36px 70px}
+h2{color:#006633;border-bottom:3px solid #CC9900;padding-bottom:6px;margin-top:44px}
+h3{color:#006633;margin-top:30px}
+a{color:#006633}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th,td{border:1px solid #cfd8d3;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#e3efe8}
+td.n,th.n{text-align:right;white-space:nowrap}
+.box{position:relative;background:#fff;border:1px solid #cfd8d3;border-left:5px solid #006633;border-radius:6px;margin:14px 0 6px}
+pre{margin:0;padding:18px 16px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:Consolas,Courier New,monospace;font-size:12.6px;line-height:1.45;max-height:640px;overflow:auto}
+.copy{position:sticky;top:8px;float:right;margin:8px 10px 0 0;background:#CC9900;color:#1e2a24;border:0;border-radius:4px;padding:7px 14px;font-weight:600;cursor:pointer;z-index:2}
+.copy:hover{background:#b58600}
+.doc{background:#fff8e6;border:1px solid #e6c766;border-radius:6px;padding:12px 16px;margin:0 0 26px;font-size:13.5px}
+.doc b{color:#7a5a00}
+.lv100{background:#d7f0dc}.lv75{background:#e9f5df}.lv50{background:#fff3cd}.lv25{background:#fde2d2}.lv0{background:#f8d0d0}
+.nota{font-size:26px;font-weight:800;color:#006633}.nota.cero{color:#a32020}
+.info{background:#fff;border:1px solid #cfd8d3;border-left:5px solid #CC9900;border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13.5px}
+.meta{font-size:12.5px;color:#555}
+.badge{display:inline-block;background:#006633;color:#fff;border-radius:12px;padding:2px 10px;font-size:12px;margin-left:8px}
+.prov{color:#7a5a00;font-weight:600}
+@media(max-width:700px){main{padding:16px}table{font-size:12px}th,td{padding:4px 5px}}</style><script>function cp(id,btn){var t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(function(){btn.textContent='Copiado';setTimeout(function(){btn.textContent='Copiar informe'},1800)});}</script></head><body><header><h1>Examen final del PFC — Asistente Virtual</h1><p>Aplicaciones Web (Quinto nivel) · UTEQ · Corte: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19 · Docente: Dr. Gleiston C. Guerrero Ulloa, Ph.D.</p></header><main>
+<p><a href="index.html">&larr; Volver al índice</a></p>
+<p class="meta">Asistente Virtual Académico con Chatbot Híbrido &middot; <a href="https://github.com/Michael-XFM/asistente-academico">https://github.com/Michael-XFM/asistente-academico</a><br>Commit evaluado: <code>4789e4c8</code> (2026-09-08 19:43). El tag v1.0.0 sigue en el commit del 16 de agosto, 22 commits por detrás del cierre.</p>
+<div class="info"><b>Criterios de piso.</b> La extensión del PDF que suben al SGA no se penaliza. Lo que exijo es que el PDF traiga la URL del repositorio y que el repositorio abra sin pedir sesión.<ul>
+<li><b>Piso 1 — URL del repositorio accesible en el PDF del SGA — SIN EVIDENCIA.</b> No recibí carátula en el SGA para este equipo, pero el repositorio abre sin pedir sesión.</li>
+<li><b>Piso 2 — el informe se regenera desde el README — NO CUMPLE.</b> No hay ni un archivo .tex en el repositorio. El informe sigue siendo un PDF de 18 páginas producido fuera de LaTeX, así que no se puede regenerar clonando y compilando.</li>
+<li><b>Piso 3 — autoría limpia — CUMPLE.</b> Una sola identidad con trabajo; Rivera Suárez sin commits en la ventana.</li>
+</ul></div>
+<h2>Hoja de cálculo</h2>
+<table><tr><th>#</th><th>Punto</th><th class="n">Peso</th><th class="n">Nivel</th><th class="n">Puntos</th><th class="n">Factor</th><th>Qué encontré</th></tr>
+<tr><td class="n">1</td><td>Secretos fuera del código</td><td class="n">1,0</td><td class="n lv75">Casi</td><td class="n">0,750</td><td class="n">0,972</td><td>El árbol ya no expone la clave de firma en AuthService. No pude confirmar la rotación del valor ni la salida de la contraseña del keystore. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">2</td><td>Documento en LaTeX</td><td class="n">0,8</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>Cero archivos .tex en el repositorio. Es además el piso 2.</td></tr>
+<tr><td class="n">3</td><td>Chatbot: implementarlo o cambiar el alcance</td><td class="n">0,9</td><td class="n lv50">A medias</td><td class="n">0,450</td><td class="n">0,940</td><td>Hay 9 @Procedure y trabajo nuevo en el backend, pero el chatbot sigue sin endpoint propio ni pruebas, y el alcance declarado no cambió en los documentos. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">4</td><td>Cifra de cobertura de controladores</td><td class="n">0,3</td><td class="n lv50">A medias</td><td class="n">0,150</td><td class="n">0,979</td><td>El jacoco.xml versionado da 41,50 % de líneas y 34,38 % de ramas. La cifra del informe no se actualizó a ese valor.</td></tr>
+<tr><td class="n">5</td><td>Integración continua</td><td class="n">0,6</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>No hay directorio .github/workflows en el árbol evaluado.</td></tr>
+<tr><td class="n">6</td><td>Operación y despliegue</td><td class="n">0,8</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>No existen DEPLOYMENT.md, RUNBOOK.md ni BACKUP.md, y no hay URL pública que responda.</td></tr>
+<tr><td class="n">7</td><td>Checklists y datos documentados</td><td class="n">0,8</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>No hay ningún checklist en el repositorio: ni Ralph, ni FAIR, ni INCOSE.</td></tr>
+<tr><td class="n">8</td><td>Bibliografía de treinta referencias verificadas</td><td class="n">0,6</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>Sin fuentes .tex ni .bib no hay bibliografía verificable en el repositorio.</td></tr>
+<tr><td class="n">9</td><td>Capítulo de trabajos relacionados</td><td class="n">0,6</td><td class="n lv25">Apenas</td><td class="n">0,150</td><td class="n">0,920</td><td>El PDF de 18 páginas conserva el capítulo anterior, sin estrategia de búsqueda ni PRISMA. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">10</td><td>k6 con estadística</td><td class="n">0,5</td><td class="n lv50">A medias</td><td class="n">0,250</td><td class="n">0,966</td><td>Están las corridas k6-run2 y k6-run3 versionadas, pero no llegan a cinco con el perfil de cincuenta usuarios.</td></tr>
+<tr><td class="n">11</td><td>SUS con quince participantes</td><td class="n">0,5</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>No hay ningún archivo de respuestas del SUS en el árbol.</td></tr>
+<tr><td class="n">12</td><td>make all — mvnw — documento completo</td><td class="n">0,5</td><td class="n lv25">Apenas</td><td class="n">0,125</td><td class="n">0,933</td><td>El Makefile tiene up, down, test, bench, audit y clean, pero no all. El documento sigue en 18 páginas sin figuras.</td></tr>
+<tr><td class="n">13</td><td>Zenodo y roles CRediT</td><td class="n">0,3</td><td class="n lv50">A medias</td><td class="n">0,150</td><td class="n">0,979</td><td>El DOI 10.5281/zenodo.21798777 está declarado y CONTRIBUTORS.md existe, pero el depósito no se actualizó a v1.0.0. <span class="prov">(prov.)</span></td></tr>
+<tr><td class="n">14</td><td>Trabajo repartido</td><td class="n">0,4</td><td class="n lv25">Apenas</td><td class="n">0,100</td><td class="n">0,946</td><td>Los 22 commits de la ventana son de una sola persona. Rivera Suárez no registra ninguno.</td></tr>
+<tr><td class="n">E1</td><td>Nombres del código en inglés</td><td class="n">0,6</td><td class="n lv25">Apenas</td><td class="n">0,150</td><td class="n">0,920</td><td>28 de 87 tipos (32,2 %) y 133 de 308 métodos (43,2 %) siguen con nombre español.</td></tr>
+<tr><td class="n">E2</td><td>Comentarios que generan documentación (Javadoc)</td><td class="n">0,6</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>Cero @param, cero @return y cero @throws en 117 métodos públicos.</td></tr>
+<tr><td class="n">E3</td><td>Figuras en inglés</td><td class="n">0,2</td><td class="n lv0">Nada</td><td class="n">0,000</td><td class="n">0,000</td><td>El informe no contiene figuras y los diagramas C4 siguen en español.</td></tr>
+<tr><th colspan="4" class="n">S = suma de puntos</th><th class="n">2,275</th><th colspan="2"></th></tr>
+<tr><th colspan="5" class="n">M = multiplicación de todos los factores</th><th class="n">0,0000</th><th></th></tr>
+<tr><th colspan="4" class="n">Nota = M × S</th><th colspan="3" class="n">0,00 / 10</th></tr>
+</table>
+<p class="nota cero">0,00 / 10</p>
+<div class="info">El multiplicador vale cero porque el punto 2, 5, 6, 7, 8, 11, E2, E3 quedó en <b>Nada</b>. Un solo factor en cero arrastra toda la nota.<br>Suma de puntos sin el multiplicador: <b>2,27 / 10</b>, que es la medida de cuánto trabajo hay hecho.</div>
+<h2>Informes individuales</h2>
+<p class="meta">Cada recuadro se copia entero con su botón y está listo para pegar en el espacio del estudiante en el SGA.</p>
+<h3>Fajardo Montes Michael Xavier<span class="badge">0,00 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('ASISTENTE_1',this)">Copiar informe</button><pre id="ASISTENTE_1">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Fajardo Montes Michael Xavier
+Equipo: Asistente Virtual -- Asistente Virtual Académico con Chatbot Híbrido
+Repositorio: https://github.com/Michael-XFM/asistente-academico
+Commit evaluado: 4789e4c8 (2026-09-08 19:43)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 17 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 sigue en el commit del 16 de agosto, 22 commits por detrás del cierre.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: SIN EVIDENCIA. No recibí carátula en el SGA para este equipo, pero el repositorio abre sin pedir sesión.
+  Piso 2 — el informe se regenera desde el README: NO CUMPLE. No hay ni un archivo .tex en el repositorio. El informe sigue siendo un PDF de 18 páginas producido fuera de LaTeX, así que no se puede regenerar clonando y compilando.
+  Piso 3 — autoría limpia: CUMPLE. Una sola identidad con trabajo; Rivera Suárez sin commits en la ventana.
+
+LO QUE SI RESOLVIERON
+  No hay ningun punto en Completo en esta revision.
+
+LO QUE LES COSTO LA NOTA
+  Punto 2 (Documento en LaTeX) quedo en Nada: Cero archivos .tex en el repositorio. Es además el piso 2.
+  Punto 5 (Integración continua) quedo en Nada: No hay directorio .github/workflows en el árbol evaluado.
+  Punto 6 (Operación y despliegue) quedo en Nada: No existen DEPLOYMENT.md, RUNBOOK.md ni BACKUP.md, y no hay URL pública que responda.
+  Punto 7 (Checklists y datos documentados) quedo en Nada: No hay ningún checklist en el repositorio: ni Ralph, ni FAIR, ni INCOSE.
+  Punto 8 (Bibliografía de treinta referencias verificadas) quedo en Nada: Sin fuentes .tex ni .bib no hay bibliografía verificable en el repositorio.
+  Punto 11 (SUS con quince participantes) quedo en Nada: No hay ningún archivo de respuestas del SUS en el árbol.
+  Punto E2 (Comentarios que generan documentación (Javadoc)) quedo en Nada: Cero @param, cero @return y cero @throws en 117 métodos públicos.
+  Punto E3 (Figuras en inglés) quedo en Nada: El informe no contiene figuras y los diagramas C4 siguen en español.
+  Punto 3 (Chatbot: implementarlo o cambiar el alcance) quedo en A medias: Hay 9 @Procedure y trabajo nuevo en el backend, pero el chatbot sigue sin endpoint propio ni pruebas, y el alcance declarado no cambió en los documentos.
+  Punto 4 (Cifra de cobertura de controladores) quedo en A medias: El jacoco.xml versionado da 41,50 % de líneas y 34,38 % de ramas. La cifra del informe no se actualizó a ese valor.
+  Punto 9 (Capítulo de trabajos relacionados) quedo en Apenas: El PDF de 18 páginas conserva el capítulo anterior, sin estrategia de búsqueda ni PRISMA.
+  Punto 10 (k6 con estadística) quedo en A medias: Están las corridas k6-run2 y k6-run3 versionadas, pero no llegan a cinco con el perfil de cincuenta usuarios.
+  Punto 12 (make all — mvnw — documento completo) quedo en Apenas: El Makefile tiene up, down, test, bench, audit y clean, pero no all. El documento sigue en 18 páginas sin figuras.
+  Punto 13 (Zenodo y roles CRediT) quedo en A medias: El DOI 10.5281/zenodo.21798777 está declarado y CONTRIBUTORS.md existe, pero el depósito no se actualizó a v1.0.0.
+  Punto 14 (Trabajo repartido) quedo en Apenas: Los 22 commits de la ventana son de una sola persona. Rivera Suárez no registra ninguno.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 22 commits, 11.152 lineas de fuente propia y 4 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: michafajardo444@gmail.com.
+Los 22 commits de la ventana son suyos. Usa correo personal, no el institucional.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 2,27 sobre 10.
+Multiplicador: 0, porque el punto 2, 5, 6, 7, 8, 11, E2, E3 quedo en Nada.
+Por como esta construida la rubrica, un solo factor en cero deja la nota en cero aunque el resto este bien.
+CALIFICACION: 0,00 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 22 commits, 11.152 líneas y 4 días activos (michafajardo444@gmail.com). Nota del equipo 0,00 (suma 2,27, multiplicador 0,0000). El cero viene de los puntos 2, 5, 6, 7, 8, 11, E2, E3. Puntos con nivel provisional: 1, 3, 9, 13. </div>
+<h3>Rivera Suárez Jonathan Javier<span class="badge">0,00 / 10</span></h3>
+<div class="box"><button class="copy" onclick="cp('ASISTENTE_2',this)">Copiar informe</button><pre id="ASISTENTE_2">============================================================================
+EXAMEN FINAL DEL PROYECTO FINAL DE CURSO -- APLICACIONES WEB (QUINTO NIVEL)
+============================================================================
+Estudiante: Rivera Suárez Jonathan Javier
+Equipo: Asistente Virtual -- Asistente Virtual Académico con Chatbot Híbrido
+Repositorio: https://github.com/Michael-XFM/asistente-academico
+Commit evaluado: 4789e4c8 (2026-09-08 19:43)
+Corte de evaluacion: 11 de septiembre de 2026, 23:59 (UTC-5) — cierre de la semana 19
+
+QUE EVALUE
+Evalue los 17 puntos que le pedi a su equipo en mi revision del 2 de septiembre, uno por uno, sobre el repositorio.
+Cada punto tiene un peso; los pesos suman 10.
+A cada punto le puse un nivel: Completo, Casi, A medias, Apenas o Nada.
+El nivel da puntos y ademas da un factor que multiplica, asi que la nota es la multiplicacion de los factores por la suma de los puntos.
+El tag v1.0.0 sigue en el commit del 16 de agosto, 22 commits por detrás del cierre.
+
+CRITERIOS DE PISO
+  Piso 1 — URL del repositorio accesible en el PDF del SGA: SIN EVIDENCIA. No recibí carátula en el SGA para este equipo, pero el repositorio abre sin pedir sesión.
+  Piso 2 — el informe se regenera desde el README: NO CUMPLE. No hay ni un archivo .tex en el repositorio. El informe sigue siendo un PDF de 18 páginas producido fuera de LaTeX, así que no se puede regenerar clonando y compilando.
+  Piso 3 — autoría limpia: CUMPLE. Una sola identidad con trabajo; Rivera Suárez sin commits en la ventana.
+
+LO QUE SI RESOLVIERON
+  No hay ningun punto en Completo en esta revision.
+
+LO QUE LES COSTO LA NOTA
+  Punto 2 (Documento en LaTeX) quedo en Nada: Cero archivos .tex en el repositorio. Es además el piso 2.
+  Punto 5 (Integración continua) quedo en Nada: No hay directorio .github/workflows en el árbol evaluado.
+  Punto 6 (Operación y despliegue) quedo en Nada: No existen DEPLOYMENT.md, RUNBOOK.md ni BACKUP.md, y no hay URL pública que responda.
+  Punto 7 (Checklists y datos documentados) quedo en Nada: No hay ningún checklist en el repositorio: ni Ralph, ni FAIR, ni INCOSE.
+  Punto 8 (Bibliografía de treinta referencias verificadas) quedo en Nada: Sin fuentes .tex ni .bib no hay bibliografía verificable en el repositorio.
+  Punto 11 (SUS con quince participantes) quedo en Nada: No hay ningún archivo de respuestas del SUS en el árbol.
+  Punto E2 (Comentarios que generan documentación (Javadoc)) quedo en Nada: Cero @param, cero @return y cero @throws en 117 métodos públicos.
+  Punto E3 (Figuras en inglés) quedo en Nada: El informe no contiene figuras y los diagramas C4 siguen en español.
+  Punto 3 (Chatbot: implementarlo o cambiar el alcance) quedo en A medias: Hay 9 @Procedure y trabajo nuevo en el backend, pero el chatbot sigue sin endpoint propio ni pruebas, y el alcance declarado no cambió en los documentos.
+  Punto 4 (Cifra de cobertura de controladores) quedo en A medias: El jacoco.xml versionado da 41,50 % de líneas y 34,38 % de ramas. La cifra del informe no se actualizó a ese valor.
+  Punto 9 (Capítulo de trabajos relacionados) quedo en Apenas: El PDF de 18 páginas conserva el capítulo anterior, sin estrategia de búsqueda ni PRISMA.
+  Punto 10 (k6 con estadística) quedo en A medias: Están las corridas k6-run2 y k6-run3 versionadas, pero no llegan a cinco con el perfil de cincuenta usuarios.
+  Punto 12 (make all — mvnw — documento completo) quedo en Apenas: El Makefile tiene up, down, test, bench, audit y clean, pero no all. El documento sigue en 18 páginas sin figuras.
+  Punto 13 (Zenodo y roles CRediT) quedo en A medias: El DOI 10.5281/zenodo.21798777 está declarado y CONTRIBUTORS.md existe, pero el depósito no se actualizó a v1.0.0.
+  Punto 14 (Trabajo repartido) quedo en Apenas: Los 22 commits de la ventana son de una sola persona. Rivera Suárez no registra ninguno.
+
+SOBRE SU APORTE INDIVIDUAL
+Entre el 2 y el 11 de septiembre registro 0 commits, 0 lineas de fuente propia y 0 dias distintos de trabajo.
+Lo medi con git log --no-merges --numstat, unificando sus identidades de Git y excluyendo los artefactos generados.
+Identidad de Git: —.
+Sin ningún commit en la ventana del examen final.
+
+SU CALIFICACION
+Esta rubrica califica el resultado del equipo, no el reparto interno del trabajo.
+Suma de puntos obtenidos: 2,27 sobre 10.
+Multiplicador: 0, porque el punto 2, 5, 6, 7, 8, 11, E2, E3 quedo en Nada.
+Por como esta construida la rubrica, un solo factor en cero deja la nota en cero aunque el resto este bien.
+CALIFICACION: 0,00 / 10
+============================================================================</pre></div>
+<div class="doc"><b>Observaciones para el docente.</b> Aporte verificado con <code>git log</code> entre el 2 y el 11 de septiembre: 0 commits, 0 líneas y 0 días activos (—). Nota del equipo 0,00 (suma 2,27, multiplicador 0,0000). El cero viene de los puntos 2, 5, 6, 7, 8, 11, E2, E3. <b>Sin ningún commit en la ventana del examen: punto de decisión sobre la calificación individual.</b> Puntos con nivel provisional: 1, 3, 9, 13. </div>
+</main></body></html>
