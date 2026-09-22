@@ -1,0 +1,28 @@
+EQUIPO = "BCEL"
+PORCENTAJES = [70, 40, 25, 50, 30, 55, 20, 70, 35, 30, 25, 35, 60, 40, 25, 35, 20, 55, 50, 35]
+ITEMS = [
+    ("1", r"URL can\'onica en README, \rt{CITATION.cff}, manuscrito, OpenAPI y despliegue; integrantes, correos y roles", 1, 1, 2, 1, "PM"),
+    ("2a", r"Credenciales y datos personales fuera del \'arbol y del historial, claves rotadas, sin valores de reserva ni acceso \rt{dev-token}, escaneo de secretos como compuerta", 3, 3, 3, 3, "PC"),
+    ("2b", r"Sin informes de cobertura, logs, fotos, APK duplicados ni lockfile hu\'erfano; un solo protocolo, juego de resultados y tablero", 1, 1, 3, 2, "PM"),
+    ("2c", r"\rt{.env.example} alineado con compose, propiedades y SPA", 1, 1, 1, 1, "PM"),
+    ("3", r"Rama principal protegida, PR aprobados por otro integrante, tabla de revisi\'on real, \rt{CHANGELOG.md} y etiqueta anotada de cierre", 2, 1, 2, 2, "PC"),
+    ("4", r"Dominio sin JPA ni Spring, puertos en \rt{domain/port} y aplicaci\'on dependiente s\'olo de puertos en Principal y Secretar\'ia; ArchUnit", 4, 4, 5, 5, "PM"),
+    ("5", r"Facade, Template Method, Observer y Strategy invocados desde flujos reales con pruebas; ADR-005 y ADR-006 veraces", 3, 3, 3, 4, "PC"),
+    ("6", r"SPA con \rt{/main}, sesi\'on fuera de \rt{localStorage}, validaci\'on de expiraci\'on, llamadas s\'olo por el gateway con autorizaci\'on y portal de directivo", 3, 3, 4, 4, "PM"),
+    ("7", r"TypeScript estricto, ESLint en CI sin errores, Vitest con cobertura $\ge$70\,\% y Dockerfile multi-stage para cada SPA", 3, 3, 4, 4, "PC"),
+    ("8", r"Actualizaci\'on por arrastre, push demostrable de extremo a extremo y URL base por \rt{BuildConfig} con HTTPS", 2, 2, 2, 2, "PM"),
+    ("9", r"Pruebas de los ViewModels, E2E instrumentada en CI y APK release firmado y publicado por CI", 3, 3, 3, 3, "PC"),
+    ("10", r"Contratos generados por la SPA y la app Kotlin, verificados contra Principal y Docente con estados reales; API de calificaciones autenticada", 3, 4, 4, 4, "PC"),
+    ("11", r"Cl\'uster de base de datos reproducible con healthchecks, Flyway con validaci\'on, usuario de ejecuci\'on sin privilegios y ca\'ida de nodo medida", 4, 4, 3, 4, "PC"),
+    ("12a", r"Cadena de auditor\'ia: vectores can\'onicos compartidos, restricci\'on UNIQUE, prueba multiservicio real y fallos que no se pierdan en silencio", 5, 4, 4, 4, "PM"),
+    ("12b", r"Cobertura $\ge$70\,\% por m\'odulo sin clases elegidas, E2E en verde como compuerta y Testcontainers con migraciones completas", 3, 4, 5, 5, "PC"),
+    ("12c", r"Rampa 0$\rightarrow$200 real, un juego can\'onico de carga, cifras inexistentes retiradas y comandos del README ejecutables", 3, 2, 3, 3, "PC"),
+    ("13", r"Compuertas en los \rt{needs} del despliegue, jobs que hacen lo que su nombre dice, despliegue por imagen y CI sin secretos de producci\'on", 3, 3, 2, 3, "PM"),
+    ("14", r"M\'etricas de negocio en flujos reales, registros JSON con \rt{trace\_id} en los cuatro servicios, OpenTelemetry con Collector y tablero \'unico con evidencia", 3, 3, 4, 4, "PC"),
+    ("15", r"Protocolo con H0/H1 y umbrales versionado antes de medir y campa\~na medida sobre el sistema real (no por f\'ormula) con $r=10$", 4, 3, 3, 4, "PC"),
+    ("16", r"Generaci\'on determinista que reproduce los datos publicados, verificador corregido, manifiesto completo, diccionario y regeneraci\'on en CI", 4, 3, 3, 3, "PC"),
+    ("17", r"ISO/IEC 25010 con las cinco caracter\'isticas de la gu\'ia, r\'eplicas reales, IC95\,\% y tabla generada", 4, 2, 2, 3, "PC"),
+    ("18", r"Manuscrito sin afirmaciones que el c\'odigo no respalde, PDF igual a la fuente, $\ge$12 referencias citadas con DOI/ISBN y trazabilidad E1$\rightarrow$E4", 3, 2, 3, 3, "PC"),
+    ("19", r"Amenazas con mitigaciones verificables (incluidos datos sint\'eticos) y reflexi\'on \'etica $\ge$\textonehalf{} p\'agina con ACM 2018", 2, 1, 1, 2, "PM"),
+    ("20", r"Actas contempor\'aneas sin anacronismos, declaraci\'on de IA \'unica, identidades git correctas y aporte propio de cada integrante", 2, 1, 2, 2, "PC"),
+]

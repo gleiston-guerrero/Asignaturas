@@ -1,0 +1,202 @@
+\input{preambulo_ISR701.tex}
+\input{nota_BCEL.tex}
+\begin{document}
+
+\cabecera{BCEL}{AcadTrace, gesti\'on acad\'emica escolar con bit\'acora de auditor\'ia encadenada}{gleiston-guerrero/acadtrace}{main}{78b0d175}{720}{Bed\'on Viteri Keyla Betzabe \textperiodcentered{} Castro L\'opez Pedro Leonardo \textperiodcentered{} Emanuel Pino Juliana Romina \textperiodcentered{} Luna Mora Ernesto Gregory}{\textbf{Los cuatro integrantes}}{\completitud}
+
+\clausulas{acadtrace}{al corte el repositorio a\'un estaba en \rt{LEO23as/acadtrace}; se transfiri\'o despu\'es y al 16/09 figura bajo \rt{gleiston-guerrero/acadtrace}. Cumple si sigue as\'i al corte del examen}
+
+\section{Evaluaci\'on de los entregables}
+
+\begin{tablaeval}
+
+\fila{1}{Identificaci\'on del entregable y URL}{\pmodif}{\pmodif}{70}[\ver{1}]
+
+\fila{2}{Estructura del repositorio, secretos y archivos de ra\'iz}{\pculm}{\pculm}{40}[\ver{2}]
+
+\fila{3}{L\'inea base congelada e integraci\'on}{\pculm}{\pculm}{25}[\ver{3}]
+
+\fila{4}{Backend en capas y SOLID}{\pmodif}{\pmodif}{50}[\ver{4}]
+
+\fila{5}{Patrones GoF y ADR}{\pculm}{\pculm}{30}[\ver{5}]
+
+\fila{6}{Aplicaci\'on web funcional}{\pmodif}{\pmodif}{55}[\ver{6}]
+
+\fila{7}{Calidad de la aplicaci\'on web}{\pculm}{\pculm}{20}[\ver{7}]
+
+\fila{8}{Aplicaci\'on m\'ovil funcional}{\pmodif}{\pmodif}{70}[\ver{8}]
+
+\fila{9}{Calidad de la aplicaci\'on m\'ovil}{\pculm}{\pculm}{35}[\ver{9}]
+
+\fila{10}{Integraci\'on y contratos}{\pculm}{\pculm}{30}[\ver{10}]
+
+\fila{11}{Persistencia distribuida}{\pculm}{\pculm}{25}[\ver{11}]
+
+\fila{12}{Pir\'amide de pruebas y cadena de auditor\'ia}{\pculm}{\pculm}{35}[\ver{12}]
+
+\fila{13}{Pipeline CI/CD}{\pmodif}{\pmodif}{60}[\ver{13}]
+
+\fila{14}{Observabilidad}{\pculm}{\pculm}{40}[\ver{14}]
+
+\fila{15}{Protocolo y campa\~na experimental}{\pculm}{\pculm}{25}[\ver{15}]
+
+\fila{16}{Paquete de datos y reproducibilidad}{\pculm}{\pculm}{35}[\ver{16}]
+
+\fila{17}{Evaluaci\'on ISO/IEC 25010}{\pculm}{\pculm}{20}[\ver{17}]
+
+\fila{18}{Manuscrito, bibliograf\'ia y trazabilidad E1--E4}{\pmodif}{\pculm}{55}[\ver{18}]
+
+\fila{19}{Amenazas a la validez y reflexi\'on \'etica}{\pmodif}{\pmodif}{50}[\ver{19}]
+
+\fila{20}{Trabajo en equipo y autor\'ia}{\pculm}{\pculm}{35}[\ver{20}]
+
+\end{tablaeval}
+
+\notadependencias
+
+\begin{logro}{Lo que est\'a hecho y no se recalifica}
+Entre el 12/09 y el corte cerraron trabajo real. Los 29 commits que estaban sin fusionar est\'an en \rt{main}. La cabeza de la cadena de auditor\'ia tiene ahora bloqueo efectivo en los tres escritores (\rt{@Lock(PESSIMISTIC\_WRITE)} y \rt{FOR UPDATE}) con el reloj de Lamport persistido, y las tres implementaciones de la forma can\'onica usan los mismos 11 campos: una cadena de cuatro eslabones generada en Java se verifica con el verificador de Python y la manipulaci\'on se detecta. Finales de l\'inea normalizados (38 CSV sin CR y comprobaci\'on en CI que puede fallar); \rt{npm ci} con lockfiles sincronizados en las cuatro interfaces; sonda de salud del despliegue que propaga el fallo; configuraci\'on de gitleaks sin lista blanca; cinco im\'agenes publicadas en GHCR por commit; Soporte con 73,03\,\% de instrucciones y compuerta de m\'odulo; seis pruebas Playwright bien dise\~nadas (fallan sin entorno y verifican escritura y restauraci\'on); verificaci\'on de bytes 6/6 con diez pruebas que detectan manipulaci\'on. La app m\'ovil guarda el JWT en \rt{EncryptedSharedPreferences}, tiene biometr\'ia y cach\'e Room sin conexi\'on. El manuscrito compila sin referencias indefinidas.
+\end{logro}
+
+\section{R\'ubrica del examen suspenso}
+
+\reglarubrica
+
+\input{rubrica_BCEL.tex}
+
+\begin{nota}{Lectura de la r\'ubrica al 13/09/2026, 19:00}
+La columna \emph{Estado} es el que encontr\'e en el commit de corte; la columna \emph{Puntos} es peso por coeficiente. Nota provisional del examen suspenso: \textbf{\notaprov{} / 10,00}. Si cierran todos los \'items en Hecho, la nota es 10,00. Los cuatro integrantes rinden el examen: el aporte de cada uno se acredita s\'olo con sus propios commits y PR sobre \'items de esta gu\'ia (\S20).
+\end{nota}
+
+\section{Trabajo exigido}
+
+\subsection*{\S1 Identificaci\'on del entregable y URL}
+\textbf{Qu\'e encontr\'e:} la URL can\'onica no aparece en ning\'un archivo; \rt{LEO23as/acadtrace} figura en nueve lugares (README, \rt{CITATION.cff}, portada y cuerpo del manuscrito, \rt{docs/api/openapi.yaml}, el documento de rotaci\'on de secretos, \rt{docs/bitacora.md}, que adem\'as apunta a otro repositorio, y el job de despliegue, que sigue clonando el repositorio antiguo). \rt{CITATION.cff} empieza con BOM, tiene un correo de autor distinto del institucional y declara \rt{version: 4.0.0} sin etiqueta que le corresponda. El README no tiene integrantes ni roles. \textbf{C\'omo debe quedar:} \rt{https://github.com/gleiston-guerrero/acadtrace} en todos esos lugares; los cuatro integrantes con nombre completo, correo institucional y rol en README y \rt{CITATION.cff}; versi\'on igual a la etiqueta de cierre. \textbf{C\'omo lo verifico:} \rt{git grep -n "LEO23as/" <etiqueta>} vac\'io; \rt{head -c3 CITATION.cff | xxd} sin \rt{efbbbf}.
+
+\subsection*{\S2 Estructura --- credenciales, datos personales y basura versionada}
+\textbf{a) Secretos y datos sensibles (lo m\'as urgente de esta gu\'ia).} Corrigieron la lista blanca de gitleaks y los \rt{\$\{VAR\}} de Principal y Soporte, pero al corte:
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt,topsep=2pt]
+\item \rt{docs/pdf/MANUAL\_MAESTRO\_COMANDOS\_OPERACIONES\_SGA.pdf} contiene, en texto extra\'ible, la contrase\~na de PostgreSQL, la direcci\'on del servidor, el nombre de la clave SSH y cuentas de usuario con contrase\~na; ning\'un detector de texto inspecciona PDF.
+\item El historial no se purg\'o: los valores reales del secreto JWT, la contrase\~na de base de datos, la clave AES y el testigo gRPC siguen en decenas de commits alcanzables.
+\item La migraci\'on V18 (13/09) crea el rol \rt{sga\_app} con una contrase\~na literal, repetida en dos pruebas.
+\item \rt{microservicio-secretaria/.../application.properties} define valores de reserva para JWT, AES, base de datos y gRPC: si falta la variable, el servicio firma testigos con una clave conocida; y \rt{docker-compose.yml} perdi\'o los \rt{:?} obligatorios.
+\item \rt{JwtAuthFilter.java} de Secretar\'ia concede los roles SECRETARIA y DIRECTOR a \textbf{cualquier} testigo que empiece por \rt{dev-token}, y la interfaz de Secretar\'ia tiene un bot\'on visible ``Ingresar con los 4 Roles'' que lo usa, sin condici\'on de entorno de desarrollo.
+\item \rt{scripts/backups/backup\_pre\_seed\_20260806\_135036.sql} contiene 677 registros de estudiantes con c\'edula, nombres y correo, y 21 hashes de contrase\~na; el 92\,\% de las c\'edulas supera el d\'igito verificador. Mientras no se demuestre que son sint\'eticos, deben tratarse como datos personales de menores.
+\item El job \rt{secret-scan} s\'olo revisa el rango del evento y ning\'un job depende de \'el.
+\end{itemize}
+\textbf{C\'omo debe quedar:} ni credenciales ni datos personales en el \'arbol (incluidos PDF, PPTX y SQL) ni en el historial (\rt{git filter-repo} coordinado), o bien declaraci\'on con evidencia fechada (sin los valores) de que todas las credenciales publicadas se rotaron; ning\'un valor de reserva para secretos; V18 sin contrase\~na literal (marcador de Flyway); la rama \rt{startsWith("dev-token")} y el bot\'on eliminados; \rt{gitleaks detect -{}-log-opts="-{}-all"} como compuerta en los \rt{needs} de la publicaci\'on. \textbf{C\'omo lo verifico:}\begin{verbatim}
+gitleaks detect --source . --log-opts="--all"                                          # 0 hallazgos
+git grep -nI -E "PASSWORD '[^$]|dev-token" -- ':!*.md'                                 # vacio
+for f in $(git ls-files '*.pdf'); do pdftotext "$f" - | grep -HiE "pass:|password|\.pem"; done   # vacio
+git ls-files scripts/backups                                                            # vacio
+\end{verbatim}
+y una petici\'on con \rt{Authorization: Bearer dev-token-x} a Secretar\'ia devuelve 401.
+
+\textbf{b) Basura versionada.} 823 informes HTML de cobertura (13\,MB) y otra copia en Secretar\'ia; \rt{build.log}, \rt{maven-debug.log} y otros logs pese a que \rt{.gitignore} ya los excluye; fotos subidas; dos APK de depuraci\'on; un \rt{package-lock.json} de 102 bytes sin \rt{package.json}; 18 rutas de evidencias con espacios; dos protocolos casi id\'enticos, dos carpetas de resultados y dos tableros distintos. \textbf{Deben:} sacarlos del \'indice, publicar informes como artefactos de CI y dejar un solo protocolo, un solo juego de resultados y un solo tablero. \textbf{c) \rt{.env.example}.} Compose exige \rt{GRAFANA\_ADMIN\_PASSWORD} y la plantilla define otra variable, as\'i que \rt{docker compose up} falla con la plantilla copiada; faltan \rt{MAIL\_PASSWORD}, \rt{FIREBASE\_CREDENTIALS\_PATH}, \rt{ZIPKIN\_ENDPOINT}, \rt{CORS\_ORIGIN}, \rt{DB\_SSL}, \rt{UPLOADS\_PATH}, \rt{VITE\_API\_URL} y \rt{VITE\_API\_PRINCIPAL}, y \rt{DB\_HOST} apunta al servidor real. \textbf{C\'omo lo verifico:} \rt{git ls-files | grep -cE "\textbackslash.log\$|docs/cobertura/|uploads/"} da 0; \rt{cp .env.example .env \&\& docker compose config -q} termina con 0.
+
+\subsection*{\S3 L\'inea base --- revisi\'on cruzada que no existi\'o}
+\textbf{Qu\'e encontr\'e:} \rt{pre-e4} es ligera y \rt{v1.0.0} es ligera y posterior al corte; no hay \rt{CHANGELOG}. Los 26 PR fusionados entre el 12 y el 13/09 tienen \textbf{cero revisiones}, la mayor\'ia fusionados por su autor; los PR que el manuscrito presenta como ``validados por otro integrante'' (\#48, \#51, \#55, \#58, \#59, \#60) tambi\'en tienen cero, y el \#58 lo abri\'o y fusion\'o una persona distinta de la que la tabla indica. No existe ning\'un issue, aunque el manuscrito describe un flujo ``formalizado mediante un issue''. 184 de 271 commits de la primera l\'inea de \rt{main} entraron directamente. Una fusi\'on sin revisi\'on (\rt{62933d72}, PR \#98) dej\'o el \rt{application.properties} de Secretar\'ia en 0 bytes durante unas 17 horas. \textbf{C\'omo debe quedar:} protecci\'on de \rt{main} (PR obligatorio, una aprobaci\'on de otro integrante, verificaciones obligatorias); tabla de revisi\'on cruzada del manuscrito sustituida por los datos reales de la API (PR, autor, quien fusiona, quien aprueba) o eliminada, igual que la descripci\'on del flujo por issues; ramas residuales borradas; \rt{CHANGELOG.md} con entradas fechadas E1--E4 y examen suspenso; etiqueta anotada de cierre sobre el \'ultimo commit de \rt{main}, creada \textbf{al final de todo}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git cat-file -t v4.0.0 && test "$(git rev-parse v4.0.0^{commit})" = "$(git rev-parse origin/main)"
+git ls-remote --tags origin v4.0.0            # deben salir DOS lineas
+\end{verbatim}
+y \rt{/pulls/<n>/reviews} con \rt{APPROVED} de un usuario distinto del autor en cada PR del suspenso.
+
+\subsection*{\S4 Backend en capas --- el dominio de Principal es JPA}
+\textbf{Qu\'e encontr\'e:} en \rt{sga-principal}, 27 de 74 archivos de \rt{domain} llevan \rt{@Entity}, \rt{@Table} y \rt{@Column} (y dos estrategias llevan \rt{@Component}); no hay ning\'un puerto en el dominio; 17 archivos de \rt{application} importan \rt{infrastructure} y los servicios usan directamente 25 \rt{JpaRepository}. Entre el 12/09 y el corte se a\~nadi\'o otra entidad JPA al dominio (\rt{EstadoCadenaAuditoria}). En Secretar\'ia el ``dominio'' son s\'olo DTO y 15 servicios usan \rt{JdbcTemplate} directamente; Docente (Django) no tiene capa de dominio. S\'olo Soporte tiene un puerto con su adaptador. \textbf{C\'omo debe quedar:} en Principal y Secretar\'ia, dominio sin \rt{jakarta.persistence} ni \rt{org.springframework}, puertos en \rt{domain/port}, entidades JPA y adaptadores con mapeadores en \rt{infrastructure/persistence}, aplicaci\'on que dependa s\'olo de puertos y prueba ArchUnit; en Docente, capa de servicios con puertos expl\'icitos y un ADR que justifique la adaptaci\'on a Django. \textbf{C\'omo lo verifico:}\begin{verbatim}
+grep -rlE "jakarta.persistence|org.springframework" sga-principal/src/main/java/ec/edu/uteq/sga/domain | wc -l        # 0
+grep -rl "import ec.edu.uteq.sga.infrastructure" sga-principal/src/main/java/ec/edu/uteq/sga/application | wc -l     # 0
+\end{verbatim}
+
+\subsection*{\S5 Patrones GoF --- cuatro de cinco son clases que nadie llama}
+\textbf{Qu\'e encontr\'e:} s\'olo Repository se usa. \rt{PortalAcademicoFacade} tiene \textbf{cero} llamadores; \rt{ReporteNotasPeriodoPDF} (Template Method) tiene cero y genera texto, no PDF; \rt{NotaPublicadaEvent} s\'olo lo publica la fachada muerta y su oyente escribe en el log ``Simulaci\'on del despacho'' (el push real de Docente no sigue el patr\'on); \rt{CalculoPromedioStrategy} s\'olo la usa la fachada muerta, y el promedio real est\'a fijo (70/30) en \rt{microservicio-docente/docentes/services.py}. ADR-005 cita \rt{CalificacionService} y \rt{CalificacionRepository}, que no existen, no tiene alternativas ni consecuencias negativas y es anterior a las clases. ADR-006 est\'a desactualizado (dice que no se integra FCM y cita 36 pruebas cuando hay 62) y sus criterios no tienen fuente externa. \textbf{C\'omo debe quedar:} el registro real de calificaciones pasa por la fachada desde un controlador; el promedio se calcula con la estrategia seleccionada por la configuraci\'on del a\~no lectivo; un endpoint de reporte por per\'iodo usa la plantilla y genera PDF; \rt{NotaPublicadaEvent} se publica desde el registro real y su oyente invoca el servicio de push; una prueba de integraci\'on por patr\'on; ADR-005 con rutas verificables, alternativas y consecuencias negativas; ADR-006 actualizado con dos criterios cuantitativos con fuente. \textbf{C\'omo lo verifico:}\begin{verbatim}
+for c in PortalAcademicoFacade ReporteNotasPeriodoPDF CalculoPromedioStrategy NotaPublicadaEvent; do
+  echo $c $(grep -rl $c sga-principal/src/main/java | grep -v "/$c.java" | grep -ci "controller\|service"); done   # >= 1 cada uno
+\end{verbatim}
+
+\subsection*{\S6 Aplicaci\'on web --- el testigo en \rt{localStorage} y un manuscrito que dice lo contrario}
+\textbf{Qu\'e encontr\'e:} existen \rt{/}, \rt{/login}, \rt{/settings} y \rt{/about}, i18n y tema en sga-frontend y Secretar\'ia; \textbf{falta \rt{/main}}. Las cuatro SPA guardan el JWT en \rt{localStorage} plano, lo que la gu\'ia proh\'ibe expresamente, y \rt{ProtectedRoute} s\'olo comprueba que exista un testigo, sin validar \rt{exp}; el manuscrito afirma ``sin localStorage, cookies HttpOnly y SameSite'' y ``React + TypeScript'' (hay 33 \rt{.jsx}, ning\'un \rt{.ts} ni \rt{tsconfig}). \rt{Calificaciones.jsx} env\'ia las notas de los estudiantes por HTTP a una direcci\'on fija del servicio de IA, saltando el gateway y \textbf{sin cabecera de autorizaci\'on}; \rt{Reportes.jsx} de Secretar\'ia llama a \rt{localhost:3000}. No hay portal de directivo propio. \textbf{C\'omo debe quedar:} una SPA can\'onica con las cinco rutas; testigo en memoria con renovaci\'on, \rt{sessionStorage} con expiraci\'on o cookie \rt{HttpOnly} emitida por el backend; guarda que valide \rt{exp}; todas las llamadas por el gateway con autorizaci\'on; vista de directivo con reporte por per\'iodo; el manuscrito describiendo exactamente eso. \textbf{C\'omo lo verifico:} \rt{grep -rn "localStorage.*token" sga-principal/sga-frontend/src | wc -l} da 0; \rt{grep -n 'path="/main"' sga-principal/sga-frontend/src/App.jsx}; ninguna direcci\'on IP ni \rt{localhost} en el c\'odigo de las SPA.
+
+\subsection*{\S7 Calidad web --- sin tipos, sin lint en CI y sin una sola prueba ejecutada}
+\textbf{Qu\'e encontr\'e:} las cuatro interfaces son JavaScript puro; \rt{npx eslint .} en sga-frontend da 54 errores y 9 avisos, y el job \rt{lint} no ejecuta ESLint (s\'olo un subconjunto de flake8); no hay Vitest ni Jest configurado y el \'unico archivo de prueba web no lo ejecuta ning\'un script; \rt{test-web} s\'olo compila. sga-frontend y docente-frontend no tienen Dockerfile y en compose corren con \rt{npm run dev}, es decir, el servidor de desarrollo en despliegue. El artefacto \rt{web-dist} por commit s\'i existe, sin suma. \textbf{C\'omo debe quedar:} sga-frontend en TypeScript con \rt{strict: true} y \rt{tsc -{}-noEmit} en verde; ESLint con cero errores en el job \rt{lint}; Vitest con Testing Library y cobertura $\ge$70\,\% sobre todo \rt{src/} con \rt{thresholds} que hagan fallar \rt{test-web}; Dockerfile multi-stage (Node para construir, \rt{nginx:alpine} para servir) para cada SPA desplegada, usado en compose y en la publicaci\'on; suma del artefacto \rt{dist}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+cd sga-principal/sga-frontend && npm ci && npx tsc --noEmit && npx eslint . && npx vitest run --coverage    # codigo 0
+grep -c "^FROM" sga-principal/sga-frontend/Dockerfile                                                        # >= 2
+\end{verbatim}
+
+\subsection*{\S8 Aplicaci\'on m\'ovil}
+\textbf{Qu\'e encontr\'e:} inicio de sesi\'on restringido a representantes, listado, detalle con calificaciones y asistencia, comunicados, cach\'e Room, \rt{SyncWorker}, biometr\'ia y servicio FCM registrado. Faltan la actualizaci\'on por arrastre (s\'olo hay un bot\'on ``Reintentar''); el push no es operativo tal como est\'a el repositorio (sin \rt{google-services.json} y con Firebase deshabilitado en el backend) y no hay evidencia de recepci\'on; la URL base es una direcci\'on fija por HTTP con \rt{usesCleartextTraffic="true"}. \textbf{C\'omo debe quedar:} \rt{PullToRefreshBox} en listado y detalle; instrucciones para suministrar las credenciales de Firebase fuera del repositorio y evidencia fechada de una notificaci\'on recibida tras publicar una nota (captura y registro del backend); URL base por \rt{BuildConfig} con HTTPS o tr\'afico sin cifrar limitado a depuraci\'on. \textbf{C\'omo lo verifico:} \rt{grep -rn PullToRefresh app-movil-docente/app/src/main}; ninguna direcci\'on IP en \rt{app/src/main}.
+
+\subsection*{\S9 Calidad m\'ovil}
+\textbf{Qu\'e encontr\'e:} 62 pruebas unitarias, pero s\'olo un ViewModel de 13 est\'a probado (\rt{LoginViewModel} no); la \'unica instrumentada renderiza una pantalla y el CI no la ejecuta. El APK versionado es de depuraci\'on, del 04/09, y ni siquiera contiene la mensajer\'ia FCM que entr\'o el 09/09; el CI s\'olo hace \rt{assembleDebug}; al corte no hab\'ia release firmado. \textbf{C\'omo debe quedar:} pruebas de los ViewModels de inicio de sesi\'on, listado, detalle y comunicados; una E2E instrumentada con servidor simulado (inicio de sesi\'on, listado, detalle) ejecutada en CI con emulador; APK release firmado con almac\'en en secretos, generado y publicado por CI con su SHA-256 e id\'entico al de \rt{release/apk/}. \textbf{C\'omo lo verifico:} \rt{grep -n "connectedAndroidTest\textbackslash|android-emulator-runner\textbackslash|assembleRelease" .github/workflows/ci-cd.yml}; \rt{apksigner verify -{}-print-certs release/apk/*.apk} sin ``Android Debug''.
+
+\subsection*{\S10 Contratos --- una interacci\'on, con el proveedor simulado}
+\textbf{Qu\'e encontr\'e:} un \'unico contrato con una interacci\'on (\rt{GET /api/docente/calificaciones/}), cuyo ``consumidor'' est\'a escrito en Python dentro del propio proveedor y cuya verificaci\'on parchea \rt{get\_queryset}: sin base de datos ni estados. No hay contrato de la app m\'ovil ni de ninguna SPA, ni contra Principal o Secretar\'ia. \rt{tests/contract/test\_contracts.py} son expresiones regulares sobre \rt{.proto} y OpenAPI. Adem\'as \rt{CalificacionViewSet} no tiene \rt{permission\_classes} ni hay permisos por defecto: \textbf{la API de calificaciones de Docente no exige autenticaci\'on}. \textbf{C\'omo debe quedar:} contratos generados por sga-frontend (Pact-JS sobre su m\'odulo de servicios) y por la app Kotlin (sobre \rt{RepresentanteApi}), que cubran inicio de sesi\'on, representados, calificaciones y asistencia; verificaci\'on contra Principal y Docente con estados que siembren una base de prueba; \rt{IsAuthenticated} en los ViewSet con un contrato que cubra el 401; job de contratos en los \rt{needs} de la publicaci\'on. \textbf{C\'omo lo verifico:} \rt{ls pacts/*.json} $\ge$ 3; \rt{grep -rn patch.object microservicio-docente/tests/contract} vac\'io; petici\'on sin testigo a la API de calificaciones devuelve 401.
+
+\subsection*{\S11 Persistencia distribuida --- no hay cl\'uster}
+\textbf{Qu\'e encontr\'e:} \rt{docker-compose.yml} define 15 servicios y \textbf{ninguno es de base de datos}; todos apuntan a un \'unico PostgreSQL externo. El manuscrito afirma ``tres instancias redundantes \ldots Raft'' y particionado por rango, que no existen en el c\'odigo. La evidencia de tolerancia a fallos mide la conmutaci\'on de r\'eplicas de la aplicaci\'on detr\'as de HAProxy, no de la base de datos. Flyway tiene la validaci\'on desactivada en compose, V13 se modific\'o despu\'es de aplicarse, hay un hueco en V11 y dos \rt{V5\_\_}; Secretar\'ia no ejecuta Flyway. V18 crea \rt{sga\_app} con privilegios reducidos, pero \textbf{todos los servicios siguen conect\'andose como \rt{postgres}}, de modo que la revocaci\'on no tiene efecto, y la misma migraci\'on concede \rt{DELETE} sobre la tabla que guarda la cabeza de la cadena. \textbf{C\'omo debe quedar:} cl\'uster reproducible en compose (tres nodos CockroachDB, o primario y r\'eplicas PostgreSQL) con healthchecks y \rt{depends\_on: service\_healthy}; Flyway con validaci\'on activa y cambios de V13 en una migraci\'on nueva; usuario de migraci\'on separado del de ejecuci\'on (\rt{sga\_app}) en los tres backends, sin \rt{DELETE} sobre la cadena; guion que detiene un nodo con escrituras en curso y verifica continuidad e integridad de la cadena, con su registro fechado versionado. \textbf{C\'omo lo verifico:} \rt{grep -c healthcheck docker-compose.yml} $\ge$ 3; \rt{grep -rn VALIDATE\_ON\_MIGRATE=false docker-compose.yml} vac\'io; ning\'un \rt{DB\_USER} de ejecuci\'on igual a \rt{postgres}.
+
+\subsection*{\S12 Pruebas y cadena de auditor\'ia}
+\textbf{a) Cadena de auditor\'ia.} Sigue habiendo tres implementaciones que difieren en casos l\'imite: la clave \rt{contrase\~na} est\'a escrita en Java con un byte inv\'alido (\rt{"contrase?a"}), de modo que no se excluye y su valor entra en el JSON; \rt{BigDecimal 9.50}, \rt{1e20} y las marcas de tiempo se serializan distinto en Java y en Python. Ninguna prueba verifica con Python filas escritas por Java; el reloj vectorial sigue sin efecto; no hay restricci\'on \rt{UNIQUE} que impida la bifurcaci\'on; las pruebas de concurrencia no usan las migraciones reales; \rt{guardar} atrapa \rt{Exception} y s\'olo registra un log, as\'i que \textbf{un fallo de auditor\'ia pierde el evento en silencio}; ADR-007 y el documento de alineaci\'on contradicen el c\'odigo. \textbf{Deben:} vectores can\'onicos compartidos (\~n y tildes, decimales, flotantes, fechas, nulos, claves excluidas) que las tres implementaciones pasen en CI; \'indice \'unico sobre \rt{hash\_anterior}; prueba de integraci\'on con migraciones reales y escrituras concurrentes desde los tres servicios; fallo de auditor\'ia que aborte la transacci\'on o quede en una cola persistente; ADR-007 reescrito; reloj vectorial con vector recibido real o retirado del dise\~no.
+
+\textbf{b) Cobertura, E2E y Testcontainers.} Medida sobre todo el c\'odigo escrito a mano: sga-principal 24,98\,\% de instrucciones, agregado Java 49,02\,\%. Las compuertas del 70\,\% siguen aplic\'andose a seis y siete clases elegidas a mano (el ``90,7\,\%'' del manuscrito sale del agregado de esas siete), y el PR \#118 ``para alcanzar la meta del 70\,\%'' excluye l\'ogica real (\rt{SecurityConfig}, \rt{GlobalExceptionHandler}, el servicio gRPC escrito a mano) y sube Secretar\'ia de 69,76\,\% a 70,46\,\% de l\'ineas. Docente cuenta sus propios archivos de prueba en el denominador. Los HTML de cobertura del 13/09 se editaron a mano en vez de regenerarse. La E2E de navegador estaba \textbf{en rojo en el commit de corte} y aun as\'i se despleg\'o porque no est\'a en los \rt{needs}; modifica calificaciones del entorno desplegado; sus evidencias son de antes de reescribirla. Las suites con contenedores se omiten sin Docker, s\'olo una aplica migraciones reales y parte de un esquema V1--V8 escrito a mano, y la de Secretar\'ia traga los errores de \rt{migrate()} en un \rt{catch} vac\'io. \textbf{Deben:} regla \rt{BUNDLE} de 70\,\% (l\'ineas e instrucciones) sin \rt{includes} y excluyendo s\'olo c\'odigo generado; pruebas hasta alcanzarla en Principal; \rt{.coveragerc} que omita las pruebas en Docente; un \'unico n\'umero por m\'odulo con fecha y comando en README y manuscrito; E2E en verde en el commit de cierre, dentro de los \rt{needs}, contra un entorno de pruebas y con su informe publicado; Testcontainers con migraciones completas que fallen (no se omitan) en CI.
+
+\textbf{c) Carga y comandos.} No hay una rampa v\'alida (el juego ``de estr\'es'' llega a 200 usuarios a los 40\,s y otro se qued\'o en 1 usuario). El manuscrito conserva filas ISO duplicadas con ``0 fallos en 12.265'' (cifra que no est\'a en ning\'un CSV de ning\'un commit) y ``100\,\% de fallos en 12.735''; cita ocho hashes de commit que no existen; el certificado de Soporte da 0 de 4. Ocho comandos del README fallan en un clon limpio (falta instalaci\'on previa, dependencias no declaradas, un \rt{.tex} inexistente, guiones sin permiso de ejecuci\'on). \textbf{Deben:} rampa con \rt{LoadTestShape} 0$\rightarrow$200 lineal en 600\,s; un juego can\'onico por escenario y los dem\'as en \rt{experimentos/descartados/} con su motivo; cifras y hashes corregidos; README ejecutable de principio a fin. \textbf{C\'omo lo verifico:}\begin{verbatim}
+grep -n "<element>CLASS</element>\|<include>" sga-principal/pom.xml microservicio-secretaria/backend/pom.xml     # vacio
+grep -c "12{,}265\|12{,}735" Informe-E4_BCEL/TA-PFC-E4_BCEL.tex                                                # 0
+grep -rn "contrase?a" --include=*.java . | wc -l                                                               # 0
+git ls-files -s scripts/start.sh sga-principal/mvnw app-movil-docente/gradlew | awk '{print $1}' | sort -u     # 100755
+\end{verbatim}
+
+\subsection*{\S13 Pipeline CI/CD --- compuertas fuera del camino del despliegue}
+\textbf{Qu\'e encontr\'e:} sonda de salud efectiva, cinco im\'agenes por commit e instalaci\'on reproducible. Pero \rt{secret-scan} y la E2E no est\'an en ning\'un \rt{needs} (con la E2E en rojo se despleg\'o igual) y \rt{build-images} construye en otras ramas aunque fallen las pruebas; \rt{lint} no ejecuta el linter de ninguna SPA, \rt{test-web} no ejecuta pruebas, \rt{integration} es un despliegue por SSH sin pruebas de integraci\'on y el APK es s\'olo de depuraci\'on; una fusi\'on reintrodujo una publicaci\'on duplicada de Secretar\'ia; el despliegue reconstruye en el servidor con \rt{docker compose up -{}-build} en lugar de usar las im\'agenes publicadas; y \rt{test-backend} inyecta la direcci\'on, el usuario \rt{postgres} y la contrase\~na de la base de datos real. \textbf{C\'omo debe quedar:} despliegue que dependa de \rt{secret-scan}, E2E, contratos y todas las pruebas; jobs que hacen lo que su nombre dice (\S7, \S9); integraci\'on que levante el stack en el runner, espere salud y ejecute \rt{tests/integration} y contratos antes de desplegar; una sola publicaci\'on por imagen, incluidas las SPA; despliegue con \rt{docker compose pull} de las im\'agenes del commit; ning\'un secreto de producci\'on en pruebas. \textbf{C\'omo lo verifico:} lectura de los \rt{needs} de \rt{integration}; \rt{grep -n "DB\_HOST" .github/workflows/ci-cd.yml} sin la direcci\'on real; todos los jobs en verde en el commit de cierre.
+
+\subsection*{\S14 Observabilidad --- m\'etricas de negocio que nadie incrementa}
+\textbf{Qu\'e encontr\'e:} \rt{SgaBusinessMetrics} define seis m\'etricas \rt{sga\_*} sin ning\'un llamador, y su indicador de estudiantes activos est\'a fijo en 344; Docente s\'i incrementa las suyas. Registros JSON con \rt{trace\_id} s\'olo en Secretar\'ia y Docente. No hay OpenTelemetry ni Collector (el manuscrito lo deja como trabajo futuro); s\'olo Soporte env\'ia a Zipkin. Hay dos tableros distintos, ninguno usa \rt{sga\_*} ni \rt{docente\_*}, y \rt{prometheus.yml} conserva un \rt{remote\_write} de plantilla. La captura ``bajo carga'' es del 31/08, anterior a la corrida oficial y al tablero actual. \textbf{C\'omo debe quedar:} m\'etricas de negocio incrementadas en flujos reales (nota registrada, matr\'icula confirmada, notificaci\'on enviada, evento de auditor\'ia encadenado) y m\'etricas del motor del cl\'uster; registros JSON con \rt{trace\_id} en los cuatro servicios; agente o SDK OpenTelemetry hacia un Collector en compose y de ah\'i a un almac\'en de trazas; un solo \rt{ops/grafana/pfc-dashboard.json} provisionado con los seis paneles de la gu\'ia; captura fechada del tablero y de una traza distribuida durante la corrida can\'onica.
+
+\subsection*{\S15 Campa\~na experimental --- latencias generadas por f\'ormula}
+\textbf{Qu\'e encontr\'e:} dos protocolos casi id\'enticos, sin H0/H1 ni variables, con 30 r\'eplicas en lugar de $r=10$ con descarte y una cuenta err\'onea (``30 $\times$ 4 $\times$ 5 = 120''); el manuscrito afirma un descarte de la primera y la \'ultima repetici\'on que no existe en el c\'odigo. Los CSV entraron el 31/08 y los protocolos el 01/09, ya con ``m\'etricas obtenidas'' dentro: \textbf{los umbrales se fijaron despu\'es de medir}. En el c\'odigo del corte, \rt{run\_experimentos.py} (modo local, en proceso, sin base de datos ni HTTP) \textbf{genera las latencias del experimento 1 con una f\'ormula} (\rt{base\_net = 1.25 + 0.35$\cdot$conc} m\'as constantes por mecanismo y ruido) y fija \rt{detectado = False} para M0 y M1, en contradicci\'on con \rt{REPRODUCIBILIDAD.md}. R\'eplicas degeneradas: 47 filas de \rt{exp1\_concurrencia.csv} id\'enticas salvo el n\'umero de r\'eplica, \emph{throughput} 20.000 = 20/0,001, 2 filas distintas de 60 en \rt{exp3}. Los CSV no tienen marcas de tiempo. Ninguna campa\~na se ejecut\'o contra los servicios desplegados. \textbf{C\'omo debe quedar:} un \'unico \rt{experimentos/protocolo-e4.md} con H0/H1, variables, umbrales num\'ericos, $r=10$ con descarte implementado y procedimiento de manipulaci\'on sobre la base real, versionado en un commit anterior a los datos; campa\~na en modo HTTP o sobre la base del cl\'uster, con latencias medidas con \rt{perf\_counter\_ns()} alrededor de escrituras reales, marca de tiempo por r\'eplica y cada r\'eplica como archivo crudo. \textbf{C\'omo lo verifico:}\begin{verbatim}
+grep -n "base_net\|detectado = False" experimentos/run_experimentos.py        # vacio
+git log --format=%ct -1 -- experimentos/protocolo-e4.md                        # menor que:
+git log --format=%ct --diff-filter=A -1 -- experimentos/resultados/raw
+\end{verbatim}
+
+\subsection*{\S16 Paquete de datos --- el certificado verifica bytes, no reproducibilidad}
+\textbf{Qu\'e encontr\'e:} \rt{sha256sum -c} da 6/6, pero regenerando dos veces con el c\'odigo del corte \textbf{los resultados cambian entre ejecuciones} y, salvo \rt{iso25010.csv}, ninguno coincide con el certificado. M3 da \rt{reconciliacion\_automatica=False} y el CSV versionado dice \rt{True}. \textbf{La detecci\'on de M2 y M3 cae del 100\,\% al 60\,\%}: las manipulaciones T2 (\emph{payload}) y T5 (marca de tiempo) no se detectan porque el verificador s\'olo hashea el contenido can\'onico; ese cambio entr\'o el 13/09 despu\'es de los CSV y del certificado. Los datos publicados no salen del c\'odigo publicado, y puede haber una brecha real en el verificador. Adem\'as el guion escribe fuera de \rt{-{}-output-dir}, el manifiesto cubre 6 archivos (fuera quedan Locust, falsos positivos, HTML y figuras), no hay diccionario de datos, \rt{requirements.txt} s\'olo declara matplotlib y el CI nunca regenera. \textbf{C\'omo debe quedar:} verificador que incluya \emph{payload} y marca de tiempo (o justificaci\'on de por qu\'e T2 y T5 no aplican); generaci\'on determinista con semilla en todas las fuentes y figuras sin metadatos variables; escritura s\'olo en \rt{-{}-output-dir}; un solo juego can\'onico; manifiesto de todos los crudos; \rt{DICCIONARIO\_DATOS.md}; dependencias y versi\'on de Python completas; job de CI que regenere en un directorio temporal y compare con el manifiesto. \textbf{C\'omo lo verifico:}\begin{verbatim}
+python experimentos/run_experimentos.py --mode local --output-dir /tmp/a
+python experimentos/run_experimentos.py --mode local --output-dir /tmp/b
+diff <(cd /tmp/a && sha256sum *) <(cd /tmp/b && sha256sum *)          # sin diferencias
+diff <(cd /tmp/a && sha256sum *) <(cd experimentos/resultados && sha256sum $(ls /tmp/a))   # sin diferencias
+git status --porcelain docs/                                           # vacio
+\end{verbatim}
+
+\subsection*{\S17 Evaluaci\'on ISO/IEC 25010}
+\textbf{Qu\'e encontr\'e:} la tabla del manuscrito no tiene media, DE ni IC95\,\%, duplica ``Disponibilidad'' y ``Fiabilidad'' con cifras contradictorias, omite Compatibilidad y no mide la tasa de 5xx durante una hora. \rt{iso25010.csv} no contiene r\'eplicas: son 20 ventanas de dos corridas no can\'onicas (una de ellas con un usuario y 79\,\% de fallos), con cobertura constante de 30,31\,\% de un informe antiguo; la tabla usa un juego y el CSV otro. Los intervalos de detecci\'on corresponden a $n=100$ cuando el CSV tiene 150, y la detecci\'on real regenerada es del 60\,\% (\S16). \textbf{C\'omo debe quedar:} las cinco caracter\'isticas de la gu\'ia con m\'etrica, umbral declarado en el protocolo previo, $n=10$ r\'eplicas reales tras el descarte, media, DE, IC95\,\% y contraste expl\'icito con el umbral, calculados por \rt{experimentos/iso25010.py} desde los crudos de \S15 y \S16 e incluidos en el manuscrito con \rt{\textbackslash input\{tabla\_iso.tex\}}. \textbf{C\'omo lo verifico:} \rt{python experimentos/iso25010.py \&\& git diff -{}-exit-code experimentos/resultados/iso25010.csv Informe-E4\_BCEL/tabla\_iso.tex}.
+
+\subsection*{\S18 Manuscrito --- afirmaciones que el repositorio desmiente}
+\textbf{Qu\'e encontr\'e:} compila a 29 p\'aginas sin indefinidas (con 204 cajas desbordadas), pero el PDF versionado es del 12/09 y el \rt{.tex} tiene tres commits posteriores: el PDF a\'un dice 12,265 cuatro veces, 30.31 y 40.96. Afirma cosas que el c\'odigo no respalda: React con TypeScript, sesi\'on sin \rt{localStorage} con cookies \rt{HttpOnly}, patrones GoF en flujo real, tres instancias Raft y particionado por rango, un flujo por issues, una tabla de revisi\'on cruzada con validadores que no existen, cobertura del 90,7\,\% y Soporte en ``Node.js Express'' (es Spring Boot). Tiene dos secciones de fundamento te\'orico, filas ISO duplicadas, cifras inferenciales (medianas, U, A12) que no salen de ning\'un archivo y hashes inexistentes. De 43 entradas bibliogr\'aficas s\'olo se citan 14, de las que 8 tienen DOI y ninguna ISBN (se exigen $\ge$12), con dos pares duplicados y una cita mal atribuida. La matriz de trazabilidad cruza temas con archivos, no la evoluci\'on E1$\rightarrow$E4, y cita rutas inexistentes. \textbf{C\'omo debe quedar:} ninguna afirmaci\'on sin respaldo en el c\'odigo; cifras incluidas desde tablas generadas por los guiones; $\ge$12 referencias citadas con DOI o ISBN y sin duplicados; secci\'on de trazabilidad E1$\rightarrow$E4 con commit y ruta de lo que cambi\'o en cada entrega; PDF compilado y versionado en el mismo commit que su \rt{.tex}, \emph{despu\'es} de la \'ultima regeneraci\'on de resultados. \textbf{C\'omo lo verifico:}\begin{verbatim}
+test "$(git log -1 --format=%H -- Informe-E4_BCEL/TA-PFC-E4_BCEL.pdf)" = "$(git log -1 --format=%H -- Informe-E4_BCEL/TA-PFC-E4_BCEL.tex)"
+pdftotext Informe-E4_BCEL/TA-PFC-E4_BCEL.pdf - | grep -cE "TypeScript|HttpOnly|12,265|90.7"        # 0
+grep -c "^\\\\bibitem" Informe-E4_BCEL/TA-PFC-E4_BCEL.bbl                                          # >= 12
+\end{verbatim}
+
+\subsection*{\S19 Amenazas a la validez y reflexi\'on \'etica}
+\textbf{Qu\'e encontr\'e:} tres internas y dos externas, pero la mitigaci\'on por descarte no existe en el c\'odigo, la de contenci\'on de CPU no tiene evidencia, las externas no tienen mitigaci\'on y no se trata la amenaza principal: datos sint\'eticos y latencias generadas por f\'ormula. La reflexi\'on \'etica tiene unas 85 palabras, cita el c\'odigo ACM/IEEE-CS de 1999 y no aborda los problemas \'eticos del propio sistema: notas de menores enviadas sin autenticaci\'on a un servicio de IA externo, el respaldo con posibles datos personales y las credenciales publicadas. \textbf{C\'omo debe quedar:} cada amenaza con una mitigaci\'on que apunte a un archivo verificable, m\'as la validez de constructo por datos sint\'eticos; reflexi\'on de al menos media p\'agina con el ACM Code of Ethics 2018 (1.3 honestidad, 1.6 privacidad, 2.9 seguridad) aplicado a esas decisiones concretas.
+
+\subsection*{\S20 Trabajo en equipo y autor\'ia}
+\textbf{Qu\'e encontr\'e:} las tres actas, fechadas el 18/08, 28/08 y 03/09, entraron en un solo commit el 04/09 y contienen datos posteriores a su fecha (un tablero creado el 01/09, m\'etricas del 31/08, una mediana de la corrida del 11/09) y afirman haber ``auditado y validado'' PR con cero revisiones; no hay actas del periodo de correcciones. La declaraci\'on de uso de IA existe en tres versiones incompatibles (una de ellas pide que ``los dem\'as integrantes completen''). 23 commits llevan el nombre de Emanuel Pino con el correo de Luna Mora, 16 de ellos creados en 37 segundos. Entre la evaluaci\'on del 12/09 y el corte, Bed\'on Viteri hizo el trabajo t\'ecnico de m\'as peso (22 commits), Emanuel Pino 11, Castro L\'opez 7 cambios peque\~nos (uno de ellos introdujo los valores de reserva inseguros y otro las exclusiones de cobertura) y Luna Mora 2 (uno de ellos la contrase\~na literal de V18). \textbf{C\'omo debe quedar:} nota en las tres actas que reconozca que se redactaron el 04/09 y corrija los anacronismos; actas nuevas versionadas el d\'ia de cada reuni\'on del suspenso; una sola declaraci\'on de IA coherente entre README y manuscrito; identidades git correctas en cada equipo y aclaraci\'on de los commits de identidad mixta; cada \'item de esta gu\'ia con un responsable nominal y entregado en PR aprobados por otro integrante. \textbf{Como los cuatro rinden el examen, cada uno debe tener aporte t\'ecnico propio y verificable}: nadie aprueba con el trabajo de otra persona. \textbf{C\'omo lo verifico:} \rt{git log -{}-diff-filter=A -{}-format="\%h \%ad" -{}-date=short -{}- docs/actas/} frente a la fecha de cada acta; \rt{git shortlog -sne -{}-no-merges 78b0d175..v4.0.0}; revisiones de cada PR en la API.
+
+\section{Orden de ejecuci\'on}
+\S2a credenciales y datos personales (inmediato: retirar, rotar y purgar antes de cualquier otra reescritura) $\rightarrow$ \S3 protecci\'on de \rt{main} $\rightarrow$ \S11 cl\'uster y usuario sin privilegios y \S12a cadena de auditor\'ia $\rightarrow$ \S4 capas y \S5 patrones (en paralelo) $\rightarrow$ \S6, \S8 y \S9 clientes $\rightarrow$ \S7, \S12b, \S10 y \S13 pruebas y CI $\rightarrow$ \S14 observabilidad $\rightarrow$ \S15 protocolo (commit) y campa\~na $\rightarrow$ \S16 reproducibilidad $\rightarrow$ \S17 ISO/IEC 25010 (con \S12c rampa) $\rightarrow$ \S18 y \S19 con las cifras finales $\rightarrow$ \S1, \S2b, \S2c y \S20 $\rightarrow$ CHANGELOG, manifiestos y, lo \'ultimo, la etiqueta anotada.
+
+\section{Lista de verificaci\'on antes de entregar}
+\begin{verbatim}
+git ls-remote https://github.com/gleiston-guerrero/acadtrace HEAD
+git cat-file -t v4.0.0 && test "$(git rev-parse v4.0.0^{commit})" = "$(git rev-parse origin/main)" && test -f CHANGELOG.md
+gitleaks detect --source . --log-opts="--all"
+for c in PortalAcademicoFacade ReporteNotasPeriodoPDF CalculoPromedioStrategy NotaPublicadaEvent; do echo $c $(grep -rl $c sga-principal/src/main/java | grep -vc "/$c.java"); done
+python experimentos/run_experimentos.py --mode local --output-dir /tmp/a && sha256sum -c experimentos/SHA256SUMS
+grep -n "<element>CLASS</element>\|<include>" sga-principal/pom.xml microservicio-secretaria/backend/pom.xml
+pdftotext Informe-E4_BCEL/TA-PFC-E4_BCEL.pdf - | grep -cE "TypeScript|HttpOnly|12,265"
+\end{verbatim}
+
+\piedepagina
+\end{document}

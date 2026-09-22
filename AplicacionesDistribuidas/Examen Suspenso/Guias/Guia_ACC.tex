@@ -1,0 +1,181 @@
+\input{preambulo_ISR701.tex}
+\input{nota_ACC.tex}
+\begin{document}
+
+\cabecera{ACC}{TicketFold, soporte t\'ecnico distribuido para un proveedor de Internet}{gleiston-guerrero/PFC-SOPORTE-ISP}{main}{964fa6e}{198}{Pacheco C\'ardenas Cristhian Daniel \textperiodcentered{} Carpio Mendoza Carlos Jos\'e \textperiodcentered{} \'Alvarez P\'arraga Jeremy Alexis \textperiodcentered{} Cando Moreno Robinson Rodrigo}{\textbf{\'Alvarez P\'arraga Jeremy Alexis}}{\completitud}
+
+\clausulas{PFC-SOPORTE-ISP}{al 16/09 el repositorio figura bajo \rt{gleiston-guerrero/PFC-SOPORTE-ISP}; cumple si sigue as\'i al corte}
+
+\section{Evaluaci\'on de los entregables}
+
+\begin{tablaeval}
+
+\fila{1}{Identificaci\'on del entregable y URL}{\pmodif}{\pmodif}{75}[\ver{1}]
+
+\fila{2}{Estructura del repositorio y archivos de ra\'iz}{\pmodif}{\pmodif}{70}[\ver{2}]
+
+\fila{3}{L\'inea base congelada e integraci\'on}{\pculm}{\pculm}{25}[\ver{3}]
+
+\fila{4}{Backend en capas y SOLID}{\pmodif}{\pmodif}{65}[\ver{4}]
+
+\fila{5}{Patrones GoF y ADR}{\pmodif}{\pmodif}{70}[\ver{5}]
+
+\fila{6}{Aplicaci\'on web funcional}{\pmodif}{\pmodif}{75}[\ver{6}]
+
+\fila{7}{Calidad de la aplicaci\'on web}{\pmodif}{\pmodif}{75}[\ver{7}]
+
+\fila{8}{Aplicaci\'on m\'ovil funcional}{\pmodif}{\pmodif}{65}[\ver{8}]
+
+\fila{9}{Calidad de la aplicaci\'on m\'ovil}{\pmodif}{\pmodif}{55}[\ver{9}]
+
+\fila{10}{Integraci\'on y contratos}{\pculm}{\pculm}{45}[\ver{10}]
+
+\fila{11}{Persistencia distribuida}{\pmodif}{\pmodif}{70}[\ver{11}]
+
+\fila{12}{Pir\'amide de pruebas}{\pculm}{\pculm}{40}[\ver{12}]
+
+\fila{13}{Pipeline CI/CD}{\hecho}{\pmodif}{85}[\ver{13}]
+
+\fila{14}{Observabilidad}{\pmodif}{\pmodif}{65}[\ver{14}]
+
+\fila{15}{Protocolo y campa\~na experimental}{\pculm}{\pculm}{35}[\ver{15}]
+
+\fila{16}{Paquete de datos y reproducibilidad}{\pmodif}{\pculm}{35}[\ver{16}]
+
+\fila{17}{Evaluaci\'on ISO/IEC 25010}{\pculm}{\pculm}{30}[\ver{17}]
+
+\fila{18}{Manuscrito, bibliograf\'ia y trazabilidad E1--E4}{\pmodif}{\pculm}{35}[\ver{18}]
+
+\fila{19}{Amenazas a la validez y reflexi\'on \'etica}{\pmodif}{\pmodif}{60}[\ver{19}]
+
+\fila{20}{Trabajo en equipo y autor\'ia}{\pculm}{\pculm}{25}[\ver{20}]
+
+\end{tablaeval}
+
+\notadependencias
+
+\begin{logro}{Lo que est\'a hecho y no se recalifica}
+El pipeline es el m\'as completo del curso: los siete jobs en DAG m\'as \rt{compile-latex} y \rt{verify-checksums}; \rt{build-images} depende de lint, las tres suites y la integraci\'on, y publica siete im\'agenes en GHCR etiquetadas por commit; la integraci\'on levanta el stack con sonda de salud y verifica el proveedor Pact y Playwright contra servicios reales; la ejecuci\'on sobre \rt{964fa6e} termin\'o con 15 jobs en verde. La SPA, recompilada desde cero, pasa \rt{tsc} y ESLint sin advertencias y 75 pruebas con cobertura de l\'ineas 87,6\,\% (1.583/1.807) y de ramas 89,09\,\% (237/266) sobre todo \rt{src/}; tiene las cinco rutas protegidas, i18n es/en, tema claro y oscuro y JWT en \rt{sessionStorage} con expiraci\'on. El m\'ovil guarda el JWT cifrado, tiene cach\'e Room y actualizaci\'on por arrastre y captura foto y GPS reales; el APK est\'a firmado desde un secreto en CI. Command, Chain of Responsibility, Observer de escalado, Factory Method y Strategy de SLA y correlaci\'on son c\'odigo real con 86 pruebas. Las cuatro m\'etricas nuevas y tres \rt{crdb\_*}, registros JSON con \rt{trace\_id} y trazas hacia Tempo est\'an instrumentados. Los tres manifiestos verifican (3/3, 41/41, 1/1) en CI; \rt{generar\_reporte\_correl.py} regenera el an\'alisis y la tabla del documento id\'enticos; \rt{.gitattributes} deja cero archivos CRLF. El manuscrito compila a 55 p\'aginas sin indefinidas, su PDF corresponde a la fuente y la tabla de aporte ya incluye a los cuatro integrantes.
+\end{logro}
+
+\section{R\'ubrica del examen suspenso}
+
+\reglarubrica
+
+\input{rubrica_ACC.tex}
+
+\begin{nota}{Lectura de la r\'ubrica al 13/09/2026, 19:00}
+La columna \emph{Estado} es el que encontr\'e en el commit de corte; la columna \emph{Puntos} es peso por coeficiente. Nota provisional del examen suspenso: \textbf{\notaprov{} / 10,00}. Si cierran todos los \'items en Hecho, la nota es 10,00.
+\end{nota}
+
+\section{Trabajo exigido}
+
+\subsection*{\S1 Identificaci\'on del entregable y URL}
+\textbf{Qu\'e encontr\'e:} \rt{CITATION.cff} (\rt{repository-code}) y \rt{docs/diapositivas/identificacion\_lms.tex} siguen apuntando a \rt{carlospatroner-boop/PFC-SOPORTE-ISP}; el manuscrito no contiene ninguna URL del repositorio; el README no tiene la URL, ni los integrantes, ni sus roles (s\'olo est\'an en \rt{PLAN.md}, un plan de la E3), conserva el aviso de la ``fecha l\'imite del viernes 28 de agosto'' y dice que el documento tiene 51 p\'aginas cuando tiene 55; \rt{CITATION.cff} no declara versi\'on. \textbf{C\'omo debe quedar:} \rt{https://github.com/gleiston-guerrero/PFC-SOPORTE-ISP} en README, \rt{CITATION.cff}, portada del manuscrito y diapositiva; secci\'on ``Equipo'' en el README con nombre completo, rol y usuario de GitHub; \rt{version} y \rt{date-released} coherentes con la etiqueta de cierre. \textbf{C\'omo lo verifico:} \rt{git grep -n carlospatroner-boop v4.0.0} no devuelve nada; \rt{git grep -n gleiston-guerrero/PFC-SOPORTE-ISP v4.0.0 -{}- README.md CITATION.cff docs/latex/main.tex} devuelve las tres.
+
+\subsection*{\S2 Estructura --- subproductos, carpetas heredadas y rutas que no existen}
+\textbf{Qu\'e encontr\'e:} versionan \rt{main.bbl} y \rt{main.blg}, 194 archivos HTML generados por JaCoCo y un \rt{.exec} de 1,33\,MB; \rt{node\_modules} de notification-service (1.575 archivos) sigue en el historial; conviven carpetas heredadas o ajenas sin explicaci\'on (\rt{frontend/} de la E3, \rt{PLAN.md}, \rt{start-all.ps1}, \rt{Evidencias de Modificaciones/} con capturas de ``clic en editar''). Faltan ADR-001 y ADR-002, el C4 de nivel 3 en imagen, \rt{iso25010.csv} y \rt{boxplot\_latencia.png} del Listado 3, y los siete servicios tienen nombres distintos sin tabla de correspondencia. \rt{tolerancia\_fallos.md} remite a \rt{docs/evidencias/frames/} y una prueba E2E cita \rt{rebalance\_demo\_tickets.sql}: ninguno existe. \rt{.env.example} no tiene variables del m\'ovil, cuya URL base \rt{10.0.2.2:8000} est\'a fija en el c\'odigo. \textbf{Qu\'e deben hacer:} retirar subproductos y a\~nadir \rt{*.bbl}, \rt{*.blg} y \rt{*.exec} a \rt{.gitignore}; conservar de JaCoCo s\'olo \rt{jacoco.xml} y \rt{jacoco.csv}; mover lo heredado a \rt{docs/entrega3/} o retirarlo; a\~nadir al README la tabla ``Listado 3 $\rightarrow$ ruta real''; crear los ADR ausentes o justificar su ausencia; corregir las rutas rotas; declarar la URL base del m\'ovil como \rt{buildConfigField} documentada en \rt{.env.example}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git ls-files | grep -E "\.(bbl|blg|aux|log|exec)$|jacoco-resources|node_modules"     # vacio
+grep -rn "frames/\|rebalance_demo_tickets" --include=*.md --include=*.ts .             # vacio
+\end{verbatim}
+
+\subsection*{\S3 L\'inea base --- sin etiqueta de cierre, sin revisi\'on y con historia reescrita}
+\textbf{Qu\'e encontr\'e:} las cuatro etiquetas existentes son ligeras y ninguna apunta a un commit de \rt{main} (tres son copias de seguridad de reescrituras y \rt{mobile-release} apunta a \rt{f5300ed}, fuera de la rama). No hay \rt{CHANGELOG}. De 13 PR anteriores al corte s\'olo el \#1 tiene revisiones; cinco los abri\'o y fusion\'o la misma persona. Los 45 commits posteriores al \'ultimo PR entraron directamente en \rt{main}, y la rama se reescribi\'o con \emph{force-push} al menos tres veces (16 commits descartados el 09/09, siete reaplicados el 10/09 con otros autores y uno eliminado el 13/09). Los archivos del Release \rt{mobile-release} se reemplazaron despu\'es del corte, as\'i que no prueban nada sobre la entrega. \textbf{C\'omo debe quedar:} rama \rt{main} protegida (PR obligatorio, una aprobaci\'on, sin \emph{force-push}); cada cambio del suspenso en un PR aprobado por un integrante distinto del autor; \rt{CHANGELOG.md} con entradas fechadas de v1.0.0 a v4.0.0 y una del examen suspenso; etiquetas \rt{backup-*} retiradas; etiqueta anotada de cierre sobre el \'ultimo commit de \rt{main}, creada \textbf{al final de todo}, con un Release inmutable ligado a ella. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git cat-file -t v4.0.0 && git merge-base --is-ancestor v4.0.0 origin/main
+git for-each-ref refs/tags --format='%(objecttype) %(refname:short) %(taggerdate:iso)'
+git ls-remote --tags origin v4.0.0           # deben salir DOS lineas
+\end{verbatim}
+y en la API, \rt{/pulls?state=closed} con una revisi\'on \rt{APPROVED} de otro usuario en cada PR.
+
+\subsection*{\S4 Backend en capas --- Spring dentro del dominio}
+\textbf{Qu\'e encontr\'e:} nueve archivos de \rt{svc-principal/.../domain} llevan anotaciones de Spring (\rt{@Component("c0")}, \rt{@Component("c1")}, \rt{@Value}, \rt{@Order(1)}, en estrategias, cadena de escalado, f\'abrica y pol\'iticas de SLA), igual que \rt{TelemetryStore}, lo que contradice el propio ADR-005 (``el dominio queda libre de anotaciones JPA/Spring''). Las entidades \rt{Ticket}, \rt{Incidencia}, \rt{User}, \rt{RefreshToken} y \rt{TicketSummary} son an\'emicas con \rt{@Setter} y \rt{@AllArgsConstructor}, as\'i que cualquier invariante se puede saltar. telemetry-service no tiene \rt{application} ni \rt{presentation}; notification-service y ai-service son planos. \rt{TicketController} depende de tres manejadores concretos y no de \rt{TicketCommandHandler<C,R>}. \textbf{C\'omo debe quedar:} dominio sin \rt{org.springframework}, \rt{jakarta.persistence} ni setters p\'ublicos; beans construidos en \rt{infrastructure/config}; entidades con m\'etodos de negocio (\rt{asignar()}, \rt{cambiarEstado()}, \rt{escalar()}); cuatro capas en cada servicio con l\'ogica, o un ADR que justifique los triviales; controladores sobre interfaces; prueba ArchUnit que lo haga cumplir. \textbf{C\'omo lo verifico:}\begin{verbatim}
+grep -rln "import org.springframework\|lombok.Setter" services/*/src/main/java/ec/edu/uteq/soporte/*/domain   # vacio
+mvn -B test -Dtest=ArchitectureTest     # en svc-principal, auth-service, report-service y telemetry-service
+\end{verbatim}
+
+\subsection*{\S5 Patrones GoF --- faltan los dos que dependen del dominio del ISP}
+\textbf{Qu\'e encontr\'e:} Repository, Factory Method, Command, Chain of Responsibility, Observer de escalado y Strategy de SLA y de correlaci\'on son c\'odigo real con pruebas. Pero la Tabla 1 exige un \textbf{Strategy de rutas} y no existe ninguna estrategia de rutas ni de orden de visitas en el backend ni en el m\'ovil, y el \textbf{Observer de SLA} s\'olo cubre el escalado: ning\'un sujeto notifica a la consola ni al m\'ovil el paso de un ticket a ``en riesgo'' o ``vencido''. ADR-005 repite casi literalmente un p\'arrafo del contexto, afirma que el dominio est\'a libre de Spring (falso, \S4) y cita 45 pruebas cuando hay 86. ADR-006 aporta cifras s\'olo de la opci\'on elegida (APK de 11,06\,MB y 20 dependencias) y reconoce que no midi\'o ninguna alternativa. \textbf{C\'omo debe quedar:} \rt{RutaStrategy} con al menos dos implementaciones (p.~ej. cercan\'ia por GPS y prioridad por SLA) usadas por un caso de uso que expone la ruta del t\'ecnico y que el m\'ovil consume, con pruebas; Observer de SLA que publique el cambio de estado de SLA hacia m\'etrica, mensajer\'ia y consola, con pruebas; ADR-005 corregido y ADR-006 con una tabla de al menos dos criterios medidos o citados \emph{para ambas opciones}. \textbf{C\'omo lo verifico:} \rt{grep -rn "RutaStrategy" services/svc-principal/src/main | wc -l} $\ge 3$; \rt{mvn -B test -Dtest='*Ruta*Test,*Sla*Observer*Test'} en verde; \rt{grep -c "Antes de este refactor" docs/adr/0005-patrones-gof.md} da 1.
+
+\subsection*{\S6 Aplicaci\'on web --- la vista de SLA es s\'olo un subt\'itulo}
+\textbf{Qu\'e encontr\'e:} la Tabla 1 pide una consola de operadores y coordinadores con vista de SLA por zona y por t\'ecnico. \rt{es.json} tiene el subt\'itulo ``Vista de SLA por zona y por t\'ecnico'', pero \rt{ConsolePage.tsx} muestra tres indicadores globales, un filtro de zona y una insignia por fila; \rt{ReportsPage.tsx} desglosa por estado, zona y categor\'ia, sin t\'ecnico ni porcentaje de cumplimiento; \rt{SummaryResponse} no expone agrupaci\'on por t\'ecnico. No existe el rol de coordinador u operador (roles: \rt{CLIENTE}, \rt{TECNICO}, \rt{ADMIN}). \textbf{C\'omo debe quedar:} una vista con tickets abiertos, vencidos, porcentaje de cumplimiento de SLA y tiempo medio de resoluci\'on por zona y por t\'ecnico, alimentada por un endpoint real del modelo de lectura (p.~ej. \rt{GET /api/v1/reports/sla?groupBy=zone|technician}), con i18n, estados de carga y error, pruebas Vitest y una prueba Playwright; rol de coordinador con acceso a ella. \textbf{C\'omo lo verifico:} \rt{grep -rn "groupBy\textbackslash|byTechnician" services/report-service/src/main apps/web/src} no vac\'io; \rt{npx vitest run src/features/sla}; la respuesta del endpoint trae el porcentaje por t\'ecnico.
+
+\subsection*{\S7 Calidad web --- la cobertura no es una compuerta}
+\textbf{Qu\'e encontr\'e:} la cobertura real es buena (v\'ease el recuadro de lo hecho), pero el CI ejecuta \rt{npm test} sin \rt{-{}-coverage} y \rt{vitest.config.ts} no define umbrales: una ca\'ida por debajo del 70\,\% no romper\'ia el pipeline. Ning\'un job publica \rt{dist/} versionado por commit. \textbf{Qu\'e deben hacer:} \rt{coverage.thresholds} de 70 en las cuatro m\'etricas; \rt{npm run test:coverage} en el job con el informe como artefacto; paso de \rt{npm run build} que suba \rt{web-dist-\$\{\{ github.sha \}\}} con su suma; demostrar en un PR que la compuerta falla al subir temporalmente el umbral. \textbf{C\'omo lo verifico:} \rt{grep -n thresholds apps/web/vitest.config.ts}; artefactos \rt{web-dist-<sha>} y \rt{web-coverage} en la ejecuci\'on del commit final.
+
+\subsection*{\S8 Aplicaci\'on m\'ovil --- la evidencia se captura y se descarta}
+\textbf{Qu\'e encontr\'e:} inicio de sesi\'on, listado con actualizaci\'on por arrastre, detalle, cach\'e Room y JWT cifrado funcionan, y la foto y el GPS se capturan de verdad. Pero \rt{TicketDetailViewModel.closeOnSite()} s\'olo comprueba que existan y luego llama a \rt{ticketRepository.closeOnSite(ticketId)} \textbf{sin foto ni coordenadas}; el propio \rt{TicketRepository.kt} lo reconoce en un comentario (``hoy solo actualiza el estado a RESUELTO''), no hay endpoint multipart ni de evidencia en la app ni en el backend, y aun as\'i el di\'alogo le dice al t\'ecnico que ``se enviar\'a la evidencia fotogr\'afica y las coordenadas GPS''. Adem\'as el listado no muestra los tickets \emph{asignados}: el backend filtra al t\'ecnico por zona, as\'i que ve todos los de su zona. No hay registros estructurados (Timber). \textbf{C\'omo debe quedar:} cierre en sitio que sube la foto y la latitud y longitud (multipart u objeto almacenado), persiste la evidencia en una tabla creada por migraci\'on (\S11) con ticket, t\'ecnico y marca de tiempo, la muestra en el detalle web y, sin conexi\'on, la encola y sincroniza; listado m\'ovil restringido a los tickets asignados al t\'ecnico autenticado. \textbf{C\'omo lo verifico:}\begin{verbatim}
+grep -n "Multipart\|latitude" apps/mobile/app/src/main/java/**/data/remote/TicketApi.kt
+grep -rn "close-on-site\|ticket_evidence" services/svc-principal/src
+./gradlew :app:testDebugUnitTest --tests '*TicketDetailViewModelTest*'
+\end{verbatim}
+m\'as la evidencia versionada de un cierre real (petici\'on y respuesta del gateway y fila en la tabla de evidencias).
+
+\subsection*{\S9 Calidad m\'ovil --- tres pruebas unitarias y ninguna E2E}
+\textbf{Qu\'e encontr\'e:} s\'olo \rt{LoginViewModelTest} (3 pruebas); \rt{TicketListViewModel} y \rt{TicketDetailViewModel}, que contiene la l\'ogica de cierre, no tienen pruebas. La \'unica instrumentada valida campos vac\'ios del formulario y su comentario aclara que no depende del backend. El APK versionado se subi\'o a mano; el Release depende de una etiqueta ligera fuera de \rt{main} y sus archivos se sobrescriben en cada \emph{push}. \textbf{C\'omo debe quedar:} pruebas de los tres ViewModels (\'exito, error, sin conexi\'on y cierre con evidencia) con JUnit 5, \rt{coroutines-test} y \rt{mockk}; al menos una E2E instrumentada con servidor simulado que recorra inicio de sesi\'on, lista y detalle; Release publicado s\'olo al empujar la etiqueta de cierre, sin sobrescritura, con \rt{SHA256SUMS.txt} y enlace desde el README. \textbf{C\'omo lo verifico:} \rt{grep -c "@Test" apps/mobile/app/src/test/**/*ViewModelTest.kt} (tres archivos, 10 o m\'as pruebas); \rt{grep -rn MockWebServer apps/mobile/app/src/androidTest}; el APK del Release verifica con \rt{sha256sum -c} y \rt{apksigner verify}.
+
+\subsection*{\S10 Contratos --- el cliente m\'ovil no tiene contrato}
+\textbf{Qu\'e encontr\'e:} un \'unico consumidor Pact, la web, con dos interacciones (ambas \rt{GET /api/v1/tickets}: 401 sin testigo y 200 con ADMIN); no cubre detalle, creaci\'on, cambio de estado, asignaci\'on, inicio de sesi\'on ni reportes. El m\'ovil usa tres operaciones sin ning\'un contrato. La verificaci\'on del proveedor contra el stack real es correcta, pero s\'olo sobre esas dos interacciones. \rt{docs/api/openapi.yaml} usa rutas relativas ambiguas (\rt{/}, \rt{/\{id\}}, \rt{/summary}) bajo diez \rt{servers} globales, deja sin esquema las respuestas 2xx de listar, cambiar estado, asignar y administrar usuarios, no documenta \rt{GET /api/v1/tickets/incidencias}, y nada lo valida en CI. \textbf{C\'omo debe quedar:} dos consumidores (\rt{soporte-web} y \rt{soporte-mobile}) con una interacci\'on por cada operaci\'on que usa cada cliente, incluida la del cierre en sitio de \S8, verificados por el proveedor real en CI; OpenAPI con rutas absolutas, esquemas en todas las respuestas y \rt{npx @redocly/cli lint} en el job de lint. \textbf{C\'omo lo verifico:} \rt{ls pacts/} con dos archivos (web $\ge 5$ y m\'ovil $\ge 4$ interacciones); registro del job de integraci\'on con ``Verifying a pact between soporte-mobile and ticket-service'' en verde; \rt{redocly lint} sin errores.
+
+\subsection*{\S11 Persistencia distribuida --- esquema sin historial de versiones}
+\textbf{Qu\'e encontr\'e:} tres nodos CockroachDB con localidades, healthchecks y \rt{num\_replicas = 3}. Pero no hay migraciones versionadas: el esquema se aplica con scripts \rt{CREATE TABLE IF NOT EXISTS} desde el \rt{command} de \rt{db-init}, hay un \rt{ALTER TABLE auth\_db.users ADD COLUMN ... zone} incrustado en \rt{docker-compose.yml}, y \rt{docs/db/schema.sql} es una copia ``de referencia'' que puede divergir. La imagen es flotante (\rt{latest-v23.2}), tambi\'en en Testcontainers. La evidencia de tolerancia a fallos es de la E3 y cita capturas inexistentes. \textbf{C\'omo debe quedar:} migraciones Flyway (\rt{V1\_\_init.sql}, \rt{V2\_\_users\_zone.sql}, \ldots) en cada servicio con base de datos y \rt{db-init} reducido a inicializar el cl\'uster; versi\'on fija de CockroachDB en compose y pruebas; script que detiene un nodo bajo carga y guarda un CSV con marcas de tiempo y su manifiesto, ejecutado sobre la configuraci\'on E4. \textbf{C\'omo lo verifico:} \rt{git ls-files "services/*/src/main/resources/db/migration/V*.sql"} ($\ge 2$ por servicio con base); \rt{grep -n "ALTER TABLE\textbackslash|latest" docker-compose.yml} vac\'io; \rt{sha256sum -c db-cluster/results/SHA256SUMS.txt}.
+
+\subsection*{\S12 Pir\'amide de pruebas --- la cobertura del backend no se mide en CI}
+\textbf{Qu\'e encontr\'e:} 121 pruebas Java (86 en \rt{svc-principal}, 15 auth, 11 report, 8 telemetry, 1 gateway), 75 web, 3 E2E Playwright, 3 unitarias y 2 instrumentadas m\'oviles. S\'olo \rt{svc-principal} mide cobertura, en un perfil que el CI no activa y sin \rt{check}: el 81,1\,\% de l\'ineas procede de una ejecuci\'on local del 07/09 sobre un commit que no est\'a en \rt{main}, y sus ramas est\'an en 57,1\,\%; auth, report y telemetry no tienen JaCoCo. Testcontainers s\'olo en tres pruebas de \rt{svc-principal}. La carga no sigue la gu\'ia (\S15b). El CI s\'olo sube el informe de Playwright. \textbf{C\'omo debe quedar:} JaCoCo con \rt{prepare-agent}, \rt{report} y \rt{check} al 70\,\% (instrucciones, ramas y l\'ineas) ligados a \rt{test} en los cuatro servicios Java, ejecutado en CI; pruebas de repositorio con Testcontainers en auth y report; informes de surefire, JaCoCo, Vitest, pruebas m\'oviles y Playwright como artefactos. \textbf{C\'omo lo verifico:}\begin{verbatim}
+grep -rn "<minimum>0.70" services/*/pom.xml | wc -l        # >= 4
+for s in auth-service svc-principal report-service telemetry-service; do (cd services/$s && mvn -B test) || echo FALLA $s; done
+\end{verbatim}
+
+\subsection*{\S13 Pipeline CI/CD --- dos ajustes}
+\textbf{Qu\'e encontr\'e:} el pipeline es correcto (v\'ease lo hecho) y baja s\'olo por lo que protege: no tiene compuertas de cobertura (\S7, \S12) ni verifica el contrato m\'ovil (\S10). Adem\'as \rt{build-mobile-apk} no depende de lint y los Dockerfile descargan el agente OpenTelemetry desde \rt{releases/latest}, lo que hace la imagen no reproducible. \textbf{Qu\'e deben hacer:} \rt{needs: [lint, test-mobile]} en el job del APK; URL del agente con versi\'on fija y verificaci\'on de su suma. \textbf{C\'omo lo verifico:} \rt{grep -n "releases/latest" services/*/Dockerfile} vac\'io.
+
+\subsection*{\S14 Observabilidad --- el cliente m\'ovil no emite nada}
+\textbf{Qu\'e encontr\'e:} el panel ``latencia extremo a extremo desde el cliente m\'ovil'' consulta la latencia del gateway en el servidor; el m\'ovil no emite m\'etricas, trazas ni registros JSON con \rt{trace\_id}. notification-service y ai-service no exportan registros al Collector, que no tiene pipeline de registros. Los paneles de latencia promedian cuantiles de \emph{summaries} entre instancias, lo cual no es v\'alido estad\'isticamente. No hay ninguna captura del tablero ni de una traza, ni exportaci\'on de Prometheus, bajo carga. \textbf{C\'omo debe quedar:} interceptor OkHttp que genere \rt{traceparent} y mida la duraci\'on de cada petici\'on, exportada por OTLP; Timber con \'arbol JSON que incluya \rt{trace\_id}; \rt{http\_request\_duration\_seconds} como histograma consultado con \rt{histogram\_quantile}; carpeta \rt{docs/evidencias/observabilidad/} con capturas de los seis paneles y de una traza del m\'ovil a la base de datos y respuestas \rt{query\_range} en JSON, todas con marcas de tiempo dentro de la campa\~na Locust de \S15b.
+
+\subsection*{\S15 Campa\~nas experimentales --- dise\~no no cumplido}
+\textbf{Qu\'e encontr\'e (CORREL):} 60 filas = 3 escenarios $\times$ 3 modos $\times$ 5 r\'eplicas, no 10; las cinco r\'eplicas de cada una de las 12 celdas son \textbf{id\'enticas valor a valor} (DE = 0) y c1 y c2 coinciden fila a fila, porque el sistema es determinista y repetir no a\~nade variabilidad; la poblaci\'on es de 20/60/20+20 abonados frente a los 100/500/100+100 del protocolo, y falta el escenario ``Esc-4 en la misma zona'' del ADR-0008. \rt{protocolo-e4.md} entr\'o \textbf{en el mismo commit que los datos} (\rt{8869188}), con los resultados ya escritos, y el ADR-0008 no tiene hip\'otesis ni umbrales; aun as\'i el documento dice ``se rechaza H0''. El intervalo ``IC95 binomial [0,0]'' es un Wald degenerado (con 0/30, Clopper-Pearson da [0; 0,116]); las ``30 corridas'' de Esc-4 son 15 corridas por dos zonas; el Mann-Whitney con $n=20$ trata filas no independientes como r\'eplicas; y la \'unica marca de tiempo de la campa\~na se borr\'o del JSON el 10/09. \textbf{Qu\'e encontr\'e (Locust):} cinco corridas por escenario, con m\'aximo de 30 usuarios durante 58--60\,s (se exige 50 durante 5 minutos) y rampa de 0 a 60 en 119\,s (se exige 0 a 200 en 10 minutos); tras descartes quedan $n=3$; la columna de error etiquetada como 5xx incluye \rt{ConnectionResetError}. \textbf{C\'omo debe quedar:} protocolo con hip\'otesis, variables, umbrales, $\alpha$, poblaciones del ADR y plan de an\'alisis versionado \emph{en un commit anterior al primer dato}; CORREL con $r=10$ por celda, semilla distinta por r\'eplica, orden aleatorio de modos, marcas de inicio y fin por r\'eplica y \'arbol limpio registrado; unidad de an\'alisis = corrida; intervalos exactos; Locust con \rt{-u 50 -t 5m} y rampa 0$\rightarrow$200 en 600\,s, diez corridas por escenario. El cambio de prueba estad\'istica de la E3 (hecho el 08/09) se declara como desviaci\'on del protocolo. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git log --format='%h %ad' --date=iso -- docs/experimentos/protocolo-e4.md | tail -1   # anterior a:
+git log --format='%h %ad' --date=iso -- experimentos/resultados/correlacion_corridas.csv | tail -1
+python -c "import csv,collections as c;r=list(csv.DictReader(open('experimentos/resultados/correlacion_corridas.csv')));print(c.Counter((x['escenario'],x['modo']) for x in r))"
+\end{verbatim}
+y en cada \rt{*\_stats\_history.csv}: m\'aximo de \rt{User Count} 50 con duraci\'on $\ge$300\,s, o 200 con $\ge$600\,s.
+
+\subsection*{\S16 Paquete de datos --- manifiestos parciales que se regeneran solos}
+\textbf{Qu\'e encontr\'e:} los manifiestos verifican, pero dejan fuera \rt{spark/results/**}, \rt{db-cluster/results/*}, \rt{docs/experimentos/resultados/*}, los datos de JaCoCo, la tabla generada del documento y los guiones de \rt{experimentos/}; y \rt{correr\_campana.py} y \rt{analizar\_resultados.py} regeneran el manifiesto al final de cada ejecuci\'on (el de Locust se regener\'o cuatro veces despu\'es de los datos), con lo que una suma nunca puede delatar un cambio. Hay dos juegos de resultados de Spark distintos ($T(1)$ = 352,75\,s frente a 235,22\,s) sin declarar cu\'al es el can\'onico, y \rt{docs/experimentos/resultados/} es una copia. No hay diccionario de datos. En Windows \rt{generar\_reporte\_correl.py} escribe CRLF y la suma no coincide. \rt{correr\_campana.py} valida la cabecera despu\'es de recrear el contenedor y de \rt{TRUNCATE}, y borra \rt{verdad\_campo.csv} sin respaldo. \textbf{C\'omo debe quedar:} un \'arbol can\'onico \'unico declarado en \rt{resultados/README.md}; manifiestos que cubren todos los datos crudos, derivados y guiones, generados por un comando independiente que nunca se ejecuta al analizar; diccionario con columna, tipo, unidad, dominio y guion productor; \rt{newline=""} en toda escritura; precondiciones validadas antes de cualquier efecto; job \rt{reproduce} que regenera tablas y figuras y termina con \rt{git diff -{}-exit-code}. \textbf{C\'omo lo verifico:} \rt{grep -n SHA256SUMS experimentos/correr\_campana.py resultados/locust/analizar\_resultados.py} vac\'io; \rt{sha256sum -c} en cada carpeta; el n\'umero de archivos de datos es igual al de l\'ineas de los manifiestos.
+
+\subsection*{\S17 Evaluaci\'on ISO/IEC 25010 --- tres caracter\'isticas sin dato crudo}
+\textbf{Qu\'e encontr\'e:} eficiencia se report\'o con 30 usuarios durante 60\,s ($n=3$), no con 50; fiabilidad exige una hora continua y \textbf{nunca se midi\'o m\'as de 119\,s seguidos} (unos 15 minutos en total), y la causa atribuida a la licencia de CockroachDB no tiene registro versionado; seguridad es ``30/30'' con $n=1$, sin artefacto crudo, sobre dos endpoints y sin inventario; mantenibilidad cita 542/668 y 2.529/3.518, cifras que no est\'an en ning\'un archivo (JaCoCo dice 555/684 y 2.582/3.582), y la complejidad de \rt{lizard} no est\'a versionada; compatibilidad dice ``9/9 Playwright'' sin informe, WebKit no es Safari y el m\'ovil no se ejecut\'o en API 26. En el manuscrito, los ``19--34\,\%'' de error son totales sin aplicar los descartes declarados y sin DE ni IC. El contraste con los umbrales (No / No / Parcial) s\'i es honesto. \textbf{C\'omo debe quedar:} las cinco caracter\'isticas con m\'etrica objetiva, umbral, $n \ge 8$ r\'eplicas v\'alidas donde haya variabilidad, media, DE e IC95\,\% calculados por un guion versionado desde artefactos crudos versionados: fiabilidad con carga nominal de 60 minutos continuos; seguridad recorriendo todos los endpoints de OpenAPI sin testigo y con testigo inv\'alido, m\'as un informe ZAP; mantenibilidad con JaCoCo de los cuatro servicios y \rt{lizard}; compatibilidad con informes de Playwright y ejecuci\'on en emuladores API 26 y 34; tabla del documento generada desde \rt{iso25010.csv}. \textbf{C\'omo lo verifico:} \rt{python resultados/iso25010/calcular.py \&\& git diff -{}-exit-code}; duraci\'on del CSV de fiabilidad $\ge$3.600\,s; \rt{grep -rn "542/668\textbackslash|2529/3518" docs} vac\'io.
+
+\subsection*{\S18 Manuscrito --- cifras que no salen de la evidencia}
+\textbf{Qu\'e encontr\'e:} compila sin indefinidas, pero \rt{pruebas\_cicd.tex} declara ``90/90 backend, 78/78 web, 5/5 m\'ovil'' (hay 121 pruebas Java y 75 web, y ``5/5 m\'ovil'' contradice la amenaza que admite que las instrumentadas no se ejecutaron) y la discusi\'on habla de ``174 pruebas''; los porcentajes de Locust ignoran los descartes; mantenibilidad usa cifras inexistentes (\S17). Observabilidad no tiene ninguna figura; la arquitectura s\'olo muestra C4 de niveles 1 y 2; la tabla ISO no tiene DE ni IC; el resumen repite ``Abstract / Resumen''. \rt{ieeetr} no imprime DOI ni ISBN (el PDF no contiene ninguno), hay diez referencias sin identificador y el ISBN de \rt{kim2021devops} no existe. No hay versi\'on congelada. La tabla de aporte no declara los commits generados por guion. \textbf{C\'omo debe quedar:} conteos de pruebas y tablas ISO generados desde los informes y resultados can\'onicos; figuras del tablero bajo carga, de una traza y del C4 de nivel 3; \rt{IEEEtran.bst} (o \rt{biblatex-ieee}) con DOI/ISBN visibles, 12 o m\'as verificados e ISBN corregidos; URL can\'onica en portada; PDF congelado en \rt{docs/entregas/E4/} con su suma y adjunto al Release de la etiqueta de cierre, compilado \emph{despu\'es} de la \'ultima regeneraci\'on de resultados. \textbf{C\'omo lo verifico:}\begin{verbatim}
+cd docs/latex && latexmk -pdf -interaction=nonstopmode main.tex && grep -c "Rerun\|undefined" main.log   # 0
+pdftotext main.pdf - | grep -ci "doi"                                                                 # >= 12
+pdftotext main.pdf - | grep -n "90/90\|78/78\|174 pruebas\|542/668"                                   # vacio
+\end{verbatim}
+
+\subsection*{\S19 Amenazas a la validez y reflexi\'on \'etica}
+\textbf{Qu\'e encontr\'e:} hay tres listas de amenazas (E3, ISO y proyecto); en la de E3 s\'olo una tiene mitigaci\'on aplicada, en la ISO ninguna, y en la del proyecto las dos externas no tienen mitigaci\'on, la interna 1 (``un solo desarrollador por capa'') contradice la tabla de aporte y la 3 se apoya en un archivo que no existe en ning\'un commit. Ninguna trata las amenazas reales de las campa\~nas E4: r\'eplicas deterministas, pseudorreplicaci\'on, carga distinta de la exigida y protocolo redactado despu\'es de medir. La reflexi\'on \'etica tiene unas 221 palabras, cita principios gen\'ericos sin numerar y afirma que el sistema ``procesa datos personales reales'', en contradicci\'on con los datos sint\'eticos declarados. \textbf{C\'omo debe quedar:} una \'unica secci\'on con $\ge$3 internas y $\ge$2 externas que incluya las de las campa\~nas E4, cada una con su mitigaci\'on aplicada y el artefacto que la respalda; reflexi\'on de al menos media p\'agina con principios ACM numerados (1.2, 1.3, 1.6, 2.5) aplicados a la foto y ubicaci\'on del t\'ecnico, a los datos de abonados, al m\'inimo privilegio en JWT y a la honestidad sobre autor\'ia y uso de IA.
+
+\subsection*{\S20 Trabajo en equipo y autor\'ia --- el historial no permite atribuir el aporte}
+\textbf{Qu\'e encontr\'e:} el commit \rt{10703f1} a\~nadi\'o \rt{auto\_commits\_timed.py}, que cambia \rt{user.name} y \rt{user.email} por los de los cuatro integrantes y crea 16 commits con pausas de 15--20 minutos; esos commits coinciden con la serie del 26/07, cuatro de ellos a nombre de \'Alvarez P\'arraga. El 21/08 se a\~nadi\'o \rt{ejecutar\_commits.py} a \rt{.gitignore}. En la reescritura del 09--10/09, commits de Carpio Mendoza reaparecen con otro autor y \emph{patch-id} id\'entico (\rt{df72093} $\rightarrow$ \rt{286f9b3}, a nombre de \'Alvarez P\'arraga; \rt{0f22773} $\rightarrow$ \rt{1f6f016}). Las actas son reconstruidas el 04/09 desde un chat, registran asistencia completa por pol\'itica y terminan el 01/09. Con su cuenta propia (\rt{DeJere}), \'Alvarez P\'arraga tiene hasta el corte seis commits menores: 124 l\'ineas de documentaci\'on, 35 de \rt{.gitattributes}, una recompilaci\'on del PDF y un commit vac\'io. \textbf{C\'omo debe quedar:} \rt{.mailmap} que unifique las identidades de cada persona; nota de transparencia en actas y manuscrito sobre los commits generados por guion y los reatribuidos, con la tabla de aporte recalculada seg\'un ese m\'etodo; actas levantadas el d\'ia de cada reuni\'on del periodo del suspenso; y, para el estudiante que rinde el examen, un bloque sustantivo de los \'items de esta gu\'ia (sugeridos: \S8, \S9 y \S12) hecho desde su propia cuenta, en PR revisados por otro integrante, que pueda explicar y defender. S\'olo ese trabajo acredita su aporte. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git shortlog -sne --no-merges 964fa6e..v4.0.0           # con .mailmap
+git log --author=DeJere --numstat 964fa6e..v4.0.0 -- apps/mobile services
+grep -n "auto_commits_timed\|reatribu" docs/actas_reunion.md docs/latex/secciones/*.tex
+\end{verbatim}
+y en la API, PR de \rt{DeJere} aprobados por otro usuario y PR de otros revisados por \rt{DeJere}.
+
+\section{Orden de ejecuci\'on}
+\S3 protecci\'on de \rt{main} y \S20 \rt{.mailmap} y flujo por PR (antes de tocar nada) $\rightarrow$ \S4 dominio sin Spring $\rightarrow$ \S11 migraciones $\rightarrow$ \S8 cierre con evidencia y \S5 rutas y SLA $\rightarrow$ \S6 vista de SLA $\rightarrow$ \S10 contratos y OpenAPI $\rightarrow$ \S9 y \S7 $\rightarrow$ \S12 y \S13 compuertas $\rightarrow$ \S15 protocolo, c\'odigo congelado y campa\~nas (capturando \S14 durante la carga) $\rightarrow$ \S16 paquete de datos $\rightarrow$ \S17 ISO/IEC 25010 $\rightarrow$ \S18 y \S19 con las cifras definitivas $\rightarrow$ \S1 y \S2 $\rightarrow$ CHANGELOG, manifiestos finales y, lo \'ultimo, la etiqueta anotada con su Release.
+
+\section{Lista de verificaci\'on antes de entregar}
+\begin{verbatim}
+git ls-remote https://github.com/gleiston-guerrero/PFC-SOPORTE-ISP HEAD
+git cat-file -t v4.0.0 && git merge-base --is-ancestor v4.0.0 origin/main && test -f CHANGELOG.md
+grep -rln "import org.springframework" services/*/src/main/java/ec/edu/uteq/soporte/*/domain
+grep -n "Multipart\|latitude" apps/mobile/app/src/main/java/ec/edu/uteq/soporte/mobile/data/remote/TicketApi.kt
+ls pacts/
+for d in $(git ls-files | grep SHA256SUMS.txt | xargs -n1 dirname); do (cd $d && sha256sum -c --quiet SHA256SUMS.txt) || echo FALLA $d; done
+cd docs/latex && latexmk -pdf main.tex && pdftotext main.pdf - | grep -ci doi
+\end{verbatim}
+
+\piedepagina
+\end{document}

@@ -1,0 +1,181 @@
+\input{preambulo_ISR701.tex}
+\input{nota_AGLS.tex}
+\begin{document}
+
+\cabecera{AGLS}{TiendaTech, comercio electr\'onico distribuido con asistente de armado}{JoseLozanoMorales/TiendaTech}{main}{822399a}{341}{Aucatoma Celorio Jhinson Stalyn \textperiodcentered{} Lozano Morales Jos\'e Alejandro \textperiodcentered{} Gaibor Rodr\'iguez Jeremy Ruperto \textperiodcentered{} S\'anchez Pilaloa Andy Paul}{\textbf{Aucatoma Celorio Jhinson Stalyn}}{\completitud}
+
+\clausulas{TiendaTech}{\textbf{NO cumple}: el repositorio sigue bajo \rt{JoseLozanoMorales/TiendaTech} (verificado tambi\'en el 16/09). Es el \'unico de los cuatro equipos que no lo ha transferido; sin transferencia aceptada no hay examen que calificar}
+
+\section{Evaluaci\'on de los entregables}
+
+\begin{tablaeval}
+
+\fila{1}{Identificaci\'on del entregable y URL}{\pmodif}{\pmodif}{80}[\ver{1}]
+
+\fila{2}{Estructura del repositorio y archivos de ra\'iz}{\pmodif}{\pmodif}{65}[\ver{2}]
+
+\fila{3}{L\'inea base congelada e integraci\'on}{\pculm}{\pculm}{40}[\ver{3}]
+
+\fila{4}{Backend en capas y SOLID}{\pmodif}{\pmodif}{80}[\ver{4}]
+
+\fila{5}{Patrones GoF y ADR}{\pculm}{\pculm}{35}[\ver{5}]
+
+\fila{6}{Aplicaci\'on web funcional}{\pculm}{\pculm}{55}[\ver{6}]
+
+\fila{7}{Calidad de la aplicaci\'on web}{\pmodif}{\pculm}{55}[\ver{7}]
+
+\fila{8}{Aplicaci\'on m\'ovil funcional}{\pmodif}{\pmodif}{60}[\ver{8}]
+
+\fila{9}{Calidad de la aplicaci\'on m\'ovil}{\pmodif}{\pmodif}{65}[\ver{9}]
+
+\fila{10}{Integraci\'on y contratos}{\pculm}{\pculm}{30}[\ver{10}]
+
+\fila{11}{Persistencia distribuida}{\pmodif}{\pmodif}{85}[\ver{11}]
+
+\fila{12}{Pir\'amide de pruebas}{\pculm}{\pculm}{45}[\ver{12}]
+
+\fila{13}{Pipeline CI/CD}{\pmodif}{\pculm}{50}[\ver{13}]
+
+\fila{14}{Observabilidad}{\pmodif}{\pmodif}{55}[\ver{14}]
+
+\fila{15}{Protocolo y campa\~na experimental}{\pculm}{\pculm}{45}[\ver{15}]
+
+\fila{16}{Paquete de datos y reproducibilidad}{\pmodif}{\pculm}{45}[\ver{16}]
+
+\fila{17}{Evaluaci\'on ISO/IEC 25010}{\pculm}{\pculm}{35}[\ver{17}]
+
+\fila{18}{Manuscrito, bibliograf\'ia y trazabilidad E1--E4}{\pmodif}{\pculm}{45}[\ver{18}]
+
+\fila{19}{Amenazas a la validez y reflexi\'on \'etica}{\hecho}{\pmodif}{85}[\ver{19}]
+
+\fila{20}{Trabajo en equipo y autor\'ia}{\pmodif}{\pmodif}{55}[\ver{20}]
+
+\end{tablaeval}
+
+\notadependencias
+
+\begin{logro}{Lo que est\'a hecho y no se recalifica}
+El manuscrito compila desde copia limpia a 59 p\'aginas sin errores ni cajas desbordadas, su texto coincide con el PDF versionado, tiene 23 referencias (20 con DOI) y un validador de citas que corre en CI antes de compilar. Las amenazas a la validez (14, en cuatro tipos) y la reflexi\'on \'etica (cinco p\'arrafos aplicados a stock, pagos, credenciales, bibliograf\'ia e IA) est\'an escritas con cuidado. El pipeline estaba en verde sobre \rt{822399a} (CI con 11 jobs, puerta de calidad con 15, integridad de datos, publicaci\'on multiarquitectura en GHCR por commit y despliegue con sonda). El APK de release est\'a firmado por CI con certificado propio verificado con \rt{apksigner}, y el JWT m\'ovil se cifra con AES-GCM y Android Keystore. El manifiesto SHA-256 cubre los 60 CSV/TSV, verifica y se comprueba en CI con pruebas de alteraci\'on; las doce salidas estad\'isticas de la campa\~na se regeneran byte a byte; y el rec\'alculo desde el crudo reproduce 120 filas, 30.275 checkouts confirmados, 43.168 \'ordenes persistidas y 13.210 inconsistentes, igual que el documento. Dominio Java sin anotaciones de framework en los seis servicios con 34 puertos y adaptadores; cl\'uster CockroachDB de tres nodos con reintegraci\'on medida (3,62\,s); complejidad ciclom\'atica m\'axima de 9 con compuerta PMD; ESLint sin advertencias y TypeScript estricto; ramas integradas en \rt{main}.
+\end{logro}
+
+\section{R\'ubrica del examen suspenso}
+
+\reglarubrica
+
+\input{rubrica_AGLS.tex}
+
+\begin{nota}{Lectura de la r\'ubrica al 13/09/2026, 19:00}
+La columna \emph{Estado} es el que encontr\'e en el commit de corte; la columna \emph{Puntos} es peso por coeficiente. Nota provisional del examen suspenso: \textbf{\notaprov{} / 10,00}, condicionada a la cl\'ausula 1: si el repositorio no est\'a transferido y aceptado al corte, la nota es cero. Si cierran todos los \'items en Hecho, la nota es 10,00.
+\end{nota}
+
+\section{Trabajo exigido}
+
+\subsection*{\S1 Identificaci\'on del entregable y URL --- repositorio sin transferir}
+\textbf{Qu\'e encontr\'e:} la URL \rt{JoseLozanoMorales/TiendaTech} es coherente en README, \rt{CITATION.cff} y la macro de enlaces del manuscrito, pero \textbf{el repositorio no est\'a transferido} (cl\'ausula 1). El commit de corte quit\'o la URL de la portada y dej\'o ``Proyecto Fin de Curso --- Paso 13'', ``Corte documental: 1 de septiembre de 2026'' y ``Per\'iodo acad\'emico 2026''. Gaibor Rodr\'iguez figura como ``Desarrollador'' en el manuscrito y como ``L\'ider de Desarrollo'' en el README. \rt{CITATION.cff} declara \rt{version: "4.0.0"} con fecha 01/09 sin que existiera esa etiqueta. \textbf{Qu\'e deben hacer:} transferir el repositorio a \rt{gleiston-guerrero} y confirmar que la transferencia fue aceptada; \rt{git remote set-url origin https://github.com/gleiston-guerrero/TiendaTech.git}; sustituir la URL en README, \rt{CITATION.cff}, macros y enlaces del manuscrito; rehacer la portada con la URL, periodo 2026--2027, ``Entrega 4 --- examen suspenso'' y fecha real; unificar roles; \rt{date-released} igual a la fecha de la etiqueta de cierre. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git ls-remote https://github.com/gleiston-guerrero/TiendaTech HEAD
+grep -rn "JoseLozanoMorales/TiendaTech" README.md CITATION.cff docs/entrega4/*.tex     # vacio
+pdftotext -l 1 docs/entrega4/PFC4.pdf - | grep -E "github.com/gleiston-guerrero|2026.2027"
+\end{verbatim}
+
+\subsection*{\S2 Estructura --- peso muerto, un secreto en el historial y un README que afirma lo que no hay}
+\textbf{a) Higiene.} Siguen versionados \rt{.idea/TiendaTech.iml} (con una excepci\'on expresa en \rt{.gitignore}) y siete archivos de \rt{Apps/mobile/.idea/}; un v\'ideo de 92\,MB, un APK de depuraci\'on de 40\,MB, el agente OpenTelemetry de 22\,MB, un \rt{compilacion.log} y \textbf{358 bases SQLite}, 240 de ellas en \rt{resultados-rubrica-20260904/} con un \rt{.db-journal} de una transacci\'on sin cerrar; el paquete del repositorio pesa 230,55\,MiB. \textbf{Deben:} retirar la configuraci\'on de IDE a cualquier profundidad (\rt{**/.idea/}, \rt{*.iml}), publicar v\'ideo y bases como archivos de un Release enlazados, descargar el agente en el Dockerfile verificando su suma y retirar el APK de depuraci\'on y el log.
+
+\textbf{b) Secreto.} El commit \rt{396b1b3} (26/07) version\'o \rt{paypal.clientId} y \rt{paypal.clientSecret} de una aplicaci\'on \emph{sandbox}; se retiraron 73 minutos despu\'es, pero siguen legibles en el historial. \textbf{Deben:} revocar y rotar esa credencial, dejar constancia fechada (sin el valor) en \rt{docs/evidencias/} y a\~nadir \rt{gitleaks} o \rt{trufflehog} como job del CI.
+
+\textbf{c) README y ra\'iz.} El README marca como ``Completo'' los cinco patrones GoF que el propio ADR-005 admite que no existen (\S5), dice en otra secci\'on que no hay Pact, Playwright ni lint web, y afirma que la publicaci\'on ``se condiciona'' a contratos y E2E, lo cual es falso (\S13). No hay ADR-006, \rt{protocolo-e4.md}, \rt{ops/grafana/pfc-dashboard.json}, \rt{ops/otel-collector/config.yaml} ni \rt{release/apk/}, y nada mapea esas diferencias. \rt{.gitattributes} no tiene regla general. \textbf{Deben:} reescribir las tablas de estado del README con estados verificables, a\~nadir la tabla ``Listado 3 $\rightarrow$ TiendaTech'' y declarar \rt{* text=auto eol=lf} con las excepciones binarias. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git ls-files | grep -iE "(^|/)\.idea/|\.iml$|\.db-journal$|\.mp4$|debug\.apk$|\.jar$" | grep -v gradle-wrapper.jar   # vacio
+git ls-files --eol | awk '{print $1}' | sort | uniq -c
+\end{verbatim}
+
+\subsection*{\S3 L\'inea base --- casi nada pas\'o por revisi\'on}
+\textbf{Qu\'e encontr\'e:} ninguna etiqueta anotada (\rt{pre-e4} y las 35 \rt{mobile-*} creadas por CI son ligeras; \rt{v4.0.0} es ligera y posterior al corte). No hay \rt{CHANGELOG}. De 21 fusiones en la rama principal s\'olo 3 son PR, y \textbf{s\'olo el \#79 tiene la aprobaci\'on de otro integrante}; el \#84 se fusion\'o cuatro minutos despu\'es de abrirse. Desde el 01/09 entraron 82 commits directos a \rt{main}. \textbf{C\'omo debe quedar:} protecci\'on de \rt{main} con una aprobaci\'on y verificaciones obligatorias; todo el trabajo del suspenso en PR abiertos por su autor y aprobados por otro integrante; \rt{CHANGELOG.md} con entradas fechadas (E1--E4 y examen suspenso); la etiqueta ligera \rt{v4.0.0} retirada y una etiqueta anotada de cierre (p.~ej. \rt{v4.1.0}) sobre el \'ultimo commit de \rt{main}, creada \textbf{al final de todo}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git cat-file -t v4.1.0 && git rev-parse v4.1.0^{commit} origin/main
+git ls-remote --tags origin v4.1.0           # deben salir DOS lineas
+\end{verbatim}
+y en la API, cada PR del suspenso con una revisi\'on \rt{APPROVED} de un usuario distinto del autor.
+
+\subsection*{\S4 Backend en capas --- aplicaci\'on que conoce SQL y HTTP}
+\textbf{Qu\'e encontr\'e:} el dominio est\'a limpio y hay 34 puertos con adaptador, pero \rt{StockReservationService} (aplicaci\'on de inventario) recibe \rt{JdbcTemplate} y ejecuta \rt{SELECT ... FOR UPDATE}; \rt{CrdbTransactionRetryExecutor} usa \rt{TransactionTemplate}; \rt{OtpService} usa \rt{BCrypt} aunque existe el puerto \rt{PasswordHasher}; \rt{UsuarioService}, \rt{OrdenCompraService}, \rt{ProveedorService}, \rt{OrdenService} y \rt{FacturaService} lanzan \rt{ResponseStatusException}; y tres controladores importan infraestructura concreta (servidores TCP/gRPC, inyector de fallos experimental). \textbf{C\'omo debe quedar:} aplicaci\'on que s\'olo depende de puertos y excepciones de dominio; SQL y transacciones en adaptadores; traducci\'on a HTTP en un \rt{@ControllerAdvice}; reglas ArchUnit en cada servicio. \textbf{C\'omo lo verifico:} \rt{grep -rn "JdbcTemplate\textbackslash|ResponseStatusException\textbackslash|TransactionTemplate\textbackslash|BCrypt" services/*/src/main/java/**/application} vac\'io; la prueba de arquitectura en verde en CI.
+
+\subsection*{\S5 Patrones GoF --- cuatro de los cinco exigidos no existen}
+\textbf{Qu\'e encontr\'e:} la Tabla 1 exige Repository, Factory Method, Strategy de m\'etodos de pago, Observer de eventos de pedido y Decorator de promociones. S\'olo Repository es real. \rt{MetodoPago} y \rt{TipoMetodoPago} son POJO y \rt{OrdenService} s\'olo pasa un entero \rt{metodopagoId}; no hay ning\'un publicador ni oyente de eventos de pedido; no existe ninguna clase de promoci\'on o descuento; y el propio ADR-005 reconoce que las ``f\'abricas'' no son Factory Method. Los patrones reales del proyecto (Strategy, Adapter, Chain of Responsibility y Template Method en \rt{armado-ia}; un Decorator de cabeceras en el gateway) no est\'an en el dominio de venta. No existe ADR-006; la decisi\'on m\'ovil est\'a en \rt{002-mobile-platform.md} con criterios triviales (``1 de 1'') y sin alternativas nombradas. \textbf{C\'omo debe quedar:} en el flujo real de checkout, \rt{PaymentStrategy} con dos o m\'as implementaciones elegidas seg\'un \rt{TipoMetodoPago}; publicador de eventos de pedido con dos o m\'as suscriptores reales (facturaci\'on y la notificaci\'on push de \S8); Decorator de promociones apilable aplicado al total del carrito; Factory Method con creador abstracto y concretos; cada uno con una prueba que demuestre la variaci\'on, y ADR-005 con clase y archivo de cada patr\'on. \rt{ADR-006-eleccion-movil.md} en formato Nygard con Flutter, React Native o KMP como alternativas y al menos dos criterios medidos con cifra y fuente. \textbf{C\'omo lo verifico:}\begin{verbatim}
+grep -rlnE "interface \w*(Payment|Pago)\w*Strategy|interface \w*Observer|\w*Decorator (implements|extends)|abstract class \w*Creator" services/*/src/main/java
+grep -cE "^## (Estado|Contexto|Decisi|Consecuencias)" docs/adr/ADR-006*          # 4
+\end{verbatim}
+y compruebo que \rt{OrdenService} invoca la estrategia y que retirar una implementaci\'on hace fallar su prueba.
+
+\subsection*{\S6 Aplicaci\'on web --- el checkout no compra}
+\textbf{Qu\'e encontr\'e:} doce rutas de dominio, pero \textbf{faltan \rt{/main}, \rt{/settings} y \rt{/about}}; s\'olo \rt{/admin} tiene guarda, y decide por el rol guardado en \rt{sessionStorage} sin validar el JWT ni su expiraci\'on; \rt{/carrito}, \rt{/trabajador} y \rt{/factura} no est\'an protegidas. No hay internacionalizaci\'on. \rt{CheckoutView.tsx} contiene un bot\'on \rt{disabled} con el texto ``Pago pendiente de integraci\'on'' y nunca llama a \rt{/api/ordenes/checkout} (ya estaba como pendiente en el acta del 04/09). El panel de vendedor muestra dos contadores y dos enlaces; el panel de administrador cuenta productos, categor\'ias y usuarios, sin m\'etricas de venta. Adem\'as el cliente env\'ia \rt{X-Usuario-Id}, el gateway no la sobrescribe y \rt{OrdenCompraController} conf\'ia en ella: un usuario puede actuar en nombre de otro. \textbf{C\'omo debe quedar:} las cinco rutas de la gu\'ia m\'as las del dominio, con guarda que valide \rt{exp} en todas las privadas; i18n es/en con selector persistente; testigo de acceso en memoria con renovaci\'on por la cookie \rt{httpOnly} ya existente; checkout funcional hasta la factura usando la Strategy de \S5; panel de vendedor con sus productos, stock y pedidos por estado; panel de administrador con ventas por d\'ia, ticket medio y productos m\'as vendidos desde un endpoint agregado; \rt{X-Usuario-Id} eliminada o sobrescrita en el gateway con el \rt{sub} del testigo. \textbf{C\'omo lo verifico:} \rt{grep -nE 'path="/(main|settings|about)"' src/App.tsx}; \rt{ls src/locales/\{es,en\}.json}; \rt{grep -n disabled src/views/CheckoutView.tsx} vac\'io; una petici\'on con \rt{X-Usuario-Id} de otro usuario devuelve 403; la E2E de compra de \S12 en verde.
+
+\subsection*{\S7 Calidad web --- cobertura de alcance elegido y sin umbral}
+\textbf{Qu\'e encontr\'e:} TypeScript estricto y ESLint limpio. Pero \rt{vitest.config.ts} enumera doce vistas en \rt{coverage.include}, excluye \rt{App.tsx}, \rt{api.ts}, \rt{cart.ts} y \rt{session.ts}, y \textbf{no tiene \rt{thresholds}}: la compuerta no puede fallar. En mi ejecuci\'on (62 pruebas en verde) las sentencias cubiertas son 56,08\,\% con el alcance configurado y 56,22\,\% sobre todo \rt{src}; el 79\,\% de l\'ineas est\'a inflado porque los componentes est\'an escritos en muy pocas l\'ineas (\rt{AdminView.tsx}: 48\,KB en 138 l\'ineas). La evidencia enlazada en el README es del 11/09 (3 vistas, 30,78\,\% de sentencias). El commit que dice ``generar din\'amicamente el alcance de cobertura'' s\'olo cambia el texto del resumen del CI. No hay artefacto \rt{dist} por commit; el Dockerfile corre como root y sin \rt{HEALTHCHECK}. \textbf{C\'omo debe quedar:} \rt{include: ['src/**/*.\{ts,tsx\}']} con exclusiones justificadas, \rt{thresholds} de 70 en las cuatro m\'etricas y el CI en rojo si no se alcanzan; componentes formateados; evidencia regenerada desde la \'ultima ejecuci\'on; artefacto \rt{webapp-dist-<sha>} con su suma; contenedor con \rt{USER} no root y \rt{HEALTHCHECK}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+cd Apps/web/frontend/webapp && npm ci && npx vitest run --coverage; echo "exit=$?"
+node -e "console.log(require('./coverage/coverage-summary.json').total.statements.pct)"     # >= 70
+\end{verbatim}
+
+\subsection*{\S8 Aplicaci\'on m\'ovil --- ni push ni esc\'aner conectados al sistema}
+\textbf{Qu\'e encontr\'e:} inicio de sesi\'on, cat\'alogo, carrito y checkout contra el backend y JWT cifrado funcionan. Pero \textbf{las notificaciones push de estado del pedido no existen}: no hay Firebase, el publicador s\'olo se dispara con un bot\'on de demostraci\'on y la propia pantalla dice ``No existe configuraci\'on Firebase, registro de dispositivo ni eventos de estado en el backend''. La c\'amara y ML Kit son reales, pero el c\'odigo le\'ido se busca en \textbf{una tabla fija de cinco EAN} de demostraci\'on, no en el backend. No hay actualizaci\'on por arrastre y el modo sin conexi\'on s\'olo cubre productos y categor\'ias. El README llama ``segunda capacidad'' a la cach\'e Room. \textbf{C\'omo debe quedar:} notificaci\'on push (FCM, o como m\'inimo \rt{WorkManager} documentado) disparada por cambios reales de estado del pedido desde el Observer de \S5; columna \rt{codigo\_barras} con migraci\'on, endpoint de b\'usqueda y repositorio remoto con cach\'e; \rt{PullToRefreshBox} en cat\'alogo y pedidos; evidencia en \rt{release/screenshots/} de un pedido que cambia de estado y la notificaci\'on recibida sin pulsar ning\'un bot\'on de demostraci\'on. \textbf{C\'omo lo verifico:} \rt{grep -rn "firebase-messaging\textbackslash|FirebaseMessagingService\textbackslash|WorkManager" Apps/mobile/app}; \rt{grep -rn "codigo\_barras" services Apps/mobile}; \rt{grep -rn PullToRefresh Apps/mobile/app/src/main}.
+
+\subsection*{\S9 Calidad m\'ovil}
+\textbf{Qu\'e encontr\'e:} 58 pruebas unitarias, pero \textbf{s\'olo 1 de 11 ViewModels} (el del esc\'aner) tiene pruebas; las cuatro instrumentadas son la plantilla, la base de datos y la notificaci\'on, y ninguna recorre la interfaz. La firma de release qued\'o resuelta, pero \rt{release/tiendatech-release.apk} es una compilaci\'on local que no coincide con el binario del CI (35.849.002 frente a 35.849.007 bytes), el job de calidad m\'ovil s\'olo verifica el APK de depuraci\'on, y \rt{versionCode} es 1 con R8 desactivado. \textbf{C\'omo debe quedar:} pruebas de al menos Auth, Catalog, Cart, Orders y Account con \rt{kotlinx-coroutines-test}; una E2E instrumentada con \rt{createAndroidComposeRule<MainActivity>()} y servidor simulado (inicio de sesi\'on, cat\'alogo, carrito) ejecutada en CI con emulador; el APK del repositorio igual al del Release de CI (o s\'olo el enlace); \rt{versionCode} desde \rt{GITHUB\_RUN\_NUMBER}. \textbf{C\'omo lo verifico:} \rt{grep -rl ViewModel Apps/mobile/app/src/test | wc -l} $\ge$ 6; \rt{grep -rn createAndroidComposeRule Apps/mobile/app/src/androidTest}; \rt{sha256sum} del APK igual al publicado por CI.
+
+\subsection*{\S10 Contratos --- no verifican a ning\'un proveedor}
+\textbf{Qu\'e encontr\'e:} dos consumidores en Node con una interacci\'on cada uno (\rt{GET /api/productos} y \rt{POST /api/login}) que llaman al simulador con \rt{fetch}: no usan el cliente real de la web ni el Retrofit de Kotlin (el ``consumidor m\'ovil'' es JavaScript). No hay verificaci\'on de proveedor en ning\'un servicio y el job s\'olo genera y sube JSON, as\'i que no puede fallar. Y los contratos no coinciden con los proveedores: \rt{ApiResponseAdvice} envuelve las respuestas en \rt{\{status,data,message,timestamp\}} y el contrato espera un arreglo; el m\'ovil espera \rt{ApiEnvelope<LoginResponse>} y el contrato \rt{\{user, access\}}. \textbf{C\'omo debe quedar:} consumidores escritos sobre \rt{src/services/api.ts} y sobre la interfaz Retrofit, con al menos inicio de sesi\'on, cat\'alogo y checkout; verificaci\'on con \rt{@Provider}, \rt{@PactFolder} y \rt{@State} en usuarios, productos y pedidos; job \rt{contract-verify} que falle si un proveedor cambia la forma de la respuesta. \textbf{C\'omo lo verifico:} \rt{grep -rln "@Provider\textbackslash|PactVerificationContext" services}; en una rama altero un campo del sobre de respuesta y el job se pone en rojo.
+
+\subsection*{\S11 Persistencia distribuida}
+\textbf{Qu\'e encontr\'e:} tres nodos con healthchecks, evidencia de fragmentaci\'on y una prueba de ca\'ida coherente con su commit. Pero \rt{docs/db/migrations/} s\'olo tiene V004--V006 (faltan V001--V003), ninguna herramienta las aplica (el \rt{crdb-init} carga \rt{schema.sql}), y la prueba de ca\'ida es una sola ejecuci\'on de lectura, sin escrituras durante la ca\'ida. \textbf{C\'omo debe quedar:} migraciones continuas desde V001 aplicadas por Flyway (por servicio o como servicio del compose); prueba de ca\'ida con inserciones concurrentes repetida tres veces que compruebe que confirmadas = persistidas, con CSV de punto decimal y sin BOM. \textbf{C\'omo lo verifico:} \rt{grep -rn flyway services/*/pom.xml docker-compose.yml}; CSV con tres filas y \rt{perdidas=0}.
+
+\subsection*{\S12 Pir\'amide de pruebas --- la compuerta del backend mide la capa que conviene}
+\textbf{a) Cobertura del backend.} Los seis \rt{pom.xml} exigen 70\,\% de l\'ineas \textbf{s\'olo sobre \rt{application/**}} (usuarios, s\'olo sobre \rt{application/service/**}); el gateway no tiene JaCoCo; y el 82,31\,\% que publica el documento sale de informes del 28/08 filtrados (inventario: 8 l\'ineas medidas). \textbf{Deben:} quitar los \rt{<includes>} restrictivos, excluir s\'olo clases de arranque y configuraci\'on justificadas, a\~nadir JaCoCo al gateway y escribir pruebas de dominio, adaptadores JDBC y controladores (\rt{@WebMvcTest}) hasta alcanzar 70\,\% por servicio con compuerta en CI. \textbf{b) Integraci\'on, E2E y carga.} Testcontainers s\'olo en pedidos; las tres pruebas Playwright simulan todas las APIs con \rt{page.route} y no cubren carrito ni checkout; no hay Espresso; Locust s\'olo ejecuta cuatro GET p\'ublicos durante 60\,s en una \'unica corrida, sin el escenario de 5 minutos ni la rampa 0$\rightarrow$200. \textbf{Deben:} Testcontainers en inventario, ventas y usuarios; E2E de compra sin \rt{page.route} contra el compose; Locust con tareas autenticadas (inicio de sesi\'on, carrito, checkout), \rt{-{}-users 50 -{}-run-time 5m} y \rt{LoadTestShape} 0$\rightarrow$200 en 600\,s, con CSV, HTML y sumas versionados. \textbf{C\'omo lo verifico:}\begin{verbatim}
+grep -n "<include>" services/*/pom.xml                     # vacio o solo exclusiones justificadas
+grep -n "LoadTestShape\|checkout" tests/load/locustfile.py
+grep -c "page.route" tests/e2e-web/tests/compra.spec.js    # 0
+\end{verbatim}
+
+\subsection*{\S13 Pipeline CI/CD --- la publicaci\'on no espera a todas las pruebas}
+\textbf{Qu\'e encontr\'e:} existe un equivalente de cada job y todo estaba en verde, pero las compuertas no pueden fallar por lo que dicen medir (\S7, \S10, \S12) y Codecov tiene \rt{fail\_ci\_if\_error: false}. El DAG est\'a partido: \rt{publish-images.yml} s\'olo espera a ``CI-CD quality gate'', de modo que contratos, E2E, web, Android y manuscrito (workflow ``CI'') no condicionan la publicaci\'on; \rt{workflow\_dispatch} publica sin compuerta; y la integraci\'on no levanta el compose ni sondea la salud del stack. \textbf{C\'omo debe quedar:} un \'unico DAG en el que la publicaci\'on dependa de lint, pruebas backend, web y m\'ovil y verificaci\'on de contratos; job \rt{integration} que levante el compose con las im\'agenes del commit y haga \rt{curl -{}-fail -{}-retry 30} a la salud del gateway y los servicios m\'as un checkout de humo; publicaci\'on y despliegue s\'olo desde ese DAG. \textbf{C\'omo lo verifico:} en una rama con una prueba web rota, la publicaci\'on no se ejecuta; \rt{grep -n "curl -{}-fail" .github/workflows/*.yml} en el job de integraci\'on.
+
+\subsection*{\S14 Observabilidad --- tablero incompleto y m\'etricas con otros nombres}
+\textbf{Qu\'e encontr\'e:} registros JSON en los seis servicios, trazas con el agente OpenTelemetry hacia Jaeger y una traza de compra versionada. Pero el tablero tiene cinco paneles y le faltan disponibilidad Raft, recursos por contenedor y latencia desde el m\'ovil; las m\'etricas se llaman \rt{request\_count}, \rt{request\_duration} y \rt{active\_connections}; \rt{app\_business\_events\_total} y las \rt{crdb\_*} s\'olo existen en pedidos; Prometheus no recoge CockroachDB, el gateway ni cAdvisor; no hay OpenTelemetry Collector con su \rt{config.yaml}; el m\'ovil no emite registros JSON. \textbf{C\'omo debe quedar:} \rt{http\_requests\_total}, \rt{http\_request\_duration\_seconds}, \rt{app\_business\_events\_total} y \rt{app\_active\_sessions} en los seis servicios; \emph{scrape} de \rt{/\_status/vars} de los tres nodos, del gateway y de cAdvisor; Collector en el compose; \rt{ops/grafana/pfc-dashboard.json} con los seis paneles, incluida la latencia medida en el cliente m\'ovil; Timber con \'arbol JSON y \rt{traceparent}; captura de los seis paneles con datos durante la carga de \S12.
+
+\subsection*{\S15 Campa\~na 2PC/Saga --- un dise\~no que no pod\'ia dar resultado}
+\textbf{a) Dise\~no.} Hay 5 r\'eplicas por condici\'on (24 $\times$ 5 = 120), no 10, y la tabla \rt{tab:protocolo} del manuscrito atribuye las cinco r\'eplicas a la gu\'ia, lo cual es falso. El propio documento admite que la formulaci\'on ``no se presenta como un protocolo preespecificado antes de la corrida''. Con $n_1=n_2=5$, el $p$ exacto m\'inimo de Mann--Whitney es 2/252 = 0,0079, mayor que el umbral de Bonferroni 0,05/12 = 0,0042: \textbf{ning\'un contraste pod\'ia ser significativo}. El orden de ejecuci\'on fue fijo. En E3 se cita \rt{tiempos\_crudos.csv} (1, 2 y 4 ejecutores, cinco repeticiones), no el juego que s\'i cumple ($N$ = 1, 2, 4, 8 y $r=10$). \textbf{b) Ejecuci\'on.} Recalculado desde el crudo: 47,26\,\% de solicitudes fallidas (68,9--76,6\,\% con $c=400$); medianas de p95 de 30--37\,s con $c=50$ y de 86--92\,s con $c \ge 200$, y en tres condiciones los cinco p95 valen exactamente 90.000\,ms: \textbf{el sistema estaba saturado y el p95 mide el tiempo l\'imite del cliente}, no la coordinaci\'on. La consistencia, que es la variable central, se reconstruy\'o 19 horas despu\'es desde una instant\'anea, porque los estados finales estaban en un b\'ufer en memoria de 200 entradas; el invariante de compensaci\'on queda \rt{no\_verificado} en las 120 filas. Se mezclan poblaciones: 30.275 confirmaciones HTTP frente a 43.168 \'ordenes persistidas. La CPU de Locust vale 0,0 en 82 de 120 filas. La campa\~na anterior (3 checkouts, 74\,\% de error) sigue versionada junto a la can\'onica. \textbf{C\'omo debe quedar:} \rt{protocolo-e4.md} con H0/H1 por variable, $\delta$, $\alpha$, an\'alisis de potencia, $r=10$ con descarte de la primera y la \'ultima, orden aleatorizado con semilla y criterios de descarte, versionado \emph{antes} del primer dato (si no hay tiempo para 240 corridas, reducir condiciones y declararlo ah\'i); nivel de carga por debajo de saturaci\'on elegido con la rampa (error $<$\,5\,\% sin fallos); cada intento persistido con su clave de idempotencia, su estado HTTP y su estado final, verificado por el or\'aculo al final de cada corrida y antes del reinicio, con un control positivo que inyecte una violaci\'on conocida; una sola poblaci\'on para latencia e invariantes; CPU y memoria medidas; la campa\~na anterior movida a \rt{historico/}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git log --format='%h %cI' -- docs/experimentos/protocolo-e4.md | tail -1   # anterior al primer inicio_epoch
+python -c "import csv,collections as c;r=list(csv.DictReader(open('<crudo nuevo>')));print(set(c.Counter((x['fallo'],x['coord'],x['concurrencia']) for x in r).values()))"   # {10}
+\end{verbatim}
+
+\subsection*{\S16 Paquete de datos}
+\textbf{Qu\'e encontr\'e:} el manifiesto de los 60 CSV/TSV qued\'o cerrado, pero quedan fuera 358 \rt{.db}, 54 \rt{.json} (preflight, pilotos, rampa, resumen del or\'aculo, trazas) y los XML de PMD y JaCoCo; se regenera en el mismo commit que cambia los datos y el hash del crudo can\'onico no est\'a fijado en el documento. Conviven cinco juegos de resultados (simulaci\'on SQLite duplicada, \rt{oficial-v4}, \rt{resultados-rubrica} sin referencias, la correctiva y dos juegos PySpark) y dos tablas de $p$ para el mismo contraste (aproximado y exacto). Las columnas de inconsistencia dependen de una instant\'anea de un cl\'uster que no se conserva, as\'i que no son regenerables. No hay diccionario de datos. \textbf{C\'omo debe quedar:} un directorio can\'onico por experimento con los hist\'oricos declarados; diccionario con nombre, tipo, unidad y origen de las columnas del crudo y del or\'aculo; manifiesto que cubra todo archivo de datos con su hash ra\'iz citado en el manuscrito; volcado de las tablas usadas por el or\'aculo para que \rt{reconstruct\_real\_oracle.py -{}-desde-volcado} lo regenere; una sola tabla de $p$ exactos. \textbf{C\'omo lo verifico:} \rt{python scripts/check\_data\_checksums.py} y el n\'umero de archivos de datos igual al de l\'ineas del manifiesto; la regeneraci\'on del or\'aculo desde el volcado coincide con \rt{cmp}.
+
+\subsection*{\S17 Evaluaci\'on ISO/IEC 25010 --- sin compatibilidad y sin r\'eplicas}
+\textbf{Qu\'e encontr\'e:} falta Compatibilidad (se sustituy\'o por Disponibilidad). Eficiencia (p95 = 610\,ms) sale de una sola corrida de 60\,s con cuatro GET p\'ublicos y el l\'imite de tasa del gateway elevado; la fiabilidad ``0/2.112'' sale de esa misma carga de 60\,s, y la hora de disponibilidad se midi\'o despu\'es y sin carga (un GET por segundo). Mantenibilidad usa el 82,31\,\% filtrado (\S12a) y reporta la complejidad m\'axima, no la media. Seguridad comprueba 8 familias con 401, sin ZAP ni auditor\'ia de dependencias. Los IC95 son de Wilson sobre l\'ineas o sondeos: \textbf{ninguna caracter\'istica tiene r\'eplicas}. \textbf{C\'omo debe quedar:} las cinco caracter\'isticas de la Tabla 2 con $r \ge 10$ (8 \'utiles), media, DE e IC95\,\% de $t$ de Student sobre r\'eplicas: fiabilidad en una hora bajo carga nominal con checkout; eficiencia como p95 por r\'eplica de 5 minutos; seguridad como porcentaje de endpoints con JWT m\'as informe ZAP \emph{baseline} y \rt{npm audit}; mantenibilidad con la cobertura completa de \S12a y complejidad media; compatibilidad con Playwright en Chromium, Firefox y WebKit y emuladores API 26 y 34; \rt{scripts/iso25010\_stats.py} que genere \rt{iso25010.csv} desde los crudos. \textbf{C\'omo lo verifico:} \rt{python scripts/iso25010\_stats.py \&\& git diff -{}-exit-code docs/experimentos/resultados/iso25010.csv}; el CSV incluye Compatibilidad y $n \ge 8$ en todas.
+
+\subsection*{\S18 Manuscrito --- bien escrito, pero sobre cifras que hay que rehacer}
+\textbf{Qu\'e encontr\'e:} compila limpio, pero no desde la copia limpia que documenta el README: incluye 16 im\'agenes de \rt{release/screenshots/} y una de \rt{experiments/}. \rt{verificacion.json} declara el hash de un PDF anterior (\rt{30dd00cd\ldots}), no el del corte (\rt{03b3a388\ldots}). No sigue la estructura de la Tabla 3 (no hay secciones de fundamento te\'orico, aplicaci\'on web, aplicaci\'on m\'ovil, pruebas y CI/CD ni observabilidad). Publica el 82,31\,\% de cobertura filtrada y la atribuci\'on falsa de $r=5$ a la gu\'ia; no hay evidencia de i18n ni capturas de \rt{/main}, \rt{/settings} y \rt{/about}; la portada est\'a desfasada (\S1). \textbf{C\'omo debe quedar:} estructura de la Tabla 3; tablas de protocolo, ISO y cobertura incluidas con \rt{\textbackslash input} desde \rt{.tex} generados por los guiones a partir de los CSV can\'onicos, de modo que ninguna cifra se teclee; instrucciones de copia limpia completas; hash del PDF actualizado en el mismo commit y comprobado en CI; compilado \emph{despu\'es} de la \'ultima regeneraci\'on de resultados. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git archive HEAD docs/entrega4 docs/entrega3/referenciasPFC.bib release/screenshots experiments/paso8/resultados-reales | tar -x -C /tmp/m
+cd /tmp/m/docs/entrega4 && latexmk -pdf -halt-on-error PFC4.tex && grep -c undefined PFC4.log
+grep -o "82{,}31" PFC4.tex                  # vacio
+\end{verbatim}
+
+\subsection*{\S19 Amenazas a la validez y reflexi\'on \'etica}
+\textbf{Qu\'e encontr\'e:} el texto est\'a bien hecho, pero describe la campa\~na actual ($r=5$, saturaci\'on, or\'aculo retrospectivo) y deber\'a reescribirse cuando se repita (\S15); tres amenazas relevantes (configuraci\'on, saturaci\'on y carga sint\'etica) no tienen una mitigaci\'on expl\'icita, y se cita el c\'odigo de \'etica ACM/IEEE-CS de ingenier\'ia de software en lugar del ACM Code of Ethics and Professional Conduct (2018) que pide la gu\'ia. \textbf{C\'omo debe quedar:} amenazas revisadas contra el nuevo dise\~no, cada una con su frase ``Mitigaci\'on:'' concreta; referencia al c\'odigo ACM 2018 con al menos dos principios numerados aplicados (1.2, 2.5). \textbf{C\'omo lo verifico:} \rt{grep -c "Mitigaci" docs/entrega4/PFC4.tex} $\ge$ 11.
+
+\subsection*{\S20 Trabajo en equipo y autor\'ia}
+\textbf{Qu\'e encontr\'e:} una sola acta (04/09), en la que no figuran Lozano Morales ni Gaibor Rodr\'iguez; una sola aprobaci\'on cruzada de PR; 82 commits directos a \rt{main} desde el 01/09. La declaraci\'on de IA existe. Aucatoma Celorio tiene el mayor n\'umero de commits del equipo (99), pero entre el 12/09 y el corte sus 15 commits son modestos: 292 l\'ineas de pruebas web reales, retirada de \rt{.idea/}, un refactor de complejidad, retoques de README y CI (uno de ellos s\'olo cambia un texto aunque su mensaje describe otra cosa) y un commit vac\'io de disparo. \textbf{C\'omo debe quedar:} un acta por sesi\'on del suspenso con fecha, asistentes, decisiones, responsables y enlace a los PR, versionada el mismo d\'ia; cada PR aprobado por un integrante distinto del autor; tabla de autor\'ia por \'item de esta gu\'ia en el manuscrito, verificable con \rt{git shortlog}. El aporte del estudiante que rinde el examen se acredita s\'olo con sus propios commits y PR sobre \'items de esta gu\'ia, cuyo mensaje describa exactamente lo que cambia.
+
+\section{Orden de ejecuci\'on}
+Cl\'ausula 1 (transferir el repositorio) y \S3 protecci\'on de \rt{main} $\rightarrow$ \S2 higiene y revocaci\'on del secreto $\rightarrow$ \S4 capas $\rightarrow$ \S5 patrones en el checkout (ADR-006 en paralelo) $\rightarrow$ \S6 web y \S7 cobertura $\rightarrow$ \S8 push y esc\'aner y \S9 $\rightarrow$ \S10 contratos y \S12 pruebas $\rightarrow$ \S13 DAG $\rightarrow$ \S14 observabilidad $\rightarrow$ \S15a protocolo (commit) $\rightarrow$ \S15b campa\~na $\rightarrow$ \S16 paquete $\rightarrow$ \S17 ISO/IEC 25010 (\S11 en paralelo desde el principio) $\rightarrow$ \S18 y \S19 $\rightarrow$ \S1 portada y \S20 $\rightarrow$ CHANGELOG, manifiestos y, lo \'ultimo, la etiqueta anotada.
+
+\section{Lista de verificaci\'on antes de entregar}
+\begin{verbatim}
+git ls-remote https://github.com/gleiston-guerrero/TiendaTech HEAD      # clausula 1
+git cat-file -t v4.1.0 && git rev-parse v4.1.0^{commit} origin/main
+grep -rlnE "interface \w*(Payment|Pago)\w*Strategy|interface \w*Observer|\w*Decorator (implements|extends)" services/*/src/main/java
+grep -n "<include>" services/*/pom.xml; grep -n "thresholds" Apps/web/frontend/webapp/vitest.config.ts
+python scripts/check_data_checksums.py && python experiments/paso8/campaign_checksums.py
+python -c "import csv;print([(x['caracteristica'],x.get('n')) for x in csv.DictReader(open('docs/experimentos/resultados/iso25010.csv'))])"
+git ls-files | grep -iE "(^|/)\.idea/|\.iml$|\.db-journal$|debug\.apk$"
+\end{verbatim}
+
+\piedepagina
+\end{document}

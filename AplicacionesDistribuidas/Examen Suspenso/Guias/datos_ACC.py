@@ -1,0 +1,25 @@
+EQUIPO = "ACC"
+PORCENTAJES = [75, 70, 25, 65, 70, 75, 75, 65, 55, 45, 70, 40, 85, 65, 35, 35, 30, 35, 60, 25]
+ITEMS = [
+    ("1", r"URL can\'onica en \rt{CITATION.cff}, portada y diapositiva; README con equipo, roles y avisos vigentes", 1, 1, 2, 1, "PM"),
+    ("2", r"Ra\'iz sin subproductos de compilaci\'on ni carpetas heredadas, mapa del Listado 3, rutas citadas existentes y variables del m\'ovil", 2, 2, 3, 2, "PM"),
+    ("3", r"Integraci\'on por PR con revisi\'on de otro integrante, rama principal sin reescrituras, \rt{CHANGELOG.md} y etiqueta anotada de cierre", 2, 2, 2, 2, "PC"),
+    ("4", r"Dominio sin Spring ni setters p\'ublicos, cuatro capas en todos los servicios con l\'ogica, controladores sobre abstracciones y ArchUnit", 3, 3, 4, 3, "PM"),
+    ("5", r"Strategy de rutas y Observer de SLA con uso real y pruebas; ADR-005 corregido y ADR-006 con comparaci\'on cuantitativa", 3, 3, 3, 3, "PC"),
+    ("6", r"Vista de SLA por zona y por t\'ecnico sobre un endpoint real y rol de coordinador", 2, 3, 3, 3, "PC"),
+    ("7", r"Compuerta de cobertura web $\ge$70\,\% en CI y artefacto \rt{dist} versionado por commit", 1, 2, 2, 1, "PM"),
+    ("8", r"Cierre en sitio que env\'ia y persiste foto y GPS (con cola sin conexi\'on) y listado de tickets asignados al t\'ecnico", 3, 4, 4, 4, "PC"),
+    ("9", r"Pruebas de los tres ViewModels, E2E instrumentada login$\rightarrow$lista$\rightarrow$detalle y APK en Release inmutable de la etiqueta", 2, 3, 3, 3, "PC"),
+    ("10", r"Contrato del consumidor m\'ovil, contrato web ampliado a todas las operaciones y OpenAPI con rutas absolutas, esquemas y validaci\'on en CI", 3, 3, 3, 3, "PC"),
+    ("11", r"Migraciones versionadas con Flyway, im\'agenes con versi\'on fija y experimento de ca\'ida reproducible en la configuraci\'on E4", 2, 3, 3, 3, "PM"),
+    ("12", r"Cobertura backend $\ge$70\,\% con compuerta en los cuatro servicios Java, Testcontainers en auth y report e informes como artefactos", 3, 3, 4, 4, "PC"),
+    ("13", r"APK dependiente de lint y pruebas y agente OpenTelemetry con versi\'on fija", 1, 2, 2, 1, "PM"),
+    ("14", r"Registros JSON y \rt{traceparent} en el m\'ovil, latencia medida en el cliente, histogramas y evidencia del tablero bajo carga", 3, 3, 3, 3, "PM"),
+    ("15a", r"Protocolo versionado antes de medir y campa\~na CORREL con $r=10$, variabilidad real, unidad de an\'alisis correcta e IC exactos", 4, 3, 3, 4, "PC"),
+    ("15b", r"Carga Locust conforme: 50 usuarios $\times$ 5 min y rampa 0$\rightarrow$200 en 10 min, diez corridas por escenario", 2, 3, 2, 3, "PC"),
+    ("16", r"Un juego can\'onico de resultados, manifiestos que cubren todos los datos, diccionario de datos y reproducci\'on verificada en CI", 3, 2, 3, 2, "PC"),
+    ("17", r"ISO/IEC 25010 completa: fiabilidad de 1\,h, seguridad sobre todos los endpoints, mantenibilidad y compatibilidad con artefactos crudos", 4, 3, 3, 4, "PC"),
+    ("18", r"Manuscrito con cifras can\'onicas, figuras de observabilidad y C4 nivel 3, estilo que imprima DOI/ISBN y versi\'on congelada", 2, 2, 4, 3, "PC"),
+    ("19", r"Amenazas de las campa\~nas E4 con mitigaci\'on aplicada y reflexi\'on \'etica $\ge$\textonehalf{} p\'agina con principios ACM", 3, 1, 2, 2, "PM"),
+    ("20", r"Autor\'ia transparente (\rt{.mailmap}, declaraci\'on de commits por guion y reatribuidos), actas contempor\'aneas y aporte propio verificable", 2, 1, 2, 2, "PC"),
+]

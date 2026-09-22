@@ -1,0 +1,370 @@
+================================================================================
+OBSERVACIONES PARA EL DOCENTE -- TA-PFC-E4 (revision del 5 de septiembre de 2026)
+Proyecto Fin de Curso, Entrega 4 -- Aplicaciones Distribuidas (ISR-701)
+Periodo 2026-2027 PPA -- Docente: PhD. Gleiston Ciceron Guerrero-Ulloa
+DOCUMENTO CONFIDENCIAL. No entregar a los estudiantes.
+================================================================================
+
+1. ALCANCE
+
+Auditoria del estado a 5 de septiembre de 2026, considerando TODOS los commits
+existentes a esta fecha sin limite de hora y sin penalizacion por el momento del
+envio, conforme a su indicacion.
+
+VERIFICACION IMPORTANTE: no existe ningun commit posterior a las 19:50 del 4 de
+septiembre en ninguno de los cuatro repositorios. Levantar el limite horario no
+incorpora evidencia nueva; el estado auditado es identico al de la revision
+anterior. Lo unico que cambia en este informe es la calibracion.
+
+  AGLS  main               d55b894  2026-09-04 19:50
+  BCEL  main               732eb27  2026-09-04 19:48
+  ACC   main               6981302  2026-09-04 14:42
+  FUVV  feature/entrega-4  e43967e  2026-09-04 19:21
+
+Los cuatro equipos trabajaron intensamente sobre las observaciones del 2 de
+septiembre. La respuesta fue real y verificable en los cuatro casos, aunque
+desigual en profundidad.
+
+Metodo: clonacion completa; compilacion de cada .tex desde clon limpio;
+recalculo independiente con pandas/numpy/scipy sobre los CSV crudos; lectura del
+codigo de cada banco experimental; resolucion de TODOS los DOI contra el
+registrador; suma directa de los informes JaCoCo versionados; atribucion por
+git log --numstat con identidades unificadas.
+
+NO VERIFICABLE: historial de GitHub Actions (limite de tasa de la API) y arranque
+del stack con docker compose. El piso P3 queda NO VERIFICADO en los cuatro.
+
+Sin penalizaciones ni pisos aplicados a la calificacion, conforme a su indicacion.
+Nota previa y nota final coinciden en los cuatro equipos.
+
+--------------------------------------------------------------------------------
+2. CUADRO DE CALIFICACIONES
+--------------------------------------------------------------------------------
+
+Rubrica aplicada: la misma de las revisiones anteriores de este expediente, es
+decir la tabla de criterios calificables de la guia paso a paso TA-PFC-E4
+(C1 12, C2 16, C3 14, C4 10, C5 12, C6 9, C7 9, C8 5, C9 8, C10 5). C10 no
+evaluable hasta la defensa; se califica sobre los 95 puntos restantes,
+renormalizados a 100. Sin pisos ni penalizaciones aplicadas.
+
+Calibracion: aplicacion recta de la rubrica, sin la atenuacion que se aplico por
+indicacion expresa en la revision del 2 de septiembre y sin endurecimiento.
+
+Equipo   5-sep   4-sep*  2-sep   31-ago   Comentario
+AGLS      8.40    8.80    8.10     5.5    C2 baja de nivel 4 a 3 (ver seccion 3)
+FUVV      6.10    6.10    5.70     7.5    Sin cambio: mismos niveles, misma evidencia
+ACC       6.10    6.10    5.60     6.2    Sin cambio
+BCEL      5.80    5.80    4.80     3.4    Sin cambio
+
+(*) columna 4-sep: calificacion emitida en la revision inmediatamente anterior
+sobre esta misma evidencia. Las tres notas que no se mueven no se mueven porque
+sus niveles ya se habian fijado por evidencia y no por atenuacion.
+
+UNICO CAMBIO DE CALIFICACION: AGLS, C2, de nivel 4 (16,00) a nivel 3 (12,00).
+Motivo: dos desviaciones de diseno que la atenuacion anterior no penalizaba.
+  a) La guia fija corridas de cinco minutos; ejecutaron dos minutos y medio. Esta
+     declarada como amenaza, pero declarar una desviacion no la vuelve cumplimiento.
+  b) Lanzaron la matriz completa a 50 usuarios concurrentes sin corrida piloto
+     previa que verificara el flujo basal. Un ensayo de dos minutos con un usuario
+     habria revelado que el checkout ya fallaba, antes de gastar 10 h de maquina.
+     La comprobacion previa de que el sistema responde forma parte del diseno
+     experimental, y su ausencia explica los 3 checkouts confirmados de 401.
+El resto de criterios de AGLS se mantienen: el trabajo sigue siendo, con
+diferencia, el mejor del curso.
+
+Individuales (0,60 x equipo + 0,40 x individual, sin tope de equipo):
+
+  Sanchez Pilaloa, Andy Paul              8.84  (AGLS, individual 9.50)
+  Lozano Morales, Jose Alejandro          8.72  (AGLS, individual 9.20)
+  Aucatoma Celorio, Jhinson Stalyn        8.56  (AGLS, individual 8.80)
+  Gaibor Rodriguez, Jeremy Ruperto        8.48  (AGLS, individual 8.60)
+  Farinango Guandinango, Freddy Vladimir  7.38  (FUVV, individual 9.30)
+  Villamarin Cuenca, Ivan Andres          7.26  (FUVV, individual 9.00)
+  Castro Lopez, Pedro Leonardo            7.08  (BCEL, individual 9.00)
+  Carpio Mendoza, Carlos Jose             7.06  (ACC, individual 8.50)
+  Pacheco Cardenas, Cristhian Daniel      6.94  (ACC, individual 8.20)
+  Vinueza Sanchez, Harold Nicolas         6.86  (FUVV, individual 8.00)
+  Urbina Romero, Isaias Abraham           6.86  (FUVV, individual 8.00)
+  Cando Moreno, Robinson Rodrigo          6.66  (ACC, individual 7.50)
+  Bedon Viteri, Keyla Betzabe             6.48  (BCEL, individual 7.50)
+  Luna Mora, Ernesto Gregory              6.28  (BCEL, individual 7.00)
+  Emanuel Pino, Juliana Romina            5.88  (BCEL, individual 6.00)
+  Alvarez Parraga, Jeremy Alexis          5.46  (ACC, individual 4.50)
+
+--------------------------------------------------------------------------------
+3. AGLS -- EL UNICO EQUIPO QUE EJECUTO SU EXPERIMENTO, Y LE SALIO MAL
+--------------------------------------------------------------------------------
+
+Corrigieron TODO lo senalado el 2 de septiembre:
+
+  a) delay-seconds de 0,05 a 5,0; warmup de 0 a 60 s descartados; medicion 90 s.
+     Verificado: las 120 filas registran los mismos parametros sin excepcion.
+  b) Eliminaron el threading.Lock() global de coordination_lab.py.
+  c) Incorporaron Mann-Whitney exacta y correccion de Bonferroni (commit 5cef707).
+  d) Subieron a 12 repeticiones en la campana de rubrica.
+  e) Anadieron registro de cambios frente a E1, estado del arte especifico sobre
+     saga vs. 2PC, y trazabilidad-temas.tex.
+  f) Cerraron los issues duplicados sin respuesta.
+  g) Anadieron la pareja rojo/verde del Paso 9, la ISO 25010 del Paso 11 y la
+     corrida conjunta de observabilidad (panel + traza + carga).
+
+CAMPANA REAL (experiments/paso8/resultados-reales/oficial-v4-20260904):
+Ejecutada contra el API Gateway y los microservicios sobre CockroachDB, con
+Locust, reinicio de los seis servicios entre corridas y checkpoints reanudables.
+Marcas de tiempo: ~10 h de reloj, >3 h de medicion efectiva.
+Verificacion independiente: 120 filas, 120 claves unicas, 24 condiciones con
+exactamente 5 repeticiones. Estructura impecable.
+
+RESULTADO: 76.022 solicitudes, 56.353 fallos (74 % de error). 401 intentos de
+checkout, 398 fallidos, 3 confirmados, los tres en una unica corrida. Mediana de
+checkouts confirmados = 0 en las 24 condiciones.
+
+El sistema colapso. La variable central sigue sin medirse, ahora por saturacion
+del stack y no por artefacto del banco.
+
+Lo decisivo: ellos lo declaran. Su informe_final.md escribe que la cantidad de
+checkouts confirmados es insuficiente para atribuir conservacion de invariantes o
+superioridad a ninguna estrategia, y advierte de forma expresa que la ausencia de
+confirmaciones no debe leerse como equivalencia. Ademas EVIDENCIA-REAL.md retira
+explicitamente los pilotos SQLite como respaldo de C2, C3 y C6.
+
+Retirar evidencia propia por no ser valida, sabiendo que cuesta nota, es la
+conducta que este curso deberia premiar. Por eso C2 va a nivel 4 (diseno y
+ejecucion correctos) y C3 solo a nivel 2 (no hay resultado).
+
+Bibliografia: 56 DOI, 56 resuelven. Documento: 55 paginas, biblatex/biber IEEE,
+0 errores, 0 overfull, 0 referencias sin resolver desde clon limpio. Unico del curso.
+
+--------------------------------------------------------------------------------
+4. FUVV -- INSTRUMENTO PERFECTO, CERO MEDICIONES
+--------------------------------------------------------------------------------
+
+Construyeron el aparato completo el 4 de septiembre, entre las 14:18 y las 19:21:
+
+  - S0SinArbitraje, S1Optimista, S2Pesimista, S3BullyLamport, S4SerializableQuorum
+    como clases Java reales en reservas-solicitudes-service.
+  - Conmutacion efectiva: application.yml lee ${ARBITER:} y docker-compose.prod.yml
+    la expone. Piso P5 cubierto.
+  - generador_rafagas.py con threading.Barrier(agents+1) y liberacion desde un
+    unico punto. La barrera que faltaba.
+  - oraculo_reservas.py con las cinco invariantes I1-I5 correctamente implementadas.
+  - caida_coordinador.py, ejecutar_campana_arbiter.py (409 lineas),
+    arbiter_core.py (359 lineas), tests del arbitro y validacion en el pipeline.
+
+Y NO LO EJECUTARON. El README de experimentos/resultados/arbiter/ dice, escrito
+por ellos: "Actualmente existen 0 de 130 corridas. Los tests unitarios no
+constituyen evidencia experimental."
+
+Esa honestidad es lo que sostiene C2 en nivel 2. Preferir declarar cero antes que
+disfrazar tests unitarios de evidencia es lo correcto y conviene reforzarlo
+publicamente ante el curso.
+
+Tambien corrigieron: bibliographystyle a ieeetr, bibliografia de 6 a 15 entradas
+(19 DOI, 0 fallos), README con instrucciones de compilacion, CITATION.cff.
+
+NO corrigieron, siendo trivial:
+  - docs/main.tex sigue sin compilar: faltan figuras/panel-monitoreo.png y
+    figuras/qr-scan.png; docs/figuras no existe. Tercera revision con el mismo fallo.
+  - Las 10 filas de fiabilidad_nominal_50u_1h en iso25010.csv siguen vacias.
+    Era una corrida desatendida de 60 minutos. Tuvieron tres noches.
+  - Siguen entregando DOS documentos sin declarar cual es el bueno.
+  - Sin tabla de revision cruzada. main congelada desde el 15 de agosto, sin una
+    sola fusion: toda la entrega vive en feature/entrega-4.
+  - El documento de la entrega sigue con 4 de las 18 secciones obligatorias.
+  - El p99 que varia por factor 40 entre corridas identicas sigue sin comentarse.
+  - Caratula erronea por tercera vez (dice TiendaTech).
+
+--------------------------------------------------------------------------------
+5. ACC -- DOCUMENTO RESUELTO, EXPERIMENTO NO
+--------------------------------------------------------------------------------
+
+El 4 de septiembre, entre las 03:40 y las 12:25, los cuatro escribieron por
+reparto las secciones que faltaban: resumen/abstract, arquitectura E4 con C4-L1 y
+C4-L2 redibujados, aplicacion web, aplicacion movil, pruebas y CI/CD,
+observabilidad distribuida, evaluacion ISO 25010, discusion y amenazas,
+conclusiones. El documento pasa de 32 a 49 paginas y ahora compila desde clon
+limpio (antes fallaba por dos figuras).
+
+Corrigieron ademas: README con instrucciones de compilacion (piso P2),
+declaracion de IA actualizada a E4 (piso P8), y --destacable-- reemplazaron una
+captura fabricada por una real contra el stack en ejecucion, declarandolo en el
+mensaje del commit (3d1e260, Cando Moreno).
+
+NO corrigieron:
+  - El experimento de correlacion sigue sin ejecutarse. Cero de 90 corridas.
+  - experimentos/resultados/verdad_campo.csv sigue sin versionarse. Es el archivo
+    que su propio analizador requiere. Senalado hace tres dias.
+  - stats_test.json SIN TOCAR: p = 5,0166e-10 con conclusion "no se rechaza H0
+    (sin diferencia significativa al 95%)". Ahora contradice tambien a la
+    hipotesis H1 declarada en el mismo archivo. Sigue siendo t pareada donde se
+    exige Mann-Whitney, con Shapiro-Wilk sobre n=8.
+  - DOI 10.5555/2643634.2643666 sigue sin resolver (prefijo no registrado).
+  - Referencia cruzada sec:arquitectura sin resolver en pagina 42: main.tex
+    incluye dos veces secciones/fundamento_teorico.
+  - Sin CITATION.cff. Sin tabla de revision cruzada.
+  - El 81,1 % de cobertura esta en una tabla Markdown (542/668 lineas) sin informe
+    JaCoCo versionado que lo respalde. Cifra autodeclarada.
+
+--------------------------------------------------------------------------------
+6. BCEL -- DE DATOS FABRICADOS A MEDICION REAL, PERO A MEDIAS
+--------------------------------------------------------------------------------
+
+Cambio sustantivo y verificado. El commit 28347aed (Castro Lopez, 3-sep 22:56)
+reemplazo el guion que fabricaba datos por un banco que mide de verdad:
+
+  a) verificar_cadena_eventos() recorre la bitacora comprobando encadenamiento
+     SHA-256 real, invariante de Lamport y correspondencia hash guardado/recalculado,
+     devolviendo la regla concreta violada. Ya no existe el
+     "if mec in [M2,M3]: detectado = True".
+  b) verificar_estado_tabla_vs_bitacora() reconcilia el estado de la tabla de
+     notas contra la bitacora. Esta es exactamente la funcion cuya ausencia
+     senale como prueba logica de fabricacion: sin ella T1 es indetectable.
+     La escribieron.
+  c) Tiempos medidos con time.perf_counter_ns(), no de constantes.
+  d) Aparecieron los dos experimentos ausentes: exp1_concurrencia.csv (160
+     corridas) y exp3_reconciliacion.csv (60 corridas).
+  e) Commit 6d524de7: conmutacion efectiva m0-m3 por variable AUDIT con reloj de
+     Lamport en sga-principal. Piso P5 cubierto.
+  f) Bibliografia depurada: de 9 DOI no resolubles a 0. Los 21 restantes resuelven.
+     Retiraron la cita a alharbi2025microservices.
+  g) Declaracion de IA incorporada al documento, por integrante. Piso P8 cubierto.
+  h) Cobertura real de secretaria de 13,21 % a 34,52 % con pruebas JUnit reales.
+
+EL EXPERIMENTO 3 ES UN RESULTADO GENUINO. Muestra que ante edicion concurrente
+offline con relojes de Lamport empatados, M2 detecta el conflicto pero exige
+intervencion manual mientras M3 reconcilia automatica y deterministicamente con
+reloj vectorial. Es el hallazgo que faltaba para distinguir M2 de M3, que en la
+revision anterior eran indistinguibles en toda su evidencia.
+
+LO QUE SIGUE MAL:
+  - Todo corre en un modelo en memoria. Cero llamadas HTTP o de base de datos
+    hacia AcadTrace. Miden su criptografia, no su sistema.
+  - Las metricas ISO SIGUEN generandose con numeros inventados:
+      cobertura_jacoco = round(random.uniform(70.5, 74.2), 2)
+    y las latencias de tres diccionarios con rps_base/lat_mediana/lat_p95 fijados
+    a mano. Cambiaron el rango del random (antes 82,8-83,4), no la naturaleza del
+    dato. El CSV declara 71,0 %; sga-principal esta en 0,51 % real.
+  - Deteccion sigue en 100/0 con varianza cero en 600 ensayos. Ahora es derivada,
+    no estipulada, pero el modelo no tiene ruido y falta la tasa de falsos
+    positivos sobre corridas limpias.
+  - SIN revision cruzada. Secuencia a revisar: commit 175a690e (4-sep 15:05)
+    anuncia agregar "declaracion IA, revision cruzada C8, trazabilidad C5 y
+    reconciliacion T1"; commit fa8a69bb (15:08) revierte las modificaciones del
+    informe "para coordinacion con companera de equipo". En el arbol final no
+    queda tabla de revision cruzada ni trazabilidad. Vale la pena preguntarlo.
+
+--------------------------------------------------------------------------------
+7. VERIFICACION BIBLIOGRAFICA FINAL (todos los DOI resueltos uno a uno)
+--------------------------------------------------------------------------------
+
+  AGLS       56 DOI ... 56 resuelven ... 0 fallos   (antes 51/51)
+  BCEL       21 DOI ... 21 resuelven ... 0 fallos   (antes 20/29, 9 fallos)
+  FUVV main  13 DOI ... 13 resuelven ... 0 fallos
+  FUVV e4     6 DOI ...  6 resuelven ... 0 fallos
+  ACC        18 DOI ... 17 resuelven ... 1 fallo    (10.5555/2643634.2643666)
+
+BCEL corrigio integramente el problema de las nueve referencias IEEE inexistentes.
+ACC no corrigio el suyo pese al aviso.
+
+--------------------------------------------------------------------------------
+8. ATRIBUCION INDIVIDUAL (git log --numstat, 16-ago a 5-sep)
+--------------------------------------------------------------------------------
+
+FUVV
+  Farinango    64 c / 17 d / +23077 -10665 /  981 arch / BACK 414 TEST 171 EXP 78
+  Villamarin   72 c / 17 d / +18365  -2793 /  511 arch / BACK 143 TEST 99 EXP 29
+  Vinueza      72 c / 17 d / +17527  -1691 /  543 arch / BACK 289 TEST 78 DOC 25
+  Urbina       50 c / 15 d / +14671   -826 /  502 arch / BACK 178 OPS 91 TEST 90
+
+AGLS
+  Gaibor       34 c / 12 d / +18109 -20053 /  425 arch / BACK 155 OPS 82 EXP 54
+  Lozano       44 c / 11 d / +13248  -3579 /  667 arch / BACK 297 MOVIL 100 DOC 62
+  Sanchez      53 c /  8 d / +11313 -30558 /  497 arch / BACK 148 EXP 29 DOC 21
+  Aucatoma     64 c / 11 d /  +9031  -2910 /  254 arch / BACK 119 DOC 68 OPS 24
+
+BCEL
+  Castro      107 c / 13 d / +85797  -5118 /  962 arch / DOC 519 BACK 269 WEB 89
+  Luna        109 c /  9 d / +37532  -4638 /  862 arch / BACK 398 DOC 308 OPS 110
+  Bedon        35 c /  6 d / +33886 -10007 /  494 arch / MOVIL 280 DOC 94 TEST 44
+  Emanuel      48 c /  9 d /  +9044  -2233 /  119 arch / BACK 53 OPS 34 DOC 13
+
+ACC
+  Pacheco      39 c /  7 d /  +5319 -205348/ 1432 arch / BACK 1267 TEST 70 CI 38
+  Carpio       31 c /  7 d / +14339   -563 /  204 arch / BACK 63 WEB 54 TEST 43
+  Cando        26 c /  7 d /  +4633   -225 /   85 arch / MOVIL 33 DOC 15 TEST 14
+  Alvarez       9 c /  5 d /  +2557    -20 /   13 arch / DOC 7 WEB 2 TEST 2
+
+Alvarez Parraga: aporto UN commit entre el 2 y el 5 de septiembre (8c64c70,
+actualizacion de cobertura ISO). Es el unico del curso que podria activar la
+penalizacion de la guia por commits no sustantivos (-50 %). NO aplicada: de
+aplicarse pasaria de 5,46 a 4,37.
+
+--------------------------------------------------------------------------------
+9. DESCUENTOS CALCULADOS Y NO APLICADOS
+--------------------------------------------------------------------------------
+
+  ACC   -0,50 pts   DOI 10.5555 no resoluble. De aplicarse: 6,10 -> 6,05.
+  ACC   -50 %       Alvarez Parraga por commits no sustantivos.
+  FUVV  piso P4     0 de 130 corridas. De aplicarse: CERO.
+  FUVV  piso P2     docs/main.tex no compila. De aplicarse: CERO.
+  FUVV  piso P8     declaracion de IA fuera del documento. De aplicarse: CERO.
+  ACC   piso P4     verdad_campo.csv no versionado. De aplicarse: CERO.
+  BCEL  piso P4     metricas ISO generadas, no medidas. De aplicarse: CERO.
+
+AGLS no incurre en ningun piso verificable ni en ninguna penalizacion.
+
+--------------------------------------------------------------------------------
+10. PREGUNTAS DE DEFENSA SUGERIDAS (C10, 5 puntos, sin evaluar)
+--------------------------------------------------------------------------------
+
+  AGLS / Sanchez    : por que arrancaron en 50 usuarios sin corrida piloto previa
+                      que verificara el flujo basal, y que habrian hecho distinto.
+  AGLS / Aucatoma   : que decision de arquitectura cambiaria sabiendo que el stack
+                      se satura al 74 % de error con 50 usuarios.
+  AGLS / Gaibor     : con el candado eliminado y el escritor unico de SQLite aun
+                      presente, que experimento minimo bastaria para observar una
+                      inconsistencia.
+  FUVV / Farinango  : por que el arbitro se termino el mismo dia del plazo.
+  FUVV / Villamarin : ejecucion en vivo de una condicion, S0 contra S2.
+  FUVV / Vinueza    : cual de los dos documentos es la entrega y por que.
+  FUVV / Urbina     : como demostraria que 200 peticiones llegaron simultaneas.
+  ACC  / Carpio     : ejecucion en vivo del inyector y el analizador.
+  ACC  / Alvarez    : por que stats_test.json concluye lo contrario de su p valor.
+  BCEL / Castro     : que faltaria para que el banco midiera AcadTrace y no un
+                      modelo en memoria.
+  BCEL / Luna       : de donde sale el 71 % de cobertura del CSV ISO.
+  BCEL / Emanuel    : cual es la cobertura real de cada modulo.
+  BCEL / Bedon      : demostracion en vivo de la sincronizacion sin conexion.
+
+--------------------------------------------------------------------------------
+11. LECTURA DEL CURSO
+--------------------------------------------------------------------------------
+
+De cuatro equipos, uno ejecuto su experimento y le salio mal; uno construyo el
+instrumento y no lo uso; uno implemento el mecanismo en el sistema real y no lo
+corrio; uno midio un modelo en lugar del sistema. Ninguno tiene el resultado
+central que la entrega pedia.
+
+Ese patron, con equipos que evidentemente trabajaron muchisimo, apunta al diseno
+del instrumento mas que al esfuerzo:
+
+  1) La entrega concentra en una sola ventana el cierre de web, movil, CI/CD,
+     observabilidad, ISO 25010, revision cruzada, un documento de 20 paginas Y una
+     campana de 90-150 corridas. Conviene separar el experimento a una entrega
+     propia, o reducir la matriz a un tercio.
+
+  2) La rubrica no separa "instrumento construido" de "medicion obtenida". FUVV
+     tiene hoy el mejor instrumento del curso y cero datos; AGLS tiene datos que no
+     responden la pregunta. Un descriptor explicito para cada cosa lo corregiria.
+
+  3) Ningun criterio obliga a un ensayo piloto previo. Si AGLS hubiera exigido un
+     flujo basal sano antes de escalar, su campana de 10 horas habria servido. Un
+     paso obligatorio de "smoke run" documentado evitaria ese desperdicio.
+
+  4) Recomendacion ya formulada y ahora confirmada: exigir que todo guion que
+     genere datos declare en cabecera, en linea normalizada, si son MEDIDOS o
+     SIMULADOS. Es una linea de codigo y habria evitado el caso BCEL desde agosto.
+
+================================================================================
+FIN DEL DOCUMENTO
+================================================================================

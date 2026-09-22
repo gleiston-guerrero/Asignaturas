@@ -1,0 +1,663 @@
+<title>Evaluación final PFC — Aplicaciones Distribuidas</title>
+<style>
+:root{--az:#0E3F7E;--te:#2E86A1;--ok:#2A6349;--am:#96660F;--ro:#9E3324;--bg:#ffffff;--fg:#1b1f24;--mut:#5a6672;--li:#D3DCE8;--su:#F2F5F8;--cd:#eef2f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 "Charter","Georgia","Times New Roman",serif;padding-block:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 70px}
+header.top{background:linear-gradient(135deg,#0E3F7E,#2E86A1);color:#fff;padding:34px 20px 30px;margin-bottom:26px}
+header.top .in{max-width:1180px;margin:0 auto}
+header.top h1{margin:0 0 6px;font-size:1.65rem;letter-spacing:.2px}
+header.top p{margin:0;opacity:.93;font-size:.95rem}
+h2{color:var(--az);font-size:1.3rem;border-bottom:2px solid var(--li);padding-bottom:7px;margin:42px 0 14px}
+h3{color:var(--te);font-size:1.08rem;margin:26px 0 10px}
+p{margin:.6em 0}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.85em;background:var(--cd);padding:1px 5px;border-radius:3px;word-break:break-word}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 18px}
+.meta div{background:var(--su);border:1px solid var(--li);border-radius:6px;padding:7px 12px;font-size:.85rem}
+.meta b{color:var(--az)}
+.tw{overflow-x:auto;border:1px solid var(--li);border-radius:8px;margin:14px 0}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:.88rem;background:var(--bg)}
+th{background:var(--az);color:#fff;text-align:left;padding:10px;font-weight:600;font-size:.82rem;letter-spacing:.3px}
+td{padding:11px 10px;border-top:1px solid var(--li);vertical-align:top}
+tr:nth-child(even) td{background:#fafcfe}
+.cod{font-weight:700;color:var(--az);white-space:nowrap}
+.nom{font-weight:600}
+.ev{display:block;margin-top:5px;font-size:.93em;color:var(--mut);line-height:1.55}
+.badge{display:inline-block;padding:3px 9px;border-radius:11px;font-size:.76rem;font-weight:700;white-space:nowrap}
+.st-ok{background:#e4f1ea;color:var(--ok)}
+.st-mod{background:#fbf0dc;color:var(--am)}
+.st-cul{background:#fae5e0;color:var(--ro)}
+.st-ini{background:#3a3a3a;color:#fff}
+.pct{display:block;font-size:.78rem;color:var(--mut);margin-top:4px}
+.nota{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.nota b{font-size:1.02rem}
+.nota span{color:var(--mut);font-size:.85em}
+.fx{text-align:center;font-variant-numeric:tabular-nums;font-size:.85rem}
+.fx.bad{color:var(--ro);font-weight:700}
+tfoot td{background:var(--su);font-weight:700;border-top:2px solid var(--az)}
+.box{border:1px solid var(--li);border-left:4px solid var(--te);background:var(--su);border-radius:6px;padding:14px 16px;margin:16px 0}
+.box.warn{border-left-color:var(--am);background:#fdf7ec}
+.box.bad{border-left-color:var(--ro);background:#fdf0ec}
+.box.good{border-left-color:var(--ok);background:#eef6f1}
+.box h4{margin:0 0 7px;color:var(--az);font-size:.95rem}
+.calc{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86rem;background:#fff;border:1px solid var(--li);border-radius:6px;padding:12px 14px;margin:10px 0;overflow-x:auto}
+.calc div{padding:3px 0}
+.calc .r{border-top:1px solid var(--li);margin-top:6px;padding-top:8px;font-weight:700;color:var(--az);font-size:1rem}
+.gr{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:14px 0}
+.card{border:1px solid var(--li);border-radius:8px;padding:13px 15px;background:var(--su)}
+.card .k{font-size:.78rem;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.card .v{font-size:1.5rem;font-weight:700;color:var(--az);font-variant-numeric:tabular-nums}
+.card .s{font-size:.8rem;color:var(--mut)}
+.card.z .v{color:var(--ro)}
+.fb{position:relative;margin:14px 0}
+.fb pre{background:#11161c;color:#e6edf3;padding:16px 16px 16px;border-radius:8px;overflow-x:auto;font:12.5px/1.75 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;margin:0}
+.fb button{position:absolute;top:9px;right:9px;background:#2E86A1;color:#fff;border:0;border-radius:5px;padding:6px 13px;font-size:.78rem;cursor:pointer;font-family:inherit}
+.fb button:hover{background:#246e86}
+.fb button.done{background:var(--ok)}
+.fbh{font-weight:700;color:var(--az);margin:20px 0 0;font-size:.95rem}
+ul{margin:.5em 0;padding-left:1.25em}li{margin:.3em 0}
+.foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--li);color:var(--mut);font-size:.83rem}
+@media (max-width:640px){.wrap{padding:0 16px 50px}header.top{padding:26px 16px}header.top h1{font-size:1.3rem}}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1419;--fg:#e6edf3;--mut:#9aa7b4;--li:#2a3541;--su:#161c24;--cd:#1d252e}
+tr:nth-child(even) td{background:#131920}.calc{background:#0f1419}}
+</style>
+<header class="top"><div class="in"><h1>Evaluación final del Proyecto Fin de Curso</h1><p>Aplicaciones Distribuidas (ISR-701) · Facultad de Ciencias de la Computación · UTEQ · Periodo 2026–2027</p></div></header>
+<div class="wrap">
+<h2>Cómo se calificó</h2>
+<p>La nota de cada proyecto sale de su propia rúbrica de consolidación, la que recibieron en digital. Esa rúbrica califica únicamente lo que quedó pendiente: lo que existía y había que arreglar, y lo que no existía y había que hacer. Lo que ya estaba bien no se vuelve a puntuar.</p>
+<div class="box"><h4>La cuenta</h4><p style="margin-top:0">Cada elemento pendiente tiene un <b>peso</b> (los pesos suman 10) y un <b>mínimo</b>, que es la nota más baja con la que ese elemento se da por aceptable. Cada elemento se califica de 0 a 10.</p><p><b>Suma:</b> se multiplica peso × nota de cada elemento, se suman y se divide para 10. Eso da <i>S</i>.</p><p><b>Factor:</b> cada elemento aporta un factor — vale 1 si llegó a su mínimo, vale nota/mínimo si se quedó corto, y vale 0 si no se hizo nada.</p><p><b>Nota de la rúbrica</b> = (factor<sub>1</sub> × factor<sub>2</sub> × … × factor<sub>n</sub>) × <i>S</i>.</p><p style="margin-bottom:0"><b>Nota final del estudiante</b> = nota de la rúbrica × 0,80 + nota del cuestionario del SGA × 0,20. El trabajo se evalúa una sola vez por equipo y ese 80 % es el mismo para los cuatro integrantes; el 20 % es individual.</p></div>
+<div class="box warn"><h4>Qué verifiqué, y qué no pude verificar</h4><p style="margin-top:0">Volví a clonar los cuatro repositorios en su estado de hoy, no en el de la evaluación anterior: los cuatro equipos siguieron trabajando y los cuatro tocaron precisamente los elementos de la rúbrica. Para cada elemento abrí los archivos, leí el código línea por línea, compilé los documentos desde una copia limpia, ejecuté las pruebas, corrí los guiones de análisis y recalculé las cifras por mi cuenta. Un commit cuyo mensaje dice arreglar algo no cuenta como arreglo: cuenta lo que hace el código.</p><p style="margin-bottom:0">Tres cosas no pude comprobarlas aquí y no cuentan como defecto de nadie: no hay demonio de contenedores, así que todo lo que necesite levantar uno quedó sin ejecutar; no hay kit de Android, así que ningún proyecto móvil se compiló; y la revisión de los repositorios se hace sobre el contenido versionado, no sobre despliegues en marcha.</p></div>
+<div class="box"><h4>Cómo leer la columna de estado</h4><ul style="margin-bottom:0"><li><b>Culminado</b> — el elemento está terminado y verificado.</li><li><b>Debe modificarlo</b> — llega al mínimo y cuenta, pero tiene defectos concretos. El porcentaje es lo que está logrado.</li><li><b>Debe culminarlo</b> — está empezado pero no alcanza el mínimo, así que su factor castiga la nota.</li><li><b>Iniciarlo</b> — no existe nada. Su factor es 0 y anula la calificación completa.</li></ul></div>
+<h2>Equipo FUVV — SCLI — Sistema de Control de Laboratorios Informáticos</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/ffarinangog2/Entrega-final-del-PFC</code></div><div><b>Rama</b> <code>feature/entrega-4</code></div><div><b>Commit evaluado</b> <code>e6ec484</code></div><div><b>Elementos</b> 8</div></div>
+<div class="tw"><table><thead><tr><th style="width:46%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:8%">Factor</th><th style="width:12%">Calificación</th></tr></thead><tbody>
+<tr><td><span class="cod">E1</span> <span class="nom">Preguntas de investigación</span><span class="ev">Ahora existen. <code>04-observabilidad-iso.tex:158-217</code> formula PI1 y PI2 con variable manipulada, medida y población, y las responde. PI1 recibe un «solo parcialmente» porque el p99 excede el umbral: admitir el resultado desfavorable es lo correcto. Comprobé que el prerregistro de umbrales es anterior a la campaña (<code>protocolo-e4.md</code> del 18-ago, analizador del 24-ago, campaña del 30-ago). Resta: PI2 declara como población «consultas autenticadas» pero los percentiles salen de la fila agregada de Locust, donde ~75 % de las peticiones son 401 no autenticadas.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 70 %</span></td><td class="fx">6</td><td class="fx">1</td><td class="nota"><b>1,40</b> <span>/ 2,0</span></td></tr>
+<tr><td><span class="cod">E2</span> <span class="nom">La prueba de fiabilidad de una hora</span><span class="ev">Ejecutada de verdad. Las 10 filas de <code>fiabilidad_nominal_50u_1h</code> están completas, 0 vacías. 270 archivos crudos en 10 repeticiones, con <code>elapsed_seconds</code> entre 3600,8 y 3601,1 en las diez: son horas reales. Reproduje la fila 2 desde el crudo y coincide dígito a dígito. Resta: las diez repeticiones registran ~75 % de fallos HTTP 401 por un defecto del propio <code>locustfile.py:42</code>, que fija el token en <code>on_start</code> y no lo renueva; el informe declara los 401 pero presenta los percentiles sin advertir que están contaminados.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 80 %</span></td><td class="fx">6</td><td class="fx">1</td><td class="nota"><b>1,44</b> <span>/ 1,8</span></td></tr>
+<tr><td><span class="cod">E3</span> <span class="nom">Las cinco características de calidad</span><span class="ev">Siguen midiéndose 2 de 5. Eficiencia y fiabilidad tienen valor, IC95 y umbral; seguridad, mantenibilidad y compatibilidad son conteos y afirmaciones sin intervalo ni umbral, y el propio documento las marca PARCIAL. El commit <code>b2b1d94</code> añade un prerregistro excelente de las tres restantes, y <code>fdc8e68</code> el instrumental, pero <code>ls experimentos/resultados/raw/</code> no contiene ni <code>seguridad_gateway/</code>, ni <code>mantenibilidad/</code>, ni <code>compatibilidad/</code>: no hay una sola medición. El incumplimiento del p99 sí se consigna en tres sitios.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 50 %</span></td><td class="fx">6</td><td class="fx bad">0,833</td><td class="nota"><b>0,85</b> <span>/ 1,7</span></td></tr>
+<tr><td><span class="cod">E4</span> <span class="nom">Lo medido que llega al documento</span><span class="ev">Aquí aparece el defecto más grave de la entrega, y va en dirección contraria a la esperada. La subsección ARBITER (<code>04-observabilidad-iso.tex:342-440</code>) presenta ~100 líneas, dos tablas y estadística inferencial (130 corridas, U=64, p=0,0007775, A12=1,0). El directorio de esa evidencia, <code>experimentos/resultados/arbiter/README.md</code>, dice literalmente «Actualmente existen <b>0 de 130 corridas</b>», y <code>comparacion.json</code> es un molde vacío. Ninguna de esas cifras existe en archivo alguno. Además <code>:233</code> dice que el manifiesto enumera 198 archivos cuando tiene 468. Sí mejoró la otra dirección: las cifras de <code>locust-50u-5m</code> y <code>cockroach-limite-transacciones</code> ya se narran en el texto.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 50 %</span></td><td class="fx">6</td><td class="fx bad">0,833</td><td class="nota"><b>0,75</b> <span>/ 1,5</span></td></tr>
+<tr><td><span class="cod">E5</span> <span class="nom">El contrato de todos los servicios</span><span class="ev">Sin avance. 5 servicios en <code>services/</code>, 2 contratos en <code>docs/openapi/</code>, y los dos están obsoletos: reservas cubre 23 de 54 rutas y usuarios 13 de 29. <code>api-gateway</code> no tiene ni contrato ni la dependencia que lo genera. Último commit sobre esa carpeta, muy anterior a la entrega.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 30 %</span></td><td class="fx">5</td><td class="fx bad">0,600</td><td class="nota"><b>0,30</b> <span>/ 1,0</span></td></tr>
+<tr><td><span class="cod">E6</span> <span class="nom">Un solo documento por entrega</span><span class="ev"><code>docs/entrega-4/main.tex</code> sigue ahí, y ahora los dos README se contradicen: el de la raíz dice que el vivo es <code>docs/main.tex</code>; <code>docs/README.md</code> dice que el oficial y vigente es <code>docs/entrega-4/main.tex</code>. Compilé el segundo y aborta por figura no encontrada. Y el PDF que ese README llama «final» está obsoleto: dice «fiabilidad 0/10 — NO EJECUTADA» y no contiene las preguntas de investigación. Un lector que siga esas instrucciones concluye lo contrario de lo que el repositorio hoy demuestra.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 40 %</span></td><td class="fx">7</td><td class="fx bad">0,571</td><td class="nota"><b>0,32</b> <span>/ 0,8</span></td></tr>
+<tr><td><span class="cod">E7</span> <span class="nom">El instalable de la aplicación móvil</span><span class="ev">Sin avance. <code>release/apk/</code> contiene solo <code>.gitkeep</code> de 0 bytes. <code>build.gradle.kts:36-38</code> no declara <code>signingConfig</code> y no hay ningún keystore. El pipeline ejecuta <code>assembleDebug</code> y sube el artefacto a Actions: nunca <code>assembleRelease</code>, nunca firma. El punto se concede porque el informe no miente: dice que es de depuración y no lo presenta como release firmado.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 20 %</span></td><td class="fx">5</td><td class="fx bad">0,400</td><td class="nota"><b>0,14</b> <span>/ 0,7</span></td></tr>
+<tr><td><span class="cod">E8</span> <span class="nom">Actas de reunión</span><span class="ev">No existe ninguna. Búsqueda exhaustiva por nombre y por contenido: 0 resultados. Lo más cercano, <code>docs/evidencias/revision-cruzada-e4.md</code>, documenta la ausencia del proceso: «Reviewers solicitados 0 / Reviews registradas 0 / Approvals 0 … No se fabrican actas ni aprobaciones». El punto es por negarse a fabricarlas, que es lo correcto; el requisito sigue incumplido.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 10 %</span></td><td class="fx">5</td><td class="fx bad">0,200</td><td class="nota"><b>0,05</b> <span>/ 0,5</span></td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="fx bad">0,019048</td><td class="nota">5,25 <span>/ 10,0</span></td></tr></tfoot></table></div>
+<h3>Resumen del equipo FUVV</h3>
+<div class="calc">
+<div>Suma ponderada&nbsp;&nbsp;<b>S = 5,25</b> sobre 10</div>
+<div>Producto de los 8 factores&nbsp;&nbsp;<b>0,019048</b></div>
+<div class="r">Nota de la rúbrica = 0,019048 × 5,25 = <b>0,10 / 10,00</b></div>
+<div style="padding-top:8px">Aporte al 80 % del trabajo&nbsp;&nbsp;0,10 × 0,80 = <b>0,080</b></div>
+</div>
+<div class="gr"><div class="card"><div class="k">Suma ponderada</div><div class="v">5,25</div><div class="s">si nada estuviera bajo mínimo</div></div><div class="card z"><div class="k">Nota de la rúbrica</div><div class="v">0,10</div><div class="s">con los factores aplicados</div></div><div class="card z"><div class="k">80 % del trabajo</div><div class="v">0,08</div><div class="s">igual para los cuatro</div></div></div>
+<h3>Comprobaciones globales del repositorio</h3><ul>
+<li><b>Compilación del documento vivo.</b> <code>docs/main.tex</code> compila desde cero a 31 páginas, exit 0, 0 citas indefinidas, 0 referencias cruzadas indefinidas, 0 archivos no encontrados.</li>
+<li><b>Integridad de los datos.</b> <code>sha256sum -c</code> sobre el manifiesto: <b>468 de 468 OK</b>, cero fallos. El problema de finales de línea que detecté antes está resuelto.</li>
+<li><b>Aplicación web.</b> <code>npm ci</code>, <code>build</code> y <code>vitest</code>: exit 0 en los tres. <b>280 de 280 pruebas</b> en verde.</li>
+<li><b>Backend.</b> Los 5 servicios Maven compilan: BUILD SUCCESS en todos.</li>
+<li><b>Higiene.</b> Sin secretos ni artefactos de compilación versionados.</li>
+</ul>
+<h3>Nota final por integrante</h3>
+<div class="tw"><table><thead><tr><th style="width:34%">Integrante</th><th style="width:22%">Trabajo (80 %)</th><th style="width:22%">Cuestionario SGA (20 %)</th><th style="width:22%">Nota final</th></tr></thead><tbody>
+<tr><td class="nom">Freddy Farinango</td><td class="nota">0,080</td><td class="nota"><span>pendiente</span></td><td class="nota"><span>0,080 + cuest.×0,20</span></td></tr>
+<tr><td class="nom">Harold Vinueza</td><td class="nota">0,080</td><td class="nota">8,67 <span>× 0,20 = 1,734</span></td><td class="nota"><b>1,81</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Iván Villamarín</td><td class="nota">0,080</td><td class="nota">5,53 <span>× 0,20 = 1,106</span></td><td class="nota"><b>1,19</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Isaías Urbina</td><td class="nota">0,080</td><td class="nota"><span>pendiente</span></td><td class="nota"><span>0,080 + cuest.×0,20</span></td></tr>
+</tbody></table></div>
+<div class="box warn"><h4>Cuestionarios sin identificar</h4><p style="margin:0">Una de las capturas del SGA entregadas marca 19,25/45,00 = 4,28/10 pero no identifica al estudiante: el resumen del cuestionario no muestra el nombre. Corresponde a Farinango o a Urbina. Con la nota del SGA a la vista, la cuenta se cierra en un paso: <code>0,080 + nota × 0,20</code>.</p></div>
+<h3>Retroalimentación individual — equipo FUVV</h3>
+<p style="font-size:.9rem;color:var(--mut);margin-top:0">Un recuadro por integrante, en texto plano, listo para copiar de un clic y pegar en el espacio del estudiante.</p>
+<div class="fbh">Freddy Farinango</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Freddy Farinango:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit e6ec484.
+
+Reconozco el trabajo hecho desde la última revisión, y es mucho: la campaña de fiabilidad de diez repeticiones de una hora está ejecutada de verdad, con 270 archivos crudos que comprobé uno a uno, y reproduje una de las filas desde el dato bruto sin que discrepara un dígito.
+Las preguntas de investigación ya existen, están bien formuladas y una de ellas se responde reconociendo que el resultado no favorece a la hipótesis, que es exactamente lo que se espera de un trabajo serio.
+El manifiesto de integridad verifica 468 de 468 archivos y la aplicación web pasa sus 280 pruebas.
+Dicho eso, tengo que señalarles lo que más pesa en la nota, y no es una omisión sino lo contrario: la subsección ARBITER del documento presenta ciento treinta corridas, dos tablas y un contraste estadístico completo, mientras el archivo README del directorio donde debería estar esa evidencia dice, con todas sus letras, que existen cero de ciento treinta corridas.
+Ninguna de esas cifras está en archivo alguno del repositorio.
+Eso no es un descuido de forma: es una sección de resultados que el propio repositorio desmiente, y en un trabajo cuyo mérito principal es la honestidad de sus mediciones resulta especialmente costoso.
+A eso se suma que tres de las cinco características de calidad siguen sin una sola medición pese a tener ya el protocolo y la herramienta escritos, que la carpeta del instalable móvil sigue conteniendo únicamente un archivo vacío, que no existe ni un acta de reunión, y que los dos README se contradicen sobre cuál es el documento vigente, con el agravante de que el que uno de ellos llama PDF final afirma que la fiabilidad no se ejecutó.
+Seis de los ocho elementos quedaron por debajo de su mínimo, y como cada elemento multiplica, el producto de los factores hunde la nota.
+Les pido que retiren o respalden la sección ARBITER antes que cualquier otra cosa: es lo único que está en juego más allá de la nota.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 5,25 sobre 10.
+Producto de los factores: 0,019048.
+Nota de la rúbrica: 0,10 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,080.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,080 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Harold Vinueza</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Harold Vinueza:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit e6ec484.
+
+Reconozco el trabajo hecho desde la última revisión, y es mucho: la campaña de fiabilidad de diez repeticiones de una hora está ejecutada de verdad, con 270 archivos crudos que comprobé uno a uno, y reproduje una de las filas desde el dato bruto sin que discrepara un dígito.
+Las preguntas de investigación ya existen, están bien formuladas y una de ellas se responde reconociendo que el resultado no favorece a la hipótesis, que es exactamente lo que se espera de un trabajo serio.
+El manifiesto de integridad verifica 468 de 468 archivos y la aplicación web pasa sus 280 pruebas.
+Dicho eso, tengo que señalarles lo que más pesa en la nota, y no es una omisión sino lo contrario: la subsección ARBITER del documento presenta ciento treinta corridas, dos tablas y un contraste estadístico completo, mientras el archivo README del directorio donde debería estar esa evidencia dice, con todas sus letras, que existen cero de ciento treinta corridas.
+Ninguna de esas cifras está en archivo alguno del repositorio.
+Eso no es un descuido de forma: es una sección de resultados que el propio repositorio desmiente, y en un trabajo cuyo mérito principal es la honestidad de sus mediciones resulta especialmente costoso.
+A eso se suma que tres de las cinco características de calidad siguen sin una sola medición pese a tener ya el protocolo y la herramienta escritos, que la carpeta del instalable móvil sigue conteniendo únicamente un archivo vacío, que no existe ni un acta de reunión, y que los dos README se contradicen sobre cuál es el documento vigente, con el agravante de que el que uno de ellos llama PDF final afirma que la fiabilidad no se ejecutó.
+Seis de los ocho elementos quedaron por debajo de su mínimo, y como cada elemento multiplica, el producto de los factores hunde la nota.
+Les pido que retiren o respalden la sección ARBITER antes que cualquier otra cosa: es lo único que está en juego más allá de la nota.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 5,25 sobre 10.
+Producto de los factores: 0,019048.
+Nota de la rúbrica: 0,10 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,080.
+Nota del cuestionario del SGA: 8,67 sobre 10, que aporta 1,734.
+Nota final: 1,81 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Iván Villamarín</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Iván Villamarín:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit e6ec484.
+
+Reconozco el trabajo hecho desde la última revisión, y es mucho: la campaña de fiabilidad de diez repeticiones de una hora está ejecutada de verdad, con 270 archivos crudos que comprobé uno a uno, y reproduje una de las filas desde el dato bruto sin que discrepara un dígito.
+Las preguntas de investigación ya existen, están bien formuladas y una de ellas se responde reconociendo que el resultado no favorece a la hipótesis, que es exactamente lo que se espera de un trabajo serio.
+El manifiesto de integridad verifica 468 de 468 archivos y la aplicación web pasa sus 280 pruebas.
+Dicho eso, tengo que señalarles lo que más pesa en la nota, y no es una omisión sino lo contrario: la subsección ARBITER del documento presenta ciento treinta corridas, dos tablas y un contraste estadístico completo, mientras el archivo README del directorio donde debería estar esa evidencia dice, con todas sus letras, que existen cero de ciento treinta corridas.
+Ninguna de esas cifras está en archivo alguno del repositorio.
+Eso no es un descuido de forma: es una sección de resultados que el propio repositorio desmiente, y en un trabajo cuyo mérito principal es la honestidad de sus mediciones resulta especialmente costoso.
+A eso se suma que tres de las cinco características de calidad siguen sin una sola medición pese a tener ya el protocolo y la herramienta escritos, que la carpeta del instalable móvil sigue conteniendo únicamente un archivo vacío, que no existe ni un acta de reunión, y que los dos README se contradicen sobre cuál es el documento vigente, con el agravante de que el que uno de ellos llama PDF final afirma que la fiabilidad no se ejecutó.
+Seis de los ocho elementos quedaron por debajo de su mínimo, y como cada elemento multiplica, el producto de los factores hunde la nota.
+Les pido que retiren o respalden la sección ARBITER antes que cualquier otra cosa: es lo único que está en juego más allá de la nota.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 5,25 sobre 10.
+Producto de los factores: 0,019048.
+Nota de la rúbrica: 0,10 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,080.
+Nota del cuestionario del SGA: 5,53 sobre 10, que aporta 1,106.
+Nota final: 1,19 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Isaías Urbina</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Isaías Urbina:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit e6ec484.
+
+Reconozco el trabajo hecho desde la última revisión, y es mucho: la campaña de fiabilidad de diez repeticiones de una hora está ejecutada de verdad, con 270 archivos crudos que comprobé uno a uno, y reproduje una de las filas desde el dato bruto sin que discrepara un dígito.
+Las preguntas de investigación ya existen, están bien formuladas y una de ellas se responde reconociendo que el resultado no favorece a la hipótesis, que es exactamente lo que se espera de un trabajo serio.
+El manifiesto de integridad verifica 468 de 468 archivos y la aplicación web pasa sus 280 pruebas.
+Dicho eso, tengo que señalarles lo que más pesa en la nota, y no es una omisión sino lo contrario: la subsección ARBITER del documento presenta ciento treinta corridas, dos tablas y un contraste estadístico completo, mientras el archivo README del directorio donde debería estar esa evidencia dice, con todas sus letras, que existen cero de ciento treinta corridas.
+Ninguna de esas cifras está en archivo alguno del repositorio.
+Eso no es un descuido de forma: es una sección de resultados que el propio repositorio desmiente, y en un trabajo cuyo mérito principal es la honestidad de sus mediciones resulta especialmente costoso.
+A eso se suma que tres de las cinco características de calidad siguen sin una sola medición pese a tener ya el protocolo y la herramienta escritos, que la carpeta del instalable móvil sigue conteniendo únicamente un archivo vacío, que no existe ni un acta de reunión, y que los dos README se contradicen sobre cuál es el documento vigente, con el agravante de que el que uno de ellos llama PDF final afirma que la fiabilidad no se ejecutó.
+Seis de los ocho elementos quedaron por debajo de su mínimo, y como cada elemento multiplica, el producto de los factores hunde la nota.
+Les pido que retiren o respalden la sección ARBITER antes que cualquier otra cosa: es lo único que está en juego más allá de la nota.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 5,25 sobre 10.
+Producto de los factores: 0,019048.
+Nota de la rúbrica: 0,10 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,080.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,080 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<h2>Equipo ACC — TicketFold — Soporte técnico distribuido para un proveedor de Internet</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/carlospatroner-boop/PFC-SOPORTE-ISP</code></div><div><b>Rama</b> <code>main</code></div><div><b>Commit evaluado</b> <code>28c3fb3</code></div><div><b>Elementos</b> 8</div></div>
+<div class="tw"><table><thead><tr><th style="width:46%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:8%">Factor</th><th style="width:12%">Calificación</th></tr></thead><tbody>
+<tr><td><span class="cod">E1</span> <span class="nom">La cobertura, con los tres números</span><span class="ev">Resuelto y bien. <code>pruebas_cicd.tex:164-177</code> trae una sola tabla con las tres filas nombradas: líneas 555/684 = 81,1 %, instrucciones 2582/3582 = 72,1 %, ramas 88/154 = 57,1 %. Recalculé los tres desde <code>jacoco.csv</code> y coinciden. Incluso verifiqué una afirmación puntual: dicen «0 de 38 líneas cubiertas» en <code>infrastructure.security</code> y el CSV dice exactamente eso. Resta un detalle: el <code>jacoco.xml</code> publicado da 551/679 a nivel de reporte, distinto del 555/684 sumado del CSV, y el texto no lo advierte.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 90 %</span></td><td class="fx">7</td><td class="fx">1</td><td class="nota"><b>1,80</b> <span>/ 2,0</span></td></tr>
+<tr><td><span class="cod">E2</span> <span class="nom">Dos programas que escribían el mismo archivo</span><span class="ev">Resuelto. <code>inyector_averias.py:40</code> escribe <code>verdad_campo_manual.csv</code> y <code>correr_campana.py:46</code> escribe <code>verdad_campo.csv</code>: archivos y cabeceras distintos. Ambos validan la cabecera y lanzan <code>SystemExit</code> nombrando la esperada y la encontrada. Resta: la validación corre después del bucle de red, así que cuando falla ya se crearon los tickets.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 90 %</span></td><td class="fx">6</td><td class="fx">1</td><td class="nota"><b>1,62</b> <span>/ 1,8</span></td></tr>
+<tr><td><span class="cod">E3</span> <span class="nom">Códigos de verificación de los datos</span><span class="ev">Resuelto. Tres manifiestos (<code>experimentos/</code>, <code>resultados/locust/</code>, <code>release/apk/</code>): <code>sha256sum -c</code> da <b>45 OK, 0 fallos</b> en los tres. Cobertura completa: 41 archivos y 41 entradas en locust. Y la generación es de verdad el último paso del guion, con el comentario «Ultimo paso, a proposito». Resta: ningún job de CI verifica esas sumas.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 90 %</span></td><td class="fx">6</td><td class="fx">1</td><td class="nota"><b>1,53</b> <span>/ 1,7</span></td></tr>
+<tr><td><span class="cod">E4</span> <span class="nom">Que el documento lo escriban entre todos</span><span class="ev">Avance real pero con un fallo en el entregable. El <code>.tex</code> ya tiene la sección de aporte por integrante y reproduje el <code>git log --numstat</code>: manuscrito 75,24 / 11,87 / 10,77 / 2,12 %, exacto a dos decimales. Álvarez pasó de 1 a 4 commits en la carpeta de secciones. <b>Pero el PDF entregado está un commit atrás</b>: <code>main.pdf</code> línea 2906 sigue mostrando «C. Pacheco 77 %, R. Cando 13 %, C. Carpio 11 %», la fila vieja que omite a Álvarez, que es justo el defecto que el commit <code>947c3bf</code> corrigió en la fuente. La corrección existe, pero no en el archivo que un lector abre.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 60 %</span></td><td class="fx">6</td><td class="fx">1</td><td class="nota"><b>0,90</b> <span>/ 1,5</span></td></tr>
+<tr><td><span class="cod">E5</span> <span class="nom">El instalable de la aplicación móvil</span><span class="ev">Resuelto con solvencia. <code>release/apk/soporte-isp.apk</code>, 12,8 MB, firmado de verdad: v1 (<code>META-INF/SOPORTE-.SF</code> y <code>.RSA</code>), v2 (<code>0x7109871a</code>) y v3 (<code>0xf05368c0</code>); <code>jarsigner -verify</code> pasa. Suma verificada OK. Y el workflow firma de verdad: <code>assembleRelease</code>, keystore desde secreto, <code>zipalign</code>, <code>apksigner sign</code> y <code>verify</code>. Resta: se publica como artefacto de Actions a 90 días, no como release.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 90 %</span></td><td class="fx">5</td><td class="fx">1</td><td class="nota"><b>0,90</b> <span>/ 1,0</span></td></tr>
+<tr><td><span class="cod">E6</span> <span class="nom">Archivos de evidencia vacíos</span><span class="ev">Resuelto por completo. Barrido de los 772 archivos versionados: solo dos de 0-1 bytes, y son los <code>__init__.py</code> de Python, que deben estar vacíos. La carpeta de evidencias contiene hoy 4 capturas reales de 94 a 131 kB.</span></td><td><span class="badge st-ok">Culminado</span><span class="pct">Logrado: 100 %</span></td><td class="fx">7</td><td class="fx">1</td><td class="nota"><b>0,90</b> <span>/ 0,9</span></td></tr>
+<tr><td><span class="cod">E7</span> <span class="nom">Finales de línea</span><span class="ev">Hecho, con alcance corto. Existe <code>.gitattributes</code> con <code>text eol=lf</code> para csv, json, md, sql, py, sh, txt y <code>binary</code> para los binarios; comprobé que aplica de hecho. Las sumas se regeneraron después. Resta: no cubre el código fuente (no hay <code>* text=auto</code> ni reglas para .tex/.java/.ts), y se nota, porque <code>arquitectura.tex</code> está versionado con CRLF mientras las otras 22 secciones son LF. Y la verificación no corre en CI.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 70 %</span></td><td class="fx">7</td><td class="fx">1</td><td class="nota"><b>0,42</b> <span>/ 0,6</span></td></tr>
+<tr><td><span class="cod">E8</span> <span class="nom">Decir en el README dónde están los resultados</span><span class="ev">Hecho. <code>README.md:150-157</code> nombra las dos rutas con enlace, dice qué hay en cada una y qué guion la produce, y los cuatro guiones existen. Resta: no menciona <code>inyector_averias.py</code>, que también escribe en esa carpeta.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 80 %</span></td><td class="fx">7</td><td class="fx">1</td><td class="nota"><b>0,40</b> <span>/ 0,5</span></td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="fx">1</td><td class="nota">8,47 <span>/ 10,0</span></td></tr></tfoot></table></div>
+<h3>Resumen del equipo ACC</h3>
+<div class="calc">
+<div>Suma ponderada&nbsp;&nbsp;<b>S = 8,47</b> sobre 10</div>
+<div>Producto de los 8 factores&nbsp;&nbsp;<b>1,000000</b></div>
+<div class="r">Nota de la rúbrica = 1 × 8,47 = <b>8,47 / 10,00</b></div>
+<div style="padding-top:8px">Aporte al 80 % del trabajo&nbsp;&nbsp;8,47 × 0,80 = <b>6,776</b></div>
+</div>
+<div class="gr"><div class="card"><div class="k">Suma ponderada</div><div class="v">8,47</div><div class="s">si nada estuviera bajo mínimo</div></div><div class="card"><div class="k">Nota de la rúbrica</div><div class="v">8,47</div><div class="s">con los factores aplicados</div></div><div class="card"><div class="k">80 % del trabajo</div><div class="v">6,78</div><div class="s">igual para los cuatro</div></div></div>
+<h3>Comprobaciones globales del repositorio</h3><ul>
+<li><b>Compilación del manuscrito.</b> <code>docs/latex/main.tex</code> compila desde cero a 55 páginas, 0 errores, 0 citas indefinidas, 0 referencias cruzadas indefinidas, 0 archivos no encontrados.</li>
+<li><b>Backend.</b> 121 pruebas en 5 servicios, <b>0 fallos</b>. El único error es <code>TicketRepositoryIntegrationTest</code>, que necesita Docker y este entorno no lo tiene: no cuenta como defecto.</li>
+<li><b>Aplicación web.</b> <code>build</code> exit 0 y <b>75 de 75 pruebas</b> en verde. La cobertura real, 87,6 % de líneas, coincide exactamente con lo que declara el documento.</li>
+<li><b>Reproducibilidad del experimento.</b> Ejecuté <code>generar_reporte_correl.py</code> y regeneró el JSON y la tabla LaTeX <b>byte a byte idénticos</b> a lo versionado. Reproducibilidad real, no declarada.</li>
+<li><b>Higiene.</b> Sin secretos ni artefactos de compilación versionados.</li>
+</ul>
+<h3>Nota final por integrante</h3>
+<div class="tw"><table><thead><tr><th style="width:34%">Integrante</th><th style="width:22%">Trabajo (80 %)</th><th style="width:22%">Cuestionario SGA (20 %)</th><th style="width:22%">Nota final</th></tr></thead><tbody>
+<tr><td class="nom">Cristhian Pacheco</td><td class="nota">6,776</td><td class="nota">8,39 <span>× 0,20 = 1,678</span></td><td class="nota"><b>8,45</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Carlos Carpio</td><td class="nota">6,776</td><td class="nota"><span>pendiente</span></td><td class="nota"><span>6,776 + cuest.×0,20</span></td></tr>
+<tr><td class="nom">Robinson Cando</td><td class="nota">6,776</td><td class="nota"><span>pendiente</span></td><td class="nota"><span>6,776 + cuest.×0,20</span></td></tr>
+<tr><td class="nom">Jeremy Álvarez</td><td class="nota">6,776</td><td class="nota"><span>pendiente</span></td><td class="nota"><span>6,776 + cuest.×0,20</span></td></tr>
+</tbody></table></div>
+<div class="box warn"><h4>Cuestionarios sin identificar</h4><p style="margin:0">Una de las carátulas entregadas marca 25,50/45,00 = 5,67/10 pero no identifica al estudiante. Corresponde a Carpio, Cando o Álvarez. Con la nota del SGA a la vista, la cuenta se cierra en un paso: <code>6,776 + nota × 0,20</code>.</p></div>
+<h3>Retroalimentación individual — equipo ACC</h3>
+<p style="font-size:.9rem;color:var(--mut);margin-top:0">Un recuadro por integrante, en texto plano, listo para copiar de un clic y pegar en el espacio del estudiante.</p>
+<div class="fbh">Cristhian Pacheco</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Cristhian Pacheco:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3.
+
+Han hecho un trabajo de corrección ejemplar y quiero que conste.
+Los ocho elementos pendientes alcanzan su mínimo, el producto de factores vale uno y por tanto la nota es limpiamente la suma ponderada, sin castigo alguno.
+Comprobé una por una las correcciones: la cobertura se reporta ahora con las tres cifras nombradas y las recalculé desde el informe de la herramienta; los dos guiones escriben archivos distintos y validan cabecera; los tres manifiestos de verificación dan cuarenta y cinco de cuarenta y cinco correctos; el instalable móvil está firmado de verdad con tres esquemas y el pipeline lo firma él mismo; y no queda un solo archivo de evidencia vacío.
+Ejecuté además el generador del reporte de correlación y regeneró el JSON y la tabla LaTeX idénticos byte a byte a lo versionado, que es reproducibilidad real y no declarada.
+Les señalo dos cosas que sí debe corregir el equipo.
+La primera es que el PDF entregado va un commit por detrás de la fuente y sigue mostrando la tabla de contribución antigua, la que omite por completo a un integrante, que es justamente el defecto que ustedes corrigieron en el .tex: recompilen y vuelvan a subir el PDF.
+La segunda es que la fijación de finales de línea no cubre el código fuente, y se nota, porque una de las veintitrés secciones del manuscrito está versionada con finales de línea distintos a las demás.
+Ninguna de las dos afecta a la validez del trabajo, pero las dos afectan a lo que un lector externo recibe.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 8,47 sobre 10.
+Producto de los factores: 1,000000.
+Nota de la rúbrica: 8,47 sobre 10.
+Aporte del trabajo del equipo (80 %): 6,776.
+Nota del cuestionario del SGA: 8,39 sobre 10, que aporta 1,678.
+Nota final: 8,45 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Carlos Carpio</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Carlos Carpio:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3.
+
+Han hecho un trabajo de corrección ejemplar y quiero que conste.
+Los ocho elementos pendientes alcanzan su mínimo, el producto de factores vale uno y por tanto la nota es limpiamente la suma ponderada, sin castigo alguno.
+Comprobé una por una las correcciones: la cobertura se reporta ahora con las tres cifras nombradas y las recalculé desde el informe de la herramienta; los dos guiones escriben archivos distintos y validan cabecera; los tres manifiestos de verificación dan cuarenta y cinco de cuarenta y cinco correctos; el instalable móvil está firmado de verdad con tres esquemas y el pipeline lo firma él mismo; y no queda un solo archivo de evidencia vacío.
+Ejecuté además el generador del reporte de correlación y regeneró el JSON y la tabla LaTeX idénticos byte a byte a lo versionado, que es reproducibilidad real y no declarada.
+Les señalo dos cosas que sí debe corregir el equipo.
+La primera es que el PDF entregado va un commit por detrás de la fuente y sigue mostrando la tabla de contribución antigua, la que omite por completo a un integrante, que es justamente el defecto que ustedes corrigieron en el .tex: recompilen y vuelvan a subir el PDF.
+La segunda es que la fijación de finales de línea no cubre el código fuente, y se nota, porque una de las veintitrés secciones del manuscrito está versionada con finales de línea distintos a las demás.
+Ninguna de las dos afecta a la validez del trabajo, pero las dos afectan a lo que un lector externo recibe.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 8,47 sobre 10.
+Producto de los factores: 1,000000.
+Nota de la rúbrica: 8,47 sobre 10.
+Aporte del trabajo del equipo (80 %): 6,776.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 6,776 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Robinson Cando</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Robinson Cando:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3.
+
+Han hecho un trabajo de corrección ejemplar y quiero que conste.
+Los ocho elementos pendientes alcanzan su mínimo, el producto de factores vale uno y por tanto la nota es limpiamente la suma ponderada, sin castigo alguno.
+Comprobé una por una las correcciones: la cobertura se reporta ahora con las tres cifras nombradas y las recalculé desde el informe de la herramienta; los dos guiones escriben archivos distintos y validan cabecera; los tres manifiestos de verificación dan cuarenta y cinco de cuarenta y cinco correctos; el instalable móvil está firmado de verdad con tres esquemas y el pipeline lo firma él mismo; y no queda un solo archivo de evidencia vacío.
+Ejecuté además el generador del reporte de correlación y regeneró el JSON y la tabla LaTeX idénticos byte a byte a lo versionado, que es reproducibilidad real y no declarada.
+Les señalo dos cosas que sí debe corregir el equipo.
+La primera es que el PDF entregado va un commit por detrás de la fuente y sigue mostrando la tabla de contribución antigua, la que omite por completo a un integrante, que es justamente el defecto que ustedes corrigieron en el .tex: recompilen y vuelvan a subir el PDF.
+La segunda es que la fijación de finales de línea no cubre el código fuente, y se nota, porque una de las veintitrés secciones del manuscrito está versionada con finales de línea distintos a las demás.
+Ninguna de las dos afecta a la validez del trabajo, pero las dos afectan a lo que un lector externo recibe.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 8,47 sobre 10.
+Producto de los factores: 1,000000.
+Nota de la rúbrica: 8,47 sobre 10.
+Aporte del trabajo del equipo (80 %): 6,776.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 6,776 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Jeremy Álvarez</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Jeremy Álvarez:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3.
+
+Han hecho un trabajo de corrección ejemplar y quiero que conste.
+Los ocho elementos pendientes alcanzan su mínimo, el producto de factores vale uno y por tanto la nota es limpiamente la suma ponderada, sin castigo alguno.
+Comprobé una por una las correcciones: la cobertura se reporta ahora con las tres cifras nombradas y las recalculé desde el informe de la herramienta; los dos guiones escriben archivos distintos y validan cabecera; los tres manifiestos de verificación dan cuarenta y cinco de cuarenta y cinco correctos; el instalable móvil está firmado de verdad con tres esquemas y el pipeline lo firma él mismo; y no queda un solo archivo de evidencia vacío.
+Ejecuté además el generador del reporte de correlación y regeneró el JSON y la tabla LaTeX idénticos byte a byte a lo versionado, que es reproducibilidad real y no declarada.
+Les señalo dos cosas que sí debe corregir el equipo.
+La primera es que el PDF entregado va un commit por detrás de la fuente y sigue mostrando la tabla de contribución antigua, la que omite por completo a un integrante, que es justamente el defecto que ustedes corrigieron en el .tex: recompilen y vuelvan a subir el PDF.
+La segunda es que la fijación de finales de línea no cubre el código fuente, y se nota, porque una de las veintitrés secciones del manuscrito está versionada con finales de línea distintos a las demás.
+Ninguna de las dos afecta a la validez del trabajo, pero las dos afectan a lo que un lector externo recibe.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 8,47 sobre 10.
+Producto de los factores: 1,000000.
+Nota de la rúbrica: 8,47 sobre 10.
+Aporte del trabajo del equipo (80 %): 6,776.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 6,776 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<h2>Equipo AGLS — TiendaTech — Comercio electrónico distribuido con asistente de armado</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/JoseLozanoMorales/TiendaTech</code></div><div><b>Rama</b> <code>main</code></div><div><b>Commit evaluado</b> <code>24d27fc</code></div><div><b>Elementos</b> 9</div></div>
+<div class="tw"><table><thead><tr><th style="width:46%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:8%">Factor</th><th style="width:12%">Calificación</th></tr></thead><tbody>
+<tr><td><span class="cod">E1</span> <span class="nom">Pruebas de la aplicación web</span><span class="ev">Resuelto y con calidad. <code>package.json</code> declara vitest y testing-library; <code>npm test</code> da <b>19 de 19 pruebas en verde</b>. Y no son de adorno: comprobé que <code>CartView.test.tsx</code> verifica aritmética real (2×10,5 + 3×4,25 = 33,75), los topes 1/99 y el rollback tras fallo; <code>OrderStates.test.tsx</code> recorre la máquina de estados completa. Ni un solo <code>expect(true)</code>. Corren en CI. Resta: <code>vitest.config.ts:16</code> limita la cobertura a 3 de las 11 vistas, así que el 53,4 % no es la cobertura de la aplicación sino de un tercio; el manuscrito lo declara.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 90 %</span></td><td class="fx">6</td><td class="fx">1</td><td class="nota"><b>2,07</b> <span>/ 2,3</span></td></tr>
+<tr><td><span class="cod">E2</span> <span class="nom">Que exista todo archivo que el documento cita</span><span class="ev">Mejorado, no cerrado. Las 40 referencias del manuscrito resuelven y la cita rota desapareció de él. Pero quedan dos defectos: tres enlaces del PDF apuntan al commit <code>c5dca588</code>, donde esos archivos aún no existían, así que dan 404 al lector; y <code>iso25010.csv:7</code> sigue apuntando a <code>security-401-gatewayintegration-2026-09-01.csv</code>, que no existe, con estado CUMPLE y 8/8. El equipo lo declara «Pendiente» en su registro de cambios en lugar de esconderlo, lo cual cuenta a favor. No hay comprobación automática.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 70 %</span></td><td class="fx">8</td><td class="fx bad">0,875</td><td class="nota"><b>1,12</b> <span>/ 1,6</span></td></tr>
+<tr><td><span class="cod">E3</span> <span class="nom">Revisor de código de la aplicación web</span><span class="ev">Resuelto. <code>eslint.config.js</code> es sustantivo: recomendados de JS y TS más <code>react-hooks</code> elevados a error. Lo ejecuté: <code>0 errores, 0 advertencias</code>, exit 0. Y regeneré la evidencia: quedó byte-idéntica a la versionada. Corre en CI con fallo si no cumple, y el manuscrito reporta la cifra exacta.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 90 %</span></td><td class="fx">6</td><td class="fx">1</td><td class="nota"><b>1,26</b> <span>/ 1,4</span></td></tr>
+<tr><td><span class="cod">E4</span> <span class="nom">Publicar las imágenes donde pide la guía</span><span class="ev">Resuelto. Publican en <code>ghcr.io</code> con el token del propio flujo, etiquetando por commit, multi-arquitectura. <b>Cero referencias a Docker Hub</b> en todo el árbol y la etiqueta <code>latest</code> desapareció. Hay captura del run verde y del paquete público con las versiones fijadas por commit.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 90 %</span></td><td class="fx">6</td><td class="fx">1</td><td class="nota"><b>1,17</b> <span>/ 1,3</span></td></tr>
+<tr><td><span class="cod">E5</span> <span class="nom">Códigos de verificación de los datos</span><span class="ev">Hecho, pero de alcance mínimo. El único <code>checksums.txt</code> verifica OK y su generación sí está enganchada al script de campaña. El problema es la cobertura: el repositorio versiona <b>59 CSV</b> y el manifiesto cubre <b>1</b>. Los CSV crudos de Locust y los de la otra campaña no tienen ninguna suma. Y no se verifica en CI.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 60 %</span></td><td class="fx">6</td><td class="fx">1</td><td class="nota"><b>0,72</b> <span>/ 1,2</span></td></tr>
+<tr><td><span class="cod">E6</span> <span class="nom">El instalable de la aplicación móvil</span><span class="ev">Hecho. <code>release/tiendatech-debug.apk</code>, 41 MB, con suma que verifica OK. Está firmado de verdad: no tiene firma v1, pero sí bloque v2; extraje el certificado y verifiqué la firma con <code>openssl</code>: <code>Verified OK</code>. Resta: es el keystore de depuración implícito de Gradle, porque <code>build.gradle.kts</code> no declara <code>signingConfigs</code>, así que el APK que publique CI no tendrá la misma identidad que el versionado. El equipo lo admite por escrito y no reclama más de lo que tiene.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 80 %</span></td><td class="fx">5</td><td class="fx">1</td><td class="nota"><b>0,64</b> <span>/ 0,8</span></td></tr>
+<tr><td><span class="cod">E7</span> <span class="nom">Tableros sin duplicación</span><span class="ev">Resuelto por completo. Queda un solo árbol bajo <code>ops/observability/grafana/</code>, el <code>docker-compose</code> monta exactamente esas rutas, y está documentado en dos niveles.</span></td><td><span class="badge st-ok">Culminado</span><span class="pct">Logrado: 100 %</span></td><td class="fx">7</td><td class="fx">1</td><td class="nota"><b>0,60</b> <span>/ 0,6</span></td></tr>
+<tr><td><span class="cod">E8</span> <span class="nom">Raíz sin carpetas sueltas</span><span class="ev">Hecho. <code>usuarios/</code> y <code>frontend/</code> eliminadas, y el README trae una tabla con las 13 carpetas de primer nivel. Resta: quedan dos sin documentar, y una es huérfana de manual — <code>.idea/</code> con 8 archivos de configuración de IDE versionados.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 80 %</span></td><td class="fx">8</td><td class="fx">1</td><td class="nota"><b>0,32</b> <span>/ 0,4</span></td></tr>
+<tr><td><span class="cod">E9</span> <span class="nom">Finales de línea</span><span class="ev">Hecho. Hay <code>.gitattributes</code> y, mejor aún, un job de CI que falla si encuentra un CSV con CRLF. Reproduje el comando: ninguno de los 59 CSV tiene CRLF. Resta: la política solo cubre <code>.csv</code>; un <code>.sh</code> con CRLF entraría sin que nada lo detecte.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 80 %</span></td><td class="fx">7</td><td class="fx">1</td><td class="nota"><b>0,32</b> <span>/ 0,4</span></td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="fx bad">0,875000</td><td class="nota">8,22 <span>/ 10,0</span></td></tr></tfoot></table></div>
+<h3>Resumen del equipo AGLS</h3>
+<div class="calc">
+<div>Suma ponderada&nbsp;&nbsp;<b>S = 8,22</b> sobre 10</div>
+<div>Producto de los 9 factores&nbsp;&nbsp;<b>0,875000</b></div>
+<div class="r">Nota de la rúbrica = 0,875000 × 8,22 = <b>7,19 / 10,00</b></div>
+<div style="padding-top:8px">Aporte al 80 % del trabajo&nbsp;&nbsp;7,19 × 0,80 = <b>5,754</b></div>
+</div>
+<div class="gr"><div class="card"><div class="k">Suma ponderada</div><div class="v">8,22</div><div class="s">si nada estuviera bajo mínimo</div></div><div class="card"><div class="k">Nota de la rúbrica</div><div class="v">7,19</div><div class="s">con los factores aplicados</div></div><div class="card"><div class="k">80 % del trabajo</div><div class="v">5,75</div><div class="s">igual para los cuatro</div></div></div>
+<h3>Comprobaciones globales del repositorio</h3><ul>
+<li><b>Compilación del manuscrito.</b> <code>PFC4.tex</code> con biber compila a <b>59 páginas</b>, 0 errores, 0 citas indefinidas, 0 referencias indefinidas, <b>0 overfull</b>, 0 archivos no encontrados. El PDF versionado coincide con la fuente: mismo número de páginas y de líneas de texto; las diferencias son solo de glifos por versión de TeX.</li>
+<li><b>Backend.</b> 171 pruebas, <b>0 fallos</b>. El único omitido necesita Docker. <code>armado-ia</code>: 30 pruebas en verde.</li>
+<li><b>Higiene.</b> Sin secretos versionados. Resta un binario de terceros de 23 MB en el historial (<code>opentelemetry-javaagent.jar</code>).</li>
+</ul>
+<h3>Nota final por integrante</h3>
+<div class="tw"><table><thead><tr><th style="width:34%">Integrante</th><th style="width:22%">Trabajo (80 %)</th><th style="width:22%">Cuestionario SGA (20 %)</th><th style="width:22%">Nota final</th></tr></thead><tbody>
+<tr><td class="nom">Jhinson Aucatoma</td><td class="nota">5,754</td><td class="nota">7,11 <span>× 0,20 = 1,422</span></td><td class="nota"><b>7,18</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Jeremy Gaibor</td><td class="nota">5,754</td><td class="nota">8,76 <span>× 0,20 = 1,752</span></td><td class="nota"><b>7,51</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Andy Sánchez</td><td class="nota">5,754</td><td class="nota">9,00 <span>× 0,20 = 1,800</span></td><td class="nota"><b>7,55</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">José Lozano</td><td class="nota">5,754</td><td class="nota">8,67 <span>× 0,20 = 1,734</span></td><td class="nota"><b>7,49</b> <span>/ 10,00</span></td></tr>
+</tbody></table></div>
+<h3>Retroalimentación individual — equipo AGLS</h3>
+<p style="font-size:.9rem;color:var(--mut);margin-top:0">Un recuadro por integrante, en texto plano, listo para copiar de un clic y pegar en el espacio del estudiante.</p>
+<div class="fbh">Jhinson Aucatoma</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Jhinson Aucatoma:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 24d27fc.
+
+El trabajo de corrección ha sido sólido y se nota en casi todos los frentes.
+La aplicación web ya tiene pruebas de verdad, y lo digo habiéndolas leído: verifican aritmética del carrito, los topes de cantidad, el rollback tras un fallo y la máquina de estados completa del pedido, sin una sola prueba de relleno.
+El revisor de código está configurado con reglas sustantivas, lo ejecuté y da cero errores y cero advertencias, y además regeneré su evidencia y quedó idéntica a la versionada.
+La migración al registro de imágenes que pide la guía está completa, sin una sola referencia al registro anterior y sin la etiqueta que se mueve.
+El manuscrito compila a cincuenta y nueve páginas sin un solo error ni una sola caja desbordada, y el PDF versionado se corresponde con la fuente.
+Lo que impide que la nota sea más alta es un solo elemento que se quedó por debajo de su mínimo: las referencias de evidencia.
+Tres enlaces del PDF apuntan a un commit en el que esos archivos todavía no existían, de modo que al lector le devuelven un error, y el archivo de resultados de calidad sigue citando una evidencia que no existe en ninguna rama, dándola además por cumplida al cien por cien.
+Que ustedes mismos lo declaren pendiente en su registro de cambios en lugar de taparlo cuenta a su favor, pero el elemento sigue sin cerrarse y su factor reduce la nota del conjunto.
+Les señalo aparte, porque no entra en la nota pero conviene que lo sepan hoy, que un commit del once de septiembre añadió el servicio de facturación sin cobertura suficiente y eso deja en rojo la puerta de calidad del pipeline, que es precisamente la que habilita la publicación de imágenes.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 8,22 sobre 10.
+Producto de los factores: 0,875000.
+Nota de la rúbrica: 7,19 sobre 10.
+Aporte del trabajo del equipo (80 %): 5,754.
+Nota del cuestionario del SGA: 7,11 sobre 10, que aporta 1,422.
+Nota final: 7,18 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Jeremy Gaibor</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Jeremy Gaibor:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 24d27fc.
+
+El trabajo de corrección ha sido sólido y se nota en casi todos los frentes.
+La aplicación web ya tiene pruebas de verdad, y lo digo habiéndolas leído: verifican aritmética del carrito, los topes de cantidad, el rollback tras un fallo y la máquina de estados completa del pedido, sin una sola prueba de relleno.
+El revisor de código está configurado con reglas sustantivas, lo ejecuté y da cero errores y cero advertencias, y además regeneré su evidencia y quedó idéntica a la versionada.
+La migración al registro de imágenes que pide la guía está completa, sin una sola referencia al registro anterior y sin la etiqueta que se mueve.
+El manuscrito compila a cincuenta y nueve páginas sin un solo error ni una sola caja desbordada, y el PDF versionado se corresponde con la fuente.
+Lo que impide que la nota sea más alta es un solo elemento que se quedó por debajo de su mínimo: las referencias de evidencia.
+Tres enlaces del PDF apuntan a un commit en el que esos archivos todavía no existían, de modo que al lector le devuelven un error, y el archivo de resultados de calidad sigue citando una evidencia que no existe en ninguna rama, dándola además por cumplida al cien por cien.
+Que ustedes mismos lo declaren pendiente en su registro de cambios en lugar de taparlo cuenta a su favor, pero el elemento sigue sin cerrarse y su factor reduce la nota del conjunto.
+Les señalo aparte, porque no entra en la nota pero conviene que lo sepan hoy, que un commit del once de septiembre añadió el servicio de facturación sin cobertura suficiente y eso deja en rojo la puerta de calidad del pipeline, que es precisamente la que habilita la publicación de imágenes.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 8,22 sobre 10.
+Producto de los factores: 0,875000.
+Nota de la rúbrica: 7,19 sobre 10.
+Aporte del trabajo del equipo (80 %): 5,754.
+Nota del cuestionario del SGA: 8,76 sobre 10, que aporta 1,752.
+Nota final: 7,51 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Andy Sánchez</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Andy Sánchez:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 24d27fc.
+
+El trabajo de corrección ha sido sólido y se nota en casi todos los frentes.
+La aplicación web ya tiene pruebas de verdad, y lo digo habiéndolas leído: verifican aritmética del carrito, los topes de cantidad, el rollback tras un fallo y la máquina de estados completa del pedido, sin una sola prueba de relleno.
+El revisor de código está configurado con reglas sustantivas, lo ejecuté y da cero errores y cero advertencias, y además regeneré su evidencia y quedó idéntica a la versionada.
+La migración al registro de imágenes que pide la guía está completa, sin una sola referencia al registro anterior y sin la etiqueta que se mueve.
+El manuscrito compila a cincuenta y nueve páginas sin un solo error ni una sola caja desbordada, y el PDF versionado se corresponde con la fuente.
+Lo que impide que la nota sea más alta es un solo elemento que se quedó por debajo de su mínimo: las referencias de evidencia.
+Tres enlaces del PDF apuntan a un commit en el que esos archivos todavía no existían, de modo que al lector le devuelven un error, y el archivo de resultados de calidad sigue citando una evidencia que no existe en ninguna rama, dándola además por cumplida al cien por cien.
+Que ustedes mismos lo declaren pendiente en su registro de cambios en lugar de taparlo cuenta a su favor, pero el elemento sigue sin cerrarse y su factor reduce la nota del conjunto.
+Les señalo aparte, porque no entra en la nota pero conviene que lo sepan hoy, que un commit del once de septiembre añadió el servicio de facturación sin cobertura suficiente y eso deja en rojo la puerta de calidad del pipeline, que es precisamente la que habilita la publicación de imágenes.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 8,22 sobre 10.
+Producto de los factores: 0,875000.
+Nota de la rúbrica: 7,19 sobre 10.
+Aporte del trabajo del equipo (80 %): 5,754.
+Nota del cuestionario del SGA: 9,00 sobre 10, que aporta 1,800.
+Nota final: 7,55 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">José Lozano</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a José Lozano:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 24d27fc.
+
+El trabajo de corrección ha sido sólido y se nota en casi todos los frentes.
+La aplicación web ya tiene pruebas de verdad, y lo digo habiéndolas leído: verifican aritmética del carrito, los topes de cantidad, el rollback tras un fallo y la máquina de estados completa del pedido, sin una sola prueba de relleno.
+El revisor de código está configurado con reglas sustantivas, lo ejecuté y da cero errores y cero advertencias, y además regeneré su evidencia y quedó idéntica a la versionada.
+La migración al registro de imágenes que pide la guía está completa, sin una sola referencia al registro anterior y sin la etiqueta que se mueve.
+El manuscrito compila a cincuenta y nueve páginas sin un solo error ni una sola caja desbordada, y el PDF versionado se corresponde con la fuente.
+Lo que impide que la nota sea más alta es un solo elemento que se quedó por debajo de su mínimo: las referencias de evidencia.
+Tres enlaces del PDF apuntan a un commit en el que esos archivos todavía no existían, de modo que al lector le devuelven un error, y el archivo de resultados de calidad sigue citando una evidencia que no existe en ninguna rama, dándola además por cumplida al cien por cien.
+Que ustedes mismos lo declaren pendiente en su registro de cambios en lugar de taparlo cuenta a su favor, pero el elemento sigue sin cerrarse y su factor reduce la nota del conjunto.
+Les señalo aparte, porque no entra en la nota pero conviene que lo sepan hoy, que un commit del once de septiembre añadió el servicio de facturación sin cobertura suficiente y eso deja en rojo la puerta de calidad del pipeline, que es precisamente la que habilita la publicación de imágenes.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 8,22 sobre 10.
+Producto de los factores: 0,875000.
+Nota de la rúbrica: 7,19 sobre 10.
+Aporte del trabajo del equipo (80 %): 5,754.
+Nota del cuestionario del SGA: 8,67 sobre 10, que aporta 1,734.
+Nota final: 7,49 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<h2>Equipo BCEL — AcadTrace — Gestión académica con bitácora de auditoría encadenada</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/LEO23as/acadtrace</code></div><div><b>Rama</b> <code>main</code></div><div><b>Commit evaluado</b> <code>5e011896</code></div><div><b>Elementos</b> 17</div></div>
+<div class="tw"><table><thead><tr><th style="width:46%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:8%">Factor</th><th style="width:12%">Calificación</th></tr></thead><tbody>
+<tr><td><span class="cod">E1</span> <span class="nom">Sacar las claves del repositorio</span><span class="ev">Se corrigió una de cinco. <code>spring.mail.password</code> ya es <code>${MAIL_PASSWORD}</code>, y eso está bien. Pero comprobé el árbol de hoy y siguen quemadas, en más de 40 sitios: <code>microservicio-secretaria/docker-compose.yml:58</code> con el <code>JWT_SECRET</code> completo, <code>:59</code> con la clave AES, <code>:18</code> con la contraseña de base, <code>.env.example:13</code> con el mismo secreto, y <code>ci-cd.yml:132-137</code> con host, contraseña y secreto en texto plano. Hay además un token quemado en código de producción: <code>InternalAuthInterceptor.java:27</code>. Y el historial está intacto: <code>git show</code> devuelve la contraseña de Gmail original. Cero rotación documentada, cero comprobación anti-secretos. El manuscrito afirma en <code>:832</code> «eliminación absoluta de contraseñas en texto plano del repositorio»: es falso y es comprobable que lo es.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 20 %</span></td><td class="fx">8</td><td class="fx bad">0,250</td><td class="nota"><b>0,26</b> <span>/ 1,3</span></td></tr>
+<tr><td><span class="cod">E2</span> <span class="nom">Que el experimento verifique la cadena de verdad</span><span class="ev">Sin avance. <code>experimentos/verificador_cadena.py:24-26</code> sigue calculando <code>sha256(anterior + "|" + contenido)</code> y su último commit es del 3 de septiembre, anterior a todo este trabajo. Producción usa <code>sha256(anterior + json_canonico(contenido))</code>. Peor: el guion que genera los resultados publicados, <code>run_experimentos.py:178</code>, usa una <b>tercera</b> fórmula que ni siquiera encadena. Los dos verificadores del árbol siguen siendo distintos. La prueba Java que se añadió es una tautología: programa el mock para devolver un valor y luego comprueba que ese valor es distinto de otro. La corrección de verdad existe en la rama <code>devBedon</code>, sin fusionar.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 20 %</span></td><td class="fx">7</td><td class="fx bad">0,286</td><td class="nota"><b>0,24</b> <span>/ 1,2</span></td></tr>
+<tr><td><span class="cod">E3</span> <span class="nom">Una sola forma de auditar</span><span class="ev">El ADR-007 existe, pero no acota el alcance: lo amplía. Declara la arquitectura obligatoria para todos los microservicios y exige los campos <code>hash_anterior</code> y <code>hash_actual</code>. El código Java no implementa nada de eso: <code>grep hashAnterior --include=*.java</code> da <b>0 resultados en todo el repositorio</b>, y <code>vclock:[1,0,0]</code> sigue escrito a mano en <code>AuditoriaService.java:83</code>, con una prueba que ahora consagra ese literal. El manuscrito tampoco acota: sigue afirmando cadena encadenada y relojes vectoriales para todo el sistema.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 20 %</span></td><td class="fx">6</td><td class="fx bad">0,333</td><td class="nota"><b>0,22</b> <span>/ 1,1</span></td></tr>
+<tr><td><span class="cod">E4</span> <span class="nom">Que el disparador de verdad se cree</span><span class="ev">La mitad. La ruta sí se corrigió: <code>V13__trigger_y_revocacion_auditoria.sql</code> está dentro de <code>db/migration</code>, sin colisión de versiones, y el SQL es correcto e idempotente. Pero la prueba que debía demostrarlo <b>no llega a arrancar</b>: <code>AuditoriaInmutabilidadTest</code> es un <code>@SpringBootTest</code> sin perfil de prueba que intenta conectarse a <code>3.23.195.43:5433</code> y agota el tiempo. Eso no es falta de Docker: es una dependencia de una base remota metida en una prueba unitaria. El módulo termina en BUILD FAILURE.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 50 %</span></td><td class="fx">7</td><td class="fx bad">0,714</td><td class="nota"><b>0,45</b> <span>/ 0,9</span></td></tr>
+<tr><td><span class="cod">E5</span> <span class="nom">Un solo juego de resultados de carga</span><span class="ev">Empeoró. El juego con 80 % de fallos desapareció, pero ahora conviven <b>cuatro</b> juegos del mismo escenario nominal, con 13.606, 12.236, 12.994 y 2.419 peticiones. El documento declara «la prueba de carga oficial» con 12.265, cifra que no coincide con ninguno. Y hay una contradicción interna grave: <code>:692</code> afirma que el escenario 2 tuvo 12.735 peticiones con 100 % de fallo, mientras el CSV dice 106.735 peticiones con 26 fallos (0,024 %), y <code>:789</code> usa ese 0,024 % para declarar 99,98 % de disponibilidad. El mismo documento afirma 100 % de fallo y 99,98 % de disponibilidad del mismo escenario.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 20 %</span></td><td class="fx">6</td><td class="fx bad">0,333</td><td class="nota"><b>0,14</b> <span>/ 0,7</span></td></tr>
+<tr><td><span class="cod">E6</span> <span class="nom">Quitar permisos sobre la bitácora</span><span class="ev">Existe la sentencia, pero no hace lo que debería. <code>V13:30</code> dice <code>REVOKE UPDATE, DELETE … FROM PUBLIC</code>, y la aplicación se conecta como <code>postgres</code>, propietario del esquema: un REVOKE a PUBLIC no afecta ni al propietario ni a un superusuario. Es cosmético. No hay REVOKE sobre la bitácora del módulo docente, y no hay prueba que lo compruebe.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 30 %</span></td><td class="fx">6</td><td class="fx bad">0,500</td><td class="nota"><b>0,21</b> <span>/ 0,7</span></td></tr>
+<tr><td><span class="cod">E7</span> <span class="nom">Que el certificado cuadre con los datos</span><span class="ev">Peor que antes. Verifiqué los <b>tres</b> certificados del repositorio: el principal falla 4 de 6, el de <code>docs/</code> falla 5 de 6 y el de soporte falla 4 de 4. Total: <b>2 OK y 13 fallos</b>. La causa es la misma de siempre y es comprobable por fechas: el certificado se generó el 8 de septiembre y los CSV se regeneraron el 12. El guion está bien escrito — genera las sumas como último paso — simplemente no se ejecutó antes de confirmar.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 10 %</span></td><td class="fx">7</td><td class="fx bad">0,143</td><td class="nota"><b>0,06</b> <span>/ 0,6</span></td></tr>
+<tr><td><span class="cod">E8</span> <span class="nom">Un solo número de cobertura</span><span class="ev">Mejoró y sigue sin cuadrar. El 0,51 % desapareció y mantenibilidad ya no se marca «Cumple». Pero medí la cobertura yo mismo: <code>sga-principal</code> da 26,88 % de líneas, el <code>.tex</code> dice 30,3 % y el informe HTML versionado dice 29 %: tres números. Y en secretaría ocurre al revés — la cobertura real es <b>70,27 %</b> y el documento declara 34,5 %: se subestiman a la mitad su propio trabajo. Aparece además un cuarto número sin respaldo, «compuerta JaCoCo (90,7 %)». Y la «compuerta estricta al 70 %» se aplica solo a 7 clases elegidas a mano, no al módulo.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 40 %</span></td><td class="fx">7</td><td class="fx bad">0,571</td><td class="nota"><b>0,24</b> <span>/ 0,6</span></td></tr>
+<tr><td><span class="cod">E9</span> <span class="nom">Meter todas las ramas a la principal</span><span class="ev">Dos de tres. <code>Ernesto-Luna</code> y <code>Juliana-Emanuel</code> ya están fusionadas. <code>devBedon</code> sigue fuera con 2 commits y 1.804 líneas, y contiene precisamente la corrección de E2. Lo más serio es la revisión cruzada: los <b>cinco</b> merge de pull request de <code>main</code> fueron confirmados por el mismo autor de la rama. El manuscrito afirma en <code>:878</code> que «al menos un integrante distinto del autor debió auditar y aprobar el PR»: lo desmiente el 100 % de los merges.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 30 %</span></td><td class="fx">6</td><td class="fx bad">0,500</td><td class="nota"><b>0,15</b> <span>/ 0,5</span></td></tr>
+<tr><td><span class="cod">E10</span> <span class="nom">Pruebas que manejen un navegador</span><span class="ev">Existen, arrancan Chromium y pasan las 4 — con el sistema completamente apagado. Las leí línea por línea: <code>BASE_URL</code> se define en la línea 23 y <b>no se usa nunca</b>; los cuatro tests hacen <code>page.set_content("""&lt;html&gt;…""")</code> con HTML que el propio test escribe, y después comprueban que el texto que acaban de inyectar está presente. El «login» es un formulario falso de 15 líneas y la «ruta protegida» es un <code>&lt;script&gt;</code> que cambia el título. No tocan la aplicación, así que no pueden fallar. La suite <code>tests/e2e/</code> es del mismo tipo: asigna <code>http_status = 401</code> y luego comprueba que vale 401.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 20 %</span></td><td class="fx">6</td><td class="fx bad">0,333</td><td class="nota"><b>0,10</b> <span>/ 0,5</span></td></tr>
+<tr><td><span class="cod">E11</span> <span class="nom">Dependencias que existan de verdad</span><span class="ev">Se resolvió solo. <code>requirements.txt:1</code> sigue diciendo <code>Django==6.0.6</code> y el archivo no se tocó, pero esa versión <b>ya existe</b> en PyPI desde el 3 de junio. Comprobé las 12 fijaciones contra PyPI: las 12 responden 200, y <code>pip install -r</code> funciona en Python 3.12. Los 4 <code>package.json</code> también resuelven.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 70 %</span></td><td class="fx">8</td><td class="fx bad">0,875</td><td class="nota"><b>0,28</b> <span>/ 0,4</span></td></tr>
+<tr><td><span class="cod">E12</span> <span class="nom">Que todas las interfaces se puedan instalar</span><span class="ev">Sin avance. <code>microservicio-secretaria/client/package-lock.json</code> sigue sin versionar, y la causa es explícita: <code>microservicio-secretaria/.gitignore:3</code> lo ignora. Lo comprobé sobre un clon limpio: <code>npm ci</code> termina en error. Las otras tres interfaces sí instalan. Y hay un agravante: CI <b>nunca usa <code>npm ci</code></b>, usa <code>npm install --legacy-peer-deps</code>, que ignora el bloqueo — justamente lo que este punto quería evitar.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 30 %</span></td><td class="fx">8</td><td class="fx bad">0,375</td><td class="nota"><b>0,12</b> <span>/ 0,4</span></td></tr>
+<tr><td><span class="cod">E13</span> <span class="nom">Pruebas con contenedores que se levantan solos</span><span class="ev">No existe. Búsqueda de <code>testcontainers</code> en xml, java, py, gradle, kts, md y tex de todo el repositorio: <b>0 resultados</b>. Y tiene consecuencia medible: por eso <code>AuditoriaInmutabilidadTest</code> tiene que hablar con una base remota y falla en cualquier entorno limpio.</span></td><td><span class="badge st-ini">Iniciarlo</span><span class="pct">Logrado: —</span></td><td class="fx">6</td><td class="fx bad">0</td><td class="nota"><b>0,00</b> <span>/ 0,3</span></td></tr>
+<tr><td><span class="cod">E14</span> <span class="nom">Publicar todas las imágenes</span><span class="ev">Sin avance. <code>ci-cd.yml</code> publica exactamente 2 imágenes: <code>sga-principal</code> y <code>microservicio-docente</code>. El sistema tiene 5 Dockerfiles propios. Secretaría y soporte, cuyas pruebas compilan y pasan, no se publican. El manuscrito habla de «publicación de imágenes en GHCR» sin acotar.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 20 %</span></td><td class="fx">6</td><td class="fx bad">0,333</td><td class="nota"><b>0,06</b> <span>/ 0,3</span></td></tr>
+<tr><td><span class="cod">E15</span> <span class="nom">Que el despliegue falle cuando falla</span><span class="ev">Resuelto. <code>continue-on-error</code> no aparece en ningún workflow. El job de integración depende de los anteriores y usa una acción que propaga el código de salida. Resta un matiz: dos líneas del script enmascaran fallos intermedios con <code>|| true</code>.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 80 %</span></td><td class="fx">7</td><td class="fx">1</td><td class="nota"><b>0,16</b> <span>/ 0,2</span></td></tr>
+<tr><td><span class="cod">E16</span> <span class="nom">Un mapa de carpetas en el README</span><span class="ev">Hecho. <code>README.md:30-44</code> trae la tabla con 9 filas y cuatro columnas, incluida la de comando de reproducción, y las 9 carpetas existen. Resta: dos de esos comandos apuntan a un <code>mvnw</code> que no está en esa ruta, y un tercero invoca un guion que no tiene punto de entrada y no hace nada.</span></td><td><span class="badge st-mod">Debe modificarlo</span><span class="pct">Logrado: 70 %</span></td><td class="fx">7</td><td class="fx">1</td><td class="nota"><b>0,14</b> <span>/ 0,2</span></td></tr>
+<tr><td><span class="cod">E17</span> <span class="nom">Finales de línea</span><span class="ev">El archivo existe y las reglas son correctas — <code>* text=auto eol=lf</code> más reglas por extensión — pero <b>nunca se aplicaron</b>: falta el <code>git add --renormalize</code>. De los 38 CSV versionados, <b>18 siguen con CRLF en el contenido confirmado</b>, incluidos los de carga que sostienen el informe. Y no se verifica en CI.</span></td><td><span class="badge st-cul">Debe culminarlo</span><span class="pct">Logrado: 30 %</span></td><td class="fx">7</td><td class="fx bad">0,429</td><td class="nota"><b>0,03</b> <span>/ 0,1</span></td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="fx bad">0,000000</td><td class="nota">2,86 <span>/ 10,0</span></td></tr></tfoot></table></div>
+<h3>Resumen del equipo BCEL</h3>
+<div class="calc">
+<div>Suma ponderada&nbsp;&nbsp;<b>S = 2,86</b> sobre 10</div>
+<div>Producto de los 17 factores&nbsp;&nbsp;<b>0,000000</b></div>
+<div class="r">Nota de la rúbrica = 0,000000 × 2,86 = <b>0,00 / 10,00</b></div>
+<div style="padding-top:8px">Aporte al 80 % del trabajo&nbsp;&nbsp;0,00 × 0,80 = <b>0,000</b></div>
+</div>
+<div class="gr"><div class="card"><div class="k">Suma ponderada</div><div class="v">2,86</div><div class="s">si nada estuviera bajo mínimo</div></div><div class="card z"><div class="k">Nota de la rúbrica</div><div class="v">0,00</div><div class="s">con los factores aplicados</div></div><div class="card z"><div class="k">80 % del trabajo</div><div class="v">0,00</div><div class="s">igual para los cuatro</div></div></div>
+<h3>Comprobaciones globales del repositorio</h3><ul>
+<li><b>Compilación del informe.</b> Compila desde cero a 28 páginas, 0 errores, 0 citas indefinidas, 0 referencias indefinidas, 0 imágenes no encontradas. En lo formal el documento es sólido.</li>
+<li><b>Backend.</b> <code>microservicio-secretaria</code>: 87 pruebas, BUILD SUCCESS. <code>microservicio-soporte</code>: 73 pruebas, BUILD SUCCESS. <code>sga-principal</code>: 90 pruebas, <b>1 error y BUILD FAILURE</b>, por la prueba que se conecta a una base remota.</li>
+<li><b>Microservicio docente.</b> 90 pruebas en verde y <b>79,47 % de cobertura real</b>. Es la parte más sana del repositorio, y su cifra no aparece en la tabla de calidad del informe.</li>
+<li><b>Alerta de seguridad.</b> Los informes de cobertura versionados publican en HTML la clave AES y la IP de producción: <code>CryptoService.java.html:35</code> y <code>settings_py.html:145</code>.</li>
+</ul>
+<h3>Nota final por integrante</h3>
+<div class="tw"><table><thead><tr><th style="width:34%">Integrante</th><th style="width:22%">Trabajo (80 %)</th><th style="width:22%">Cuestionario SGA (20 %)</th><th style="width:22%">Nota final</th></tr></thead><tbody>
+<tr><td class="nom">Keyla Bedón</td><td class="nota">0,000</td><td class="nota"><span>pendiente</span></td><td class="nota"><span>0,000 + cuest.×0,20</span></td></tr>
+<tr><td class="nom">Juliana Emanuel</td><td class="nota">0,000</td><td class="nota"><span>pendiente</span></td><td class="nota"><span>0,000 + cuest.×0,20</span></td></tr>
+<tr><td class="nom">Ernesto Luna</td><td class="nota">0,000</td><td class="nota"><span>pendiente</span></td><td class="nota"><span>0,000 + cuest.×0,20</span></td></tr>
+<tr><td class="nom">Pedro Castro</td><td class="nota">0,000</td><td class="nota"><span>pendiente</span></td><td class="nota"><span>0,000 + cuest.×0,20</span></td></tr>
+</tbody></table></div>
+<div class="box warn"><h4>Cuestionarios sin identificar</h4><p style="margin:0">La carátula entregada marca 44,00/45,00 = 9,78/10 pero no identifica al estudiante: es una carátula de equipo con los cuatro nombres y una sola captura. Con la nota del SGA a la vista, la cuenta se cierra en un paso: <code>0,000 + nota × 0,20</code>.</p></div>
+<h3>Retroalimentación individual — equipo BCEL</h3>
+<p style="font-size:.9rem;color:var(--mut);margin-top:0">Un recuadro por integrante, en texto plano, listo para copiar de un clic y pegar en el espacio del estudiante.</p>
+<div class="fbh">Keyla Bedón</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Keyla Bedón:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit 5e011896.
+
+Tengo que darles la evaluación más dura de las cuatro, y quiero explicarles exactamente por qué, porque el volumen de trabajo que hay en este repositorio no es el problema.
+Verifiqué cada elemento en el código, no en el mensaje del commit, y el resultado es que varios de los arreglos anunciados no están hechos.
+El verificador del experimento sigue calculando el hash de una forma distinta a la del sistema real, y su último cambio es anterior a todo este trabajo; el guion que genera los resultados publicados usa incluso una tercera fórmula que ni siquiera encadena.
+Las claves siguen en el repositorio: el secreto de firma completo, la clave de cifrado, la contraseña de base y un token en código de producción, en más de cuarenta sitios, y el historial está intacto.
+El lado Java sigue sin campo de hash anterior — cero coincidencias en todo el repositorio — y el reloj vectorial sigue escrito a mano como un literal, ahora además consagrado por una prueba.
+Las pruebas de navegador arrancan y pasan con el sistema apagado, porque los cuatro casos escriben el HTML que después comprueban: no tocan la aplicación, así que no pueden fallar.
+No existe ninguna prueba con contenedores efímeros, y ese elemento quedó en cero.
+Aquí está la consecuencia que quiero que entiendan: la rúbrica que recibieron dice que cada elemento es un factor y que un solo cero anula la calificación completa.
+La suma ponderada de su trabajo daba dos coma ocho seis sobre diez; con un elemento en cero, el producto es cero y la nota de la rúbrica es cero.
+Lo más grave, sin embargo, no es aritmético.
+El manuscrito afirma que se eliminaron por completo las contraseñas del repositorio, que todo pull request fue aprobado por un integrante distinto del autor, y que el escenario dos tuvo cien por ciento de fallo mientras en otra página declara noventa y nueve coma noventa y ocho por ciento de disponibilidad del mismo escenario.
+Las tres afirmaciones son falsas y son comprobables como falsas abriendo los archivos del propio repositorio.
+Escribir en un informe algo que el repositorio desmiente es el error más caro que se puede cometer en este trabajo, y les pido que lo corrijan con prioridad sobre cualquier otra cosa.
+Reconozco, porque es justo, que el microservicio en Python es la parte más sana del proyecto: noventa pruebas en verde y casi ochenta por ciento de cobertura real, una cifra que ni siquiera aparece en su propia tabla de calidad.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 2,86 sobre 10.
+Producto de los factores: 0,000000.
+Nota de la rúbrica: 0,00 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Juliana Emanuel</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Juliana Emanuel:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit 5e011896.
+
+Tengo que darles la evaluación más dura de las cuatro, y quiero explicarles exactamente por qué, porque el volumen de trabajo que hay en este repositorio no es el problema.
+Verifiqué cada elemento en el código, no en el mensaje del commit, y el resultado es que varios de los arreglos anunciados no están hechos.
+El verificador del experimento sigue calculando el hash de una forma distinta a la del sistema real, y su último cambio es anterior a todo este trabajo; el guion que genera los resultados publicados usa incluso una tercera fórmula que ni siquiera encadena.
+Las claves siguen en el repositorio: el secreto de firma completo, la clave de cifrado, la contraseña de base y un token en código de producción, en más de cuarenta sitios, y el historial está intacto.
+El lado Java sigue sin campo de hash anterior — cero coincidencias en todo el repositorio — y el reloj vectorial sigue escrito a mano como un literal, ahora además consagrado por una prueba.
+Las pruebas de navegador arrancan y pasan con el sistema apagado, porque los cuatro casos escriben el HTML que después comprueban: no tocan la aplicación, así que no pueden fallar.
+No existe ninguna prueba con contenedores efímeros, y ese elemento quedó en cero.
+Aquí está la consecuencia que quiero que entiendan: la rúbrica que recibieron dice que cada elemento es un factor y que un solo cero anula la calificación completa.
+La suma ponderada de su trabajo daba dos coma ocho seis sobre diez; con un elemento en cero, el producto es cero y la nota de la rúbrica es cero.
+Lo más grave, sin embargo, no es aritmético.
+El manuscrito afirma que se eliminaron por completo las contraseñas del repositorio, que todo pull request fue aprobado por un integrante distinto del autor, y que el escenario dos tuvo cien por ciento de fallo mientras en otra página declara noventa y nueve coma noventa y ocho por ciento de disponibilidad del mismo escenario.
+Las tres afirmaciones son falsas y son comprobables como falsas abriendo los archivos del propio repositorio.
+Escribir en un informe algo que el repositorio desmiente es el error más caro que se puede cometer en este trabajo, y les pido que lo corrijan con prioridad sobre cualquier otra cosa.
+Reconozco, porque es justo, que el microservicio en Python es la parte más sana del proyecto: noventa pruebas en verde y casi ochenta por ciento de cobertura real, una cifra que ni siquiera aparece en su propia tabla de calidad.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 2,86 sobre 10.
+Producto de los factores: 0,000000.
+Nota de la rúbrica: 0,00 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Ernesto Luna</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Ernesto Luna:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit 5e011896.
+
+Tengo que darles la evaluación más dura de las cuatro, y quiero explicarles exactamente por qué, porque el volumen de trabajo que hay en este repositorio no es el problema.
+Verifiqué cada elemento en el código, no en el mensaje del commit, y el resultado es que varios de los arreglos anunciados no están hechos.
+El verificador del experimento sigue calculando el hash de una forma distinta a la del sistema real, y su último cambio es anterior a todo este trabajo; el guion que genera los resultados publicados usa incluso una tercera fórmula que ni siquiera encadena.
+Las claves siguen en el repositorio: el secreto de firma completo, la clave de cifrado, la contraseña de base y un token en código de producción, en más de cuarenta sitios, y el historial está intacto.
+El lado Java sigue sin campo de hash anterior — cero coincidencias en todo el repositorio — y el reloj vectorial sigue escrito a mano como un literal, ahora además consagrado por una prueba.
+Las pruebas de navegador arrancan y pasan con el sistema apagado, porque los cuatro casos escriben el HTML que después comprueban: no tocan la aplicación, así que no pueden fallar.
+No existe ninguna prueba con contenedores efímeros, y ese elemento quedó en cero.
+Aquí está la consecuencia que quiero que entiendan: la rúbrica que recibieron dice que cada elemento es un factor y que un solo cero anula la calificación completa.
+La suma ponderada de su trabajo daba dos coma ocho seis sobre diez; con un elemento en cero, el producto es cero y la nota de la rúbrica es cero.
+Lo más grave, sin embargo, no es aritmético.
+El manuscrito afirma que se eliminaron por completo las contraseñas del repositorio, que todo pull request fue aprobado por un integrante distinto del autor, y que el escenario dos tuvo cien por ciento de fallo mientras en otra página declara noventa y nueve coma noventa y ocho por ciento de disponibilidad del mismo escenario.
+Las tres afirmaciones son falsas y son comprobables como falsas abriendo los archivos del propio repositorio.
+Escribir en un informe algo que el repositorio desmiente es el error más caro que se puede cometer en este trabajo, y les pido que lo corrijan con prioridad sobre cualquier otra cosa.
+Reconozco, porque es justo, que el microservicio en Python es la parte más sana del proyecto: noventa pruebas en verde y casi ochenta por ciento de cobertura real, una cifra que ni siquiera aparece en su propia tabla de calidad.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 2,86 sobre 10.
+Producto de los factores: 0,000000.
+Nota de la rúbrica: 0,00 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Pedro Castro</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Pedro Castro:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit 5e011896.
+
+Tengo que darles la evaluación más dura de las cuatro, y quiero explicarles exactamente por qué, porque el volumen de trabajo que hay en este repositorio no es el problema.
+Verifiqué cada elemento en el código, no en el mensaje del commit, y el resultado es que varios de los arreglos anunciados no están hechos.
+El verificador del experimento sigue calculando el hash de una forma distinta a la del sistema real, y su último cambio es anterior a todo este trabajo; el guion que genera los resultados publicados usa incluso una tercera fórmula que ni siquiera encadena.
+Las claves siguen en el repositorio: el secreto de firma completo, la clave de cifrado, la contraseña de base y un token en código de producción, en más de cuarenta sitios, y el historial está intacto.
+El lado Java sigue sin campo de hash anterior — cero coincidencias en todo el repositorio — y el reloj vectorial sigue escrito a mano como un literal, ahora además consagrado por una prueba.
+Las pruebas de navegador arrancan y pasan con el sistema apagado, porque los cuatro casos escriben el HTML que después comprueban: no tocan la aplicación, así que no pueden fallar.
+No existe ninguna prueba con contenedores efímeros, y ese elemento quedó en cero.
+Aquí está la consecuencia que quiero que entiendan: la rúbrica que recibieron dice que cada elemento es un factor y que un solo cero anula la calificación completa.
+La suma ponderada de su trabajo daba dos coma ocho seis sobre diez; con un elemento en cero, el producto es cero y la nota de la rúbrica es cero.
+Lo más grave, sin embargo, no es aritmético.
+El manuscrito afirma que se eliminaron por completo las contraseñas del repositorio, que todo pull request fue aprobado por un integrante distinto del autor, y que el escenario dos tuvo cien por ciento de fallo mientras en otra página declara noventa y nueve coma noventa y ocho por ciento de disponibilidad del mismo escenario.
+Las tres afirmaciones son falsas y son comprobables como falsas abriendo los archivos del propio repositorio.
+Escribir en un informe algo que el repositorio desmiente es el error más caro que se puede cometer en este trabajo, y les pido que lo corrijan con prioridad sobre cualquier otra cosa.
+Reconozco, porque es justo, que el microservicio en Python es la parte más sana del proyecto: noventa pruebas en verde y casi ochenta por ciento de cobertura real, una cifra que ni siquiera aparece en su propia tabla de calidad.
+
+Detalle de la calificación:
+Suma ponderada de los elementos pendientes: 2,86 sobre 10.
+Producto de los factores: 0,000000.
+Nota de la rúbrica: 0,00 sobre 10.
+Aporte del trabajo del equipo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<h2>Resumen de los cuatro proyectos</h2>
+<div class="tw"><table><thead><tr><th>Equipo</th><th>Elementos</th><th>Bajo mínimo</th><th>Suma <i>S</i></th><th>Producto</th><th>Nota rúbrica</th><th>80 % del trabajo</th></tr></thead><tbody>
+<tr><td class="nom">ACC</td><td class="fx">8</td><td class="fx">0 de 8</td><td class="nota">8,47</td><td class="fx">1</td><td class="nota"><b>8,47</b></td><td class="nota">6,776</td></tr>
+<tr><td class="nom">AGLS</td><td class="fx">9</td><td class="fx">1 de 9</td><td class="nota">8,22</td><td class="fx bad">0,875000</td><td class="nota"><b>7,19</b></td><td class="nota">5,754</td></tr>
+<tr><td class="nom">FUVV</td><td class="fx">8</td><td class="fx">6 de 8</td><td class="nota">5,25</td><td class="fx bad">0,019048</td><td class="nota"><b>0,10</b></td><td class="nota">0,080</td></tr>
+<tr><td class="nom">BCEL</td><td class="fx">17</td><td class="fx">15 de 17</td><td class="nota">2,86</td><td class="fx bad">0,000000</td><td class="nota"><b>0,00</b></td><td class="nota">0,000</td></tr>
+</tbody></table></div>
+<div class="box bad"><h4>Lo que produce el producto de factores, dicho sin rodeos</h4><p style="margin-top:0">Apliqué la fórmula tal como está en las rúbricas que los equipos recibieron, sin suavizarla. En dos casos el resultado es demoledor y conviene que lo vea antes de registrar nada.</p><p><b>BCEL</b> tiene un elemento en cero — no existe ninguna prueba con contenedores efímeros, comprobado con una búsqueda en todo el repositorio. La regla dice que un cero anula la calificación completa, así que su nota de rúbrica es 0,00 aunque la suma ponderada de su trabajo diera 2,86.</p><p><b>FUVV</b> no tiene ningún cero, pero seis de sus ocho elementos quedaron por debajo del mínimo, y los factores se multiplican entre sí: 0,019 × 5,25 da 0,10. La suma ponderada por sí sola habría dado 5,25.</p><p style="margin-bottom:0">No he cambiado la regla por mi cuenta porque usted la eligió deliberadamente y la comunicó a los estudiantes. Pero le dejo las dos cifras a la vista en cada tabla — la suma <i>S</i> y la nota con factores — por si decide aplicar alguna mitigación. Si quiere una variante que conserve el efecto de anulación por cero sin colapsar cuando hay varios elementos algo cortos, la raíz n-ésima del producto lo consigue: dígamelo y recalculo las cuatro notas en un paso.</p></div>
+<div class="box warn"><h4>Notas del cuestionario que faltan</h4><p style="margin-top:0">De los dieciséis estudiantes, tengo la nota del SGA documentada para siete. Los cuatro de AGLS están completos. De FUVV tengo a Vinueza y a Villamarín; de ACC, a Pacheco.</p><p style="margin-bottom:0">Hay además tres capturas que muestran la nota pero no el nombre del estudiante, porque el resumen del cuestionario del SGA no lo incluye: una de FUVV con 4,28, una de ACC con 5,67 y una de BCEL con 9,78. En cada tabla de equipo dejé la fila lista para completar: basta sumar la nota del cuestionario multiplicada por 0,20 al 80 % que ya está calculado.</p></div>
+<div class="box good"><h4>Lo que conviene destacar de cada equipo</h4><ul style="margin-bottom:0"><li><b>ACC</b> corrigió los ocho elementos por encima del mínimo y es el único con factor 1. Su experimento se regenera byte a byte idéntico a lo versionado.</li><li><b>AGLS</b> entrega el manuscrito más limpio de los cuatro — 59 páginas sin un solo error ni caja desbordada — y sus pruebas nuevas de la web ejercitan lógica real, no relleno.</li><li><b>FUVV</b> ejecutó de verdad diez repeticiones de una hora y su manifiesto verifica 468 de 468 archivos; la campaña experimental es la más sólida del curso. Lo que la hunde es una sección de resultados sin ninguna evidencia detrás.</li><li><b>BCEL</b> tiene el mayor volumen construido y su microservicio en Python es la pieza más sana del curso, con 79,47 % de cobertura real que ni siquiera reportan.</li></ul></div>
+<div class="box bad"><h4>Tres asuntos que le pido mirar aparte de la nota</h4><ul style="margin-bottom:0"><li><b>BCEL — credenciales vivas.</b> El secreto de firma, la clave de cifrado, la contraseña de base y la IP de producción siguen en el repositorio y en el historial, y los informes de cobertura versionados los publican además en HTML. Como ese mismo secreto sella la bitácora de auditoría, la propiedad de no repudio que el proyecto reivindica no se sostiene mientras no se roten.</li><li><b>FUVV — sección sin evidencia.</b> La subsección ARBITER presenta 130 corridas y un contraste estadístico completo; el README de su propio directorio de evidencia dice que hay cero corridas.</li><li><b>BCEL — afirmaciones desmentidas por el repositorio.</b> El informe declara eliminación absoluta de contraseñas, revisión cruzada en todos los pull request, y a la vez 100 % de fallo y 99,98 % de disponibilidad del mismo escenario. Las tres se comprueban falsas abriendo los archivos.</li></ul></div>
+<div class="foot">Evaluación realizada sobre los commits indicados en cada equipo, verificando el contenido de los repositorios archivo por archivo, compilando los documentos desde copia limpia y ejecutando las pruebas y los guiones de análisis. Las cifras de este informe proceden de esas ejecuciones y de recálculos propios, no de lo que los repositorios afirman sobre sí mismos.</div>
+</div>
+<script>
+document.querySelectorAll('.fb button').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=b.parentElement.querySelector('pre').innerText;
+    var done=function(){b.textContent='Copiado';b.classList.add('done');setTimeout(function(){b.textContent='Copiar';b.classList.remove('done')},1600)};
+    function fb(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(a)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb)}else{fb()}
+  });
+});
+</script>

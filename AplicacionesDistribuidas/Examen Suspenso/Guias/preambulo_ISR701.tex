@@ -1,0 +1,107 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.2cm,bottom=2.4cm,left=2.2cm,right=2.2cm,headheight=14pt]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{amsmath}
+\usepackage[hidelinks]{hyperref}
+\tcbuselibrary{skins,breakable}
+\definecolor{uteqverde}{HTML}{2C5F2D}
+\definecolor{uteqazul}{HTML}{1E4D8B}
+\definecolor{uteqoro}{HTML}{D4A017}
+\definecolor{grisclaro}{HTML}{F2F2F2}
+\definecolor{rojopiso}{HTML}{A61B1B}
+\definecolor{verdeok}{HTML}{1E7A3C}
+\definecolor{ambar}{HTML}{B36B00}
+\sloppy
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\scriptsize}
+\emergencystretch=4em
+\hyphenpenalty=2000
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\titleformat{\section}{\large\bfseries\color{uteqverde}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{uteqazul}}{\thesubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.6pt}
+\fancyhead[L]{\footnotesize\color{uteqverde}ISR-701 \textperiodcentered{} Aplicaciones Distribuidas \textperiodcentered{} UTEQ}
+\fancyhead[R]{\footnotesize\color{uteqverde}Estado al 13/09/2026, 19:00 \textperiodcentered{} Corte 18/09/2026, 23:55}
+\fancyfoot[C]{\footnotesize P\'agina \thepage}
+\newcommand{\rt}[1]{\texttt{\footnotesize #1}}
+\newcommand{\hecho}{\textcolor{verdeok}{\bfseries Hecho}}
+\newcommand{\pmodif}{\textcolor{ambar}{\bfseries Por modificar}}
+\newcommand{\pculm}{\textcolor{ambar}{\bfseries Por culminar}}
+\newcommand{\pini}{\textcolor{rojopiso}{\bfseries Por iniciar}}
+\newtcolorbox{aviso}[1]{breakable,colback=rojopiso!5,colframe=rojopiso,boxrule=0.9pt,arc=2pt,left=6pt,right=6pt,top=5pt,bottom=5pt,title={\bfseries #1},fonttitle=\small\bfseries,coltitle=white}
+\newtcolorbox{nota}[1]{breakable,colback=uteqazul!4,colframe=uteqazul,boxrule=0.7pt,arc=2pt,left=6pt,right=6pt,top=5pt,bottom=5pt,title={\bfseries #1},fonttitle=\small\bfseries,coltitle=white}
+\newtcolorbox{logro}[1]{breakable,colback=uteqverde!4,colframe=uteqverde,boxrule=0.7pt,arc=2pt,left=6pt,right=6pt,top=5pt,bottom=5pt,title={\bfseries #1},fonttitle=\small\bfseries,coltitle=white}
+% \cabecera{equipo}{sistema}{repositorio}{rama}{commit}{n commits}{integrantes}{rinden suspenso}{completitud}
+\newcommand{\cabecera}[9]{%
+  \begin{center}
+    {\LARGE\bfseries\color{uteqverde} Gu\'ia de cierre y r\'ubrica del examen suspenso}\\[4pt]
+    {\Large\bfseries\color{uteqazul} Equipo #1 --- #2}\\[8pt]
+  \end{center}
+  {\footnotesize
+  \begin{tabularx}{\textwidth}{|>{\bfseries}p{4.3cm}|X|}
+    \hline
+    \rowcolor{grisclaro}\multicolumn{2}{|l|}{\bfseries\color{uteqverde} Identificaci\'on}\\ \hline
+    Asignatura & Aplicaciones Distribuidas (ISR-701) --- 2026--2027 PPA\\ \hline
+    Paralelo & 7.\textsuperscript{o} ``A'' Software\\ \hline
+    Repositorio evaluado & \rt{#3}\\ \hline
+    Cabecera evaluada & Rama \rt{#4}, commit \rt{#5} --- #6 commits --- \'ultimo commit anterior al domingo 13/09/2026, 19:00; verificaci\'on sobre clon completo, 16 de septiembre de 2026\\ \hline
+    Integrantes & #7\\ \hline
+    Rinden el examen suspenso & #8\\ \hline
+    Completitud del proyecto & \textbf{#9}\\ \hline
+    Corte del examen suspenso & \textbf{Viernes 18 de septiembre de 2026, 23:55 (Ecuador)}\\ \hline
+    Docente & Ing. Gleiston Cicer\'on Guerrero Ulloa, PhD.\\ \hline
+  \end{tabularx}}
+  \vspace{6pt}}
+\newenvironment{tablaeval}{%
+  \begingroup\footnotesize\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}
+  \begin{longtable}{|p{0.7cm}|p{5.4cm}|p{2.4cm}|p{2.4cm}|p{0.9cm}|p{2.1cm}|}
+  \hline\rowcolor{uteqverde}\textcolor{white}{\bfseries \#} & \textcolor{white}{\bfseries Entregable / indicador} & \textcolor{white}{\bfseries Estado propio} & \textcolor{white}{\bfseries Estado efectivo} & \textcolor{white}{\bfseries \%} & \textcolor{white}{\bfseries Acci\'on}\\ \hline\endfirsthead
+  \hline\rowcolor{uteqverde}\textcolor{white}{\bfseries \#} & \textcolor{white}{\bfseries Entregable / indicador} & \textcolor{white}{\bfseries Estado propio} & \textcolor{white}{\bfseries Estado efectivo} & \textcolor{white}{\bfseries \%} & \textcolor{white}{\bfseries Acci\'on}\\ \hline\endhead
+}{\end{longtable}\endgroup}
+\newcommand{\sinaccion}{\textcolor{verdeok}{\footnotesize ---}}
+\newcommand{\ver}[1]{\footnotesize V\'ease \S#1}
+\NewDocumentCommand{\fila}{m m m m m O{\sinaccion}}{#1 & #2 & #3 & #4 & #5\,\% & #6 \\ \hline}
+% Rúbrica: P profundidad, C complejidad, A amplitud, T tiempo
+\newenvironment{rubrica}{%
+  \begingroup\footnotesize\setlength{\tabcolsep}{3.2pt}\renewcommand{\arraystretch}{1.22}
+  \begin{longtable}{|p{0.95cm}|p{5.3cm}|c|c|c|c|c|p{1.0cm}|p{2.2cm}|p{1.0cm}|}
+  \hline\rowcolor{uteqverde}\textcolor{white}{\bfseries \S} & \textcolor{white}{\bfseries \'Item que se califica} & \textcolor{white}{\bfseries P} & \textcolor{white}{\bfseries C} & \textcolor{white}{\bfseries A} & \textcolor{white}{\bfseries T} & \textcolor{white}{\bfseries Pts} & \textcolor{white}{\bfseries Peso \%} & \textcolor{white}{\bfseries Estado 13/09} & \textcolor{white}{\bfseries Puntos}\\ \hline\endfirsthead
+  \hline\rowcolor{uteqverde}\textcolor{white}{\bfseries \S} & \textcolor{white}{\bfseries \'Item que se califica} & \textcolor{white}{\bfseries P} & \textcolor{white}{\bfseries C} & \textcolor{white}{\bfseries A} & \textcolor{white}{\bfseries T} & \textcolor{white}{\bfseries Pts} & \textcolor{white}{\bfseries Peso \%} & \textcolor{white}{\bfseries Estado 13/09} & \textcolor{white}{\bfseries Puntos}\\ \hline\endhead
+}{\rowcolor{grisclaro}\multicolumn{7}{|r|}{\bfseries Total} & \bfseries 100 & & \\ \hline\end{longtable}\endgroup}
+\newcommand{\ri}[9]{\S#1 & #2 & #3 & #4 & #5 & #6 & #7 & #8 & #9}
+\newcommand{\rp}[1]{ & #1 \\ \hline}
+\newcommand{\reglarubrica}{%
+\begin{nota}{C\'omo se califica el examen suspenso}
+S\'olo se califican los \'items de esta tabla: lo que est\'a en Hecho no vuelve a puntuar ni se puede perder. El peso de cada \'item sale de sumar cuatro estimaciones de lo que cuesta llevarlo a Hecho con la calidad exigida: \textbf{profundidad} (P, 1--5: de aplicar una instrucci\'on a rehacer an\'alisis, dise\~no experimental o arquitectura con criterio propio), \textbf{complejidad} t\'ecnica (C, 1--5: de tr\'amite mec\'anico a coordinar varios servicios, datos y herramientas), \textbf{amplitud} (A, 1--5: de un archivo a varios m\'odulos, clientes, flujos y documentos a la vez) y \textbf{tiempo} de dedicaci\'on (T, 1--5: menos de 2, de 2 a 6, de 6 a 15, de 15 a 30 y m\'as de 30 horas-persona), normalizando a 100 dentro del equipo. Cada \'item recibe su peso multiplicado por el coeficiente del estado en que lo encuentre el viernes 18 de septiembre a las 23:55: \textbf{Hecho 1,00 \textperiodcentered{} Por modificar 0,40 \textperiodcentered{} Por culminar 0,20 \textperiodcentered{} Por iniciar 0,00}. La nota del examen es la suma de puntos dividida entre diez. Un \'item s\'olo llega a Hecho si la comprobaci\'on descrita en ``C\'omo lo verifico'' da el resultado exigido sobre el repositorio del docente; el mensaje de un commit, un archivo vac\'io o una cifra sin dato crudo que la respalde no cuentan. Las cl\'ausulas de entrega de la primera p\'agina y la ausencia total de la aplicaci\'on web o de la m\'ovil (factor 0,5) siguen vigentes sobre la nota.
+\end{nota}}
+\newcommand{\notadependencias}{%
+\begin{nota}{C\'omo leer las dos columnas de estado}
+El \emph{estado propio} describe el artefacto en s\'i. El \emph{estado efectivo} aplica la regla de dependencia: \textbf{ning\'un artefacto puede estar m\'as completo que aquello de lo que se construye}. El backend en capas sostiene a los dos clientes; los clientes y el backend sostienen los contratos y la pir\'amide de pruebas; las pruebas sostienen el pipeline; el sistema instrumentado sostiene la campa\~na experimental; la campa\~na sostiene el paquete de datos; el paquete sostiene la evaluaci\'on ISO/IEC 25010; y el manuscrito, las amenazas a la validez y la l\'inea base congelan y reportan todo lo anterior. Las actas, la declaraci\'on de uso de IA y los archivos de ra\'iz no propagan: se declaran. Lo que se califica es el estado efectivo.
+\end{nota}}
+% \clausulas{usuario-o-organizacion-actual/repositorio}{estado-de-transferencia}
+\newcommand{\clausulas}[2]{%
+\begin{aviso}{Cl\'ausulas de entrega del examen suspenso (anulan la calificaci\'on si no se cumplen)}
+\textbf{1. Repositorio transferido y aceptado.} El repositorio debe estar transferido a la cuenta del docente (\rt{gleiston-guerrero}) y la transferencia \textbf{aceptada} antes del corte. Si al viernes 18/09/2026 a las 23:55 el repositorio no figura bajo \rt{github.com/gleiston-guerrero/}, el examen se toma como \textbf{no entregado} y su nota es cero, cualquiera que sea el trabajo realizado. Estado al 13/09: #2. Todo lo que se califica se revisa en esa URL y en su rama principal; lo que quede en ramas sin fusionar o en cuentas personales no existe para esta evaluaci\'on.\par\smallskip
+\textbf{2. Car\'atula en una sola p\'agina subida al SGA.} Cada estudiante que rinde el examen sube al SGA un \'unico PDF de \textbf{una sola p\'agina}, sin capturas de cuestionarios, calificaciones ni contenido adicional, con: universidad, facultad y carrera; asignatura, paralelo y periodo; ``Examen suspenso --- Proyecto Fin de Curso''; nombre completo del estudiante que la sube; equipo y nombre del sistema; integrantes del equipo; docente; URL can\'onica del repositorio (\rt{https://github.com/gleiston-guerrero/#1}) escrita completa en una l\'inea y como enlace activo; rama, etiqueta anotada de cierre y hash corto del commit final; fecha de entrega. Una car\'atula de m\'as de una p\'agina, con una URL distinta de la can\'onica o que no se suba al SGA equivale a examen no entregado para ese estudiante.
+\end{aviso}}
+\newcommand{\piedepagina}{\vspace{10pt}\hrule\vspace{6pt}{\footnotesize Documento de uso acad\'emico. Aplicaciones Distribuidas (ISR-701), UTEQ, 2026--2027 PPA. Verificaci\'on ejecutada sobre clon completo del repositorio declarado, con el estado al domingo 13 de septiembre de 2026 a las 19:00, el 16 de septiembre de 2026. Ing. Gleiston Cicer\'on Guerrero Ulloa, PhD.}}

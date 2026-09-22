@@ -1,0 +1,177 @@
+\input{preambulo_ISR701.tex}
+\input{nota_FUVV.tex}
+\begin{document}
+
+\cabecera{FUVV}{SCLI, Sistema de Control de Laboratorios Inform\'aticos}{gleiston-guerrero/Entrega-final-del-PFC}{feature/entrega-4}{d0ef60b}{366}{Farinango Guandinango Freddy Vladimir \textperiodcentered{} Urbina Romero Isa\'ias Abraham \textperiodcentered{} Villamar\'in Cuenca Iv\'an Andr\'es \textperiodcentered{} Vinueza S\'anchez Harold Nicol\'as}{\textbf{Urbina Romero Isa\'ias Abraham \textperiodcentered{} Villamar\'in Cuenca Iv\'an Andr\'es}}{\completitud}
+
+\clausulas{Entrega-final-del-PFC}{la transferencia se hizo la noche del 13/09 y al 16/09 el repositorio figura bajo \rt{gleiston-guerrero/Entrega-final-del-PFC}; cumple si sigue as\'i al corte. Adem\'as, al corte la rama \rt{main} ten\'ia un \'unico commit del 15/08 y todo el trabajo estaba en \rt{feature/entrega-4}}
+
+\section{Evaluaci\'on de los entregables}
+
+\begin{tablaeval}
+
+\fila{1}{Identificaci\'on del entregable y URL}{\pmodif}{\pmodif}{75}[\ver{1}]
+
+\fila{2}{Estructura del repositorio y archivos de ra\'iz}{\pmodif}{\pmodif}{70}[\ver{2}]
+
+\fila{3}{L\'inea base congelada e integraci\'on a \rt{main}}{\pculm}{\pculm}{25}[\ver{3}]
+
+\fila{4}{Backend en capas y SOLID}{\pmodif}{\pmodif}{65}[\ver{4}]
+
+\fila{5}{Patrones GoF y ADR}{\pmodif}{\pmodif}{70}[\ver{5}]
+
+\fila{6}{Aplicaci\'on web funcional}{\pmodif}{\pmodif}{75}[\ver{6}]
+
+\fila{7}{Calidad de la aplicaci\'on web}{\pmodif}{\pmodif}{80}[\ver{7}]
+
+\fila{8}{Aplicaci\'on m\'ovil funcional}{\pmodif}{\pmodif}{70}[\ver{8}]
+
+\fila{9}{Calidad de la aplicaci\'on m\'ovil}{\pmodif}{\pmodif}{60}[\ver{9}]
+
+\fila{10}{Integraci\'on y contratos}{\pmodif}{\pmodif}{60}[\ver{10}]
+
+\fila{11}{Persistencia distribuida}{\pmodif}{\pmodif}{75}[\ver{11}]
+
+\fila{12}{Pir\'amide de pruebas}{\pmodif}{\pmodif}{70}[\ver{12}]
+
+\fila{13}{Pipeline CI/CD}{\pmodif}{\pmodif}{70}[\ver{13}]
+
+\fila{14}{Observabilidad}{\pmodif}{\pmodif}{60}[\ver{14}]
+
+\fila{15}{Protocolo y campa\~na experimental}{\pmodif}{\pmodif}{60}[\ver{15}]
+
+\fila{16}{Paquete de datos y reproducibilidad}{\pmodif}{\pmodif}{60}[\ver{16}]
+
+\fila{17}{Evaluaci\'on ISO/IEC 25010}{\pmodif}{\pmodif}{55}[\ver{17}]
+
+\fila{18}{Manuscrito, bibliograf\'ia y trazabilidad E1--E4}{\pmodif}{\pmodif}{55}[\ver{18}]
+
+\fila{19}{Amenazas a la validez y reflexi\'on \'etica}{\pmodif}{\pmodif}{80}[\ver{19}]
+
+\fila{20}{Trabajo en equipo y autor\'ia}{\pmodif}{\pmodif}{55}[\ver{20}]
+
+\end{tablaeval}
+
+\notadependencias
+
+\begin{logro}{Lo que est\'a hecho y no se recalifica}
+Ning\'un entregable est\'a completo, pero hay piezas verificadas que no se tocan. Eficiencia (PI1) recalculada desde los datos crudos de \rt{eficiencia\_nominal\_50u\_5m}, repeticiones 2 a 9, sobre la fila \rt{GET /api/v1/reservas}: p95 media 45,5\,ms, IC95\,\% [27,30; 63,70]; p99 media 371,25\,ms, IC95\,\% [66,91; 675,59], id\'enticas al documento y con umbrales fijados antes de medir. Campa\~na ARBITER: 123 de 130 corridas, manifiesto 315/315, censo HTTP de Esc-2 y Esc-3 id\'entico al publicado y \rt{analisis-e3.json} regenerado byte a byte. Manifiesto general 468/468 sobre los bytes del repositorio. Validador de contratos en tiempo de ejecuci\'on sobre los cinco servicios (12/44/71/79/224 operaciones). Instant\'anea documental E3 congelada (14 p\'aginas, cero indefinidas). Manuscrito vivo de 33 p\'aginas sin citas ni referencias indefinidas, 29 referencias y 14 DOI resueltos. SPA en TypeScript estricto con \rt{tsc} y lint limpios y 280/280 pruebas; JWT en \rt{sessionStorage} con expiraci\'on; serie temporal y calendario semanal sobre la API real. M\'ovil con \rt{EncryptedSharedPreferences}, Room sin conexi\'on, esc\'aner QR con CameraX y ML Kit, unas 120 pruebas de ViewModel y APK con firma v1/v2/v3 de clave propia. Backend con 869 pruebas, Testcontainers con CockroachDB en tres servicios y JaCoCo $\ge$70\,\% con compuerta en los cinco; State, Facade, Repository y Factory Method genuinos; registros JSON con \rt{trace\_id} en los cinco servicios.
+\end{logro}
+
+\section{R\'ubrica del examen suspenso}
+
+\reglarubrica
+
+\input{rubrica_FUVV.tex}
+
+\begin{nota}{Lectura de la r\'ubrica al 13/09/2026, 19:00}
+La columna \emph{Estado} es el que encontr\'e en el commit de corte; la columna \emph{Puntos} es peso por coeficiente. Nota provisional del examen suspenso: \textbf{\notaprov{} / 10,00}. Si cierran todos los \'items en Hecho, la nota es 10,00.
+\end{nota}
+
+\section{Trabajo exigido}
+
+\subsection*{\S1 Identificaci\'on del entregable y URL}
+\textbf{Qu\'e encontr\'e:} la URL del propietario anterior (\rt{ffarinangog2/Entrega-final-del-PFC}) sigue en ocho archivos, entre ellos \rt{CITATION.cff}, \rt{README.md}, \rt{docs/main.tex} (\rt{\textbackslash RepoURL}), \rt{docs/entrega-4/main.tex} y \rt{docs/actas/README.md}. El sistema tiene tres nombres (``Laboratorios e Infraestructura'', ``Laboratorios e Inform\'atica'', ``Laboratorios Inform\'aticos''), el equipo aparece como ``For\'aCode'' en la portada y como FUVV en el resto, y \rt{CITATION.cff} lista un nombre y un apellido por autor, sin roles. \textbf{C\'omo debe quedar:} \rt{https://github.com/gleiston-guerrero/Entrega-final-del-PFC} en README, \rt{CITATION.cff} y documentos vivos; un solo nombre de sistema y de equipo; nombres completos y roles de los cuatro integrantes. \textbf{C\'omo lo verifico:} \rt{git grep -n "ffarinangog2/Entrega" HEAD -{}- README.md CITATION.cff docs/main.tex} no devuelve nada.
+
+\subsection*{\S2 Estructura --- licencia, variables, ra\'iz y finales de l\'inea}
+\textbf{Qu\'e encontr\'e:} no existe \rt{LICENSE}; \rt{.env.example} no tiene variables de la web ni del m\'ovil; el commit de corte versiona un PDF con la calificaci\'on personal de un integrante en el cuestionario del SGA, ajeno al proyecto; faltan \rt{docs/api/openapi.yaml}, \rt{protocolo-e3.md} y \rt{boxplot\_latencia.png} del Listado 3 sin que el README explique la equivalencia; y \rt{.gitattributes} s\'olo fija \rt{eol=lf} para dos rutas, de modo que en un clon de Windows fallan 373 de 468 sumas del manifiesto general, 50 de 50 de \rt{evidencia-e3-canonica} y la del APK. \textbf{Qu\'e deben hacer:} a\~nadir \rt{LICENSE}; declarar \rt{VITE\_API\_BASE\_URL} y \rt{SCLI\_API\_BASE\_URL} en \rt{.env.example}; retirar el PDF del cuestionario; a\~nadir al README una tabla ``Listado 3 $\rightarrow$ ruta real''; declarar \rt{experimentos/** -text} y \rt{release/apk/SHA256SUMS.txt -text} y renormalizar. \textbf{C\'omo lo verifico:} \rt{test -f LICENSE}; \rt{git ls-files | grep -i cuestionario} vac\'io; en un clon con \rt{core.autocrlf=true} y otro con \rt{false}, \rt{sha256sum -c} no imprime ning\'un fallo.
+
+\subsection*{\S3 L\'inea base --- nada integrado ni congelado al corte}
+\textbf{Qu\'e encontr\'e:} al 13/09 a las 19:00 \rt{main} ten\'ia un \'unico commit (\rt{859bc58}, ``Entrega anterior'', 15/08). El PR que integra \rt{feature/entrega-4} tiene 367 commits, 2.417 archivos y una sola aprobaci\'on de una frase gen\'erica, sin un comentario en l\'inea, emitida con el pipeline de ese commit en rojo; la fusi\'on la hizo el propio autor a las 21:28, fuera de plazo y con dos commits que la aprobaci\'on no cubre. No hay ninguna etiqueta ni \rt{CHANGELOG.md}. \textbf{C\'omo debe quedar:} todo el trabajo en \rt{main} mediante PR cuyo revisor, distinto del autor, deja comentarios sobre el c\'odigo y aprueba con el pipeline en verde sobre el commit final; \rt{CHANGELOG.md} con una entrada fechada por entrega (E1 a E4) y una del examen suspenso; etiqueta anotada de cierre sobre el \'ultimo commit de \rt{main}, creada \textbf{al final de todo}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+git cat-file -t v4.0.0                       # debe imprimir: tag
+git merge-base --is-ancestor v4.0.0 origin/main && git rev-parse v4.0.0^{commit} origin/main
+git ls-remote --tags origin v4.0.0           # deben salir DOS lineas
+\end{verbatim}
+y en la API de GitHub, por cada PR del suspenso, \rt{/reviews} con un aprobador distinto del autor y \rt{/comments} con al menos un comentario sobre el c\'odigo.
+
+\subsection*{\S4 Backend en capas --- la capa de aplicaci\'on depende de las externas}
+\textbf{Qu\'e encontr\'e:} 71 imports de \rt{application} hacia \rt{infrastructure} y 157 hacia \rt{presentation}, en 56 archivos de cuatro servicios; por ejemplo \rt{AdminUsuarioService} usa directamente \rt{UsuarioAuthRepository} salt\'andose su propio puerto, y \rt{NotificacionService} usa un repositorio JPA. Los diez puertos de acad\'emico importan \rt{Page} y \rt{Pageable} de Spring; \rt{BloqueoAgendaRepositoryPort} expone una entidad con \rt{@Entity}; reservas conserva los paquetes \rt{entity}, \rt{repository}, \rt{client}, \rt{mapper} y \rt{security} fuera de las capas; y nada lo hace cumplir en CI. \textbf{C\'omo debe quedar:} cero dependencias de \rt{application} hacia \rt{infrastructure} o \rt{presentation}; dominio sin tipos de Spring ni de JPA; reglas \rt{layeredArchitecture()} de ArchUnit por servicio ejecutadas en \rt{mvn verify}. \textbf{Qu\'e deben hacer:} mover los DTO a \rt{application/dto} y mapear en el controlador; sustituir los repositorios JPA usados en aplicaci\'on por puertos; crear un tipo de paginaci\'on propio del dominio en acad\'emico (usuarios ya lo tiene) y un modelo de dominio para \rt{BloqueoAgenda}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+grep -rEn "import .*\.(infrastructure|presentation)\." services/*/src/main/java --include=*.java | grep /application/ | wc -l   # 0
+grep -rEn "org\.springframework|jakarta\.persistence" services/*/src/main/java --include=*.java | grep /domain/ | wc -l          # 0
+grep -rl "layeredArchitecture" services/*/src/test | wc -l                                                                     # >= 4
+\end{verbatim}
+
+\subsection*{\S5 Patrones GoF --- tres de los cinco exigidos no cumplen}
+\textbf{Qu\'e encontr\'e:} State, Facade, Repository y Factory Method son genuinos. El ``Singleton del cliente Prometheus'' (\rt{HttpRequestsMetricsRegistry}) es un \rt{@Component} con constructor p\'ublico que asigna \rt{instance = this}, envuelve \rt{MeterRegistry} y est\'a duplicado en usuarios; el cliente real, \rt{PrometheusQueryClient}, es un bean normal. El Observer ``de alertas'' no existe: s\'olo hay un oyente de perfil que escribe en el log, y la palabra ``alert'' no aparece en el c\'odigo de producci\'on. La Strategy ``de pol\'iticas de reserva'' tiene una \'unica implementaci\'on fija, y la estrategia real (\rt{ArbitrajeStrategy} S0--S4) est\'a desactivada en operaci\'on y no figura en el ADR. \rt{SolicitudExpirationScheduler} cambia el estado con un \rt{setEstado} que se salta el patr\'on State. ADR-006 usa el estado ``Implementado'', ajeno al formato Nygard, y sus dos criterios cuantitativos no comparan ninguna cifra con Flutter o React Native. \textbf{C\'omo debe quedar:} Observer de alertas o incidentes con dos o m\'as suscriptores reales (notificaci\'on push y auditor\'ia o m\'etrica); dos o m\'as pol\'iticas de reserva seleccionables en ejecuci\'on y probadas; singleton conforme (constructor privado o justificaci\'on expl\'icita del singleton del contenedor) sin copias; expiraci\'on por el patr\'on State; ADR-005 con los conteos reales y ADR-006 en formato Nygard con una comparaci\'on cuantitativa entre alternativas y fuentes fechadas. \textbf{C\'omo lo verifico:} \rt{grep -rn "implements .*Strategy" services/reservas-solicitudes-service/src/main | wc -l} $\ge 2$ con su prueba de selecci\'on; dos o m\'as clases suscriptoras del sujeto de alertas; lectura de ambos ADR.
+
+\subsection*{\S6 Aplicaci\'on web --- internacionalizaci\'on aparente}
+\textbf{Qu\'e encontr\'e:} las cinco rutas, la ruta protegida, el JWT con expiraci\'on, la serie temporal y el calendario funcionan, y \rt{es.json} y \rt{en.json} tienen las mismas 57 claves; pero s\'olo 3 de 38 componentes usan \rt{t()} y quedan unos 283 textos fijos en espa\~nol (inicio de sesi\'on, calendario, monitoreo, men\'u, mensajes de error), de modo que al cambiar a ingl\'es casi toda la aplicaci\'on sigue en espa\~nol. \rt{/settings} y \rt{/about} exigen el rol de administrador; \rt{/} s\'olo redirige a \rt{/login}; el tema oscuro es un \'unico bloque CSS frente a 233 colores fijos; la serie temporal s\'olo la ve el administrador. \textbf{C\'omo debe quedar:} toda la interfaz traducida con fechas en el idioma activo; \rt{/settings} y \rt{/about} para cualquier usuario autenticado; \rt{/} como p\'agina de inicio; tema oscuro coherente en todas las pantallas mediante variables CSS. \textbf{C\'omo lo verifico:} la prueba E2E de idioma y tema, ampliada, cambia a ingl\'es y comprueba textos en \rt{/login}, \rt{/main} y el calendario; \rt{grep -rL useTranslation apps/web/src -{}-include=*.tsx | grep -v test} s\'olo lista componentes sin texto visible.
+
+\subsection*{\S7 Calidad web --- cobertura sobre un alcance favorable y E2E que no corrieron}
+\textbf{Qu\'e encontr\'e:} lint y \rt{tsc} limpios, 280/280 pruebas y Dockerfile multi-stage. La cobertura declarada (ramas 73,69\,\%) se mide s\'olo sobre los archivos que importan las pruebas porque \rt{vite.config.ts} no define \rt{coverage.include}; con \rt{include: src/**} las ramas caen a 68,94\,\% y el umbral falla, con \rt{LoginPage}, \rt{ProfilePage}, \rt{PlanificacionPage}, \rt{router/index.tsx} y \rt{App.tsx} al 0\,\%. Esa cifra mal acotada es la que llega a la tabla de mantenibilidad. En Playwright, una prueba se salta con \rt{test.skip} porque ning\'un flujo define sus variables, otra est\'a excluida en la configuraci\'on, las seis restantes no tocan la serie temporal ni el calendario, y en el commit de corte ninguna se ejecut\'o porque fall\'o el paso previo del job de integraci\'on. Hay credenciales escritas en \rt{auth.spec.ts}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+cd apps/web && npm ci && npx vitest run --coverage --coverage.include='src/**/*.{ts,tsx}'   # codigo de salida 0
+grep -rn "test.skip" apps/web/e2e                                                          # vacio
+\end{verbatim}
+y el job de integraci\'on del commit final en verde con el recuento de pruebas Playwright en su registro.
+
+\subsection*{\S8 Aplicaci\'on m\'ovil --- el APK de entrega no puede hablar con el sistema}
+\textbf{Qu\'e encontr\'e:} Kotlin con Compose y MVVM, API m\'inima 26 y objetivo 34, inicio de sesi\'on por el gateway, listado y detalle con actualizaci\'on por arrastre y cach\'e Room, y QR real. Pero el \rt{.dex} del APK versionado contiene \rt{http://10.0.2.2:8080/} (el CI no define \rt{SCLI\_API\_BASE\_URL}) y el tr\'afico HTTP sin cifrar s\'olo se permite en el manifiesto de depuraci\'on, as\'i que en release queda bloqueado. Las notificaciones push no funcionan: no hay \rt{google-services.json}, el APK no contiene \rt{google\_app\_id}, el backend tiene \rt{FIREBASE\_ENABLED=false} y el propio README lo admite. Crear un incidente no notifica a ning\'un t\'ecnico (s\'olo hay una notificaci\'on local), y el detalle del laboratorio escaneado no lleva a la reserva r\'apida que pide la Tabla 1. \textbf{C\'omo debe quedar:} APK de release contra el gateway por HTTPS o con \rt{network\_security\_config} restringido; push FCM de extremo a extremo desde la creaci\'on del incidente hasta los t\'ecnicos con permiso, con evidencia versionada (identificador del mensaje enviado, registro del dispositivo y captura); acci\'on ``Reservar este laboratorio'' tras escanear. \textbf{C\'omo lo verifico:} \rt{unzip -p release/apk/*.apk 'classes*.dex' | strings | grep -c 10.0.2.2} da 0; los recursos del APK contienen \rt{google\_app\_id}; la creaci\'on de incidentes llama al puerto de notificaci\'on.
+
+\subsection*{\S9 Calidad m\'ovil --- sin prueba extremo a extremo y con cobertura del 38\,\%}
+\textbf{Qu\'e encontr\'e:} 291 pruebas unitarias, unas 120 de ViewModels, todas con JUnit 4; las siete instrumentadas prueban pantallas con dobles, un DAO y una migraci\'on, y ninguna recorre la aplicaci\'on (actividad, inicio de sesi\'on, navegaci\'on, red). Cobertura de l\'ineas recalculada desde \rt{jacocoTestReport.xml}: 1.733/4.520 = 38,34\,\%, sin compuerta. El APK versionado se subi\'o a mano el 12/09; su firma es v\'alida con clave propia, pero nada lo vincula con el artefacto del CI; el job firmado s\'olo corre al empujar a \rt{feature/entrega-4} (en el PR sali\'o \emph{skipped}) y no depende de las pruebas. \textbf{C\'omo debe quedar:} ViewModels con JUnit 5; cobertura $\ge$70\,\% con \rt{jacocoTestCoverageVerification}; al menos una E2E instrumentada con \rt{createAndroidComposeRule<MainActivity>} que recorra inicio de sesi\'on, lista, detalle y modo sin conexi\'on contra un servidor simulado; APK firmado generado desde \rt{main} despu\'es de las pruebas y publicado de forma verificable (Release con su suma citada en el README o atestaci\'on de procedencia). \textbf{C\'omo lo verifico:} \rt{grep -rl org.junit.jupiter apps/mobile/app/src/test | wc -l}; \rt{grep -rn "createAndroidComposeRule<MainActivity>" apps/mobile/app/src/androidTest}; la suma publicada coincide con \rt{sha256sum} del APK descargado del CI.
+
+\subsection*{\S10 Contratos --- escritos a mano y verificados sin el proveedor real}
+\textbf{Qu\'e encontr\'e:} los contratos consumidores est\'an escritos a mano en Java dentro de \rt{tests/contract}; no se generan desde la web (no hay pact-js) ni desde el m\'ovil, y ya est\'an desfasados: la app pide \rt{GET api/v1/incidentes?tamanio=100} y el contrato define ese GET sin par\'ametros. La verificaci\'on del proveedor usa \rt{standaloneSetup} con servicios simulados, sin contexto de Spring ni seguridad, y auth-service no tiene prueba de proveedor, as\'i que sus contratos nunca se verifican. El validador en tiempo de ejecuci\'on es una mejora real, pero s\'olo compara m\'etodo y ruta, y el job \rt{validate-openapi-contracts} sigue ejecutando el script que compara el JSON con su propio extractor por expresiones regulares, lo cual es circular. Adem\'as esos cambios rompieron el pipeline (\S13). \textbf{C\'omo debe quedar:} contratos generados por los clientes reales (pact-js sobre la capa de API web; pruebas consumidoras sobre las interfaces Retrofit), verificados contra el proveedor arrancado (\rt{@SpringBootTest(webEnvironment = RANDOM\_PORT)}) en cada servicio consumido, incluido auth, y validaci\'on de esquemas contra \rt{/v3/api-docs} como compuerta de la publicaci\'on. \textbf{C\'omo lo verifico:} \rt{grep -n pact apps/web/package.json apps/mobile/app/build.gradle.kts}; \rt{grep -rn standaloneSetup} en las pruebas de proveedor devuelve vac\'io; existe la prueba de proveedor de auth; job de verificaci\'on en verde en el commit final.
+
+\subsection*{\S11 Persistencia distribuida --- tolerancia a fallos sin experimento reproducible}
+\textbf{Qu\'e encontr\'e:} tres nodos CockroachDB con TLS, \rt{num\_replicas=3}, Flyway en cuatro servicios y un script de CI que detiene un nodo (en verde). Pero la evidencia de tolerancia a fallos son capturas del 28/07 de otra topolog\'ia (\rt{-{}-insecure}) m\'as un v\'ideo de 24,6\,MB, con latencias de una sola medici\'on dominadas por el arranque del cliente, y cita una figura que no existe. Con el nodo ca\'ido el script s\'olo ejecuta \rt{SELECT 1} y compara la versi\'on de migraci\'on como texto, de modo que nunca verifica V10--V14. Auth, usuarios y acad\'emico corren en nodo \'unico. Y el registro del servicio de reservas de la campa\~na de fiabilidad muestra ``No license installed. The maximum number of concurrently open transactions has been reached'', que es el origen de los HTTP 500 de las campa\~nas. \textbf{C\'omo debe quedar:} carpeta \rt{experimentos/crdb-failover/} con script, estado del cl\'uster antes, durante y despu\'es, lecturas y escrituras con marca UTC, cinco o m\'as repeticiones con uno y dos nodos ca\'idos y manifiesto; verificador de CI que lea y escriba en tablas replicadas con el nodo ca\'ido y compare la versi\'on de migraci\'on como entero; l\'imite de licencia resuelto antes de volver a medir, o justificado en un ADR junto con la decisi\'on de nodos \'unicos.
+
+\subsection*{\S12 Pir\'amide de pruebas --- capas escritas pero no ejercitadas al corte}
+\textbf{Qu\'e encontr\'e:} 869 pruebas de backend, Testcontainers con CockroachDB en tres servicios y el \rt{locustfile} ya renueva el testigo. Pero en el commit de corte fall\'o el job de integraci\'on, de modo que Playwright y el \emph{smoke} de Locust no se ejecutaron; no hay E2E m\'ovil (\S9); las diez corridas nominales y la \'unica rampa son del 30/08, anteriores a la correcci\'on del testigo, y la rampa registra \rt{status: failed}; el CI no publica los informes de Playwright ni de JaCoCo; acad\'emico prueba integraci\'on con H2 y Flyway desactivado; Testcontainers usa CockroachDB v24.3.5 y el compose v26.2.0. \textbf{C\'omo debe quedar:} las cinco capas en verde en el commit final, cada una con su informe como artefacto descargable; carga nominal (50 usuarios, 5 minutos) y rampa (0 a 200 en 10 minutos, tres o m\'as corridas) repetidas con el \emph{harness} corregido y sus datos crudos versionados; integraci\'on de acad\'emico sobre CockroachDB con migraciones reales y la misma versi\'on que el compose.
+
+\subsection*{\S13 Pipeline CI/CD --- en rojo en el commit de corte}
+\textbf{Qu\'e encontr\'e:} los siete jobs existen en un DAG coherente, sin \rt{continue-on-error} ni pruebas saltadas, con sonda de salud y seis im\'agenes etiquetadas por commit. Pero hubo 11 commits consecutivos en rojo hasta el de corte, que no tiene im\'agenes publicadas. La causa, reproducida en local: \rt{build-helper-maven-plugin} a\~nade fuentes de \rt{../../tests/openapi-runtime}, fuera del contexto de Docker, y \rt{jackson-databind} tiene alcance \rt{test}. El lint del backend s\'olo corre en acad\'emico con seis reglas; ESLint admite advertencias; \rt{validate-openapi-contracts} y el job del APK firmado no bloquean la publicaci\'on de im\'agenes; el despliegue nunca se ejecut\'o. \textbf{C\'omo debe quedar:} ejecuci\'on completa en verde sobre el commit etiquetado, con sus im\'agenes en GHCR; Checkstyle con \rt{failOnViolation} en los cinco servicios; \rt{eslint . -{}-max-warnings 0}; todas las validaciones en los \rt{needs} de \rt{build-images}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+curl -s "https://api.github.com/repos/gleiston-guerrero/Entrega-final-del-PFC/actions/runs?head_sha=$(git rev-parse v4.0.0^{commit})"
+grep -c "checkstyle:check" .github/workflows/ci-cd.yml        # >= 5
+\end{verbatim}
+
+\subsection*{\S14 Observabilidad --- la mitad del tablero vac\'io}
+\textbf{Qu\'e encontr\'e:} registros JSON con \rt{trace\_id} en los cinco servicios, \rt{app\_business\_events\_total} en flujos reales, \rt{app\_active\_sessions} en auth, Collector hacia Tempo y Loki, y un tablero versionado con seis paneles. Pero la captura del propio equipo, tomada bajo carga, muestra ``No data'' en tres: disponibilidad del cl\'uster (el \emph{scrape} no declara \rt{scheme: https} ni \rt{tls\_config} y el cl\'uster usa certificados), recursos por contenedor (cAdvisor sin privilegios) y latencia desde el m\'ovil, que en realidad es un indicador del gateway y tampoco tiene datos. La app no mide ni exporta latencia; su \rt{TraceId.kt} es un UUID por proceso sin \rt{traceparent}. \rt{http\_requests\_total} s\'olo existe en dos servicios, \rt{http\_request\_duration\_seconds} es una regla de grabaci\'on s\'olo para reservas, el tablero no usa ninguna de las cuatro m\'etricas nuevas y no hay una traza distribuida exportada. \textbf{C\'omo debe quedar:} los seis paneles con series bajo carga Locust, con captura y respuestas \rt{query\_range} versionadas en \rt{ops/evidencia/}; interceptor en el cliente m\'ovil que mida la duraci\'on de cada petici\'on, genere \rt{traceparent} y exporte la m\'etrica por OTLP; las cuatro m\'etricas en todos los servicios que atienden tr\'afico y usadas en el tablero; una traza del m\'ovil a CockroachDB exportada y correlacionada con su registro en Loki.
+
+\subsection*{\S15 Campa\~na experimental --- la correcci\'on de fiabilidad no se ejecut\'o}
+\textbf{Qu\'e encontr\'e:} PI1 qued\'o bien corregida (v\'ease el recuadro de lo hecho). Fiabilidad no: el protocolo correctivo registra diez repeticiones de una hora con renovaci\'on de sesi\'on, pero \rt{resultados/iso25010-correctiva.csv} tiene sus diez filas vac\'ias; la \'unica repetici\'on correctiva que el cierre declara ``v\'alida'' y los tres intentos de la segunda no est\'an en el repositorio (el documento lo admite), y lo \'unico versionado es un \emph{smoke} de 25 minutos. La campa\~na que sostiene PI2 sigue con 75,05\,\% de respuestas 401 inducidas por el instrumento, marcada \rt{valida=si}. En ARBITER, Esc-1 perdi\'o 7 de 10 corridas ($n=3$ frente a $r=10$); los invariantes I4 e I5 quedan \rt{NOT\_OBSERVED} en 96 de 96 casos, de modo que el or\'aculo s\'olo eval\'ua tres de cinco; y el censo HTTP omite Esc-4, donde S4 tuvo 351 de 1.600 errores (21,94\,\%) frente a 0 de S3, porque \rt{auditar\_http\_arbiter.py} fija \rt{COMPARISON\_SCENARIOS=("esc2","esc3")}. Seguridad, mantenibilidad y compatibilidad usan $r=3$. \textbf{C\'omo debe quedar:} campa\~na correctiva de fiabilidad $10\times1$\,h ejecutada despu\'es de resolver el l\'imite de transacciones (\S11), con datos crudos, metadatos y sumas de cada repetici\'on versionados; ARBITER con repeticiones suficientes en Esc-1 (o exclusi\'on declarada en el protocolo antes de ejecutar), corridas de cancelaci\'on y acceso que ejerciten I4 e I5, y censo HTTP de todos los escenarios. \textbf{C\'omo lo verifico:}\begin{verbatim}
+python -c "import csv;print(sum(1 for r in csv.DictReader(open('experimentos/resultados/iso25010-correctiva.csv')) if r['total_requests']))"  # 10
+grep -rho NOT_OBSERVED experimentos/resultados/arbiter/campaign/analysis/oracle | wc -l
+grep -n COMPARISON_SCENARIOS experimentos/*.py
+\end{verbatim}
+
+\subsection*{\S16 Paquete de datos --- sumas que no verifican y dos juegos de percentiles}
+\textbf{Qu\'e encontr\'e:} el manifiesto general verifica 468/468 sobre los bytes del repositorio y ARBITER 315/315, pero \rt{evidencia-e3-canonica/MANIFEST-SHA256.txt} no verifica en ning\'un modo de checkout (falla 43 de 50 sobre los bytes: 43 sumas se calcularon sobre la versi\'on CRLF), el \emph{smoke} de fiabilidad falla 3 de 7 y ning\'un job del CI verifica los manifiestos. No hay un juego can\'onico: \rt{iso25010.csv} guarda los percentiles de la fila agregada (r1: p95 110, p99 2.200\,ms) y el manuscrito publica los de la fila GET (r1: 87 y 1.000\,ms), que no est\'an en ning\'un CSV procesado. \textbf{C\'omo debe quedar:} manifiestos regenerados sobre los bytes versionados y protegidos por \rt{.gitattributes}; un paso del CI que ejecute \rt{sha256sum -c} para cada manifiesto; un \'unico CSV can\'onico con exactamente los valores que publica el documento; datos crudos de toda ejecuci\'on que el documento cite. \textbf{C\'omo lo verifico} (en un clon limpio, en Linux y en Windows):\begin{verbatim}
+sha256sum -c experimentos/resultados/SHA256SUMS | grep -vc ': OK$'                                              # 0
+(cd experimentos/resultados/evidencia-e3-canonica && sha256sum -c MANIFEST-SHA256.txt | grep -vc ': OK$')         # 0
+(cd experimentos/evidencia-e2/smoke-refresh-25m && sha256sum -c SHA256SUMS.txt | grep -vc ': OK$')                # 0
+\end{verbatim}
+
+\subsection*{\S17 Evaluaci\'on ISO/IEC 25010 --- una respuesta afirmativa sobre una poblaci\'on inv\'alida}
+\textbf{Qu\'e encontr\'e:} la tasa de 5xx publicada (0,061\,\%, IC95\,\% [0,032; 0,091]) se calcula sobre una poblaci\'on donde el 75\,\% son 401 que no llegan al servicio; con el denominador sin 401, recalculado desde \rt{locust\_failures.csv}, es 0,246\,\% [0,128; 0,364], cuatro veces m\'as, y en el \emph{smoke} con sesi\'on renovada llega a 0,60\,\% (219 HTTP 500 en 36.331 GET), cerca del umbral del 1\,\%. Los p95/p99 de fiabilidad usan la fila agregada, con una regla de poblaci\'on distinta de la de PI1. Mantenibilidad no mide la complejidad ciclom\'atica que exige la Tabla 2 y usa la cobertura web mal acotada (\S7). Seguridad cuenta 7 decisiones $\times$ 3 en vez del porcentaje de endpoints con verificaci\'on JWT sobre las 224 operaciones del gateway. Compatibilidad m\'ovil ``API 26+'' s\'olo se prob\'o en un emulador API 29. \textbf{C\'omo debe quedar:} las cinco caracter\'isticas con la m\'etrica de la Tabla 2, sobre la poblaci\'on que declara el protocolo: fiabilidad desde la campa\~na correctiva de \S15; mantenibilidad con cobertura de todo el c\'odigo y complejidad ciclom\'atica media por componente (PMD, Checkstyle o \rt{lizard}); seguridad como porcentaje de endpoints protegidos del inventario OpenAPI con una prueba 401 por endpoint; compatibilidad m\'ovil en API 26 y 34. Las m\'etricas deterministas se reportan como medici\'on \'unica, sin intervalo.
+
+\subsection*{\S18 Manuscrito --- dos introducciones y conclusiones que no son las finales}
+\textbf{Qu\'e encontr\'e:} compila a 33 p\'aginas sin indefinidas y la bibliograf\'ia cumple. Pero no hay PDF versionado de la fuente oficial; \rt{docs/entrega-4}, presentado como instant\'anea, incluye las secciones vivas, compila con una figura ausente (\rt{panel-monitoreo.png}) y una referencia indefinida (\rt{sec:contratos-openapi}), y su PDF es del 05/09. Hay dos secciones ``Introducci\'on''; las secciones de E4 se insertan antes de la discusi\'on y las conclusiones de E3, de modo que el documento termina con las conclusiones de E3; la tabla de m\'odulos de E3 sigue diciendo ``M\'etricas Prometheus: No iniciado'' y ``Protocolo: sin repeticiones ejecutadas''; el resumen dice que las evidencias ``a\'un deban ejecutarse'', no da ning\'un resultado y tiene 154 palabras en espa\~nol y 97 en ingl\'es. No hay capturas de las cinco rutas web, de la app m\'ovil ni de una traza (las ``figuras'' de las aplicaciones son bloques de texto ASCII). \textbf{C\'omo debe quedar:} un documento acumulativo con la estructura de la Tabla 3 de la gu\'ia (una introducci\'on; discusi\'on y conclusiones finales que integren E1--E4), res\'umenes de al menos 200 palabras con los resultados, capturas reales de las cinco rutas en espa\~nol e ingl\'es, de la app y de una traza en Tempo; cifras id\'enticas al CSV can\'onico (\S16--\S17) y compilado \emph{despu\'es} de la \'ultima regeneraci\'on de resultados; \rt{docs/main.pdf} versionado e igual a la compilaci\'on de su fuente; \rt{docs/entrega-4} congelado con copia propia de secciones y figuras, como ya se hizo con \rt{docs/entrega-3}. \textbf{C\'omo lo verifico:}\begin{verbatim}
+cd docs && latexmk -pdf -interaction=nonstopmode main.tex && grep -c "undefined\|not found" main.log         # 0
+cd entrega-4 && latexmk -pdf -interaction=nonstopmode main.tex && grep -c "undefined\|not found" main.log    # 0
+grep -rc '\\section{Introducci' ../main.tex secciones/*.tex                                                 # total 1
+\end{verbatim}
+Adem\'as extraigo el texto del PDF y busco cada valor de la tabla ISO en el CSV can\'onico.
+
+\subsection*{\S19 Amenazas a la validez y reflexi\'on \'etica}
+\textbf{Qu\'e encontr\'e:} tres amenazas internas, dos externas y tres de constructo con el formato amenaza, efecto, mitigaci\'on y riesgo. Dos ``mitigaciones'' internas s\'olo informan (``se conservan y publican todos los intentos'', ``se reporta separada''), y faltan las dos amenazas que m\'as afectan a los resultados: el testigo no renovado (75\,\% de 401) y el l\'imite de transacciones de CockroachDB sin licencia, causa de los HTTP 500. La reflexi\'on \'etica cita el C\'odigo de \'Etica de ACM pero tiene 342 palabras, cerca de un tercio de p\'agina. \textbf{C\'omo debe quedar:} ambas amenazas a\~nadidas con una mitigaci\'on que las reduzca (campa\~na correctiva, licencia o ajuste del l\'imite); las dos mitigaciones reescritas como control, repetici\'on o medici\'on adicional; reflexi\'on de al menos media p\'agina vinculada a principios numerados del c\'odigo (1.2, 1.6, 2.5, 3.1) aplicados a los datos de reservas y monitoreo.
+
+\subsection*{\S20 Trabajo en equipo y autor\'ia}
+\textbf{Qu\'e encontr\'e:} las actas se reetiquetaron honestamente como ``registros retrospectivos'' escritos el 12/09 que ``no demuestran reuniones'': no existe ning\'un acta contempor\'anea. La revisi\'on cruzada se reduce a la aprobaci\'on descrita en \S3. La declaraci\'on de uso de IA es gen\'erica y no dice en qu\'e artefactos se us\'o. Urbina Romero tiene 73 commits con aporte real en web, usuarios, m\'ovil, Observer y ADR-006; Villamar\'in Cuenca tiene 91, pero la mitad de sus l\'ineas son JSON de OpenAPI generados y, entre el 12/09 y el corte, un solo cambio sustantivo. \textbf{C\'omo debe quedar:} un acta por reuni\'on del periodo del suspenso, versionada el mismo d\'ia; cada \'item de esta r\'ubrica entregado en un PR cuyo autor es uno de los dos integrantes que rinden el examen y cuyo revisor es otro integrante, con comentarios sobre el c\'odigo; declaraci\'on de IA con herramienta, tareas y c\'omo se verific\'o lo producido. El aporte de cada estudiante que rinde el examen se acredita s\'olo por sus propios commits y PR sobre los \'items de esta gu\'ia. \textbf{C\'omo lo verifico:} \rt{git log -{}-format='\%h \%cI \%aN' -{}- docs/actas/} frente a la fecha interna de cada acta; \rt{git shortlog -sn -{}-no-merges d0ef60b..v4.0.0}; \rt{/pulls?state=all}, \rt{/reviews} y \rt{/comments} de la API.
+
+\section{Orden de ejecuci\'on}
+\S13 pipeline en verde $\rightarrow$ \S2 y \S16 finales de l\'inea, manifiestos y compuerta $\rightarrow$ \S11 l\'imite de transacciones $\rightarrow$ \S15 campa\~nas $\rightarrow$ \S17 ISO/IEC 25010 y CSV can\'onico $\rightarrow$ \S4 capas y ArchUnit $\rightarrow$ \S5 patrones $\rightarrow$ en paralelo \S6--\S7 web y \S10 contratos (Villamar\'in Cuenca) y \S8--\S9 y \S14 m\'ovil y observabilidad (Urbina Romero) $\rightarrow$ \S12 pir\'amide $\rightarrow$ \S18 manuscrito y \S19 amenazas con las cifras definitivas $\rightarrow$ \S1 URL $\rightarrow$ \S20 y \S3 PR revisados, fusi\'on a \rt{main}, CHANGELOG, manifiestos finales y, lo \'ultimo, la etiqueta anotada.
+
+\section{Lista de verificaci\'on antes de entregar}
+\begin{verbatim}
+git ls-remote https://github.com/gleiston-guerrero/Entrega-final-del-PFC HEAD   # repositorio transferido y accesible
+git cat-file -t v4.0.0 && git merge-base --is-ancestor v4.0.0 origin/main && test -f CHANGELOG.md -a -f LICENSE
+sha256sum -c experimentos/resultados/SHA256SUMS | grep -vc ': OK$'
+python experimentos/analizar_iso25010.py experimentos/resultados/iso25010-correctiva.csv
+grep -rEn "import .*\.(infrastructure|presentation)\." services/*/src/main/java --include=*.java | grep -c /application/
+cd apps/web && npx vitest run --coverage --coverage.include='src/**/*.{ts,tsx}'
+cd docs && latexmk -pdf main.tex && grep -c "undefined\|not found" main.log
+\end{verbatim}
+
+\piedepagina
+\end{document}

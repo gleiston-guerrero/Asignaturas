@@ -1,0 +1,928 @@
+<title>Evaluación final del PFC — Aplicaciones Distribuidas</title>
+<style>
+:root{--az:#0E3F7E;--te:#2E86A1;--ok:#2A6349;--am:#96660F;--ro:#9E3324;--gr:#4B5563;--bg:#fff;--fg:#1b1f24;--mut:#5a6672;--li:#D3DCE8;--su:#F2F5F8;--cd:#eef2f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.62 "Charter",Georgia,"Times New Roman",serif}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 70px}
+header.top{background:linear-gradient(135deg,#0E3F7E,#2E86A1);color:#fff;padding:30px 20px 26px}
+header.top .in{max-width:1120px;margin:0 auto}
+header.top h1{margin:0 0 4px;font-size:1.5rem}
+header.top p{margin:2px 0;opacity:.93;font-size:.92rem}
+.parte{background:var(--az);color:#fff;padding:9px 16px;border-radius:6px;font-size:.82rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin:40px 0 4px;display:inline-block}
+h2{color:var(--az);font-size:1.26rem;border-bottom:2px solid var(--li);padding-bottom:7px;margin:14px 0 12px}
+h3{color:var(--te);font-size:1.05rem;margin:26px 0 9px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em;background:var(--cd);padding:1px 5px;border-radius:3px;word-break:break-word}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin:10px 0 16px}
+.meta div{background:var(--su);border:1px solid var(--li);border-radius:6px;padding:6px 11px;font-size:.84rem}
+.meta b{color:var(--az)}
+.tw{overflow-x:auto;border:1px solid var(--li);border-radius:8px;margin:12px 0}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:.88rem}
+th{background:var(--az);color:#fff;text-align:left;padding:9px 10px;font-size:.8rem;letter-spacing:.3px}
+td{padding:9px 10px;border-top:1px solid var(--li);vertical-align:top}
+tr:nth-child(even) td{background:#fafcfe}
+.grupo td{background:var(--su)!important;font-weight:700;color:var(--az);font-size:.84rem;letter-spacing:.4px;text-transform:uppercase;border-top:2px solid var(--az)}
+.cod{font-weight:700;color:var(--az);white-space:nowrap}
+.ev{display:block;margin-top:4px;font-size:.92em;color:var(--mut);line-height:1.5}
+.b{display:inline-block;padding:3px 9px;border-radius:11px;font-size:.75rem;font-weight:700;white-space:nowrap}
+.st-hecho{background:#e8ebef;color:var(--gr)}
+.st-com{background:#e4f1ea;color:var(--ok)}
+.st-mod{background:#fbf0dc;color:var(--am)}
+.st-ter{background:#fae5e0;color:var(--ro)}
+.st-hac{background:#3a3a3a;color:#fff}
+.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.n b{font-size:1.02rem}.n span{color:var(--mut);font-size:.85em}
+tfoot td{background:var(--su);font-weight:700;border-top:2px solid var(--az)}
+.box{border:1px solid var(--li);border-left:4px solid var(--te);background:var(--su);border-radius:6px;padding:13px 16px;margin:14px 0}
+.box.warn{border-left-color:var(--am);background:#fdf7ec}
+.box.good{border-left-color:var(--ok);background:#eef6f1}
+.box.bad{border-left-color:var(--ro);background:#fdf0ec}
+.box h4{margin:0 0 6px;color:var(--az);font-size:.95rem}
+.calc{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;background:#fff;border:1px solid var(--li);border-radius:6px;padding:12px 14px;margin:10px 0;overflow-x:auto}
+.calc div{padding:3px 0}.calc .r{border-top:1px solid var(--li);margin-top:6px;padding-top:8px;font-weight:700;color:var(--az);font-size:1rem}
+.opt{border:1px solid var(--li);border-radius:8px;padding:12px 15px;margin:10px 0;background:#fff}
+.opt.sel{border-color:var(--ok);border-left:4px solid var(--ok);background:#eef6f1}
+.opt .h{font-weight:700;color:var(--az);margin-bottom:3px}
+.opt .v{float:right;font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+.gr{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:11px;margin:13px 0}
+.card{border:1px solid var(--li);border-radius:8px;padding:12px 14px;background:var(--su)}
+.card .k{font-size:.76rem;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.card .v{font-size:1.45rem;font-weight:700;color:var(--az);font-variant-numeric:tabular-nums}
+.card .s{font-size:.79rem;color:var(--mut)}
+.fb{position:relative;margin:13px 0}
+.fb pre{background:#11161c;color:#e6edf3;padding:16px;border-radius:8px;overflow-x:auto;font:12.5px/1.72 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;margin:0}
+.fb button{position:absolute;top:9px;right:9px;background:#2E86A1;color:#fff;border:0;border-radius:5px;padding:6px 13px;font-size:.78rem;cursor:pointer;font-family:inherit}
+.fb button:hover{background:#246e86}.fb button.done{background:var(--ok)}
+ul{margin:.4em 0;padding-left:1.2em}li{margin:.28em 0}
+.foot{margin-top:42px;padding-top:14px;border-top:1px solid var(--li);color:var(--mut);font-size:.83rem}
+@media (max-width:640px){.wrap{padding:0 15px 45px}header.top{padding:24px 15px}header.top h1{font-size:1.2rem}}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1419;--fg:#e6edf3;--mut:#9aa7b4;--li:#2a3541;--su:#161c24;--cd:#1d252e}
+tr:nth-child(even) td{background:#131920}.calc,.opt{background:#0f1419}}
+
+.n.bad{color:#9E3324;font-weight:700}
+.fbh{font-weight:700;color:var(--az);margin:20px 0 0;font-size:.95rem}
+</style>
+<header class="top"><div class="in"><h1>Evaluación final del Proyecto Fin de Curso</h1><p>Aplicaciones Distribuidas (ISR-701) · Facultad de Ciencias de la Computación · UTEQ · Periodo 2026–2027</p></div></header>
+<div class="wrap">
+<h2>Cómo se califica</h2>
+<p>De todo lo exigido a cada proyecto, una parte estaba ya resuelta y verificada y no vuelve a puntuar: aparece marcada como <b>Hecho</b>. Lo que se califica es lo que quedaba pendiente, y cada uno de esos elementos cuenta dos veces: como sumando y como factor.</p>
+<div class="box"><h4>La cuenta</h4><p style="margin-top:0">Cada elemento pendiente tiene un <b>peso</b> —todos los pesos suman 10— y recibe una calificación sobre ese peso.</p><p><b>Suma.</b> <i>S</i> es la suma de las calificaciones de todos los elementos.</p><p><b>Factor.</b> El factor de cada elemento es su calificación dividida entre su máximo, de modo que solo vale 1 cuando el elemento está terminado y correcto al cien por cien.</p><p><b>Nota del equipo</b> = (factor₁ × factor₂ × … × factorₙ) × <i>S</i>.</p><p style="margin-bottom:0"><b>Nota del estudiante.</b> El trabajo se evalúa una sola vez por equipo, y cada integrante recibe esa nota ajustada por lo que aportó, sin superarla nunca. Ese resultado pesa el 80 %, y el 20 % restante es la calificación del cuestionario del SGA.</p></div>
+<div class="box"><h4>La columna de estado</h4><ul style="margin-bottom:0"><li><b>Hecho</b> — resuelto y verificado con anterioridad. No puntúa.</li><li><b>Completo</b> — terminado y correcto al cien por cien.</li><li><b>Modificar</b> — existe y funciona, pero tiene defectos concretos.</li><li><b>Por terminar</b> — empezado, sin alcanzar el mínimo exigido.</li><li><b>Por hacer</b> — no existe nada.</li></ul></div>
+<div class="box"><h4>Cómo se midió</h4><p style="margin-top:0">Clonando los cuatro repositorios, leyendo el código archivo por archivo, compilando cada documento desde una copia limpia, ejecutando las pruebas y los guiones de análisis, y recalculando de forma independiente las cifras que cada documento declara. La presencia de un archivo no cuenta como cumplimiento, y el mensaje de un commit no cuenta como prueba de lo que afirma.</p><p style="margin-bottom:0">Tres comprobaciones no fueron posibles en este entorno y no cuentan como defecto de nadie: no hay demonio de contenedores, no hay kit de desarrollo de Android, y la revisión se hace sobre el contenido versionado, no sobre despliegues en marcha.</p></div>
+<h2>Equipo FUVV — SCLI — Sistema de Control de Laboratorios Informáticos</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/ffarinangog2/Entrega-final-del-PFC</code></div><div><b>Rama</b> <code>feature/entrega-4</code></div><div><b>Commit</b> <code>445e5b0</code></div><div><b>Fecha</b> 12 de septiembre de 2026</div><div><b>Elementos exigidos</b> 37</div></div>
+<div class="tw"><table><thead><tr><th style="width:48%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:14%">Calificación</th><th style="width:10%">Factor</th></tr></thead><tbody>
+<tr class="grupo"><td colspan="5">Resuelto y verificado con anterioridad — no puntúa</td></tr>
+<tr><td>Refactorización en capas y principios SOLID</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Patrones de diseño documentados en registros de decisión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Vistas de arquitectura C4 (tres niveles) con fuente versionada</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Esquema de base de datos y semillas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Persistencia distribuida operando con evidencia de tolerancia a fallos</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación web funcional (construye y ejecuta)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Calidad de la aplicación web (pruebas de unidad)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación móvil funcional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capacidades de dispositivo (cámara y notificaciones)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Integración web + móvil + backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de unidad e integración del backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de contrato</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de extremo a extremo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de carga</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pipeline de integración y despliegue con publicación etiquetada</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Observabilidad: métricas, trazas, registros y tableros</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Procesamiento paralelo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Protocolo experimental e instrumental de medición</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Datos crudos preservados con metadatos y sumas de verificación</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Fijación de finales de línea para verificación reproducible</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Manuscrito compilable, acumulativo y sin referencias indefinidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Bibliografía verificada con identificador persistente</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Amenazas a la validez con mitigación declarada</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Reflexión ética referida al código de ética profesional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>README con instrucciones de compilación y reproducibilidad</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Licencia y archivo de citación</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Declaración de uso de herramientas de inteligencia artificial</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capturas de la aplicación en release</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Higiene del repositorio (sin artefactos de compilación versionados)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr class="grupo"><td colspan="5">Lo pendiente — es lo que se califica, y cada uno es factor</td></tr>
+<tr><td><span class="cod">E1</span> <b>Preguntas de investigación</b><span class="ev">El documento formula dos preguntas etiquetadas, cada una con su variable manipulada, su medida y su población, y ambas están respondidas con los datos del proyecto. Una recibe un «solo parcialmente» porque el percentil 99 excede el umbral, y admitir el resultado desfavorable es lo correcto. Verifiqué que los umbrales del prerregistro son anteriores a la campaña. El defecto está en la población: los percentiles salen de la fila agregada de Locust, que incluye los inicios de sesión de siete a ocho segundos y un 75 % de respuestas 401. Recalculado sobre la población que la propia pregunta declara, el percentil 99 da media 371,25 ms con IC95 [66,91; 675,59], por debajo del umbral. La pregunta se responde a sí misma en contra por un descontrol de población.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,40</b> <span>/ 2,0</span></td><td class="n bad">0,7</td></tr>
+<tr><td><span class="cod">E2</span> <b>La prueba de fiabilidad de una hora</b><span class="ev">Diez repeticiones ejecutadas de verdad: <code>elapsed_seconds</code> entre 3.600,8 y 3.601,1 en las diez, 270 archivos crudos preservados y <code>evidence_complete=True</code>. Reproduje una de las filas desde el dato bruto y coincide dígito a dígito. Cada fila registra los 66.915 fallos HTTP 401, el contraste con Prometheus y el código de salida distinto de cero, de modo que nada se oculta. El límite es que esos 401 vienen de <code>tests/load/locustfile.py:42</code>, que fija el testigo al arrancar y no lo renueva: el indicador de errores de servidor es defendible, pero los percentiles no describen la población declarada.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,44</b> <span>/ 1,8</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E3</span> <b>Las cinco características de calidad</b><span class="ev">Las cinco tienen valor medido, intervalo y umbral. Eficiencia y fiabilidad por <code>analizar_iso25010.py</code>; seguridad (21/21, Wilson [0,8454; 1]), mantenibilidad (Android 38,34 % frente a un umbral de 70 %, que no cumple y se consigna) y compatibilidad (24/24 por motor, Wilson [0,8620; 1]) por <code>analizar_e3.py</code>, con 51 archivos crudos en <code>evidencia-e3-canonica/</code>. Comprobé lo esencial: los umbrales del prerregistro son idénticos a los de hoy y las campañas se ejecutaron después, y regeneré el análisis byte a byte idéntico. El defecto es que mantenibilidad declara tres repeticiones que son el mismo archivo, con desviación cero e intervalo degenerado: eso no es replicación.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,36</b> <span>/ 1,7</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E4</span> <b>Lo medido que llega al documento</b><span class="ev">La campaña experimental central está completa y es auténtica. Recalculé las 24 comparaciones desde los datos crudos y reproducen sin una sola discrepancia —U=64, p=0,0007775 y A12=1,0 salen exactos—; los 16.500 valores de latencia son todos distintos; cada latencia coincide con la resta de sus marcas de tiempo con error cero; ninguna decisión del servidor precede al envío del cliente; y el registro de la campaña termina con el rastro real del fallo del operador, que nadie fabrica. El manifiesto de esa campaña verifica 315 de 315. Quedan dos defectos: el texto afirma que el manifiesto general enumera 198 archivos cuando tiene 468, y ahí falla un hash; y los errores HTTP se concentran asimétricamente en las estrategias comparadas, hasta un 26,7 % frente al 0 % de la de referencia, sin una sola cifra en el documento.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,20</b> <span>/ 1,5</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E5</span> <b>El contrato de todos los servicios</b><span class="ev">Cinco servicios, cinco contratos. El validador reporta 12/12, 44/44, 71/71, 79/79 y 224/224 rutas cubiertas con cero errores de estructura, y lo contrasté contando anotaciones en el código: coinciden. Corre en el flujo automático sin condicionales, de modo que un contrato desfasado lo rompe. El límite es que el validador compara el contrato contra su propio extractor por expresión regular, lo cual es circular para medir completitud.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">5</td><td class="n"><b>0,80</b> <span>/ 1,0</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E6</span> <b>Un solo documento por entrega</b><span class="ev">Hay una única fuente oficial declarada, y las dos carpetas históricas se identifican como instantáneas advirtiendo que su PDF es anterior. Compilado desde copia limpia, el documento vivo da 32 páginas con cero errores, cero citas indefinidas, cero referencias cruzadas indefinidas y ningún archivo ausente. El defecto es que la instantánea no está congelada: sigue incluyendo las secciones vivas, de modo que compilada hoy produce una referencia indefinida y le falta una figura.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>0,64</b> <span>/ 0,8</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E7</span> <b>El instalable de la aplicación móvil</b><span class="ev">El paquete existe y está firmado con los tres esquemas. No me limité a comprobar que los bloques estuvieran: recalculé el resumen troceado del esquema v2 sobre el contenido real del archivo y está contenido en los dos bloques; el certificado es válido y la suma verifica. El flujo lo alinea, lo firma con el almacén tomado de un secreto, lo verifica e imprime el certificado. El límite es que si faltan los secretos el trabajo se salta en silencio, así que un flujo en verde no prueba que se generara el paquete.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">5</td><td class="n"><b>0,56</b> <span>/ 0,7</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E8</span> <b>Actas de reunión</b><span class="ev">Existen cinco actas con fecha, participantes, decisiones y tabla de responsables, y verifiqué los dieciocho commits que citan: todos existen y cada uno está firmado por el integrante al que se atribuye. El problema es la cronología: las cinco entraron en un solo commit, y tres datan reuniones posteriores al commit que las registra —una de ellas quince horas y media después—. Solo dos son coherentes. La revisión cruzada, además, sigue registrada en cero solicitudes y cero aprobaciones.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">5</td><td class="n"><b>0,25</b> <span>/ 0,5</span></td><td class="n bad">0,5</td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="n">7,65 <span>/ 10,0</span></td><td class="n">0,091750</td></tr></tfoot></table></div>
+<div class="calc">
+<div>Suma&nbsp;&nbsp;S = 7,65 sobre 10</div>
+<div>Producto de los factores&nbsp;&nbsp;0,7&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,5 = 0,091750</div>
+<div class="r" style="font-size:1.12rem">Nota del equipo = 0,091750 × 7,65 = <b>0,70 / 10,00</b></div>
+</div>
+<h3>Aporte de cada integrante a esta entrega</h3>
+<p>El peso de cada elemento se reparte entre quienes lo trabajaron, según el historial del control de versiones en el rango que cierra esta rúbrica, combinando a partes iguales el número de commits y el volumen de cambio atenuado. El reparto equitativo entre 4 integrantes es el 25 %: quien lo alcanza recibe la nota completa del equipo, quien queda por debajo la recibe en proporción.</p>
+<div class="tw"><table><thead><tr><th style="width:32%">Integrante</th><th style="width:17%">Peso aportado</th><th style="width:17%">Participación</th><th style="width:17%">Factor</th><th style="width:17%">Nota del trabajo</th></tr></thead><tbody>
+<tr><td class="nom">Freddy Farinango</td><td class="n">5,56 <span>/ 10</span></td><td class="n">55,6 %</td><td class="n">1,000</td><td class="n"><b>0,70</b> <span>/ 0,70</span></td></tr>
+<tr><td class="nom">Isaías Urbina</td><td class="n">1,84 <span>/ 10</span></td><td class="n">18,4 %</td><td class="n">0,735</td><td class="n"><b>0,52</b> <span>/ 0,70</span></td></tr>
+<tr><td class="nom">Iván Villamarín</td><td class="n">1,38 <span>/ 10</span></td><td class="n">13,8 %</td><td class="n">0,551</td><td class="n"><b>0,39</b> <span>/ 0,70</span></td></tr>
+<tr><td class="nom">Harold Vinueza</td><td class="n">1,22 <span>/ 10</span></td><td class="n">12,2 %</td><td class="n">0,489</td><td class="n"><b>0,34</b> <span>/ 0,70</span></td></tr>
+</tbody></table></div>
+<h3>Nota final por integrante</h3>
+<div class="tw"><table><thead><tr><th style="width:30%">Integrante</th><th style="width:23%">Trabajo (80 %)</th><th style="width:23%">Cuestionario SGA (20 %)</th><th style="width:24%">Nota final</th></tr></thead><tbody>
+<tr><td class="nom">Freddy Farinango</td><td class="n">0,562 <span>(0,70 × 0,80)</span></td><td class="n"><span>pendiente</span></td><td class="n"><span>0,562 + cuest. × 0,20</span></td></tr>
+<tr><td class="nom">Harold Vinueza</td><td class="n">0,275 <span>(0,34 × 0,80)</span></td><td class="n">8,67 <span>→ 1,734</span></td><td class="n"><b>2,01</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Iván Villamarín</td><td class="n">0,309 <span>(0,39 × 0,80)</span></td><td class="n">5,53 <span>→ 1,106</span></td><td class="n"><b>1,42</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Isaías Urbina</td><td class="n">0,413 <span>(0,52 × 0,80)</span></td><td class="n"><span>pendiente</span></td><td class="n"><span>0,413 + cuest. × 0,20</span></td></tr>
+</tbody></table></div>
+<h3>Retroalimentación individual</h3>
+<p style="font-size:.9rem;color:var(--mut);margin-top:0">Un recuadro por integrante, en texto plano, listo para copiar de un clic y pegar en el espacio del estudiante.</p>
+<div class="fbh">Freddy Farinango</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Freddy Farinango:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit 445e5b0 del 12 de septiembre de 2026.
+
+La campaña experimental de este proyecto es la más sólida del curso y quiero que conste con precisión por qué.
+Recalculé las veinticuatro comparaciones desde los datos crudos y reproducen sin una sola discrepancia; los dieciséis mil quinientos valores de latencia son todos distintos; cada latencia coincide con la resta de sus propias marcas de tiempo con error cero; ninguna decisión del servidor precede al envío del cliente; y el registro de la campaña termina con el rastro real del fallo del operador.
+Nadie fabrica su propio fallo: esa evidencia resistiría el escrutinio de un tercero, y el manifiesto de la campaña verifica trescientas quince de trescientas quince entradas.
+La prueba de fiabilidad de una hora se ejecutó de verdad, diez veces, con doscientos setenta archivos crudos preservados, y reproduje una de las filas desde el dato bruto sin que discrepara un dígito.
+Las cinco características de calidad tienen valor, intervalo y umbral, y comprobé lo que más importa: que los umbrales se declararon antes de medir y no se tocaron después.
+Los cinco contratos de interfaz están completos y se validan automáticamente, y el instalable está firmado de verdad, con la firma verificada criptográficamente y no solo comprobada por la presencia del bloque.
+Ahora lo que deben corregir, y empiezo por lo que más les perjudica a ustedes mismos.
+La primera pregunta de investigación está sesgada en su contra: el percentil que la hace fallar sale de la fila agregada, que incluye los inicios de sesión de siete a ocho segundos y un setenta y cinco por ciento de respuestas rechazadas.
+Recalculado sobre la población que la propia pregunta declara, el umbral se cumple.
+Eso un revisor lo lee como descontrol de población, no como prudencia.
+El texto sigue afirmando que el manifiesto enumera ciento noventa y ocho archivos cuando contiene cuatrocientos sesenta y ocho, y uno de esos hashes ya no coincide.
+Los errores HTTP se concentran de forma asimétrica en las estrategias comparadas, hasta un veintiséis por ciento frente al cero por ciento de la de referencia, y eso debilita la comparación principal sin que el documento lo mencione.
+Y les pido atención especial a las actas: tres de las cinco datan reuniones ocurridas después del commit que las registra, una de ellas quince horas y media después.
+Un registro que no puede haber existido cuando se escribió resta credibilidad a los que sí son correctos.
+Prefiero decírselo con claridad: no construyan evidencia hacia atrás, aunque el requisito la pida.
+
+Detalle de la calificación:
+De los 37 elementos exigidos al proyecto, 29 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 7,65 sobre 10.
+Producto de los factores: 0,091750.
+Nota del equipo: 0,70 sobre 10.
+Su aporte a esta entrega: 55,6 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,70 sobre 10.
+Aporte del trabajo (80 %): 0,562.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,562 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Harold Vinueza</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Harold Vinueza:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit 445e5b0 del 12 de septiembre de 2026.
+
+La campaña experimental de este proyecto es la más sólida del curso y quiero que conste con precisión por qué.
+Recalculé las veinticuatro comparaciones desde los datos crudos y reproducen sin una sola discrepancia; los dieciséis mil quinientos valores de latencia son todos distintos; cada latencia coincide con la resta de sus propias marcas de tiempo con error cero; ninguna decisión del servidor precede al envío del cliente; y el registro de la campaña termina con el rastro real del fallo del operador.
+Nadie fabrica su propio fallo: esa evidencia resistiría el escrutinio de un tercero, y el manifiesto de la campaña verifica trescientas quince de trescientas quince entradas.
+La prueba de fiabilidad de una hora se ejecutó de verdad, diez veces, con doscientos setenta archivos crudos preservados, y reproduje una de las filas desde el dato bruto sin que discrepara un dígito.
+Las cinco características de calidad tienen valor, intervalo y umbral, y comprobé lo que más importa: que los umbrales se declararon antes de medir y no se tocaron después.
+Los cinco contratos de interfaz están completos y se validan automáticamente, y el instalable está firmado de verdad, con la firma verificada criptográficamente y no solo comprobada por la presencia del bloque.
+Ahora lo que deben corregir, y empiezo por lo que más les perjudica a ustedes mismos.
+La primera pregunta de investigación está sesgada en su contra: el percentil que la hace fallar sale de la fila agregada, que incluye los inicios de sesión de siete a ocho segundos y un setenta y cinco por ciento de respuestas rechazadas.
+Recalculado sobre la población que la propia pregunta declara, el umbral se cumple.
+Eso un revisor lo lee como descontrol de población, no como prudencia.
+El texto sigue afirmando que el manifiesto enumera ciento noventa y ocho archivos cuando contiene cuatrocientos sesenta y ocho, y uno de esos hashes ya no coincide.
+Los errores HTTP se concentran de forma asimétrica en las estrategias comparadas, hasta un veintiséis por ciento frente al cero por ciento de la de referencia, y eso debilita la comparación principal sin que el documento lo mencione.
+Y les pido atención especial a las actas: tres de las cinco datan reuniones ocurridas después del commit que las registra, una de ellas quince horas y media después.
+Un registro que no puede haber existido cuando se escribió resta credibilidad a los que sí son correctos.
+Prefiero decírselo con claridad: no construyan evidencia hacia atrás, aunque el requisito la pida.
+
+Detalle de la calificación:
+De los 37 elementos exigidos al proyecto, 29 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 7,65 sobre 10.
+Producto de los factores: 0,091750.
+Nota del equipo: 0,70 sobre 10.
+Su aporte a esta entrega: 12,2 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,34 sobre 10.
+Aporte del trabajo (80 %): 0,275.
+Nota del cuestionario del SGA: 8,67 sobre 10, que aporta 1,734.
+Nota final: 2,01 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Iván Villamarín</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Iván Villamarín:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit 445e5b0 del 12 de septiembre de 2026.
+
+La campaña experimental de este proyecto es la más sólida del curso y quiero que conste con precisión por qué.
+Recalculé las veinticuatro comparaciones desde los datos crudos y reproducen sin una sola discrepancia; los dieciséis mil quinientos valores de latencia son todos distintos; cada latencia coincide con la resta de sus propias marcas de tiempo con error cero; ninguna decisión del servidor precede al envío del cliente; y el registro de la campaña termina con el rastro real del fallo del operador.
+Nadie fabrica su propio fallo: esa evidencia resistiría el escrutinio de un tercero, y el manifiesto de la campaña verifica trescientas quince de trescientas quince entradas.
+La prueba de fiabilidad de una hora se ejecutó de verdad, diez veces, con doscientos setenta archivos crudos preservados, y reproduje una de las filas desde el dato bruto sin que discrepara un dígito.
+Las cinco características de calidad tienen valor, intervalo y umbral, y comprobé lo que más importa: que los umbrales se declararon antes de medir y no se tocaron después.
+Los cinco contratos de interfaz están completos y se validan automáticamente, y el instalable está firmado de verdad, con la firma verificada criptográficamente y no solo comprobada por la presencia del bloque.
+Ahora lo que deben corregir, y empiezo por lo que más les perjudica a ustedes mismos.
+La primera pregunta de investigación está sesgada en su contra: el percentil que la hace fallar sale de la fila agregada, que incluye los inicios de sesión de siete a ocho segundos y un setenta y cinco por ciento de respuestas rechazadas.
+Recalculado sobre la población que la propia pregunta declara, el umbral se cumple.
+Eso un revisor lo lee como descontrol de población, no como prudencia.
+El texto sigue afirmando que el manifiesto enumera ciento noventa y ocho archivos cuando contiene cuatrocientos sesenta y ocho, y uno de esos hashes ya no coincide.
+Los errores HTTP se concentran de forma asimétrica en las estrategias comparadas, hasta un veintiséis por ciento frente al cero por ciento de la de referencia, y eso debilita la comparación principal sin que el documento lo mencione.
+Y les pido atención especial a las actas: tres de las cinco datan reuniones ocurridas después del commit que las registra, una de ellas quince horas y media después.
+Un registro que no puede haber existido cuando se escribió resta credibilidad a los que sí son correctos.
+Prefiero decírselo con claridad: no construyan evidencia hacia atrás, aunque el requisito la pida.
+
+Detalle de la calificación:
+De los 37 elementos exigidos al proyecto, 29 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 7,65 sobre 10.
+Producto de los factores: 0,091750.
+Nota del equipo: 0,70 sobre 10.
+Su aporte a esta entrega: 13,8 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,39 sobre 10.
+Aporte del trabajo (80 %): 0,309.
+Nota del cuestionario del SGA: 5,53 sobre 10, que aporta 1,106.
+Nota final: 1,42 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Isaías Urbina</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Isaías Urbina:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo FUVV. Repositorio github.com/ffarinangog2/Entrega-final-del-PFC, rama feature/entrega-4, commit 445e5b0 del 12 de septiembre de 2026.
+
+La campaña experimental de este proyecto es la más sólida del curso y quiero que conste con precisión por qué.
+Recalculé las veinticuatro comparaciones desde los datos crudos y reproducen sin una sola discrepancia; los dieciséis mil quinientos valores de latencia son todos distintos; cada latencia coincide con la resta de sus propias marcas de tiempo con error cero; ninguna decisión del servidor precede al envío del cliente; y el registro de la campaña termina con el rastro real del fallo del operador.
+Nadie fabrica su propio fallo: esa evidencia resistiría el escrutinio de un tercero, y el manifiesto de la campaña verifica trescientas quince de trescientas quince entradas.
+La prueba de fiabilidad de una hora se ejecutó de verdad, diez veces, con doscientos setenta archivos crudos preservados, y reproduje una de las filas desde el dato bruto sin que discrepara un dígito.
+Las cinco características de calidad tienen valor, intervalo y umbral, y comprobé lo que más importa: que los umbrales se declararon antes de medir y no se tocaron después.
+Los cinco contratos de interfaz están completos y se validan automáticamente, y el instalable está firmado de verdad, con la firma verificada criptográficamente y no solo comprobada por la presencia del bloque.
+Ahora lo que deben corregir, y empiezo por lo que más les perjudica a ustedes mismos.
+La primera pregunta de investigación está sesgada en su contra: el percentil que la hace fallar sale de la fila agregada, que incluye los inicios de sesión de siete a ocho segundos y un setenta y cinco por ciento de respuestas rechazadas.
+Recalculado sobre la población que la propia pregunta declara, el umbral se cumple.
+Eso un revisor lo lee como descontrol de población, no como prudencia.
+El texto sigue afirmando que el manifiesto enumera ciento noventa y ocho archivos cuando contiene cuatrocientos sesenta y ocho, y uno de esos hashes ya no coincide.
+Los errores HTTP se concentran de forma asimétrica en las estrategias comparadas, hasta un veintiséis por ciento frente al cero por ciento de la de referencia, y eso debilita la comparación principal sin que el documento lo mencione.
+Y les pido atención especial a las actas: tres de las cinco datan reuniones ocurridas después del commit que las registra, una de ellas quince horas y media después.
+Un registro que no puede haber existido cuando se escribió resta credibilidad a los que sí son correctos.
+Prefiero decírselo con claridad: no construyan evidencia hacia atrás, aunque el requisito la pida.
+
+Detalle de la calificación:
+De los 37 elementos exigidos al proyecto, 29 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 7,65 sobre 10.
+Producto de los factores: 0,091750.
+Nota del equipo: 0,70 sobre 10.
+Su aporte a esta entrega: 18,4 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,52 sobre 10.
+Aporte del trabajo (80 %): 0,413.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,413 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<h2>Equipo ACC — TicketFold — Soporte técnico distribuido para un proveedor de Internet</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/carlospatroner-boop/PFC-SOPORTE-ISP</code></div><div><b>Rama</b> <code>main</code></div><div><b>Commit</b> <code>28c3fb3</code></div><div><b>Fecha</b> 11 de septiembre de 2026</div><div><b>Elementos exigidos</b> 44</div></div>
+<div class="tw"><table><thead><tr><th style="width:48%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:14%">Calificación</th><th style="width:10%">Factor</th></tr></thead><tbody>
+<tr class="grupo"><td colspan="5">Resuelto y verificado con anterioridad — no puntúa</td></tr>
+<tr><td>Refactorización en capas y principios SOLID</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Patrones de diseño documentados en registros de decisión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Vistas de arquitectura C4 (tres niveles)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Contrato de interfaz OpenAPI</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Esquema de base de datos y migraciones</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Persistencia distribuida operando</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación web funcional (construye y ejecuta)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Calidad de la aplicación web (pruebas de unidad)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación móvil funcional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capacidades de dispositivo (cámara y localización)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Integración web + móvil + backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de unidad e integración del backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de contrato</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de extremo a extremo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de carga</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pipeline de integración y despliegue con publicación etiquetada</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Observabilidad: métricas, trazas, registros y tableros</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Procesamiento paralelo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Módulo de correlación implementado y probado</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Protocolo experimental y campaña ejecutada según diseño</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Análisis estadístico con prueba no paramétrica y tamaño de efecto</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Correspondencia exacta entre el análisis y las tablas del documento</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Datos crudos preservados</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Evaluación de calidad con las características medidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Manuscrito propio de la entrega, compilable y sin referencias indefinidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Separación entre documento vivo y documento congelado</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Bibliografía verificada con identificador persistente</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Preguntas de investigación formuladas y respondidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Amenazas a la validez con mitigación declarada</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Reflexión ética referida al código de ética profesional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>README con instrucciones de compilación y reproducibilidad</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Licencia y archivo de citación</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Actas de reunión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Declaración de uso de herramientas de inteligencia artificial</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capturas de la aplicación en release, sin composiciones</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Higiene del repositorio (sin artefactos de compilación versionados)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr class="grupo"><td colspan="5">Lo pendiente — es lo que se califica, y cada uno es factor</td></tr>
+<tr><td><span class="cod">E1</span> <b>La cobertura, con los tres números</b><span class="ev">Una sola tabla reúne las tres cifras nombradas: líneas 555/684 = 81,1 %, instrucciones 2582/3582 = 72,1 % y ramas 88/154 = 57,1 %. Las recalculé desde el informe crudo de la herramienta y coinciden; incluso la afirmación puntual de «0 de 38 líneas cubiertas» en el paquete de seguridad es exacta. El único desajuste es que el informe XML publicado da 551/679 a nivel de reporte, distinto del total sumado del CSV, y el texto no lo advierte.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>1,80</b> <span>/ 2,0</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E2</span> <b>Dos programas que escriben datos experimentales</b><span class="ev">Cada guion escribe su propio archivo con su propia cabecera, y ambos la validan antes de escribir, deteniéndose con un mensaje que nombra la esperada y la encontrada. El límite es que esa validación corre después del bucle de red, de modo que cuando falla ya se crearon los tickets y se envió la telemetría.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,62</b> <span>/ 1,8</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E3</span> <b>Códigos de verificación de los datos</b><span class="ev">Tres manifiestos que cubren los resultados por completo —41 archivos y 41 entradas en la campaña de carga— y que verifiqué uno a uno: 45 de 45 correctos. La generación es de verdad el último paso del guion que produce los datos, con el comentario que lo declara. El límite es que ningún trabajo del flujo automático ejecuta esa verificación.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,53</b> <span>/ 1,7</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E4</span> <b>Que el documento lo escriban entre todos</b><span class="ev">La fuente contiene la sección de aporte por integrante con la tabla de porcentajes, y reproduje esos porcentajes desde el historial: 75,24 / 11,87 / 10,77 / 2,12 %, exactos a dos decimales. El problema está en el entregable: el PDF versionado va un commit por detrás y muestra la tabla anterior —«C. Pacheco 77 %, R. Cando 13 %, C. Carpio 11 %»—, que omite por completo a uno de los cuatro integrantes. La corrección existe en el código fuente pero no en el archivo que un lector abre.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>0,90</b> <span>/ 1,5</span></td><td class="n bad">0,6</td></tr>
+<tr><td><span class="cod">E5</span> <b>El instalable de la aplicación móvil</b><span class="ev">Firmado con los tres esquemas, verificado con <code>jarsigner</code> en verde y certificado válido hasta 2054; la suma comprueba correctamente. El flujo lo firma él mismo: compila la versión de entrega, descifra el almacén desde un secreto, alinea, firma, verifica y borra la clave. El límite es que se publica como artefacto temporal, no como entrega estable.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">5</td><td class="n"><b>0,90</b> <span>/ 1,0</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E6</span> <b>Archivos de evidencia con contenido</b><span class="ev">Barrido de los 772 archivos versionados: los únicos de cero o un byte son los <code>__init__.py</code> de Python, que deben estar vacíos. La carpeta de evidencias contiene capturas reales de 94 a 131 kB.</span></td><td><span class="b st-com">Completo</span></td><td class="n">7</td><td class="n"><b>0,90</b> <span>/ 0,9</span></td><td class="n">1,0</td></tr>
+<tr><td><span class="cod">E7</span> <b>Fijación de finales de línea</b><span class="ev">Existe el archivo de atributos, con reglas para los datos tabulares y los binarios, y comprobé que aplica de hecho; las sumas se generaron después de ponerlo. El límite es el alcance: no cubre el código fuente, y se nota, porque una de las veintitrés secciones del manuscrito está versionada con 179 líneas en CRLF mientras las demás son LF.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>0,42</b> <span>/ 0,6</span></td><td class="n bad">0,7</td></tr>
+<tr><td><span class="cod">E8</span> <b>Decir en el README dónde están los resultados</b><span class="ev">El README nombra con enlace las dos rutas de resultados, dice qué contiene cada una y qué guion la produce, y los cuatro guiones existen. El límite es que no menciona el inyector de averías, que también escribe en esa carpeta.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>0,40</b> <span>/ 0,5</span></td><td class="n bad">0,8</td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="n">8,47 <span>/ 10,0</span></td><td class="n">0,220450</td></tr></tfoot></table></div>
+<div class="calc">
+<div>Suma&nbsp;&nbsp;S = 8,47 sobre 10</div>
+<div>Producto de los factores&nbsp;&nbsp;0,9&nbsp;×&nbsp;0,9&nbsp;×&nbsp;0,9&nbsp;×&nbsp;0,6&nbsp;×&nbsp;0,9&nbsp;×&nbsp;1,0&nbsp;×&nbsp;0,7&nbsp;×&nbsp;0,8 = 0,220450</div>
+<div class="r" style="font-size:1.12rem">Nota del equipo = 0,220450 × 8,47 = <b>1,87 / 10,00</b></div>
+</div>
+<h3>Aporte de cada integrante a esta entrega</h3>
+<p>El peso de cada elemento se reparte entre quienes lo trabajaron, según el historial del control de versiones en el rango que cierra esta rúbrica, combinando a partes iguales el número de commits y el volumen de cambio atenuado. El reparto equitativo entre 4 integrantes es el 25 %: quien lo alcanza recibe la nota completa del equipo, quien queda por debajo la recibe en proporción.</p>
+<div class="tw"><table><thead><tr><th style="width:32%">Integrante</th><th style="width:17%">Peso aportado</th><th style="width:17%">Participación</th><th style="width:17%">Factor</th><th style="width:17%">Nota del trabajo</th></tr></thead><tbody>
+<tr><td class="nom">Cristhian Pacheco</td><td class="n">3,46 <span>/ 10</span></td><td class="n">34,6 %</td><td class="n">1,000</td><td class="n"><b>1,87</b> <span>/ 1,87</span></td></tr>
+<tr><td class="nom">Robinson Cando</td><td class="n">2,67 <span>/ 10</span></td><td class="n">26,7 %</td><td class="n">1,000</td><td class="n"><b>1,87</b> <span>/ 1,87</span></td></tr>
+<tr><td class="nom">Carlos Carpio</td><td class="n">2,05 <span>/ 10</span></td><td class="n">20,5 %</td><td class="n">0,818</td><td class="n"><b>1,53</b> <span>/ 1,87</span></td></tr>
+<tr><td class="nom">Jeremy Álvarez</td><td class="n">1,82 <span>/ 10</span></td><td class="n">18,2 %</td><td class="n">0,730</td><td class="n"><b>1,36</b> <span>/ 1,87</span></td></tr>
+</tbody></table></div>
+<h3>Nota final por integrante</h3>
+<div class="tw"><table><thead><tr><th style="width:30%">Integrante</th><th style="width:23%">Trabajo (80 %)</th><th style="width:23%">Cuestionario SGA (20 %)</th><th style="width:24%">Nota final</th></tr></thead><tbody>
+<tr><td class="nom">Cristhian Pacheco</td><td class="n">1,494 <span>(1,87 × 0,80)</span></td><td class="n">8,39 <span>→ 1,678</span></td><td class="n"><b>3,17</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Carlos Carpio</td><td class="n">1,222 <span>(1,53 × 0,80)</span></td><td class="n"><span>pendiente</span></td><td class="n"><span>1,222 + cuest. × 0,20</span></td></tr>
+<tr><td class="nom">Robinson Cando</td><td class="n">1,494 <span>(1,87 × 0,80)</span></td><td class="n"><span>pendiente</span></td><td class="n"><span>1,494 + cuest. × 0,20</span></td></tr>
+<tr><td class="nom">Jeremy Álvarez</td><td class="n">1,090 <span>(1,36 × 0,80)</span></td><td class="n"><span>pendiente</span></td><td class="n"><span>1,090 + cuest. × 0,20</span></td></tr>
+</tbody></table></div>
+<h3>Retroalimentación individual</h3>
+<p style="font-size:.9rem;color:var(--mut);margin-top:0">Un recuadro por integrante, en texto plano, listo para copiar de un clic y pegar en el espacio del estudiante.</p>
+<div class="fbh">Cristhian Pacheco</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Cristhian Pacheco:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3 del 11 de septiembre de 2026.
+
+Su trabajo de corrección es el más ordenado de los cuatro equipos y quiero reconocerlo con detalle.
+La cobertura se reporta con las tres cifras nombradas en una sola tabla y las recalculé desde el informe crudo de la herramienta: coinciden, incluida la afirmación puntual de que un paquete concreto tiene cero de treinta y ocho líneas cubiertas.
+Los tres manifiestos de verificación dan cuarenta y cinco de cuarenta y cinco correctos, cubren los resultados por completo, y su generación es realmente el último paso del guion que produce los datos.
+El instalable está firmado con los tres esquemas y el flujo lo firma él mismo, descifrando el almacén desde un secreto y verificando al final.
+No queda un solo archivo de evidencia vacío en los setecientos setenta y dos versionados.
+Y la pieza que más me convence: ejecuté su generador del reporte de correlación y regeneró el análisis y la tabla del documento byte a byte idénticos a lo versionado.
+Eso es reproducibilidad real, no declarada, y es exactamente lo que se les pide.
+Lo que deben corregir es poco pero importa.
+El PDF que ustedes entregan va un commit por detrás del código fuente y sigue mostrando la tabla de contribución anterior, la que omite por completo a uno de los cuatro integrantes, que es justo el defecto que ya corrigieron en el archivo fuente.
+Se resuelve recompilando y volviendo a subir el PDF, y es el archivo que un lector externo abre.
+Les queda también extender la fijación de finales de línea al código fuente, porque una de las veintitrés secciones del manuscrito está versionada con finales distintos a las demás, y enganchar la verificación de sumas al flujo automático, que hoy solo comprueba la del instalable.
+
+Detalle de la calificación:
+De los 44 elementos exigidos al proyecto, 36 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 8,47 sobre 10.
+Producto de los factores: 0,220450.
+Nota del equipo: 1,87 sobre 10.
+Su aporte a esta entrega: 34,6 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 1,87 sobre 10.
+Aporte del trabajo (80 %): 1,494.
+Nota del cuestionario del SGA: 8,39 sobre 10, que aporta 1,678.
+Nota final: 3,17 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Carlos Carpio</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Carlos Carpio:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3 del 11 de septiembre de 2026.
+
+Su trabajo de corrección es el más ordenado de los cuatro equipos y quiero reconocerlo con detalle.
+La cobertura se reporta con las tres cifras nombradas en una sola tabla y las recalculé desde el informe crudo de la herramienta: coinciden, incluida la afirmación puntual de que un paquete concreto tiene cero de treinta y ocho líneas cubiertas.
+Los tres manifiestos de verificación dan cuarenta y cinco de cuarenta y cinco correctos, cubren los resultados por completo, y su generación es realmente el último paso del guion que produce los datos.
+El instalable está firmado con los tres esquemas y el flujo lo firma él mismo, descifrando el almacén desde un secreto y verificando al final.
+No queda un solo archivo de evidencia vacío en los setecientos setenta y dos versionados.
+Y la pieza que más me convence: ejecuté su generador del reporte de correlación y regeneró el análisis y la tabla del documento byte a byte idénticos a lo versionado.
+Eso es reproducibilidad real, no declarada, y es exactamente lo que se les pide.
+Lo que deben corregir es poco pero importa.
+El PDF que ustedes entregan va un commit por detrás del código fuente y sigue mostrando la tabla de contribución anterior, la que omite por completo a uno de los cuatro integrantes, que es justo el defecto que ya corrigieron en el archivo fuente.
+Se resuelve recompilando y volviendo a subir el PDF, y es el archivo que un lector externo abre.
+Les queda también extender la fijación de finales de línea al código fuente, porque una de las veintitrés secciones del manuscrito está versionada con finales distintos a las demás, y enganchar la verificación de sumas al flujo automático, que hoy solo comprueba la del instalable.
+
+Detalle de la calificación:
+De los 44 elementos exigidos al proyecto, 36 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 8,47 sobre 10.
+Producto de los factores: 0,220450.
+Nota del equipo: 1,87 sobre 10.
+Su aporte a esta entrega: 20,5 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 1,53 sobre 10.
+Aporte del trabajo (80 %): 1,222.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 1,222 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Robinson Cando</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Robinson Cando:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3 del 11 de septiembre de 2026.
+
+Su trabajo de corrección es el más ordenado de los cuatro equipos y quiero reconocerlo con detalle.
+La cobertura se reporta con las tres cifras nombradas en una sola tabla y las recalculé desde el informe crudo de la herramienta: coinciden, incluida la afirmación puntual de que un paquete concreto tiene cero de treinta y ocho líneas cubiertas.
+Los tres manifiestos de verificación dan cuarenta y cinco de cuarenta y cinco correctos, cubren los resultados por completo, y su generación es realmente el último paso del guion que produce los datos.
+El instalable está firmado con los tres esquemas y el flujo lo firma él mismo, descifrando el almacén desde un secreto y verificando al final.
+No queda un solo archivo de evidencia vacío en los setecientos setenta y dos versionados.
+Y la pieza que más me convence: ejecuté su generador del reporte de correlación y regeneró el análisis y la tabla del documento byte a byte idénticos a lo versionado.
+Eso es reproducibilidad real, no declarada, y es exactamente lo que se les pide.
+Lo que deben corregir es poco pero importa.
+El PDF que ustedes entregan va un commit por detrás del código fuente y sigue mostrando la tabla de contribución anterior, la que omite por completo a uno de los cuatro integrantes, que es justo el defecto que ya corrigieron en el archivo fuente.
+Se resuelve recompilando y volviendo a subir el PDF, y es el archivo que un lector externo abre.
+Les queda también extender la fijación de finales de línea al código fuente, porque una de las veintitrés secciones del manuscrito está versionada con finales distintos a las demás, y enganchar la verificación de sumas al flujo automático, que hoy solo comprueba la del instalable.
+
+Detalle de la calificación:
+De los 44 elementos exigidos al proyecto, 36 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 8,47 sobre 10.
+Producto de los factores: 0,220450.
+Nota del equipo: 1,87 sobre 10.
+Su aporte a esta entrega: 26,7 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 1,87 sobre 10.
+Aporte del trabajo (80 %): 1,494.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 1,494 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Jeremy Álvarez</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Jeremy Álvarez:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo ACC. Repositorio github.com/carlospatroner-boop/PFC-SOPORTE-ISP, rama main, commit 28c3fb3 del 11 de septiembre de 2026.
+
+Su trabajo de corrección es el más ordenado de los cuatro equipos y quiero reconocerlo con detalle.
+La cobertura se reporta con las tres cifras nombradas en una sola tabla y las recalculé desde el informe crudo de la herramienta: coinciden, incluida la afirmación puntual de que un paquete concreto tiene cero de treinta y ocho líneas cubiertas.
+Los tres manifiestos de verificación dan cuarenta y cinco de cuarenta y cinco correctos, cubren los resultados por completo, y su generación es realmente el último paso del guion que produce los datos.
+El instalable está firmado con los tres esquemas y el flujo lo firma él mismo, descifrando el almacén desde un secreto y verificando al final.
+No queda un solo archivo de evidencia vacío en los setecientos setenta y dos versionados.
+Y la pieza que más me convence: ejecuté su generador del reporte de correlación y regeneró el análisis y la tabla del documento byte a byte idénticos a lo versionado.
+Eso es reproducibilidad real, no declarada, y es exactamente lo que se les pide.
+Lo que deben corregir es poco pero importa.
+El PDF que ustedes entregan va un commit por detrás del código fuente y sigue mostrando la tabla de contribución anterior, la que omite por completo a uno de los cuatro integrantes, que es justo el defecto que ya corrigieron en el archivo fuente.
+Se resuelve recompilando y volviendo a subir el PDF, y es el archivo que un lector externo abre.
+Les queda también extender la fijación de finales de línea al código fuente, porque una de las veintitrés secciones del manuscrito está versionada con finales distintos a las demás, y enganchar la verificación de sumas al flujo automático, que hoy solo comprueba la del instalable.
+
+Detalle de la calificación:
+De los 44 elementos exigidos al proyecto, 36 estaban resueltos y verificados, y 8 quedaban pendientes.
+Suma de los elementos calificados: 8,47 sobre 10.
+Producto de los factores: 0,220450.
+Nota del equipo: 1,87 sobre 10.
+Su aporte a esta entrega: 18,2 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 1,36 sobre 10.
+Aporte del trabajo (80 %): 1,090.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 1,090 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<h2>Equipo AGLS — TiendaTech — Comercio electrónico distribuido con asistente de armado</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/JoseLozanoMorales/TiendaTech</code></div><div><b>Rama</b> <code>main</code></div><div><b>Commit</b> <code>75aeac6</code></div><div><b>Fecha</b> 12 de septiembre de 2026</div><div><b>Elementos exigidos</b> 46</div></div>
+<div class="tw"><table><thead><tr><th style="width:48%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:14%">Calificación</th><th style="width:10%">Factor</th></tr></thead><tbody>
+<tr class="grupo"><td colspan="5">Resuelto y verificado con anterioridad — no puntúa</td></tr>
+<tr><td>Refactorización en capas y principios SOLID</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Patrones de diseño documentados en registros de decisión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Vistas de arquitectura C4 (tres niveles) versionadas como fuente</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Contrato de interfaz OpenAPI</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Esquema de base de datos y migraciones</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Persistencia distribuida operando con fragmentación y réplica</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación web funcional (construye y ejecuta)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación móvil funcional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capacidades de dispositivo (cámara y notificaciones)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Integración web + móvil + backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de unidad e integración del backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de contrato</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de extremo a extremo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de carga</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Cobertura y complejidad reportadas con valores verificables</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pipeline de integración con compuerta de calidad efectiva</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Observabilidad: métricas, trazas, registros y tableros</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Procesamiento paralelo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Protocolo experimental e instrumental de medición</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Campaña ejecutada y totales reproducibles desde el dato crudo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Análisis estadístico con tamaño de efecto e intervalos</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Datos crudos preservados</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Evaluación de calidad con las características medidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Manuscrito compilable, sin referencias indefinidas ni figuras huérfanas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Verificación del hash del artefacto documental</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Bibliografía verificada con identificador persistente</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Preguntas de investigación formuladas y respondidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Amenazas a la validez tratadas por tipo y con mitigación</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Reflexión ética referida al código de ética profesional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Corrección explícita de afirmaciones previas no sostenidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Integración de las ramas de trabajo a la principal</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>README con instrucciones de compilación y reproducibilidad</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Licencia y archivo de citación</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Actas de reunión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Declaración de uso de herramientas de inteligencia artificial</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capturas de la aplicación en release</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Higiene del repositorio (sin artefactos de compilación versionados)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr class="grupo"><td colspan="5">Lo pendiente — es lo que se califica, y cada uno es factor</td></tr>
+<tr><td><span class="cod">E1</span> <b>Pruebas de la aplicación web</b><span class="ev">Diecinueve pruebas en verde que ejercitan lógica real —aritmética del carrito, topes de cantidad, reversión tras fallo y la máquina de estados del pedido— y comprobé que pueden fallar: alteré el tope en el componente y la suite pasó a un fallo. Se suman siete pruebas de la facturación en el backend, con verificación del orden de llamadas y de la cabecera del PDF, y diez de resiliencia en Python. El total medido del proyecto es de 233 pruebas. El límite es que la configuración restringe la medición de cobertura a tres de las once vistas.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>2,07</b> <span>/ 2,3</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E2</span> <b>Que exista todo archivo que el documento cita</b><span class="ev">El archivo de evidencia de seguridad procede de una ejecución real: corrí la prueba de integración del gateway y sus once casos pasan, con una prueba parametrizada que recorre exactamente las mismas ocho rutas del archivo comprobando el rechazo. Comprobé todas las citas del manuscrito contra el commit al que apuntan, que es la comprobación que importa: ocho de ocho en la macro, siete de siete en los enlaces y trece de trece rutas de archivo. Y el validador automático hace lo que dice: le inyecté cuatro defectos distintos —ruta inexistente, enlace apuntado a un commit anterior, evidencia ausente en la matriz y formato no reconocido— y falló en los cuatro. Corre en el flujo antes de compilar.</span></td><td><span class="b st-com">Completo</span></td><td class="n">8</td><td class="n"><b>1,60</b> <span>/ 1,6</span></td><td class="n">1,0</td></tr>
+<tr><td><span class="cod">E3</span> <b>Revisor de código de la aplicación web</b><span class="ev">Configuración sustantiva, con las reglas de ganchos elevadas a error. Lo ejecuté: 27 archivos, cero errores y cero advertencias; regeneré la evidencia y quedó byte a byte idéntica a la versionada. El guion devuelve error si no cumple y el flujo lo ejecuta. El límite es el alcance: el análisis de complejidad del backend se versiona pero no se ejecuta en ningún flujo.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,26</b> <span>/ 1,4</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E4</span> <b>Publicar las imágenes en el registro prescrito</b><span class="ev">Publican en el registro prescrito con el testigo del propio flujo, etiquetando por commit y en dos arquitecturas. No queda ninguna referencia al registro anterior en flujos ni archivos de construcción, y no hay ninguna etiqueta móvil: cada imagen queda atada a un commit concreto. Hay evidencia del flujo en verde y del paquete publicado.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>1,17</b> <span>/ 1,3</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E5</span> <b>Códigos de verificación de los datos</b><span class="ev">El manifiesto existe, verifica correctamente y su generación está enganchada al guion de campaña, escribiendo con finales de línea fijos. El problema es el alcance: el repositorio versiona sesenta archivos de datos y el manifiesto cubre uno. Los datos crudos de la campaña de carga y los de la otra sesión no tienen ninguna suma, y ningún trabajo del flujo verifica la que hay.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>0,72</b> <span>/ 1,2</span></td><td class="n bad">0,6</td></tr>
+<tr><td><span class="cod">E6</span> <b>El instalable de la aplicación móvil</b><span class="ev">El paquete existe con su suma, que verifica, y está firmado con esquema v2: extraje el certificado del bloque de firma y verifiqué la firma con <code>openssl</code>, que responde correcto. El límite es que se trata del almacén de depuración implícito, porque el archivo de construcción no declara configuración de firma; el documento lo dice con esas palabras y no reclama más de lo que tiene.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">5</td><td class="n"><b>0,64</b> <span>/ 0,8</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E7</span> <b>Tableros sin duplicación</b><span class="ev">Un solo árbol de provisión, un solo tablero versionado, y el archivo de composición monta exactamente esas rutas. Documentado en dos niveles.</span></td><td><span class="b st-com">Completo</span></td><td class="n">7</td><td class="n"><b>0,60</b> <span>/ 0,6</span></td><td class="n">1,0</td></tr>
+<tr><td><span class="cod">E8</span> <b>Raíz sin carpetas sueltas</b><span class="ev">La raíz está limpia de módulos huérfanos y el README incluye una tabla con las carpetas de primer nivel. El defecto es que la carpeta de configuración del entorno de desarrollo sigue versionada con ocho archivos, contradiciendo la propia regla del repositorio que declara ignorarla, y no figura en esa tabla, igual que la carpeta de evidencias de trabajo.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">8</td><td class="n"><b>0,32</b> <span>/ 0,4</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E9</span> <b>Fijación de finales de línea</b><span class="ev">Además del archivo de atributos hay un trabajo del flujo que falla si encuentra un archivo tabular con finales de Windows. Reproduje el comando: ninguno de los sesenta archivos versionados lo tiene. El CRLF que queda está donde corresponde, en cabeceras HTTP crudas y guiones de Windows. El límite es que la regla cubre solo esa extensión.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>0,32</b> <span>/ 0,4</span></td><td class="n bad">0,8</td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="n">8,70 <span>/ 10,0</span></td><td class="n">0,223949</td></tr></tfoot></table></div>
+<div class="calc">
+<div>Suma&nbsp;&nbsp;S = 8,70 sobre 10</div>
+<div>Producto de los factores&nbsp;&nbsp;0,9&nbsp;×&nbsp;1,0&nbsp;×&nbsp;0,9&nbsp;×&nbsp;0,9&nbsp;×&nbsp;0,6&nbsp;×&nbsp;0,8&nbsp;×&nbsp;1,0&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,8 = 0,223949</div>
+<div class="r" style="font-size:1.12rem">Nota del equipo = 0,223949 × 8,70 = <b>1,95 / 10,00</b></div>
+</div>
+<h3>Aporte de cada integrante a esta entrega</h3>
+<p>El peso de cada elemento se reparte entre quienes lo trabajaron, según el historial del control de versiones en el rango que cierra esta rúbrica, combinando a partes iguales el número de commits y el volumen de cambio atenuado. El reparto equitativo entre 4 integrantes es el 25 %: quien lo alcanza recibe la nota completa del equipo, quien queda por debajo la recibe en proporción.</p>
+<div class="tw"><table><thead><tr><th style="width:32%">Integrante</th><th style="width:17%">Peso aportado</th><th style="width:17%">Participación</th><th style="width:17%">Factor</th><th style="width:17%">Nota del trabajo</th></tr></thead><tbody>
+<tr><td class="nom">Andy Sánchez</td><td class="n">5,00 <span>/ 10</span></td><td class="n">50,0 %</td><td class="n">1,000</td><td class="n"><b>1,95</b> <span>/ 1,95</span></td></tr>
+<tr><td class="nom">Jeremy Gaibor</td><td class="n">3,66 <span>/ 10</span></td><td class="n">36,6 %</td><td class="n">1,000</td><td class="n"><b>1,95</b> <span>/ 1,95</span></td></tr>
+<tr><td class="nom">José Lozano</td><td class="n">1,34 <span>/ 10</span></td><td class="n">13,4 %</td><td class="n">0,536</td><td class="n"><b>1,04</b> <span>/ 1,95</span></td></tr>
+<tr><td class="nom">Jhinson Aucatoma</td><td class="n">0,00 <span>/ 10</span></td><td class="n">0,0 %</td><td class="n">0,000</td><td class="n"><b>0,00</b> <span>/ 1,95</span></td></tr>
+</tbody></table></div>
+<h3>Nota final por integrante</h3>
+<div class="tw"><table><thead><tr><th style="width:30%">Integrante</th><th style="width:23%">Trabajo (80 %)</th><th style="width:23%">Cuestionario SGA (20 %)</th><th style="width:24%">Nota final</th></tr></thead><tbody>
+<tr><td class="nom">Jhinson Aucatoma</td><td class="n">0,000 <span>(0,00 × 0,80)</span></td><td class="n">7,11 <span>→ 1,422</span></td><td class="n"><b>1,42</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Jeremy Gaibor</td><td class="n">1,559 <span>(1,95 × 0,80)</span></td><td class="n">8,76 <span>→ 1,752</span></td><td class="n"><b>3,31</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">Andy Sánchez</td><td class="n">1,559 <span>(1,95 × 0,80)</span></td><td class="n">9,00 <span>→ 1,800</span></td><td class="n"><b>3,36</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">José Lozano</td><td class="n">0,836 <span>(1,04 × 0,80)</span></td><td class="n">8,67 <span>→ 1,734</span></td><td class="n"><b>2,57</b> <span>/ 10,00</span></td></tr>
+</tbody></table></div>
+<h3>Retroalimentación individual</h3>
+<p style="font-size:.9rem;color:var(--mut);margin-top:0">Un recuadro por integrante, en texto plano, listo para copiar de un clic y pegar en el espacio del estudiante.</p>
+<div class="fbh">Jhinson Aucatoma</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Jhinson Aucatoma:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 75aeac6 del 12 de septiembre de 2026.
+
+Este proyecto entrega el manuscrito más limpio del curso y la evidencia mejor trazada, y conviene decir por qué.
+Compila desde copia limpia a cincuenta y nueve páginas sin un solo error, sin citas ni referencias indefinidas y sin una sola caja desbordada, y el hash del PDF versionado coincide exactamente con el que ustedes declaran en su archivo de verificación.
+El archivo de evidencia de seguridad procede de una ejecución real: corrí su prueba de integración del gateway y sus once casos pasan, con una prueba parametrizada que recorre exactamente las mismas ocho rutas comprobando el rechazo.
+Comprobé todas las citas del manuscrito contra el commit al que apuntan, que es la comprobación que de verdad importa, y las veintiocho resuelven.
+Y su validador automático hace lo que promete: le inyecté cuatro defectos distintos, incluida una cita apuntada a un commit anterior, y falló en los cuatro; además corre en el flujo antes de compilar.
+Sus pruebas de la aplicación web ejercitan lógica real y comprobé que pueden fallar alterando el tope de cantidad en el componente.
+La mejor pieza del paquete son las pruebas de resiliencia: restauré los archivos a su versión previa y obtuve exactamente los mismos tres fallos con los mismos nombres que ustedes declaran.
+Lo que deben corregir es un patrón que se repite en tres sitios y que un lector externo detecta enseguida: el alcance de lo que miden.
+La cobertura de la aplicación web está limitada por configuración a tres de las once vistas; la compuerta del backend filtra a un solo paquete; y el manifiesto de verificación cubre un archivo de datos de sesenta.
+Nada de eso está oculto y ustedes lo declaran, pero una medición que elige su propio alcance favorable vale menos que una peor medida sobre el conjunto.
+Queda además la carpeta de configuración del entorno de desarrollo versionada con ocho archivos, contradiciendo la propia regla del repositorio que declara ignorarla.
+
+Detalle de la calificación:
+De los 46 elementos exigidos al proyecto, 37 estaban resueltos y verificados, y 9 quedaban pendientes.
+Suma de los elementos calificados: 8,70 sobre 10.
+Producto de los factores: 0,223949.
+Nota del equipo: 1,95 sobre 10.
+Su aporte a esta entrega: 0,0 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,00 sobre 10.
+Aporte del trabajo (80 %): 0,000.
+Nota del cuestionario del SGA: 7,11 sobre 10, que aporta 1,422.
+Nota final: 1,42 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Jeremy Gaibor</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Jeremy Gaibor:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 75aeac6 del 12 de septiembre de 2026.
+
+Este proyecto entrega el manuscrito más limpio del curso y la evidencia mejor trazada, y conviene decir por qué.
+Compila desde copia limpia a cincuenta y nueve páginas sin un solo error, sin citas ni referencias indefinidas y sin una sola caja desbordada, y el hash del PDF versionado coincide exactamente con el que ustedes declaran en su archivo de verificación.
+El archivo de evidencia de seguridad procede de una ejecución real: corrí su prueba de integración del gateway y sus once casos pasan, con una prueba parametrizada que recorre exactamente las mismas ocho rutas comprobando el rechazo.
+Comprobé todas las citas del manuscrito contra el commit al que apuntan, que es la comprobación que de verdad importa, y las veintiocho resuelven.
+Y su validador automático hace lo que promete: le inyecté cuatro defectos distintos, incluida una cita apuntada a un commit anterior, y falló en los cuatro; además corre en el flujo antes de compilar.
+Sus pruebas de la aplicación web ejercitan lógica real y comprobé que pueden fallar alterando el tope de cantidad en el componente.
+La mejor pieza del paquete son las pruebas de resiliencia: restauré los archivos a su versión previa y obtuve exactamente los mismos tres fallos con los mismos nombres que ustedes declaran.
+Lo que deben corregir es un patrón que se repite en tres sitios y que un lector externo detecta enseguida: el alcance de lo que miden.
+La cobertura de la aplicación web está limitada por configuración a tres de las once vistas; la compuerta del backend filtra a un solo paquete; y el manifiesto de verificación cubre un archivo de datos de sesenta.
+Nada de eso está oculto y ustedes lo declaran, pero una medición que elige su propio alcance favorable vale menos que una peor medida sobre el conjunto.
+Queda además la carpeta de configuración del entorno de desarrollo versionada con ocho archivos, contradiciendo la propia regla del repositorio que declara ignorarla.
+
+Detalle de la calificación:
+De los 46 elementos exigidos al proyecto, 37 estaban resueltos y verificados, y 9 quedaban pendientes.
+Suma de los elementos calificados: 8,70 sobre 10.
+Producto de los factores: 0,223949.
+Nota del equipo: 1,95 sobre 10.
+Su aporte a esta entrega: 36,6 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 1,95 sobre 10.
+Aporte del trabajo (80 %): 1,559.
+Nota del cuestionario del SGA: 8,76 sobre 10, que aporta 1,752.
+Nota final: 3,31 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Andy Sánchez</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Andy Sánchez:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 75aeac6 del 12 de septiembre de 2026.
+
+Este proyecto entrega el manuscrito más limpio del curso y la evidencia mejor trazada, y conviene decir por qué.
+Compila desde copia limpia a cincuenta y nueve páginas sin un solo error, sin citas ni referencias indefinidas y sin una sola caja desbordada, y el hash del PDF versionado coincide exactamente con el que ustedes declaran en su archivo de verificación.
+El archivo de evidencia de seguridad procede de una ejecución real: corrí su prueba de integración del gateway y sus once casos pasan, con una prueba parametrizada que recorre exactamente las mismas ocho rutas comprobando el rechazo.
+Comprobé todas las citas del manuscrito contra el commit al que apuntan, que es la comprobación que de verdad importa, y las veintiocho resuelven.
+Y su validador automático hace lo que promete: le inyecté cuatro defectos distintos, incluida una cita apuntada a un commit anterior, y falló en los cuatro; además corre en el flujo antes de compilar.
+Sus pruebas de la aplicación web ejercitan lógica real y comprobé que pueden fallar alterando el tope de cantidad en el componente.
+La mejor pieza del paquete son las pruebas de resiliencia: restauré los archivos a su versión previa y obtuve exactamente los mismos tres fallos con los mismos nombres que ustedes declaran.
+Lo que deben corregir es un patrón que se repite en tres sitios y que un lector externo detecta enseguida: el alcance de lo que miden.
+La cobertura de la aplicación web está limitada por configuración a tres de las once vistas; la compuerta del backend filtra a un solo paquete; y el manifiesto de verificación cubre un archivo de datos de sesenta.
+Nada de eso está oculto y ustedes lo declaran, pero una medición que elige su propio alcance favorable vale menos que una peor medida sobre el conjunto.
+Queda además la carpeta de configuración del entorno de desarrollo versionada con ocho archivos, contradiciendo la propia regla del repositorio que declara ignorarla.
+
+Detalle de la calificación:
+De los 46 elementos exigidos al proyecto, 37 estaban resueltos y verificados, y 9 quedaban pendientes.
+Suma de los elementos calificados: 8,70 sobre 10.
+Producto de los factores: 0,223949.
+Nota del equipo: 1,95 sobre 10.
+Su aporte a esta entrega: 50,0 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 1,95 sobre 10.
+Aporte del trabajo (80 %): 1,559.
+Nota del cuestionario del SGA: 9,00 sobre 10, que aporta 1,800.
+Nota final: 3,36 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">José Lozano</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a José Lozano:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo AGLS. Repositorio github.com/JoseLozanoMorales/TiendaTech, rama main, commit 75aeac6 del 12 de septiembre de 2026.
+
+Este proyecto entrega el manuscrito más limpio del curso y la evidencia mejor trazada, y conviene decir por qué.
+Compila desde copia limpia a cincuenta y nueve páginas sin un solo error, sin citas ni referencias indefinidas y sin una sola caja desbordada, y el hash del PDF versionado coincide exactamente con el que ustedes declaran en su archivo de verificación.
+El archivo de evidencia de seguridad procede de una ejecución real: corrí su prueba de integración del gateway y sus once casos pasan, con una prueba parametrizada que recorre exactamente las mismas ocho rutas comprobando el rechazo.
+Comprobé todas las citas del manuscrito contra el commit al que apuntan, que es la comprobación que de verdad importa, y las veintiocho resuelven.
+Y su validador automático hace lo que promete: le inyecté cuatro defectos distintos, incluida una cita apuntada a un commit anterior, y falló en los cuatro; además corre en el flujo antes de compilar.
+Sus pruebas de la aplicación web ejercitan lógica real y comprobé que pueden fallar alterando el tope de cantidad en el componente.
+La mejor pieza del paquete son las pruebas de resiliencia: restauré los archivos a su versión previa y obtuve exactamente los mismos tres fallos con los mismos nombres que ustedes declaran.
+Lo que deben corregir es un patrón que se repite en tres sitios y que un lector externo detecta enseguida: el alcance de lo que miden.
+La cobertura de la aplicación web está limitada por configuración a tres de las once vistas; la compuerta del backend filtra a un solo paquete; y el manifiesto de verificación cubre un archivo de datos de sesenta.
+Nada de eso está oculto y ustedes lo declaran, pero una medición que elige su propio alcance favorable vale menos que una peor medida sobre el conjunto.
+Queda además la carpeta de configuración del entorno de desarrollo versionada con ocho archivos, contradiciendo la propia regla del repositorio que declara ignorarla.
+
+Detalle de la calificación:
+De los 46 elementos exigidos al proyecto, 37 estaban resueltos y verificados, y 9 quedaban pendientes.
+Suma de los elementos calificados: 8,70 sobre 10.
+Producto de los factores: 0,223949.
+Nota del equipo: 1,95 sobre 10.
+Su aporte a esta entrega: 13,4 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 1,04 sobre 10.
+Aporte del trabajo (80 %): 0,836.
+Nota del cuestionario del SGA: 8,67 sobre 10, que aporta 1,734.
+Nota final: 2,57 sobre 10,00.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<h2>Equipo BCEL — AcadTrace — Gestión académica con bitácora de auditoría encadenada</h2>
+<div class="meta"><div><b>Repositorio</b> <code>github.com/LEO23as/acadtrace</code></div><div><b>Rama</b> <code>main</code></div><div><b>Commit</b> <code>ff6f68ba</code></div><div><b>Fecha</b> 12 de septiembre de 2026</div><div><b>Elementos exigidos</b> 51</div></div>
+<div class="tw"><table><thead><tr><th style="width:48%">Lo exigido</th><th style="width:15%">Estado</th><th style="width:9%">Mín.</th><th style="width:14%">Calificación</th><th style="width:10%">Factor</th></tr></thead><tbody>
+<tr class="grupo"><td colspan="5">Resuelto y verificado con anterioridad — no puntúa</td></tr>
+<tr><td>Refactorización en capas y principios SOLID</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Patrones de diseño documentados en registros de decisión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Vistas de arquitectura C4 (tres niveles)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Contrato de interfaz OpenAPI</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Esquema de base de datos y migraciones</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Persistencia distribuida operando</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicaciones web funcionales (cuatro interfaces)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Aplicación móvil funcional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capacidades de dispositivo (biometría y notificaciones)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Integración web + móvil + backend</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de unidad e integración del backend Java</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas del microservicio en Python con cobertura medida</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de contrato verificadas contra servidor real</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pruebas de carga</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Pipeline de integración con dependencias declaradas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Observabilidad: métricas, trazas, registros y tableros</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Procesamiento paralelo</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Bitácora de auditoría encadenada (implementación en Python)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Protocolo experimental e instrumental de medición</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Datos crudos preservados</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Análisis estadístico con tamaño de efecto e intervalos</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Evaluación de calidad con las características medidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Manuscrito consolidado, compilable y sin referencias indefinidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Bibliografía verificada con identificador persistente</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Preguntas de investigación formuladas y respondidas</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Amenazas a la validez con mitigación declarada</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Reflexión ética referida al código de ética profesional</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>README con instrucciones de compilación y reproducibilidad</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Licencia y archivo de citación</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Actas de reunión</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Declaración de uso de herramientas de inteligencia artificial</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Capturas de la aplicación en release</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Paquete móvil publicado en release</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr><td>Higiene del repositorio (sin artefactos de compilación versionados)</td><td><span class="b st-hecho">Hecho</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td><td class="n"><span>—</span></td></tr>
+<tr class="grupo"><td colspan="5">Lo pendiente — es lo que se califica, y cada uno es factor</td></tr>
+<tr><td><span class="cod">E1</span> <b>Sacar las claves del repositorio</b><span class="ev">El árbol de trabajo está limpio: los secretos literales se sustituyeron por variables que fallan de forma explícita si no se suministran, los informes de cobertura ya no publican la clave de cifrado, y hay un documento de rotación de 112 líneas con inventario por secreto y matriz de suministro. El defecto es grave y está en la compuerta: el archivo de configuración del detector permite expresamente los cuatro valores reales que se filtraron y excluye las carpetas donde estaban. Lo ejecuté de las dos maneras: con la configuración del repositorio no encuentra ninguna fuga en 778 commits; con la configuración por defecto encuentra 27. Y el historial las sigue conteniendo, entre siete y catorce commits por secreto.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">8</td><td class="n"><b>0,78</b> <span>/ 1,3</span></td><td class="n bad">0,6</td></tr>
+<tr><td><span class="cod">E2</span> <b>Que el experimento verifique la cadena real</b><span class="ev">El verificador experimental es un adaptador que importa la función del sistema en producción, y el guion de experimentos importa también el cálculo de hash y la forma canónica: una sola definición. Ejecuté la prueba y sus seis casos pasan, aceptando una cadena real y rechazando un contenido manipulado, un hash anterior roto, un reloj no monotónico y una edición directa del estado académico; además comprueba que el adaptador devuelve el mismo objeto que el verificador de producción.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>1,08</b> <span>/ 1,2</span></td><td class="n bad">0,9</td></tr>
+<tr><td><span class="cod">E3</span> <b>Una sola forma de auditar</b><span class="ev">El campo de hash anterior existe en la entidad, el encadenamiento está implementado y el reloj vectorial se calcula. Pero no es una sola forma: los mapas canónicos de las dos implementaciones contienen campos distintos, de modo que ninguna cadena es verificable por el verificador de la otra. El reloj vectorial es además causalmente inerte —solo se incrementa la componente propia y las otras quedan siempre en cero— y el reloj lógico no se siembra desde la base al arrancar, así que tras un reinicio vuelve a uno y rompe la monotonía que el verificador exige. El registro de decisión afirma un bloqueo pesimista que no existe: cero apariciones en todo el repositorio.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,55</b> <span>/ 1,1</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E4</span> <b>Que el disparador de inmutabilidad se cree</b><span class="ev">La migración está en la ruta correcta, sin colisión de versiones, y el SQL es correcto e idempotente. El problema es que ninguna prueba ejecutable lo demuestra: la que debía hacerlo está condicionada a una variable de entorno que el repositorio nunca define, y el informe de pruebas la reporta omitida dos de dos. La prueba con contenedor que sí arranca desactiva las migraciones y usa un esquema base sin ningún disparador. La única que lo comprueba escribe el esquema a mano dentro del test y envuelve la llamada a las migraciones en un bloque que se traga cualquier error.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,45</b> <span>/ 0,9</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E5</span> <b>Un solo juego de resultados de carga</b><span class="ev">Conviven tres juegos del mismo escenario nominal con 13.606, 12.236 y 2.419 peticiones. El informe declara «oficial» una cifra de 12.265 que no aparece en ningún archivo, aunque sus percentiles coincidan exactamente con el juego de 12.236, lo que delata una transposición. Y hay una contradicción literal dentro del mismo documento: una página afirma que el escenario de estrés tuvo 12.735 peticiones con 100 % de fallo y otra declara 99,98 % de disponibilidad y 0,024 % de error del mismo escenario, ambas derivadas de un archivo que registra 106.735 peticiones con 26 fallos.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,14</b> <span>/ 0,7</span></td><td class="n bad">0,2</td></tr>
+<tr><td><span class="cod">E6</span> <b>Quitar permisos sobre la bitácora</b><span class="ev">La prueba está bien diseñada: crea un rol sin privilegios, revoca modificación y borrado, desactiva el disparador y comprueba que la operación se rechaza por permisos. Ese es el experimento correcto. El problema es que ese rol solo existe dentro de la prueba: ninguna migración lo crea, y la aplicación se conecta como propietario del esquema, sobre el que una revocación a PUBLIC no tiene efecto.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,35</b> <span>/ 0,7</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E7</span> <b>Que el certificado cuadre con los datos</b><span class="ev">Verifiqué los dos certificados del repositorio: tres comprobaciones correctas y nueve fallidas de doce. La causa de fondo es que el guion solo genera sumas y no las verifica nunca —no hay una sola llamada de comprobación en todo el repositorio— y aun así termina imprimiendo que todo es cien por cien verificable y determinista. Las dos copias del mismo archivo de datos difieren además entre sí.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,12</b> <span>/ 0,6</span></td><td class="n bad">0,2</td></tr>
+<tr><td><span class="cod">E8</span> <b>Un solo número de cobertura</b><span class="ev">Ejecuté las cuatro suites y medí: el módulo principal da 27,46 % de instrucciones y el informe declara 30,3 %; el de secretaría da 71,28 % y el informe declara 34,5 %, subestimando a menos de la mitad su propio trabajo; los otros dos módulos, con 73,03 % y 79,55 %, no aparecen. Hay además una cifra del 90,7 % sin ningún respaldo. Y la compuerta que el documento presenta como estricta al 70 % se aplica a seis o siete clases elegidas a mano, no al módulo: por eso un módulo al 27 % «cumple» un umbral del 70 %.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,18</b> <span>/ 0,6</span></td><td class="n bad">0,3</td></tr>
+<tr><td><span class="cod">E9</span> <b>Integrar todo el trabajo a la rama principal</b><span class="ev">Hay 29 commits sin fusionar repartidos en siete de las diez ramas, y lo que contienen no es accesorio: es la corrección de los resultados de carga, del certificado de reproducibilidad, de las cifras de cobertura y de los finales de línea. El trabajo está escrito y no entregado. Además los siete pull request nuevos los confirmó el autor de la rama, mientras el documento afirma que cada uno fue auditado y aprobado por un integrante distinto.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,10</b> <span>/ 0,5</span></td><td class="n bad">0,2</td></tr>
+<tr><td><span class="cod">E10</span> <b>Pruebas que manejen un navegador</b><span class="ev">Las pruebas navegan de verdad: van a la dirección configurada, rellenan el formulario real, esperan la respuesta del servidor, comprueban su código y restauran el dato al final. El flujo falla primero si falta cualquiera de las variables de entorno. Las ejecuté y fallan por ausencia de la aplicación desplegada y del navegador, que es el comportamiento correcto: no pueden pasar con el sistema apagado.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>0,40</b> <span>/ 0,5</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E11</span> <b>Dependencias que existan de verdad</b><span class="ev">Los doce pines resuelven e instalan en un entorno limpio, comprobado contra el índice de paquetes, y las cuatro interfaces instalan. El límite es que la herramienta de carga no está declarada en ningún archivo de dependencias pese a que los guiones la invocan.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">8</td><td class="n"><b>0,32</b> <span>/ 0,4</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E12</span> <b>Que todas las interfaces se puedan instalar</b><span class="ev">Los cuatro proyectos de interfaz tienen su archivo de bloqueo versionado y comprobé la instalación reproducible en los cuatro sobre un clon limpio. El límite es que el flujo automático sigue usando la instalación que ignora el bloqueo en tres de las cuatro, de modo que la reproducibilidad no se ejercita donde debería.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">8</td><td class="n"><b>0,28</b> <span>/ 0,4</span></td><td class="n bad">0,7</td></tr>
+<tr><td><span class="cod">E13</span> <b>Pruebas con contenedores efímeros</b><span class="ev">Dos suites reales: una de 405 líneas que migra el esquema, persiste un evento de auditoría con su sello, comprueba que el disparador rechaza modificación y borrado y que la denegación de privilegios funciona con dos conexiones; y otra que verifica que el servicio real puebla los campos de la cadena. Están recogidas por el flujo normal. El límite es que ninguna ejercita el pipeline real de migraciones.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">6</td><td class="n"><b>0,21</b> <span>/ 0,3</span></td><td class="n bad">0,7</td></tr>
+<tr><td><span class="cod">E14</span> <b>Publicar todas las imágenes</b><span class="ev">El flujo publica tres imágenes de los cinco servicios con archivo de construcción propio; dos quedan sin publicar pese a que sus pruebas compilan y pasan. Además el trabajo solo se dispara en la rama principal, así que ninguna solicitud de incorporación ejercita la construcción.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">6</td><td class="n"><b>0,15</b> <span>/ 0,3</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E15</span> <b>Que el despliegue falle cuando falla</b><span class="ev">No hay tolerancia al error en ningún flujo y el encadenamiento bloquea de verdad: la construcción de imágenes depende de los cuatro trabajos de prueba y la integración depende de aquélla. El límite es que el despliegue termina al levantar los contenedores sin sonda de salud posterior, de modo que un contenedor que arranque y muera al instante seguiría reportando verde.</span></td><td><span class="b st-mod">Modificar</span></td><td class="n">7</td><td class="n"><b>0,16</b> <span>/ 0,2</span></td><td class="n bad">0,8</td></tr>
+<tr><td><span class="cod">E16</span> <b>Un mapa de carpetas en el README</b><span class="ev">La tabla existe, con nueve filas y columna de comando de reproducción, y las nueve carpetas de destino existen. Pero probé los comandos y cuatro están rotos: dos apuntan a un arrancador que está un directorio más abajo, uno invoca un guion que no tiene punto de entrada y no imprime nada, y otro llama a un script inexistente.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,10</b> <span>/ 0,2</span></td><td class="n bad">0,5</td></tr>
+<tr><td><span class="cod">E17</span> <b>Fijación de finales de línea</b><span class="ev">El archivo de atributos es correcto y completo, y el código fuente está limpio: cero archivos con finales de Windows entre los de código, consulta, documento y marcado. Pero nunca se aplicó a los datos: 25 de los 34 archivos tabulares versionados los conservan en el contenido confirmado, incluidos los que sostienen el informe. Falta la renormalización y no se verifica en ningún flujo.</span></td><td><span class="b st-ter">Por terminar</span></td><td class="n">7</td><td class="n"><b>0,03</b> <span>/ 0,1</span></td><td class="n bad">0,3</td></tr>
+</tbody><tfoot><tr><td>Totales</td><td></td><td></td><td class="n">5,40 <span>/ 10,0</span></td><td class="n">0,000003</td></tr></tfoot></table></div>
+<div class="calc">
+<div>Suma&nbsp;&nbsp;S = 5,40 sobre 10</div>
+<div>Producto de los factores&nbsp;&nbsp;0,6&nbsp;×&nbsp;0,9&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,2&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,2&nbsp;×&nbsp;0,3&nbsp;×&nbsp;0,2&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,7&nbsp;×&nbsp;0,7&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,8&nbsp;×&nbsp;0,5&nbsp;×&nbsp;0,3 = 0,000003</div>
+<div class="r" style="font-size:1.12rem">Nota del equipo = 0,000003 × 5,40 = <b>0,00 / 10,00</b></div>
+</div>
+<h3>Aporte de cada integrante a esta entrega</h3>
+<p>El peso de cada elemento se reparte entre quienes lo trabajaron, según el historial del control de versiones en el rango que cierra esta rúbrica, combinando a partes iguales el número de commits y el volumen de cambio atenuado. El reparto equitativo entre 4 integrantes es el 25 %: quien lo alcanza recibe la nota completa del equipo, quien queda por debajo la recibe en proporción.</p>
+<div class="tw"><table><thead><tr><th style="width:32%">Integrante</th><th style="width:17%">Peso aportado</th><th style="width:17%">Participación</th><th style="width:17%">Factor</th><th style="width:17%">Nota del trabajo</th></tr></thead><tbody>
+<tr><td class="nom">Pedro Castro</td><td class="n">3,83 <span>/ 10</span></td><td class="n">38,3 %</td><td class="n">1,000</td><td class="n"><b>0,00</b> <span>/ 0,00</span></td></tr>
+<tr><td class="nom">Ernesto Luna</td><td class="n">3,56 <span>/ 10</span></td><td class="n">35,6 %</td><td class="n">1,000</td><td class="n"><b>0,00</b> <span>/ 0,00</span></td></tr>
+<tr><td class="nom">Keyla Bedón</td><td class="n">1,46 <span>/ 10</span></td><td class="n">14,6 %</td><td class="n">0,583</td><td class="n"><b>0,00</b> <span>/ 0,00</span></td></tr>
+<tr><td class="nom">Juliana Emanuel</td><td class="n">1,15 <span>/ 10</span></td><td class="n">11,5 %</td><td class="n">0,462</td><td class="n"><b>0,00</b> <span>/ 0,00</span></td></tr>
+</tbody></table></div>
+<h3>Nota final por integrante</h3>
+<div class="tw"><table><thead><tr><th style="width:30%">Integrante</th><th style="width:23%">Trabajo (80 %)</th><th style="width:23%">Cuestionario SGA (20 %)</th><th style="width:24%">Nota final</th></tr></thead><tbody>
+<tr><td class="nom">Keyla Bedón</td><td class="n">0,000 <span>(0,00 × 0,80)</span></td><td class="n"><span>pendiente</span></td><td class="n"><span>0,000 + cuest. × 0,20</span></td></tr>
+<tr><td class="nom">Juliana Emanuel</td><td class="n">0,000 <span>(0,00 × 0,80)</span></td><td class="n"><span>pendiente</span></td><td class="n"><span>0,000 + cuest. × 0,20</span></td></tr>
+<tr><td class="nom">Ernesto Luna</td><td class="n">0,000 <span>(0,00 × 0,80)</span></td><td class="n"><span>pendiente</span></td><td class="n"><span>0,000 + cuest. × 0,20</span></td></tr>
+<tr><td class="nom">Pedro Castro</td><td class="n">0,000 <span>(0,00 × 0,80)</span></td><td class="n"><span>pendiente</span></td><td class="n"><span>0,000 + cuest. × 0,20</span></td></tr>
+</tbody></table></div>
+<h3>Retroalimentación individual</h3>
+<p style="font-size:.9rem;color:var(--mut);margin-top:0">Un recuadro por integrante, en texto plano, listo para copiar de un clic y pegar en el espacio del estudiante.</p>
+<div class="fbh">Keyla Bedón</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Keyla Bedón:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit ff6f68ba del 12 de septiembre de 2026.
+
+Este proyecto tiene el mayor volumen construido del curso y varias piezas de verdadera calidad, y quiero empezar por ellas.
+El verificador del experimento usa la función del sistema en producción y sus seis casos de prueba pasan, aceptando una cadena real y rechazando contenido manipulado, hash roto, reloj no monotónico y edición directa del estado.
+Las pruebas de navegador navegan de verdad y fallan cuando el sistema no está levantado, que es exactamente lo que deben hacer.
+Hay dos suites con contenedores efímeros que migran el esquema, persisten un evento y comprueban el rechazo de modificación y borrado.
+El árbol de trabajo está limpio de claves y existe un documento de rotación serio.
+Y el microservicio en Python es la pieza más sana del curso, con noventa y cinco pruebas y casi ochenta por ciento de cobertura real.
+Dicho eso, la calificación es la que es por razones que están enteramente en su mano.
+La primera y más costosa: encontré veintinueve commits sin fusionar repartidos en siete de sus diez ramas, y lo que contienen es precisamente la corrección de los resultados de carga, del certificado de reproducibilidad, de las cifras de cobertura y de los finales de línea.
+El trabajo está escrito y no está entregado, y lo que no está en la rama principal no forma parte de la entrega.
+Integrarlo movería cuatro criterios a la vez.
+La segunda: el detector de secretos está configurado para no detectar.
+Su archivo de configuración permite expresamente los cuatro valores que se filtraron y excluye las carpetas donde estaban.
+Lo ejecuté de las dos maneras: con la configuración de ustedes no encuentra ninguna fuga en setecientos setenta y ocho commits; con la de fábrica encuentra veintisiete.
+Una compuerta de seguridad que no puede fallar no es una compuerta, y un revisor que lo advierta desconfiará de todo lo demás.
+La tercera: el guion de reproducibilidad solo genera sumas y no las verifica nunca, y aun así termina imprimiendo que todo es cien por cien verificable y determinista; de doce comprobaciones, nueve fallan.
+La cuarta: el informe afirma en la misma página que un escenario tuvo cien por ciento de fallo y que ese mismo escenario tuvo noventa y nueve coma noventa y ocho por ciento de disponibilidad.
+Y una advertencia técnica que va más allá de la nota, porque afecta a la contribución que el proyecto reivindica como propia.
+El servicio de auditoría lee la cabeza de la cadena sin bloqueo y después escribe, de modo que bajo concurrencia dos eventos leen la misma cabeza y la cadena se bifurca.
+Su registro de decisión afirma un bloqueo pesimista que no existe en el código.
+Eso compromete el no repudio justo bajo la carga que su propio experimento mide, y es lo primero que yo arreglaría.
+
+Detalle de la calificación:
+De los 51 elementos exigidos al proyecto, 34 estaban resueltos y verificados, y 17 quedaban pendientes.
+Suma de los elementos calificados: 5,40 sobre 10.
+Producto de los factores: 0,000003.
+Nota del equipo: 0,00 sobre 10.
+Su aporte a esta entrega: 14,6 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,00 sobre 10.
+Aporte del trabajo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Juliana Emanuel</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Juliana Emanuel:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit ff6f68ba del 12 de septiembre de 2026.
+
+Este proyecto tiene el mayor volumen construido del curso y varias piezas de verdadera calidad, y quiero empezar por ellas.
+El verificador del experimento usa la función del sistema en producción y sus seis casos de prueba pasan, aceptando una cadena real y rechazando contenido manipulado, hash roto, reloj no monotónico y edición directa del estado.
+Las pruebas de navegador navegan de verdad y fallan cuando el sistema no está levantado, que es exactamente lo que deben hacer.
+Hay dos suites con contenedores efímeros que migran el esquema, persisten un evento y comprueban el rechazo de modificación y borrado.
+El árbol de trabajo está limpio de claves y existe un documento de rotación serio.
+Y el microservicio en Python es la pieza más sana del curso, con noventa y cinco pruebas y casi ochenta por ciento de cobertura real.
+Dicho eso, la calificación es la que es por razones que están enteramente en su mano.
+La primera y más costosa: encontré veintinueve commits sin fusionar repartidos en siete de sus diez ramas, y lo que contienen es precisamente la corrección de los resultados de carga, del certificado de reproducibilidad, de las cifras de cobertura y de los finales de línea.
+El trabajo está escrito y no está entregado, y lo que no está en la rama principal no forma parte de la entrega.
+Integrarlo movería cuatro criterios a la vez.
+La segunda: el detector de secretos está configurado para no detectar.
+Su archivo de configuración permite expresamente los cuatro valores que se filtraron y excluye las carpetas donde estaban.
+Lo ejecuté de las dos maneras: con la configuración de ustedes no encuentra ninguna fuga en setecientos setenta y ocho commits; con la de fábrica encuentra veintisiete.
+Una compuerta de seguridad que no puede fallar no es una compuerta, y un revisor que lo advierta desconfiará de todo lo demás.
+La tercera: el guion de reproducibilidad solo genera sumas y no las verifica nunca, y aun así termina imprimiendo que todo es cien por cien verificable y determinista; de doce comprobaciones, nueve fallan.
+La cuarta: el informe afirma en la misma página que un escenario tuvo cien por ciento de fallo y que ese mismo escenario tuvo noventa y nueve coma noventa y ocho por ciento de disponibilidad.
+Y una advertencia técnica que va más allá de la nota, porque afecta a la contribución que el proyecto reivindica como propia.
+El servicio de auditoría lee la cabeza de la cadena sin bloqueo y después escribe, de modo que bajo concurrencia dos eventos leen la misma cabeza y la cadena se bifurca.
+Su registro de decisión afirma un bloqueo pesimista que no existe en el código.
+Eso compromete el no repudio justo bajo la carga que su propio experimento mide, y es lo primero que yo arreglaría.
+
+Detalle de la calificación:
+De los 51 elementos exigidos al proyecto, 34 estaban resueltos y verificados, y 17 quedaban pendientes.
+Suma de los elementos calificados: 5,40 sobre 10.
+Producto de los factores: 0,000003.
+Nota del equipo: 0,00 sobre 10.
+Su aporte a esta entrega: 11,5 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,00 sobre 10.
+Aporte del trabajo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Ernesto Luna</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Ernesto Luna:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit ff6f68ba del 12 de septiembre de 2026.
+
+Este proyecto tiene el mayor volumen construido del curso y varias piezas de verdadera calidad, y quiero empezar por ellas.
+El verificador del experimento usa la función del sistema en producción y sus seis casos de prueba pasan, aceptando una cadena real y rechazando contenido manipulado, hash roto, reloj no monotónico y edición directa del estado.
+Las pruebas de navegador navegan de verdad y fallan cuando el sistema no está levantado, que es exactamente lo que deben hacer.
+Hay dos suites con contenedores efímeros que migran el esquema, persisten un evento y comprueban el rechazo de modificación y borrado.
+El árbol de trabajo está limpio de claves y existe un documento de rotación serio.
+Y el microservicio en Python es la pieza más sana del curso, con noventa y cinco pruebas y casi ochenta por ciento de cobertura real.
+Dicho eso, la calificación es la que es por razones que están enteramente en su mano.
+La primera y más costosa: encontré veintinueve commits sin fusionar repartidos en siete de sus diez ramas, y lo que contienen es precisamente la corrección de los resultados de carga, del certificado de reproducibilidad, de las cifras de cobertura y de los finales de línea.
+El trabajo está escrito y no está entregado, y lo que no está en la rama principal no forma parte de la entrega.
+Integrarlo movería cuatro criterios a la vez.
+La segunda: el detector de secretos está configurado para no detectar.
+Su archivo de configuración permite expresamente los cuatro valores que se filtraron y excluye las carpetas donde estaban.
+Lo ejecuté de las dos maneras: con la configuración de ustedes no encuentra ninguna fuga en setecientos setenta y ocho commits; con la de fábrica encuentra veintisiete.
+Una compuerta de seguridad que no puede fallar no es una compuerta, y un revisor que lo advierta desconfiará de todo lo demás.
+La tercera: el guion de reproducibilidad solo genera sumas y no las verifica nunca, y aun así termina imprimiendo que todo es cien por cien verificable y determinista; de doce comprobaciones, nueve fallan.
+La cuarta: el informe afirma en la misma página que un escenario tuvo cien por ciento de fallo y que ese mismo escenario tuvo noventa y nueve coma noventa y ocho por ciento de disponibilidad.
+Y una advertencia técnica que va más allá de la nota, porque afecta a la contribución que el proyecto reivindica como propia.
+El servicio de auditoría lee la cabeza de la cadena sin bloqueo y después escribe, de modo que bajo concurrencia dos eventos leen la misma cabeza y la cadena se bifurca.
+Su registro de decisión afirma un bloqueo pesimista que no existe en el código.
+Eso compromete el no repudio justo bajo la carga que su propio experimento mide, y es lo primero que yo arreglaría.
+
+Detalle de la calificación:
+De los 51 elementos exigidos al proyecto, 34 estaban resueltos y verificados, y 17 quedaban pendientes.
+Suma de los elementos calificados: 5,40 sobre 10.
+Producto de los factores: 0,000003.
+Nota del equipo: 0,00 sobre 10.
+Su aporte a esta entrega: 35,6 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,00 sobre 10.
+Aporte del trabajo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<div class="fbh">Pedro Castro</div>
+<div class="fb"><button type="button">Copiar</button><pre>Estimado/a Pedro Castro:
+
+Evaluación final del Proyecto Fin de Curso — Aplicaciones Distribuidas (ISR-701).
+Equipo BCEL. Repositorio github.com/LEO23as/acadtrace, rama main, commit ff6f68ba del 12 de septiembre de 2026.
+
+Este proyecto tiene el mayor volumen construido del curso y varias piezas de verdadera calidad, y quiero empezar por ellas.
+El verificador del experimento usa la función del sistema en producción y sus seis casos de prueba pasan, aceptando una cadena real y rechazando contenido manipulado, hash roto, reloj no monotónico y edición directa del estado.
+Las pruebas de navegador navegan de verdad y fallan cuando el sistema no está levantado, que es exactamente lo que deben hacer.
+Hay dos suites con contenedores efímeros que migran el esquema, persisten un evento y comprueban el rechazo de modificación y borrado.
+El árbol de trabajo está limpio de claves y existe un documento de rotación serio.
+Y el microservicio en Python es la pieza más sana del curso, con noventa y cinco pruebas y casi ochenta por ciento de cobertura real.
+Dicho eso, la calificación es la que es por razones que están enteramente en su mano.
+La primera y más costosa: encontré veintinueve commits sin fusionar repartidos en siete de sus diez ramas, y lo que contienen es precisamente la corrección de los resultados de carga, del certificado de reproducibilidad, de las cifras de cobertura y de los finales de línea.
+El trabajo está escrito y no está entregado, y lo que no está en la rama principal no forma parte de la entrega.
+Integrarlo movería cuatro criterios a la vez.
+La segunda: el detector de secretos está configurado para no detectar.
+Su archivo de configuración permite expresamente los cuatro valores que se filtraron y excluye las carpetas donde estaban.
+Lo ejecuté de las dos maneras: con la configuración de ustedes no encuentra ninguna fuga en setecientos setenta y ocho commits; con la de fábrica encuentra veintisiete.
+Una compuerta de seguridad que no puede fallar no es una compuerta, y un revisor que lo advierta desconfiará de todo lo demás.
+La tercera: el guion de reproducibilidad solo genera sumas y no las verifica nunca, y aun así termina imprimiendo que todo es cien por cien verificable y determinista; de doce comprobaciones, nueve fallan.
+La cuarta: el informe afirma en la misma página que un escenario tuvo cien por ciento de fallo y que ese mismo escenario tuvo noventa y nueve coma noventa y ocho por ciento de disponibilidad.
+Y una advertencia técnica que va más allá de la nota, porque afecta a la contribución que el proyecto reivindica como propia.
+El servicio de auditoría lee la cabeza de la cadena sin bloqueo y después escribe, de modo que bajo concurrencia dos eventos leen la misma cabeza y la cadena se bifurca.
+Su registro de decisión afirma un bloqueo pesimista que no existe en el código.
+Eso compromete el no repudio justo bajo la carga que su propio experimento mide, y es lo primero que yo arreglaría.
+
+Detalle de la calificación:
+De los 51 elementos exigidos al proyecto, 34 estaban resueltos y verificados, y 17 quedaban pendientes.
+Suma de los elementos calificados: 5,40 sobre 10.
+Producto de los factores: 0,000003.
+Nota del equipo: 0,00 sobre 10.
+Su aporte a esta entrega: 38,3 % del trabajo, frente a un reparto equitativo del 25 %.
+Nota de su trabajo: 0,00 sobre 10.
+Aporte del trabajo (80 %): 0,000.
+Nota del cuestionario del SGA (20 %): pendiente de registrar.
+Nota final: 0,000 más su nota del cuestionario multiplicada por 0,20.
+
+Ing. Gleiston Cicerón Guerrero Ulloa, PhD</pre></div>
+<h2>Resumen</h2>
+<div class="tw"><table><thead><tr><th>Equipo</th><th>Pendientes</th><th>Suma <i>S</i></th><th>Producto</th><th>Nota del equipo</th></tr></thead><tbody>
+<tr><td class="nom">AGLS</td><td class="n">9</td><td class="n">8,70</td><td class="n">0,223949</td><td class="n"><b>1,95</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">ACC</td><td class="n">8</td><td class="n">8,47</td><td class="n">0,220450</td><td class="n"><b>1,87</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">FUVV</td><td class="n">8</td><td class="n">7,65</td><td class="n">0,091750</td><td class="n"><b>0,70</b> <span>/ 10,00</span></td></tr>
+<tr><td class="nom">BCEL</td><td class="n">17</td><td class="n">5,40</td><td class="n">0,000003</td><td class="n"><b>0,00</b> <span>/ 10,00</span></td></tr>
+</tbody></table></div>
+<h3>Calificaciones</h3>
+<div class="tw"><table><thead><tr><th style="width:32%">Integrante</th><th style="width:12%">Equipo</th><th style="width:18%">Trabajo</th><th style="width:18%">Cuestionario</th><th style="width:20%">Nota final</th></tr></thead><tbody>
+<tr><td class="nom">Andy Sánchez</td><td class="n">AGLS</td><td class="n">1,95</td><td class="n">9,00</td><td class="n"><b>3,36</b></td></tr>
+<tr><td class="nom">Jeremy Gaibor</td><td class="n">AGLS</td><td class="n">1,95</td><td class="n">8,76</td><td class="n"><b>3,31</b></td></tr>
+<tr><td class="nom">Cristhian Pacheco</td><td class="n">ACC</td><td class="n">1,87</td><td class="n">8,39</td><td class="n"><b>3,17</b></td></tr>
+<tr><td class="nom">José Lozano</td><td class="n">AGLS</td><td class="n">1,04</td><td class="n">8,67</td><td class="n"><b>2,57</b></td></tr>
+<tr><td class="nom">Harold Vinueza</td><td class="n">FUVV</td><td class="n">0,34</td><td class="n">8,67</td><td class="n"><b>2,01</b></td></tr>
+<tr><td class="nom">Jhinson Aucatoma</td><td class="n">AGLS</td><td class="n">0,00</td><td class="n">7,11</td><td class="n"><b>1,42</b></td></tr>
+<tr><td class="nom">Iván Villamarín</td><td class="n">FUVV</td><td class="n">0,39</td><td class="n">5,53</td><td class="n"><b>1,42</b></td></tr>
+<tr><td class="nom">Carlos Carpio</td><td class="n">ACC</td><td class="n">1,53</td><td class="n"><span>pendiente</span></td><td class="n"><span>pendiente</span></td></tr>
+<tr><td class="nom">Ernesto Luna</td><td class="n">BCEL</td><td class="n">0,00</td><td class="n"><span>pendiente</span></td><td class="n"><span>pendiente</span></td></tr>
+<tr><td class="nom">Freddy Farinango</td><td class="n">FUVV</td><td class="n">0,70</td><td class="n"><span>pendiente</span></td><td class="n"><span>pendiente</span></td></tr>
+<tr><td class="nom">Isaías Urbina</td><td class="n">FUVV</td><td class="n">0,52</td><td class="n"><span>pendiente</span></td><td class="n"><span>pendiente</span></td></tr>
+<tr><td class="nom">Jeremy Álvarez</td><td class="n">ACC</td><td class="n">1,36</td><td class="n"><span>pendiente</span></td><td class="n"><span>pendiente</span></td></tr>
+<tr><td class="nom">Juliana Emanuel</td><td class="n">BCEL</td><td class="n">0,00</td><td class="n"><span>pendiente</span></td><td class="n"><span>pendiente</span></td></tr>
+<tr><td class="nom">Keyla Bedón</td><td class="n">BCEL</td><td class="n">0,00</td><td class="n"><span>pendiente</span></td><td class="n"><span>pendiente</span></td></tr>
+<tr><td class="nom">Pedro Castro</td><td class="n">BCEL</td><td class="n">0,00</td><td class="n"><span>pendiente</span></td><td class="n"><span>pendiente</span></td></tr>
+<tr><td class="nom">Robinson Cando</td><td class="n">ACC</td><td class="n">1,87</td><td class="n"><span>pendiente</span></td><td class="n"><span>pendiente</span></td></tr>
+</tbody></table></div>
+<div class="box warn"><h4>Cuestionarios pendientes de registrar</h4><p style="margin:0">Faltan nueve notas del SGA. Para cerrarlas: nota final = trabajo × 0,80 + nota del cuestionario × 0,20.</p></div>
+<div class="foot">Evaluación sobre los commits de cada repositorio hasta el 12 de septiembre de 2026, verificando el contenido archivo por archivo, compilando los documentos desde copia limpia y ejecutando las pruebas y los guiones de análisis. Las cifras proceden de esas ejecuciones y de recálculos independientes.</div>
+</div>
+<script>
+document.querySelectorAll('.fb button').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentElement.querySelector('pre').innerText;
+var ok=function(){b.textContent='Copiado';b.classList.add('done');setTimeout(function(){b.textContent='Copiar';b.classList.remove('done')},1600)};
+function f(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,f)}else{f()}});});
+</script>
