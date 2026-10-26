@@ -1,0 +1,63 @@
+%============================================================
+\chapter{Capa de presentación distribuida}\label{cap:presentacion}
+%============================================================
+
+La capa de presentación de BiblioUTEQ es una aplicación web independiente, \ruta{biblio-web}, que se ejecuta en su propio nivel y no tiene acceso a la base de datos: todo lo que muestra lo obtiene del API. Esta separación es la que permitiría reemplazarla por una aplicación móvil o una aplicación de página única sin tocar el negocio. A cambio, cada pantalla depende de un servicio remoto que puede tardar o fallar, y el código debe estar preparado para eso.
+
+\section{Un cliente HTTP declarativo}
+
+Para consumir el API, \ruta{biblio-web} declara una interfaz Java con una anotación por operación remota. Spring genera en tiempo de ejecución un objeto que implementa la interfaz y convierte cada llamada en una solicitud HTTP: es un \textbf{proxy remoto}, un objeto local que representa a otro que vive en otro proceso \cite{gamma1994design}. El controlador lo usa como si llamara a un objeto cualquiera.
+
+\lstinputlisting[language=Java,firstline=17,lastline=39,caption={Cliente declarativo del API en \texttt{biblio-web}},label={lst:cliente}]{\webmain/cliente/BiblioApiCliente.java}
+
+Observe que \ruta{biblio-web} define sus propios registros (\texttt{LibroDatos}, \texttt{PrestamoDatos}) en lugar de reutilizar las clases de \ruta{biblio-api}. Los dos niveles comparten solo el contrato JSON, no el código: así cada uno puede compilarse, versionarse y desplegarse por separado.
+
+\section{Tiempos de espera: la primera defensa ante fallos parciales}
+
+Dentro de un solo proceso, una llamada a un método siempre termina. Entre niveles no: si el API está caído o saturado, una solicitud HTTP sin límite de tiempo puede dejar esperando al usuario indefinidamente y agotar los hilos del servidor web. En los sistemas distribuidos estas fallas parciales son la norma, no la excepción \cite{vansteen2023distributed}. Por eso el cliente se configura con un tiempo máximo de conexión y otro de lectura.
+
+\lstinputlisting[language=Java,firstline=16,lastline=39,caption={Configuración del cliente con tiempos de espera},label={lst:clientecfg}]{\webmain/config/ClienteApiConfig.java}
+
+La URL del API se lee de la propiedad \texttt{biblio.api.url}, que en el contenedor se define con la variable de entorno \texttt{BIBLIO\_API\_URL}. El mismo artefacto funciona en el equipo del desarrollador y en Docker Compose.
+
+\section{Controladores web y el patrón Post/Redirect/Get}
+
+\lstinputlisting[language=Java,firstline=19,lastline=65,caption={Controlador web de préstamos},label={lst:ctrlweb}]{\webmain/controlador/PrestamoWebControlador.java}
+
+Después de procesar un formulario, el controlador no devuelve una página: redirige a una URL de consulta. Este patrón, conocido como Post/Redirect/Get, evita que el préstamo se registre dos veces si el usuario recarga la página. El mensaje de éxito o de error viaja a la página siguiente como atributo \emph{flash}, que se borra después de mostrarse.
+
+Cuando el API rechaza la operación por una regla del negocio, el controlador lee el campo \texttt{detail} del Problem Details y lo muestra al usuario (figura \ref{fig:errorregla}). La capa de presentación no repite la regla: solo comunica la decisión que tomó el negocio.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\linewidth]{figuras/web-error-regla.png}
+	\caption{La regla «sin ejemplares» decidida por el API y mostrada por la capa de presentación}\label{fig:errorregla}
+\end{figure}
+
+\section{Cuando el API no responde}
+
+\lstinputlisting[language=Java,firstline=12,lastline=27,caption={Manejo de la indisponibilidad del API},label={lst:fallos}]{\webmain/controlador/ManejadorFallosApi.java}
+
+Si el API está caído, el cliente lanza \texttt{ResourceAccessException} al vencer el tiempo de espera, y si responde con un error interno, \texttt{HttpServerErrorException}. El manejador del listado \ref{lst:fallos} las convierte en una página controlada con el código 503, en lugar de una traza de error (figura \ref{fig:caida}). La aplicación web sigue viva y se recupera sola cuando el API vuelve.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\linewidth]{figuras/web-api-caida.png}
+	\caption{Respuesta de \texttt{biblio-web} con el contenedor del API detenido}\label{fig:caida}
+\end{figure}
+
+\section{Las vistas}
+
+Las vistas se escriben con Thymeleaf, un motor de plantillas que genera HTML en el servidor. Los atributos \texttt{th:*} se reemplazan con los datos del modelo y el resto del archivo es HTML válido que puede abrirse en un navegador como prototipo.
+
+\lstinputlisting[language=HTML,firstline=1,lastline=34,caption={Plantilla \texttt{catalogo.html}},label={lst:plantilla}]{codigo/biblio-web/src/main/resources/templates/catalogo.html}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\linewidth]{figuras/web-catalogo.png}
+	\caption{Catálogo de libros en \texttt{biblio-web}}\label{fig:catalogo}
+\end{figure}
+
+\begin{practicaBox}[title={Práctica 7.1: reintentos y disyuntor}]
+	Los tiempos de espera evitan que el usuario espere para siempre, pero si el API está caído, cada solicitud seguirá intentando conectarse. Agregue a \ruta{biblio-web} un disyuntor (\emph{circuit breaker}) con la biblioteca Resilience4j sobre las llamadas de lectura del catálogo: después de varios fallos seguidos, el disyuntor deja de llamar al API durante un tiempo y responde de inmediato con la página de servicio no disponible. Mida, con el API detenido, cuánto tarda la página antes y después del cambio.
+\end{practicaBox}

@@ -1,0 +1,64 @@
+%============================================================
+\chapter{Capa de negocio}\label{cap:negocio}
+%============================================================
+
+La capa de negocio responde a la pregunta «¿qué puede hacer el sistema y bajo qué reglas?». En BiblioUTEQ los casos de uso son registrar un préstamo, registrar una devolución y consultar los préstamos de un socio. Esta capa no sabe si la petición llegó por HTTP, por una cola de mensajes o desde una prueba, ni cómo se guardan los datos: solo aplica las reglas y decide qué se confirma.
+
+\section{Reglas del negocio}
+
+\begin{xltabular}{\linewidth}{@{}L{1.0cm}YL{4.6cm}@{}}
+	\caption{Reglas del negocio de BiblioUTEQ}\label{tab:reglas}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{N.\textsuperscript{o}} & \hdr{Regla} & \hdr{Dónde se aplica} \\
+	\midrule
+	\endhead
+	R1 & Un socio inactivo no puede pedir préstamos. & \ruta{Prestamo.registrar} (dominio) \\
+	R2 & Un socio tiene como máximo 3 préstamos activos. & \ruta{PrestamoServicio.registrar} (negocio) \\
+	R3 & Solo se presta un libro con ejemplares disponibles. & \ruta{Libro.retirarEjemplar} (dominio) \\
+	R4 & El préstamo vence a los 7 días. & \ruta{Prestamo.registrar} con el parámetro de configuración \\
+	R5 & Por cada día de atraso se cobran 0,25 dólares. & \ruta{Prestamo.registrarDevolucion} \\
+	R6 & Un préstamo devuelto no se puede volver a devolver. & \ruta{Prestamo.registrarDevolucion} \\
+	\bottomrule
+\end{xltabular}
+
+Las reglas que dependen solo de un objeto (R1, R3, R5, R6) viven en el dominio; la que necesita consultar otros datos (R2, que cuenta los préstamos activos del socio) vive en el servicio. Esta distribución sigue la idea de que el servicio coordina y el dominio decide \cite{fowler2002patterns,evans2003domain}.
+
+\section{El método fábrica del préstamo}
+
+\lstinputlisting[language=Java,firstline=56,lastline=86,caption={Creación y devolución de un préstamo en la entidad \texttt{Prestamo}},label={lst:prestamo}]{\apimain/dominio/Prestamo.java}
+
+El constructor de \texttt{Prestamo} es privado: la única forma de crear un préstamo desde otra clase es el método fábrica \texttt{registrar} \cite{gamma1994design}, que valida al socio y retira el ejemplar antes de construir el objeto. Así es imposible, por diseño, que exista un préstamo sin su ejemplar retirado.
+
+\section{El servicio de préstamos}
+
+\lstinputlisting[language=Java,firstline=21,lastline=82,caption={Servicio \texttt{PrestamoServicio}: casos de uso y transacciones},label={lst:servicio}]{\apimain/negocio/PrestamoServicio.java}
+
+\subsection{Transacciones}
+
+Una \textbf{transacción} agrupa varias operaciones sobre la base de datos para que se apliquen todas o ninguna. En \texttt{registrar}, retirar el ejemplar y guardar el préstamo forman una unidad: si guardar el préstamo falla, el ejemplar no debe quedar retirado. La anotación \texttt{@Transactional} delimita esa unidad: Spring abre la transacción al entrar al método, la confirma al salir y la revierte si se lanza una excepción no comprobada, como \texttt{ReglaNegocioException}.
+
+La clase entera tiene la anotación \texttt{@Transactional} con el atributo \texttt{readOnly} activado, y los métodos que modifican datos la sobrescriben con \texttt{@Transactional}. La marca de solo lectura permite al proveedor JPA omitir la detección de cambios en las consultas. Observe además que \texttt{devolver} no llama a ningún método \texttt{save}: la entidad cargada está administrada por JPA y sus cambios se escriben al confirmar la transacción.
+
+\subsection{Reglas configurables y reloj inyectado}
+
+Los valores de las reglas (máximo de préstamos, días de préstamo, multa diaria) no están escritos en el código: se leen de la configuración mediante un registro de Java con la anotación \texttt{@ConfigurationProperties}, y se validan al arrancar la aplicación.
+
+\lstinputlisting[language=Java,firstline=12,lastline=22,caption={Parámetros del negocio leídos de la configuración},label={lst:reglas}]{\apimain/negocio/ReglasPrestamo.java}
+
+El servicio tampoco pide la fecha con \texttt{LocalDate.now()}, sino a un objeto \texttt{Clock} que recibe por inyección. En producción ese reloj es el del sistema; en una prueba es un reloj fijo, de modo que el cálculo de la multa da siempre el mismo resultado, sin importar el día en que se ejecute la prueba.
+
+\section{Eventos del dominio: el patrón Observador}
+
+Cuando se confirma un préstamo, otras partes del sistema podrían querer enterarse: enviar un correo al socio, actualizar estadísticas o publicar el hecho en un \emph{broker} de mensajes. Si el servicio llamara a cada una, crecería con cada nueva necesidad. Con el patrón Observador, el servicio publica un evento y los interesados se suscriben a él sin que el servicio los conozca \cite{gamma1994design}.
+
+\lstinputlisting[language=Java,firstline=10,lastline=25,caption={Observador que reacciona a los préstamos confirmados},label={lst:observador}]{\apimain/negocio/NotificadorPrestamos.java}
+
+La anotación \texttt{@TransactionalEventListener} hace que el observador se ejecute solo después de que la transacción se confirma. Si el préstamo se revierte, no se notifica nada, lo que evita avisar al socio de un préstamo que no existe.
+
+\begin{avisoBox}[title={Una condición de carrera que queda abierta}]
+	La regla R2 cuenta los préstamos activos y luego inserta uno nuevo. Si el mismo socio envía dos solicitudes al mismo tiempo para dos libros distintos, ambas transacciones pueden contar 2, ambas pasar la validación y el socio terminar con 4 préstamos. El control optimista sobre \texttt{Libro} no lo impide, porque cada solicitud modifica un libro diferente. La práctica 5.1 pide corregirlo.
+\end{avisoBox}
+
+\begin{practicaBox}[title={Práctica 5.1: cerrar la condición de carrera de la regla R2}]
+	Proponga y aplique una de estas soluciones y justifique su elección: (a) bloquear la fila del socio al inicio de \texttt{registrar} con \texttt{@Lock(LockModeType.PESSIMISTIC\_WRITE)} en una consulta del repositorio de socios; (b) agregar a \texttt{Socio} un contador de préstamos activos protegido con \texttt{@Version}; (c) ejecutar la transacción con aislamiento serializable. Escriba una prueba de integración que lance dos solicitudes simultáneas del mismo socio con dos préstamos activos y compruebe que solo una tiene éxito. Discuta qué cuesta cada solución en latencia y en reintentos \cite{kleppmann2026designing}.
+\end{practicaBox}

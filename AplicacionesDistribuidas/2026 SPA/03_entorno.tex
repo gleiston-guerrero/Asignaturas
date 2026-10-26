@@ -1,0 +1,148 @@
+%============================================================
+\chapter{Entorno de desarrollo en Windows}\label{cap:entorno}
+%============================================================
+
+Este capítulo prepara un equipo con Windows 11 para desarrollar, ejecutar y probar BiblioUTEQ. Se usan las versiones vigentes de cada herramienta al 26 de octubre de 2026, verificadas en sus fuentes oficiales.
+
+\section{Versiones de las herramientas}
+
+\begin{xltabular}{\linewidth}{@{}L{3.4cm}L{2.9cm}Y@{}}
+	\caption{Herramientas y versiones usadas en la guía}\label{tab:versiones}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Herramienta} & \hdr{Versión} & \hdr{Observación} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Herramienta} & \hdr{Versión} & \hdr{Observación} \\
+	\midrule
+	\endhead
+	IntelliJ IDEA & 2026.2.3 (compilación 262.10968.63) & Desde la versión 2025.3 es un solo producto con funciones gratuitas y una suscripción Ultimate \cite{jetbrains2025unified}; la 2026.2 da soporte a Java 27 desde el primer día \cite{jetbrains2026idea}. \\
+	\addlinespace
+	JDK (Eclipse Temurin) & 27 & Disponible desde el 15 de septiembre de 2026 \cite{oracle2026jdk27}; la versión de soporte extendido (LTS) más reciente es la 25 \cite{adoptium2026releases}. \\
+	\addlinespace
+	Spring Boot & 4.1.2 & Publicada el 23 de octubre de 2026 \cite{spring2026boot412}; requiere Java 17 o superior y es compatible hasta Java 27 \cite{spring2026requirements}. \\
+	\addlinespace
+	PostgreSQL & 18.6 & Versión estable más reciente \cite{pgdg2026postgresql}; la 19 está en fase de candidata y su publicación está prevista para el 19 de noviembre de 2026 \cite{pgdg2026rc}. \\
+	\addlinespace
+	Docker Desktop & 4.97.0 & Publicada el 26 de octubre de 2026 \cite{docker2026desktop}; incluye Docker Compose v2. \\
+	\addlinespace
+	Maven & 3.9.16 & Se usa a través de Maven Wrapper (\texttt{mvnw.cmd}); no hace falta instalarlo. Maven 4.0 todavía está en fase de candidata. \\
+	\addlinespace
+	Git para Windows & La más reciente & Para clonar el proyecto y versionar el trabajo. \\
+	\bottomrule
+\end{xltabular}
+
+Las bibliotecas que el proyecto usa dentro de Spring Boot no se eligen a mano: Spring Boot 4.1.2 fija versiones compatibles entre sí. Las más relevantes para esta guía son Spring Framework 7.0.10, Hibernate ORM 7.4.13, Flyway 12.4.0, el controlador JDBC de PostgreSQL 42.7.14, Testcontainers 2.0.5, JUnit Jupiter 6.0.3 y Tomcat 11.0.27. Para la documentación del API se agrega springdoc-openapi 3.2.0, la versión compatible con Spring Boot 4.1.2.
+
+\begin{infoBox}[title={¿JDK 27 o JDK 25?}]
+	JDK 27 es la versión más reciente, pero no es de soporte extendido: recibirá actualizaciones hasta marzo de 2027, cuando la reemplace JDK 28 \cite{oracle2026jdk27}. JDK 25 es la versión LTS más reciente \cite{adoptium2026releases}. Esta guía usa JDK 27 porque el curso trabaja con lo más actual; para un sistema que deba mantenerse en producción varios años conviene JDK 25. El proyecto no usa funciones exclusivas de Java 27, así que para cambiar de versión basta con editar la propiedad \texttt{java.version} del \texttt{pom.xml} raíz.
+\end{infoBox}
+
+\section{Instalación paso a paso}
+
+\subsection{JDK 27}
+
+\begin{enumerate}
+	\item Descargue el instalador MSI de Eclipse Temurin 27 para Windows x64 desde \url{https://adoptium.net/temurin/releases/}.
+	\item Durante la instalación, active las opciones \emph{Add to PATH} y \emph{Set JAVA\_HOME variable}.
+	\item Abra una ventana nueva de PowerShell y verifique:
+\end{enumerate}
+
+\begin{lstlisting}[language=powershell,numbers=none]
+java -version
+echo $env:JAVA_HOME
+\end{lstlisting}
+
+La primera línea de la respuesta debe indicar la versión 27, y \texttt{JAVA\_HOME} debe apuntar a la carpeta del JDK 27.
+
+\subsection{IntelliJ IDEA 2026.2}
+
+\begin{enumerate}
+	\item Descargue el instalador desde \url{https://www.jetbrains.com/idea/download/}. Desde la versión 2025.3 hay un único instalador: las funciones principales para Java son gratuitas y las avanzadas forman parte de la suscripción Ultimate \cite{jetbrains2025unified}.
+	\item El asistente para crear proyectos Spring Boot y las herramientas básicas de base de datos son gratuitos; el soporte completo de Spring forma parte de Ultimate. La suscripción Ultimate es gratuita para estudiantes y docentes que la solicitan con su correo institucional en \url{https://www.jetbrains.com/shop/eform/students}.
+	\item Al abrir IntelliJ IDEA por primera vez, configure el JDK en \emph{File $\rightarrow$ Project Structure $\rightarrow$ SDK}, eligiendo la carpeta del JDK 27.
+\end{enumerate}
+
+\subsection{Docker Desktop}
+
+\begin{enumerate}
+	\item Descargue Docker Desktop desde \url{https://www.docker.com/products/docker-desktop/} e instálelo con el motor basado en WSL 2 (\emph{Windows Subsystem for Linux}), que es la opción recomendada en Windows 11.
+	\item Reinicie el equipo si el instalador lo pide y abra Docker Desktop. Debe quedar en estado \emph{Engine running}.
+	\item Verifique en PowerShell:
+\end{enumerate}
+
+\begin{lstlisting}[language=powershell,numbers=none]
+docker version
+docker compose version
+docker run --rm postgres:18 postgres --version
+\end{lstlisting}
+
+La última orden descarga la imagen oficial de PostgreSQL 18 y debe responder \texttt{postgres (PostgreSQL) 18.6}.
+
+\subsection{PostgreSQL 18}
+
+En esta guía PostgreSQL se ejecuta en un contenedor, de modo que no hay que instalarlo en Windows: el archivo \texttt{compose.yaml} del proyecto lo levanta con la configuración correcta (capítulo \ref{cap:despliegue}). Si prefiere una instalación nativa, use el instalador de \url{https://www.postgresql.org/download/windows/}, cree la base de datos \texttt{biblio} con el usuario \texttt{biblio} y ajuste la variable \texttt{DB\_URL} si usa otro puerto.
+
+\subsection{Git}
+
+Instale Git para Windows desde \url{https://git-scm.com/download/win} y configure su identidad, que es la que aparecerá en cada \emph{commit}:
+
+\begin{lstlisting}[language=powershell,numbers=none]
+git config --global user.name "Nombres Apellidos"
+git config --global user.email "usuario@uteq.edu.ec"
+\end{lstlisting}
+
+\section{Abrir y ejecutar el proyecto en IntelliJ IDEA}
+
+\begin{enumerate}
+	\item Descomprima \texttt{biblio-uteq.zip} en una carpeta sin espacios ni tildes, por ejemplo \ruta{C:\Proyectos\biblio}.
+	\item En IntelliJ IDEA elija \emph{File $\rightarrow$ Open}, seleccione el archivo \texttt{pom.xml} de la raíz y luego \emph{Open as Project}. IntelliJ IDEA reconoce los dos módulos Maven, \texttt{biblio-api} y \texttt{biblio-web}, y descarga las dependencias.
+	\item Levante solo la base de datos desde la terminal integrada (\emph{View $\rightarrow$ Tool Windows $\rightarrow$ Terminal}):
+\end{enumerate}
+
+\begin{lstlisting}[language=powershell,numbers=none]
+docker compose up -d db
+\end{lstlisting}
+
+\begin{enumerate}[resume]
+	\item Abra la clase \ruta{BiblioApiApplication} y pulse el triángulo verde junto a \texttt{main}. Al arrancar, Flyway crea las tablas y carga los datos iniciales; compruébelo en \url{http://localhost:8080/api/v1/libros}.
+	\item Abra la clase \ruta{BiblioWebApplication} y ejecútela del mismo modo. La aplicación web queda en \url{http://localhost:8081}.
+\end{enumerate}
+
+\begin{infoBox}[title={Ver la base de datos desde IntelliJ IDEA}]
+	En la ventana \emph{Database} pulse \emph{+ $\rightarrow$ Data Source $\rightarrow$ PostgreSQL} e ingrese \texttt{localhost}, puerto \texttt{5432}, base de datos \texttt{biblio}, usuario \texttt{biblio} y clave \texttt{biblio}. Podrá ver las tablas \texttt{libro}, \texttt{socio}, \texttt{prestamo} y la tabla \texttt{flyway\_schema\_history}, donde Flyway registra las migraciones aplicadas.
+\end{infoBox}
+
+\section{Crear un proyecto propio desde cero}
+
+Para su Proyecto Fin de Curso puede partir del asistente de IntelliJ IDEA: \emph{File $\rightarrow$ New $\rightarrow$ Project $\rightarrow$ Spring Boot}. Elija lenguaje Java, tipo Maven, grupo \texttt{ec.edu.uteq}, JDK 27 y Spring Boot 4.1.2, y agregue las dependencias de la tabla \ref{tab:dependencias}. Si el asistente no ofrece Java 27 en la lista de versiones del lenguaje, elija la más alta disponible y cambie después la propiedad \texttt{java.version} del \texttt{pom.xml} a 27.
+
+\begin{xltabular}{\linewidth}{@{}L{5.4cm}Y@{}}
+	\caption{Dependencias de cada módulo}\label{tab:dependencias}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Dependencia} & \hdr{Para qué se usa} \\
+	\midrule
+	\endhead
+	\multicolumn{2}{@{}l}{\cellcolor{uteqSoft}\textbf{biblio-api}} \\
+	\ruta{spring-boot-starter-webmvc} & Servidor HTTP y controladores REST \\
+	\ruta{spring-boot-starter-validation} & Validación de los datos de entrada \\
+	\ruta{spring-boot-starter-data-jpa} & Acceso a datos con JPA e Hibernate \\
+	\ruta{spring-boot-starter-flyway} y \ruta{flyway-database-postgresql} & Migraciones versionadas del esquema \\
+	\ruta{postgresql} & Controlador JDBC de PostgreSQL \\
+	\ruta{spring-boot-starter-actuator} & Salud y métricas del servicio \\
+	\ruta{springdoc-openapi-starter-webmvc-ui} & Contrato OpenAPI y Swagger UI \\
+	\ruta{spring-boot-testcontainers}, \ruta{testcontainers-postgresql} & PostgreSQL real en las pruebas \\
+	\multicolumn{2}{@{}l}{\cellcolor{uteqSoft}\textbf{biblio-web}} \\
+	\ruta{spring-boot-starter-webmvc} & Servidor HTTP y controladores web \\
+	\ruta{spring-boot-starter-thymeleaf} & Plantillas HTML del lado del servidor \\
+	\ruta{spring-boot-starter-restclient} & Cliente HTTP para consumir el API \\
+	\bottomrule
+\end{xltabular}
+
+El listado \ref{lst:pomraiz} muestra el \texttt{pom.xml} raíz: hereda de \texttt{spring-boot-starter-parent} 4.1.2, que fija las versiones de todas las bibliotecas, y declara los dos módulos.
+
+\lstinputlisting[language=XML,firstline=1,lastline=29,caption={\texttt{pom.xml} raíz del proyecto},label={lst:pomraiz}]{codigo/pom.xml}
+
+\begin{okBox}[title={Lo que debe quedar funcionando}]
+	\texttt{java -version} responde 27; \texttt{docker compose version} responde v2; IntelliJ IDEA abre el proyecto sin errores; \url{http://localhost:8080/api/v1/libros} devuelve cuatro libros en JSON y \url{http://localhost:8081} muestra el catálogo.
+\end{okBox}

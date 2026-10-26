@@ -1,0 +1,74 @@
+%============================================================
+\chapter{Integración y despliegue con contenedores}\label{cap:despliegue}
+%============================================================
+
+Hasta aquí cada nivel se ejecutó desde IntelliJ IDEA. En este capítulo los tres niveles se empaquetan en contenedores y se levantan juntos con un solo comando. Un contenedor incluye el programa y todo lo que necesita para ejecutarse (el JRE, las bibliotecas y la configuración por defecto), de modo que se comporta igual en el equipo de cualquier integrante del curso, en el servidor de integración continua y en la nube.
+
+\section{Imágenes de los niveles de aplicación}
+
+Cada módulo tiene su \texttt{Dockerfile}. La imagen parte de Eclipse Temurin 27 en su versión JRE (solo lo necesario para ejecutar, no para compilar), copia el archivo \texttt{.jar} generado por Maven y lo ejecuta con un usuario sin privilegios de administrador.
+
+\lstinputlisting[language=bash,numbers=none,caption={\texttt{Dockerfile} de \texttt{biblio-api}},label={lst:dockerfile}]{codigo/biblio-api/Dockerfile}
+
+\begin{infoBox}[title={¿Por qué un usuario sin privilegios?}]
+	Si un atacante lograra ejecutar código dentro del contenedor, lo haría con los permisos del usuario del proceso. La instrucción \texttt{USER app} limita ese daño. Es una de las prácticas de seguridad más simples y efectivas al construir imágenes.
+\end{infoBox}
+
+\section{Orquestación local con Docker Compose}
+
+El archivo \texttt{compose.yaml} describe los tres niveles, cómo se conectan y en qué orden arrancan.
+
+\lstinputlisting[language=yaml,caption={\texttt{compose.yaml}: los tres niveles de BiblioUTEQ},label={lst:compose}]{codigo/compose.yaml}
+
+Puntos clave del listado \ref{lst:compose}:
+
+\begin{itemize}
+	\item \textbf{Nombres de servicio como direcciones.} Dentro de la red que crea Compose, el API alcanza a la base de datos en \texttt{db:5432} y la aplicación web alcanza al API en \texttt{http://api:8080}. Esas direcciones se pasan por variables de entorno, sin cambiar el código.
+	\item \textbf{Arranque condicionado a la salud.} El API espera a que PostgreSQL responda a \texttt{pg\_isready}; si arrancara antes, Flyway fallaría al no poder conectarse.
+	\item \textbf{Volumen persistente.} Los datos sobreviven a \texttt{docker compose down}. En la imagen oficial de PostgreSQL 18 los datos se guardan en un subdirectorio por versión (\ruta{/var/lib/postgresql/18/docker}), por lo que el volumen se monta en \ruta{/var/lib/postgresql}.
+	\item \textbf{Secretos fuera del código.} Usuario y clave se toman de variables de entorno con valores por defecto para desarrollo. En un despliegue real se definen en un archivo \texttt{.env} que no se sube al repositorio.
+\end{itemize}
+
+\section{Levantar el sistema completo}
+
+Desde la carpeta del proyecto, en PowerShell:
+
+\begin{lstlisting}[language=powershell,numbers=none]
+.\mvnw.cmd -DskipTests package     # genera los dos .jar
+docker compose up -d --build       # construye las imagenes y levanta los tres niveles
+docker compose ps                  # estado de los contenedores
+docker compose logs -f api         # registros del API (Ctrl+C para salir)
+\end{lstlisting}
+
+Al terminar, \url{http://localhost:8081} muestra la aplicación web, \url{http://localhost:8080/swagger-ui.html} el contrato del API y \url{http://localhost:8080/actuator/health} el estado del API, que debe responder \texttt{"status":"UP"}.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\linewidth]{figuras/web-prestamos.png}
+	\caption{Registro de préstamos con los tres niveles ejecutándose en contenedores}\label{fig:prestamos}
+\end{figure}
+
+\section{Provocar una falla parcial}
+
+Un sistema distribuido se entiende mejor cuando se le hace fallar a propósito. Con el sistema en marcha, detenga solo el API y observe la aplicación web:
+
+\begin{lstlisting}[language=powershell,numbers=none]
+docker compose stop api      # el nivel de servicios deja de responder
+# abrir http://localhost:8081: se muestra la pagina de servicio no disponible
+docker compose start api     # el nivel vuelve; la aplicacion web se recupera sola
+\end{lstlisting}
+
+La aplicación web no se cae: espera como máximo el tiempo configurado, responde con la página controlada de la figura \ref{fig:caida} y vuelve a funcionar en cuanto el API está disponible, sin reiniciarla.
+
+\begin{avisoBox}[title={Problemas frecuentes en Windows}]
+	\begin{itemize}
+		\item \textbf{\texttt{port is already allocated}}: otro programa usa el puerto 5432, 8080 u 8081. Si tiene PostgreSQL instalado de forma nativa, deténgalo desde \emph{Servicios} de Windows o cambie el puerto publicado en \texttt{compose.yaml} (por ejemplo, \texttt{"5433:5432"}).
+		\item \textbf{\texttt{Cannot connect to the Docker daemon}}: Docker Desktop no está abierto o su motor no terminó de arrancar.
+		\item \textbf{\texttt{Unable to access jarfile}} al construir la imagen: no se ejecutó \texttt{mvnw.cmd package} antes de \texttt{docker compose up --build}.
+		\item \textbf{Datos de una versión anterior}: si cambió migraciones ya aplicadas, borre el volumen con \texttt{docker compose down -v}; se perderán los datos de desarrollo.
+	\end{itemize}
+\end{avisoBox}
+
+\begin{practicaBox}[title={Práctica 8.1: escalar el nivel del API}]
+	Quite la publicación del puerto 8080 del servicio \texttt{api} y levante dos réplicas con \texttt{docker compose up -d --scale api=2}. Compruebe con \texttt{docker compose ps} que hay dos contenedores del API y explique: (a) cómo reparte Docker las solicitudes de \texttt{biblio-web} entre ellos; (b) por qué el control de concurrencia optimista sigue funcionando con dos réplicas; y (c) qué pasaría con el \emph{pool} de conexiones a PostgreSQL si se levantaran veinte réplicas.
+\end{practicaBox}

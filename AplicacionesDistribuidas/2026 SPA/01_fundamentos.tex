@@ -1,0 +1,122 @@
+%============================================================
+\chapter{Fundamentos de la arquitectura en capas}\label{cap:fundamentos}
+%============================================================
+
+Una aplicación empresarial hace tres tipos de trabajo muy distintos: conversa con el usuario, decide qué está permitido hacer y guarda los datos para que no se pierdan. Cuando esos tres trabajos se mezclan en el mismo código, cualquier cambio pequeño (por ejemplo, cambiar la base de datos o agregar una aplicación móvil) obliga a revisar todo. La arquitectura en capas resuelve este problema separando el sistema en grupos de responsabilidades, cada uno con una sola razón para cambiar \cite{fowler2002patterns,richards2025fundamentals}.
+
+\section{Capas lógicas y niveles físicos}
+
+En español se usa la palabra «capa» para dos ideas que conviene distinguir desde el principio:
+
+\begin{itemize}
+	\item Una \textbf{capa lógica} (en inglés, \emph{layer}) es una forma de organizar el código: un grupo de clases con una responsabilidad común que solo puede usar los servicios de la capa inmediatamente inferior. Las capas lógicas pueden ejecutarse todas en el mismo proceso. En la práctica se ven como paquetes o módulos del proyecto.
+	\item Un \textbf{nivel físico} (en inglés, \emph{tier}) es un lugar de ejecución: un proceso, un contenedor o una máquina distinta, con la que las demás partes se comunican por la red \cite{fowler2002patterns,vansteen2023distributed}. En la práctica se ven como programas que se arrancan por separado y se hablan por HTTP o por un protocolo de base de datos.
+\end{itemize}
+
+Una aplicación es \textbf{distribuida} cuando sus capas se reparten en varios niveles físicos que cooperan a través de la red. Esa distribución trae ventajas (cada nivel se escala, se actualiza y se protege por separado), pero también trae los problemas propios de los sistemas distribuidos: la red puede fallar o tardar, un nivel puede caerse mientras los otros siguen funcionando y varios usuarios pueden modificar el mismo dato al mismo tiempo \cite{vansteen2023distributed,kleppmann2026designing}. Esta guía trata esos problemas en el código, no solo en la teoría.
+
+\section{Las capas de una aplicación empresarial}
+
+La organización clásica distingue tres capas principales: presentación, dominio o negocio, y fuente de datos \cite{fowler2002patterns}. En las aplicaciones actuales que exponen un API, la capa de presentación se divide en dos: la interfaz de usuario y la capa de servicios web que publica el API \cite{richards2025fundamentals}. La tabla \ref{tab:capas} describe las capas que se usan en BiblioUTEQ.
+
+\begin{xltabular}{\linewidth}{@{}L{2.9cm}YL{4.0cm}@{}}
+	\caption{Capas de BiblioUTEQ y su responsabilidad}\label{tab:capas}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Capa} & \hdr{Responsabilidad (qué hace y qué no hace)} & \hdr{Dónde está en el proyecto} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Capa} & \hdr{Responsabilidad (qué hace y qué no hace)} & \hdr{Dónde está en el proyecto} \\
+	\midrule
+	\endhead
+	Presentación & Muestra la información y recoge las acciones del usuario. No decide reglas del negocio ni accede a la base de datos. & Módulo \ruta{biblio-web}: controladores web y plantillas Thymeleaf \\
+	\addlinespace
+	Servicios web (API) & Traduce solicitudes HTTP en llamadas a la capa de negocio y sus resultados en respuestas HTTP. No contiene reglas del negocio. & Paquete \ruta{api.web} de \ruta{biblio-api} \\
+	\addlinespace
+	Negocio & Ejecuta los casos de uso (prestar, devolver) y delimita las transacciones. No conoce HTTP ni SQL. & Paquete \ruta{api.negocio} \\
+	\addlinespace
+	Dominio & Representa los conceptos del problema (libro, socio, préstamo) y protege sus reglas internas. & Paquete \ruta{api.dominio} \\
+	\addlinespace
+	Acceso a datos & Guarda y recupera los objetos del dominio en la base de datos. No decide nada del negocio. & Paquete \ruta{api.datos} \\
+	\addlinespace
+	Datos & Almacena los datos de forma persistente y hace cumplir las restricciones de integridad. & PostgreSQL 18 en su propio contenedor \\
+	\bottomrule
+\end{xltabular}
+
+\section{La regla de dependencia}\label{sec:regla}
+
+La regla que hace funcionar a las capas es simple: \textbf{cada capa solo puede usar a la capa que está debajo de ella, nunca a la de arriba}. Esta relación se conoce como «permitido usar» (\emph{allowed-to-use}) \cite{bass2021software}. Cuando además se prohíbe saltarse capas, las capas se llaman cerradas, y el beneficio es el aislamiento: un cambio dentro de una capa no afecta a las demás mientras su interfaz no cambie \cite{richards2025fundamentals}. En la práctica, esto significa que en BiblioUTEQ ningún archivo del paquete \ruta{negocio} importa una clase del paquete \ruta{web}, y ningún controlador llama directamente a un repositorio.
+
+\begin{avisoBox}[title={La erosión de la arquitectura}]
+	Con el tiempo, los atajos (un controlador que consulta la base de datos «solo esta vez») hacen que la arquitectura implementada se aleje de la diseñada. Este fenómeno se llama erosión de la arquitectura y es una causa conocida de pérdida de mantenibilidad \cite{li2022understanding}. Se previene revisando las dependencias entre paquetes en cada revisión de código, como se propone en el capítulo \ref{cap:actividades}.
+\end{avisoBox}
+
+\section{De las capas a los niveles: la arquitectura de BiblioUTEQ}
+
+La figura \ref{fig:niveles} muestra cómo se reparten las capas de BiblioUTEQ en tres niveles físicos. El navegador del usuario solo habla con \ruta{biblio-web}; \ruta{biblio-web} solo habla con el API REST de \ruta{biblio-api}; y solo \ruta{biblio-api} habla con PostgreSQL. Esta disposición en tres niveles es una de las formas más extendidas de las arquitecturas cliente-servidor multinivel \cite{vansteen2023distributed}.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		font=\small,
+		nivel/.style={draw=uteqBlue,thick,rounded corners=3pt,fill=uteqSoft,inner sep=6pt},
+		capa/.style={draw=uteqMid,fill=white,rounded corners=2pt,minimum width=4.6cm,minimum height=0.62cm,align=center},
+		flecha/.style={-{Stealth[length=2.6mm]},thick,color=uteqTeal},
+		etiqueta/.style={font=\footnotesize,fill=white,inner sep=1.5pt,align=center}
+	]
+		\node[draw=uteqMid,fill=uteqGray,rounded corners=2pt,minimum width=3.0cm,minimum height=1.0cm,align=center] (nav) {Navegador\\del usuario};
+		\node[capa,right=1.7cm of nav,yshift=0.35cm] (ctrlweb) {Controladores web};
+		\node[capa,below=0.18cm of ctrlweb] (vistas) {Plantillas (vistas)};
+		\node[capa,below=0.18cm of vistas] (cliente) {Cliente HTTP del API};
+		\begin{scope}[on background layer]
+			\node[nivel,fit=(ctrlweb)(vistas)(cliente),label={[font=\footnotesize\bfseries,color=uteqBlue]above:Nivel 1: biblio-web (puerto 8081)}] (n1) {};
+		\end{scope}
+		\node[capa,below=1.45cm of cliente] (apiweb) {Servicios web (controladores REST)};
+		\node[capa,below=0.18cm of apiweb] (neg) {Negocio (servicios)};
+		\node[capa,below=0.18cm of neg] (dom) {Dominio (entidades)};
+		\node[capa,below=0.18cm of dom] (dat) {Acceso a datos (repositorios)};
+		\begin{scope}[on background layer]
+			\node[nivel,fit=(apiweb)(neg)(dom)(dat),label={[font=\footnotesize\bfseries,color=uteqBlue]above:Nivel 2: biblio-api (puerto 8080)}] (n2) {};
+		\end{scope}
+		\node[draw=uteqBlue,thick,fill=uteqSoft,cylinder,shape border rotate=90,aspect=0.25,minimum width=2.6cm,minimum height=1.5cm,align=center,below=1.0cm of n2] (db) {PostgreSQL 18\\(puerto 5432)};
+		\node[font=\footnotesize\bfseries,color=uteqBlue,right=0.2cm of db] {Nivel 3: datos};
+		\draw[flecha] (nav.east) -- node[etiqueta,above,yshift=2pt]{HTTP\\HTML} (n1.west |- nav.east);
+		\draw[flecha] (n1.south) -- node[etiqueta,right,xshift=3pt]{HTTP, JSON (API REST)} (n2.north);
+		\draw[flecha] (n2.south) -- node[etiqueta,right,xshift=3pt]{JDBC, SQL} (db.north);
+	\end{tikzpicture}
+	\caption{Capas lógicas de BiblioUTEQ repartidas en tres niveles físicos}\label{fig:niveles}
+\end{figure}
+
+\subsection{Ventajas y costos de distribuir}
+
+Distribuir las capas no es gratis. Separar la presentación en su propio nivel permite, por ejemplo, agregar una aplicación móvil que use el mismo API sin tocar la lógica del negocio, o escalar solo el nivel que recibe más carga. A cambio, cada llamada entre niveles atraviesa la red, puede fallar por razones que no existen dentro de un solo proceso y exige decidir qué hacer cuando el otro nivel no responde \cite{vansteen2023distributed}. La tabla \ref{tab:compromisos} resume los compromisos (\emph{trade-offs}) principales.
+
+\begin{xltabular}{\linewidth}{@{}L{3.4cm}YY@{}}
+	\caption{Compromisos de separar capas en niveles físicos}\label{tab:compromisos}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Atributo} & \hdr{Lo que se gana} & \hdr{Lo que se paga} \\
+	\midrule
+	\endhead
+	Escalabilidad & Cada nivel se replica según su propia carga & Hay que balancear la carga y mantener los niveles sin estado \\
+	\addlinespace
+	Mantenibilidad & Cada nivel se cambia y despliega por separado & El contrato del API debe versionarse y cuidarse \\
+	\addlinespace
+	Disponibilidad & La falla de un nivel puede aislarse & Aparecen fallas parciales que hay que manejar en el código \\
+	\addlinespace
+	Rendimiento & Cada nivel usa los recursos que necesita & Cada llamada remota añade latencia de red y serialización \\
+	\addlinespace
+	Seguridad & La base de datos no queda expuesta al usuario & Cada canal entre niveles debe protegerse \\
+	\bottomrule
+\end{xltabular}
+
+\section{Capas, niveles y microservicios}
+
+La arquitectura en capas y la de microservicios no son excluyentes. Un microservicio bien diseñado suele estar organizado internamente en capas, y un sistema de microservicios es, visto desde fuera, un conjunto de niveles que se comunican por la red \cite{newman2021building}. La diferencia está en cómo se corta el sistema: las capas lo cortan por tipo de responsabilidad técnica (presentación, negocio, datos), mientras que los microservicios lo cortan por capacidad del negocio (préstamos, catálogo, usuarios), cada una con su propia base de datos \cite{newman2021building,richards2025fundamentals}. La elección no es una cuestión de moda: los estudios comparativos muestran que la ventaja de los microservicios en rendimiento y escalabilidad depende del escenario de despliegue y de la carga \cite{blinowski2022monolithic}. BiblioUTEQ usa una distribución en tres niveles con capas internas, que es el punto de partida natural antes de dividir el sistema en microservicios.
+
+\begin{okBox}[title={Lo esencial de este capítulo}]
+	\begin{itemize}
+		\item Capa lógica es organización del código; nivel físico es lugar de ejecución.
+		\item Cada capa usa solo a la inferior; los atajos erosionan la arquitectura.
+		\item Distribuir capas en niveles da independencia a cambio de latencia y fallas parciales que el código debe manejar.
+	\end{itemize}
+\end{okBox}

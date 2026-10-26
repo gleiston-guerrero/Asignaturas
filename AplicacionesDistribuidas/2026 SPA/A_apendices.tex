@@ -1,0 +1,82 @@
+%============================================================
+\chapter{Estructura completa del proyecto}\label{ap:estructura}
+%============================================================
+
+\begin{lstlisting}[numbers=none,caption={Archivos del proyecto BiblioUTEQ},label={lst:arbol}]
+biblio/
+|-- pom.xml                      (proyecto padre: Spring Boot 4.1.2, Java 27, dos modulos)
+|-- mvnw, mvnw.cmd, .mvn/        (Maven Wrapper: Maven 3.9.16)
+|-- compose.yaml                 (tres niveles: web, api, db)
+|-- README.md
+|-- .github/workflows/ci.yml     (integracion continua)
+|-- biblio-api/                  (nivel 2: servicios web, negocio, dominio y acceso a datos)
+|   |-- Dockerfile
+|   |-- pom.xml
+|   `-- src/
+|       |-- main/java/ec/edu/uteq/biblio/api/
+|       |   |-- BiblioApiApplication.java
+|       |   |-- config/          ConfiguracionReloj, ConfiguracionOpenApi
+|       |   |-- web/             LibroControlador, SocioControlador, PrestamoControlador,
+|       |   |                    ManejadorErrores
+|       |   |-- web/dto/         LibroSolicitud, LibroRespuesta, SocioRespuesta,
+|       |   |                    PrestamoSolicitud, PrestamoRespuesta
+|       |   |-- negocio/         CatalogoServicio, PrestamoServicio, ReglasPrestamo,
+|       |   |                    NotificadorPrestamos, RecursoNoEncontradoException
+|       |   |-- dominio/         Libro, Socio, Prestamo, EstadoPrestamo,
+|       |   |                    PrestamoRegistradoEvento, ReglaNegocioException
+|       |   `-- datos/           LibroRepositorio, SocioRepositorio, PrestamoRepositorio
+|       |-- main/resources/
+|       |   |-- application.yaml
+|       |   `-- db/migration/    V1__esquema_inicial.sql, V2__datos_iniciales.sql
+|       `-- test/java/ec/edu/uteq/biblio/api/
+|           |-- ContenedoresPrueba.java
+|           |-- negocio/         PrestamoServicioTest
+|           |-- web/             PrestamoControladorTest
+|           |-- datos/           PrestamoRepositorioTest
+|           `-- integracion/     BiblioApiIntegracionTest
+`-- biblio-web/                  (nivel 1: presentacion)
+    |-- Dockerfile
+    |-- pom.xml
+    `-- src/
+        |-- main/java/ec/edu/uteq/biblio/web/
+        |   |-- BiblioWebApplication.java
+        |   |-- cliente/         BiblioApiCliente, Modelos
+        |   |-- config/          ClienteApiConfig
+        |   `-- controlador/     CatalogoWebControlador, PrestamoWebControlador,
+        |                        ManejadorFallosApi
+        |-- main/resources/
+        |   |-- application.yaml
+        |   |-- templates/       fragmentos, catalogo, prestamos, servicio-no-disponible
+        |   `-- static/css/      estilos.css
+        `-- test/java/ec/edu/uteq/biblio/web/
+            `-- CatalogoWebControladorTest
+\end{lstlisting}
+
+%============================================================
+\chapter{Comandos de referencia}\label{ap:comandos}
+%============================================================
+
+\begin{xltabular}{\linewidth}{@{}L{7.4cm}Y@{}}
+	\caption{Comandos frecuentes en PowerShell}\label{tab:comandos}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Comando} & \hdr{Para qué sirve} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Comando} & \hdr{Para qué sirve} \\
+	\midrule
+	\endhead
+	\texttt{.\textbackslash mvnw.cmd verify} & Compilar y ejecutar todas las pruebas \\
+	\texttt{.\textbackslash mvnw.cmd -DskipTests package} & Generar los \texttt{.jar} sin ejecutar pruebas \\
+	\texttt{.\textbackslash mvnw.cmd -pl biblio-api test} & Ejecutar solo las pruebas del API \\
+	\texttt{docker compose up -d db} & Levantar solo PostgreSQL para trabajar desde IntelliJ IDEA \\
+	\texttt{docker compose up -d --build} & Construir las imágenes y levantar los tres niveles \\
+	\texttt{docker compose ps} & Ver el estado de los contenedores \\
+	\texttt{docker compose logs -f api} & Seguir los registros del API \\
+	\texttt{docker compose stop api} & Detener un nivel para provocar una falla parcial \\
+	\texttt{docker compose down} & Detener y eliminar los contenedores (conserva los datos) \\
+	\texttt{docker compose down -v} & Eliminar también el volumen de datos \\
+	\texttt{docker compose exec db psql -U biblio -d biblio} & Abrir una consola SQL en PostgreSQL \\
+	\texttt{Invoke-RestMethod http://localhost:8080/api/v1/libros} & Consultar el API desde PowerShell \\
+	\bottomrule
+\end{xltabular}

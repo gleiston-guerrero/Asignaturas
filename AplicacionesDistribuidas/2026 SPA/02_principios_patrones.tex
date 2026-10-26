@@ -1,0 +1,81 @@
+%============================================================
+\chapter{Principios y patrones de diseño}\label{cap:principios}
+%============================================================
+
+Separar el código en capas no basta: dentro de cada capa las clases deben estar bien diseñadas para que el sistema sea fácil de cambiar y de probar. Este capítulo presenta los principios SOLID, la inversión de control con inyección de dependencias y los patrones de diseño que usa BiblioUTEQ, cada uno con el lugar exacto del proyecto donde se aplica.
+
+\section{Principios SOLID}
+
+SOLID es el nombre que agrupa cinco principios de diseño orientado a objetos cuyo objetivo es que los módulos toleren el cambio, sean fáciles de entender y puedan reutilizarse \cite{martin2017clean}. La tabla \ref{tab:solid} los explica en lenguaje sencillo y muestra cómo se cumplen en el proyecto.
+
+\begin{xltabular}{\linewidth}{@{}L{3.5cm}YL{4.2cm}@{}}
+	\caption{Principios SOLID en BiblioUTEQ}\label{tab:solid}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Principio} & \hdr{Qué dice, en palabras sencillas} & \hdr{Cómo se ve en el proyecto} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Principio} & \hdr{Qué dice, en palabras sencillas} & \hdr{Cómo se ve en el proyecto} \\
+	\midrule
+	\endhead
+	Responsabilidad única (SRP) & Una clase debe tener una sola razón para cambiar. & \ruta{PrestamoControlador} solo traduce HTTP; \ruta{PrestamoServicio} solo aplica el caso de uso. \\
+	\addlinespace
+	Abierto/cerrado (OCP) & Se agrega comportamiento nuevo sin modificar el código que ya funciona. & Un nuevo observador de \ruta{PrestamoRegistradoEvento} se agrega sin tocar el servicio. \\
+	\addlinespace
+	Sustitución de Liskov (LSP) & Un subtipo debe poder usarse donde se espera su tipo base sin romper nada. & \ruta{ManejadorErrores} extiende la clase base de Spring y conserva su contrato. \\
+	\addlinespace
+	Segregación de interfaces (ISP) & Nadie debe depender de métodos que no usa. & Cada repositorio declara solo las consultas que su agregado necesita. \\
+	\addlinespace
+	Inversión de dependencias (DIP) & Las políticas de alto nivel dependen de abstracciones, no de detalles. & El servicio depende de la interfaz \ruta{LibroRepositorio}, no de JPA ni de PostgreSQL. \\
+	\bottomrule
+\end{xltabular}
+
+\section{Inversión de control e inyección de dependencias}
+
+En un programa tradicional, cada clase crea los objetos que necesita con \texttt{new}. Con la \textbf{inversión de control} (\emph{Inversion of Control}, IoC) esa responsabilidad pasa a un contenedor: la clase solo declara lo que necesita y el contenedor se lo entrega ya construido. La forma de entregarlo se llama \textbf{inyección de dependencias} (\emph{Dependency Injection}, DI) y aplica directamente el principio de inversión de dependencias \cite{martin2017clean}. En Spring, el contenedor IoC crea los objetos marcados con \texttt{@Service}, \texttt{@Repository}, \texttt{@Component} o \texttt{@Configuration} y los entrega por el constructor.
+
+El listado \ref{lst:di} muestra la inyección por constructor en \ruta{CatalogoServicio}. El servicio no sabe qué clase implementa \ruta{LibroRepositorio}: Spring Data la genera al arrancar. En una prueba unitaria, en cambio, se le entrega un objeto simulado, como se verá en el capítulo \ref{cap:pruebas}.
+
+\lstinputlisting[language=Java,firstline=14,lastline=28,caption={Inyección de dependencias por constructor en \texttt{CatalogoServicio}},label={lst:di}]{\apimain/negocio/CatalogoServicio.java}
+
+\begin{avisoBox}[title={Antipatrones de inyección de dependencias}]
+	La inyección de dependencias mal usada también degrada el diseño. Un estudio empírico catalogó antipatrones frecuentes, como inyectar clases concretas en lugar de abstracciones o acumular demasiadas dependencias en una sola clase \cite{laigner2022cataloging}. En la práctica: prefiera la inyección por constructor (los campos quedan \texttt{final} y la clase no se puede crear incompleta), y si un constructor recibe más de cinco o seis dependencias, la clase probablemente tiene más de una responsabilidad.
+\end{avisoBox}
+
+\section{Patrones de diseño aplicados}
+
+Un patrón de diseño es una solución probada a un problema que se repite, descrita de modo que pueda reutilizarse en contextos distintos \cite{gamma1994design}. La tabla \ref{tab:patrones} reúne los patrones que aparecen en BiblioUTEQ. Algunos los escribe el programador; otros los aplica el propio marco de trabajo y conviene reconocerlos.
+
+\begin{xltabular}{\linewidth}{@{}L{3.1cm}YL{4.4cm}@{}}
+	\caption{Patrones de diseño en BiblioUTEQ}\label{tab:patrones}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Patrón} & \hdr{Problema que resuelve} & \hdr{Dónde se aplica} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Patrón} & \hdr{Problema que resuelve} & \hdr{Dónde se aplica} \\
+	\midrule
+	\endhead
+	Repositorio (\emph{Repository}) \cite{fowler2002patterns,evans2003domain} & Dar a la capa de negocio una colección de objetos del dominio sin que conozca el SQL. & \ruta{LibroRepositorio}, \ruta{PrestamoRepositorio} (capítulo \ref{cap:datos}) \\
+	\addlinespace
+	Capa de servicio (\emph{Service Layer}) \cite{fowler2002patterns} & Definir los casos de uso de la aplicación y sus límites transaccionales en un solo lugar. & \ruta{PrestamoServicio}, \ruta{CatalogoServicio} (capítulo \ref{cap:negocio}) \\
+	\addlinespace
+	Modelo de dominio (\emph{Domain Model}) \cite{fowler2002patterns,evans2003domain} & Mantener las reglas que pertenecen a un objeto dentro del propio objeto. & \ruta{Libro.retirarEjemplar()}, \ruta{Prestamo.registrarDevolucion()} \\
+	\addlinespace
+	Método fábrica (\emph{Factory Method}) \cite{gamma1994design} & Crear objetos siempre en un estado válido, con un nombre que expresa la intención. & \ruta{Prestamo.registrar(...)} \\
+	\addlinespace
+	Objeto de transferencia de datos (DTO) \cite{fowler2002patterns} & Transportar datos entre niveles sin exponer las entidades internas. & Registros \ruta{LibroRespuesta}, \ruta{PrestamoSolicitud} (capítulo \ref{cap:servicios}) \\
+	\addlinespace
+	Proxy \cite{gamma1994design} & Interponer un sustituto que controla el acceso al objeto real. & Las transacciones de \texttt{@Transactional} y el cliente HTTP declarativo \ruta{BiblioApiCliente} (capítulo \ref{cap:presentacion}) \\
+	\addlinespace
+	Observador (\emph{Observer}) \cite{gamma1994design} & Notificar a interesados sin que el emisor los conozca. & \ruta{PrestamoRegistradoEvento} y \ruta{NotificadorPrestamos} \\
+	\bottomrule
+\end{xltabular}
+
+\subsection{El patrón Proxy que no se ve}
+
+Cuando una clase tiene la anotación \texttt{@Transactional}, Spring no entrega a los demás objetos la instancia real, sino un \textbf{proxy}: un objeto que se hace pasar por ella, abre la transacción antes de llamar al método real y la confirma o la revierte al terminar \cite{gamma1994design}. Por eso, si un método de un servicio llama a otro método \texttt{@Transactional} de la misma clase, la segunda anotación no tiene efecto: la llamada no pasa por el proxy. En la práctica, los límites transaccionales se definen en los métodos públicos que llaman los controladores, como se hace en BiblioUTEQ.
+
+\begin{practicaBox}[title={Práctica 2.1: reconocer patrones}]
+	Abra el proyecto en IntelliJ IDEA y, para cada fila de la tabla \ref{tab:patrones}, ubique la clase indicada con \emph{Navigate $\rightarrow$ Class} (\texttt{Ctrl+N}). Escriba en una frase qué pasaría en el sistema si ese patrón no se hubiera aplicado. Por ejemplo: sin el método fábrica, otra clase podría crear un préstamo sin retirar el ejemplar del inventario.
+\end{practicaBox}

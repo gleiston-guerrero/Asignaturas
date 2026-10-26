@@ -1,0 +1,76 @@
+%============================================================
+\chapter{Calidad, integración continua y observabilidad}\label{cap:calidad}
+%============================================================
+
+Una aplicación que funciona en el equipo del desarrollador todavía no es una aplicación de calidad. Este capítulo relaciona lo construido con el modelo de calidad ISO/IEC 25010, automatiza su verificación en cada cambio con integración continua y muestra cómo observar el sistema mientras se ejecuta.
+
+\section{El modelo de calidad ISO/IEC 25010}
+
+La norma ISO/IEC 25010:2023 define el modelo de calidad de un producto de software como un conjunto de características que se pueden especificar, medir y evaluar \cite{iso25010_2023}. La tabla \ref{tab:iso} relaciona cada característica con decisiones concretas de BiblioUTEQ y con la forma de evidenciarlas. En la práctica, cuando su equipo afirme que el PFC cumple una característica, debe poder señalar la evidencia de la última columna.
+
+\begin{xltabular}{\linewidth}{@{}L{3.4cm}YL{4.0cm}@{}}
+	\caption{Características de ISO/IEC 25010:2023 en BiblioUTEQ}\label{tab:iso}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Característica} & \hdr{Decisión en el proyecto} & \hdr{Evidencia verificable} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Característica} & \hdr{Decisión en el proyecto} & \hdr{Evidencia verificable} \\
+	\midrule
+	\endhead
+	Adecuación funcional & Reglas R1 a R6 implementadas en dominio y negocio & Pruebas unitarias e integración (capítulo \ref{cap:pruebas}) \\
+	\addlinespace
+	Eficiencia de desempeño & Índice parcial, \texttt{join fetch}, \emph{pool} de conexiones & Latencias medidas en la práctica 9.1 \\
+	\addlinespace
+	Compatibilidad & Contrato OpenAPI y errores RFC 9457 & \texttt{/v3/api-docs} y pruebas de la capa web \\
+	\addlinespace
+	Capacidad de interacción & Mensajes de error comprensibles para el usuario & Figura \ref{fig:errorregla} \\
+	\addlinespace
+	Fiabilidad & Tiempos de espera, página de servicio no disponible, control optimista & Falla provocada del capítulo \ref{cap:despliegue}; prueba de concurrencia \\
+	\addlinespace
+	Seguridad & Base de datos no expuesta al usuario, contenedores sin privilegios, secretos por variables de entorno & \texttt{compose.yaml} y \texttt{Dockerfile} \\
+	\addlinespace
+	Mantenibilidad & Capas con dependencias en un solo sentido, inyección de dependencias, pruebas por capa & Estructura de paquetes y 17 pruebas automatizadas \\
+	\addlinespace
+	Flexibilidad & Configuración externa, imágenes de contenedor, JDK intercambiable & Mismo artefacto en IntelliJ IDEA y en Docker \\
+	\addlinespace
+	Protección (\emph{safety}) & Restricciones \texttt{CHECK} que impiden estados imposibles & Prueba de la restricción en \ruta{PrestamoRepositorioTest} \\
+	\bottomrule
+\end{xltabular}
+
+\section{Integración continua con GitHub Actions}
+
+La integración continua consiste en compilar y probar el sistema automáticamente cada vez que alguien sube cambios al repositorio, de modo que un error se detecte minutos después de introducirse y no días después. En arquitecturas distribuidas, la automatización de la construcción, las pruebas y el despliegue es una práctica central para poder cambiar cada parte con frecuencia y sin miedo \cite{waseem2020systematic}.
+
+\lstinputlisting[language=yaml,caption={Flujo de integración continua \texttt{.github/workflows/ci.yml}},label={lst:ci}]{codigo/.github/workflows/ci.yml}
+
+El flujo del listado \ref{lst:ci} instala JDK 27 y ejecuta \texttt{mvnw verify}, el mismo comando que se usa en el equipo local. Las pruebas con Testcontainers funcionan en el ejecutor \texttt{ubuntu-latest} porque este ya trae Docker. Si alguna prueba falla, el \emph{commit} queda marcado en rojo en GitHub y el equipo sabe exactamente qué cambio lo rompió.
+
+\begin{avisoBox}[title={Una regla de trabajo en equipo}]
+	Nadie integra cambios a la rama \texttt{main} si el flujo de integración continua está en rojo. En GitHub se puede imponer con una regla de protección de la rama que exija que el trabajo \texttt{construir-y-probar} termine en verde antes de aceptar una solicitud de integración (\emph{pull request}).
+\end{avisoBox}
+
+\section{Observabilidad}
+
+Cuando un sistema distribuido falla en producción, no se puede depurar paso a paso: solo se puede observar lo que el sistema registra sobre sí mismo. La \textbf{observabilidad} es esa capacidad de entender el estado interno del sistema a partir de sus registros (\emph{logs}), sus métricas y sus trazas. Un estudio con profesionales de la industria identificó la observabilidad como una necesidad creciente en los sistemas distribuidos y documentó las dificultades prácticas para lograrla \cite{niedermaier2019observability}.
+
+BiblioUTEQ incluye Spring Boot Actuator, que publica el estado de salud del servicio y sus métricas sin escribir código adicional:
+
+\begin{lstlisting}[numbers=none,caption={Salud y una métrica del API en ejecución},label={lst:actuator}]
+GET http://localhost:8080/actuator/health
+{"groups":["liveness","readiness"],"status":"UP"}
+
+GET http://localhost:8080/actuator/metrics/http.server.requests
+measurements: COUNT, TOTAL_TIME, MAX
+availableTags: exception, method, error, uri, outcome, status
+\end{lstlisting}
+
+\begin{itemize}
+	\item \textbf{Salud.} Los grupos \texttt{liveness} y \texttt{readiness} permiten que un orquestador sepa si debe reiniciar el contenedor o si todavía no debe enviarle tráfico.
+	\item \textbf{Métricas.} La métrica \texttt{http.server.requests} cuenta las solicitudes y mide su duración, separadas por ruta, método y código de estado. Con ella se calcula la tasa de errores o la latencia de cada operación.
+	\item \textbf{Registros de negocio.} El observador \ruta{NotificadorPrestamos} escribe una línea por cada préstamo confirmado, con su identificador, que permite reconstruir qué pasó.
+\end{itemize}
+
+\begin{practicaBox}[title={Práctica 10.1: métricas en Prometheus y Grafana}]
+	Agregue a \texttt{biblio-api} la dependencia \texttt{micrometer-registry-prometheus}, exponga el punto \texttt{/actuator/prometheus} y agregue al \texttt{compose.yaml} un contenedor de Prometheus que lo consulte cada 15 segundos y uno de Grafana. Construya un panel con la tasa de solicitudes por ruta, la latencia en los percentiles 50, 95 y 99, y la tasa de respuestas 409 y 422. Agregue además un contador propio, \texttt{biblio.prestamos.registrados}, incrementado desde el observador de préstamos.
+\end{practicaBox}

@@ -1,0 +1,81 @@
+%============================================================
+\chapter{Pruebas de una aplicación distribuida en capas}\label{cap:pruebas}
+%============================================================
+
+Probar una aplicación distribuida es más difícil que probar un programa de un solo proceso: hay que comprobar cada capa por separado, las capas juntas, la comunicación entre niveles y el comportamiento ante accesos simultáneos. La literatura sobre pruebas de sistemas basados en microservicios y en API REST coincide en que ninguna técnica cubre todo por sí sola y en que hacen falta varios niveles de prueba complementarios \cite{ponce2025microservices,golmohammadi2023testing}. La separación en capas ayuda: cada capa se puede probar sola reemplazando a las demás.
+
+\section{Niveles de prueba en BiblioUTEQ}
+
+\begin{xltabular}{\linewidth}{@{}L{3.0cm}L{4.4cm}YC{1.1cm}@{}}
+	\caption{Pruebas automatizadas del proyecto}\label{tab:pruebas}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Nivel} & \hdr{Clase de prueba} & \hdr{Qué se reemplaza y qué se comprueba} & \hdr{Casos} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Nivel} & \hdr{Clase de prueba} & \hdr{Qué se reemplaza y qué se comprueba} & \hdr{Casos} \\
+	\midrule
+	\endhead
+	Unitaria & \ruta{PrestamoServicioTest} & Repositorios simulados con Mockito; reglas del negocio y cálculo de la multa & 5 \\
+	\addlinespace
+	Capa de servicios web & \ruta{PrestamoControladorTest} & Servicio simulado; códigos HTTP y formato de error & 4 \\
+	\addlinespace
+	Capa de acceso a datos & \ruta{PrestamoRepositorioTest} & Nada: PostgreSQL 18 real en un contenedor; migraciones, consultas y restricciones & 3 \\
+	\addlinespace
+	Integración del API & \ruta{BiblioApiIntegracionTest} & Nada: servidor HTTP real y PostgreSQL 18; ciclo completo y concurrencia & 3 \\
+	\addlinespace
+	Capa de presentación & \ruta{CatalogoWebControladorTest} & Cliente del API simulado; vistas y manejo de la caída del API & 2 \\
+	\midrule
+	\multicolumn{3}{@{}r}{\textbf{Total}} & \textbf{17} \\
+	\bottomrule
+\end{xltabular}
+
+Todas se ejecutan con un solo comando, que es el mismo que usa la integración continua:
+
+\begin{lstlisting}[language=powershell,numbers=none]
+.\mvnw.cmd verify
+\end{lstlisting}
+
+En la verificación de esta guía, las 17 pruebas pasaron con JDK 27 y con JDK 21. Las que usan PostgreSQL necesitan Docker Desktop en ejecución; si Docker no está disponible, se omiten en lugar de fallar, gracias a la anotación \texttt{@Testcontainers} con el atributo \texttt{disabledWithoutDocker} activado.
+
+\section{Pruebas unitarias de la capa de negocio}
+
+Una prueba unitaria comprueba una clase aislada. Para probar \ruta{PrestamoServicio} sin base de datos, sus dependencias se reemplazan por objetos simulados (\emph{mocks}) con Mockito: se les indica qué devolver y después se verifica cómo se usaron. Esto es posible precisamente porque el servicio recibe sus dependencias por el constructor (capítulo \ref{cap:principios}).
+
+\lstinputlisting[language=Java,firstline=52,lastline=86,caption={Prueba unitaria del servicio de préstamos con reloj fijo y repositorios simulados},label={lst:unitaria}]{\apitest/negocio/PrestamoServicioTest.java}
+
+El reloj fijo hace que la prueba sea repetible: el préstamo vence siempre siete días después del 1 de febrero de 2027, cualquiera que sea el día en que se ejecute.
+
+\section{Pruebas de la capa de servicios web}
+
+La anotación \texttt{@WebMvcTest} carga solo la capa web (el controlador y el manejador de errores) y reemplaza el servicio por un simulado. Así se comprueba el contrato HTTP sin tocar la base de datos: códigos de estado, formato Problem Details y campos de la respuesta.
+
+\lstinputlisting[language=Java,firstline=23,lastline=66,caption={Prueba de la capa web con \texttt{MockMvcTester}},label={lst:webmvc}]{\apitest/web/PrestamoControladorTest.java}
+
+\section{Pruebas con una base de datos real: Testcontainers}
+
+Probar el acceso a datos contra una base de datos distinta de la de producción (por ejemplo, una base en memoria) deja pasar errores: las restricciones \texttt{CHECK}, los índices parciales o las particularidades de SQL de PostgreSQL no se comportan igual. Testcontainers resuelve esto levantando, para cada ejecución de las pruebas, un contenedor real de PostgreSQL 18 que se destruye al terminar. La anotación \texttt{@ServiceConnection} configura automáticamente la conexión de Spring hacia ese contenedor.
+
+\lstinputlisting[language=Java,firstline=8,lastline=20,caption={Configuración compartida del contenedor de PostgreSQL 18 para las pruebas},label={lst:contenedores}]{\apitest/ContenedoresPrueba.java}
+
+\lstinputlisting[language=Java,firstline=24,lastline=68,caption={Prueba de la capa de acceso a datos contra PostgreSQL 18},label={lst:datajpa}]{\apitest/datos/PrestamoRepositorioTest.java}
+
+La última prueba del listado \ref{lst:datajpa} intenta saltarse el código Java y escribir directamente un valor negativo en la base de datos: la restricción \texttt{CHECK} de la migración V1 lo impide. Es la comprobación de la defensa en profundidad descrita en el capítulo \ref{cap:datos}.
+
+\section{Prueba de integración con concurrencia}
+
+La prueba de integración levanta el API completo en un puerto aleatorio, con su servidor HTTP real, y le envía solicitudes como lo haría \ruta{biblio-web}. La más interesante para un sistema distribuido es la del listado \ref{lst:concurrencia}: crea un libro con un solo ejemplar y lanza tres solicitudes de préstamo en el mismo instante, desde tres hilos que esperan una misma señal de salida.
+
+\lstinputlisting[language=Java,firstline=95,lastline=126,caption={Tres solicitudes simultáneas por el único ejemplar de un libro},label={lst:concurrencia}]{\apitest/integracion/BiblioApiIntegracionTest.java}
+
+La prueba acepta que las solicitudes perdedoras terminen con 409 (perdieron la carrera en el control optimista) o con 422 (llegaron cuando el ejemplar ya estaba prestado); lo que no acepta es más de un préstamo exitoso ni un número de ejemplares disponibles distinto de cero. Esta es la forma de probar una propiedad de seguridad de un sistema concurrente: no se fija el orden de los eventos, que no se puede controlar, sino la invariante que debe cumplirse en cualquier orden.
+
+\section{Prueba de la capa de presentación}
+
+\lstinputlisting[language=Java,firstline=21,lastline=50,caption={Prueba de la capa de presentación con el API simulado},label={lst:pruebaweb}]{\webtest/CatalogoWebControladorTest.java}
+
+La segunda prueba del listado \ref{lst:pruebaweb} simula que el API no responde y comprueba que el usuario recibe la página controlada con el código 503, que es el comportamiento diseñado en el capítulo \ref{cap:presentacion}.
+
+\begin{practicaBox}[title={Práctica 9.1: medir la cobertura y probar la carga}]
+	(a) Agregue el complemento JaCoCo al \texttt{pom.xml} de \texttt{biblio-api}, ejecute \texttt{.\textbackslash mvnw.cmd verify} y abra el informe \texttt{target/site/jacoco/index.html}. Identifique qué ramas de \texttt{ManejadorErrores} y de \texttt{Prestamo} no están cubiertas y escriba las pruebas que faltan. (b) Con una herramienta de pruebas de carga de su elección, envíe 50 solicitudes por segundo durante un minuto a \texttt{GET /api/v1/libros} con el sistema en Docker Compose y reporte la latencia en los percentiles 50, 95 y 99. Repita la medición cinco veces y reporte la media y la dispersión.
+\end{practicaBox}

@@ -1,0 +1,72 @@
+%============================================================
+\chapter{Capa de datos y de acceso a datos}\label{cap:datos}
+%============================================================
+
+La capa de datos guarda la información de forma permanente; la capa de acceso a datos traduce entre los objetos del programa y las tablas de la base de datos. En BiblioUTEQ la primera es PostgreSQL 18 y la segunda está formada por las entidades JPA y los repositorios de Spring Data.
+
+\section{El esquema como código: migraciones con Flyway}
+
+El esquema de la base de datos (tablas, restricciones e índices) cambia con el proyecto, igual que el código. Si esos cambios se hacen a mano, cada integrante del equipo termina con una base de datos distinta. Una \textbf{migración} es un archivo SQL numerado que describe un cambio del esquema; la herramienta Flyway aplica, al arrancar la aplicación, las migraciones que aún no se han ejecutado en esa base de datos y registra cuáles aplicó. En la práctica: nunca se edita una migración ya aplicada; cada cambio nuevo es un archivo nuevo (\texttt{V3\_\_...sql}).
+
+\lstinputlisting[language=SQL,caption={Migración \texttt{V1\_\_esquema\_inicial.sql}},label={lst:v1}]{codigo/biblio-api/src/main/resources/db/migration/V1__esquema_inicial.sql}
+
+Tres decisiones del listado \ref{lst:v1} merecen atención:
+
+\begin{itemize}
+	\item Las restricciones \texttt{CHECK} hacen que la propia base de datos rechace un estado imposible, como un número negativo de ejemplares disponibles. Es una defensa en profundidad: aunque un error en el código lo intentara, el dato inválido no llegaría a guardarse. El capítulo \ref{cap:pruebas} lo comprueba con una prueba.
+	\item La columna \texttt{version} de la tabla \texttt{libro} sirve para el control de concurrencia optimista que se explica en la sección \ref{sec:optimista}.
+	\item El índice parcial \texttt{ix\_prestamo\_socio\_activo} solo indexa los préstamos activos, que son los que se consultan para aplicar la regla del límite de préstamos por socio. Es más pequeño y rápido que un índice sobre toda la tabla.
+\end{itemize}
+
+\section{Entidades JPA}
+
+Una \textbf{entidad} es una clase cuyos objetos se guardan como filas de una tabla. JPA (\emph{Jakarta Persistence}) define las anotaciones que indican esa correspondencia, e Hibernate es la implementación que genera el SQL. Este mecanismo es una aplicación del patrón \emph{Data Mapper}: los objetos del dominio no saben cómo se guardan \cite{fowler2002patterns}.
+
+\lstinputlisting[language=Java,firstline=11,lastline=85,caption={Entidad \texttt{Libro} (sin los métodos de acceso)},label={lst:libro}]{\apimain/dominio/Libro.java}
+
+La entidad del listado \ref{lst:libro} no es un simple contenedor de datos: los métodos \texttt{retirarEjemplar()} y \texttt{devolverEjemplar()} protegen la regla de que los ejemplares disponibles nunca son negativos ni mayores que el total. Esta es la idea del modelo de dominio: la regla vive junto a los datos que protege \cite{fowler2002patterns,evans2003domain}. El constructor sin argumentos es \texttt{protected} porque solo lo usa JPA; el resto del código debe usar el constructor que valida los datos.
+
+\section{Repositorios con Spring Data JPA}
+
+Un \textbf{repositorio} se comporta como una colección de objetos del dominio en memoria: se le piden, se le agregan y se le quitan objetos, sin escribir SQL \cite{fowler2002patterns,evans2003domain}. Con Spring Data JPA basta declarar una interfaz; Spring genera la implementación al arrancar, a partir del nombre de cada método.
+
+\lstinputlisting[language=Java,firstline=10,lastline=20,caption={Repositorio de libros: consultas derivadas del nombre del método},label={lst:repolibro}]{\apimain/datos/LibroRepositorio.java}
+
+Por ejemplo, \texttt{findByTituloContainingIgnoreCaseOrderByTitulo} genera una consulta que busca el texto dentro del título sin distinguir mayúsculas y ordena por título. Cuando la consulta es más compleja, se escribe en JPQL con \texttt{@Query}, como en el listado \ref{lst:repoprestamo}.
+
+\lstinputlisting[language=Java,firstline=13,lastline=34,caption={Consultas JPQL con \texttt{join fetch} en \texttt{PrestamoRepositorio}},label={lst:repoprestamo}]{\apimain/datos/PrestamoRepositorio.java}
+
+\begin{avisoBox}[title={El problema de las N+1 consultas}]
+	Las relaciones de \texttt{Prestamo} con \texttt{Libro} y \texttt{Socio} se cargan de forma diferida (\texttt{FetchType.LAZY}): Hibernate no trae el libro hasta que alguien lo pide. Si se listan 50 préstamos y luego se pide el título de cada libro, se ejecutan 1 + 50 consultas. El \texttt{join fetch} del listado \ref{lst:repoprestamo} trae préstamos, libros y socios en una sola consulta. En la práctica, active \texttt{spring.jpa.show-sql=true} durante el desarrollo y cuente las consultas que genera cada pantalla.
+\end{avisoBox}
+
+\section{Configuración del acceso a datos}
+
+La conexión se configura en \texttt{application.yaml} con valores que se pueden reemplazar por variables de entorno. Así el mismo artefacto funciona en el equipo del desarrollador (\texttt{localhost}) y en un contenedor (\texttt{db}), sin recompilar.
+
+\lstinputlisting[language=yaml,firstline=1,lastline=19,caption={Configuración de la fuente de datos y de JPA en \texttt{biblio-api}},label={lst:yamlapi}]{codigo/biblio-api/src/main/resources/application.yaml}
+
+Tres propiedades son importantes en una aplicación distribuida:
+
+\begin{itemize}
+	\item \texttt{hikari.maximum-pool-size} limita las conexiones simultáneas a la base de datos. Abrir una conexión es costoso; el \emph{pool} las reutiliza. Si se replica el API en varios contenedores, la suma de sus \emph{pools} no debe superar el máximo de conexiones de PostgreSQL.
+	\item \texttt{ddl-auto: validate} hace que Hibernate compare las entidades con el esquema creado por Flyway y detenga el arranque si no coinciden, en lugar de modificar el esquema por su cuenta.
+	\item \texttt{open-in-view: false} cierra la sesión de base de datos al terminar el servicio. Obliga a traer en la capa de negocio todo lo que la respuesta necesita, y evita que una vista dispare consultas inesperadas.
+\end{itemize}
+
+\section{Concurrencia optimista}\label{sec:optimista}
+
+En un sistema distribuido, dos usuarios pueden pedir el último ejemplar de un libro en el mismo instante. Si ambas transacciones leen «1 disponible», ambas lo reducen a cero y ambas confirman, se habrá prestado un ejemplar que no existe. El \textbf{control de concurrencia optimista} supone que los conflictos son raros y, en lugar de bloquear el dato, comprueba al confirmar si alguien lo modificó mientras tanto \cite{kung1981optimistic}.
+
+En JPA se activa con un campo anotado con \texttt{@Version} (listado \ref{lst:libro}). Hibernate incrementa la versión en cada modificación y la agrega a la condición del \texttt{UPDATE}, como en esta sentencia simplificada:
+
+\begin{lstlisting}[language=SQL,numbers=none]
+UPDATE libro SET ejemplares_disponibles = 0, version = 8
+ WHERE id = 3 AND version = 7;
+\end{lstlisting}
+
+Si otra transacción ya cambió la versión a 8, la sentencia no actualiza ninguna fila, Hibernate lanza una excepción y la transacción se revierte. El API la traduce en una respuesta HTTP 409 (capítulo \ref{cap:servicios}) y el cliente puede reintentar. La prueba de integración del capítulo \ref{cap:pruebas} lanza tres solicitudes simultáneas por el único ejemplar de un libro y comprueba que solo una tiene éxito.
+
+\begin{practicaBox}[title={Práctica 4.1: una migración nueva}]
+	Agregue una migración \texttt{V3\_\_categoria\_libro.sql} que añada a la tabla \texttt{libro} la columna \texttt{categoria VARCHAR(60)} y un índice sobre ella. Agregue el atributo a la entidad \texttt{Libro}, reinicie \texttt{biblio-api} y compruebe en la tabla \texttt{flyway\_schema\_history} que la migración se aplicó. Explique qué ocurriría si, en lugar de crear \texttt{V3}, hubiera editado \texttt{V1}.
+\end{practicaBox}

@@ -1,0 +1,29 @@
+%============================================================
+\chapter{Presentación}
+%============================================================
+
+Esta guía acompaña la Unidad 5 de la asignatura Aplicaciones Distribuidas, cuyo resultado de aprendizaje es construir aplicaciones distribuidas en capas que cumplan estándares de calidad de software (ISO/IEC 25010 \cite{iso25010_2023}), con seguridad y ética profesional, trabajando en equipo y en ciclos iterativos. La guía cubre los tres temas de la unidad: arquitectura en capas y patrones de diseño, desarrollo práctico de una aplicación distribuida en capas, y calidad, pruebas y despliegue.
+
+La guía no es un resumen de teoría: se construye, capa por capa, una aplicación completa y funcional llamada \textbf{BiblioUTEQ}, un sistema de préstamos de libros para la biblioteca de la universidad. Cada concepto se explica primero en lenguaje sencillo, luego se nombra con su término técnico y, por último, se muestra en el código del proyecto. Todo el código que aparece en los listados se leyó directamente de los archivos del proyecto, que se compiló y se probó con las versiones de las herramientas indicadas en el capítulo \ref{cap:entorno} antes de publicar esta guía.
+
+\section*{Cómo usar esta guía}
+
+\begin{enumerate}
+	\item Lea los capítulos \ref{cap:fundamentos} y \ref{cap:principios} antes de escribir código: explican qué es una capa, qué es un nivel y por qué se separan.
+	\item Prepare su equipo con Windows siguiendo el capítulo \ref{cap:entorno}. Al final de ese capítulo todas las herramientas deben responder a sus comandos de verificación.
+	\item Construya el proyecto en el orden de los capítulos \ref{cap:datos} a \ref{cap:presentacion}: datos, negocio, servicios y presentación. Cada capítulo termina con una actividad práctica.
+	\item Despliegue el sistema completo con contenedores (capítulo \ref{cap:despliegue}), pruébelo (capítulo \ref{cap:pruebas}) y automatice su verificación (capítulo \ref{cap:calidad}).
+	\item Aplique lo aprendido a su Proyecto Fin de Curso con las actividades del capítulo \ref{cap:actividades}.
+\end{enumerate}
+
+\section*{Convenciones}
+
+\begin{itemize}
+	\item Los comandos se escriben para \textbf{PowerShell en Windows 11}. Donde aparece \texttt{.\textbackslash mvnw.cmd}, en Linux o macOS se usa \texttt{./mvnw}.
+	\item El código fuente se escribe sin tildes ni eñes, para evitar problemas de codificación entre sistemas operativos. Los textos que ve el usuario final llevan sus tildes mediante entidades HTML o secuencias de escape Unicode.
+	\item Las cajas azules amplían un concepto, las amarillas advierten de un error frecuente, las verdes resumen lo que debe quedar funcionando y las de borde turquesa proponen una práctica.
+\end{itemize}
+
+\begin{infoBox}[title={Material que acompaña a la guía}]
+	El proyecto completo BiblioUTEQ se entrega junto con esta guía (archivo \texttt{biblio-uteq.zip}). Contiene los dos módulos Maven, las migraciones de base de datos, las pruebas, los \texttt{Dockerfile}, el archivo de Docker Compose y el flujo de integración continua. Puede abrirse directamente en IntelliJ IDEA.
+\end{infoBox}

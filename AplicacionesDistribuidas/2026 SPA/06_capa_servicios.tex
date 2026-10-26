@@ -1,0 +1,114 @@
+%============================================================
+\chapter{Capa de servicios: el API REST}\label{cap:servicios}
+%============================================================
+
+La capa de servicios publica los casos de uso del negocio para que otros niveles los usen a través de la red. En BiblioUTEQ es un API REST: un conjunto de recursos identificados por URL que se manipulan con los métodos de HTTP e intercambian representaciones en JSON. Esta capa es delgada a propósito: recibe, valida, delega en la capa de negocio y traduce el resultado a HTTP.
+
+\section{Diseño de los recursos}
+
+El estilo REST, definido por Fielding, organiza un sistema en recursos con identificadores uniformes, sobre los que se aplica un conjunto reducido de operaciones con semántica conocida, sin que el servidor guarde el estado de la conversación con cada cliente \cite{fielding2000architectural}. La semántica de cada método y de cada código de estado la fija la especificación de HTTP \cite{fielding2022http}. La tabla \ref{tab:endpoints} muestra los recursos de BiblioUTEQ.
+
+\begin{xltabular}{\linewidth}{@{}L{1.6cm}L{4.6cm}YC{1.1cm}@{}}
+	\caption{Recursos del API de BiblioUTEQ}\label{tab:endpoints}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Método} & \hdr{Ruta} & \hdr{Operación} & \hdr{Éxito} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Método} & \hdr{Ruta} & \hdr{Operación} & \hdr{Éxito} \\
+	\midrule
+	\endhead
+	GET & \ruta{/api/v1/libros?q=texto} & Listar o buscar libros & 200 \\
+	GET & \ruta{/api/v1/libros/{id}} & Obtener un libro & 200 \\
+	POST & \ruta{/api/v1/libros} & Registrar un libro & 201 \\
+	PUT & \ruta{/api/v1/libros/{id}} & Reemplazar los datos de un libro & 200 \\
+	GET & \ruta{/api/v1/socios} & Listar socios & 200 \\
+	GET & \ruta{/api/v1/socios/{id}/prestamos} & Préstamos de un socio & 200 \\
+	POST & \ruta{/api/v1/prestamos} & Registrar un préstamo & 201 \\
+	POST & \ruta{/api/v1/prestamos/{id}/devolucion} & Registrar la devolución & 200 \\
+	\bottomrule
+\end{xltabular}
+
+Tres decisiones de diseño explican la tabla:
+
+\begin{itemize}
+	\item \textbf{Sustantivos, no verbos.} Las rutas nombran recursos (\texttt{/prestamos}); la acción la indica el método HTTP. Seguir reglas de diseño como esta mejora la comprensión de un API por parte de quienes la usan \cite{bogner2023restful}.
+	\item \textbf{La devolución es un subrecurso.} Devolver un libro no es simplemente cambiar un campo: calcula la multa y repone el ejemplar. Por eso se modela como una acción explícita con \texttt{POST}, en lugar de permitir que el cliente envíe el estado «DEVUELTO» con \texttt{PUT}.
+	\item \textbf{Versión en la ruta.} El prefijo \texttt{/v1} permite publicar más adelante una \texttt{/v2} incompatible sin romper a los clientes existentes. Cómo evolucionar un API sin romper a sus consumidores es uno de los retos más frecuentes en sistemas distribuidos en la práctica \cite{lercher2024microservice}.
+\end{itemize}
+
+\section{Objetos de transferencia de datos y validación}
+
+El API nunca devuelve las entidades JPA. Usa \textbf{objetos de transferencia de datos} (DTO) \cite{fowler2002patterns}, escritos como \texttt{record} de Java: inmutables, sin lógica y con exactamente los campos del contrato. Así, agregar una columna interna a la tabla no cambia el contrato del API, y no se exponen por accidente datos internos como el campo \texttt{version}.
+
+\lstinputlisting[language=Java,firstline=9,lastline=16,caption={DTO de entrada con reglas de validación},label={lst:dtolibro}]{\apimain/web/dto/LibroSolicitud.java}
+
+Las anotaciones de Jakarta Validation del listado \ref{lst:dtolibro} se comprueban antes de llamar al servicio cuando el parámetro del controlador lleva \texttt{@Valid}. Un dato inválido nunca llega a la capa de negocio.
+
+\section{Los controladores}
+
+\lstinputlisting[language=Java,firstline=18,lastline=40,caption={Controlador de préstamos},label={lst:ctrlprestamo}]{\apimain/web/PrestamoControlador.java}
+
+El controlador del listado \ref{lst:ctrlprestamo} hace solo tres cosas: recibe el DTO validado, llama al servicio y convierte el resultado en un DTO de respuesta con el código adecuado. Al crear un recurso responde \texttt{201 Created} con la cabecera \texttt{Location}, que indica la URL del recurso nuevo \cite{fielding2022http}.
+
+\section{Errores con Problem Details (RFC 9457)}
+
+Un API distribuido debe informar sus errores de forma que el cliente los pueda procesar, no solo mostrar. El estándar \emph{Problem Details for HTTP APIs} (RFC 9457) define un formato JSON común para los errores, con los campos \texttt{type}, \texttt{title}, \texttt{status}, \texttt{detail} e \texttt{instance}, que pueden ampliarse con campos propios \cite{nottingham2023problem}. Spring lo implementa con la clase \texttt{ProblemDetail}.
+
+\lstinputlisting[language=Java,firstline=22,lastline=71,caption={Traducción de excepciones a respuestas HTTP en \texttt{ManejadorErrores}},label={lst:errores}]{\apimain/web/ManejadorErrores.java}
+
+La tabla \ref{tab:errores} resume la correspondencia entre las excepciones de las capas inferiores y los códigos HTTP. Fíjese en que las capas de negocio y de dominio lanzan sus propias excepciones sin saber nada de HTTP: la traducción ocurre solo en esta capa.
+
+\begin{xltabular}{\linewidth}{@{}L{5.0cm}C{1.4cm}Y@{}}
+	\caption{Correspondencia entre errores y códigos HTTP}\label{tab:errores}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Situación} & \hdr{Código} & \hdr{Significado para el cliente} \\
+	\midrule
+	\endhead
+	Datos de entrada inválidos & 400 & Corregir la solicitud; el campo \texttt{errores} indica qué falló \\
+	\ruta{RecursoNoEncontradoException} & 404 & El recurso pedido no existe \\
+	\ruta{ObjectOptimisticLockingFailureException} & 409 & Otro usuario modificó el dato a la vez; reintentar \\
+	\ruta{ReglaNegocioException} & 422 & La solicitud es válida, pero una regla del negocio la impide; el campo \texttt{codigo} dice cuál \\
+	\bottomrule
+\end{xltabular}
+
+El código 422 se llama \emph{Unprocessable Content} en la especificación vigente de HTTP \cite{fielding2022http}; Spring Framework 7 lo nombra \texttt{HttpStatus.UNPROCESSABLE\_CONTENT}. Estas son respuestas reales del API en ejecución:
+
+\begin{lstlisting}[numbers=none,caption={Respuestas reales del API ante tres situaciones},label={lst:respuestas}]
+POST /api/v1/prestamos  {"socioId":1,"libroId":3}
+HTTP/1.1 201
+Location: /api/v1/prestamos/1
+{"id":1,"socioId":1,"codigoSocio":"E-0001","libroId":3,"tituloLibro":"Building Microservices","fechaPrestamo":"2026-10-26","fechaVencimiento":"2026-11-02","fechaDevolucion":null,"estado":"ACTIVO","multa":0}
+
+POST /api/v1/prestamos  {"socioId":2,"libroId":3}
+HTTP/1.1 422
+Content-Type: application/problem+json
+{"detail":"El libro 'Building Microservices' no tiene ejemplares disponibles","instance":"/api/v1/prestamos","status":422,"title":"Regla de negocio incumplida","type":"https://biblio.uteq.edu.ec/errores/regla-negocio","codigo":"SIN_EJEMPLARES"}
+
+POST /api/v1/prestamos  {"socioId":-1}
+HTTP/1.1 400
+Content-Type: application/problem+json
+{"detail":"La solicitud tiene campos con valores no validos","instance":"/api/v1/prestamos","status":400,"title":"Datos invalidos","errores":{"libroId":"no debe ser nulo","socioId":"debe ser mayor que 0"}}
+\end{lstlisting}
+
+\section{El contrato OpenAPI}
+
+El contrato de un API es la descripción precisa de sus rutas, parámetros, esquemas y códigos de respuesta. La especificación OpenAPI es el estándar más usado para escribir ese contrato en un formato que leen tanto las personas como las herramientas; su versión más reciente es la 3.2.1 \cite{openapi2026openapi}. En BiblioUTEQ, springdoc-openapi genera el contrato a partir de los controladores y lo publica en \url{http://localhost:8080/v3/api-docs}, en formato OpenAPI 3.1, junto con la interfaz interactiva Swagger UI (figura \ref{fig:swagger}).
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\linewidth]{figuras/swagger.png}
+	\caption{Contrato del API publicado con Swagger UI en \texttt{biblio-api}}\label{fig:swagger}
+\end{figure}
+
+Desde Swagger UI se puede probar cada operación con el botón \emph{Try it out}. Desde PowerShell, el comando \texttt{Invoke-RestMethod} permite lo mismo:
+
+\begin{lstlisting}[language=powershell,numbers=none]
+Invoke-RestMethod http://localhost:8080/api/v1/libros
+Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/prestamos `
+    -ContentType 'application/json' -Body '{"socioId": 1, "libroId": 3}'
+\end{lstlisting}
+
+\begin{practicaBox}[title={Práctica 6.1: un recurso nuevo}]
+	Agregue la operación \texttt{GET /api/v1/prestamos/vencidos}, que devuelva los préstamos activos cuya fecha de vencimiento ya pasó. Implemente la consulta en el repositorio, el método en el servicio (usando el reloj inyectado) y el método en el controlador. Compruebe que la operación aparece en Swagger UI con su esquema de respuesta y documente en una frase por qué no recibe la fecha actual como parámetro.
+\end{practicaBox}

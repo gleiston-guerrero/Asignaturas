@@ -1,0 +1,71 @@
+%============================================================
+\chapter{Aplicación al Proyecto Fin de Curso}\label{cap:actividades}
+%============================================================
+
+Este capítulo traslada lo aprendido con BiblioUTEQ al Proyecto Fin de Curso (PFC) de cada equipo. Las actividades siguen el orden de la Unidad 5: primero se revisa la arquitectura, luego se refactoriza y por último se verifica la calidad.
+
+\section{Señales de que las capas se están erosionando}
+
+Antes de modificar el PFC, revise si presenta alguno de estos problemas. Cada uno es una forma concreta de la erosión de la arquitectura descrita en el capítulo \ref{cap:fundamentos} \cite{li2022understanding}.
+
+\begin{xltabular}{\linewidth}{@{}L{4.2cm}YL{4.3cm}@{}}
+	\caption{Señales de erosión de la arquitectura en capas}\label{tab:erosion}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Señal} & \hdr{Por qué es un problema} & \hdr{Cómo se corrige} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Señal} & \hdr{Por qué es un problema} & \hdr{Cómo se corrige} \\
+	\midrule
+	\endhead
+	El controlador usa un repositorio directamente & Se salta la capa de negocio; las reglas quedan dispersas & Mover la lógica a un servicio \\
+	\addlinespace
+	El API devuelve entidades JPA & Expone datos internos y ata el contrato al esquema & DTO de respuesta (capítulo \ref{cap:servicios}) \\
+	\addlinespace
+	Reglas del negocio en el controlador o en la vista & La misma regla se repite y se contradice entre clientes & Llevarla al dominio o al servicio \\
+	\addlinespace
+	\texttt{@Transactional} en el controlador & La transacción incluye trabajo de presentación y dura más de lo necesario & Delimitar la transacción en el servicio \\
+	\addlinespace
+	Servicios que solo reenvían al repositorio & Capas que no aportan nada; las solicitudes atraviesan capas vacías \cite{richards2025fundamentals} & Aceptarlo si es poco frecuente; si es la mayoría, revisar el diseño \\
+	\addlinespace
+	Llamadas remotas sin tiempo de espera & Una falla en otro nivel bloquea al que llama & Configurar tiempos de espera (capítulo \ref{cap:presentacion}) \\
+	\addlinespace
+	Excepciones técnicas que llegan al cliente & El cliente recibe trazas internas y no puede reaccionar & Manejador global con Problem Details \\
+	\bottomrule
+\end{xltabular}
+
+\section{Actividades}
+
+\begin{practicaBox}[title={Actividad 11.1: diagnóstico de capas del PFC}]
+	Para el microservicio principal de su PFC, dibuje sus capas y las dependencias reales entre sus paquetes (puede usar el diagrama de dependencias de IntelliJ IDEA). Marque con rojo cada dependencia que viole la regla de la sección \ref{sec:regla} y cada señal de la tabla \ref{tab:erosion} que encuentre. Entregue el diagrama y la lista priorizada de correcciones en el documento del PFC.
+\end{practicaBox}
+
+\begin{practicaBox}[title={Actividad 11.2: reglas de capas como pruebas}]
+	Agregue la biblioteca ArchUnit a las pruebas del PFC y escriba al menos tres reglas que fallen si alguien viola la arquitectura: (a) las clases del paquete de negocio no dependen del paquete web; (b) los controladores no dependen de los repositorios; (c) las entidades no se usan en las firmas públicas de los controladores. Ejecútelas en la integración continua: a partir de ese momento, la erosión se detecta automáticamente.
+\end{practicaBox}
+
+\begin{practicaBox}[title={Actividad 11.3: refactorización guiada}]
+	Corrija las tres violaciones de mayor prioridad de la actividad 11.1. Por cada una, haga un \emph{commit} independiente cuyo mensaje explique la regla que se restablece, y verifique que las pruebas existentes siguen pasando antes y después del cambio.
+\end{practicaBox}
+
+\begin{practicaBox}[title={Actividad 11.4: matriz de calidad del PFC}]
+	Construya para su PFC una tabla como la tabla \ref{tab:iso}: para cada característica de ISO/IEC 25010:2023 que su equipo priorice, indique la decisión de diseño que la favorece y la evidencia verificable en el repositorio (prueba, medición, configuración o captura). No incluya características sin evidencia.
+\end{practicaBox}
+
+\section{Lista de verificación de una aplicación distribuida en capas}
+
+\begin{okBox}[title={Antes de entregar, compruebe que su sistema cumple}]
+	\begin{itemize}
+		\item[$\square$] Cada capa usa solo a la inmediatamente inferior; ninguna clase de negocio importa clases web.
+		\item[$\square$] Los controladores no contienen reglas del negocio y no usan repositorios.
+		\item[$\square$] El API usa DTO, valida su entrada y responde errores con Problem Details.
+		\item[$\square$] Las transacciones se delimitan en la capa de negocio.
+		\item[$\square$] Los datos que pueden modificarse a la vez tienen control de concurrencia y una prueba que lo demuestra.
+		\item[$\square$] El esquema de la base de datos se crea con migraciones versionadas.
+		\item[$\square$] Toda llamada entre niveles tiene tiempo de espera y un manejo controlado de la falla.
+		\item[$\square$] La configuración que cambia entre ambientes (URL, usuarios, claves) se lee de variables de entorno.
+		\item[$\square$] El sistema completo se levanta con \texttt{docker compose up} desde un clon limpio.
+		\item[$\square$] Existen pruebas por capa y de integración, y la integración continua está en verde.
+		\item[$\square$] El servicio publica su salud y sus métricas.
+	\end{itemize}
+\end{okBox}
