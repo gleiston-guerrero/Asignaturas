@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% FORM-TL-08 — Taller de product backlog e historias de usuario del PFC
+% Ingeniería de Requerimientos (ISR-401) · UTEQ · SPA 2026-2027
+% Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% babel no disponible en este entorno
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage{needspace}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Textos en español (sin babel) ----------
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+\definecolor{lightgreen}{HTML}{DCEFE3}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ \,$\cdot$\, Ingeniería de Requerimientos (ISR-401)}
+\rhead{\footnotesize FORM-TL-08 \,$\cdot$\, SPA 2026--2027}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\seccion}[1]{\section{\textcolor{utegreendk}{#1}}}
+\newcommand{\subseccion}[1]{\subsection{\textcolor{midblue}{#1}}}
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajapiso}[1][]{colback=lightred,colframe=red!60!black,boxrule=1pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajaaviso}[1][]{colback=lightgold,colframe=gold!80!black,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+
+\begin{document}
+
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\vspace{4pt}
+\begin{center}
+	{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software \,\textcolor{gold}{$\bullet$}\, Ingeniería de Requerimientos (ISR-401)}\\[8pt]
+	{\LARGE\textbf{\textcolor{utegreendk}{GUÍA Y RÚBRICA DE EVALUACIÓN}}}\\[4pt]
+	{\large\textbf{\textcolor{midblue}{ACTIVIDAD FORMATIVA}}}\\[6pt]
+	{\Large\textbf{FORM-TL-08}}\\[2pt]
+	{\large Taller de product backlog e historias de usuario del PFC}
+\end{center}
+
+\vspace{2pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+\seccion{Datos generales}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Detalle}\\
+	\hline
+	Asignatura & Ingeniería de Requerimientos (ISR-401) \,$\cdot$\, 4.\textsuperscript{o} nivel \,$\cdot$\, Paralelo A\\
+	\hline
+	\rowcolor{rowgray} Docente & Gleiston Cicerón Guerrero Ulloa, PhD \,$\cdot$\, \texttt{gguerrero@uteq.edu.ec}\\
+	\hline
+	Unidad & Unidad 4. Validación, Gestión y Consideraciones Prácticas\\
+	\hline
+	\rowcolor{rowgray} Resultado de aprendizaje & Aplica técnicas de validación, gestión del cambio y trazabilidad de requisitos, asegurando calidad.\\
+	\hline
+	Carácter & Formativo: sin calificación; su entrega válida es requisito de la sumativa vinculada\\
+	\hline
+	\rowcolor{rowgray} Prepara (sumativas vinculadas) & GA-SUM-07\\
+	\hline
+	Modalidad & Grupal (equipo del PFC)\\
+	\hline
+	\rowcolor{rowgray} Semana & 14 (25 de enero -- 31 de enero de 2027)\\
+	\hline
+	Publicación de la guía & lunes 25 de enero de 2027\\
+	\hline
+	\rowcolor{rowgray} Cierre & sábado 30 de enero de 2027, a las 23:59\\
+	\hline
+	Repositorio & Repositorio del equipo \texttt{ISR401-<SIGLA>}\\
+	\hline
+\end{tabularx}
+
+\seccion{Propósito}
+
+Iniciar el product backlog del PFC en una herramienta y practicar la redacción de historias de usuario con criterios de aceptación, antes de la PE-U5.
+
+\seccion{Fundamento}
+
+El product backlog es una lista ordenada y emergente \citep{scrumguide_2020}; las historias de usuario requieren criterios de aceptación verificables y atención explícita a los requisitos no funcionales \citep{hoy_agile_re_2023}.
+
+\seccion{Desarrollo de la actividad}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=4pt]
+	\item \textbf{Herramienta.} Cree el proyecto del PFC en Jira o Trello.
+	\item \textbf{Épicas.} Defina 4 épicas a partir de los casos de uso del PFC.
+	\item \textbf{Historias.} Redacte 10 historias con el formato estándar y 2 criterios Gherkin cada una.
+	\item \textbf{INVEST.} Revise cada historia con INVEST y corrija las que fallen.
+\end{enumerate}
+
+\seccion{Productos entregables}
+
+{\small
+\begin{longtable}{|L{0.27\linewidth}|L{0.43\linewidth}|L{0.21\linewidth}|}
+	\caption{Productos que deben estar en el repositorio al cierre.}\\
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endhead
+	\texttt{PE-U5/\allowbreak{}borrador/\allowbreak{}} & Exportación del backlog y revisión INVEST & 10 historias\\
+	\hline
+\end{longtable}
+}
+
+\seccion{Normas de entrega}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=3pt]
+	\item \textbf{Repositorio.} Todo el trabajo se desarrolla en el repositorio del equipo \texttt{ISR401-<SIGLA>}, que debe ser público en GitHub. Allí deben estar los fuentes (\texttt{.tex}, \texttt{.bib}, figuras, fuentes editables de los modelos y evidencias) y el PDF compilado.
+	\item \textbf{Documento en el SGA.} En la tarea del SGA se sube solamente un PDF de \textbf{una sola página} con los datos informativos: estudiante o estudiantes, código y nombre de la tarea, fecha límite de entrega y la URL del repositorio escrita completa en una sola línea. No se sube ningún otro archivo.
+	\item \textbf{\LaTeX{} reproducible.} El PDF debe poder regenerarse clonando el repositorio y compilando el archivo \texttt{.tex}. El \texttt{README.md} documenta compilador, archivo principal, orden de comandos y dependencias.
+	\item \textbf{Referencias.} Estilo IEEE. Toda referencia debe existir y sus datos (autores, año, título, revista o editorial, volumen, número, páginas y DOI o ISBN) deben corresponder exactamente a la obra real.
+	\item \textbf{Plazo.} El cierre es el sábado 30 de enero de 2027, a las 23:59. Se evalúa el contenido del repositorio hasta ese momento; lo agregado después no se considera.
+	\item \textbf{Trabajo anticipado.} El trabajo se realiza durante la semana, no a última hora; el historial de commits debe mostrarlo. La lista de cotejo registra la constancia observada.
+	\item \textbf{Datos personales.} Ningún dato personal de terceros (cédulas, teléfonos, correos personales, audios o videos de participantes, consentimientos firmados) se publica en el repositorio. Esas evidencias se guardan en una carpeta institucional privada (cuenta \texttt{@uteq.edu.ec}) compartida con el docente, y en el repositorio se registra un manifiesto con nombre de archivo, fecha, duración y huella SHA-256 \citep{lopdp_2021}.
+	\item \textbf{Uso de IA como apoyo.} Si se usa una herramienta de IA solo como apoyo (ortografía, error de compilación), se declara en una sección del documento: herramienta, versión, propósito y cómo se verificó lo obtenido.
+\end{enumerate}
+
+\seccion{Condiciones de entrega válida}
+
+\begin{cajapiso}[title={Condiciones de entrega válida: su incumplimiento equivale a no entregar}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{PDF de una sola página con datos informativos y URL.} En el SGA se sube solamente un PDF de UNA SOLA página con los datos informativos (estudiante o estudiantes, tarea, fecha límite de entrega) y, en una sola línea, la URL del repositorio. Si el PDF tiene más de una página, si se suben otros archivos, si la URL no cabe en una sola línea o está rota, o si el repositorio no es accesible, la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar la sumativa vinculada, en la que obtiene CERO.
+		\item \textbf{PDF reproducible.} Si el PDF no se genera correctamente a partir del \LaTeX{} al clonar el repositorio y compilar el archivo \texttt{.tex} siguiendo el \texttt{README.md} (compilador, orden de comandos, archivo principal y dependencias), la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar la sumativa vinculada, en la que obtiene CERO.
+		\item \textbf{Plazo.} Si el contenido evaluable se sube después de la fecha y hora de cierre, la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar la sumativa vinculada, en la que obtiene CERO.
+		\item \textbf{Integridad.} Plagio verificado, cualquiera de los indicios graves G1 a G6 de uso de IA, o contenido generado por IA presentado como propio: la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar la sumativa vinculada, en la que obtiene CERO, sin perjuicio de las acciones disciplinarias que correspondan.
+	\end{enumerate}
+\end{cajapiso}
+
+\seccion{Integridad académica e indicios de uso de IA}
+
+Todo trabajo debe ser de autoría propia. Se aplica el Código de Ética de la ACM \citep{acm_code_2018} y la sección 6.1 del encuadre.
+
+\begin{cajapiso}[title={Indicios graves de uso de IA: cada uno, por sí solo, implica CERO (P4)}]
+	\begin{enumerate}[label=\textbf{G\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{Referencias con datos que no corresponden a la obra real:} DOI que lleva a una obra con autores, título, año, revista, volumen o páginas diferentes; DOI, ISBN o URL inexistentes; obras que no existen.
+		\item \textbf{Citas que la fuente no respalda:} afirmaciones, cifras o citas textuales atribuidas a una fuente que no las contiene, o cláusulas, secciones o tablas de una norma (IEEE 29148, ISO/\allowbreak{}IEC 25010) que no existen o no dicen lo afirmado.
+		\item \textbf{Restos de un asistente de IA} en el documento, el código, los comentarios o los commits (por ejemplo, «Claro, aquí tienes\ldots», «Como modelo de lenguaje\ldots»).
+		\item \textbf{Evidencias de campo fabricadas:} entrevistas, encuestas, participantes, transcripciones, actas o fotografías que no existen o no tienen respaldo original.
+		\item \textbf{Resultados o artefactos inexistentes:} el texto describe modelos, matrices, pruebas o métricas que no están en el repositorio o no coinciden con él.
+		\item \textbf{Incapacidad de explicar lo entregado:} el estudiante no puede justificar ni modificar, cuando se le pide, lo que escribió, modeló o especificó.
+	\end{enumerate}
+\end{cajapiso}
+
+\begin{cajaaviso}[title={Indicios complementarios (se acumulan)}]
+	\begin{enumerate}[label=\textbf{I\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item Redacción uniforme de principio a fin, o estilo distinto al del estudiante en otras entregas o en su exposición oral.
+		\item Uso excesivo de los mismos conectores y fórmulas («además», «cabe destacar», «es importante señalar», «en conclusión»).
+		\item Contenido genérico: requisitos, actores o reglas aplicables a cualquier sistema, sin relación con lo elicitado.
+		\item Entrega en uno o pocos commits masivos, o mensajes de commit idénticos o automáticos.
+		\item Residuos de formato ajeno a \LaTeX{} (marcas de Markdown, emojis) o metadatos del PDF de otra herramienta.
+		\item Estructura, redacción o errores muy similares entre estudiantes o equipos distintos.
+		\item Traducción literal o mezcla de idiomas sin justificación.
+	\end{enumerate}
+	Con dos indicios complementarios se resta 1,5 puntos (nivel B) y con tres o más se restan 3,0 (nivel C). La declaración de uso de IA no exime de responsabilidad ni anula estos indicios.
+\end{cajaaviso}
+
+\seccion{Lista de cotejo para la retroalimentación}
+
+La actividad no tiene calificación. El docente marca cada indicador y escribe una observación que el estudiante debe atender en la actividad sumativa vinculada. \textbf{L} = Logrado (cumple con la calidad descrita); \textbf{EP} = En proceso (presente pero incompleto, impreciso o con errores que se señalan); \textbf{NL} = No logrado (ausente, incorrecto o no verificable). Que un elemento esté presente no basta: se valora su calidad.
+
+{\small
+\begin{longtable}{|C{0.04\linewidth}|L{0.47\linewidth}|C{0.035\linewidth}|C{0.035\linewidth}|C{0.035\linewidth}|L{0.17\linewidth}|}
+	\caption{Lista de cotejo de FORM-TL-08.}\\
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Indicador y calidad esperada (Logrado)} & \thdr{L} & \thdr{EP} & \thdr{NL} & \thdr{Observación}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Indicador y calidad esperada (Logrado)} & \thdr{L} & \thdr{EP} & \thdr{NL} & \thdr{Observación}\\
+	\hline
+	\endhead
+	1 & Épicas coherentes con los casos de uso. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	2 & Historias con rol, objetivo y beneficio concretos. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	3 & Criterios Gherkin verificables. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	4 & Revisión INVEST documentada con correcciones. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	5 & Exportación de la herramienta en el repositorio. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+\end{longtable}
+}
+
+\begin{cajaclave}[title={Cómo se usa esta retroalimentación}]
+	El docente devuelve la lista de cotejo en el SGA antes de la sesión siguiente. Cada indicador marcado como EP o NL debe corregirse antes de presentar GA-SUM-07; el docente verificará esa corrección al calificarla. Entregar esta formativa de forma válida es requisito para presentar GA-SUM-07.
+\end{cajaclave}
+
+\bibliographystyle{unsrtnat}
+\bibliography{referencias}
+
+\end{document}

@@ -1,0 +1,351 @@
+% =====================================================================
+% EV-DIAG-01 - Prueba de diagnostico - Aplicaciones Distribuidas (ISR-701)
+% Version estudiante:  pdflatex EV-DIAG-01_Prueba_Diagnostico.tex
+% Version con clave:   pdflatex -jobname=EV-DIAG-01_Prueba_Diagnostico_Clave "\def\conclave{1}\input{EV-DIAG-01_Prueba_Diagnostico.tex}"
+% Secuencia completa: pdflatex -> biber -> pdflatex -> pdflatex (para cada jobname)
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,top=2.3cm,bottom=2.3cm,left=2.5cm,right=2.5cm,headheight=14pt]{geometry}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[most]{tcolorbox}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+\addbibresource{referencias_EV-DIAG-01.bib}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+
+\newif\ifclave
+\ifdefined\conclave
+	\clavetrue
+\fi
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{2.5em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{uteqBlue}UTEQ · Ingeniería de Software · ISR-701}
+\fancyhead[R]{\small\color{uteqBlue}EV-DIAG-01 · Prueba de diagnóstico\ifclave{} · \textbf{CLAVE}\fi}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstset{
+	basicstyle=\ttfamily\small,
+	frame=single,
+	rulecolor=\color{uteqTeal},
+	backgroundcolor=\color{uteqTeal!5},
+	columns=fullflexible,
+	keepspaces=true,
+	xleftmargin=4pt,
+	xrightmargin=4pt,
+	language=Java,
+	keywordstyle=\color{uteqBlue}\bfseries,
+	showstringspaces=false
+}
+
+% ---------------- Macros de preguntas ----------------
+\newcounter{preg}
+\newcommand{\tipounica}{\textcolor{uteqMid}{\small\textsf{[Selección única: marque una sola alternativa]}}}
+\newcommand{\tipomultiple}{\textcolor{uteqAmber!80!black}{\small\textsf{[Selección múltiple: marque todas las alternativas que correspondan]}}}
+\newcommand{\pregunta}[2]{%
+	\refstepcounter{preg}%
+	\par\medskip
+	\noindent\textbf{\color{uteqBlue}\arabic{preg}.}~#1\par
+	\noindent #2\par\nopagebreak
+}
+\newcommand{\ok}{\ifclave~\textcolor{uteqGreen}{\ding{51}~\textbf{Correcta}}\fi}
+\newenvironment{opciones}{%
+	\begin{enumerate}[label={$\square$\ \alph*)},leftmargin=2.6em,itemsep=1pt,topsep=2pt]
+}{%
+	\end{enumerate}
+}
+\newcommand{\just}[1]{%
+	\ifclave
+		\begin{tcolorbox}[colback=uteqGreen!6,colframe=uteqGreen!70!black,boxrule=0.4pt,arc=1mm,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small]
+			\textbf{Justificación:} #1
+		\end{tcolorbox}
+	\fi
+}
+
+\begin{document}
+
+% ---------------- Encabezado ----------------
+\begin{center}
+	{\large\bfseries\color{uteqBlue} UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[2pt]
+	{\normalsize Facultad de Ciencias de la Computación · Carrera de Ingeniería de Software}\\[8pt]
+	{\Large\bfseries\color{uteqMid} Prueba de diagnóstico de conocimientos previos\ifclave{} -- Clave de respuestas\fi}\\[3pt]
+	{\normalsize Aplicaciones Distribuidas (ISR-701) · Séptimo nivel · Período 2026--2027}
+\end{center}
+
+\begin{tabularx}{\textwidth}{@{}l p{6.9cm} l X@{}}
+	\toprule
+	\textbf{Código:} & EV-DIAG-01 (diagnóstica, no calificada) & \textbf{Duración:} & 40 minutos \\
+	\textbf{Docente:} & Ing. Gleiston C. Guerrero Ulloa, PhD & \textbf{Fecha:} & \rule{3.5cm}{0.4pt} \\
+	\textbf{Estudiante:} & \rule{5cm}{0.4pt} & \textbf{Paralelo:} & \rule{2cm}{0.4pt} \\
+	\bottomrule
+\end{tabularx}
+
+\begin{tcolorbox}[colback=uteqBlue!4,colframe=uteqBlue,boxrule=0.5pt,arc=1mm,title=Instrucciones,fonttitle=\bfseries\small,fontupper=\small]
+	\begin{itemize}[leftmargin=1.2em,itemsep=0pt,topsep=0pt]
+		\item Esta prueba explora los conocimientos de asignaturas anteriores que necesitará en Aplicaciones Distribuidas; su resultado orienta la nivelación y no afecta su calificación.
+		\item Las preguntas de \textbf{selección única} tienen cuatro alternativas y solo una es correcta.
+		\item Las preguntas de \textbf{selección múltiple} tienen cinco alternativas; más de una es correcta. Marque todas las que correspondan y ninguna incorrecta.
+		\item Trabaje individualmente, sin apuntes, sin dispositivos y sin herramientas de inteligencia artificial. Si no sabe una respuesta, déjela en blanco: un diagnóstico honesto le beneficia.
+	\end{itemize}
+\end{tcolorbox}
+
+% =====================================================================
+\section*{\color{uteqBlue}\large Bloque A. Sistemas operativos y concurrencia}
+
+\pregunta{\tipounica}{Un programa en ejecución crea varias unidades de ejecución que comparten el mismo espacio de direcciones, el mismo montículo (heap) y los mismos archivos abiertos, aunque cada una conserva su propia pila y su propio contador de programa. ¿Cómo se denominan esas unidades?}
+\begin{opciones}
+	\item Procesos hijos creados mediante la llamada \texttt{fork()}.
+	\item Segmentos de memoria compartida (\emph{shared memory}).
+	\item Hilos (\emph{threads}).\ok
+	\item Demonios del sistema (\emph{daemons}).
+\end{opciones}
+\just{Los hilos de un mismo proceso comparten código, datos, montículo y descriptores, pero cada uno tiene pila, registros y contador de programa propios. Un proceso creado con \texttt{fork()} recibe una copia separada del espacio de direcciones; un segmento de memoria compartida es una región, no una unidad de ejecución; un demonio es un proceso en segundo plano.}
+
+\pregunta{\tipounica}{Dos hilos ejecutan simultáneamente el método \texttt{tarea()} sobre el mismo objeto. Al terminar ambos, el valor impreso suele ser menor que 200000 y cambia entre ejecuciones. ¿Cuál es la causa?}
+\begin{lstlisting}
+class Contador {
+    private int valor = 0;
+    void tarea() { for (int i = 0; i < 100000; i++) { valor++; } }
+}
+\end{lstlisting}
+\begin{opciones}
+	\item El recolector de basura pausa los hilos y descarta los incrementos que estaban pendientes en ese momento.
+	\item La instrucción \texttt{valor++} consta de leer, sumar y escribir; los pasos de ambos hilos se intercalan y algunas escrituras sobrescriben a otras.\ok
+	\item Cada hilo trabaja sobre una copia privada del objeto y, al finalizar, la JVM conserva solo la copia del último hilo.
+	\item El tipo \texttt{int} se desborda al acercarse a 200000 y el valor vuelve a empezar desde un número menor.
+\end{opciones}
+\just{Es una condición de carrera: \texttt{valor++} no es atómica, por lo que dos hilos pueden leer el mismo valor y escribir el mismo resultado, perdiendo una actualización \cite{goetz2006jcip}. El recolector no altera variables vivas, la JVM no duplica objetos por hilo y el máximo de \texttt{int} supera los dos mil millones.}
+
+\pregunta{\tipomultiple}{Un bloque de código modifica una lista compartida y se requiere que, en cualquier instante, solo un hilo pueda estar ejecutándolo. ¿Qué recursos de Java garantizan ese comportamiento si se usan correctamente?}
+\begin{opciones}
+	\item Declarar el bloque como \texttt{synchronized} sobre un mismo objeto monitor.\ok
+	\item Declarar la lista con el modificador \texttt{volatile}.
+	\item Rodear el bloque con \texttt{lock()} y \texttt{unlock()} de un \texttt{ReentrantLock} compartido.\ok
+	\item Asignar al hilo que modifica la lista la prioridad \texttt{Thread.MAX\_PRIORITY}.
+	\item Rodear el bloque con \texttt{acquire()} y \texttt{release()} de un \texttt{Semaphore} creado con un único permiso.\ok
+\end{opciones}
+\just{\texttt{synchronized}, \texttt{ReentrantLock} y un semáforo binario impiden que dos hilos entren a la vez a la sección crítica \cite{goetz2006jcip}. \texttt{volatile} solo garantiza visibilidad de la referencia, no exclusión; la prioridad es una sugerencia al planificador y no impide la ejecución simultánea.}
+
+\pregunta{\tipounica}{El hilo H1 retiene el recurso A y espera el recurso B; al mismo tiempo, el hilo H2 retiene B y espera A, y ambos quedan detenidos indefinidamente. ¿Qué decisión de diseño impide que esta situación vuelva a producirse sin eliminar el uso de ambos recursos?}
+\begin{opciones}
+	\item Establecer un orden global y obligar a que todos los hilos soliciten los recursos siempre en ese mismo orden.\ok
+	\item Elevar la prioridad de H1 para que el planificador lo ejecute antes que a H2.
+	\item Declarar los recursos A y B como \texttt{volatile} para que ambos hilos vean su estado actualizado.
+	\item Aumentar el número de hilos del grupo (\emph{thread pool}) para que haya más hilos disponibles.
+\end{opciones}
+\just{Es un interbloqueo (\emph{deadlock}); requiere simultáneamente exclusión mutua, retención y espera, no expropiación y espera circular \cite{coffman1971deadlocks}. Ordenar globalmente la adquisición rompe la espera circular. La prioridad, la visibilidad o más hilos no rompen ninguna de las cuatro condiciones.}
+
+% =====================================================================
+\section*{\color{uteqBlue}\large Bloque B. Redes y comunicación}
+
+\pregunta{\tipomultiple}{¿Qué características corresponden al protocolo de la capa de transporte sobre el que funcionan por defecto HTTP/1.1 y las conexiones JDBC hacia un servidor de base de datos?}
+\begin{opciones}
+	\item Conserva los límites de cada mensaje: lo que el emisor envía en una escritura llega en una sola lectura del receptor.
+	\item Antes de intercambiar datos, ambos extremos realizan un intercambio inicial de tres segmentos para sincronizar números de secuencia.\ok
+	\item Determina la ruta de los paquetes entre redes distintas a partir de las direcciones IP de origen y destino.
+	\item Entrega los bytes a la aplicación en el mismo orden en que fueron enviados y reenvía los que se pierden.\ok
+	\item Prescinde de establecer una conexión previa, lo que reduce la latencia del primer envío.
+\end{opciones}
+\just{El protocolo es TCP: orientado a conexión (saludo de tres vías), con entrega ordenada y retransmisión \cite{rfc9293}. TCP es un flujo de bytes y no conserva límites de mensajes (eso es propio de UDP); el enrutamiento por IP corresponde a la capa de red; operar sin conexión es característica de UDP.}
+
+\pregunta{\tipounica}{Un servidor escucha en el puerto 8080 y mantiene abiertas al mismo tiempo 50 conexiones con clientes distintos. ¿Qué información utiliza el sistema operativo del servidor para saber a cuál de esas conexiones pertenece cada segmento recibido?}
+\begin{opciones}
+	\item La dirección física (MAC) de la tarjeta de red de cada cliente.
+	\item Un puerto distinto que el servidor asigna a cada cliente, a partir del 8081, al aceptar la conexión.
+	\item La cookie de sesión que el cliente incluye en cada solicitud.
+	\item La combinación de dirección IP y puerto del cliente junto con la dirección IP y puerto del servidor.\ok
+\end{opciones}
+\just{Cada conexión TCP se identifica por el par de \emph{sockets} de ambos extremos (IP y puerto locales y remotos) \cite{rfc9293}; por eso todas comparten el puerto 8080 del servidor. La MAC no sobrevive al primer enrutador, el servidor no cambia de puerto por cliente y la cookie pertenece a la capa de aplicación, no al sistema operativo.}
+
+\pregunta{\tipounica}{Un componente recibe todas las peticiones de los clientes y decide a qué servidor reenviarlas según la ruta solicitada, por ejemplo \texttt{/api/pedidos} frente a \texttt{/api/clientes}. ¿En qué capa del modelo TCP/IP debe operar ese componente para tomar esa decisión?}
+\begin{opciones}
+	\item Capa de transporte.
+	\item Capa de aplicación.\ok
+	\item Capa de internet (red).
+	\item Capa de enlace de datos.
+\end{opciones}
+\just{La ruta de la URL forma parte del mensaje HTTP, que solo es legible en la capa de aplicación (equilibradores de capa 7 o pasarelas de API). En la capa de transporte solo se ven puertos e IP; en las capas inferiores, direcciones de red o físicas.}
+
+% =====================================================================
+\section*{\color{uteqBlue}\large Bloque C. Servicios web y desarrollo de aplicaciones}
+
+\pregunta{\tipomultiple}{Si una misma solicitud se envía varias veces por un reintento automático, ¿con qué métodos HTTP el efecto final en el servidor es el mismo que si se hubiera enviado una sola vez, según la especificación de la semántica de HTTP?}
+\begin{opciones}
+	\item \texttt{POST}
+	\item \texttt{GET}\ok
+	\item \texttt{PUT}\ok
+	\item \texttt{PATCH}
+	\item \texttt{DELETE}\ok
+\end{opciones}
+\just{RFC 9110 define como idempotentes a \texttt{GET}, \texttt{HEAD}, \texttt{OPTIONS}, \texttt{TRACE}, \texttt{PUT} y \texttt{DELETE} \cite{rfc9110}. \texttt{POST} puede crear un recurso nuevo en cada envío y \texttt{PATCH} no está definido como idempotente.}
+
+\pregunta{\tipounica}{Un cliente solicita un recurso protegido de una API sin incluir ningún token ni credencial en la petición. ¿Qué código de estado debe devolver el servidor?}
+\begin{opciones}
+	\item \texttt{403}
+	\item \texttt{404}
+	\item \texttt{401}\ok
+	\item \texttt{400}
+\end{opciones}
+\just{El código 401 indica que faltan credenciales válidas y que el cliente debe autenticarse; el 403 se reserva para un cliente ya identificado que no tiene permiso \cite{rfc9110}. El 404 indica que el recurso no existe y el 400 que la petición está mal formada.}
+
+\pregunta{\tipomultiple}{¿Qué propiedades forman parte de las restricciones del estilo arquitectónico REST, tal como fue definido por su autor?}
+\begin{opciones}
+	\item Cada petición contiene toda la información necesaria para ser atendida, sin depender de datos de sesión guardados en el servidor.\ok
+	\item Las representaciones de los recursos deben intercambiarse en formato JSON.
+	\item Las respuestas indican explícitamente si pueden almacenarse temporalmente para reutilizarse.\ok
+	\item Toda comunicación debe cifrarse mediante HTTPS.
+	\item Los recursos se identifican mediante URI y se manipulan a través de un conjunto común y uniforme de operaciones.\ok
+\end{opciones}
+\just{Fielding define REST mediante cliente-servidor, ausencia de estado de sesión en el servidor, caché, interfaz uniforme, sistema en capas y código bajo demanda \cite{fielding2000rest}. REST no impone JSON (admite cualquier representación) ni HTTPS, aunque este último sea una buena práctica de seguridad.}
+
+\pregunta{\tipounica}{Un controlador Spring Boot devuelve directamente una entidad JPA \texttt{Cliente} que tiene una lista de \texttt{Pedido}, y cada \texttt{Pedido} referencia de vuelta a su \texttt{Cliente}. Al consumir el servicio desde una aplicación móvil se obtiene un \texttt{StackOverflowError} durante la conversión a JSON. ¿Qué solución es la adecuada?}
+\begin{opciones}
+	\item Devolver objetos de transferencia (DTO) sin la referencia de retorno, o excluir uno de los lados de la relación de la conversión a JSON.\ok
+	\item Aumentar el tamaño de la pila de la JVM con el parámetro \texttt{-Xss} para que la conversión logre completarse.
+	\item Cambiar la estrategia de carga de la relación a \texttt{FetchType.EAGER} para que los pedidos se obtengan junto con el cliente.
+	\item Hacer que ambas entidades implementen la interfaz \texttt{Serializable}.
+\end{opciones}
+\just{La relación bidireccional provoca una recursión infinita (cliente, pedidos, cliente\ldots) al convertir a JSON. Se corta usando DTO o anotaciones como \texttt{@JsonIgnore} o \texttt{@JsonManagedReference}/\texttt{@JsonBackReference}. Una pila mayor solo retrasa el error, la carga ansiosa no elimina el ciclo y \texttt{Serializable} se refiere a la serialización binaria de Java, no a JSON.}
+
+% =====================================================================
+\section*{\color{uteqBlue}\large Bloque D. Bases de datos}
+
+\pregunta{\tipomultiple}{Una transferencia bancaria descuenta 100 dólares de la cuenta X y los acredita en la cuenta Y dentro de una misma transacción de un gestor relacional. ¿Qué afirmaciones describen correctamente las garantías ACID?}
+\begin{opciones}
+	\item Si el crédito en Y falla, el débito ya aplicado en X se deshace y ninguna de las dos operaciones queda registrada.\ok
+	\item La consistencia garantiza que todas las réplicas de la base de datos muestren el mismo saldo en el mismo instante.
+	\item Una vez confirmada la transacción, sus cambios permanecen aunque el servidor se apague inmediatamente después.\ok
+	\item El aislamiento obliga a que el gestor ejecute las transacciones de una en una, sin concurrencia.
+	\item Otra transacción que se ejecute en paralelo no observa el estado intermedio en que el dinero salió de X pero aún no llegó a Y.\ok
+\end{opciones}
+\just{Las alternativas a), c) y e) describen atomicidad, durabilidad y aislamiento. La C de ACID se refiere al respeto de las reglas de integridad de la base, no a la igualdad entre réplicas (esa idea corresponde a la C del teorema CAP, que se estudiará en el curso). El aislamiento se logra mediante bloqueos o versiones y permite concurrencia; la ejecución en serie es solo una forma de razonarlo \cite{berenson1995critique}.}
+
+\pregunta{\tipounica}{La transacción T1 consulta un saldo y obtiene 100. Mientras T1 sigue abierta, la transacción T2 cambia ese saldo a 50 y confirma. Luego T1 vuelve a consultar la misma fila y obtiene 50. ¿Qué fenómeno ocurrió y cuál es el nivel de aislamiento mínimo del estándar SQL que lo evita?}
+\begin{opciones}
+	\item Lectura sucia; se evita con \texttt{READ COMMITTED}.
+	\item Lectura fantasma; se evita con \texttt{SERIALIZABLE}.
+	\item Lectura no repetible; se evita con \texttt{REPEATABLE READ}.\ok
+	\item Actualización perdida; se evita con \texttt{READ UNCOMMITTED}.
+\end{opciones}
+\just{T1 leyó dos veces la misma fila con resultados diferentes debido a un cambio confirmado por otra transacción: lectura no repetible, que \texttt{REPEATABLE READ} impide \cite{berenson1995critique}. No es lectura sucia porque T2 había confirmado; no es fantasma porque no aparecen filas nuevas; \texttt{READ UNCOMMITTED} no evita ninguna anomalía.}
+
+\pregunta{\tipounica}{La tabla \texttt{estudiante} tiene un índice de árbol B sobre la columna \texttt{apellido}; sin embargo, la consulta \texttt{SELECT * FROM estudiante WHERE apellido LIKE '\%ez';} recorre la tabla completa. ¿Por qué?}
+\begin{opciones}
+	\item El operador \texttt{LIKE} nunca puede aprovechar un índice, sin importar el patrón utilizado.
+	\item El índice solo se usaría si se hubiera declarado como \texttt{UNIQUE}.
+	\item Las columnas de tipo \texttt{VARCHAR} no admiten índices de árbol B.
+	\item Al desconocerse el inicio del texto buscado, el gestor no puede usar el orden del índice para delimitar el rango de búsqueda.\ok
+\end{opciones}
+\just{El árbol B ordena los valores por su prefijo; un patrón como \texttt{'Gu\%'} sí puede usar el índice, pero un comodín al inicio impide localizar un rango y obliga a revisar todas las filas. Los índices no necesitan ser únicos y los \texttt{VARCHAR} sí son indexables.}
+
+% =====================================================================
+\section*{\color{uteqBlue}\large Bloque E. Ingeniería de software, seguridad y herramientas}
+
+\pregunta{\tipomultiple}{Dos integrantes del equipo modificaron las mismas líneas de \texttt{PedidoService.java} en ramas distintas y ahora intentan integrar su trabajo. ¿Qué afirmaciones son correctas?}
+\begin{opciones}
+	\item \texttt{git pull --force} integra automáticamente ambas versiones conservando los cambios de los dos integrantes.
+	\item \texttt{git merge} se detiene y marca en el archivo las zonas en disputa con los delimitadores \texttt{<{}<{}<{}<{}<{}<{}<}, \texttt{=======} y \texttt{>{}>{}>{}>{}>{}>{}>}.\ok
+	\item \texttt{git rebase} reescribe los commits de la rama que se reaplica, por lo que estos obtienen identificadores (hash) nuevos.\ok
+	\item \texttt{git stash} incorpora los cambios del compañero en la copia de trabajo local.
+	\item Tras editar el archivo, se marca como resuelto con \texttt{git add} y se concluye con \texttt{git commit} o con \texttt{git rebase --continue}, según la operación en curso.\ok
+\end{opciones}
+\just{\texttt{merge} se detiene ante el conflicto y lo marca; \texttt{rebase} crea commits nuevos con hash distinto; la resolución se registra con \texttt{git add} y se concluye con \texttt{commit} o \texttt{rebase --continue}. \texttt{git pull} no resuelve conflictos automáticamente y \texttt{git stash} guarda temporalmente los cambios propios, no los del compañero.}
+
+\pregunta{\tipounica}{La clase \texttt{ServicioPedido} crea dentro de su constructor, con el operador \texttt{new}, una instancia de \texttt{PedidoRepositorioMySQL}. Se desea probarla sin una base de datos real y, más adelante, cambiar a PostgreSQL sin modificar \texttt{ServicioPedido}. ¿Qué cambio de diseño lo permite?}
+\begin{opciones}
+	\item Declarar como \texttt{static} los métodos de \texttt{PedidoRepositorioMySQL} para invocarlos sin crear objetos.
+	\item Hacer que \texttt{ServicioPedido} dependa de una interfaz \texttt{PedidoRepositorio} y reciba la implementación concreta como parámetro del constructor.\ok
+	\item Hacer que \texttt{ServicioPedido} herede de \texttt{PedidoRepositorioMySQL} y sobrescriba los métodos que se necesiten.
+	\item Rodear las llamadas al repositorio con un bloque \texttt{try-catch} que devuelva datos simulados cuando falle la conexión.
+\end{opciones}
+\just{Depender de una abstracción y recibir la implementación desde fuera (inversión de dependencias e inyección por constructor) permite pasar un repositorio simulado en las pruebas o uno de PostgreSQL en producción sin tocar la clase. Los métodos estáticos y la herencia aumentan el acoplamiento con MySQL; el \texttt{try-catch} oculta fallos en lugar de resolver el diseño.}
+
+\pregunta{\tipomultiple}{Una aplicación debe guardar en su base de datos la información necesaria para verificar las contraseñas de los usuarios durante el inicio de sesión. ¿Qué prácticas son adecuadas?}
+\begin{opciones}
+	\item Cifrar cada contraseña con AES y conservar la clave en el servidor para poder recuperarla si el usuario la olvida.
+	\item Aplicar una función de derivación deliberadamente lenta y configurable, como bcrypt o Argon2.\ok
+	\item Calcular un SHA-256 de una sola pasada, suficiente porque el resultado no puede revertirse.
+	\item Combinar cada contraseña con un valor aleatorio distinto por usuario antes de procesarla y guardar ese valor junto al resultado.\ok
+	\item Codificar la contraseña en Base64 para que no sea legible a simple vista en la tabla.
+\end{opciones}
+\just{Las funciones adaptativas como bcrypt encarecen los ataques de fuerza bruta y la sal aleatoria por usuario impide el uso de tablas precalculadas y revela qué usuarios comparten contraseña \cite{provos1999bcrypt}. El cifrado reversible expone todas las contraseñas si se filtra la clave; SHA-256 es demasiado rápido para este fin; Base64 es una codificación, no una protección.}
+
+\pregunta{\tipounica}{En una aplicación móvil, una llamada de red bloqueante a una API se ejecuta en el mismo hilo que atiende la interfaz gráfica, y el servidor tarda varios segundos en responder. ¿Qué ocurre?}
+\begin{opciones}
+	\item La interfaz deja de responder a toques y desplazamientos hasta que la llamada termina, y el sistema puede ofrecer cerrar la aplicación por no responder.\ok
+	\item La llamada se ejecuta más rápido porque el hilo de la interfaz tiene mayor prioridad en el planificador del sistema operativo.
+	\item El sistema operativo traslada automáticamente la llamada a un hilo secundario y la interfaz continúa respondiendo.
+	\item La llamada se cancela automáticamente a los cinco segundos y la interfaz continúa sin mostrar ningún resultado.
+\end{opciones}
+\just{El hilo principal procesa los eventos de la interfaz; si se bloquea, la aplicación se congela (en Android se muestra el diálogo ANR, y la plataforma incluso prohíbe operaciones de red en ese hilo). Por eso las llamadas de red se ejecutan de forma asíncrona (corrutinas, \emph{futures}, \texttt{async/await}). El sistema no traslada la tarea de hilo ni la cancela por sí mismo.}
+
+\pregunta{\tipomultiple}{¿Qué afirmaciones son correctas al comparar un contenedor Docker con una máquina virtual tradicional?}
+\begin{opciones}
+	\item Los contenedores que se ejecutan en un mismo anfitrión comparten el núcleo (\emph{kernel}) del sistema operativo de ese anfitrión.\ok
+	\item Cada contenedor incluye y arranca su propio núcleo del sistema operativo, independiente del anfitrión.
+	\item Un contenedor suele iniciar en segundos porque no necesita arrancar un sistema operativo completo.\ok
+	\item El aislamiento de un contenedor lo proporciona un hipervisor de tipo 1 que emula el hardware.
+	\item Una imagen construida para Linux en procesadores x86 se ejecuta sin cambios en cualquier arquitectura, incluida ARM.
+\end{opciones}
+\just{El contenedor es un proceso aislado mediante mecanismos del núcleo (espacios de nombres y grupos de control) y por eso arranca rápido. Las máquinas virtuales, no los contenedores, usan hipervisor y núcleo propio. Las imágenes dependen de la arquitectura del procesador; ejecutarlas en otra exige imágenes multiarquitectura o emulación.}
+
+\pregunta{\tipounica}{Para cada uno de los $n$ correos de un lote nuevo debe verificarse si ya figura entre $n$ correos registrados previamente. ¿Qué colección de Java permite que el proceso completo tenga un costo promedio de orden $O(n)$?}
+\begin{opciones}
+	\item Un \texttt{ArrayList} con los correos registrados, consultado con \texttt{contains()}.
+	\item Un \texttt{TreeSet} con los correos registrados, consultado con \texttt{contains()}.
+	\item Una \texttt{LinkedList} ordenada con los correos registrados, consultada mediante búsqueda binaria.
+	\item Un \texttt{HashSet} con los correos registrados, consultado con \texttt{contains()}.\ok
+\end{opciones}
+\just{\texttt{HashSet} ofrece consulta en tiempo constante promedio, por lo que $n$ consultas cuestan $O(n)$. \texttt{ArrayList} produce $O(n^2)$; \texttt{TreeSet}, $O(n \log n)$; y en una lista enlazada la búsqueda binaria no es eficiente porque llegar al elemento central exige recorrer la lista.}
+
+\ifclave
+	\clearpage
+	\section*{\color{uteqBlue}\large Resumen de la clave}
+	\begin{center}
+		\small
+		\begin{tabular}{@{}clc|clc@{}}
+			\toprule
+			\textbf{N.º} & \textbf{Tipo} & \textbf{Respuesta} & \textbf{N.º} & \textbf{Tipo} & \textbf{Respuesta} \\
+			\midrule
+			1 & Única & c & 11 & Única & a \\
+			2 & Única & b & 12 & Múltiple & a, c, e \\
+			3 & Múltiple & a, c, e & 13 & Única & c \\
+			4 & Única & a & 14 & Única & d \\
+			5 & Múltiple & b, d & 15 & Múltiple & b, c, e \\
+			6 & Única & d & 16 & Única & b \\
+			7 & Única & b & 17 & Múltiple & b, d \\
+			8 & Múltiple & b, c, e & 18 & Única & a \\
+			9 & Única & c & 19 & Múltiple & a, c \\
+			10 & Múltiple & a, c, e & 20 & Única & d \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	\begin{tcolorbox}[colback=uteqAmber!8,colframe=uteqAmber!80!black,boxrule=0.5pt,arc=1mm,title=Criterio sugerido de puntuación diagnóstica,fonttitle=\bfseries\small,fontupper=\small]
+		Cada pregunta vale 5 puntos (total 100). En selección única: 5 si es correcta, 0 en otro caso. En selección múltiple: se suman 5/$k$ puntos por cada alternativa correcta marcada ($k$ = número de correctas) y se restan 5/$k$ por cada incorrecta marcada, con mínimo 0 por pregunta. Lectura por bloques: A (preguntas 1--4) concurrencia; B (5--7) redes; C (8--11) servicios web; D (12--14) bases de datos; E (15--20) diseño, seguridad y herramientas. Un bloque con menos del 60\,\% indica el tema que debe nivelarse en la Semana 1.
+	\end{tcolorbox}
+	\printbibliography[title={Referencias}]
+\fi
+
+\end{document}

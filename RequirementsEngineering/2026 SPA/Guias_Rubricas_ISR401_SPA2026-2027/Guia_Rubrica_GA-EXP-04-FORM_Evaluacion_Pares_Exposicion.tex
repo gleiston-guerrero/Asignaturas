@@ -1,0 +1,359 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% GUÍA-RÚBRICA · EVALUACIÓN DE PARES DE EXPOSICIÓN
+% ISR-401 Ingeniería de Requerimientos · SPA 2026-2027
+% Aplica a: GA-SUM-06 (EXP-2, S13) — Herramientas CASE e Estándares de IR
+% Compilación: pdflatex -> pdflatex
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{multirow}
+
+% ---------- Textos en español (sin babel) ----------
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+\definecolor{lightgreen}{HTML}{DCEFE3}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ $\cdot$ Ingeniería de Software $\cdot$ Ingeniería de Requerimientos (ISR-401)}
+\rhead{\footnotesize Guía-Rúbrica de Evaluación de Pares · EXP-2 (2.° corte)}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\renewcommand{\arraystretch}{1.28}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\bhdr}[1]{\cellcolor{midblue}\textcolor{white}{\textbf{#1}}}
+
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,#1}
+\newtcolorbox{cajapiso}[1][]{colback=lightred,colframe=red!60!black,boxrule=1pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajaaviso}[1][]{colback=lightgold,colframe=gold!80!black,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+
+\begin{document}
+
+% ============================================================
+% PORTADA
+% ============================================================
+\thispagestyle{empty}
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\vspace{20pt}
+\begin{center}
+	{\large Facultad de Ciencias de la Computación}\\[2pt]
+	{\large Carrera de Software}\\[30pt]
+	{\LARGE\textbf{\textcolor{utegreendk}{GUÍA-RÚBRICA}}}\\[8pt]
+	{\Large\textbf{Evaluación de Pares --- Informe de Exposición (2.° corte)}}\\[6pt]
+	{\large Ingeniería de Requerimientos (ISR-401)}\\[2pt]
+	{\large Segundo Periodo Académico Ordinario (SPA) 2026--2027}
+\end{center}
+
+\vspace{20pt}
+\begin{center}
+	\begin{tabular}{L{0.30\linewidth}L{0.55\linewidth}}
+		\textbf{Aplica a} & GA-SUM-06 (EXP-2, semana 13, 18--24 enero 2027)\\
+		\textbf{Tema de la exposición} & Herramientas CASE para IR y estándares\\
+		\textbf{Tipo de actividad} & GA-EXP (Gestión de Aula --- Exposición grupal)\\
+		\textbf{Rol del estudiante} & Evaluador individual de los equipos que NO son el suyo\\
+		\textbf{Docente} & Gleiston Cicerón Guerrero Ulloa, PhD\\
+		\textbf{Correo institucional} & \texttt{gguerrero@uteq.edu.ec}\\
+	\end{tabular}
+\end{center}
+
+\vspace{18pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+\begin{center}
+	\small La \emph{nota de la exposición} la asigna el docente; la nota de este \emph{informe de evaluación de pares} se registra de forma independiente como componente GA de la actividad GA-SUM-06. Ambas contribuyen al cálculo del 2.° corte.
+\end{center}
+
+\newpage
+
+% ============================================================
+\section{\textcolor{utegreendk}{Propósito y contexto}}
+% ============================================================
+
+En la semana 13, cada equipo expone sobre herramientas CASE aplicadas a la IR y sobre los estándares que las rigen (IEEE 29148:2018, ISO/IEC\,25010:2023). Los integrantes de los demás equipos actúan como evaluadores pares: observan, registran evidencias y emiten un juicio técnico fundamentado. Este ejercicio desarrolla la capacidad de evaluar herramientas de software con criterios objetivos y prepara al estudiante para seleccionar herramientas en proyectos reales.
+
+El \textbf{informe de evaluación de pares} es el documento escrito que el evaluador entrega al finalizar la sesión. Cada estudiante entrega \textbf{un informe por cada equipo observado} (excluido el propio).
+
+\begin{cajaclave}[title=Regla de exclusión]
+	El estudiante \textbf{no evalúa} a los integrantes de su propio equipo. Si el aula tiene cuatro equipos (A, B, C, D) y el evaluador pertenece al equipo A, entrega informes independientes para los equipos B, C y D.
+\end{cajaclave}
+
+\begin{cajaclave}[title=Qué NO debe hacer el evaluador]
+	\begin{itemize}[leftmargin=14pt,itemsep=2pt]
+		\item No filma ni graba audio o video a los expositores.
+		\item No interrumpe la exposición (salvo en el turno de preguntas habilitado por el docente).
+		\item No consulta con sus compañeros durante la observación para acordar puntuaciones.
+		\item No copia ni parafrasea el informe de otro evaluador.
+	\end{itemize}
+\end{cajaclave}
+
+% ============================================================
+\section{\textcolor{utegreendk}{Contexto temático: qué debe cubrir EXP-2}}
+% ============================================================
+
+El equipo expositor puede organizar su presentación en torno a uno o más subtemas de la Unidad IV. La siguiente lista orienta al evaluador par sobre qué elementos \emph{pueden} y \emph{deben} aparecer en una exposición de alta calidad sobre este tema:
+
+\begin{itemize}[leftmargin=16pt,itemsep=3pt]
+	\item \textbf{Herramientas CASE de gestión ágil:} Jira (epics, historias, backlogs, tableros Kanban/Scrum) y Trello (tableros, listas, tarjetas con criterios de aceptación).
+	\item \textbf{Herramientas CASE de modelado:} Enterprise Architect / Sparx EA (diagramas UML de casos de uso, actividad, clases; trazabilidad de requisitos; generación de documentación SRS).
+	\item \textbf{Estándar de intercambio de requisitos:} ReqIF (Requirements Interchange Format) --- formato XML para migrar requisitos entre herramientas.
+	\item \textbf{Estándares normativos:} IEEE 29148:2018 (proceso de IR, atributos de un buen requisito, estructura SyRS/SRS) e ISO/IEC\,25010:2023 (modelo de calidad del producto software; características y subcaracterísticas relevantes para la especificación de requisitos de calidad).
+	\item \textbf{Técnicas de validación y gestión:} inspección de Fagan, walkthroughs, CCB (Control Board de cambios), trazabilidad, baselines.
+	\item \textbf{IR ágil:} product backlog, BDD (Behavior-Driven Development), historias de usuario en contexto SCRUM o XP.
+\end{itemize}
+
+\begin{cajaaviso}[title=Para el evaluador par]
+	No todos los equipos cubrirán todos los puntos anteriores. Su tarea es evaluar la \emph{calidad y profundidad} de lo que el equipo sí presentó, no penalizar por no haber cubierto subtemas que el equipo no declaró en su alcance. La comparación entre al menos dos herramientas o estándares sí es un indicador esperado en cualquier enfoque.
+\end{cajaaviso}
+
+% ============================================================
+\section{\textcolor{utegreendk}{Estructura del informe de evaluación de pares}}
+% ============================================================
+
+El informe se entrega en papel o en PDF al docente al finalizar la sesión, según se indique. Extensión: \textbf{una a dos páginas por equipo evaluado}. Debe contener:
+
+\subsection{\textcolor{midblue}{Sección 1 --- Identificación}}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.38\linewidth}|Y|}
+	\hline
+	\bhdr{Campo} & \bhdr{Descripción}\\
+	\hline
+	Nombre completo del evaluador & Quién escribe el informe.\\
+	\hline
+	\rowcolor{rowgray} Equipo del evaluador & Nombre o número del equipo al que pertenece.\\
+	\hline
+	Equipo evaluado & Nombre o número del equipo que expuso.\\
+	\hline
+	\rowcolor{rowgray} Herramienta o subtema principal expuesto & Herramienta(s) o norma(s) que el equipo declaró como eje central.\\
+	\hline
+	Actividad & GA-SUM-06 (EXP-2).\\
+	\hline
+	\rowcolor{rowgray} Fecha & Día en que se realizó la exposición.\\
+	\hline
+\end{tabularx}
+
+\subsection{\textcolor{midblue}{Sección 2 --- Registro de indicadores observados}}
+
+Para cada criterio de la Tabla~\ref{tab:criterios}, el evaluador registra:
+\begin{enumerate}[leftmargin=18pt,itemsep=3pt]
+	\item \textbf{Nivel asignado} (0, 1, 2, 3 o 4) según los descriptores de la Tabla~\ref{tab:niveles}.
+	\item \textbf{Evidencia concreta:} al menos una oración con un observable medible (número de diapositiva, nombre exacto de la herramienta o cláusula de norma, dato comparado, pregunta técnica planteada, error conceptual detectado). Frases como «fue bueno» o «estuvo bien explicado» no son evidencias válidas.
+\end{enumerate}
+
+\subsection{\textcolor{midblue}{Sección 3 --- Nota sugerida calculada}}
+
+El evaluador aplica la fórmula de la sección~\ref{sec:formula} y anota el resultado.
+
+\subsection{\textcolor{midblue}{Sección 4 --- Retroalimentación constructiva}}
+
+Dos o tres frases dirigidas al equipo expositor: qué fue lo más valioso (técnicamente) y qué aspecto concreto mejoraría más su demostración o análisis de herramientas. Sin adjetivos vacíos; cada frase identifica un elemento específico y medible.
+
+% ============================================================
+\section{\textcolor{utegreendk}{Criterios de evaluación de la exposición (EXP-2)}}
+% ============================================================
+
+Los criterios de la Tabla~\ref{tab:criterios} describen lo que el evaluador par observa. Los pesos siguen la distribución GA-EXP del encuadre: D1 = 10, D2 = 20, D3 = 15, D4 = 20, D5 = 25, D6 = 10.
+
+\begin{cajaaviso}[title=Indicadores observables y medibles]
+	Cada descriptor incorpora indicadores específicos del tema EXP-2 (herramientas CASE e estándares). Al asignar el nivel, cite en la evidencia al menos un observable concreto: nombre de la herramienta, cláusula del estándar, número de criterios de comparación, diapositiva, respuesta en preguntas. Si un indicador no se corresponde exactamente con ningún nivel, aplique el más cercano y justifíquelo.
+\end{cajaaviso}
+
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{|C{0.45cm}|L{2.4cm}|C{0.65cm}|L{3.1cm}|L{3.1cm}|L{3.1cm}|L{2.4cm}|}
+	\caption{Criterios de evaluación de la exposición EXP-2 para el evaluador par.}\label{tab:criterios}\\
+	\hline
+	\thdr{\#} & \thdr{Criterio} & \thdr{Peso} & \thdr{4 --- Excelente} & \thdr{3 --- Bueno} & \thdr{2/1 --- Aceptable/Insuficiente} & \thdr{0 --- Ausente}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{\#} & \thdr{Criterio} & \thdr{Peso} & \thdr{4 --- Excelente} & \thdr{3 --- Bueno} & \thdr{2/1 --- Aceptable/Insuficiente} & \thdr{0 --- Ausente}\\
+	\hline
+	\endhead
+	\hline
+	\multicolumn{7}{r}{\footnotesize\textit{Continúa en la página siguiente\ldots}}\\
+	\endfoot
+	\hline
+	\endlastfoot
+	D1 & \textbf{Cumplimiento de la guía} (alcance y estructura declarados) & 10 & Cubre el alcance declarado al inicio: herramienta(s) presentada(s), comparación con al menos una alternativa, referencia a un estándar aplicable, y demostración o ejemplo concreto, todo presente. & Falta un elemento menor del alcance (p.\,ej., la comparación es superficial o el estándar solo se menciona de paso). & \textbf{(2)} Faltan dos elementos del alcance o la demostración está ausente. \textbf{(1)} Solo expone características de una sola herramienta sin comparación ni estándar. & No expone o el tema no corresponde a herramientas CASE ni estándares de IR.\\
+	\hline
+	\rowcolor{rowgray} D2 & \textbf{Fundamentación conceptual} (precisión técnica y dominio de herramientas y normas) & 20 & Nombra correctamente $\geq$3 conceptos técnicos (p.\,ej., cláusulas de IEEE 29148, atributos de calidad de ISO/IEC 25010, artefactos ReqIF, funciones de EA); las afirmaciones son verificables y coherentes con los estándares citados. & Conceptos mayoritariamente correctos; $\leq$1 imprecisión que no invalida el contenido central. & \textbf{(2)} Dos o más imprecisiones técnicas o confusión entre funciones de herramientas distintas. \textbf{(1)} Errores conceptuales graves o uso incorrecto sistemático de términos del estándar. & No hay fundamentación técnica o el contenido no pertenece a IR.\\
+	\hline
+	D3 & \textbf{Desarrollo técnico} (demostración o ilustración de la herramienta en contexto de IR) & 15 & Muestra al menos una función concreta de la herramienta aplicada a un caso de IR (p.\,ej., trazabilidad en EA, tablero Scrum en Jira con criterios de aceptación, diagrama de requisitos en Sparx, archivo ReqIF comentado); los datos o capturas son identificables y tienen fuente. & Muestra la herramienta con un ejemplo básico; el contexto de IR es reconocible aunque poco elaborado. & \textbf{(2)} Describe la herramienta en abstracto sin mostrar ni ilustrar su uso. \textbf{(1)} Solo enumera menús o características sin aplicarlas a ningún artefacto de IR. & No hay demostración ni ilustración técnica evaluable.\\
+	\hline
+	\rowcolor{rowgray} D4 & \textbf{Análisis crítico y recomendación} (comparación fundamentada y posicionamiento) & 20 & Compara $\geq$2 herramientas o estándares con $\geq$3 criterios explícitos (p.\,ej., soporte a trazabilidad, curva de aprendizaje, integración con otros artefactos, costo/licencia, conformidad con IEEE 29148); la recomendación final identifica el tipo de proyecto para el que cada opción es más adecuada. & Comparación con $\geq$2 criterios; recomendación presente aunque sin especificar tipo de proyecto o contexto. & \textbf{(2)} Comparación descriptiva sin criterios explícitos o recomendación genérica no argumentada. \textbf{(1)} No hay comparación o la recomendación contradice el análisis previo. & Ausente.\\
+	\hline
+	D5 & \textbf{Comunicación oral y visual} (claridad, tiempo, manejo de preguntas técnicas) & 25 & Exposición fluida sin leer pantalla; tiempo dentro del rango $\pm$2 min; responde $\geq$1 pregunta técnica sobre la herramienta o el estándar con precisión; diapositivas con capturas legibles y textos de fuente $\geq$18 pt visibles desde el fondo. & Uno de los cuatro indicadores cumplido parcialmente (pequeña lectura, tiempo $\pm$3 min, respuesta con imprecisión menor, una captura ilegible). & \textbf{(2)} Dos indicadores parciales. \textbf{(1)} Tres o más indicadores parciales o no responde ninguna pregunta técnica. & No expone o la exposición es ininteligible.\\
+	\hline
+	\rowcolor{rowgray} D6 & \textbf{Fuentes y créditos} (atribución de capturas, datos y estándares) & 10 & Cada captura de herramienta, dato estadístico o cláusula de norma tiene fuente visible en la diapositiva (nombre de la herramienta + versión, norma + año, URL o manual); las fuentes son verificables. & Mayoría de fuentes presentes; $\leq$2 capturas o datos sin atribuir pero el contenido es correcto. & \textbf{(2)} Varias capturas o afirmaciones sin fuente. \textbf{(1)} Solo una o ninguna fuente visible en todo el juego de diapositivas. & No hay ninguna fuente o las capturas son de fuente desconocida e inverificable.\\
+	\hline
+\end{longtable}
+}
+
+% ============================================================
+\section{\textcolor{utegreendk}{Niveles de desempeño}}\label{sec:niveles}
+% ============================================================
+
+\noindent{\small\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|L{0.18\linewidth}|Y|}
+	\hline
+	\thdr{Nivel} & \thdr{Denominación} & \thdr{Descripción operacional para el evaluador par}\\
+	\hline
+	4 & Excelente & Cumple íntegramente todos los indicadores del descriptor; no se detecta ninguna omisión ni imprecisión técnica en lo observado.\\
+	\hline
+	\rowcolor{rowgray} 3 & Bueno & Cumple la mayor parte; hay una deficiencia menor que no afecta la comprensión ni la validez técnica.\\
+	\hline
+	2 & Aceptable & Cumple aproximadamente la mitad; hay deficiencias que limitan pero no anulan la comprensión técnica.\\
+	\hline
+	\rowcolor{rowgray} 1 & Insuficiente & Cumple menos de la mitad o hay errores graves que comprometen la comprensión técnica.\\
+	\hline
+	0 & Ausente & El criterio no se puede evaluar porque el elemento no se presentó o no fue observable.\\
+	\hline
+\end{tabularx}}\label{tab:niveles}
+
+% ============================================================
+\section{\textcolor{utegreendk}{Cálculo de la nota sugerida}}\label{sec:formula}
+% ============================================================
+
+El evaluador par calcula una \textbf{nota sugerida} que el docente toma como insumo (no como nota definitiva). La nota definitiva de la exposición la asigna el docente.
+
+\[
+	\text{Nota sugerida} = \frac{\displaystyle\sum_{i=1}^{6} w_i \times n_i}{4} \times \frac{10}{100}
+\]
+
+donde $w_i$ es el peso de la dimensión $i$ y $n_i$ el nivel asignado (0 a 4). Los pesos son: D1 = 10, D2 = 20, D3 = 15, D4 = 20, D5 = 25, D6 = 10.
+
+\begin{cajaclave}[title=Ejemplo de cálculo]
+	Niveles observados: D1 = 3, D2 = 4, D3 = 4, D4 = 3, D5 = 3, D6 = 3.\\[4pt]
+	$\text{Nota sugerida} = \dfrac{10 \cdot 3 + 20 \cdot 4 + 15 \cdot 4 + 20 \cdot 3 + 25 \cdot 3 + 10 \cdot 3}{4} \times \dfrac{10}{100} = \dfrac{310}{4} \times 0{,}1 = 7{,}75$
+\end{cajaclave}
+
+% ============================================================
+\section{\textcolor{utegreendk}{Criterios de calificación del informe de evaluación de pares}}
+% ============================================================
+
+El \emph{informe} que entrega el evaluador es en sí mismo una actividad evaluada (GA-SUM-06). Se califica sobre 10 con los criterios de la Tabla~\ref{tab:rubrica_informe}.
+
+\begin{cajapiso}[title={Criterios de piso del informe: incumplimiento implica CERO en el informe}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{Entrega al docente al finalizar la sesión.} No se acepta entrega posterior, salvo causa debidamente justificada antes del inicio de la actividad.
+		\item \textbf{Un informe por cada equipo observado} (excluido el propio). La ausencia del informe de cualquiera de los equipos observados implica CERO en toda la actividad.
+		\item \textbf{Evidencia concreta por criterio.} Si más de dos criterios carecen de evidencia observable (únicamente nivel numérico sin texto), la nota del informe es CERO.
+		\item \textbf{Sin copia de otro evaluador.} Informes con evidencias idénticas o notoriamente similares (misma redacción, mismas capturas descritas) reciben CERO en ambos evaluadores implicados.
+	\end{enumerate}
+\end{cajapiso}
+
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{|L{2.6cm}|C{0.85cm}|L{3.3cm}|L{3.0cm}|L{3.3cm}|L{2.2cm}|}
+	\caption{Rúbrica de calificación del informe de evaluación de pares (EXP-2).}\label{tab:rubrica_informe}\\
+	\hline
+	\thdr{Criterio del informe} & \thdr{Peso} & \thdr{4 --- Excelente} & \thdr{3 --- Bueno} & \thdr{2/1 --- Acept./Insuf.} & \thdr{0 --- Ausente}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Criterio del informe} & \thdr{Peso} & \thdr{4 --- Excelente} & \thdr{3 --- Bueno} & \thdr{2/1 --- Acept./Insuf.} & \thdr{0 --- Ausente}\\
+	\hline
+	\endhead
+	\hline
+	\multicolumn{6}{r}{\footnotesize\textit{Continúa\ldots}}\\
+	\endfoot
+	\hline
+	\endlastfoot
+	\textbf{I1. Completitud} (todos los campos y criterios completos) & 20 & Identificación completa (incluye herramienta/subtema expuesto); los 6 criterios con nivel y evidencia; nota sugerida calculada; retroalimentación presente. & Falta un campo menor de identificación o un criterio sin evidencia. & \textbf{(2)} Dos criterios sin evidencia o falta la sección de retroalimentación. \textbf{(1)} Tres o más criterios sin evidencia. & No entregó o entregó una hoja en blanco.\\
+	\hline
+	\rowcolor{rowgray} \textbf{I2. Objetividad y base observable} (evidencias concretas referenciadas al tema de herramientas CASE) & 30 & Cada nivel está respaldado por al menos una observación concreta y técnicamente específica (nombre de la herramienta, cláusula del estándar, número de diapositiva, función demostrada, pregunta respondida o no respondida); sin afirmaciones vacías como «fue bueno» o «explicaron bien». & Al menos 4 de 6 criterios tienen evidencia concreta técnica; los otros son superficiales. & \textbf{(2)} Solo 2--3 criterios con evidencia concreta. \textbf{(1)} Evidencias todas genéricas u opinativas. & Sin ninguna evidencia observable.\\
+	\hline
+	\textbf{I3. Coherencia entre nivel y evidencia} (el nivel asignado se justifica con lo descrito) & 25 & En todos los criterios el nivel asignado es coherente con la evidencia descrita (no asigna 4 cuando describe una demostración incompleta, ni 1 cuando describe un ejemplo funcional). & En $\leq$1 criterio el nivel y la evidencia no son del todo coherentes. & \textbf{(2)} En 2--3 criterios hay incoherencia nivel--evidencia. \textbf{(1)} En 4 o más criterios el nivel no concuerda con lo descrito. & Sin coherencia verificable.\\
+	\hline
+	\rowcolor{rowgray} \textbf{I4. Cálculo correcto} (nota sugerida calculada correctamente) & 10 & La nota sugerida se calcula con la fórmula correcta, los pesos D1--D6 correctos y sin error aritmético. & Error aritmético menor ($\leq$0,2 puntos de diferencia) pero fórmula y pesos correctos. & \textbf{(2)} Error en un peso o en la fórmula. \textbf{(1)} Nota sugerida ausente o calculada sin fórmula. & Sin nota calculada.\\
+	\hline
+	\textbf{I5. Retroalimentación constructiva} (específica, accionable y técnica) & 15 & Identifica un punto fuerte y un aspecto de mejora concretos referenciados a la herramienta o estándar demostrado (p.\,ej., «la comparación Jira--Trello usó solo precio como criterio; añadir soporte a trazabilidad la haría más técnica»). & Uno de los dos (fortaleza o mejora) es técnicamente concreto; el otro es genérico. & \textbf{(2)} Ambos presentes pero genéricos. \textbf{(1)} Solo uno de los dos presente. & Ausente.\\
+	\hline
+\end{longtable}
+}
+
+Fórmula del informe:
+\[
+	\text{Nota del informe} = \frac{20 \cdot n_{I1} + 30 \cdot n_{I2} + 25 \cdot n_{I3} + 10 \cdot n_{I4} + 15 \cdot n_{I5}}{4} \times \frac{10}{100}
+\]
+
+% ============================================================
+\section{\textcolor{utegreendk}{Plantilla de entrega (llenar a mano o en texto)}}
+% ============================================================
+
+\begin{tcolorbox}[colback=lightblue,colframe=midblue,boxrule=0.8pt,arc=2mm,title=Informe de Evaluación de Pares --- EXP-2 (GA-SUM-06) --- ISR-401]
+	\small
+	\noindent\textbf{Evaluador:}~\underline{\hspace{5cm}}\hfill\textbf{Equipo del evaluador:}~\underline{\hspace{2.8cm}}\\[5pt]
+	\noindent\textbf{Equipo evaluado:}~\underline{\hspace{4cm}}\hfill\textbf{Actividad:}~GA-SUM-06\hfill\textbf{Fecha:}~\underline{\hspace{2cm}}\\[5pt]
+	\noindent\textbf{Herramienta/subtema principal expuesto:}~\underline{\hspace{8.5cm}}\\[8pt]
+
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabularx}{\linewidth}{|C{0.7cm}|L{2.9cm}|C{0.9cm}|Y|}
+		\hline
+		\textbf{D} & \textbf{Criterio} & \textbf{Nivel} & \textbf{Evidencia concreta observada (herramienta, estándar, dato)}\\
+		\hline
+		D1 & Cumplimiento guía & & \\[12pt]
+		\hline
+		D2 & Fundamentación técnica & & \\[12pt]
+		\hline
+		D3 & Demostración de la herramienta & & \\[12pt]
+		\hline
+		D4 & Análisis crítico y comparación & & \\[12pt]
+		\hline
+		D5 & Comunicación oral y visual & & \\[12pt]
+		\hline
+		D6 & Fuentes y créditos & & \\[12pt]
+		\hline
+		\multicolumn{2}{|r|}{\textbf{Nota sugerida calculada:}} & \multicolumn{2}{l|}{\hspace{0.5cm}/10}\\
+		\hline
+	\end{tabularx}
+
+	\vspace{6pt}
+	\textbf{Retroalimentación al equipo expositor:}\\[4pt]
+	Punto fuerte (técnico): \underline{\hspace{11.5cm}}\\[8pt]
+	Aspecto a mejorar (técnico): \underline{\hspace{11cm}}
+\end{tcolorbox}
+
+\end{document}

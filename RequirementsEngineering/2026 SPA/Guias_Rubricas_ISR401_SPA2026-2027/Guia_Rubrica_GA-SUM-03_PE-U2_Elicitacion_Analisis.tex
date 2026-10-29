@@ -1,0 +1,355 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% GA-SUM-03 — PE-U2 Práctica experimental: elicitación y análisis de requisitos
+% Ingeniería de Requerimientos (ISR-401) · UTEQ · SPA 2026-2027
+% Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% babel no disponible en este entorno
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage{needspace}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Textos en español (sin babel) ----------
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+\definecolor{lightgreen}{HTML}{DCEFE3}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ \,$\cdot$\, Ingeniería de Requerimientos (ISR-401)}
+\rhead{\footnotesize GA-SUM-03 \,$\cdot$\, SPA 2026--2027}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\seccion}[1]{\section{\textcolor{utegreendk}{#1}}}
+\newcommand{\subseccion}[1]{\subsection{\textcolor{midblue}{#1}}}
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajapiso}[1][]{colback=lightred,colframe=red!60!black,boxrule=1pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajaaviso}[1][]{colback=lightgold,colframe=gold!80!black,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+
+\begin{document}
+
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\vspace{4pt}
+\begin{center}
+	{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software \,\textcolor{gold}{$\bullet$}\, Ingeniería de Requerimientos (ISR-401)}\\[8pt]
+	{\LARGE\textbf{\textcolor{utegreendk}{GUÍA Y RÚBRICA DE EVALUACIÓN}}}\\[4pt]
+	{\large\textbf{\textcolor{utegreendk}{ACTIVIDAD SUMATIVA}}}\\[6pt]
+	{\Large\textbf{GA-SUM-03}}\\[2pt]
+	{\large PE-U2 Práctica experimental: elicitación y análisis de requisitos}
+\end{center}
+
+\vspace{2pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+\seccion{Datos generales}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Detalle}\\
+	\hline
+	Asignatura & Ingeniería de Requerimientos (ISR-401) \,$\cdot$\, 4.\textsuperscript{o} nivel \,$\cdot$\, Paralelo A\\
+	\hline
+	\rowcolor{rowgray} Docente & Gleiston Cicerón Guerrero Ulloa, PhD \,$\cdot$\, \texttt{gguerrero@uteq.edu.ec}\\
+	\hline
+	Unidad & Unidad 2. Elicitación y Análisis de Requisitos\\
+	\hline
+	\rowcolor{rowgray} Resultado de aprendizaje & Aplica técnicas de elicitación y análisis de requisitos para identificar, clasificar y modelar requisitos.\\
+	\hline
+	Tipo y componente & Práctica experimental (Gestión de Aula)\\
+	\hline
+	\rowcolor{rowgray} Peso en el corte & 0.90 de 10 puntos del corte 1\\
+	\hline
+	Formativa vinculada (requisito) & FORM-TL-02\\
+	\hline
+	\rowcolor{rowgray} Modalidad & Grupal (equipo de 4 o 5 estudiantes, el mismo del PFC), con calificación individual\\
+	\hline
+	Semana & 5 (23 de noviembre -- 29 de noviembre de 2026)\\
+	\hline
+	\rowcolor{rowgray} Publicación de la guía & lunes 16 de noviembre de 2026\\
+	\hline
+	Cierre & sábado 28 de noviembre de 2026, a las 23:59\\
+	\hline
+	\rowcolor{rowgray} Repositorio & Repositorio del equipo \texttt{ISR401-<SIGLA>}\\
+	\hline
+	Escala & 0 a 10 puntos, con un decimal\\
+	\hline
+\end{tabularx}
+
+\seccion{Propósito}
+
+Elicitar requisitos del caso de práctica con personas reales, consolidarlos, clasificarlos, priorizarlos, modelar el dominio y resolver conflictos entre partes interesadas. En la práctica, es el primer contacto sistemático con usuarios reales y con la evidencia que respalda cada requisito.
+
+\seccion{Fundamento}
+
+La elicitación combina técnicas de interrogación, colaboración, observación y análisis de artefactos para obtener conocimiento consciente, inconsciente y subconsciente de las fuentes \citep{pohl_2025,ireb_cpre_fl_2026}. El análisis incluye la clasificación y la priorización de requisitos (MoSCoW, Kano, votación ponderada), el modelado conceptual y la negociación de conflictos con estrategias de ganar-ganar \citep{swebok_v4_2024,wiegers_beatty_2013}. La comunicación deficiente con el cliente y los requisitos incompletos siguen siendo las causas principales de problemas en IR \citep{mendez_napire_2017}.
+
+\seccion{Desarrollo de la actividad}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=4pt]
+	\item \textbf{Plan.} A partir de FORM-TL-02, ajuste el plan de elicitación del caso de práctica: partes interesadas, técnicas, instrumentos y cronograma.
+	\item \textbf{Entrevistas.} Realice al menos 3 entrevistas estructuradas o semiestructuradas a personas reales con 3 roles distintos del dominio, con consentimiento informado. Transcriba y anonimice.
+	\item \textbf{Segunda técnica.} Aplique una segunda técnica: cuestionario ($n \geq 15$ respuestas reales) o taller de design thinking con al menos 4 participantes. Documente instrumento, resultados y evidencia.
+	\item \textbf{Consolidación.} Consolide al menos 25 requisitos con su fuente (entrevista, pregunta, minuto de la sesión) en una tabla de trazabilidad hacia la fuente.
+	\item \textbf{Clasificación y priorización.} Clasifique los requisitos y priorícelos con MoSCoW; aplique Kano a al menos 5 características con el cuestionario funcional–disfuncional; compare ambos resultados.
+	\item \textbf{Modelo conceptual.} Elabore el diagrama de clases del dominio (sin métodos) con al menos 8 clases, atributos clave, asociaciones y multiplicidades.
+	\item \textbf{Negociación.} Identifique al menos 2 conflictos reales entre partes interesadas, clasifíquelos (de datos, de intereses, de valores, de relación o estructurales) y documente la estrategia de resolución aplicada.
+	\item \textbf{Conclusiones.} Concluya sobre la calidad de la información obtenida y lo que falta por elicitar.
+\end{enumerate}
+
+\seccion{Productos entregables}
+
+{\small
+\begin{longtable}{|L{0.27\linewidth}|L{0.43\linewidth}|L{0.21\linewidth}|}
+	\caption{Productos que deben estar en el repositorio al cierre.}\\
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endhead
+	\texttt{PE-U2/\allowbreak{}main.tex} & Informe de la práctica & 12 a 20 páginas de contenido\\
+	\hline
+	\rowcolor{rowgray} \texttt{PE-U2/\allowbreak{}evidencias/\allowbreak{}} & Transcripciones anonimizadas, resultados del cuestionario o del taller y \texttt{MANIFIESTO.md} & 3 entrevistas + 1 técnica\\
+	\hline
+	\texttt{PE-U2/\allowbreak{}modelos/\allowbreak{}} & Fuente editable del modelo conceptual & 1\\
+	\hline
+	\rowcolor{rowgray} \texttt{PE-U2/\allowbreak{}datos/\allowbreak{}} & Respuestas crudas del cuestionario o Kano (CSV) & 1 archivo\\
+	\hline
+	\texttt{PE-U2/\allowbreak{}main.pdf} & PDF compilado & 1\\
+	\hline
+\end{longtable}
+}
+
+\seccion{Normas de entrega}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=3pt]
+	\item \textbf{Repositorio.} Todo el trabajo se desarrolla en el repositorio del equipo \texttt{ISR401-<SIGLA>}, que debe ser público en GitHub. Allí deben estar los fuentes (\texttt{.tex}, \texttt{.bib}, figuras, fuentes editables de los modelos y evidencias) y el PDF compilado.
+	\item \textbf{Documento en el SGA.} En la tarea del SGA se sube solamente un PDF de \textbf{una sola página} con los datos informativos: estudiante o estudiantes, código y nombre de la tarea, fecha límite de entrega y la URL del repositorio escrita completa en una sola línea. No se sube ningún otro archivo.
+	\item \textbf{\LaTeX{} reproducible.} El PDF debe poder regenerarse clonando el repositorio y compilando el archivo \texttt{.tex}. El \texttt{README.md} documenta compilador, archivo principal, orden de comandos y dependencias.
+	\item \textbf{Referencias.} Estilo IEEE. Toda referencia debe existir y sus datos (autores, año, título, revista o editorial, volumen, número, páginas y DOI o ISBN) deben corresponder exactamente a la obra real.
+	\item \textbf{Plazo.} El cierre es el sábado 28 de noviembre de 2026, a las 23:59. Se evalúa el contenido del repositorio hasta ese momento; lo agregado después no se considera.
+	\item \textbf{Trabajo anticipado.} El trabajo se realiza con anticipación, no a última hora. El avance se mide por las fechas de los commits: el historial debe mostrar trabajo sustantivo en al menos tres días distintos dentro del plazo. Subir más del 50\,\% del contenido evaluable en las 24 horas previas al cierre se penaliza (sección de penalizaciones) y reduce la valoración del aporte individual.
+	\item \textbf{Datos personales.} Ningún dato personal de terceros (cédulas, teléfonos, correos personales, audios o videos de participantes, consentimientos firmados) se publica en el repositorio. Esas evidencias se guardan en una carpeta institucional privada (cuenta \texttt{@uteq.edu.ec}) compartida con el docente, y en el repositorio se registra un manifiesto con nombre de archivo, fecha, duración y huella SHA-256 \citep{lopdp_2021}.
+	\item \textbf{Uso de IA como apoyo.} Si se usa una herramienta de IA solo como apoyo (ortografía, error de compilación), se declara en una sección del documento: herramienta, versión, propósito y cómo se verificó lo obtenido.
+\end{enumerate}
+
+\seccion{Criterios de piso}
+
+\begin{cajapiso}[title={Criterios de piso: su incumplimiento implica calificación CERO en la actividad}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{PDF de una sola página con datos informativos y URL.} En el SGA se sube solamente un PDF de UNA SOLA página con los datos informativos (estudiante o estudiantes, tarea, fecha límite de entrega) y, en una sola línea, la URL del repositorio. Si el PDF tiene más de una página, si se suben otros archivos, si la URL no cabe en una sola línea o está rota, o si el repositorio no es accesible, la calificación de la actividad es \textbf{CERO}.
+		\item \textbf{PDF reproducible.} Si el PDF no se genera correctamente a partir del \LaTeX{} al clonar el repositorio y compilar el archivo \texttt{.tex} siguiendo el \texttt{README.md} (compilador, orden de comandos, archivo principal y dependencias), la calificación de la actividad es \textbf{CERO}.
+		\item \textbf{Plazo.} Si el contenido evaluable se sube después de la fecha y hora de cierre, la calificación de la actividad es \textbf{CERO}.
+		\item \textbf{Integridad.} Plagio verificado, cualquiera de los indicios graves G1 a G6 de uso de IA, o contenido generado por IA presentado como propio: la calificación de la actividad es \textbf{CERO}, sin perjuicio de las acciones disciplinarias que correspondan.
+		\item \textbf{Formativa vinculada.} Quien no entregó de forma válida la actividad formativa vinculada (FORM-TL-02) no puede presentar esta actividad y obtiene CERO en ella, salvo justificación aprobada.
+	\end{enumerate}
+\end{cajapiso}
+
+\seccion{Integridad académica e indicios de uso de IA}
+
+Todo trabajo debe ser de autoría propia. Se aplica el Código de Ética de la ACM \citep{acm_code_2018} y la sección 6.1 del encuadre.
+
+\begin{cajapiso}[title={Indicios graves de uso de IA: cada uno, por sí solo, implica CERO (P4)}]
+	\begin{enumerate}[label=\textbf{G\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{Referencias con datos que no corresponden a la obra real:} DOI que lleva a una obra con autores, título, año, revista, volumen o páginas diferentes; DOI, ISBN o URL inexistentes; obras que no existen.
+		\item \textbf{Citas que la fuente no respalda:} afirmaciones, cifras o citas textuales atribuidas a una fuente que no las contiene, o cláusulas, secciones o tablas de una norma (IEEE 29148, ISO/\allowbreak{}IEC 25010) que no existen o no dicen lo afirmado.
+		\item \textbf{Restos de un asistente de IA} en el documento, el código, los comentarios o los commits (por ejemplo, «Claro, aquí tienes\ldots», «Como modelo de lenguaje\ldots»).
+		\item \textbf{Evidencias de campo fabricadas:} entrevistas, encuestas, participantes, transcripciones, actas o fotografías que no existen o no tienen respaldo original.
+		\item \textbf{Resultados o artefactos inexistentes:} el texto describe modelos, matrices, pruebas o métricas que no están en el repositorio o no coinciden con él.
+		\item \textbf{Incapacidad de explicar lo entregado:} el estudiante no puede justificar ni modificar, cuando se le pide, lo que escribió, modeló o especificó.
+	\end{enumerate}
+\end{cajapiso}
+
+\begin{cajaaviso}[title={Indicios complementarios (se acumulan)}]
+	\begin{enumerate}[label=\textbf{I\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item Redacción uniforme de principio a fin, o estilo distinto al del estudiante en otras entregas o en su exposición oral.
+		\item Uso excesivo de los mismos conectores y fórmulas («además», «cabe destacar», «es importante señalar», «en conclusión»).
+		\item Contenido genérico: requisitos, actores o reglas aplicables a cualquier sistema, sin relación con lo elicitado.
+		\item Entrega en uno o pocos commits masivos, o mensajes de commit idénticos o automáticos.
+		\item Residuos de formato ajeno a \LaTeX{} (marcas de Markdown, emojis) o metadatos del PDF de otra herramienta.
+		\item Estructura, redacción o errores muy similares entre estudiantes o equipos distintos.
+		\item Traducción literal o mezcla de idiomas sin justificación.
+	\end{enumerate}
+	Con dos indicios complementarios se resta 1,5 puntos (nivel B) y con tres o más se restan 3,0 (nivel C). La declaración de uso de IA no exime de responsabilidad ni anula estos indicios.
+\end{cajaaviso}
+
+\seccion{Escala de desempeño}
+
+\begin{cajaclave}[title={La presencia no basta: se califica la calidad}]
+	Que un indicador esté presente no basta para puntuarlo. Cada indicador se valora con los aspectos de calidad del encuadre: Completitud, veracidad, precisión técnica, claridad y no ambigüedad, verificabilidad, profundidad, pertinencia y relevancia, suficiencia de la evidencia, coherencia y consistencia, trazabilidad, originalidad y autoría, constancia, reproducibilidad, y actualidad y calidad de las fuentes. El nivel asignado a una dimensión es el que corresponde al aspecto peor cumplido entre los que aplican. Un indicador ausente, no verificable en el repositorio o cuyo contenido sea falso vale 0.
+\end{cajaclave}
+
+Cada dimensión se califica con un nivel de 0 a 4: 4 Excelente (cubre el 100\,\% con calidad plena), 3 Bueno (al menos 75\,\%, deficiencias menores), 2 Aceptable (50--74\,\% o descriptivo sin análisis), 1 Insuficiente (menos del 50\,\%, superficial o con errores graves) y 0 Ausente. Los descriptores de nivel son los de la rúbrica general del encuadre; la columna de indicadores concreta qué se observa en esta actividad \citep{brookhart_2018,panadero_jonsson_2020}.
+
+\begin{landscape}
+\seccion{Rúbrica analítica}
+{\footnotesize\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{|L{2.4cm}|L{5.6cm}|L{3.1cm}|L{2.8cm}|L{2.8cm}|L{2.7cm}|L{2.1cm}|}
+	\caption{Rúbrica analítica de GA-SUM-03. Pesos del tipo de actividad PE según el encuadre.}\\
+	\hline
+	\thdr{Dimensión (peso)} & \thdr{Indicadores de esta actividad} & \thdr{4 Excelente} & \thdr{3 Bueno} & \thdr{2 Aceptable} & \thdr{1 Insuficiente} & \thdr{0 Ausente}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Dimensión (peso)} & \thdr{Indicadores de esta actividad} & \thdr{4 Excelente} & \thdr{3 Bueno} & \thdr{2 Aceptable} & \thdr{1 Insuficiente} & \thdr{0 Ausente}\\
+	\hline
+	\endhead
+	\hline
+	\multicolumn{7}{r}{\footnotesize\textit{Continúa en la página siguiente\ldots}}\\
+	\endfoot
+	\hline
+	\endlastfoot
+	\textbf{D1 Cumplimiento y completitud} (15\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item 3 entrevistas, segunda técnica, 25 requisitos con fuente, MoSCoW, Kano (5 características), modelo conceptual (8 clases), 2 conflictos y conclusiones.\end{itemize} & Entrega todos los productos pedidos en la guía, completos, con la estructura exigida y en el repositorio. & Falta un elemento menor o uno está incompleto sin afectar el conjunto. & Faltan varios elementos o hay productos incompletos que limitan la evaluación. & Entrega una parte mínima de lo pedido. & No entrega o lo entregado no corresponde a la actividad.\\
+	\hline
+	\textbf{D2 Fundamentación conceptual} (15\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item Técnicas aplicadas según su método (no una conversación informal).\item Categorías Kano y MoSCoW interpretadas correctamente.\item Tipos de conflicto y estrategias de negociación bien identificados.\end{itemize} & Define y aplica con precisión los conceptos de la unidad, los relaciona entre sí y los sustenta en la bibliografía y las normas. & Conceptos correctos con alguna imprecisión menor o relación incompleta entre ellos. & Conceptos repetidos de la fuente sin aplicarlos, o con errores que no invalidan el trabajo. & Errores conceptuales graves o confusión entre conceptos clave. & No hay fundamentación o es ajena al tema.\\
+	\hline
+	\textbf{D3 Desarrollo técnico y evidencia} (30\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item Evidencias reales y anonimizadas que respaldan cada requisito (trazabilidad a la fuente).\item Datos crudos de cuestionario o Kano y tabla de evaluación reproducible.\item Modelo conceptual sintáctica y semánticamente correcto, con fuente editable.\end{itemize} & Artefactos completos y correctos; cada afirmación está respaldada por evidencia original verificable en el repositorio. & Artefactos correctos con fallos menores; casi todas las afirmaciones tienen evidencia. & Artefactos parciales o evidencia incompleta para comprobar lo afirmado. & Artefactos incorrectos o la evidencia no permite verificar casi nada. & No hay artefactos ni evidencia verificable.\\
+	\hline
+	\textbf{D4 Análisis crítico y calidad de los requisitos} (20\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item Requisitos claros, singulares y verificables.\item Comparación argumentada entre MoSCoW y Kano.\item Conclusiones sobre vacíos de información y próximos pasos.\end{itemize} & Requisitos claros, verificables, consistentes y trazables; interpreta, compara alternativas, reconoce limitaciones y concluye con afirmaciones sustentadas. & Análisis correcto con alguna conclusión o requisito sin sustento suficiente. & Describe sin interpretar, o hay ambigüedades que afectan la verificación. & Conclusiones o requisitos genéricos que no se derivan de lo realizado. & No hay análisis ni conclusiones.\\
+	\hline
+	\textbf{D5 Comunicación (documento o exposición)} (10\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item PDF compilado desde \LaTeX{} sin desbordes, sin \texttt{??} y con figuras y tablas numeradas y citadas en el texto.\item Redacción técnica en tercera persona, sin muletillas ni relleno; cada sección responde a lo pedido.\item \texttt{README.md} con instrucciones de compilación que funcionan.\end{itemize} & Documento \LaTeX{} limpio (sin desbordes ni referencias sin resolver), redacción técnica clara; en exposición, dominio del tema, tiempo respetado y respuestas precisas. & Defectos menores de formato, redacción o fluidez. & Varios defectos que dificultan la lectura o la comprensión de la exposición. & Documento desordenado o exposición leída sin dominio del tema. & No hay documento legible o no expone.\\
+	\hline
+	\textbf{D6 Referencias, ética e integridad} (10\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item Al menos 5 referencias IEEE verificables (normas, libros o artículos indexados), con al menos dos de los últimos cinco años, todas citadas donde se usan.\item Declaración de uso de IA (herramienta, versión, propósito, verificación) o declaración expresa de no uso.\item Autoría propia evidente en el historial de commits; evidencias de campo con consentimiento y sin datos personales publicados.\end{itemize} & Referencias IEEE recientes y verificables, todas citadas en el texto; declaración de uso de IA completa; autoría propia evidente. & Reales y correctas, con algún campo omitido o una cita sin respaldo. & Reales y correctas, pero escasas, antiguas o de baja calidad. & Reales pero mal citadas en el texto, o sin declaración de IA. & Sin referencias o en formato distinto de IEEE.\\
+	\hline
+\end{longtable}
+}
+{\footnotesize Nota sobre D6: una referencia inexistente, o cuyo DOI lleve a una obra con datos diferentes a los citados, no se califica en D6: implica calificación CERO (criterio de piso P4).}
+\end{landscape}
+
+\seccion{Hoja de cálculo de la nota}
+
+\[
+	\text{Nota previa} = \frac{\sum_{i=1}^{6} w_i \times n_i}{4} \times \frac{10}{100}, \qquad \text{Nota final} = \max\left(0,\ \text{Nota previa} - \text{Penalizaciones}\right)
+\]
+
+donde $w_i$ es el peso de la dimensión $i$ (en porcentaje) y $n_i$ el nivel obtenido (0 a 4). Si se incumple un criterio de piso, la nota final es cero. La retroalimentación informa siempre la nota previa y la nota final.
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|Y|C{0.10\linewidth}|C{0.14\linewidth}|C{0.20\linewidth}|}
+	\hline
+	\thdr{Dim.} & \thdr{Descripción} & \thdr{Peso (\%)} & \thdr{Nivel (0--4)} & \thdr{$w_i \times n_i$}\\
+	\hline
+	D1 & Cumplimiento y completitud & 15 &  & \\
+	\hline
+	\rowcolor{rowgray} D2 & Fundamentación conceptual & 15 &  & \\
+	\hline
+	D3 & Desarrollo técnico y evidencia & 30 &  & \\
+	\hline
+	\rowcolor{rowgray} D4 & Análisis crítico y calidad de los requisitos & 20 &  & \\
+	\hline
+	D5 & Comunicación (documento o exposición) & 10 &  & \\
+	\hline
+	\rowcolor{rowgray} D6 & Referencias, ética e integridad & 10 &  & \\
+	\hline
+	\multicolumn{2}{|r|}{\cellcolor{lightgold}\textbf{Suma}} & \cellcolor{lightgold}\textbf{100} & \cellcolor{lightgold} & \cellcolor{lightgold}\rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\cellcolor{lightblue}\textbf{Nota previa = Suma / 4 $\times$ 0,1}} & \cellcolor{lightblue}\rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\cellcolor{lightblue}\textbf{Penalizaciones (tabla siguiente)}} & \cellcolor{lightblue}\rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\cellcolor{lightgreen}\textbf{Nota final de la actividad (sobre 10)}} & \cellcolor{lightgreen}\rule{0pt}{12pt}\\
+	\hline
+\end{tabularx}
+
+\subseccion{Penalizaciones que no anulan la nota}
+
+\noindent\begin{tabularx}{\linewidth}{|Y|C{0.18\linewidth}|C{0.12\linewidth}|}
+	\hline
+	\thdr{Situación detectada} & \thdr{Efecto (sobre 10)} & \thdr{Aplica}\\
+	\hline
+	Falta la declaración de uso de inteligencia artificial & $-0{,}3$ & \\
+	\hline
+	\rowcolor{rowgray} Referencias en formato APA u otro distinto de IEEE & D6 = 0 & \\
+	\hline
+	Trabajo a última hora: más del 50\,\% del contenido subido en las 24 horas previas al cierre, o trabajo en menos de tres días distintos & $-1{,}5$ & \\
+	\hline
+	\rowcolor{rowgray} Trabajo a última hora: más del 80\,\% del contenido subido en las 24 horas previas al cierre & $-3{,}0$ & \\
+	\hline
+	Dos indicios complementarios de uso de IA (nivel B) & $-1{,}5$ & \\
+	\hline
+	\rowcolor{rowgray} Tres o más indicios complementarios (nivel C) & $-3{,}0$ & \\
+	\hline
+\end{tabularx}
+
+\subseccion{Calificación individual}
+
+La nota anterior es la nota del equipo. La nota máxima la recibe el estudiante, o los estudiantes, con el mayor y mejor aporte; los demás reciben una nota proporcional a su aporte:
+\[
+	\text{Nota individual}_i = \text{Nota del equipo} \times \frac{A_i}{A_{\max}}
+\]
+donde $A_i$ (0 a 100) valora la importancia, complejidad, cantidad y calidad de lo aportado por el estudiante $i$, su constancia en el tiempo (fechas de sus commits) y su desempeño en la sesión presencial. El número de commits es solo un indicio de autoría. Sin aportes verificables, $A_i = 0$.
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.24\linewidth}|Y|C{0.10\linewidth}|C{0.11\linewidth}|C{0.12\linewidth}|}
+	\hline
+	\thdr{Integrante} & \thdr{Aportes verificables (archivos, secciones, artefactos)} & \thdr{$A_i$} & \thdr{$A_i/A_{\max}$} & \thdr{Nota}\\
+	\hline
+	\rule{0pt}{16pt} & & & & \\
+	\hline
+	\rule{0pt}{16pt} & & & & \\
+	\hline
+	\rule{0pt}{16pt} & & & & \\
+	\hline
+	\rule{0pt}{16pt} & & & & \\
+	\hline
+	\rule{0pt}{16pt} & & & & \\
+	\hline
+\end{tabularx}
+
+\bibliographystyle{unsrtnat}
+\bibliography{referencias}
+
+\end{document}
