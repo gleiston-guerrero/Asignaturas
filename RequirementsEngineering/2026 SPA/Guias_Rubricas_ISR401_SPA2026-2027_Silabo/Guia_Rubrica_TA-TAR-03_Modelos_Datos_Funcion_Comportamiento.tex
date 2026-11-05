@@ -1,0 +1,557 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% TA-TAR-03 — Trabajo individual: modelos de datos, funcional y de comportamiento
+% Ingeniería de Requerimientos (ISR-401) · UTEQ · SPA 2026-2027
+% Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% babel no disponible en este entorno
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage{needspace}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Textos en español (sin babel) ----------
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+\definecolor{lightgreen}{HTML}{DCEFE3}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ \,$\cdot$\, Ingeniería de Requerimientos (ISR-401)}
+\rhead{\footnotesize TA-TAR-03 \,$\cdot$\, SPA 2026--2027}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\seccion}[1]{\section{\textcolor{utegreendk}{#1}}}
+\newcommand{\subseccion}[1]{\subsection{\textcolor{midblue}{#1}}}
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajapiso}[1][]{colback=lightred,colframe=red!60!black,boxrule=1pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajaaviso}[1][]{colback=lightgold,colframe=gold!80!black,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+
+\begin{document}
+
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\vspace{4pt}
+\begin{center}
+	{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software \,\textcolor{gold}{$\bullet$}\, Ingeniería de Requerimientos (ISR-401)}\\[8pt]
+	{\LARGE\textbf{\textcolor{utegreendk}{GUÍA Y RÚBRICA DE EVALUACIÓN}}}\\[4pt]
+	{\large\textbf{\textcolor{utegreendk}{ACTIVIDAD SUMATIVA}}}\\[6pt]
+	{\Large\textbf{TA-TAR-03}}\\[2pt]
+	{\large Trabajo individual: modelos de datos, funcional y de comportamiento}
+\end{center}
+
+\vspace{2pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+\seccion{Datos generales}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Detalle}\\
+	\hline
+	Asignatura & Ingeniería de Requerimientos (ISR-401) \,$\cdot$\, 4.\textsuperscript{o} nivel \,$\cdot$\, Paralelo A\\
+	\hline
+	\rowcolor{rowgray} Docente & Gleiston Cicerón Guerrero Ulloa, PhD \,$\cdot$\, \texttt{gguerrero@uteq.edu.ec}\\
+	\hline
+	Unidad & Unidad 4. Validación, Gestión y Consideraciones Prácticas\\
+	\hline
+	\rowcolor{rowgray} Resultado de aprendizaje & Aplica técnicas de validación, gestión del cambio y trazabilidad de requisitos, asegurando calidad.\\
+	\hline
+	Tipo y componente & Trabajo autónomo individual\\
+	\hline
+	\rowcolor{rowgray} Peso en el corte & 0.75 de 10 puntos del corte 2\\
+	\hline
+	Formativa vinculada (requisito) & Ninguna\\
+	\hline
+	\rowcolor{rowgray} Modalidad & Individual\\
+	\hline
+	Semana & 11 (4 de enero -- 10 de enero de 2027)\\
+	\hline
+	\rowcolor{rowgray} Publicación de la guía & lunes 28 de diciembre de 2026\\
+	\hline
+	Cierre & sábado 9 de enero de 2027, a las 23:59\\
+	\hline
+	\rowcolor{rowgray} Repositorio & Repositorio personal \texttt{ISR401-<ApellidoNombre>}\\
+	\hline
+	Escala & 0 a 10 puntos, con un decimal\\
+	\hline
+\end{tabularx}
+
+\seccion{Propósito}
+
+Que cada estudiante especifique un sistema desde las tres perspectivas de los requisitos orientados a la solución (datos, función y comportamiento) y compruebe que son coherentes entre sí. En la práctica, la coherencia entre perspectivas revela requisitos faltantes o contradictorios antes del diseño.
+
+\seccion{Fundamento}
+
+Los requisitos orientados a la solución se documentan con modelos de datos (entidad-relación y clases), funcionales (flujos de datos y actividades) y de comportamiento (máquinas de estado y statecharts), y las tres perspectivas deben ser consistentes \citep{pohl_2025}. El modelo entidad-relación \citep{chen_1976}, el análisis estructurado \citep{demarco_1979} y los statecharts \citep{harel_1987} son la base de las notaciones actuales de UML 2.5.1 \citep{omg_uml_2017}.
+
+\seccion{Desarrollo de la actividad}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=4pt]
+	\item \textbf{Caso asignado.} El docente publica en el SGA el sorteo que asigna a cada estudiante un número; ese número corresponde a uno de los 30 casos del Anexo A. Los casos son distintos entre estudiantes.
+	\item \textbf{Modelo de datos.} Elabore el modelo entidad-relación (al menos 8 entidades, cardinalidades y atributos clave) y el diagrama de clases UML equivalente; explique las diferencias entre ambos.
+	\item \textbf{Modelo funcional.} Elabore el diagrama de flujo de datos de nivel 0 y de nivel 1 (al menos 5 procesos) y un diagrama de actividades UML del proceso principal con particiones.
+	\item \textbf{Modelo de comportamiento.} Elabore la máquina de estados UML de al menos 2 entidades clave, con eventos, guardas y acciones.
+	\item \textbf{Interrelación.} Construya una matriz de consistencia entidad–proceso–estado (qué proceso crea, lee, actualiza o elimina cada entidad, y qué evento cambia su estado) y corrija las inconsistencias detectadas.
+	\item \textbf{Requisitos derivados.} Derive 10 requisitos que surgieron del modelado y no estaban en el enunciado.
+\end{enumerate}
+
+\seccion{Productos entregables}
+
+{\small
+\begin{longtable}{|L{0.27\linewidth}|L{0.43\linewidth}|L{0.21\linewidth}|}
+	\caption{Productos que deben estar en el repositorio al cierre.}\\
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endhead
+	\texttt{TA-TAR-03/\allowbreak{}main.tex} & Informe con los modelos y el análisis & 8 a 14 páginas de contenido\\
+	\hline
+	\rowcolor{rowgray} \texttt{TA-TAR-03/\allowbreak{}modelos/\allowbreak{}} & Fuentes editables de todos los modelos & 6 diagramas\\
+	\hline
+	\texttt{TA-TAR-03/\allowbreak{}main.pdf} & PDF compilado & 1\\
+	\hline
+\end{longtable}
+}
+
+\seccion{Normas de entrega}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=3pt]
+	\item \textbf{Repositorio.} Todo el trabajo se desarrolla en el repositorio personal \texttt{ISR401-<ApellidoNombre>}, que debe ser público en GitHub. Allí deben estar los fuentes (\texttt{.tex}, \texttt{.bib}, figuras, fuentes editables de los modelos y evidencias) y el PDF compilado.
+	\item \textbf{Documento en el SGA.} En la tarea del SGA se sube solamente un PDF de \textbf{una sola página} con los datos informativos: estudiante o estudiantes, código y nombre de la tarea, fecha límite de entrega y la URL del repositorio escrita completa en una sola línea. No se sube ningún otro archivo.
+	\item \textbf{\LaTeX{} reproducible.} El PDF debe poder regenerarse clonando el repositorio y compilando el archivo \texttt{.tex}. El \texttt{README.md} documenta compilador, archivo principal, orden de comandos y dependencias.
+	\item \textbf{Referencias.} Estilo IEEE. Toda referencia debe existir y sus datos (autores, año, título, revista o editorial, volumen, número, páginas y DOI o ISBN) deben corresponder exactamente a la obra real.
+	\item \textbf{Plazo.} El cierre es el sábado 9 de enero de 2027, a las 23:59. Se evalúa el contenido del repositorio hasta ese momento; lo agregado después no se considera.
+	\item \textbf{Trabajo anticipado.} El trabajo se realiza con anticipación, no a última hora. El avance se mide por las fechas de los commits: el historial debe mostrar trabajo sustantivo en al menos tres días distintos dentro del plazo. Subir más del 50\,\% del contenido evaluable en las 24 horas previas al cierre se penaliza (sección de penalizaciones) y reduce la valoración del aporte individual.
+	\item \textbf{Datos personales.} Ningún dato personal de terceros (cédulas, teléfonos, correos personales, audios o videos de participantes, consentimientos firmados) se publica en el repositorio. Esas evidencias se guardan en una carpeta institucional privada (cuenta \texttt{@uteq.edu.ec}) compartida con el docente, y en el repositorio se registra un manifiesto con nombre de archivo, fecha, duración y huella SHA-256 \citep{lopdp_2021}.
+	\item \textbf{Uso de IA como apoyo.} Si se usa una herramienta de IA solo como apoyo (ortografía, error de compilación), se declara en una sección del documento: herramienta, versión, propósito y cómo se verificó lo obtenido.
+\end{enumerate}
+
+\seccion{Criterios de piso}
+
+\begin{cajapiso}[title={Criterios de piso: su incumplimiento implica calificación CERO en la actividad}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{PDF de una sola página con datos informativos y URL.} En el SGA se sube solamente un PDF de UNA SOLA página con los datos informativos (estudiante o estudiantes, tarea, fecha límite de entrega) y, en una sola línea, la URL del repositorio. Si el PDF tiene más de una página, si se suben otros archivos, si la URL no cabe en una sola línea o está rota, o si el repositorio no es accesible, la calificación de la actividad es \textbf{CERO}.
+		\item \textbf{PDF reproducible.} Si el PDF no se genera correctamente a partir del \LaTeX{} al clonar el repositorio y compilar el archivo \texttt{.tex} siguiendo el \texttt{README.md} (compilador, orden de comandos, archivo principal y dependencias), la calificación de la actividad es \textbf{CERO}.
+		\item \textbf{Plazo.} Si el contenido evaluable se sube después de la fecha y hora de cierre, la calificación de la actividad es \textbf{CERO}.
+		\item \textbf{Integridad.} Plagio verificado, cualquiera de los indicios graves G1 a G6 de uso de IA, o contenido generado por IA presentado como propio: la calificación de la actividad es \textbf{CERO}, sin perjuicio de las acciones disciplinarias que correspondan.
+		\item \textbf{Formativa vinculada.} Esta actividad no tiene una formativa vinculada como requisito.
+	\end{enumerate}
+\end{cajapiso}
+
+\seccion{Integridad académica e indicios de uso de IA}
+
+Todo trabajo debe ser de autoría propia. Se aplica el Código de Ética de la ACM \citep{acm_code_2018} y la sección 6.1 del encuadre.
+
+\begin{cajapiso}[title={Indicios graves de uso de IA: cada uno, por sí solo, implica CERO (P4)}]
+	\begin{enumerate}[label=\textbf{G\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{Referencias con datos que no corresponden a la obra real:} DOI que lleva a una obra con autores, título, año, revista, volumen o páginas diferentes; DOI, ISBN o URL inexistentes; obras que no existen.
+		\item \textbf{Citas que la fuente no respalda:} afirmaciones, cifras o citas textuales atribuidas a una fuente que no las contiene, o cláusulas, secciones o tablas de una norma (IEEE 29148, ISO/\allowbreak{}IEC 25010) que no existen o no dicen lo afirmado.
+		\item \textbf{Restos de un asistente de IA} en el documento, el código, los comentarios o los commits (por ejemplo, «Claro, aquí tienes\ldots», «Como modelo de lenguaje\ldots»).
+		\item \textbf{Evidencias de campo fabricadas:} entrevistas, encuestas, participantes, transcripciones, actas o fotografías que no existen o no tienen respaldo original.
+		\item \textbf{Resultados o artefactos inexistentes:} el texto describe modelos, matrices, pruebas o métricas que no están en el repositorio o no coinciden con él.
+		\item \textbf{Incapacidad de explicar lo entregado:} el estudiante no puede justificar ni modificar, cuando se le pide, lo que escribió, modeló o especificó.
+	\end{enumerate}
+\end{cajapiso}
+
+\begin{cajaaviso}[title={Indicios complementarios (se acumulan)}]
+	\begin{enumerate}[label=\textbf{I\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item Redacción uniforme de principio a fin, o estilo distinto al del estudiante en otras entregas o en su exposición oral.
+		\item Uso excesivo de los mismos conectores y fórmulas («además», «cabe destacar», «es importante señalar», «en conclusión»).
+		\item Contenido genérico: requisitos, actores o reglas aplicables a cualquier sistema, sin relación con lo elicitado.
+		\item Entrega en uno o pocos commits masivos, o mensajes de commit idénticos o automáticos.
+		\item Residuos de formato ajeno a \LaTeX{} (marcas de Markdown, emojis) o metadatos del PDF de otra herramienta.
+		\item Estructura, redacción o errores muy similares entre estudiantes o equipos distintos.
+		\item Traducción literal o mezcla de idiomas sin justificación.
+	\end{enumerate}
+	Con dos indicios complementarios se resta 1,5 puntos (nivel B) y con tres o más se restan 3,0 (nivel C). La declaración de uso de IA no exime de responsabilidad ni anula estos indicios.
+\end{cajaaviso}
+
+\seccion{Escala de desempeño}
+
+\begin{cajaclave}[title={La presencia no basta: se califica la calidad}]
+	Que un indicador esté presente no basta para puntuarlo. Cada indicador se valora con los aspectos de calidad del encuadre: Completitud, veracidad, precisión técnica, claridad y no ambigüedad, verificabilidad, profundidad, pertinencia y relevancia, suficiencia de la evidencia, coherencia y consistencia, trazabilidad, originalidad y autoría, constancia, reproducibilidad, y actualidad y calidad de las fuentes. El nivel asignado a una dimensión es el que corresponde al aspecto peor cumplido entre los que aplican. Un indicador ausente, no verificable en el repositorio o cuyo contenido sea falso vale 0.
+\end{cajaclave}
+
+Cada dimensión se califica con un nivel de 0 a 4: 4 Excelente (cubre el 100\,\% con calidad plena), 3 Bueno (al menos 75\,\%, deficiencias menores), 2 Aceptable (50--74\,\% o descriptivo sin análisis), 1 Insuficiente (menos del 50\,\%, superficial o con errores graves) y 0 Ausente. Los descriptores de nivel son los de la rúbrica general del encuadre; la columna de indicadores concreta qué se observa en esta actividad \citep{brookhart_2018,panadero_jonsson_2020}.
+
+\begin{landscape}
+\seccion{Rúbrica analítica}
+{\footnotesize\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{|L{2.4cm}|L{5.6cm}|L{3.1cm}|L{2.8cm}|L{2.8cm}|L{2.7cm}|L{2.1cm}|}
+	\caption{Rúbrica analítica de TA-TAR-03. Pesos del tipo de actividad TA-IND según el encuadre.}\\
+	\hline
+	\thdr{Dimensión (peso)} & \thdr{Indicadores de esta actividad} & \thdr{4 Excelente} & \thdr{3 Bueno} & \thdr{2 Aceptable} & \thdr{1 Insuficiente} & \thdr{0 Ausente}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Dimensión (peso)} & \thdr{Indicadores de esta actividad} & \thdr{4 Excelente} & \thdr{3 Bueno} & \thdr{2 Aceptable} & \thdr{1 Insuficiente} & \thdr{0 Ausente}\\
+	\hline
+	\endhead
+	\hline
+	\multicolumn{7}{r}{\footnotesize\textit{Continúa en la página siguiente\ldots}}\\
+	\endfoot
+	\hline
+	\endlastfoot
+	\textbf{D1 Cumplimiento y completitud} (10\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item ER, clases, DFD nivel 0 y 1, actividades, 2 máquinas de estado, matriz de consistencia y 10 requisitos derivados.\end{itemize} & Entrega todos los productos pedidos en la guía, completos, con la estructura exigida y en el repositorio. & Falta un elemento menor o uno está incompleto sin afectar el conjunto. & Faltan varios elementos o hay productos incompletos que limitan la evaluación. & Entrega una parte mínima de lo pedido. & No entrega o lo entregado no corresponde a la actividad.\\
+	\hline
+	\textbf{D2 Fundamentación conceptual} (25\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item Notación y semántica correctas de cada modelo.\item Explicación correcta de la relación entre las tres perspectivas.\end{itemize} & Define y aplica con precisión los conceptos de la unidad, los relaciona entre sí y los sustenta en la bibliografía y las normas. & Conceptos correctos con alguna imprecisión menor o relación incompleta entre ellos. & Conceptos repetidos de la fuente sin aplicarlos, o con errores que no invalidan el trabajo. & Errores conceptuales graves o confusión entre conceptos clave. & No hay fundamentación o es ajena al tema.\\
+	\hline
+	\textbf{D3 Desarrollo técnico y evidencia} (20\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item Modelos propios del caso asignado, con fuente editable.\item Matriz de consistencia completa.\end{itemize} & Artefactos completos y correctos; cada afirmación está respaldada por evidencia original verificable en el repositorio. & Artefactos correctos con fallos menores; casi todas las afirmaciones tienen evidencia. & Artefactos parciales o evidencia incompleta para comprobar lo afirmado. & Artefactos incorrectos o la evidencia no permite verificar casi nada. & No hay artefactos ni evidencia verificable.\\
+	\hline
+	\textbf{D4 Análisis crítico y calidad de los requisitos} (25\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item Inconsistencias detectadas y corregidas con explicación.\item Requisitos derivados verificables y justificados por el modelado.\end{itemize} & Requisitos claros, verificables, consistentes y trazables; interpreta, compara alternativas, reconoce limitaciones y concluye con afirmaciones sustentadas. & Análisis correcto con alguna conclusión o requisito sin sustento suficiente. & Describe sin interpretar, o hay ambigüedades que afectan la verificación. & Conclusiones o requisitos genéricos que no se derivan de lo realizado. & No hay análisis ni conclusiones.\\
+	\hline
+	\textbf{D5 Comunicación (documento o exposición)} (10\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item PDF compilado desde \LaTeX{} sin desbordes, sin \texttt{??} y con figuras y tablas numeradas y citadas en el texto.\item Redacción técnica en tercera persona, sin muletillas ni relleno; cada sección responde a lo pedido.\item \texttt{README.md} con instrucciones de compilación que funcionan.\end{itemize} & Documento \LaTeX{} limpio (sin desbordes ni referencias sin resolver), redacción técnica clara; en exposición, dominio del tema, tiempo respetado y respuestas precisas. & Defectos menores de formato, redacción o fluidez. & Varios defectos que dificultan la lectura o la comprensión de la exposición. & Documento desordenado o exposición leída sin dominio del tema. & No hay documento legible o no expone.\\
+	\hline
+	\textbf{D6 Referencias, ética e integridad} (10\,\%) & \begin{itemize}[leftmargin=9pt,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt,after=\vspace{-\baselineskip}]\item Al menos 3 referencias IEEE verificables (normas, libros o artículos indexados), con al menos dos de los últimos cinco años, todas citadas donde se usan.\item Declaración de uso de IA (herramienta, versión, propósito, verificación) o declaración expresa de no uso.\item Autoría propia evidente en el historial de commits; evidencias de campo con consentimiento y sin datos personales publicados.\end{itemize} & Referencias IEEE recientes y verificables, todas citadas en el texto; declaración de uso de IA completa; autoría propia evidente. & Reales y correctas, con algún campo omitido o una cita sin respaldo. & Reales y correctas, pero escasas, antiguas o de baja calidad. & Reales pero mal citadas en el texto, o sin declaración de IA. & Sin referencias o en formato distinto de IEEE.\\
+	\hline
+\end{longtable}
+}
+{\footnotesize Nota sobre D6: una referencia inexistente, o cuyo DOI lleve a una obra con datos diferentes a los citados, no se califica en D6: implica calificación CERO (criterio de piso P4).}
+\end{landscape}
+
+\seccion{Hoja de cálculo de la nota}
+
+\[
+	\text{Nota previa} = \frac{\sum_{i=1}^{6} w_i \times n_i}{4} \times \frac{10}{100}, \qquad \text{Nota final} = \max\left(0,\ \text{Nota previa} - \text{Penalizaciones}\right)
+\]
+
+donde $w_i$ es el peso de la dimensión $i$ (en porcentaje) y $n_i$ el nivel obtenido (0 a 4). Si se incumple un criterio de piso, la nota final es cero. La retroalimentación informa siempre la nota previa y la nota final.
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|Y|C{0.10\linewidth}|C{0.14\linewidth}|C{0.20\linewidth}|}
+	\hline
+	\thdr{Dim.} & \thdr{Descripción} & \thdr{Peso (\%)} & \thdr{Nivel (0--4)} & \thdr{$w_i \times n_i$}\\
+	\hline
+	D1 & Cumplimiento y completitud & 10 &  & \\
+	\hline
+	\rowcolor{rowgray} D2 & Fundamentación conceptual & 25 &  & \\
+	\hline
+	D3 & Desarrollo técnico y evidencia & 20 &  & \\
+	\hline
+	\rowcolor{rowgray} D4 & Análisis crítico y calidad de los requisitos & 25 &  & \\
+	\hline
+	D5 & Comunicación (documento o exposición) & 10 &  & \\
+	\hline
+	\rowcolor{rowgray} D6 & Referencias, ética e integridad & 10 &  & \\
+	\hline
+	\multicolumn{2}{|r|}{\cellcolor{lightgold}\textbf{Suma}} & \cellcolor{lightgold}\textbf{100} & \cellcolor{lightgold} & \cellcolor{lightgold}\rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\cellcolor{lightblue}\textbf{Nota previa = Suma / 4 $\times$ 0,1}} & \cellcolor{lightblue}\rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\cellcolor{lightblue}\textbf{Penalizaciones (tabla siguiente)}} & \cellcolor{lightblue}\rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\cellcolor{lightgreen}\textbf{Nota final de la actividad (sobre 10)}} & \cellcolor{lightgreen}\rule{0pt}{12pt}\\
+	\hline
+\end{tabularx}
+
+\subseccion{Penalizaciones que no anulan la nota}
+
+\noindent\begin{tabularx}{\linewidth}{|Y|C{0.18\linewidth}|C{0.12\linewidth}|}
+	\hline
+	\thdr{Situación detectada} & \thdr{Efecto (sobre 10)} & \thdr{Aplica}\\
+	\hline
+	Falta la declaración de uso de inteligencia artificial & $-0{,}3$ & \\
+	\hline
+	\rowcolor{rowgray} Referencias en formato APA u otro distinto de IEEE & D6 = 0 & \\
+	\hline
+	Trabajo a última hora: más del 50\,\% del contenido subido en las 24 horas previas al cierre, o trabajo en menos de tres días distintos & $-1{,}5$ & \\
+	\hline
+	\rowcolor{rowgray} Trabajo a última hora: más del 80\,\% del contenido subido en las 24 horas previas al cierre & $-3{,}0$ & \\
+	\hline
+	Dos indicios complementarios de uso de IA (nivel B) & $-1{,}5$ & \\
+	\hline
+	\rowcolor{rowgray} Tres o más indicios complementarios (nivel C) & $-3{,}0$ & \\
+	\hline
+\end{tabularx}
+
+% ============================================================
+% ANEXOS: material que entrega el docente
+% ============================================================
+\clearpage
+\seccion{Anexo A. Catálogo de casos para el sorteo}
+
+El sorteo de casos se publica en el SGA antes del inicio de la semana 11. El número que el sistema le asigne es el número de su caso y no puede cambiarse por iniciativa propia. Ningún caso se repite dentro del mismo paralelo, de modo que cada estudiante trabaja con un enunciado distinto. Si el caso asignado coincide con el dominio del Proyecto Final de Curso (PFC) de su equipo o con el caso de práctica que su equipo ya trabajó en clase, informe al docente en las primeras 24 horas para que se le asigne otro número. Todas las organizaciones, personas y cifras de estos casos son ficticias y fueron creadas para esta actividad; lea su caso completo varias veces antes de modelar y, si encuentra un vacío, regístrelo como supuesto explícito en su entrega.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 1. Vivero Flor del Mocache}
+
+El Vivero Flor del Mocache (organización ficticia creada para esta actividad) produce y vende plantas ornamentales en la vía Quevedo–Mocache. Maneja unas 9\,000 plantas de 140 especies en cuatro invernaderos, y vende a hogares, a paisajistas y a dos municipios de la provincia. Hoy controla todo en cuadernos y pierde plantas que nadie recuerda regar o trasplantar. Los actores son el administrador, dos viveristas, la cajera, los paisajistas (clientes frecuentes con crédito) y el proveedor de semillas y sustratos. El proceso principal es la atención de un pedido: el cliente solicita plantas indicando especie, tamaño de maceta y cantidad; la cajera verifica disponibilidad por invernadero; si falta stock, se ofrece una especie sustituta o se programa una fecha de entrega; el administrador aprueba el descuento si corresponde; un viverista separa y etiqueta las plantas; finalmente se cobra o se carga al crédito y se entrega o se despacha. Cada lote de plantas pasa por los estados sembrado, en germinación, en crecimiento, listo para venta, reservado, vendido y descartado; un lote se descarta si más del 30\,\% de sus plantas presenta plaga después de dos tratamientos. El pedido pasa por registrado, aprobado, en preparación, listo, entregado y anulado; solo puede anularse antes de quedar listo. Se registran especies, invernaderos, lotes, tratamientos fitosanitarios, riegos programados, clientes, pedidos con su detalle, pagos y proveedores. Reglas: los paisajistas tienen un cupo de crédito de 800 dólares y 30 días de plazo; pedidos mayores a 50 plantas tienen 10\,\% de descuento; una reserva expira a los 5 días. Situaciones excepcionales: una helada o plaga obliga a descartar plantas ya reservadas, y un municipio solicita cambiar la especie después de la aprobación.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 2. Lavandería Industrial Río Limpio}
+
+Lavandería Industrial Río Limpio (organización ficticia creada para esta actividad) lava sábanas, toallas y manteles para 18 hoteles y tres clínicas privadas de Quevedo y Buena Fe. Procesa unos 2\,500 kilos diarios y recibe reclamos frecuentes por prendas extraviadas o devueltas con manchas. Los actores son el recepcionista de planta, el supervisor de lavado, los operarios, el chofer repartidor, el contador y el encargado de lencería de cada hotel. El proceso principal es el ciclo de una remesa: el chofer recoge la ropa sucia en el hotel y ambos firman una guía con el conteo por tipo de prenda; en planta se pesa y se clasifica por tipo, color y nivel de suciedad; el supervisor asigna la carga a una lavadora y a un programa de lavado; después se seca, se plancha, se dobla y se empaca; se vuelve a contar y, si el conteo no coincide con la guía, se abre una novedad; luego se entrega y se factura por kilo. La remesa pasa por los estados recogida, en clasificación, en lavado, en acabado, lista, entregada, con novedad y cerrada. Cada lavadora pasa por disponible, en ciclo, en limpieza y en mantenimiento, y entra a mantenimiento cada 400 ciclos. Se manejan hoteles, contratos con tarifas, guías de recolección, prendas por tipo, remesas, lavadoras, programas de lavado, operarios, novedades y facturas. Reglas: la tarifa es de 1,20 dólares por kilo y 1,60 para ropa de clínica; la remesa debe devolverse en máximo 48 horas; una prenda manchada se relava una sola vez y, si persiste la mancha, se reporta como dañada; las prendas faltantes se reponen al costo pactado. Situaciones excepcionales: una prenda de otro hotel aparece en una remesa, y una lavadora falla a mitad de ciclo con la ropa adentro.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 3. Mudanzas Cargo Seguro Los Ríos}
+
+Mudanzas Cargo Seguro Los Ríos (organización ficticia creada para esta actividad) realiza mudanzas de hogares y oficinas desde Quevedo hacia cualquier ciudad del país. Dispone de cinco camiones de distinta capacidad y doce cargadores, y hoy pierde clientes porque tarda días en enviar cotizaciones. Los actores son el cliente, el asesor comercial, el inspector, el jefe de operaciones, los choferes, los cargadores y la aseguradora que cubre la carga. El proceso principal comienza cuando el cliente solicita una mudanza indicando origen, destino y fecha deseada; el inspector visita el lugar e inventaría los bienes con su volumen estimado y su fragilidad; el asesor calcula la cotización según metros cúbicos, distancia y servicios adicionales como embalaje o desarmado de muebles; el cliente acepta y paga un anticipo; el jefe de operaciones asigna camión y cuadrilla; el día de la mudanza se cargan los bienes, se trasladan y se descargan; el cliente revisa el inventario y firma la conformidad. La mudanza pasa por los estados solicitada, inspeccionada, cotizada, confirmada, programada, en tránsito, entregada, con reclamo, cerrada y cancelada. Cada camión pasa por disponible, asignado, en ruta, en mantenimiento y fuera de servicio. Se registran clientes, solicitudes, inspecciones, inventarios de bienes, cotizaciones, servicios adicionales, camiones, choferes, cargadores, pólizas, pagos y reclamos. Reglas: el anticipo es del 40\,\% y el saldo se paga al entregar; una cotización vale 10 días; si el cliente cancela con menos de 72 horas pierde la mitad del anticipo; un reclamo por daño debe presentarse en máximo 48 horas tras la entrega. Situaciones excepcionales: el volumen real supera en más del 15\,\% al inventariado y no cabe en el camión asignado, y un camión se avería en carretera.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 4. AgroMaq Alquileres del Litoral}
+
+AgroMaq Alquileres del Litoral (organización ficticia creada para esta actividad) alquila tractores, rastras, cosechadoras y bombas de riego a agricultores de Quevedo, Valencia y Mocache. Tiene 34 máquinas y en temporada de siembra recibe más solicitudes de las que puede atender, por lo que hay choques de fechas y máquinas devueltas con daños que nadie registró. Los actores son el agricultor, la secretaria de reservas, el jefe de taller, los operadores de máquina, el transportista de la cama baja y el gerente. El proceso principal es el alquiler: el agricultor solicita una máquina indicando tipo, finca, hectáreas y fechas; la secretaria verifica disponibilidad; el gerente aprueba si el agricultor no tiene deudas; se firma el contrato y se cobra la garantía; el jefe de taller revisa la máquina y registra el horómetro; se traslada a la finca, con o sin operador; al terminar se devuelve, se inspecciona y se liquida el alquiler por horas trabajadas. El contrato de alquiler pasa por solicitado, aprobado, en ejecución, devuelto, liquidado, en disputa y anulado. Cada máquina pasa por disponible, reservada, en campo, en inspección, en reparación y dada de baja; una máquina con más de 2\,000 horas sin reparación mayor no puede reservarse. Se manejan agricultores, fincas, tipos de máquina, máquinas, contratos, lecturas de horómetro, operadores, traslados, inspecciones, daños, reparaciones y pagos. Reglas: la garantía equivale a tres días de alquiler; el mínimo facturable es de 6 horas diarias; el combustible corre por cuenta del agricultor; un agricultor con dos devoluciones tardías pierde la prioridad en temporada. Situaciones excepcionales: la máquina se avería en la finca por falla propia y debe reemplazarse, y el agricultor alega que un daño ya existía antes del alquiler.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 5. Escuela de Conducción Vía Segura Quevedo}
+
+La Escuela de Conducción Vía Segura Quevedo (organización ficticia creada para esta actividad) forma conductores no profesionales para licencia tipo B. Tiene ocho vehículos de práctica, seis instructores y unas 120 matrículas por cohorte, y hoy programa las clases prácticas en una pizarra, lo que genera choques de horarios y vehículos sin combustible. Los actores son el aspirante, la secretaria académica, los instructores teóricos y prácticos, el coordinador y el mecánico contratado. El proceso principal es la formación del aspirante: se matricula con sus documentos y paga la primera cuota; asiste a 40 horas de clases teóricas; aprueba el examen teórico interno; agenda sus 20 horas de práctica con un instructor y un vehículo; cada sesión se registra con kilometraje y observaciones del instructor; al completar las horas rinde el examen práctico interno; si aprueba, la escuela emite el certificado de aprobación del curso. La matrícula pasa por los estados inscrita, en teoría, en práctica, en evaluación final, aprobada, reprobada, suspendida y retirada. Cada sesión práctica pasa por programada, confirmada, en curso, realizada, inasistencia y cancelada. Se manejan aspirantes, cohortes, cursos, módulos teóricos, asistencias, exámenes, instructores, vehículos, sesiones prácticas, cuotas y certificados. Reglas: la asistencia teórica mínima es del 90\,\%; la nota mínima de cada examen es 16 sobre 20; se permiten dos intentos por examen; dos inasistencias seguidas a prácticas sin aviso suspenden la matrícula; una sesión se cancela sin penalidad con 12 horas de anticipación; el aspirante con cuotas vencidas por más de 15 días no puede agendar prácticas. Situaciones excepcionales: un vehículo sufre un incidente leve durante la práctica, y un instructor se ausenta y deben reasignarse sus sesiones del día.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 6. Centro de Eventos Palmeras del Quevedo}
+
+El Centro de Eventos Palmeras del Quevedo (organización ficticia creada para esta actividad) alquila tres salones de 80, 200 y 450 personas para bodas, grados y eventos empresariales, e incluye opcionalmente mobiliario, sonido y decoración. En temporada alta ha tenido dos salones reservados el mismo día a clientes distintos. Los actores son el cliente, la asesora de eventos, el administrador, el coordinador de logística, el personal de montaje y los proveedores externos de decoración. El proceso principal es la contratación de un evento: el cliente consulta fecha, salón y número de invitados; la asesora verifica disponibilidad y bloquea la fecha de forma provisional; elabora una proforma con salón, horas, mobiliario y servicios; el cliente firma el contrato y paga la reserva; se planifican el montaje y los proveedores; el día del evento se monta, se realiza el evento y se desmonta; finalmente se revisa el inventario de mobiliario y se liquida la garantía. La reserva pasa por los estados pre-reservada, confirmada, planificada, en montaje, en curso, finalizada, liquidada y cancelada. Cada salón pasa, para una fecha dada, por libre, bloqueado, reservado, en montaje, ocupado y en limpieza. Se manejan clientes, salones, fechas, proformas, contratos, servicios adicionales, mobiliario, proveedores, cuadrillas de montaje, pagos y garantías. Reglas: el bloqueo provisional dura 72 horas; la reserva es del 30\,\% y el saldo se paga 8 días antes del evento; el aforo del salón no puede superarse; cancelar con menos de 30 días hace perder la reserva; la garantía de 200 dólares cubre daños al mobiliario. Situaciones excepcionales: un corte de energía obliga a usar el generador y a extender el horario, y el cliente pide ampliar invitados por encima del aforo una semana antes.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 7. Imprenta y Serigrafía Tinta Fluvial}
+
+Imprenta y Serigrafía Tinta Fluvial (organización ficticia creada para esta actividad) imprime volantes, facturas preimpresas, tarjetas y gigantografías, y estampa camisetas y gorras por serigrafía para empresas y colegios de Quevedo. Atiende unos 60 trabajos por semana y es común que un diseño se imprima sin la aprobación final del cliente. Los actores son el cliente, la vendedora, el diseñador gráfico, el jefe de producción, los operarios de impresión y serigrafía, y el proveedor de papel y tintas. El proceso principal es la orden de trabajo: el cliente solicita el producto con medidas, cantidad, material y fecha de entrega; la vendedora cotiza y registra la orden con un anticipo; el diseñador elabora la prueba de arte y la envía al cliente; el cliente aprueba la prueba o pide cambios; el jefe de producción programa la orden en una máquina y reserva los insumos; se imprime o se estampa y se hace control de calidad; se empaca, se cobra el saldo y se entrega. La orden pasa por cotizada, registrada, en diseño, en aprobación, aprobada, en producción, en control, terminada, entregada y anulada. La prueba de arte pasa por en elaboración, enviada, con observaciones, aprobada y rechazada. Se manejan clientes, cotizaciones, órdenes, productos, pruebas de arte, versiones de archivo, máquinas, insumos, programaciones, controles de calidad y pagos. Reglas: el anticipo es del 50\,\%; se incluyen dos rondas de cambios y desde la tercera se cobran 5 dólares por ronda; no se produce sin prueba aprobada por escrito; si la merma supera el 5\,\% se reimprime sin costo para el cliente. Situaciones excepcionales: falta tinta de un color a mitad del tiraje, y el cliente detecta un error ortográfico que él mismo aprobó.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 8. Piladora Arrocera San Camilo}
+
+La Piladora Arrocera San Camilo (organización ficticia creada para esta actividad) recibe arroz en cáscara de pequeños productores de la zona de Quevedo y Mocache, lo seca, lo pila y vende el arroz blanco en sacos de 50 kilos a comerciantes. Recibe hasta 40 camiones diarios en cosecha y hay disputas frecuentes por el descuento de humedad e impurezas. Los actores son el productor, el báscula, el laboratorista de calidad, el jefe de secado, el operador de piladora, el bodeguero, la cajera y el comprador mayorista. El proceso principal comienza cuando el camión llega y se pesa lleno; el laboratorista toma una muestra y mide humedad, impurezas y grano partido; se calcula el peso neto liquidable; el productor acepta la liquidación o retira su carga; el arroz pasa a la secadora y luego se almacena por lotes; se pila, se clasifica por calidad y se ensaca; finalmente se paga al productor y se vende el producto terminado. Cada ingreso de arroz pasa por pesado, muestreado, liquidado, aceptado, rechazado, pagado y en reclamo. Cada lote de procesamiento pasa por en espera, en secado, almacenado, en pilado, ensacado y despachado, y un lote se bloquea si su humedad vuelve a subir sobre el 14\,\%. Se manejan productores, camiones, pesajes, muestras, análisis de calidad, liquidaciones, lotes, secadoras, sacos de producto, bodegas, compradores, ventas y pagos. Reglas: la humedad base es 20\,\% y cada punto adicional descuenta el 1,5\,\% del peso; se rechaza la carga con más de 28\,\% de humedad; el pago se hace en máximo 8 días; la cascarilla se vende como subproducto. Situaciones excepcionales: la secadora se daña con un lote a medio secar, y un productor impugna el análisis y pide una contramuestra.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 9. Acuícola Tilapia Dorada de Valencia}
+
+Acuícola Tilapia Dorada de Valencia (organización ficticia creada para esta actividad) cría tilapia roja en 16 piscinas en el cantón Valencia y vende pescado fresco a mercados, restaurantes y hogares de Quevedo. Registra la alimentación y las muestras de peso en hojas sueltas, por lo que no sabe con certeza cuánto alimento gasta por kilo producido. Los actores son el administrador, el técnico acuícola, los trabajadores de campo, el vendedor, el repartidor, el proveedor de alevines y el proveedor de balanceado. El proceso principal es el ciclo productivo y la venta: se compra un lote de alevines y se siembra en una piscina; se registra a diario la alimentación, la temperatura y el oxígeno del agua; cada 15 días se toma una muestra de peso; cuando el peso promedio llega al objetivo se programa la cosecha; el vendedor confirma pedidos de clientes; se cosecha, se clasifica por talla y se despacha. Cada lote de siembra pasa por sembrado, en levante, en engorde, listo para cosecha, en cosecha, cosechado y perdido. Cada pedido pasa por recibido, confirmado, asignado a cosecha, despachado, entregado y anulado. Cada piscina pasa por vacía, en preparación, ocupada y en mantenimiento. Se manejan piscinas, lotes, proveedores, alevines, registros de alimentación, mediciones de agua, muestreos, cosechas, clientes, pedidos, entregas y pagos. Reglas: la densidad máxima es de 8 peces por metro cuadrado; la talla comercial es 450 gramos; si el oxígeno baja de 3 mg/l se activan los aireadores y se suspende la alimentación; la mortalidad mayor al 20\,\% declara el lote perdido; los pedidos de restaurantes se confirman con 48 horas. Situaciones excepcionales: una mortandad súbita por falta de oxígeno durante la noche, y un pedido grande que excede lo disponible en talla comercial.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 10. Cuerpo de Bomberos Voluntarios Ribera Norte}
+
+El Cuerpo de Bomberos Voluntarios Ribera Norte (organización ficticia creada para esta actividad) atiende emergencias no médicas en tres parroquias rurales cercanas a Quevedo: incendios estructurales y forestales, inundaciones, árboles caídos y fugas de gas. Cuenta con 45 voluntarios, dos autobombas, una camioneta de rescate y un bote, y hoy registra las emergencias en una bitácora de papel. Los actores son el ciudadano que reporta, el operador de guardia, el jefe de turno, los voluntarios, el encargado de equipamiento y el comandante. El proceso principal es la atención de una emergencia: el operador recibe el reporte y registra tipo, ubicación y riesgo para personas; el jefe de turno clasifica la prioridad y despacha unidades y voluntarios disponibles; las unidades confirman salida y llegada; en el sitio se controla la emergencia y se solicita apoyo si es necesario; se declara el evento controlado y luego cerrado; finalmente se elabora el parte de novedades y se repone el equipo usado. La emergencia pasa por reportada, clasificada, despachada, en atención, controlada, cerrada, falsa alarma y transferida a otra institución. Cada unidad pasa por disponible, despachada, en sitio, retornando, en reabastecimiento y fuera de servicio. Se manejan reportes, emergencias, tipos de emergencia, prioridades, unidades, voluntarios, turnos, despachos, equipos, consumos de agua y espuma, partes de novedades y solicitudes de apoyo. Reglas: la prioridad alta exige salida en máximo 3 minutos; cada autobomba sale con al menos 4 voluntarios; un voluntario no puede cubrir más de 24 horas seguidas; una unidad con menos del 30\,\% de agua no se despacha. Situaciones excepcionales: dos emergencias simultáneas de prioridad alta con una sola autobomba disponible, y un reporte que resulta ser una falsa alarma reincidente.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 11. Club Deportivo Formativo Estrellas del Río}
+
+El Club Deportivo Formativo Estrellas del Río (organización ficticia creada para esta actividad) enseña fútbol a unos 220 niños y adolescentes de Quevedo, organizados en categorías por año de nacimiento. Tiene ocho entrenadores, dos canchas y participa en un torneo cantonal; hoy controla pensiones y asistencias en hojas de cálculo distintas y no sabe qué jugadores están habilitados para cada partido. Los actores son el representante del jugador, la secretaria, los entrenadores, el coordinador deportivo, el tesorero y el delegado de la liga. El proceso principal es la temporada del jugador: el representante inscribe al menor con su ficha y una autorización firmada; se asigna una categoría y un grupo de entrenamiento; el entrenador registra la asistencia en cada sesión; el representante paga la pensión mensual; antes de cada partido, el entrenador convoca jugadores y el sistema verifica su habilitación; se registra el resultado, los goles y las tarjetas; al final de cada trimestre se emite una evaluación del jugador. La inscripción pasa por solicitada, aprobada, activa, suspendida por mora, suspendida por sanción, retirada y finalizada. Cada partido pasa por programado, con convocatoria, jugado, suspendido, reprogramado y con resultado oficial. Se manejan jugadores, representantes, categorías, grupos, entrenadores, canchas, sesiones, asistencias, pensiones, torneos, partidos, convocatorias, tarjetas y evaluaciones. Reglas: la pensión de 25 dólares vence el día 10; con dos pensiones vencidas el jugador no puede ser convocado; se exige una asistencia mínima del 75\,\% del mes para ser convocado; dos tarjetas amarillas acumuladas suspenden un partido; cada convocatoria tiene máximo 18 jugadores. Situaciones excepcionales: un partido se suspende por lluvia en el segundo tiempo, y un jugador cambia de categoría a mitad de temporada por un error en su fecha de nacimiento.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 12. Notaría Sexta Ficticia de Quevedo}
+
+La Notaría Sexta Ficticia de Quevedo (organización ficticia creada para esta actividad, sin relación con ninguna notaría real ni con datos de personas reales) atiende escrituras de compraventa, poderes, declaraciones juramentadas y reconocimientos de firma. Recibe unas 70 solicitudes diarias y los usuarios se quejan de largas esperas y de expedientes que se pierden entre escritorios. Los actores son el usuario, la recepcionista, los asistentes de matriz, el notario, el archivista y la cajera. El proceso principal es la gestión de un trámite: el usuario agenda una cita indicando el tipo de acto; en la cita entrega los documentos habilitantes y la recepcionista abre un expediente; el asistente revisa los documentos y redacta la minuta o el borrador; el notario revisa el borrador; se agenda la firma de los comparecientes; se cobran los derechos notariales; el acto se incorpora al protocolo y se entregan las copias certificadas. El expediente pasa por los estados abierto, en revisión documental, observado, en redacción, en revisión del notario, listo para firma, firmado, protocolizado, entregado y desistido. La cita pasa por solicitada, confirmada, atendida, reprogramada, inasistencia y cancelada. Se manejan usuarios, comparecientes, tipos de acto, citas, expedientes, documentos habilitantes, borradores con sus versiones, firmas, pagos, copias certificadas y el protocolo anual. Reglas: un expediente observado espera máximo 15 días la subsanación y luego se considera desistido; cada asistente atiende hasta 12 expedientes activos; la firma debe realizarse en máximo 30 días desde la aprobación del borrador; las citas duran 20 minutos y se reprograman una sola vez. Situaciones excepcionales: un compareciente no se presenta a la firma conjunta, y se detecta un error en un acto ya firmado que exige un acto rectificatorio.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 13. AeroFumig Drones Los Ríos}
+
+AeroFumig Drones Los Ríos (organización ficticia creada para esta actividad) fumiga cultivos de maíz, arroz y palma con drones agrícolas en los cantones Quevedo, Buena Fe y Ventanas. Tiene seis drones, cuatro pilotos certificados y dos técnicos de mezcla, y hoy coordina los vuelos por mensajería, lo que provoca vuelos con viento fuerte y mezclas mal registradas. Los actores son el agricultor, la coordinadora comercial, el agrónomo, los pilotos, los técnicos de mezcla, el encargado de mantenimiento y el proveedor de agroquímicos. El proceso principal es la orden de fumigación: el agricultor solicita el servicio indicando finca, cultivo, hectáreas y problema; el agrónomo visita el lote, georreferencia el polígono y prescribe producto y dosis; la coordinadora cotiza y el agricultor acepta; se programa la fecha, el piloto y el dron; el día del servicio el piloto verifica viento y lluvia; el técnico prepara la mezcla; se ejecutan los vuelos registrando hectáreas cubiertas y litros aplicados; al final se entrega un informe y se factura. La orden pasa por solicitada, diagnosticada, cotizada, aceptada, programada, en ejecución, ejecutada parcialmente, completada, facturada y cancelada. Cada dron pasa por disponible, asignado, en vuelo, cargando batería, en mantenimiento e inhabilitado. Se manejan agricultores, fincas, lotes, cultivos, diagnósticos, prescripciones, productos, mezclas, órdenes, vuelos, drones, baterías, pilotos e informes. Reglas: no se vuela con viento mayor a 15 km/h ni con lluvia prevista en 2 horas; un dron cubre hasta 40 hectáreas diarias; cada 50 horas de vuelo entra a mantenimiento; se cobra por hectárea efectivamente cubierta. Situaciones excepcionales: un dron pierde señal y aterriza de emergencia dentro de un cultivo, y una lluvia interrumpe la orden a mitad de la jornada.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 14. Radio Comunitaria Voz del Estero}
+
+La Radio Comunitaria Voz del Estero (organización ficticia creada para esta actividad) transmite desde una parroquia rural de Quevedo programas informativos, musicales y de servicio social, y se financia con pautas publicitarias de negocios locales. Hoy arma la parrilla en papel y ha emitido cuñas vencidas mientras omitía otras ya pagadas. Los actores son el anunciante, la ejecutiva comercial, el productor de audio, el director de programación, los locutores, el operador de consola y la contadora. El proceso principal es la contratación y emisión de una pauta: el anunciante solicita un paquete indicando número de cuñas, franjas horarias y vigencia; la ejecutiva elabora el contrato y registra el pago; el productor graba la cuña y la somete a revisión; el director aprueba el contenido y la ubica en los cortes de la parrilla semanal; el operador emite las cuñas y marca cada emisión; al final del mes se genera el certificado de emisión para el anunciante. La pauta pasa por cotizada, contratada, en producción, en revisión, aprobada, en emisión, suspendida, finalizada y anulada. Cada cuña pasa por en grabación, grabada, rechazada, aprobada, al aire y retirada. Cada programa de la parrilla tiene horario, conductor y cortes comerciales. Se manejan anunciantes, paquetes, contratos, pagos, cuñas, programas, franjas, cortes, parrillas semanales, emisiones, locutores y certificados. Reglas: cada corte tiene máximo 4 minutos de publicidad y no se repite el mismo anunciante en un corte; la franja de 06:00 a 09:00 cuesta 40\,\% más; una pauta con pago vencido 5 días se suspende; una cuña no emitida se repone dentro de 48 horas. Situaciones excepcionales: un corte de energía deja de emitir dos horas de cuñas pagadas, y un anunciante pide retirar su cuña por un reclamo de contenido.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 15. Catering Empresarial Sabor Ribereño}
+
+Catering Empresarial Sabor Ribereño (organización ficticia creada para esta actividad) prepara y entrega almuerzos diarios a 14 empresas agroindustriales de Quevedo y Buena Fe, con unas 900 raciones por día, además de refrigerios para reuniones. Hoy recibe los pedidos por mensajería y a menudo sobran o faltan raciones, y las dietas especiales se confunden. Los actores son el administrador de cada empresa cliente, la asesora comercial, la nutricionista, el jefe de cocina, los cocineros, el bodeguero, los repartidores y el contador. El proceso principal es el pedido diario: la nutricionista publica el menú semanal con sus opciones; cada empresa confirma hasta las 10:00 el número de raciones por opción y las dietas especiales; el jefe de cocina consolida los pedidos y genera la orden de producción; el bodeguero despacha los insumos según las recetas; se cocina, se porciona y se empaca; los repartidores entregan y el cliente firma la recepción; al cierre de mes se factura según lo recibido. El pedido diario pasa por abierto, confirmado, en producción, despachado, entregado, entregado con novedad y anulado. Cada lote de insumo perecible pasa por recibido, en cuarentena, aprobado, en uso, agotado, vencido y desechado. Se manejan empresas, contratos, menús, platos, recetas, insumos, lotes, proveedores, pedidos, dietas especiales, órdenes de producción, rutas de reparto, entregas y facturas. Reglas: después de las 10:00 solo se aceptan cambios de hasta el 5\,\% de las raciones; la ración cuesta 3,50 dólares y la dieta especial 4,20; la carne se rechaza si llega sobre 4 grados Celsius; la entrega tolera 15 minutos de retraso y luego aplica un descuento del 10\,\%. Situaciones excepcionales: un lote de pollo llega en mal estado y obliga a cambiar el menú del día, y una empresa reporta malestar estomacal entre varios trabajadores.
+\needspace{12\baselineskip}
+\subseccion{Caso 16. Parqueadero tarifado con abonados}
+El Parqueadero Central San Camilo (organización ficticia creada para esta actividad) funciona en el centro de Quevedo con 120 plazas distribuidas en tres niveles, de las cuales 40 están reservadas para abonados mensuales. Los tickets son de papel, el tiempo se calcula a mano, la caja no cuadra y abonados con la mensualidad vencida siguen entrando. Intervienen cajeros, supervisor de turno, administrador, clientes ocasionales y abonados.
+
+El proceso principal es la atención de un vehículo. Al llegar, el cajero registra placa y tipo de vehículo (auto, camioneta o moto); si la placa no es de un abonado vigente, emite un ticket con hora de ingreso y plaza asignada. A la salida se lee el ticket, se calcula el valor con la tarifa vigente, se cobra, se emite el comprobante y la plaza queda libre. Al final del turno, el supervisor cierra caja comparando lo cobrado con los tickets cerrados.
+
+Cada ticket pasa por los estados emitido, pagado, cerrado o anulado; solo el supervisor puede anularlo y debe registrar el motivo. Cada contrato de abonado nace como solicitado, pasa a activo cuando se paga la primera mensualidad, queda en mora si 5 días después del vencimiento no hay pago, se suspende a los 10 días (la placa pierde el acceso preferente), se reactiva al saldar la deuda y puede cancelarse con 15 días de aviso.
+
+La primera hora cuesta USD 1,00 y cada fracción adicional de 30 minutos, USD 0,50; las motos pagan la mitad y el máximo diario es USD 8,00. Hay 10 minutos de gracia. Los tickets emitidos conservan la tarifa con la que ingresaron. Si el cliente pierde el ticket, paga el máximo diario tras presentar la matrícula. Un vehículo con más de 72 horas se marca como abandonado.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 17. Centro de reciclaje con pago por material}
+EcoAcopio Los Ríos (organización ficticia creada para esta actividad) es un centro de acopio de Quevedo que compra plástico PET, cartón, papel, vidrio, aluminio y chatarra a recicladores de base, tiendas y hogares, y vende lotes compactados a plantas recicladoras. El dueño no sabe cuánto material entra ni cuánto pagó a cada reciclador, y los precios cambian de palabra. Intervienen los recicladores registrados, el operador de báscula, el cajero, el jefe de bodega, el comprador de lotes y el administrador.
+
+El proceso principal es la recepción y el pago. El operador identifica al reciclador por su código (o lo registra si es nuevo), separa el material por tipo y pesa cada tipo, descontando el recipiente. El sistema aplica el precio por kilo vigente de cada material y genera una boleta de recepción; el cajero paga la boleta en efectivo o por transferencia y el material pasa a la bodega, donde el jefe de bodega lo acumula en lotes por tipo hasta enviarlo a la planta compradora con una guía de despacho.
+
+Cada boleta de recepción pasa por registrada, verificada, pagada o anulada; una boleta verificada no puede modificarse. Cada lote pasa por abierto, completo (al alcanzar el peso mínimo de su tipo), reservado para un comprador, despachado y facturado; si la planta rechaza el lote por contaminación, vuelve a abierto para reclasificarse.
+
+El PET se paga a USD 0,35 el kilo, el cartón a USD 0,08 y el aluminio a USD 0,90; los precios se actualizan solo los lunes. Un lote de PET se completa con 500 kg y uno de cartón con 1\,000 kg. Pagos superiores a USD 50,00 por boleta requieren transferencia. Si el material llega mezclado o húmedo, se descuenta el 15\,\% del peso. Si la báscula falla, se suspende la recepción hasta su calibración.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 18. Agencia de turismo comunitario}
+Senderos del Guayas Alto (organización ficticia creada para esta actividad) es una agencia de Quevedo que vende paquetes de turismo comunitario en cuatro comunidades rurales de Los Ríos: recorridos por fincas cacaoteras, paseos en canoa, talleres de cocina tradicional y hospedaje en casas de familias anfitrionas. Las reservas se anotan en un cuaderno, hay salidas sobrevendidas y familias que cobran tarde. Intervienen el turista, el asesor de ventas, el coordinador de comunidades, el guía local, la familia anfitriona y el contador.
+
+El proceso principal es la venta y operación de una salida. El turista elige un paquete y una fecha de salida programada; el asesor verifica los cupos disponibles, registra a cada viajero del grupo y genera la reserva con el valor total. El turista paga un anticipo y el coordinador confirma con la comunidad la disponibilidad de guía, canoas y hospedaje. El día de la salida, el guía registra la asistencia y las actividades realizadas; al terminar, el contador liquida el pago a cada comunidad y familia según los servicios prestados, y el turista puede dejar una valoración.
+
+Cada reserva pasa por pendiente, confirmada (con anticipo), pagada, realizada, cancelada o no presentada. Cada salida programada pasa por abierta, llena (al agotar cupos), confirmada (cuando alcanza el mínimo de viajeros 72 horas antes), en curso, finalizada o suspendida.
+
+El anticipo es el 30\,\% del valor y el saldo se paga 48 horas antes. Cada salida admite como máximo 16 viajeros y requiere un mínimo de 6. A la comunidad le corresponde el 60\,\% del valor de sus servicios. Si el turista cancela con más de 7 días, recupera el anticipo; con menos, lo pierde. Si una crecida del río impide la salida, se suspende y se ofrece reprogramar o devolver el 100\,\%.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 19. Tienda de repuestos de motos con taller}
+MotoRepuestos El Empalme (organización ficticia creada para esta actividad) tiene un local en Quevedo que vende repuestos y accesorios para motocicletas y, en la parte posterior, un taller con cinco mecánicos. El inventario no coincide con la percha y los mecánicos toman repuestos sin registrarlos, por lo que las órdenes se cobran incompletas. Intervienen el cliente, el vendedor de mostrador, el recepcionista del taller, el mecánico, el jefe de taller, el bodeguero y el proveedor.
+
+El proceso principal es la atención de una moto en el taller. El recepcionista registra al cliente y su moto (placa, marca, modelo, kilometraje), anota la falla reportada y abre una orden de trabajo. El jefe de taller asigna un mecánico, que hace el diagnóstico y propone una cotización con mano de obra y repuestos; si el cliente la aprueba, el mecánico solicita los repuestos a bodega, que los descuenta del inventario. Al terminar, el jefe de taller revisa el trabajo, se emite la factura y se entrega la moto con una garantía.
+
+Cada orden de trabajo pasa por abierta, en diagnóstico, cotizada, aprobada, en reparación, en espera de repuesto, terminada, entregada o rechazada. Cada repuesto en inventario tiene un stock que lo coloca como disponible, bajo mínimo (genera un pedido sugerido al proveedor), agotado o descontinuado.
+
+La mano de obra cuesta USD 12,00 por hora y se cobra mínimo media hora. La garantía es de 30 días o 1\,000 km, lo que ocurra primero. Si una moto terminada no se retira en 15 días, se cobra USD 1,00 diario de bodegaje. Si un repuesto falla dentro de la garantía, se abre una orden de garantía sin costo vinculada a la original. Si el cliente no aprueba la cotización en 3 días, la orden se cierra cobrando solo el diagnóstico de USD 5,00.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 20. Guardería infantil: asistencia y pagos}
+Pequeños Pasos (organización ficticia creada para esta actividad) es una guardería de Quevedo para a niños de 1 a 4 años en tres salas, con jornadas de medio día y de día completo. La asistencia se registra en hojas que se pierden y la secretaria no sabe con certeza qué representantes están atrasados en sus pensiones. En este caso solo se manejan datos operativos ficticios (código del niño, sala, jornada, persona autorizada), no datos de salud ni otros datos sensibles. Intervienen el representante, la secretaria, la educadora de sala, la directora y la persona autorizada para retirar.
+
+El proceso principal es el registro diario de asistencia. Al llegar, la educadora busca al niño en la lista de su sala y registra la hora de ingreso y quién lo entregó. Durante el día anota las actividades realizadas por la sala. A la salida verifica que quien retira esté en la lista de personas autorizadas del niño, registra la hora y la persona; si la salida ocurre después del horario de la jornada, se genera un recargo. Cada mes la secretaria emite la pensión de cada matrícula, registra los pagos y emite los comprobantes.
+
+Cada matrícula pasa por preinscrita, activa (al pagar la inscripción), suspendida, retirada o finalizada al cierre del año lectivo. Cada pensión mensual pasa por emitida, pagada, vencida, en convenio de pago o anulada.
+
+La pensión de medio día es de USD 90,00 y la de día completo de USD 140,00; vence el día 5 de cada mes. Con 2 pensiones vencidas la matrícula se suspende. Cada sala admite como máximo 15 niños. Por cada 15 minutos de retraso en el retiro se cobra USD 3,00. Si se presenta una persona no autorizada, el niño no se entrega y se registra el incidente. Hermanos tienen 10\,\% de descuento.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 21. Aserradero y venta de madera certificada}
+Maderas del Pajonal (organización ficticia creada para esta actividad) es un aserradero ubicado en Buena Fe, Los Ríos, que procesa troncas de teca, laurel y balsa provenientes de plantaciones registradas y vende tablas, vigas y tablones. Sus clientes exigen demostrar el origen legal de cada pieza, pero hoy no es posible saber de qué plantación y guía de movilización salió una tabla vendida. Intervienen el proveedor de plantación, el recepcionista de patio, el operador de sierra, el encargado de secado, el vendedor, el cliente y el responsable de certificación.
+
+El proceso principal va de la recepción de troncas a la venta. El recepcionista registra cada cargamento con su guía de movilización y su plantación de origen, mide y numera cada tronca. El operador de sierra procesa troncas en una orden de aserrado y obtiene piezas con especie, medidas y volumen en pies tablares, agrupadas en paquetes con etiqueta. Los paquetes pasan al horno de secado y luego a bodega. El vendedor registra el pedido del cliente, asigna paquetes, emite la factura y la guía de despacho con el certificado de origen de cada paquete.
+
+Cada tronca pasa por recibida, en patio, aserrada o rechazada. Cada paquete pasa por armado, en secado, seco (cuando la humedad medida es igual o menor al límite), en bodega, reservado, despachado o devuelto; un paquete con humedad mayor vuelve al horno.
+
+La humedad máxima para vender es del 15\,\% y el secado dura como mínimo 10 días. Una guía de movilización ampara como máximo 30 m³ y caduca a los 5 días. Las troncas de una guía caducada se rechazan. Las reservas de paquetes duran 7 días. Si el cliente devuelve un paquete por defectos, se inspecciona y se repone o se emite nota de crédito.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 22. Agua purificada a domicilio}
+Agua Clara Quevedo (organización ficticia creada para esta actividad) purifica y envasa agua en bidones retornables de 20 litros y la reparte a hogares, oficinas y tiendas de Quevedo con cuatro camionetas. Los repartidores anotan en papel y nadie sabe cuántos bidones tiene cada cliente; cada mes se pierden decenas. Intervienen el cliente, la operadora de pedidos, el jefe de despacho, el repartidor, el operario de planta y el administrador.
+
+El proceso principal es la atención de un pedido. La operadora registra al cliente (o lo identifica por su código), su dirección y sector, y la cantidad de bidones solicitados. El jefe de despacho agrupa los pedidos por sector en una ruta diaria, asigna camioneta y repartidor y carga los bidones llenos desde planta. En cada entrega, el repartidor entrega los bidones llenos, recoge los vacíos, cobra en efectivo o registra el crédito y marca la entrega. Al volver, se concilian bidones, dinero y entregas de la ruta.
+
+Cada bidón tiene un número grabado y pasa por en planta, lleno, en ruta, en poder del cliente, vacío recuperado, en lavado o dado de baja (por fisuras o al superar su vida útil). Cada pedido pasa por recibido, programado, en ruta, entregado, no entregado o cancelado.
+
+La recarga cuesta USD 1,50 y el primer bidón tiene una garantía de USD 6,00. Cada bidón se da de baja tras 50 recargas. Una ruta lleva como máximo 120 bidones. Los clientes con crédito pagan cada 15 días y se bloquean con más de USD 30,00 adeudados. Si el cliente no está en casa, el pedido queda como no entregado y se reprograma una sola vez. Si un lote de planta no pasa el control de calidad, sus bidones no salen a ruta.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 23. Cooperativa de taxis por despacho telefónico}
+Cooperativa de Taxis Río Quevedo (organización ficticia creada para esta actividad) agrupa 60 socios con sus unidades y atiende carreras solicitadas por teléfono desde una central de despacho. Hoy la operadora asigna las carreras por radio según quien responde primero, lo que genera quejas de favoritismo, y no hay registro confiable de cuántas carreras hace cada unidad ni de las cuotas que debe cada socio. Intervienen el cliente, la operadora de despacho, el conductor, el socio propietario, el jefe de operaciones y el tesorero.
+
+El proceso principal es el despacho de una carrera. La operadora recibe la llamada, identifica al cliente por su número registrado o lo crea, anota la dirección de origen, el destino y una referencia. El sistema propone la unidad disponible más cercana según la zona en que se reportó; la operadora la asigna y el conductor acepta o rechaza. El conductor informa su llegada, el inicio y el fin de la carrera, y registra el valor cobrado. Cada semana el tesorero emite a cada socio la cuota de la cooperativa según las carreras despachadas.
+
+Cada carrera pasa por solicitada, asignada, aceptada, en espera del cliente, en curso, finalizada, cancelada por el cliente o fallida. Cada unidad pasa por fuera de servicio, disponible, asignada, ocupada o sancionada; una unidad sancionada no recibe carreras.
+
+El conductor tiene 60 segundos para aceptar; si no, la carrera pasa a la siguiente unidad. La carrera mínima es USD 1,50. Si el cliente no aparece en 7 minutos, la carrera es fallida. Tres rechazos en un turno suspenden a la unidad 2 horas. La cuota semanal es USD 10,00 más USD 0,20 por carrera despachada. Si un cliente acumula 3 carreras fallidas en un mes, se le exige confirmar por llamada antes de despachar.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 24. Centro de copiado universitario con impresión bajo pedido}
+Copias Campus Norte (organización ficticia creada para esta actividad) es un centro de copiado ubicado junto a una universidad de Quevedo que imprime, fotocopia, anilla y empasta trabajos. En época de exámenes recibe más de 300 pedidos diarios por correo y memorias USB, se pierden archivos, se imprimen versiones equivocadas y los estudiantes hacen largas filas para preguntar si su trabajo está listo. Intervienen el estudiante o docente cliente, el dependiente de mostrador, el operador de impresión, el encargado de acabados y el administrador.
+
+El proceso principal es el pedido de impresión. El cliente se registra con un código, sube uno o varios archivos y, para cada uno, elige el tipo de papel, tamaño, color o blanco y negro, simple o doble cara, número de copias y acabado (grapado, anillado o empastado). El sistema calcula el precio con la lista vigente y asigna una hora estimada. El cliente paga en línea o en mostrador. El operador asigna el trabajo a una impresora, lo imprime y lo pasa a acabados; cuando está listo se avisa al cliente, que lo retira con su código.
+
+Cada pedido pasa por recibido, pagado, en cola, imprimiendo, en acabados, listo, entregado, cancelado o no retirado. Cada impresora pasa por disponible, ocupada, sin papel o tóner, en mantenimiento o fuera de servicio; los trabajos de una impresora averiada vuelven a la cola.
+
+La página en blanco y negro cuesta USD 0,05 y a color USD 0,25; el anillado, USD 1,00. Pedidos de más de 200 páginas requieren el pago anticipado del 50\,\%. Un pedido listo se guarda 10 días; después pasa a no retirado y se recicla. Los archivos se eliminan a los 15 días. Si el cliente reclama un error de impresión atribuible al centro, se reimprime sin costo.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 25. Organizadora de ferias agrícolas}
+AgroFeria Los Ríos (organización ficticia creada para esta actividad) organiza en Quevedo tres ferias agrícolas al año donde productores, casas comerciales y asociaciones exhiben y venden productos. Hay stands vendidos dos veces y no se sabe qué expositores presentaron sus permisos. Intervienen el expositor, el ejecutivo comercial, el coordinador de logística, el inspector de montaje, el tesorero y el visitante, que compra su entrada.
+
+El proceso principal es la contratación de un stand. Se publica la edición de la feria con su plano de pabellones y stands, cada uno con su tamaño, ubicación y categoría. El expositor se registra, presenta su solicitud indicando la categoría de productos y elige un stand libre. El ejecutivo revisa la solicitud y los documentos requeridos, la aprueba y emite el contrato con el valor; el expositor paga en cuotas. El coordinador programa el montaje y el inspector verifica el stand antes de la apertura. Al cierre se registra el desmontaje y la devolución del depósito.
+
+Cada solicitud pasa por enviada, observada, aprobada o rechazada. Cada stand, en cada edición, pasa por libre, reservado (bloqueado 72 horas mientras se paga la primera cuota), contratado, montado, inspeccionado, ocupado durante la feria y liberado. Cada edición pasa por planificada, en venta, cerrada a la venta, en curso y finalizada.
+
+El stand de 9 m² cuesta USD 250,00 y el de 18 m², USD 450,00; la primera cuota es del 40\,\% y el saldo vence 15 días antes de la feria. El depósito de garantía es USD 50,00. La venta cierra 10 días antes. Si el saldo no se paga, el stand se libera y se pierde la primera cuota. Si el inspector encuentra conexiones eléctricas inseguras, el stand no abre hasta corregirlas.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 26. Hacienda ganadera: control sanitario y pesaje}
+Hacienda La Esperanza del Baba (organización ficticia creada para esta actividad) cría ganado de carne y doble propósito en Valencia, Los Ríos, con unas 600 cabezas distribuidas en potreros. Los registros de vacunación, desparasitación y pesaje se llevan en libretas que se mojan o se pierden, por lo que se repiten vacunas, se olvidan refuerzos y no se puede calcular cuánto gana de peso cada lote. El caso trata solo de datos de los animales, no de datos médicos de personas. Intervienen el vaquero, el mayordomo, el médico veterinario, el bodeguero de insumos y el administrador.
+
+El proceso principal es la jornada de manejo sanitario y pesaje. El mayordomo programa la jornada para un lote y un potrero; los animales pasan por la manga, donde el vaquero lee el arete de cada uno. Se registra el peso en la báscula y el veterinario aplica los tratamientos del plan sanitario (vacuna, desparasitante o vitamina), anotando producto, lote del producto y dosis, que se descuenta de bodega. Si un animal presenta signos de enfermedad, se registra el hallazgo y se aparta. Al final se actualiza el potrero de cada animal y se calcula la ganancia diaria de peso del lote.
+
+Cada animal pasa por nacido o comprado, en crecimiento, en ceba, en cuarentena, en tratamiento, listo para venta, vendido o muerto. Cada tratamiento programado pasa por pendiente, aplicado, vencido o anulado.
+
+Un animal tratado con antibiótico no puede venderse hasta cumplir 21 días de retiro. Los animales comprados permanecen 15 días en cuarentena. Un bovino está listo para venta al superar los 450 kg. Un potrero admite como máximo 2 animales por hectárea. Si un tratamiento se atrasa más de 7 días, se alerta al veterinario. Si muere un animal, se registra la causa probable y se revisa su lote.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 27. Servicio de internet rural}
+ConectaRío (organización ficticia creada para esta actividad) es un proveedor de internet inalámbrico que atiende recintos rurales de Quevedo, Mocache y Ventanas desde ocho antenas repetidoras. Los contratos están en carpetas, las instalaciones se coordinan por llamadas y las averías se reportan por mensajería sin número de seguimiento, así que hay clientes que esperan semanas y otros que siguen conectados sin pagar. Intervienen el cliente, el asesor comercial, el coordinador técnico, el técnico instalador, el agente de soporte y el cajero.
+
+El proceso principal es la contratación e instalación del servicio. El asesor registra al solicitante y la ubicación de su vivienda, el coordinador verifica la cobertura desde la antena más cercana mediante una visita de factibilidad y, si es viable, se firma el contrato con el plan elegido. Se programa la instalación, se asigna un técnico, que instala el equipo receptor (con número de serie), lo enlaza a la antena y registra la prueba de velocidad. El servicio se activa y cada mes se emite la factura. Cuando el cliente reporta una avería, el agente abre un ticket y, si no se resuelve a distancia, se agenda una visita técnica.
+
+Cada contrato pasa por solicitado, factible o no factible, firmado, activo, suspendido por mora, cortado o terminado. Cada ticket de avería pasa por abierto, diagnosticado, en visita, resuelto, cerrado o reabierto.
+
+El plan básico cuesta USD 20,00 y el avanzado, USD 30,00; la instalación, USD 35,00. La factura vence el día 10; a los 5 días de vencida se suspende y a los 45 días se corta y se retira el equipo. La reconexión cuesta USD 5,00. Una antena admite como máximo 40 clientes. Una avería debe atenderse en 48 horas. Si un ticket se reabre dentro de 7 días, se asigna a otro técnico.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 28. Asociación de artesanos con tienda en línea}
+Manos del Trópico (organización ficticia creada para esta actividad) es una asociación de 35 artesanos de Los Ríos que elaboran productos de paja toquilla, tagua, balsa y fibra de plátano. Quiere vender en línea desde Quevedo, pero hoy recibe pedidos por mensajería, no sabe qué piezas tiene cada artesano y paga a cada uno con retrasos y sin detalle. Intervienen el cliente comprador, el artesano socio, la coordinadora de catálogo, el responsable de empaque y envío, la tesorera y el transportista.
+
+El proceso principal es la venta en línea. La coordinadora publica cada producto en el catálogo con su categoría, fotos, precio y el artesano que lo elabora; el artesano declara las existencias que tiene listas o indica que es por encargo. El cliente arma su carrito, registra la dirección de envío, elige la forma de entrega y paga. El sistema avisa al artesano, que entrega las piezas en el local de la asociación; el responsable de empaque las revisa, prepara el paquete y lo entrega al transportista con número de guía. Al confirmarse la entrega, la tesorera liquida a cada artesano.
+
+Cada pedido pasa por en carrito, pagado, en preparación, despachado, entregado, en devolución, devuelto o cancelado. Cada producto pasa por borrador, publicado, agotado, por encargo o retirado; se agota automáticamente cuando sus existencias llegan a cero.
+
+La asociación retiene el 12\,\% de cada venta y liquida a los artesanos cada 15 días. Los productos por encargo tienen 10 días de elaboración. El envío dentro de Los Ríos cuesta USD 3,00 y es gratis en compras mayores a USD 60,00. El cliente puede devolver en 8 días si la pieza llega dañada. Si el artesano no entrega en 3 días una pieza declarada en existencia, el pedido se reasigna o se reembolsa.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 29. Centro de capacitación con certificados}
+Instituto de Capacitación Quevedo Avanza (organización ficticia creada para esta actividad) dicta cursos cortos de ofimática, contabilidad, atención al cliente y seguridad industrial para trabajadores y empresas de Los Ríos. Los certificados se elaboran a mano, a veces con nombres equivocados, y los empleadores llaman para preguntar si un certificado es auténtico, sin que nadie pueda confirmarlo rápido. Intervienen el participante, la empresa auspiciante, la secretaria académica, el instructor, el coordinador académico y la directora, que firma los certificados.
+
+El proceso principal va de la inscripción a la certificación. El coordinador abre la oferta de cada curso con su programa, horas, horario, aula, instructor y cupo. El participante (o la empresa que lo auspicia) se inscribe y paga; la secretaria confirma la matrícula. En cada sesión el instructor registra la asistencia; al final registra la nota de la evaluación. El sistema determina quién aprueba, la secretaria genera el certificado con un código único de verificación, la directora lo firma y el participante lo descarga. Cualquier persona puede consultar la validez de un certificado con su código.
+
+Cada curso ofertado pasa por planificado, en inscripción, confirmado (al alcanzar el cupo mínimo), en ejecución, finalizado o cancelado. Cada certificado pasa por generado, firmado, emitido, corregido o revocado; un certificado revocado responde como no válido en la consulta.
+
+Un curso se abre con mínimo 8 y máximo 25 participantes. Para aprobar se exige 80\,\% de asistencia y nota mínima de 7 sobre 10. El curso de 40 horas cuesta USD 60,00; las empresas que inscriben 5 o más personas tienen 15\,\% de descuento. Si el curso se cancela, se devuelve el 100\,\%. Si se detecta un error en el certificado, se emite uno corregido y el anterior queda revocado.
+
+\needspace{12\baselineskip}
+\subseccion{Caso 30. Empresa de seguridad privada: turnos y rondas}
+Centinela del Litoral (organización ficticia creada para esta actividad) presta servicios de guardianía a urbanizaciones, bodegas y locales comerciales de Quevedo con 70 guardias. Los turnos se arman en una pizarra, hay puestos que quedan sin cubrir cuando un guardia falta y los clientes reclaman que las rondas nocturnas no se cumplen, sin que la empresa pueda demostrar lo contrario. Intervienen el guardia, el supervisor de zona, el jefe de operaciones, el cliente contratante, la central de monitoreo y el responsable de nómina.
+
+El proceso principal es la ejecución de un turno. Por cada contrato de servicio se definen puestos de vigilancia y, en cada puesto, una ruta de ronda con puntos de control. El jefe de operaciones planifica los turnos del mes asignando guardias a puestos. Al inicio del turno, el guardia marca su ingreso en el puesto y recibe las novedades del turno anterior. Durante el turno recorre la ruta y registra cada punto de control leyendo su código; anota novedades o incidentes. Al terminar, entrega el puesto al relevo. El supervisor revisa el cumplimiento y la central alerta si falta una marcación.
+
+Cada turno pasa por planificado, iniciado, en curso, con relevo pendiente, cerrado o no cubierto. Cada incidente pasa por reportado, en atención, escalado al cliente o a la policía, resuelto y cerrado.
+
+Un turno dura 12 horas y ningún guardia puede trabajar más de 2 turnos seguidos. En horario nocturno se exige una ronda completa cada 2 horas, con tolerancia de 15 minutos por punto. Si el guardia no marca ingreso en 20 minutos, el supervisor envía un reemplazo. Si una ronda queda incompleta, se registra como novedad y se informa al cliente. Tres faltas injustificadas en un mes generan una sanción en nómina.
+
+\bibliographystyle{unsrtnat}
+\bibliography{referencias}
+
+\end{document}

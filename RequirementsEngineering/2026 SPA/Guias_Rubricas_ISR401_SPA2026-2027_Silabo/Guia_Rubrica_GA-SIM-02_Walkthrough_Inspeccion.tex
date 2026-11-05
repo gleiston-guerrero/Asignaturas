@@ -1,0 +1,486 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% GA-SIM-02 — Simulación: walkthrough e inspección formal sobre un ERS
+% Ingeniería de Requerimientos (ISR-401) · UTEQ · SPA 2026-2027
+% Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% babel no disponible en este entorno
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage{needspace}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Textos en español (sin babel) ----------
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+\definecolor{lightgreen}{HTML}{DCEFE3}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ \,$\cdot$\, Ingeniería de Requerimientos (ISR-401)}
+\rhead{\footnotesize GA-SIM-02 \,$\cdot$\, SPA 2026--2027}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\seccion}[1]{\section{\textcolor{utegreendk}{#1}}}
+\newcommand{\subseccion}[1]{\subsection{\textcolor{midblue}{#1}}}
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajapiso}[1][]{colback=lightred,colframe=red!60!black,boxrule=1pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajaaviso}[1][]{colback=lightgold,colframe=gold!80!black,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+
+\begin{document}
+
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\vspace{4pt}
+\begin{center}
+	{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software \,\textcolor{gold}{$\bullet$}\, Ingeniería de Requerimientos (ISR-401)}\\[8pt]
+	{\LARGE\textbf{\textcolor{utegreendk}{GUÍA Y RÚBRICA DE EVALUACIÓN}}}\\[4pt]
+	{\large\textbf{\textcolor{midblue}{ACTIVIDAD FORMATIVA}}}\\[6pt]
+	{\Large\textbf{GA-SIM-02}}\\[2pt]
+	{\large Simulación: walkthrough e inspección formal sobre un ERS}
+\end{center}
+
+\vspace{2pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+\seccion{Datos generales}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Detalle}\\
+	\hline
+	Asignatura & Ingeniería de Requerimientos (ISR-401) \,$\cdot$\, 4.\textsuperscript{o} nivel \,$\cdot$\, Paralelo A\\
+	\hline
+	\rowcolor{rowgray} Docente & Gleiston Cicerón Guerrero Ulloa, PhD \,$\cdot$\, \texttt{gguerrero@uteq.edu.ec}\\
+	\hline
+	Unidad & Unidad 4. Validación, Gestión y Consideraciones Prácticas\\
+	\hline
+	\rowcolor{rowgray} Resultado de aprendizaje & Aplica técnicas de validación, gestión del cambio y trazabilidad de requisitos, asegurando calidad.\\
+	\hline
+	Carácter & Formativo: sin calificación; su entrega válida es requisito de la sumativa vinculada\\
+	\hline
+	\rowcolor{rowgray} Prepara (sumativas vinculadas) & GA-PE-04, EV-PRAC-04\\
+	\hline
+	Modalidad & Grupal (equipo del PFC)\\
+	\hline
+	\rowcolor{rowgray} Semana & 12 (11 de enero -- 17 de enero de 2027)\\
+	\hline
+	Publicación de la guía & lunes 11 de enero de 2027\\
+	\hline
+	\rowcolor{rowgray} Cierre & sábado 16 de enero de 2027, a las 23:59\\
+	\hline
+	Repositorio & Repositorio del equipo \texttt{ISR401-<SIGLA>}\\
+	\hline
+\end{tabularx}
+
+\seccion{Propósito}
+
+Ensayar los roles y las fases de una inspección formal sobre un fragmento de ERS preparado por el docente, antes de inspeccionar la ERS propia en la GA-PE-04.
+
+\seccion{Fundamento}
+
+El walkthrough es una revisión guiada por el autor; la inspección de Fagan es una revisión formal con roles, preparación individual, reunión y seguimiento \citep{fagan_1976,pohl_2025}.
+
+\seccion{Desarrollo de la actividad}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=4pt]
+	\item \textbf{Walkthrough.} Un integrante presenta el fragmento de ERS del Anexo A y los demás anotan dudas y defectos.
+	\item \textbf{Inspección.} Asignen los roles de Fagan; cada inspector revisa 20 minutos con la lista de verificación y registra los defectos.
+	\item \textbf{Reunión.} Consoliden el registro de defectos con tipo y severidad en 25 minutos.
+	\item \textbf{Comparación.} Comparen cuántos defectos encontró el walkthrough y cuántos la inspección, y expliquen la diferencia.
+\end{enumerate}
+
+\seccion{Productos entregables}
+
+{\small
+\begin{longtable}{|L{0.27\linewidth}|L{0.43\linewidth}|L{0.21\linewidth}|}
+	\caption{Productos que deben estar en el repositorio al cierre.}\\
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endhead
+	\texttt{GA-SIM-02/\allowbreak{}} & Registros individuales, registro consolidado y comparación & 1\\
+	\hline
+\end{longtable}
+}
+
+\seccion{Normas de entrega}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=3pt]
+	\item \textbf{Repositorio.} Todo el trabajo se desarrolla en el repositorio del equipo \texttt{ISR401-<SIGLA>}, que debe ser público en GitHub. Allí deben estar los fuentes (\texttt{.tex}, \texttt{.bib}, figuras, fuentes editables de los modelos y evidencias) y el PDF compilado.
+	\item \textbf{Documento en el SGA.} En la tarea del SGA se sube solamente un PDF de \textbf{una sola página} con los datos informativos: estudiante o estudiantes, código y nombre de la tarea, fecha límite de entrega y la URL del repositorio escrita completa en una sola línea. No se sube ningún otro archivo.
+	\item \textbf{\LaTeX{} reproducible.} El PDF debe poder regenerarse clonando el repositorio y compilando el archivo \texttt{.tex}. El \texttt{README.md} documenta compilador, archivo principal, orden de comandos y dependencias.
+	\item \textbf{Referencias.} Estilo IEEE. Toda referencia debe existir y sus datos (autores, año, título, revista o editorial, volumen, número, páginas y DOI o ISBN) deben corresponder exactamente a la obra real.
+	\item \textbf{Plazo.} El cierre es el sábado 16 de enero de 2027, a las 23:59. Se evalúa el contenido del repositorio hasta ese momento; lo agregado después no se considera.
+	\item \textbf{Trabajo anticipado.} El trabajo se realiza durante la semana, no a última hora; el historial de commits debe mostrarlo. La lista de cotejo registra la constancia observada.
+	\item \textbf{Datos personales.} Ningún dato personal de terceros (cédulas, teléfonos, correos personales, audios o videos de participantes, consentimientos firmados) se publica en el repositorio. Esas evidencias se guardan en una carpeta institucional privada (cuenta \texttt{@uteq.edu.ec}) compartida con el docente, y en el repositorio se registra un manifiesto con nombre de archivo, fecha, duración y huella SHA-256 \citep{lopdp_2021}.
+	\item \textbf{Uso de IA como apoyo.} Si se usa una herramienta de IA solo como apoyo (ortografía, error de compilación), se declara en una sección del documento: herramienta, versión, propósito y cómo se verificó lo obtenido.
+\end{enumerate}
+
+\seccion{Condiciones de entrega válida}
+
+\begin{cajapiso}[title={Condiciones de entrega válida: su incumplimiento equivale a no entregar}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{PDF de una sola página con datos informativos y URL.} En el SGA se sube solamente un PDF de UNA SOLA página con los datos informativos (estudiante o estudiantes, tarea, fecha límite de entrega) y, en una sola línea, la URL del repositorio. Si el PDF tiene más de una página, si se suben otros archivos, si la URL no cabe en una sola línea o está rota, o si el repositorio no es accesible, la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar la sumativa vinculada, en la que obtiene CERO.
+		\item \textbf{PDF reproducible.} Si el PDF no se genera correctamente a partir del \LaTeX{} al clonar el repositorio y compilar el archivo \texttt{.tex} siguiendo el \texttt{README.md} (compilador, orden de comandos, archivo principal y dependencias), la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar la sumativa vinculada, en la que obtiene CERO.
+		\item \textbf{Plazo.} Si el contenido evaluable se sube después de la fecha y hora de cierre, la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar la sumativa vinculada, en la que obtiene CERO.
+		\item \textbf{Integridad.} Plagio verificado, cualquiera de los indicios graves G1 a G6 de uso de IA, o contenido generado por IA presentado como propio: la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar la sumativa vinculada, en la que obtiene CERO, sin perjuicio de las acciones disciplinarias que correspondan.
+	\end{enumerate}
+\end{cajapiso}
+
+\seccion{Integridad académica e indicios de uso de IA}
+
+Todo trabajo debe ser de autoría propia. Se aplica el Código de Ética de la ACM \citep{acm_code_2018} y la sección 6.1 del encuadre.
+
+\begin{cajapiso}[title={Indicios graves de uso de IA: cada uno, por sí solo, implica CERO (P4)}]
+	\begin{enumerate}[label=\textbf{G\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{Referencias con datos que no corresponden a la obra real:} DOI que lleva a una obra con autores, título, año, revista, volumen o páginas diferentes; DOI, ISBN o URL inexistentes; obras que no existen.
+		\item \textbf{Citas que la fuente no respalda:} afirmaciones, cifras o citas textuales atribuidas a una fuente que no las contiene, o cláusulas, secciones o tablas de una norma (IEEE 29148, ISO/\allowbreak{}IEC 25010) que no existen o no dicen lo afirmado.
+		\item \textbf{Restos de un asistente de IA} en el documento, el código, los comentarios o los commits (por ejemplo, «Claro, aquí tienes\ldots», «Como modelo de lenguaje\ldots»).
+		\item \textbf{Evidencias de campo fabricadas:} entrevistas, encuestas, participantes, transcripciones, actas o fotografías que no existen o no tienen respaldo original.
+		\item \textbf{Resultados o artefactos inexistentes:} el texto describe modelos, matrices, pruebas o métricas que no están en el repositorio o no coinciden con él.
+		\item \textbf{Incapacidad de explicar lo entregado:} el estudiante no puede justificar ni modificar, cuando se le pide, lo que escribió, modeló o especificó.
+	\end{enumerate}
+\end{cajapiso}
+
+\begin{cajaaviso}[title={Indicios complementarios (se acumulan)}]
+	\begin{enumerate}[label=\textbf{I\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item Redacción uniforme de principio a fin, o estilo distinto al del estudiante en otras entregas o en su exposición oral.
+		\item Uso excesivo de los mismos conectores y fórmulas («además», «cabe destacar», «es importante señalar», «en conclusión»).
+		\item Contenido genérico: requisitos, actores o reglas aplicables a cualquier sistema, sin relación con lo elicitado.
+		\item Entrega en uno o pocos commits masivos, o mensajes de commit idénticos o automáticos.
+		\item Residuos de formato ajeno a \LaTeX{} (marcas de Markdown, emojis) o metadatos del PDF de otra herramienta.
+		\item Estructura, redacción o errores muy similares entre estudiantes o equipos distintos.
+		\item Traducción literal o mezcla de idiomas sin justificación.
+	\end{enumerate}
+	Con dos indicios complementarios se resta 1,5 puntos (nivel B) y con tres o más se restan 3,0 (nivel C). La declaración de uso de IA no exime de responsabilidad ni anula estos indicios.
+\end{cajaaviso}
+
+\seccion{Lista de cotejo para la retroalimentación}
+
+La actividad no tiene calificación. El docente marca cada indicador y escribe una observación que el estudiante debe atender en la actividad sumativa vinculada. \textbf{L} = Logrado (cumple con la calidad descrita); \textbf{EP} = En proceso (presente pero incompleto, impreciso o con errores que se señalan); \textbf{NL} = No logrado (ausente, incorrecto o no verificable). Que un elemento esté presente no basta: se valora su calidad.
+
+{\small
+\begin{longtable}{|C{0.04\linewidth}|L{0.47\linewidth}|C{0.035\linewidth}|C{0.035\linewidth}|C{0.035\linewidth}|L{0.17\linewidth}|}
+	\caption{Lista de cotejo de GA-SIM-02.}\\
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Indicador y calidad esperada (Logrado)} & \thdr{L} & \thdr{EP} & \thdr{NL} & \thdr{Observación}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Indicador y calidad esperada (Logrado)} & \thdr{L} & \thdr{EP} & \thdr{NL} & \thdr{Observación}\\
+	\hline
+	\endhead
+	1 & Roles de Fagan asignados y ejercidos. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	2 & Registros individuales previos a la reunión (commits de cada inspector). & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	3 & Defectos clasificados por tipo y severidad. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	4 & Comparación argumentada entre walkthrough e inspección. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	5 & Participación de todos los integrantes. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+\end{longtable}
+}
+
+\begin{cajaclave}[title={Cómo se usa esta retroalimentación}]
+	El docente devuelve la lista de cotejo en el SGA antes de la sesión siguiente. Cada indicador marcado como EP o NL debe corregirse antes de presentar GA-PE-04 y EV-PRAC-04; el docente verificará esa corrección al calificarla. Entregar esta formativa de forma válida es requisito para presentar GA-PE-04 y EV-PRAC-04.
+\end{cajaclave}
+
+% ============================================================
+% ANEXOS: material que entrega el docente
+% ============================================================
+\clearpage
+% =====================================================================
+% GA-SIM-02 · Anexo A: Fragmento de ERS para inspeccionar
+% Lista de verificación y formato del registro de defectos.
+% La clave de defectos sembrados está en clave_GA-SIM-02.txt (no se publica).
+% =====================================================================
+\seccion{Anexo A. Fragmento de ERS para inspeccionar}
+
+El siguiente fragmento de especificación de requisitos de software (ERS) fue preparado por el docente para esta actividad. La universidad, la facultad, las personas y los datos que aparecen son ficticios. Revíselo como si se tratara de un documento real que el equipo de desarrollo le entrega para su revisión antes de aprobarlo.
+
+\begin{cajaclave}[title={Datos del documento}]
+	\begin{tabularx}{\linewidth}{L{0.22\linewidth}Y}
+		Documento & Especificación de Requisitos de Software del Sistema de Préstamo de Equipos de Laboratorio (SIPEL)\\
+		Organización & Facultad de Ciencias Informáticas y Electrónica, Universidad Estatal Ribera de Quevedo (organización ficticia creada para esta actividad), Quevedo, provincia de Los Ríos\\
+		Versión & 0.3 (borrador para revisión)\\
+		Elaborado por & Equipo de desarrollo del SIPEL (personas ficticias)\\
+	\end{tabularx}
+\end{cajaclave}
+
+\needspace{4\baselineskip}
+\vspace{4pt}{\large\bfseries\color{midblue}1. Introducción}\par\vspace{4pt}
+
+\textbf{1.1 Propósito.} Este documento describe los requisitos del Sistema de Préstamo de Equipos de Laboratorio (SIPEL) de la Facultad de Ciencias Informáticas y Electrónica. Está dirigido al decanato, a los encargados de laboratorio, al Departamento de Tecnologías de la Información (TI) y al equipo de desarrollo, y servirá como base para el diseño, la construcción y las pruebas de aceptación del sistema.
+
+\textbf{1.2 Alcance.} El SIPEL será una aplicación web que permitirá a estudiantes y docentes de la facultad consultar, reservar y solicitar en préstamo equipos de los laboratorios (laptops, proyectores y kits Arduino), y a los encargados de laboratorio registrar las entregas, las devoluciones y el inventario. El sistema reemplazará el cuaderno de préstamos y la hoja de cálculo que se usan hoy en los tres laboratorios de la facultad. Quedan fuera del alcance el mantenimiento técnico de los equipos, la compra de equipos nuevos y el cobro de multas o cualquier otro pago; según el reglamento de laboratorios, las sanciones por incumplimiento se limitan a la suspensión temporal del servicio de préstamo.
+
+\textbf{1.3 Definiciones.}
+
+\begin{itemize}[leftmargin=18pt,itemsep=2pt]
+	\item \textbf{Usuario:} estudiante con matrícula vigente o docente con contrato vigente en la facultad, que solicita equipos en préstamo.
+	\item \textbf{Encargado de laboratorio:} servidor de la facultad responsable de entregar, recibir e inventariar los equipos de un laboratorio.
+	\item \textbf{Equipo:} bien inventariado de un laboratorio que puede prestarse: laptop, proyector o kit Arduino.
+	\item \textbf{Préstamo:} entrega temporal de un equipo a un usuario por un plazo máximo de tres días hábiles.
+	\item \textbf{Reserva:} solicitud de un equipo para una fecha futura, que el encargado de laboratorio aprueba o rechaza.
+	\item \textbf{Día hábil:} día de lunes a viernes que no sea feriado según el calendario académico de la universidad.
+\end{itemize}
+
+\needspace{4\baselineskip}
+\vspace{4pt}{\large\bfseries\color{midblue}2. Descripción general}\par\vspace{4pt}
+
+\textbf{2.1 Perspectiva del producto.} El SIPEL es un sistema nuevo e independiente. Se comunicará con el sistema académico de la universidad para comprobar si un estudiante tiene matrícula vigente o si un docente tiene contrato vigente. No se integra con el sistema financiero de la universidad.
+
+\textbf{2.2 Funciones del producto.} En términos generales, el SIPEL permitirá: (a) consultar la disponibilidad de los equipos; (b) reservar equipos; (c) registrar préstamos y devoluciones; (d) renovar un préstamo vigente una sola vez; (e) enviar recordatorios a los usuarios; (f) administrar el inventario de equipos; y (g) emitir reportes para el decanato.
+
+\textbf{2.3 Usuarios y sus características.} Los estudiantes (alrededor de 1\,200 en la facultad) usan el sistema desde su teléfono o desde las computadoras de la facultad; la mayoría tiene experiencia con aplicaciones web. Los docentes (alrededor de 60) solicitan sobre todo proyectores y kits Arduino para sus clases. Los encargados de laboratorio (tres, uno por laboratorio) usan el sistema durante toda su jornada desde una computadora de escritorio. El decanato solo consulta reportes. El personal administrativo de la facultad no utilizará el sistema; sus necesidades de equipos se atienden por otro trámite.
+
+\textbf{2.4 Restricciones.} El sistema se instalará en el servidor virtual que asigna el Departamento de TI. Por la política de ahorro de energía de la universidad, ese servidor permanece apagado desde el viernes a las 20:00 hasta el lunes a las 06:00. El sistema debe cumplir el reglamento de laboratorios de la facultad y la normativa ecuatoriana de protección de datos personales.
+
+\textbf{2.5 Supuestos y dependencias.} Se asume que todos los equipos tienen una etiqueta con código QR pegada antes de la puesta en marcha, que todos los usuarios tienen una cuenta de correo institucional activa y que el Departamento de TI mantendrá disponible el servicio web de consulta del sistema académico.
+
+\needspace{4\baselineskip}
+\vspace{4pt}{\large\bfseries\color{midblue}3. Requisitos específicos}\par\vspace{4pt}
+
+\textbf{3.1 Requisitos funcionales.} Prioridad: Alta, Media o Baja. Fuentes: E-01 (entrevista a encargados de laboratorio), T-01 (taller con estudiantes), D-01 (reglamento de laboratorios de la facultad), DEC (decanato), DTI (Departamento de TI).
+
+{\small
+	\begin{longtable}{L{0.08\linewidth}L{0.58\linewidth}C{0.11\linewidth}C{0.11\linewidth}}
+		\hline
+		\thdr{ID} & \thdr{Requisito} & \thdr{Prioridad} & \thdr{Fuente}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{ID} & \thdr{Requisito} & \thdr{Prioridad} & \thdr{Fuente}\\
+		\hline
+		\endhead
+		RF-01 & El sistema debe permitir que el usuario inicie sesión con su nombre de usuario y su contraseña institucionales. & Alta & DTI\\
+		\hline
+		\rowcolor{rowgray} RF-02 & El sistema debe comprobar en el sistema académico que el estudiante tenga matrícula vigente, o que el docente tenga contrato vigente, antes de aceptar una solicitud de préstamo. & Alta & D-01\\
+		\hline
+		RF-03 & El sistema debe permitir buscar equipos de forma rápida y fácil. & Media & T-01\\
+		\hline
+		\rowcolor{rowgray} RF-04 & El sistema debe mostrar, para cada equipo, su código de inventario, su tipo, su laboratorio y su estado (disponible, prestado, en mantenimiento o dado de baja). & Alta & E-01\\
+		\hline
+		RF-05 & El encargado de laboratorio debe poder registrar un equipo nuevo indicando su código de inventario, tipo (laptop, proyector, kit Arduino, etc.), número de serie, laboratorio y fecha de adquisición. & Alta & E-01\\
+		\hline
+		\rowcolor{rowgray} RF-06 & El usuario debe poder reservar un equipo con suficiente anticipación. & Media & T-01\\
+		\hline
+		RF-07 & El sistema debe asignar a cada préstamo un plazo de cinco días hábiles si el usuario es estudiante y de quince días hábiles si es docente. & Alta & D-01\\
+		\hline
+		\rowcolor{rowgray} RF-08 & El sistema debe registrar la entrega del equipo con la firma digital del usuario y debe enviar un comprobante en PDF a su correo institucional. & Alta & E-01\\
+		\hline
+		RF-09 & El encargado de laboratorio debe poder registrar la devolución de un equipo indicando la fecha, la hora y el estado en que lo recibe (bueno, con daño leve o con daño grave). & Alta & E-01\\
+		\hline
+		\rowcolor{rowgray} RF-10 & El sistema debe enviar al usuario un recordatorio a su correo institucional 24 horas antes de que venza el plazo de su préstamo. & Media & T-01\\
+		\hline
+		RF-11 & El sistema debe indicar el estado de cada equipo: disponible, prestado, en mantenimiento o dado de baja. & Media & T-01\\
+		\hline
+		\rowcolor{rowgray} RF-12 & El sistema debe impedir que un usuario tenga más de dos equipos prestados al mismo tiempo. & & D-01\\
+		\hline
+		RF-13 & El sistema debe calcular una multa de USD 1,00 por cada día de retraso en la devolución y permitir que el usuario la pague con tarjeta desde la aplicación. & Media & DEC\\
+		\hline
+		\rowcolor{rowgray} RF-14 & El usuario debe poder dar de baja un equipo dañado registrando el motivo de la baja. & Media & E-01\\
+		\hline
+		RF-15 & El personal administrativo de la facultad debe poder solicitar proyectores en préstamo para eventos institucionales. & Baja & DEC\\
+		\hline
+		\rowcolor{rowgray} RF-16 & El sistema debe guardar cada préstamo en la tabla \texttt{tbl\_prestamo} de la base de datos relacional mediante el procedimiento almacenado \texttt{sp\_registrar\_prestamo}. & Alta & DTI\\
+		\hline
+		RF-17 & El sistema debe generar los reportes estadísticos que defina el decanato (TBD). & Media & DEC\\
+		\hline
+		\rowcolor{rowgray} RF-18 & El encargado de laboratorio debe poder consultar el historial de préstamos de un equipo filtrado por un rango de fechas. & Media & \\
+		\hline
+	\end{longtable}
+}
+
+\textbf{3.2 Requisitos de calidad.}
+
+{\small
+	\begin{longtable}{L{0.08\linewidth}L{0.58\linewidth}C{0.11\linewidth}C{0.11\linewidth}}
+		\hline
+		\thdr{ID} & \thdr{Requisito} & \thdr{Prioridad} & \thdr{Fuente}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{ID} & \thdr{Requisito} & \thdr{Prioridad} & \thdr{Fuente}\\
+		\hline
+		\endhead
+		RC-01 & El sistema debe responder rápidamente a las consultas de los usuarios. & Alta & T-01\\
+		\hline
+		\rowcolor{rowgray} RC-02 & El sistema debe completar el registro de un préstamo, desde la lectura del código QR hasta la confirmación en pantalla, en no más de 3 segundos en el 95\,\% de los casos, con hasta 50 usuarios conectados al mismo tiempo. & Media & E-01\\
+		\hline
+		RC-03 & La interfaz debe ser fácil de usar e intuitiva para todos los usuarios. & Media & T-01\\
+		\hline
+		\rowcolor{rowgray} RC-04 & El sistema debe estar disponible el 99,9\,\% del tiempo, las 24 horas del día, los 7 días de la semana. & Alta & DEC\\
+		\hline
+		RC-05 & Los datos personales de los usuarios deben protegerse de forma adecuada. & Alta & DTI\\
+		\hline
+		\rowcolor{rowgray} RC-06 & El sistema debe conservar durante al menos dos años una bitácora de cada alta, baja y modificación de equipos, con el nombre del responsable, la fecha y la hora del cambio. & Media & D-01\\
+		\hline
+	\end{longtable}
+}
+
+\textbf{3.3 Requisitos de interfaz y restricciones.}
+
+{\small
+	\begin{longtable}{L{0.08\linewidth}L{0.58\linewidth}C{0.11\linewidth}C{0.11\linewidth}}
+		\hline
+		\thdr{ID} & \thdr{Requisito} & \thdr{Prioridad} & \thdr{Fuente}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{ID} & \thdr{Requisito} & \thdr{Prioridad} & \thdr{Fuente}\\
+		\hline
+		\endhead
+		RI-01 & El sistema debe consultar la matrícula y el contrato vigentes mediante el servicio web del sistema académico de la universidad, que intercambia datos en formato JSON. & Alta & DTI\\
+		\hline
+		\rowcolor{rowgray} RI-02 & El sistema debe funcionar en el servidor virtual que asigna el Departamento de TI (4 núcleos, 8 GB de memoria RAM y un sistema operativo de software libre). & Alta & DTI\\
+		\hline
+		RI-03 & Los reportes deben poder exportarse en los formatos habituales. & Baja & DEC\\
+		\hline
+	\end{longtable}
+}
+
+\subseccion{Lista de verificación para la inspección}
+
+Use esta lista durante la preparación individual de 20 minutos. Cuando una respuesta sea «no», registre el defecto en el formato de la sección siguiente. Las preguntas se inspiran en las características de cada requisito, de un conjunto de requisitos y del lenguaje de los requisitos que propone ISO/IEC/IEEE 29148:2018 (5.2.5, 5.2.6 y 5.2.7) \citep{iso29148_2018}.
+
+{\small
+	\begin{longtable}{C{0.06\linewidth}L{0.18\linewidth}L{0.68\linewidth}}
+		\hline
+		\thdr{N.º} & \thdr{Grupo} & \thdr{Pregunta de verificación}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{N.º} & \thdr{Grupo} & \thdr{Pregunta de verificación}\\
+		\hline
+		\endhead
+		1 & Requisito individual & ¿El requisito expresa una sola necesidad, con un solo «debe»?\\
+		\hline
+		\rowcolor{rowgray} 2 & Requisito individual & ¿Se puede comprobar con una prueba, una inspección o una medición con un criterio de aceptación claro?\\
+		\hline
+		3 & Requisito individual & ¿Describe qué debe hacer el sistema y no cómo construirlo (tablas, procedimientos, tecnologías)?\\
+		\hline
+		\rowcolor{rowgray} 4 & Requisito individual & ¿Es correcto respecto al alcance, las restricciones y las necesidades de los interesados?\\
+		\hline
+		5 & Requisito individual & ¿Es factible con las restricciones técnicas, de tiempo y de recursos descritas?\\
+		\hline
+		\rowcolor{rowgray} 6 & Requisito individual & ¿Tiene identificador único, prioridad y fuente registradas?\\
+		\hline
+		7 & Conjunto de requisitos & ¿Cada función descrita en la sección 2 está cubierta por al menos un requisito específico?\\
+		\hline
+		\rowcolor{rowgray} 8 & Conjunto de requisitos & ¿Están especificados los casos alternativos y de error (por ejemplo, incumplimientos o fallas)?\\
+		\hline
+		9 & Conjunto de requisitos & ¿Hay requisitos que se contradicen entre sí o contradicen las definiciones, los usuarios o las restricciones?\\
+		\hline
+		\rowcolor{rowgray} 10 & Conjunto de requisitos & ¿Hay requisitos repetidos con distinto identificador?\\
+		\hline
+		11 & Conjunto de requisitos & ¿Quedan marcas pendientes (TBD, «por definir») sin responsable ni fecha?\\
+		\hline
+		\rowcolor{rowgray} 12 & Lenguaje & ¿Se evitan términos vagos como «rápido», «fácil», «adecuado», «suficiente», «habitual» o «intuitivo»?\\
+		\hline
+		13 & Lenguaje & ¿Se evitan listas abiertas como «etc.», «entre otros» o «y similares»?\\
+		\hline
+		\rowcolor{rowgray} 14 & Lenguaje & ¿Los términos se usan con el mismo significado que tienen en las definiciones?\\
+		\hline
+	\end{longtable}
+}
+
+\subseccion{Formato del registro de defectos}
+
+El registrador consolida aquí los defectos durante la reunión de 25 minutos. Tipo: ambigüedad, incompletitud, inconsistencia, no verificable, incorrecto, redundante, compuesto, solución de diseño, pendiente (TBD) o atributo faltante. Severidad mayor: el defecto puede llevar a construir algo equivocado o impide verificar el requisito; menor: el defecto afecta la claridad o la forma, pero no el resultado. Añada filas si las necesita.
+
+{\small
+	\begin{longtable}{C{0.05\linewidth}L{0.12\linewidth}L{0.28\linewidth}L{0.14\linewidth}C{0.11\linewidth}C{0.15\linewidth}}
+		\hline
+		\thdr{N.º} & \thdr{Ubicación o ID} & \thdr{Descripción del defecto} & \thdr{Tipo} & \thdr{Severidad (mayor/menor)} & \thdr{Detectado en (walkthrough/ inspección)}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{N.º} & \thdr{Ubicación o ID} & \thdr{Descripción del defecto} & \thdr{Tipo} & \thdr{Severidad (mayor/menor)} & \thdr{Detectado en (walkthrough/ inspección)}\\
+		\hline
+		\endhead
+		1 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+		2 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+		3 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+		4 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+		5 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+		6 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+		7 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+		8 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+		9 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+		10 & & \rule{0pt}{0.9cm} & & & \\
+		\hline
+	\end{longtable}
+}
+
+\bibliographystyle{unsrtnat}
+\bibliography{referencias}
+
+\end{document}
