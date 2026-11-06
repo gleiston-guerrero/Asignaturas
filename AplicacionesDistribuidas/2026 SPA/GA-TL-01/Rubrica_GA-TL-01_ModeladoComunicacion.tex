@@ -1,0 +1,525 @@
+% !TEX program = xelatex
+% Rubrica de evaluacion - GA-TL-01 - FORM
+% Modelado de Comunicacion entre Procesos Distribuidos
+% UTEQ - Aplicaciones Distribuidas (ISR-701) - Periodo 2026-2027 SPA
+% Compilacion: xelatex -> xelatex
+\documentclass[10pt]{article}
+
+\usepackage[a4paper,landscape,margin=1.2cm,top=1.7cm,bottom=1.7cm]{geometry}
+\usepackage{fontspec}
+\setmainfont{Carlito}
+\usepackage{polyglossia}
+\setdefaultlanguage{spanish}
+\usepackage[table]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xltabular}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+
+% Paleta UTEQ
+\definecolor{uteqBlue}{HTML}{003366}
+\definecolor{uteqMid}{HTML}{1F4E79}
+\definecolor{uteqTeal}{HTML}{2E8B8B}
+\definecolor{uteqGreen}{HTML}{4CAF50}
+\definecolor{uteqAmber}{HTML}{FF9800}
+\definecolor{uteqLight}{HTML}{E8F1F8}
+\definecolor{uteqGrayBg}{HTML}{F5F5F5}
+\definecolor{uteqRed}{HTML}{B22222}
+
+% Sin numeracion automatica de secciones
+\setcounter{secnumdepth}{0}
+
+% Encabezado y pie de pagina
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{uteqBlue}{\small\textbf{UTEQ} $\cdot$ Ingenieria de Software $\cdot$ Aplicaciones Distribuidas (ISR-701)}}
+\fancyhead[R]{\textcolor{uteqBlue}{\small\textbf{Rubrica GA-TL-01 - FORM}}}
+\fancyfoot[L]{\textcolor{uteqMid}{\footnotesize Periodo 2026-2027 SPA \,\textbar\, Prof.\ Guerrero Ulloa G.C.}}
+\fancyfoot[R]{\textcolor{uteqMid}{\footnotesize Pagina \thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Estilos de seccion
+\titleformat{\section}{\Large\bfseries\color{uteqBlue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titleformat{\subsection}{\large\bfseries\color{uteqMid}}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+% Caja informativa
+\newtcolorbox{infobox}[1]{colback=uteqLight,colframe=uteqBlue,fonttitle=\bfseries,title={#1},breakable}
+\newtcolorbox{warnbox}{colback=yellow!10,colframe=uteqAmber,breakable}
+
+% Comando para encabezados de tabla repetidos
+\newcommand{\rubheader}{\rowcolor{uteqBlue}\textbf{\textcolor{white}{Criterio (peso)}} & \textbf{\textcolor{white}{Indicadores}} & \textbf{\textcolor{white}{4 -- Sobresaliente}} & \textbf{\textcolor{white}{3 -- Satisfactorio}} & \textbf{\textcolor{white}{2 -- En desarrollo}} & \textbf{\textcolor{white}{1 -- Insuficiente}} & \textbf{\textcolor{white}{0 -- Ausente}}\\\hline}
+
+\begin{document}
+
+\begin{center}
+	{\LARGE\bfseries\color{uteqBlue}UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}\\[2pt]
+	{\normalsize\color{uteqMid}Facultad de Ciencias de la Computacion --- Carrera de Software}\\[6pt]
+	{\Large\bfseries\color{uteqBlue}RUBRICA DE EVALUACION --- GA-TL-01 - FORM}\\[3pt]
+	{\large\bfseries\color{uteqTeal}Modelado de Comunicacion entre Procesos Distribuidos}\\[2pt]
+	{\small\itshape Unidad 1: Generalidades de los Sistemas Distribuidos --- Tema 3: Modelos y Comunicacion en SD}
+\end{center}
+
+\vspace{4pt}
+
+\section{1. Datos generales de la actividad}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{center}
+	\begin{tabular}{|>{\columncolor{uteqLight}\bfseries\color{uteqBlue}}p{5cm}|p{20cm}|}
+		\hline
+		Codigo de actividad & GA-TL-01 - FORM\\
+		\hline
+		Tipo de actividad & Taller formativo --- Grupal --- En clase (prepara la PE-U1 / GA-SUM-01)\\
+		\hline
+		Unidad & Unidad 1 --- Generalidades de los Sistemas Distribuidos\\
+		\hline
+		Tema asociado & Tema 3 --- Modelos y Comunicacion en Sistemas Distribuidos\\
+		\hline
+		Modalidad & Grupal (equipos de 3-4 integrantes)\\
+		\hline
+		Funcion pedagogica & Preparatoria para la Practica Experimental de la Unidad 1 (PE-U1 / GA-SUM-01)\\
+		\hline
+		Semana y cierre & Taller en clase en la semana 2 (2 al 8 de noviembre de 2026). Cierre: miercoles 11 de noviembre de 2026, 23:59\\
+		\hline
+		Escenarios de negocio asignables & (1) Sistema de reservas de vuelos $\cdot$ (2) Plataforma de streaming $\cdot$ (3) Red social $\cdot$ (4) Sistema bancario\\
+		\hline
+		Enunciado del escenario & El docente asigna a cada equipo uno de los cuatro escenarios y le entrega su enunciado completo (Anexo A): contexto, actores, procesos minimos, operaciones, requisitos cuantificados (R1--R6) y situaciones de fallo (F1--F3). El equipo no inventa el problema: disena la comunicacion para ese enunciado, y el diseno se evalua contra el.\\
+		\hline
+		Productos evaluables & (i) Diagrama de comunicacion entre procesos elaborado en draw.io con tipo de comunicacion, protocolo y middleware; (ii) Notas de presentacion; (iii) Exposicion oral de 5 minutos; (iv) Preguntas criticas a otros equipos\\
+		\hline
+		Entregable en LMS & Diagrama exportado (PDF o PNG $\geq$ 300 DPI) + Notas de presentacion (PDF o DOCX)\\
+		\hline
+		Calificacion & 0 -- 10 puntos\\
+		\hline
+		Periodo academico & Regular 2026-2027 SPA\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\section{2. Objetivo y alcance de la rubrica}
+
+Esta rubrica evalua el taller GA-TL-01, cuyo proposito es que cada equipo modele un sistema de comunicacion entre procesos distribuidos sobre un escenario de negocio asignado por el docente (sistema de reservas de vuelos, plataforma de streaming, red social o sistema bancario), identifique con rigor el tipo de comunicacion (sockets, RPC, RMI o mensajeria), el protocolo y el middleware adecuados, y justifique sus decisiones tecnicas. El taller prepara al equipo para la implementacion que se realizara en la Practica Experimental de la Unidad 1 (PE-U1 / GA-SUM-01).
+
+Todos los equipos trabajan sobre un enunciado comun por escenario (Anexo A), con los mismos procesos minimos, requisitos cuantificados y situaciones de fallo. Asi las justificaciones se pueden comparar entre equipos y las preguntas criticas tienen una base compartida: cada pregunta puede apoyarse en un requisito (R) o en una situacion de fallo (F) del enunciado.
+
+El instrumento opera con seis dimensiones de evaluacion y trece criterios; cada criterio se valora en cinco niveles --- Sobresaliente (4), Satisfactorio (3), En desarrollo (2), Insuficiente (1) y Ausente (0) --- y los puntos se ponderan segun el peso del criterio. La calificacion final se expresa sobre 10 puntos siguiendo la convencion de la asignatura para instrumentos de tipo Taller en clase.
+
+\section{3. Escala de evaluacion y equivalencia (sobre 10)}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{center}
+	\begin{tabular}{|>{\columncolor{uteqLight}\bfseries\color{uteqBlue}}p{4cm}|p{16cm}|>{\bfseries\color{uteqBlue}\centering\arraybackslash}p{3.5cm}|}
+		\hline
+		Nivel & Descripcion general & Equivalencia / 10\\
+		\hline
+		4 -- Sobresaliente & Cumple todos los requisitos con calidad tecnica destacada: diagrama claro y completo, decisiones tecnicas correctamente justificadas, exposicion convincente y defensa solida. & 9.0 -- 10.0\\
+		\hline
+		3 -- Satisfactorio & Cumple los requisitos con solvencia; deficiencias menores en algun elemento del diagrama, la justificacion o la exposicion. & 7.5 -- 8.9\\
+		\hline
+		2 -- En desarrollo & Cumple parcialmente; el diagrama es incompleto o las decisiones tecnicas no estan bien argumentadas; requiere mejoras sustanciales. & 6.0 -- 7.4\\
+		\hline
+		1 -- Insuficiente & No alcanza los estandares minimos: diagrama poco claro o erroneo, decisiones sin sustento, exposicion deficiente. & 4.0 -- 5.9\\
+		\hline
+		0 -- Ausente & No entregado, plagio verificado o el criterio no se desarrolla. & $<$ 4.0\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\medskip
+
+\noindent\textbf{Calculo por criterio:} Puntos obtenidos = Nivel (0--4) $\times$ (Peso del criterio $\div$ 4).
+
+\noindent\textbf{Formula global:} $\mathrm{Nota} = \left[\displaystyle\sum_{i} (\mathrm{peso}_{i} \times \mathrm{nivel}_{i}) \div 4\right] \times 10$ \quad cuando los pesos estan expresados como fracciones; con pesos en puntos sobre 10 la nota es la suma directa de los puntos por criterio.
+
+\textit{Ejemplo:} criterio de peso 1.0 pt evaluado en nivel 3 $\rightarrow$ $3 \times (1.0 \div 4) = 0.75$ pts.
+
+\section{4. Condiciones obligatorias (verificacion previa a la calificacion)}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{xltabular}{\textwidth}{|>{\columncolor{uteqLight}\RaggedRight\bfseries\color{uteqBlue}}p{6.5cm}|>{\RaggedRight}X|>{\RaggedRight\bfseries\color{uteqRed}}p{5.5cm}|}
+	\hline
+	\rowcolor{uteqBlue}\textbf{\textcolor{white}{Condicion}} & \textbf{\textcolor{white}{Verificacion}} & \textbf{\textcolor{white}{Consecuencia}}\\
+	\hline
+	\endhead
+	Diagrama elaborado en draw.io o herramienta equivalente verificable. & El docente revisa el archivo fuente (.drawio, .xml) y/o la exportacion. & Si no es draw.io ni equivalente: D2 maximo nivel 2.\\
+	\hline
+	Notas de presentacion adjuntas al LMS. & Conteo de archivos subidos al LMS. & Notas ausentes: $-$1.0 pt sobre la nota global.\\
+	\hline
+	Cada equipo formula al menos una pregunta critica a otro equipo. & Registro del docente durante la sesion. & Sin preguntas criticas: D5 = 0.\\
+	\hline
+	Participacion equitativa de todos los integrantes en el modelado y la presentacion. & Verificacion durante la sesion y en el archivo fuente del diagrama. & Integrante sin contribucion verificable: $-$25\% de la nota individual.\\
+	\hline
+	Entrega completa al LMS dentro del plazo establecido (miercoles 11 de noviembre de 2026, 23:59). & Marca de tiempo del LMS. & Entrega tardia: $-$2.0 pts sobre la nota global. Tras 24 h de retraso: D6 = 0.\\
+	\hline
+	El diseno corresponde al escenario y al enunciado asignados por el docente. & Cotejo con el registro de asignacion de escenarios. & Escenario distinto al asignado: D1 = 0, y D2 y D3 con nivel maximo 1.\\
+	\hline
+	Al menos una interaccion resuelta con sockets y otra con RPC, como exige la guia. & Revision del diagrama y de la tabla de interacciones. & Falta una de las dos: criterio 2.2 con nivel maximo 2.\\
+	\hline
+	Originalidad: el diagrama y las notas no son copia de otro equipo ni de internet sin atribucion. & Cotejo entre equipos y busqueda inversa de imagenes. & Plagio verificado: calificacion 0 y reporte academico.\\
+	\hline
+\end{xltabular}
+
+\section{5. Distribucion de pesos por dimension}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{center}
+	\begin{tabular}{|>{\columncolor{uteqLight}\bfseries\color{uteqBlue}}p{5.5cm}|p{13cm}|>{\bfseries\centering\arraybackslash}p{1.5cm}|>{\bfseries\color{uteqBlue}\centering\arraybackslash}p{2cm}|}
+		\hline
+		Dimension & Criterios & Puntos & Peso \%\\
+		\hline
+		D1 -- Identificacion y caracterizacion del escenario & 1.1 Comprension del escenario $\cdot$ 1.2 Identificacion de actores y componentes & 1.0 & 10\%\\
+		\hline
+		\textbf{D2 -- Modelado del diagrama de comunicacion} & 2.1 Calidad tecnica $\cdot$ 2.2 Tipo de comunicacion $\cdot$ 2.3 Protocolo y middleware $\cdot$ 2.4 Completitud & \textbf{3.5} & \textbf{35\%}\\
+		\hline
+		D3 -- Justificacion tecnica de las elecciones & 3.1 Tipo de comunicacion $\cdot$ 3.2 Protocolo y middleware & 2.0 & 20\%\\
+		\hline
+		D4 -- Presentacion oral del equipo & 4.1 Calidad expositiva (5 min) $\cdot$ 4.2 Defensa tecnica & 1.5 & 15\%\\
+		\hline
+		D5 -- Participacion critica con otros equipos & 5.1 Calidad y pertinencia de las preguntas formuladas & 1.0 & 10\%\\
+		\hline
+		D6 -- Entrega en LMS y trabajo colaborativo & 6.1 Subida completa al LMS $\cdot$ 6.2 Participacion equitativa & 1.0 & 10\%\\
+		\hline
+		\rowcolor{uteqLight!50}\textbf{TOTAL} & \textbf{13 criterios $\cdot$ 6 dimensiones} & \textbf{10.0} & \textbf{100\%}\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\medskip
+
+\textit{La Dimension D2 concentra el mayor peso por ser el nucleo de la competencia evaluada: la capacidad de modelar correctamente la comunicacion entre procesos distribuidos sobre un caso real.}
+
+\newpage
+
+\section{6. Rubrica detallada por dimension}
+
+\subsection{D1 --- Identificacion y caracterizacion del escenario distribuido (1.0 pt)}
+
+\renewcommand{\arraystretch}{1.15}
+\begin{xltabular}{\textwidth}{|>{\RaggedRight\small}p{2.7cm}|>{\RaggedRight\small}p{2.8cm}|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|}
+	\hline
+	\rubheader
+	\endfirsthead
+	\hline
+	\rubheader
+	\endhead
+	\textbf{1.1 Comprension del escenario y sus procesos distribuidos (0.5)} & \textit{Procesos identificados $\cdot$ Naturaleza distribuida $\cdot$ Necesidad de comunicacion} & Caracteriza el escenario a partir de su enunciado (Anexo A): modela todos los procesos minimos del enunciado (al menos cuatro), explica por que la solucion debe ser distribuida y que operaciones del enunciado requieren comunicacion entre procesos. & Modela los procesos minimos del enunciado y la necesidad de distribucion; alguna operacion del enunciado queda implicita. & Omite alguno de los procesos minimos del enunciado o confunde el caracter distribuido del escenario o lo trata como centralizado en alguna parte. & Descripcion superficial; no distingue procesos ni comunicacion. & No entregado, plagio o el criterio no corresponde.\\
+	\hline
+	\textbf{1.2 Identificacion de actores y componentes clave (0.5)} & \textit{Actores (usuarios, sistemas externos) $\cdot$ Componentes internos $\cdot$ Fronteras del sistema} & Identifica explicitamente todos los actores (humanos y sistemas externos), los componentes internos del sistema y traza con claridad las fronteras del sistema. & Identifica actores y componentes principales con fronteras razonablemente claras; omisiones menores. & Identifica solo algunos actores o componentes; fronteras del sistema ambiguas. & Mezcla actores y componentes sin distincion clara. & No entregado, plagio o el criterio no corresponde.\\
+	\hline
+\end{xltabular}
+
+\subsection{D2 --- Modelado del diagrama de comunicacion en draw.io (3.5 pts) --- NUCLEO}
+
+\begin{xltabular}{\textwidth}{|>{\RaggedRight\small}p{2.7cm}|>{\RaggedRight\small}p{2.8cm}|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|}
+	\hline
+	\rubheader
+	\endfirsthead
+	\hline
+	\rubheader
+	\endhead
+	\textbf{2.1 Calidad tecnica del diagrama: claridad y notacion (1.0)} & \textit{Notacion coherente $\cdot$ Leyenda $\cdot$ Legibilidad $\cdot$ Exportacion de alta calidad} & Diagrama en draw.io con notacion coherente y estandar (UML de despliegue/comunicacion o notacion equivalente), leyenda explicita, alta legibilidad y exportado a PDF o PNG de $\geq$ 300 DPI. Todos los elementos estan etiquetados. & Diagrama legible y consistente; notacion correcta con omisiones menores (p.\ ej.\ leyenda incompleta) o exportacion de menor calidad. & Diagrama interpretable pero con notacion inconsistente o elementos sin etiquetar; legibilidad reducida. & Diagrama dificil de leer o con simbologia no estandar; sin etiquetas. & Sin diagrama, o no elaborado en draw.io ni equivalente verificable.\\
+	\hline
+	\textbf{2.2 Identificacion correcta del tipo de comunicacion (1.0)} & \textit{Sockets $\cdot$ RPC $\cdot$ RMI $\cdot$ Mensajeria $\cdot$ Sincrona/Asincrona} & Identifica con precision el(los) tipo(s) de comunicacion entre procesos del escenario (sockets TCP/UDP, RPC, RMI, mensajeria pub-sub o cola) y distingue explicitamente sus partes sincronas y asincronas; incluye al menos una interaccion con sockets y otra con RPC. & Identifica los tipos principales correctamente con clasificacion sincrona/asincrona clara; alguna distincion queda implicita. & Identifica un tipo de comunicacion pero no distingue variantes o confunde sincronia con asincronia. & Identificacion generica o erronea del tipo de comunicacion. & No identifica los tipos de comunicacion.\\
+	\hline
+	\textbf{2.3 Especificacion del protocolo y middleware (1.0)} & \textit{Protocolo especifico $\cdot$ Middleware concreto $\cdot$ Coherencia con el tipo} & Especifica el protocolo (TCP, HTTP/2, AMQP, MQTT, gRPC, Java RMI, etc.) y el middleware concreto (RabbitMQ, Kafka, gRPC, Java RMI, REST sobre HTTP, etc.) para cada interaccion, y los elige de manera coherente con el tipo de comunicacion. & Especifica protocolos y middleware adecuados para la mayoria de interacciones; alguna eleccion no del todo justificada en el diagrama. & Menciona protocolos o middleware de forma generica (p.\ ej.\ ``mensajeria'' sin nombrar middleware concreto). & Protocolo o middleware ausente o incompatible con el tipo de comunicacion declarado. & Sin especificacion.\\
+	\hline
+	\textbf{2.4 Completitud del modelado (0.5)} & \textit{Procesos $\cdot$ Conexiones $\cdot$ Sentido del flujo $\cdot$ Datos en transito} & El diagrama muestra todos los procesos del escenario, sus conexiones, la direccion del flujo de mensajes y describe que datos viajan en cada conexion. & Muestra los procesos y conexiones principales con direccion de flujo; los datos en transito quedan parcialmente etiquetados. & Procesos y conexiones presentes pero sin direccion clara o sin datos en transito. & Solo procesos sin conexiones o sin estructura coherente. & No hay modelado.\\
+	\hline
+\end{xltabular}
+
+\subsection{D3 --- Justificacion tecnica de las elecciones (2.0 pts)}
+
+\begin{xltabular}{\textwidth}{|>{\RaggedRight\small}p{2.7cm}|>{\RaggedRight\small}p{2.8cm}|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|}
+	\hline
+	\rubheader
+	\endfirsthead
+	\hline
+	\rubheader
+	\endhead
+	\textbf{3.1 Argumentacion del tipo de comunicacion (1.0)} & \textit{Requisitos del escenario $\cdot$ Trade-offs $\cdot$ Alternativas descartadas} & Argumenta cada eleccion de tipo de comunicacion citando los requisitos cuantificados del enunciado (R1--R6: latencia, volumen, disponibilidad, consistencia), discute trade-offs, nombra alternativas descartadas con razon y explica como el diseno responde a cada situacion de fallo (F1--F3). & Justifica la mayoria de elecciones con los requisitos del enunciado; trade-offs presentes pero menos exhaustivos, o una situacion de fallo sin respuesta. & Justificacion generica (``es lo mas comun''); sin trade-offs ni alternativas. & Justificacion ausente o circular. & Sin justificacion.\\
+	\hline
+	\textbf{3.2 Argumentacion del protocolo y middleware (1.0)} & \textit{Caracteristicas del protocolo $\cdot$ Caracteristicas del middleware $\cdot$ Idoneidad} & Justifica protocolo y middleware con base en sus caracteristicas (orientado a conexion vs.\ no, fiabilidad, modelo de entrega, escalabilidad), conecta cada caracteristica con un requisito del enunciado (R1--R6) y demuestra idoneidad. & Justificacion correcta basada en caracteristicas; conexion con requisitos algo abreviada. & Menciona ventajas genericas sin conectarlas al escenario. & Justificacion ausente o incorrecta. & Sin justificacion.\\
+	\hline
+\end{xltabular}
+
+\subsection{D4 --- Presentacion oral del equipo (1.5 pts)}
+
+\begin{xltabular}{\textwidth}{|>{\RaggedRight\small}p{2.7cm}|>{\RaggedRight\small}p{2.8cm}|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|}
+	\hline
+	\rubheader
+	\endfirsthead
+	\hline
+	\rubheader
+	\endhead
+	\textbf{4.1 Calidad expositiva y gestion del tiempo (0.75)} & \textit{Claridad $\cdot$ Estructura $\cdot$ Respeto al limite de 5 minutos $\cdot$ Distribucion entre integrantes} & Exposicion clara y estructurada; todos los integrantes participan; respeta el limite de 5 minutos ($\pm$15 s); terminologia precisa. & Exposicion clara con estructura reconocible; gestion del tiempo dentro de $\pm$30 s; participacion equilibrada. & Exposicion comprensible pero sin estructura clara o se excede del tiempo en $\pm$1 min; algun integrante no expone. & Exposicion confusa o con desbalance grave en la participacion. & No expone.\\
+	\hline
+	\textbf{4.2 Defensa tecnica ante preguntas (0.75)} & \textit{Respuesta a preguntas criticas $\cdot$ Sustento tecnico $\cdot$ Coherencia con el diagrama} & Responde con seguridad y sustento tecnico a las preguntas criticas formuladas por otros equipos y por el docente; las respuestas son coherentes con el diagrama presentado. & Responde la mayoria de preguntas con sustento; alguna queda con respuesta parcial. & Responde solo preguntas basicas; preguntas tecnicas quedan sin respuesta solida. & No responde o las respuestas contradicen el diagrama. & No hay defensa.\\
+	\hline
+\end{xltabular}
+
+\subsection{D5 --- Participacion critica con otros equipos (1.0 pt)}
+
+\begin{xltabular}{\textwidth}{|>{\RaggedRight\small}p{2.7cm}|>{\RaggedRight\small}p{2.8cm}|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|}
+	\hline
+	\rubheader
+	\endfirsthead
+	\hline
+	\rubheader
+	\endhead
+	\textbf{5.1 Calidad y pertinencia de las preguntas formuladas (1.0)} & \textit{Profundidad tecnica $\cdot$ Pertinencia $\cdot$ Numero minimo de preguntas} & Formula $\geq 1$ pregunta critica a cada uno de los demas equipos, con profundidad tecnica (senala trade-offs, riesgos o limitaciones reales del modelo expuesto); las preguntas elevan el debate. & Formula $\geq 1$ pregunta critica con buen nivel tecnico a la mayoria de los demas equipos. & Formula al menos una pregunta critica, aunque generica o de bajo nivel tecnico. & Formula preguntas no tecnicas o irrelevantes. & No formula preguntas (incumple condicion obligatoria $\rightarrow$ 0).\\
+	\hline
+\end{xltabular}
+
+\subsection{D6 --- Entrega en LMS y trabajo colaborativo (1.0 pt)}
+
+\begin{xltabular}{\textwidth}{|>{\RaggedRight\small}p{2.7cm}|>{\RaggedRight\small}p{2.8cm}|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|>{\RaggedRight\small}X|}
+	\hline
+	\rubheader
+	\endfirsthead
+	\hline
+	\rubheader
+	\endhead
+	\textbf{6.1 Subida oportuna y completa al LMS (0.5)} & \textit{Diagrama exportado $\cdot$ Notas de presentacion $\cdot$ Plazo} & Sube al LMS el diagrama exportado en alta calidad y las notas de presentacion dentro del plazo (miercoles 11 de noviembre de 2026, 23:59); archivos bien nombrados (Equipo\_Escenario\_GA-TL-01). & Sube ambos archivos a tiempo con nombres correctos; calidad de exportacion correcta con alguna observacion menor. & Sube los archivos a tiempo pero falta uno (diagrama o notas) o estan mal nombrados. & Sube con retraso aceptable ($<$ 24 h) o con archivos incompletos. & No sube al LMS o lo hace despues del plazo de 24 h.\\
+	\hline
+	\textbf{6.2 Participacion equitativa del equipo (0.5)} & \textit{Aportes verificables $\cdot$ Sin integrante invisible $\cdot$ Coordinacion} & Todos los integrantes muestran aportes verificables en el modelado, la presentacion y la defensa; coordinacion evidente. & Todos los integrantes participan; reparto algo desigual pero todos contribuyen verificablemente. & Algun integrante con contribucion menor poco visible. & Un integrante sin contribucion verificable (penalizacion individual $-$25\%). & Trabajo concentrado en una sola persona.\\
+	\hline
+\end{xltabular}
+
+\section{7. Hoja de puntuacion del evaluador}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{xltabular}{\textwidth}{|>{\RaggedRight\bfseries\color{uteqBlue}}p{8cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{2.5cm}|>{\RaggedRight}X|}
+	\hline
+	\rowcolor{uteqLight}\textbf{Criterio} & \textbf{Nivel (0-4)} & \textbf{Peso (pts)} & \textbf{Pts.\ obt.} & \textbf{Observacion del evaluador}\\
+	\hline
+	\endhead
+	\multicolumn{5}{|l|}{\cellcolor{uteqLight!50}\textbf{D1 --- Identificacion y caracterizacion del escenario (1.0 pt)}}\\
+	\hline
+	1.1 Comprension del escenario y procesos distribuidos & \rule{1cm}{0.4pt} & 0.5 & & \\
+	\hline
+	1.2 Identificacion de actores y componentes & \rule{1cm}{0.4pt} & 0.5 & & \\
+	\hline
+	\multicolumn{5}{|l|}{\cellcolor{uteqLight!50}\textbf{D2 --- Modelado del diagrama de comunicacion en draw.io (3.5 pts)}}\\
+	\hline
+	2.1 Calidad tecnica del diagrama & \rule{1cm}{0.4pt} & 1.0 & & \\
+	\hline
+	2.2 Identificacion del tipo de comunicacion & \rule{1cm}{0.4pt} & 1.0 & & \\
+	\hline
+	2.3 Especificacion de protocolo y middleware & \rule{1cm}{0.4pt} & 1.0 & & \\
+	\hline
+	2.4 Completitud del modelado & \rule{1cm}{0.4pt} & 0.5 & & \\
+	\hline
+	\multicolumn{5}{|l|}{\cellcolor{uteqLight!50}\textbf{D3 --- Justificacion tecnica de las elecciones (2.0 pts)}}\\
+	\hline
+	3.1 Argumentacion del tipo de comunicacion & \rule{1cm}{0.4pt} & 1.0 & & \\
+	\hline
+	3.2 Argumentacion del protocolo y middleware & \rule{1cm}{0.4pt} & 1.0 & & \\
+	\hline
+	\multicolumn{5}{|l|}{\cellcolor{uteqLight!50}\textbf{D4 --- Presentacion oral del equipo (1.5 pts)}}\\
+	\hline
+	4.1 Calidad expositiva y gestion del tiempo (5 min) & \rule{1cm}{0.4pt} & 0.75 & & \\
+	\hline
+	4.2 Defensa tecnica ante preguntas & \rule{1cm}{0.4pt} & 0.75 & & \\
+	\hline
+	\multicolumn{5}{|l|}{\cellcolor{uteqLight!50}\textbf{D5 --- Participacion critica con otros equipos (1.0 pt)}}\\
+	\hline
+	5.1 Calidad y pertinencia de las preguntas formuladas & \rule{1cm}{0.4pt} & 1.0 & & \\
+	\hline
+	\multicolumn{5}{|l|}{\cellcolor{uteqLight!50}\textbf{D6 --- Entrega en LMS y trabajo colaborativo (1.0 pt)}}\\
+	\hline
+	6.1 Subida oportuna y completa al LMS & \rule{1cm}{0.4pt} & 0.5 & & \\
+	\hline
+	6.2 Participacion equitativa del equipo & \rule{1cm}{0.4pt} & 0.5 & & \\
+	\hline
+	\multicolumn{5}{|l|}{\cellcolor{uteqBlue}\textbf{\textcolor{white}{CALIFICACION FINAL (sobre 10): \rule{2cm}{0.4pt} / 10 \hspace{1.5cm} Firma: \rule{4cm}{0.4pt} \hspace{1cm} Fecha: \rule{2.5cm}{0.4pt}}}}\\
+	\hline
+\end{xltabular}
+
+\vspace{8pt}
+
+\begin{warnbox}
+	\textbf{\color{uteqBlue}Penalizaciones aplicables (recordatorio):} no draw.io $\rightarrow$ D2 $\leq$ 2 $\cdot$ notas ausentes $\rightarrow$ $-$1.0 pt $\cdot$ sin preguntas criticas $\rightarrow$ D5 = 0 $\cdot$ integrante sin contribucion $\rightarrow$ $-$25\% individual $\cdot$ entrega tardia (despues del miercoles 11 de noviembre de 2026, 23:59) $\rightarrow$ $-$2.0 pts (D6 = 0 tras 24 h) $\cdot$ plagio $\rightarrow$ calificacion 0.
+\end{warnbox}
+
+\section{8. Nota metodologica}
+
+Esta rubrica se deriva directamente de la consigna del docente para el instrumento GA-TL-01 - FORM --- Modelado de Comunicacion entre Procesos Distribuidos, y se alinea con el Tema 3 del silabo oficial de la asignatura Aplicaciones Distribuidas (ISR-701), Unidad 1: Generalidades de los Sistemas Distribuidos.
+
+Las seis dimensiones cubren los cuatro productos verificables del taller establecidos en la consigna: (i) el escenario asignado y su caracterizacion (D1), (ii) el diagrama elaborado en draw.io con identificacion del tipo de comunicacion, protocolo y middleware (D2), (iii) la justificacion tecnica de las elecciones (D3), (iv) la presentacion oral de 5 minutos y la defensa ante preguntas (D4), (v) las preguntas criticas formuladas a otros equipos como evidencia de pensamiento critico (D5) y (vi) la entrega completa al LMS y la colaboracion equitativa del equipo (D6).
+
+La Dimension D2 concentra el mayor peso (35\%) por ser el nucleo de la competencia evaluada: la capacidad de modelar correctamente la comunicacion entre procesos distribuidos sobre un caso real. La escala de cinco niveles, el esquema de calculo ponderado y la formula global de calificacion mantienen plena coherencia con los demas instrumentos de evaluacion de la asignatura (TA-IND-01, TA-PFC-E1, GA-SUM-01/PE-U1 y EV-SUM-01), adaptados al caracter grupal en clase de este taller y a una calificacion sobre 10.
+
+El instrumento es preparatorio para la Practica Experimental de la Unidad 1 (PE-U1 / GA-SUM-01): los equipos que alcancen un nivel Sobresaliente en GA-TL-01 estaran en condiciones tecnicas y metodologicas para abordar la implementacion con sockets TCP, gRPC y el algoritmo de Lamport en la siguiente practica sumativa.
+
+
+\newpage
+
+\section{Anexo A. Enunciados de los cuatro escenarios}
+
+\begin{infobox}{Cómo se usan estos enunciados}
+	El docente asigna a cada equipo un escenario y le entrega su enunciado. Las empresas son ficticias y las cifras son datos del problema, no estadísticas reales: el equipo las toma como requisitos y no necesita citarlas. Cada enunciado fija lo mínimo que el diseño debe cubrir; el equipo puede añadir procesos si los justifica. Lo que el enunciado no fija (por ejemplo, qué middleware usar en cada interacción) es decisión del equipo y es lo que se evalúa en D2 y D3.
+\end{infobox}
+
+\subsection{Escenario 1 --- Sistema de reservas de vuelos: AeroAndes Reservas}
+
+\textbf{Contexto.} AeroAndes es una aerolínea regional ficticia que opera vuelos nacionales e internacionales desde Guayaquil y Quito. Vende pasajes en su aplicación móvil, en su web y a través de agencias de viajes. En el aeropuerto, los quioscos de autoservicio y las puertas de embarque validan los pases de abordar. La empresa necesita rediseñar la comunicación entre sus procesos porque en temporada alta (feriados y vacaciones) se han vendido asientos que ya estaban ocupados (sobreventa no planificada) y algunos clientes han pagado sin recibir su reserva confirmada.
+
+\textbf{Actores.} Pasajero (app o web), agencia de viajes (sistema externo), pasarela de pagos (sistema externo), personal de aeropuerto, quioscos de autoservicio y lectores de puerta de embarque.
+
+\textbf{Procesos o servicios mínimos que deben aparecer en el diagrama.}
+\begin{enumerate}[leftmargin=1.6em]
+	\item Cliente (aplicación móvil o web).
+	\item Servicio de reservas: recibe las solicitudes y coordina la operación.
+	\item Servicio de inventario de asientos: sabe qué asientos están libres, retenidos u ocupados en cada vuelo.
+	\item Servicio de pagos: se comunica con la pasarela externa.
+	\item Servicio de notificaciones: envía la confirmación y el pase de abordar por correo o mensaje.
+	\item Servidor de embarque en aeropuerto: recibe las lecturas de los quioscos y de los lectores de puerta.
+	\item Base de datos de reservas.
+\end{enumerate}
+
+\textbf{Operaciones que se deben modelar.} (a) Buscar vuelos y ver asientos disponibles. (b) Retener un asiento mientras el pasajero paga. (c) Pagar y confirmar la reserva. (d) Enviar la confirmación y el pase de abordar. (e) Validar el pase en el quiosco o en la puerta de embarque.
+
+\textbf{Requisitos cuantificados.}
+\begin{itemize}[leftmargin=1.6em]
+	\item \textbf{R1.} En temporada alta llegan hasta 1\,200 consultas de disponibilidad por segundo, y el 95\,\% debe responderse en menos de 300 ms.
+	\item \textbf{R2.} Un asiento retenido queda bloqueado 10 minutos; si el pago no se completa, vuelve a estar disponible.
+	\item \textbf{R3.} Un asiento nunca puede quedar vendido a dos pasajeros: la confirmación exige consistencia fuerte en el inventario.
+	\item \textbf{R4.} La pasarela de pagos puede tardar hasta 30 segundos en responder; el cliente no debe quedar bloqueado sin información durante ese tiempo.
+	\item \textbf{R5.} La confirmación al pasajero debe llegar en menos de 1 minuto después del pago, pero puede enviarse después de responder al cliente.
+	\item \textbf{R6.} Los lectores de puerta envían cada lectura en un mensaje corto de formato fijo (código de reserva, vuelo y asiento) y deben recibir «válido» o «inválido» en menos de 1 segundo; hay 40 lectores conectados al mismo tiempo durante el embarque.
+\end{itemize}
+
+\textbf{Situaciones de fallo que el diseño debe responder.}
+\begin{itemize}[leftmargin=1.6em]
+	\item \textbf{F1.} La pasarela de pagos no responde: ¿qué pasa con el asiento retenido y con el dinero del pasajero?
+	\item \textbf{F2.} El servicio de notificaciones está caído cuando se confirma la reserva: ¿se pierde la confirmación?
+	\item \textbf{F3.} Se corta la red entre el aeropuerto y el centro de datos durante el embarque: ¿cómo siguen validándose los pases?
+\end{itemize}
+
+\textbf{Restricción de la guía.} Al menos una interacción con sockets (la comunicación natural es la de los lectores y quioscos, por R6) y al menos una con RPC (por ejemplo, entre reservas e inventario). \textbf{Decide el equipo:} middleware, protocolo, qué interacciones son síncronas o asíncronas y cómo se garantiza R3.
+
+\subsection{Escenario 2 --- Plataforma de streaming: OndaPlay}
+
+\textbf{Contexto.} OndaPlay es una plataforma ficticia de video por suscripción para Ecuador y la región andina. Ofrece películas y series bajo demanda y, los fines de semana, transmisiones en vivo de conciertos y partidos de ligas locales. El reproductor funciona en teléfonos, televisores inteligentes y navegadores. La empresa necesita rediseñar la comunicación porque durante las transmisiones en vivo el video tarda en arrancar, algunos usuarios sin suscripción vigente logran reproducir contenido y el equipo de recomendaciones recibe los datos de visualización con horas de retraso.
+
+\textbf{Actores.} Suscriptor, administrador de contenidos, pasarela de pagos (sistema externo) y servidores de borde de una red de distribución de contenidos (CDN).
+
+\textbf{Procesos o servicios mínimos que deben aparecer en el diagrama.}
+\begin{enumerate}[leftmargin=1.6em]
+	\item Reproductor (cliente).
+	\item Servicio de autenticación y licencias: verifica que la suscripción esté vigente y entrega la licencia para reproducir.
+	\item Servicio de catálogo: títulos, temporadas y metadatos.
+	\item Servidor de contenido o nodo de borde: entrega los segmentos de video.
+	\item Servicio de telemetría: recibe los eventos del reproductor (inicio, pausa, avance, errores y calidad).
+	\item Servicio de recomendaciones: consume los eventos de visualización.
+	\item Servicio de facturación y suscripciones.
+\end{enumerate}
+
+\textbf{Operaciones que se deben modelar.} (a) Iniciar sesión y explorar el catálogo. (b) Solicitar la licencia y empezar a reproducir. (c) Enviar la telemetría mientras se reproduce. (d) Actualizar las recomendaciones a partir de lo visto. (e) Renovar la suscripción y reflejar el cambio en las licencias.
+
+\textbf{Requisitos cuantificados.}
+\begin{itemize}[leftmargin=1.6em]
+	\item \textbf{R1.} En una transmisión en vivo puede haber 50\,000 espectadores simultáneos.
+	\item \textbf{R2.} El video debe empezar a reproducirse en menos de 2 segundos desde que el usuario pulsa «reproducir», incluida la verificación de la licencia.
+	\item \textbf{R3.} Cada reproductor envía un evento de telemetría cada 10 segundos; en una transmisión en vivo eso supone unos 5\,000 eventos por segundo. Se acepta perder hasta el 1\,\% de esos eventos.
+	\item \textbf{R4.} Una suscripción vencida o cancelada debe impedir nuevas reproducciones en menos de 5 minutos.
+	\item \textbf{R5.} Las recomendaciones pueden actualizarse con hasta 15 minutos de retraso (consistencia eventual aceptable).
+	\item \textbf{R6.} El servicio de licencias debe tener una disponibilidad del 99,9\,\%, porque sin licencia no hay reproducción.
+\end{itemize}
+
+\textbf{Situaciones de fallo que el diseño debe responder.}
+\begin{itemize}[leftmargin=1.6em]
+	\item \textbf{F1.} El servicio de licencias no responde: ¿se bloquea a todos los usuarios o se permite reproducir durante un tiempo?
+	\item \textbf{F2.} El servicio de recomendaciones está caído durante dos horas: ¿se pierden los eventos de visualización de ese periodo?
+	\item \textbf{F3.} Un nodo de borde falla en plena transmisión en vivo: ¿qué pasa con los espectadores conectados a él?
+\end{itemize}
+
+\textbf{Restricción de la guía.} Al menos una interacción con sockets (por ejemplo, el flujo de telemetría o la conexión persistente durante el vivo) y al menos una con RPC (por ejemplo, la solicitud de licencia). \textbf{Decide el equipo:} middleware, protocolo, qué interacciones son síncronas o asíncronas y cómo se cumplen R2 y R4 a la vez.
+
+\subsection{Escenario 3 --- Red social: Vecindario}
+
+\textbf{Contexto.} Vecindario es una red social ficticia para comunidades de barrio en ciudades intermedias de Ecuador. Los usuarios publican avisos (objetos perdidos, emprendimientos, alertas de seguridad), siguen a vecinos y a negocios locales, reaccionan, comentan y conversan por mensajes directos. La empresa necesita rediseñar la comunicación porque los mensajes directos llegan desordenados o con retraso, las alertas de seguridad tardan en aparecer en el muro de los vecinos y las publicaciones denunciadas permanecen visibles demasiado tiempo.
+
+\textbf{Actores.} Usuario, negocio local, moderador y servicio externo de almacenamiento de imágenes.
+
+\textbf{Procesos o servicios mínimos que deben aparecer en el diagrama.}
+\begin{enumerate}[leftmargin=1.6em]
+	\item Cliente (aplicación móvil o web).
+	\item Servicio de publicaciones: crea, edita y elimina avisos.
+	\item Servicio de seguidores: sabe quién sigue a quién.
+	\item Servicio de muro: arma el muro (\emph{timeline}) de cada usuario.
+	\item Servicio de mensajería directa en tiempo real, con indicador de «en línea».
+	\item Servicio de moderación: recibe denuncias y oculta contenido.
+	\item Servicio de notificaciones.
+\end{enumerate}
+
+\textbf{Operaciones que se deben modelar.} (a) Publicar un aviso con imagen. (b) Distribuir el aviso al muro de los seguidores. (c) Enviar y recibir mensajes directos. (d) Mostrar quién está en línea. (e) Denunciar una publicación y ocultarla.
+
+\textbf{Requisitos cuantificados.}
+\begin{itemize}[leftmargin=1.6em]
+	\item \textbf{R1.} La red tiene 200\,000 usuarios registrados, con hasta 40\,000 conectados al mismo tiempo en horas pico.
+	\item \textbf{R2.} Un mensaje directo debe llegar al destinatario conectado en menos de 500 ms, y los mensajes de una misma conversación deben mostrarse en el orden en que se enviaron.
+	\item \textbf{R3.} Una publicación normal puede tardar hasta 5 segundos en aparecer en el muro de los seguidores (consistencia eventual aceptable); una alerta de seguridad debe aparecer en menos de 1 segundo.
+	\item \textbf{R4.} Un negocio popular tiene 30\,000 seguidores: una sola publicación suya debe llegar a todos sin degradar el servicio para el resto.
+	\item \textbf{R5.} Una publicación con tres denuncias debe quedar oculta en menos de 1 minuto.
+	\item \textbf{R6.} El servicio de mensajería directa debe tener una disponibilidad del 99,5\,\%; el muro puede degradarse antes que la mensajería.
+\end{itemize}
+
+\textbf{Situaciones de fallo que el diseño debe responder.}
+\begin{itemize}[leftmargin=1.6em]
+	\item \textbf{F1.} El destinatario de un mensaje directo está desconectado: ¿dónde queda el mensaje y cuándo se entrega?
+	\item \textbf{F2.} El servicio de muro se cae mientras un negocio con 30\,000 seguidores publica: ¿se pierde la distribución?
+	\item \textbf{F3.} Se reinicia el servidor de mensajería con miles de conversaciones abiertas: ¿cómo se reconectan los clientes sin perder ni duplicar mensajes?
+\end{itemize}
+
+\textbf{Restricción de la guía.} Al menos una interacción con sockets (la mensajería directa y el indicador de «en línea» son el caso natural, por R2) y al menos una con RPC (por ejemplo, entre el muro y el servicio de seguidores). \textbf{Decide el equipo:} middleware, protocolo, qué interacciones son síncronas o asíncronas y cómo se garantiza el orden de R2.
+
+\subsection{Escenario 4 --- Sistema bancario: Cooperativa Ahorro Futuro}
+
+\textbf{Contexto.} Ahorro Futuro es una cooperativa de ahorro y crédito ficticia con agencias en Los Ríos y Guayas. Sus socios usan la banca móvil, la banca web, los cajeros automáticos propios y las ventanillas de las agencias. Sus saldos residen en un núcleo bancario (\emph{core}) heredado, que no se puede reemplazar a corto plazo. La cooperativa necesita rediseñar la comunicación porque en los días de pago (15 y fin de mes) las transferencias se demoran, se han registrado débitos duplicados cuando el socio pulsa dos veces «enviar» y algunos cajeros entregaron dinero sin que el débito quedara registrado.
+
+\textbf{Actores.} Socio, cajero de ventanilla, cajero automático, analista de fraude y red interbancaria (sistema externo).
+
+\textbf{Procesos o servicios mínimos que deben aparecer en el diagrama.}
+\begin{enumerate}[leftmargin=1.6em]
+	\item Cliente de banca móvil o web.
+	\item Servicio de cuentas: consulta saldos y movimientos.
+	\item Servicio de transferencias: coordina el débito y el crédito.
+	\item Núcleo bancario (\emph{core}): registra los saldos oficiales.
+	\item Servidor de cajeros automáticos: atiende a los cajeros de la red propia.
+	\item Servicio antifraude: evalúa cada transferencia antes de ejecutarla.
+	\item Servicio de notificaciones y servicio de auditoría.
+\end{enumerate}
+
+\textbf{Operaciones que se deben modelar.} (a) Consultar el saldo. (b) Transferir entre cuentas de la cooperativa. (c) Transferir a otro banco por la red interbancaria. (d) Retirar efectivo en un cajero automático. (e) Notificar el movimiento al socio y registrarlo en la auditoría.
+
+\textbf{Requisitos cuantificados.}
+\begin{itemize}[leftmargin=1.6em]
+	\item \textbf{R1.} En los días de pago llegan hasta 300 transacciones por segundo, y el 95\,\% debe completarse en menos de 2 segundos.
+	\item \textbf{R2.} El saldo exige consistencia fuerte: un débito confirmado al socio debe estar registrado en el núcleo bancario, y nunca se puede debitar dos veces la misma operación aunque el socio la envíe dos veces.
+	\item \textbf{R3.} El servicio antifraude debe responder en menos de 200 ms; la cooperativa debe definir qué hacer si no responde a tiempo.
+	\item \textbf{R4.} Los cajeros automáticos se comunican con mensajes de formato fijo definidos por la cooperativa (tipo de operación, tarjeta, monto y código de cajero) y esperan respuesta como máximo 15 segundos; si no la reciben, no entregan el dinero.
+	\item \textbf{R5.} Toda operación debe quedar en la auditoría, aunque el servicio de auditoría esté caído en ese momento.
+	\item \textbf{R6.} La disponibilidad exigida para transferencias y retiros es del 99,95\,\%.
+\end{itemize}
+
+\textbf{Situaciones de fallo que el diseño debe responder.}
+\begin{itemize}[leftmargin=1.6em]
+	\item \textbf{F1.} El núcleo bancario responde «débito realizado», pero la respuesta no llega al cajero automático antes de los 15 segundos: ¿el socio pierde su dinero?
+	\item \textbf{F2.} El servicio antifraude está caído en un día de pago: ¿se detienen todas las transferencias o se aceptan sin revisar?
+	\item \textbf{F3.} El socio pulsa dos veces «enviar» y llegan dos solicitudes idénticas: ¿cómo se evita el doble débito?
+\end{itemize}
+
+\textbf{Restricción de la guía.} Al menos una interacción con sockets (la comunicación natural es la de los cajeros automáticos, por R4) y al menos una con RPC (por ejemplo, transferencias con antifraude o con el núcleo bancario). \textbf{Decide el equipo:} middleware, protocolo, qué interacciones son síncronas o asíncronas y cómo se garantizan R2 y R5.
+
+\end{document}
