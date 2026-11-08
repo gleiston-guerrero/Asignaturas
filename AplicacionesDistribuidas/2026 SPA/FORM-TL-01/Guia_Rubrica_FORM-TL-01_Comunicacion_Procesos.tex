@@ -1,0 +1,325 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% FORM-TL-01 — Taller de modelado de comunicación entre procesos distribuidos
+% Aplicaciones Distribuidas (ISR-701) · UTEQ · SPA 2026-2027
+% Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% babel no disponible en este entorno
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{courier}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage{caption}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Textos en español (sin babel) ----------
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ \,$\cdot$\, Aplicaciones Distribuidas (ISR-701)}
+\rhead{\footnotesize FORM-TL-01 \,$\cdot$\, SPA 2026--2027}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\seccion}[1]{\section{\textcolor{utegreendk}{#1}}}
+\renewcommand{\thesection}{\arabic{section}.}
+
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajapiso}[1][]{colback=lightred,colframe=red!60!black,boxrule=1pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajaaviso}[1][]{colback=lightgold,colframe=gold!80!black,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+
+\begin{document}
+
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\vspace{4pt}
+\begin{center}
+	{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software \,\textcolor{gold}{$\bullet$}\, Aplicaciones Distribuidas (ISR-701)}\\[8pt]
+	{\LARGE\textbf{\textcolor{utegreendk}{GUÍA Y RÚBRICA DE EVALUACIÓN}}}\\[4pt]
+	{\large\textbf{\textcolor{midblue}{ACTIVIDAD FORMATIVA}}}\\[6pt]
+	{\Large\textbf{FORM-TL-01}}\\[2pt]
+	{\large Taller de modelado de comunicación entre procesos distribuidos}
+\end{center}
+
+\vspace{2pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+\seccion{Datos generales}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Detalle}\\
+	\hline
+	Asignatura & Aplicaciones Distribuidas (ISR-701)\\
+	\hline
+	\rowcolor{rowgray} Docente & Gleiston Cicerón Guerrero Ulloa, PhD \,$\cdot$\, \texttt{gguerrero@uteq.edu.ec}\\
+	\hline
+	Unidad & Unidad 1\\
+	\hline
+	\rowcolor{rowgray} Carácter & Formativo: sin calificación; su entrega válida es requisito de la sumativa vinculada\\
+	\hline
+	Prepara (sumativa vinculada) & Práctica Experimental de la Unidad 1 (PE-U1 / GA-SUM-01), que se califica en la semana 4\\
+	\hline
+	\rowcolor{rowgray} Modalidad & Grupal (equipos de 3 a 4 estudiantes)\\
+	\hline
+	Semana & 2 (2 -- 8 de noviembre de 2026), en clase\\
+	\hline
+	\rowcolor{rowgray} Cierre & miércoles 11 de noviembre de 2026, a las 23:59\\
+	\hline
+	Repositorio & Repositorio GitHub público del equipo\\
+	\hline
+\end{tabularx}
+
+\seccion{Propósito}
+
+Diseñar, antes de programar, cómo se comunican los procesos de un sistema distribuido y justificar cada decisión con las condiciones del escenario. El diagrama que el equipo construya en este taller será el punto de partida del diseño que implementará en PE-U1, donde se programarán y compararán la comunicación por sockets TCP y la comunicación por gRPC.
+
+\seccion{Fundamento}
+
+En un sistema distribuido los procesos solo cooperan intercambiando mensajes, y los mecanismos de comunicación se diferencian por el nivel de abstracción que ofrecen: los sockets dan acceso directo a la capa de transporte, la llamada a procedimiento remoto (RPC) presenta el envío y la respuesta como si fuera una llamada local, y el middleware orientado a mensajes (colas o publicación/suscripción) desacopla al emisor del receptor en el tiempo \citep{vansteen_tanenbaum_2023}. TCP ofrece un flujo de bytes fiable y ordenado sobre una conexión \citep{rfc9293_2022}; gRPC transporta sus llamadas sobre HTTP/2 \citep{grpc_http2,rfc9113_2022}, admite llamadas unarias y de flujo (streaming), plazos máximos de espera (deadlines) y versiones síncronas y asíncronas de su interfaz \citep{grpc_concepts}. Elegir entre comunicación síncrona y asíncrona implica decidir qué ocurre cuando el otro proceso es lento o no responde, y esa decisión afecta la latencia, la tolerancia a fallos y la consistencia de los datos \citep{kleppmann_riccomini_2026}.
+
+\seccion{Desarrollo de la actividad}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=4pt]
+	\item \textbf{Escenario.} El docente asigna a cada equipo uno de estos escenarios de negocio: sistema de reservas de vuelos, plataforma de streaming, red social o sistema bancario.
+	\item \textbf{Diagrama.} El equipo modela en draw.io el diagrama de comunicación entre los procesos del escenario. El diagrama muestra, como mínimo, cuatro procesos o servicios (por ejemplo, cliente, servidor de aplicación, servicio de pagos y base de datos) y los mensajes que intercambian. Para cada interacción se identifica:
+	\begin{itemize}[itemsep=2pt]
+		\item el tipo de comunicación: sockets, RPC (por ejemplo, gRPC), RMI o mensajería (colas o publicación/suscripción);
+		\item si la comunicación es síncrona (el emisor espera la respuesta) o asíncrona (el emisor continúa sin esperar);
+		\item el protocolo (TCP, HTTP/2, AMQP u otro) y el middleware utilizado (gRPC, RabbitMQ, Kafka u otro);
+		\item la justificación de la elección, en función del escenario: latencia, volumen de mensajes, necesidad de respuesta inmediata, tolerancia a fallos y consistencia.
+	\end{itemize}
+	\item \textbf{Mecanismos obligatorios.} Al menos una interacción se resuelve con sockets y otra con RPC, porque son los dos mecanismos que se implementarán y compararán en PE-U1.
+	\item \textbf{Presentación y preguntas críticas.} Al final de la clase cada equipo presenta su diagrama en 5 minutos. Luego, cada uno de los demás equipos formula al menos una pregunta crítica al equipo que expone. Una pregunta crítica cuestiona una decisión del diseño (por ejemplo: «¿qué pasa con la reserva si el servicio de pagos no responde?»); pedir que se repita una explicación no cuenta como pregunta crítica. Las preguntas recibidas y las respuestas dadas se registran en las notas de la presentación (Anexo A).
+	\item \textbf{Repositorio.} El repositorio contiene los productos de la Tabla~\ref{tab:productos}. Cada integrante hace sus propios commits, porque el historial es la evidencia del aporte individual.
+	\item \textbf{SGA.} En la tarea del SGA se sube solamente el PDF de una sola página descrito en las normas de entrega.
+\end{enumerate}
+
+\needspace{18\baselineskip}
+\seccion{Productos entregables}
+
+{\small
+\begin{longtable}{|L{0.30\linewidth}|L{0.42\linewidth}|L{0.19\linewidth}|}
+	\caption{Productos que deben estar en el repositorio al cierre.}\label{tab:productos}\\
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endhead
+	\texttt{FORM-TL-01/\allowbreak{}diagrama/\allowbreak{}comunicacion.drawio} & Archivo editable del diagrama & 4 procesos; 1 interacción con sockets y 1 con RPC\\
+	\hline
+	\texttt{FORM-TL-01/\allowbreak{}diagrama/\allowbreak{}comunicacion.pdf} (o \texttt{.png}) & Exportación del mismo diagrama, legible y sin diferencias con el editable & 1 archivo\\
+	\hline
+	\texttt{FORM-TL-01/\allowbreak{}notas/\allowbreak{}main.tex} y \texttt{main.pdf} & Notas de la presentación con las preguntas recibidas y las respuestas (Anexo A) & 1 pregunta por cada equipo que preguntó\\
+	\hline
+	\texttt{README.md} (raíz) & Integrantes e instrucciones de compilación (compilador, archivo principal, orden de comandos, dependencias) & 1 archivo\\
+	\hline
+\end{longtable}
+}
+
+\seccion{Normas de entrega}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=3pt]
+	\item \textbf{Repositorio.} Todo el trabajo se desarrolla en el repositorio del equipo, que debe ser público en GitHub. Allí deben estar los fuentes (\texttt{.drawio}, \texttt{.tex}, \texttt{.bib} si se citan fuentes, figuras) y los PDF o PNG generados.
+	\item \textbf{Documento en el SGA.} En la tarea del SGA se sube solamente un PDF de \textbf{una sola página} con los datos identificativos del equipo (integrantes, código y nombre de la tarea, fecha límite de entrega) y la URL del repositorio escrita completa en una sola línea. El diagrama y las notas van en el repositorio, no en el SGA. No se sube ningún otro archivo.
+	\item \textbf{\LaTeX{} reproducible.} El PDF de las notas debe poder regenerarse clonando el repositorio y compilando el archivo \texttt{.tex}. El \texttt{README.md} documenta compilador, archivo principal, orden de comandos y dependencias.
+	\item \textbf{Referencias.} Si se citan fuentes, estilo IEEE. Toda referencia debe existir y sus datos (autores, año, título, revista o editorial, volumen, número, páginas y DOI o ISBN) deben corresponder exactamente a la obra real.
+	\item \textbf{Plazo.} El cierre es el miércoles 11 de noviembre de 2026, a las 23:59. Se evalúa el contenido del repositorio hasta ese momento; lo agregado después no se considera.
+	\item \textbf{Aporte individual.} Cada integrante sube sus propios cambios con su cuenta. Un integrante sin commits propios no tiene evidencia de aporte y no recibe la constancia de entrega de esta formativa.
+	\item \textbf{Uso de IA como apoyo.} Si se usa una herramienta de IA solo como apoyo (ortografía, error de compilación), se declara en una sección de las notas: herramienta, versión, propósito y cómo se verificó lo obtenido.
+\end{enumerate}
+
+\seccion{Condiciones de entrega válida}
+
+\begin{cajapiso}[title={Condiciones de entrega válida (criterios de piso): su incumplimiento equivale a no entregar}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{PDF de una sola página con datos identificativos y URL.} En el SGA se sube solamente un PDF de UNA SOLA página con los datos identificativos del equipo y, en una sola línea, la URL del repositorio. Si el PDF tiene más de una página, si se suben otros archivos, si la URL no cabe en una sola línea o está rota, o si el repositorio no es accesible, la actividad formativa se considera \textbf{NO ENTREGADA}: el equipo no puede presentar PE-U1 y obtiene CERO en ella, salvo justificación aprobada.
+		\item \textbf{PDF reproducible.} Si el PDF de las notas no se genera correctamente a partir del \LaTeX{} al clonar el repositorio y compilar el archivo \texttt{.tex} siguiendo el \texttt{README.md} (compilador, orden de comandos, archivo principal y dependencias), la actividad formativa se considera \textbf{NO ENTREGADA}, con la misma consecuencia sobre PE-U1.
+		\item \textbf{Productos mínimos.} Si falta el archivo \texttt{.drawio}, su exportación o las notas con las preguntas y respuestas, o si el diagrama no incluye al menos una interacción con sockets y otra con RPC, la actividad formativa se considera \textbf{NO ENTREGADA}, con la misma consecuencia sobre PE-U1.
+		\item \textbf{Plazo.} Si el contenido evaluable se sube después de la fecha y hora de cierre, la actividad formativa se considera \textbf{NO ENTREGADA}, con la misma consecuencia sobre PE-U1.
+		\item \textbf{Integridad.} Plagio verificado, cualquiera de los indicios graves G1 a G6 de uso de IA, o contenido generado por IA presentado como propio: la actividad formativa se considera \textbf{NO ENTREGADA}, con la misma consecuencia sobre PE-U1, sin perjuicio de las acciones disciplinarias que correspondan.
+	\end{enumerate}
+\end{cajapiso}
+
+\seccion{Integridad académica e indicios de uso de IA}
+
+Todo trabajo debe ser de autoría propia. Se aplica el Código de Ética de la ACM \citep{acm_code_2018} y el encuadre de la asignatura.
+
+\begin{cajapiso}[title={Indicios graves de uso de IA: cada uno, por sí solo, implica CERO (P5)}]
+	\begin{enumerate}[label=\textbf{G\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{Referencias con datos que no corresponden a la obra real:} DOI que lleva a una obra con autores, título, año, revista, volumen o páginas diferentes; DOI, ISBN o URL inexistentes; obras que no existen.
+		\item \textbf{Afirmaciones técnicas que la fuente no respalda:} atribuir a TCP, HTTP/2, gRPC, AMQP, RabbitMQ o Kafka características que su especificación o documentación no tienen, o citar secciones de una norma o RFC que no existen o no dicen lo afirmado.
+		\item \textbf{Restos de un asistente de IA} en el diagrama, las notas, los comentarios o los commits (por ejemplo, «Claro, aquí tienes\ldots», «Como modelo de lenguaje\ldots»).
+		\item \textbf{Registro fabricado:} preguntas, respuestas o equipos registrados en las notas que no corresponden a lo ocurrido en la clase.
+		\item \textbf{Artefactos inexistentes o discordantes:} las notas describen procesos o interacciones que no están en el diagrama, o la exportación no coincide con el archivo \texttt{.drawio}.
+		\item \textbf{Incapacidad de explicar lo entregado:} el equipo o el integrante no puede justificar ni modificar, cuando se le pide, una decisión de su diagrama.
+	\end{enumerate}
+\end{cajapiso}
+
+\begin{cajaaviso}[title={Indicios complementarios (se acumulan)}]
+	\begin{enumerate}[label=\textbf{I\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item Redacción uniforme de principio a fin, o estilo distinto al que el equipo mostró en su exposición oral.
+		\item Uso excesivo de los mismos conectores y fórmulas («además», «cabe destacar», «es importante señalar», «en conclusión»).
+		\item Diagrama o justificaciones genéricas, aplicables a cualquier escenario, sin relación con el escenario asignado.
+		\item Entrega en uno o pocos commits masivos, o mensajes de commit idénticos o automáticos.
+		\item Residuos de formato ajeno a \LaTeX{} (marcas de Markdown, emojis) o metadatos del PDF de otra herramienta.
+		\item Estructura, redacción o errores muy similares entre equipos distintos.
+		\item Traducción literal o mezcla de idiomas sin justificación.
+	\end{enumerate}
+	Con dos indicios complementarios se resta 1,5 puntos (nivel B) y con tres o más se restan 3,0 (nivel C) en la sumativa vinculada. La declaración de uso de IA no exime de responsabilidad ni anula estos indicios.
+\end{cajaaviso}
+
+\seccion{Lista de cotejo para la retroalimentación}
+
+La actividad no tiene calificación. El docente marca cada indicador y escribe una observación que el equipo debe atender antes de implementar su diseño en PE-U1. \textbf{L} = Logrado (cumple con la calidad descrita); \textbf{EP} = En proceso (presente pero incompleto, impreciso o con errores que se señalan); \textbf{NL} = No logrado (ausente, incorrecto o no verificable). Que un elemento esté presente no basta: se valora su calidad.
+
+{\small
+\begin{longtable}{|C{0.04\linewidth}|L{0.50\linewidth}|C{0.035\linewidth}|C{0.035\linewidth}|C{0.035\linewidth}|L{0.15\linewidth}|}
+	\caption{Lista de cotejo de FORM-TL-01.}\\
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Indicador y calidad esperada (Logrado)} & \thdr{L} & \thdr{EP} & \thdr{NL} & \thdr{Observación}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Indicador y calidad esperada (Logrado)} & \thdr{L} & \thdr{EP} & \thdr{NL} & \thdr{Observación}\\
+	\hline
+	\endhead
+	1 & Procesos del escenario: al menos cuatro procesos o servicios propios del escenario asignado, cada uno con una responsabilidad clara y sin solaparse con otro. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	2 & Mensajes: cada interacción indica emisor, receptor, dirección y el contenido u operación del mensaje (por ejemplo, \texttt{reservarAsiento(vuelo, asiento)}), no solo una flecha sin nombre. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	3 & Tipo de comunicación correcto en cada interacción (sockets, RPC, RMI o mensajería) y coherente con lo que esa interacción necesita. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	4 & Síncrona o asíncrona: bien identificada y coherente con el tipo (por ejemplo, una cola no se presenta como síncrona sin explicar cómo se obtiene la respuesta). & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	5 & Protocolo y middleware coherentes entre sí (por ejemplo, gRPC sobre HTTP/2; RabbitMQ con AMQP; sockets sobre TCP) y sin combinaciones inexistentes. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	6 & Justificación de cada interacción con datos o condiciones del escenario (latencia, volumen de mensajes, respuesta inmediata, tolerancia a fallos, consistencia), no con frases generales. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	7 & Al menos una interacción con sockets y otra con RPC, definidas con suficiente detalle (mensajes, formato y comportamiento ante fallo o demora) para implementarlas en PE-U1. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	8 & Exposición en 5 minutos que explica las decisiones, no solo describe el diagrama. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	9 & Notas con todas las preguntas críticas recibidas (equipo que pregunta, pregunta, decisión cuestionada) y respuestas que defienden la decisión con argumentos o reconocen el cambio de diseño que produce. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	10 & El equipo formuló en clase al menos una pregunta crítica a cada equipo expositor (registro del docente). & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	11 & Repositorio completo: \texttt{.drawio} y exportación idénticos, notas compiladas y \texttt{README.md} con integrantes e instrucciones de compilación. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	12 & Aporte de cada integrante visible en commits propios, con cambios de contenido y no solo de formato. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+\end{longtable}
+}
+
+\subsection*{\textcolor{midblue}{Registro del aporte individual}}
+
+{\small
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|C{0.10\linewidth}|Y|}
+	\hline
+	\thdr{Integrante} & \thdr{Commits} & \thdr{Archivos y contenido aportado (según el historial)}\\
+	\hline
+	 & & \\
+	\hline
+	 & & \\
+	\hline
+	 & & \\
+	\hline
+	 & & \\
+	\hline
+\end{tabularx}
+}
+
+\begin{cajaclave}[title={Cómo se usa esta retroalimentación}]
+	El docente publica la retroalimentación en el foro del SGA antes de la siguiente clase. Cada indicador marcado como EP o NL debe corregirse en el diseño antes de implementarlo en PE-U1; el docente verificará esa corrección al calificar la práctica. Entregar esta formativa de forma válida es requisito para presentar PE-U1.
+\end{cajaclave}
+
+% ============================================================
+% ANEXO: estructura mínima de las notas de la presentación
+% ============================================================
+\clearpage
+\seccion{Anexo A. Estructura mínima de las notas de la presentación}
+
+Las notas (\texttt{FORM-TL-01/notas/main.tex}) contienen, en este orden:
+
+\begin{enumerate}[leftmargin=20pt,itemsep=3pt]
+	\item Datos del equipo, escenario asignado y fecha de la presentación.
+	\item El diagrama exportado, incluido como figura.
+	\item Una tabla de interacciones con estas columnas: emisor, receptor, mensaje, tipo de comunicación, síncrona o asíncrona, protocolo, middleware y justificación.
+	\item El registro de preguntas críticas con el formato de la Tabla~\ref{tab:preguntas}.
+	\item Los cambios de diseño que el equipo decide a partir de las preguntas, para llevarlos a PE-U1.
+	\item La declaración de uso de IA como apoyo, si la hubo.
+\end{enumerate}
+
+{\small
+\begin{longtable}{|C{0.05\linewidth}|L{0.12\linewidth}|L{0.22\linewidth}|L{0.15\linewidth}|L{0.19\linewidth}|C{0.09\linewidth}|}
+	\caption{Formato del registro de preguntas críticas (una fila por pregunta).}\label{tab:preguntas}\\
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Equipo que pregunta} & \thdr{Pregunta crítica} & \thdr{Decisión cuestionada} & \thdr{Respuesta del equipo} & \thdr{¿Cambia el diseño?}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Equipo que pregunta} & \thdr{Pregunta crítica} & \thdr{Decisión cuestionada} & \thdr{Respuesta del equipo} & \thdr{¿Cambia el diseño?}\\
+	\hline
+	\endhead
+	1 & Equipo X & ¿Qué pasa con la reserva si el servicio de pagos no responde? & Llamada síncrona por gRPC al servicio de pagos & Se fija un plazo máximo de espera y, si vence, la reserva queda pendiente y se reintenta el cobro & Sí\\
+	\hline
+	2 & & & & & \\
+	\hline
+\end{longtable}
+}
+
+La fila 1 es solo un ejemplo del formato; no debe copiarse en las notas del equipo.
+
+\bibliographystyle{unsrtnat}
+\bibliography{referencias}
+
+\end{document}
