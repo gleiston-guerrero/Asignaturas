@@ -1,0 +1,445 @@
+%============================================================
+% FORM-FB-01 -- Formativa individual: fichas bibliograficas sobre
+% fundamentos de sistemas distribuidos y arquitecturas distribuidas
+% Guia y rubrica para el estudiante y hoja de valoracion del docente
+% Aplicaciones Distribuidas (ISR-701) -- UTEQ -- SPA 2026-2027
+% Compilacion: pdflatex -> biber -> pdflatex -> pdflatex
+%============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noquoting]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.2cm,headheight=15pt]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{pdflscape}
+\usepackage{needspace}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xurl}
+\usepackage{csquotes}
+\usepackage{listings}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+
+\addbibresource{referencias_FORM-FB-01.bib}
+\DefineBibliographyStrings{spanish}{artno = {art.~n.\textordmasculine}}
+
+\newcommand{\doccode}{FORM-FB-01 $\cdot$ Guía y rúbrica}
+
+%------------------------------------------------------------
+% Paleta institucional UTEQ
+%------------------------------------------------------------
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqRed}{HTML}{B02418}
+\definecolor{uteqSoft}{HTML}{EAF1FA}
+\definecolor{uteqGray}{HTML}{F3F4F6}
+
+%------------------------------------------------------------
+% Encabezado y pie
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{uteqBlue}UTEQ $\cdot$ Aplicaciones Distribuidas (ISR-701)}
+\fancyhead[R]{\footnotesize\color{uteqBlue}\textbf{\doccode}}
+\fancyfoot[L]{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\fancyfoot[R]{\footnotesize Página \thepage}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyfoot[R]{\footnotesize Página \thepage}
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+%------------------------------------------------------------
+% Titulos
+%------------------------------------------------------------
+\titleformat{\section}{\normalfont\large\bfseries\color{uteqBlue}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\color{uteqMid}}{\thesubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.2em}
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+%------------------------------------------------------------
+% Cajas semanticas
+%------------------------------------------------------------
+\newtcolorbox{infoBox}[1][]{enhanced,breakable,colback=uteqSoft,colframe=uteqMid,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{avisoBox}[1][]{enhanced,breakable,colback=uteqAmber!10,colframe=uteqAmber!85!black,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{pisoBox}[1][]{enhanced,breakable,colback=uteqRed!6,colframe=uteqRed,fonttitle=\bfseries,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{okBox}[1][]{enhanced,breakable,colback=uteqGreen!8,colframe=uteqGreen!80!black,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+
+\newcommand{\hdr}[1]{\textcolor{white}{\textbf{#1}}}
+
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{uteqMid},backgroundcolor=\color{uteqGray},breaklines=true,xleftmargin=4pt,xrightmargin=4pt,aboveskip=6pt,belowskip=6pt}
+
+\begin{document}
+
+%============================================================
+% ENCABEZADO
+%============================================================
+\begin{center}
+	{\color{uteqBlue}\rule{\linewidth}{1pt}}\\[0.2cm]
+	{\large\bfseries\color{uteqBlue} UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[0.05cm]
+	{\normalsize Facultad de Ciencias de la Computación $\cdot$ Carrera de Software}\\[0.1cm]
+	{\color{uteqBlue}\rule{\linewidth}{1pt}}\\[0.35cm]
+	{\LARGE\bfseries\color{uteqBlue} Fichas bibliográficas: fundamentos de}\\[0.1cm]
+	{\LARGE\bfseries\color{uteqBlue} sistemas distribuidos y arquitecturas distribuidas}\\[0.15cm]
+	{\large\bfseries FORM-FB-01 $\cdot$ Guía y rúbrica}\\[0.1cm]
+	{\normalsize Aplicaciones Distribuidas (ISR-701) $\cdot$ SPA 2026--2027}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{xltabular}{\linewidth}{@{}L{4.6cm}Y@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Campo} & \hdr{Detalle} \\
+	\midrule
+	\endhead
+	Código & FORM-FB-01 \\
+	Unidad y tema & Unidad 1 --- Generalidades de los sistemas distribuidos $\cdot$ Fundamentos de los sistemas distribuidos y arquitecturas distribuidas \\
+	Modalidad & Individual \\
+	Carácter & Formativa: no tiene calificación, pero su entrega completa es requisito para presentar la sumativa que prepara \\
+	Prepara & TA-IND-01, Informe Académico Individual: análisis crítico de un sistema distribuido real (semana 3) \\
+	Semana & 2 (2 al 8 de noviembre de 2026) \\
+	Cierre & \textbf{Domingo 8 de noviembre de 2026, 23:59} \\
+	Entrega & Repositorio GitHub público (todo el contenido) y, en el SGA, solo un PDF de una página con la URL del repositorio \\
+	Docente & Gleiston C. Guerrero-Ulloa, PhD (\texttt{gguerrero@uteq.edu.ec}) \\
+	\bottomrule
+\end{xltabular}
+
+%============================================================
+\section{Propósito}
+%============================================================
+
+Esta actividad formativa individual prepara al estudiante para redactar el Informe Académico Individual TA-IND-01 (análisis crítico de un sistema distribuido real), que se entrega en la semana 3. No tiene calificación, pero según el encuadre de la asignatura su entrega completa es requisito para presentar TA-IND-01: quien no la entregue no podrá presentar ese informe y obtendrá cero en él, salvo justificación aprobada. Las fuentes que el estudiante localice y verifique aquí serán la base bibliográfica de su informe.
+
+Una ficha bibliográfica es el registro que un investigador hace de cada fuente que lee: dónde está publicada, de qué trata, qué dato útil contiene y para qué la va a usar. Hacerla bien obliga a leer la fuente y no solo su título. Por eso esta actividad pide, además del resumen, un dato concreto con su página y una nota que diga en qué parte del informe se usará la fuente.
+
+\begin{infoBox}[title={Lo que se espera que el estudiante sea capaz de hacer al terminar}]
+	\begin{enumerate}
+		\item Localizar fuentes académicas recientes y de calidad sobre sistemas distribuidos o microservicios.
+		\item Verificar que cada referencia corresponde exactamente a la obra real antes de citarla.
+		\item Resumir con palabras propias el problema, el método y los resultados de una fuente.
+		\item Extraer un dato concreto y localizable de cada fuente.
+		\item Decidir para qué servirá cada fuente en un informe académico concreto (TA-IND-01).
+		\item Producir un documento \LaTeX{} reproducible con referencias IEEE generadas con \texttt{biblatex}.
+	\end{enumerate}
+\end{infoBox}
+
+%============================================================
+\section{Instrucciones}
+%============================================================
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=1.6em]
+	\item \textbf{Localice y verifique 5 fuentes académicas} sobre sistemas distribuidos o arquitecturas de microservicios publicadas en los últimos 5 años (2021 a 2026), priorizando las más recientes. Al menos 3 deben ser artículos de revistas indexadas (IEEE, ACM, Elsevier, Springer; preferentemente Q1 o Q2 en Scopus o Web of Science) con DOI verificable. Las demás pueden ser libros de editoriales reconocidas con ISBN, o artículos de congresos indexados. No se aceptan blogs, Wikipedia, apuntes ni sitios sin autor identificable.
+	\item \textbf{Verifique cada fuente antes de registrarla.} Abra el DOI y compruebe que lo lleva exactamente a la obra citada. Confirme también que los autores, el año, el título, la revista, el volumen, el número y las páginas coinciden entre sí y con la publicación real (procedimiento en la sección \ref{sec:verificar}). Una referencia con datos que no se corresponden es un indicio de uso de IA generativa.
+	\item \textbf{Complete una ficha por fuente} con los cinco campos de la sección \ref{sec:ficha}: la referencia en formato IEEE, generada con \texttt{biblatex} desde un archivo \texttt{.bib}; el DOI o ISBN verificado; un resumen de 100 palabras, redactado por usted, con el problema que aborda la fuente, el método que usa y sus resultados o ideas clave; al menos un dato concreto de la fuente (una cifra, una definición o una conclusión), con la página o sección donde aparece; y una nota personal que explique cómo la fuente aporta a su comprensión del tema y en qué parte de TA-IND-01 la usará.
+	\item \textbf{Redacte las 5 fichas en un documento \LaTeX{}} y compílelo a PDF. En el repositorio GitHub público deben estar el \texttt{.tex}, el \texttt{.bib}, el PDF compilado y un \texttt{README.md} con las instrucciones de compilación (compilador, archivo principal, orden de comandos y dependencias).
+	\item \textbf{En la tarea del SGA suba solamente un documento PDF de UNA SOLA página} con sus datos identificativos y la URL del repositorio, escrita completa en una sola línea. No suba el \texttt{.tex} ni ningún otro archivo al SGA: todo va en el repositorio.
+	\item \textbf{Incluya en el documento una declaración de uso de inteligencia artificial}: indique qué herramienta usó, para qué y cómo verificó lo obtenido, o declare que no la usó (modelo en la sección \ref{sec:ia}). Los resúmenes y las notas deben ser de su autoría. Se consideran indicios de texto generado por IA, entre otros, la redacción uniforme, los conectores repetidos y las referencias inexistentes o con datos que no coinciden.
+	\item \textbf{Retroalimentación.} El docente revisará la pertinencia, la actualidad, la veracidad y la calidad de las fuentes, y devolverá la retroalimentación durante la semana 3, antes del cierre de TA-IND-01, para que el estudiante pueda corregirlas antes de entregar el informe.
+\end{enumerate}
+
+\Needspace{12\baselineskip}
+%============================================================
+\section{Contenido de cada ficha}\label{sec:ficha}
+%============================================================
+
+\begin{xltabular}{\linewidth}{@{}L{3.3cm}YY@{}}
+	\caption{Campos obligatorios de cada ficha}\label{tab:campos}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Campo} & \hdr{Qué debe contener} & \hdr{Cómo se hace en la práctica} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Campo} & \hdr{Qué debe contener} & \hdr{Cómo se hace en la práctica} \\
+	\midrule
+	\endhead
+	Referencia IEEE & La referencia completa de la fuente, dentro de la propia ficha, en estilo IEEE. & Escriba la entrada en el \texttt{.bib} y muéstrela en la ficha con \texttt{\textbackslash fullcite\{clave\}}. Un número entre corchetes, como [3], no es la referencia completa. \\
+	\addlinespace
+	DOI o ISBN verificado & El identificador de la obra y la fecha en que lo comprobó. & Copie el DOI desde la página del editor, no desde un buscador ni desde una respuesta de IA. Un libro sin DOI lleva su ISBN. \\
+	\addlinespace
+	Resumen (100 palabras) & Problema que aborda la fuente, método que usa y resultados o ideas clave, con sus palabras. & Lea la introducción, el método y las conclusiones, no solo el resumen del artículo (\emph{abstract}). Escriba sin mirar el texto y después compruebe que cada afirmación está en la fuente. \\
+	\addlinespace
+	Dato concreto & Una cifra, una definición o una conclusión del propio estudio, con la página, tabla o sección donde aparece. & Copie el dato tal como aparece y anote dónde. Relea la página para confirmar que la cifra está allí y que significa lo que usted dice que significa. \\
+	\addlinespace
+	Nota personal & Qué le aportó la fuente, qué límite tiene y en qué sección de TA-IND-01 la usará. & Escriba en primera persona. Nombre la sección del informe (por ejemplo, marco teórico o discusión) y la afirmación que la fuente sostendrá. \\
+	\bottomrule
+\end{xltabular}
+
+\subsection{Qué cuenta como dato concreto}
+
+\begin{xltabular}{\linewidth}{@{}YY@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{No cumple} & \hdr{Cumple} \\
+	\midrule
+	\endhead
+	«La arquitectura de microservicios se ha convertido en el estándar de la industria» (frase general de la introducción, aplicable a cualquier artículo). & «En la Tabla 4 (p.~12), los autores reportan que [n] de los [N] estudios revisados evalúan la escalabilidad horizontal» (resultado del propio estudio, con su ubicación). \\
+	\addlinespace
+	Una cifra de un informe de terceros que los autores solo citan en su introducción. & Una cifra medida o contada por los propios autores, con la tabla o figura donde aparece. \\
+	\addlinespace
+	«El artículo propone una taxonomía» (repite el resumen, sin contenido). & La definición textual que dan los autores, entre comillas, con su página. \\
+	\addlinespace
+	Una cifra sin página, o con una página que no existe en la obra. & Una cifra con la página real, comprobable en el PDF publicado. \\
+	\bottomrule
+\end{xltabular}
+
+\begin{avisoBox}[title={Un dato que no está en la fuente es un dato fabricado}]
+	Si la cifra, la tabla o la conclusión que escribe no aparece en la fuente citada, o aparece con otro significado, el dato se considera fabricado y se aplica el criterio de piso P4. Esto incluye los porcentajes que «suenan razonables» pero que el artículo no contiene.
+\end{avisoBox}
+
+\subsection{Plantilla de una ficha en \LaTeX}
+
+\begin{lstlisting}
+\subsection*{Ficha 1}
+\begin{description}
+  \item[Referencia (IEEE):] \fullcite{apellido2024palabra}
+  \item[DOI o ISBN verificado:] 10.xxxx/xxxxx (verificado el dd/mm/2026)
+  \item[Resumen:] Problema: ... Metodo: ... Resultados: ...
+  \item[Dato concreto:] "..." (p. 12, Tabla 4)
+  \item[Nota personal:] Esta fuente me permitio entender ...
+        La usare en la seccion [X] de TA-IND-01 para sostener que ...
+\end{description}
+\end{lstlisting}
+
+Al final del documento se imprime la lista completa con \verb|\printbibliography|. La compilación con \texttt{biber} genera tanto la referencia de cada ficha como la lista final.
+
+%============================================================
+\section{Cómo verificar una referencia}\label{sec:verificar}
+%============================================================
+
+Las herramientas de IA generativa producen con frecuencia referencias que no existen o que mezclan datos de obras distintas: en un estudio publicado en \emph{Scientific Reports}, el 55\,\% de las citas generadas por GPT-3.5 y el 18\,\% de las generadas por GPT-4 eran inventadas, y una parte de las citas reales tenía errores sustanciales \cite{walters2023fabrication}. Por eso cada referencia se comprueba en la fuente original. Una referencia es correcta cuando todos sus campos (autores, año, título, revista o congreso, volumen, número, páginas y DOI) corresponden a la misma obra.
+
+\begin{enumerate}
+	\item \textbf{Resuelva el DOI.} Escriba en el navegador \texttt{https://doi.org/} seguido del DOI. Debe abrir la página del editor con el mismo título y los mismos autores que usted escribió.
+	\Needspace{9\baselineskip}
+	\item \textbf{Compare los metadatos con Crossref.} Desde PowerShell, reemplazando el DOI por el de su fuente:
+	\begin{lstlisting}
+$r = Invoke-RestMethod "https://api.crossref.org/works/10.1038/s41598-023-41032-5"
+$r.message.title
+$r.message.author | ForEach-Object { "$($_.given) $($_.family)" }
+$r.message."container-title"
+$r.message.volume
+$r.message.page
+	\end{lstlisting}
+	Compare cada valor con su entrada BibTeX. Si algo no coincide, corrija la entrada con los datos del editor.
+	\item \textbf{Copie la lista completa de autores.} No recorte autores en el \texttt{.bib}: \texttt{biblatex} abrevia con «et al.» cuando corresponde.
+	\item \textbf{Sin DOI} (libros, actas de USENIX): confirme el ISBN, el título, los autores y el año en la página del editor.
+	\item \textbf{Si no logra verificarla, no la use.}
+\end{enumerate}
+
+%============================================================
+\section{Repositorio y entrega}
+%============================================================
+
+\subsection{Estructura del repositorio}
+
+\begin{lstlisting}
+FORM-FB-01/
+  main.tex                  (las cinco fichas y la declaracion de IA)
+  referencias.bib           (cinco entradas verificadas)
+  main.pdf                  (PDF compilado de la version final)
+README.md                   (autor, instrucciones de compilacion)
+\end{lstlisting}
+
+Si varios estudiantes comparten un repositorio, cada uno trabaja en su propia carpeta y desde su propia cuenta de GitHub, porque el historial de \emph{commits} es la evidencia de autoría. No suba al repositorio público libros completos con derechos de autor ni documentos con su número de cédula.
+
+\subsection{Modelo de \texttt{README.md}}
+
+\begin{lstlisting}
+# FORM-FB-01 - Fichas bibliograficas
+Autor: Apellidos Nombres - Aplicaciones Distribuidas (ISR-701), UTEQ
+
+## Compilacion
+- Distribucion: MiKTeX o TeX Live (pdflatex y biber)
+- Archivo principal: FORM-FB-01/main.tex
+- Dependencias: biblatex (style=ieee), biber, babel (spanish)
+- Orden de comandos (desde la carpeta FORM-FB-01):
+    pdflatex main.tex
+    biber main
+    pdflatex main.tex
+    pdflatex main.tex
+\end{lstlisting}
+
+\subsection{Documento de una página para el SGA}
+
+El PDF que se sube al SGA tiene una sola página y contiene únicamente universidad, facultad (Facultad de Ciencias de la Computación), carrera, asignatura (Aplicaciones Distribuidas, ISR-701), código y nombre de la actividad, nombre del estudiante, paralelo, fecha y la URL del repositorio escrita completa en una sola línea. Antes de subirlo compruebe tres cosas: que tiene exactamente una página, que la URL no se parte en dos líneas y que al abrirla en una ventana privada del navegador se ve el repositorio sin iniciar sesión. Un hipervínculo con otro texto visible (por ejemplo, el título de la actividad) no cumple: la URL debe leerse escrita.
+
+\subsection{Declaración de uso de inteligencia artificial}\label{sec:ia}
+
+Al final del documento, antes de las referencias, incluya una sección con este contenido mínimo:
+
+\begin{lstlisting}
+\section*{Declaracion de uso de inteligencia artificial}
+Herramienta y version: [nombre y version, o "No use herramientas de IA"].
+Para que la use: [p. ej., buscar articulos candidatos; revisar ortografia].
+Como verifique lo obtenido: [p. ej., abri cada DOI y compare los datos
+con Crossref; lei cada articulo antes de redactar].
+Declaro que los resumenes y las notas personales son de mi autoria.
+\end{lstlisting}
+
+La declaración no exime de responsabilidad \cite{acm2018ethics}. Si declara que una herramienta redactó o propuso sus resúmenes o sus notas, esa parte no es de su autoría: cuenta como indicio de autoría no propia y limita las dimensiones D2 y D4 de la rúbrica al nivel 3.
+
+%============================================================
+\section{Criterios de piso}
+%============================================================
+
+Esta actividad no tiene calificación. La valoración que recibe el estudiante es referencial: le dice cómo estaría su trabajo si fuera una actividad sumativa. Los criterios de piso son los del encuadre de la asignatura.
+
+\begin{pisoBox}[title={Criterios de piso: su incumplimiento deja la valoración referencial en CERO}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=2.2em]
+		\item \textbf{PDF de una sola página con carátula y URL.} El estudiante sube al SGA solamente un documento PDF de UNA SOLA página con los datos identificativos y, en una sola línea, la URL del repositorio. Si el PDF tiene más de una página, si se suben otros archivos en su lugar, si la URL no se lee escrita en una sola línea o está rota, o si el repositorio no es público o no es accesible, la valoración es cero.
+		\item \textbf{PDF reproducible.} Si el PDF no se genera correctamente al clonar el repositorio y compilar el archivo \texttt{.tex}, la valoración es cero. Las instrucciones de compilación deben estar en el \texttt{README.md}.
+		\item \textbf{Plazo.} Lo que se sube al repositorio después del domingo 8 de noviembre de 2026 a las 23:59 no se considera. Si el contenido evaluable se sube después del cierre, la valoración es cero.
+		\item \textbf{Integridad.} Una sola referencia inexistente, o cuyos datos (autores, año, título, revista, volumen o páginas) no corresponden a la obra real; un dato concreto que no está en la fuente; plagio; o contenido generado por IA y presentado como propio. Cualquiera de ellos deja la valoración en cero.
+		\item \textbf{Formativa vinculada.} Quien no entrega esta formativa no puede presentar TA-IND-01 y obtiene cero en ella, salvo justificación aprobada. Se considera entregada cuando, antes del cierre, el estudiante subió su documento al SGA y sus cinco fichas están en un repositorio accesible.
+	\end{enumerate}
+\end{pisoBox}
+
+%============================================================
+\section{Rúbrica}
+%============================================================
+
+La rúbrica dice de antemano qué se va a mirar y cómo se ve cada nivel de calidad; conocerla antes de entregar permite revisar el propio trabajo \cite{brookhart2018appropriate,panadero2020critical}. Se aplica la rúbrica general del encuadre con los pesos de informe individual (TA-IND), porque esta actividad prepara TA-IND-01. Cada dimensión recibe un nivel de 0 a 4. Que un elemento esté presente no basta para puntuarlo: se valora con qué calidad se cumple (veracidad, precisión, pertinencia, autoría y calidad de las fuentes). El nivel 4 se asigna solo cuando la dimensión se cumple por completo; un elemento ausente o falso vale 0.
+
+\[
+\text{Nota previa} = \sum_{i=1}^{6} \frac{w_i \times n_i}{4} \times \frac{10}{100}, \qquad \text{Nota final} = \max\bigl(0,\ \text{Nota previa} - \text{Penalizaciones}\bigr)
+\]
+
+donde $w_i$ es el peso de la dimensión en porcentaje y $n_i$ el nivel obtenido. Si se incumple un criterio de piso, la nota final es cero. En la retroalimentación se informan siempre la nota previa y la nota final. Por ser formativa, ninguna de las dos se registra en el SGA.
+
+\begin{xltabular}{\linewidth}{@{}L{6.2cm}C{1.3cm}C{1.5cm}Y@{}}
+	\caption{Dimensiones y pesos (TA-IND)}\label{tab:pesos}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Dimensión} & \hdr{Peso} & \hdr{Puntos} & \hdr{Producto que se mira} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Dimensión} & \hdr{Peso} & \hdr{Puntos} & \hdr{Producto que se mira} \\
+	\midrule
+	\endhead
+	D1. Cumplimiento y completitud & 10\,\% & 1,0 & Fuentes, fichas y repositorio \\
+	D2. Fundamentación conceptual (resúmenes) & 25\,\% & 2,5 & Resúmenes \\
+	D3. Desarrollo y evidencia (datos concretos) & 20\,\% & 2,0 & Datos con su ubicación \\
+	D4. Análisis crítico (notas personales) & 25\,\% & 2,5 & Notas personales \\
+	D5. Comunicación (documento \LaTeX) & 10\,\% & 1,0 & PDF y carátula \\
+	D6. Referencias, ética e integridad & 10\,\% & 1,0 & \texttt{.bib}, referencias y declaración de IA \\
+	\midrule
+	\textbf{Total} & \textbf{100\,\%} & \textbf{10,0} & \\
+	\bottomrule
+\end{xltabular}
+
+\Needspace{12\baselineskip}
+\subsection{Penalizaciones que no anulan la valoración}
+
+\begin{xltabular}{\linewidth}{@{}YC{3.2cm}@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Situación detectada} & \hdr{Efecto} \\
+	\midrule
+	\endhead
+	Falta la declaración de uso de inteligencia artificial & $-0{,}3$ \\
+	Referencias en formato APA u otro distinto de IEEE & D6 $=0$ \\
+	Dos indicios de uso de IA generativa o de autoría no propia (nivel B) & $-1{,}5$ \\
+	Tres o más indicios, o resultados no verificados presentados como verificados (nivel C) & $-3{,}0$ \\
+	\bottomrule
+\end{xltabular}
+
+Son indicios, entre otros: la declaración de que una herramienta redactó o propuso los resúmenes o las notas; la redacción uniforme (I1); el uso repetido de los mismos conectores (I3); el contenido genérico (I4); afirmaciones que la fuente no respalda (I5); el documento completo subido en uno o dos \emph{commits} seguidos, o restos de respuestas de un asistente en el texto (I6); y la coincidencia de plantilla o frases con otro estudiante (I7). Un solo indicio no se penaliza.
+
+\begin{landscape}
+\setlength{\LTpre}{2pt}
+\renewcommand{\arraystretch}{1.08}
+\scriptsize
+\begin{xltabular}{\linewidth}{@{}L{3.2cm}YYYYL{2.7cm}@{}}
+	\caption{Rúbrica detallada de FORM-FB-01}\label{tab:rubrica}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Dimensión (peso)} & \hdr{4 --- Excelente} & \hdr{3 --- Bueno} & \hdr{2 --- Aceptable} & \hdr{1 --- Insuficiente} & \hdr{0 --- Ausente} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Dimensión (peso)} & \hdr{4 --- Excelente} & \hdr{3 --- Bueno} & \hdr{2 --- Aceptable} & \hdr{1 --- Insuficiente} & \hdr{0 --- Ausente} \\
+	\midrule
+	\endhead
+	\textbf{D1. Cumplimiento y completitud (10\,\%)} & Cinco fuentes de 2021 a 2026, al menos tres artículos de revista indexada; cada ficha con sus cinco campos (referencia IEEE completa, DOI o ISBN, resumen, dato con ubicación, nota con sección de TA-IND-01); repositorio con \texttt{.tex}, \texttt{.bib}, PDF y \texttt{README.md}; declaración de IA. & Falta un elemento menor (una nota sin sección de TA-IND-01, un dato sin página) sin afectar el conjunto. & Faltan varios elementos: la referencia es solo un número [n], el dato va mezclado en el resumen, las notas no dicen su uso, una fuente está fuera del periodo o hay menos de tres revistas. & Menos de cinco fichas, o la mayoría de los campos incompletos. & No entrega, o lo entregado no corresponde a la actividad. \\
+	\addlinespace
+	\textbf{D2. Fundamentación conceptual: resúmenes (25\,\%)} & Cada resumen, de unas 100 palabras y redactado por el estudiante, presenta con precisión el problema, el método y los resultados, con hallazgos del propio estudio, y muestra lectura del texto completo. & Resúmenes correctos y fieles; alguno se basa solo en el \emph{abstract} o le falta uno de los tres elementos; o la redacción fue asistida por IA según la declaración (tope de nivel). & Paráfrasis o traducción del \emph{abstract}, resúmenes genéricos, o una afirmación que la fuente no contiene. & Errores conceptuales graves, o varios resúmenes que no corresponden a la fuente. & Sin resúmenes, o ajenos al tema. \\
+	\addlinespace
+	\textbf{D3. Desarrollo y evidencia: datos concretos (20\,\%)} & Cada ficha tiene un dato exacto del propio estudio (cifra, definición o conclusión), con página, tabla o sección, separado del resumen y comprobable en la fuente. & Datos exactos; uno o dos sin página, o de carácter general (una definición de la introducción). & Varios datos son enunciados generales, cifras de terceros que los autores solo citan, o no tienen ubicación. & Los datos repiten el resumen sin cifra ni ubicación, o casi ninguno se puede verificar. & Sin datos. Un dato que no está en la fuente activa P4. \\
+	\addlinespace
+	\textbf{D4. Análisis crítico: notas personales (25\,\%)} & Cada nota, en primera persona, dice qué aprendió, qué límite tiene la fuente y en qué sección concreta de TA-IND-01 y sobre qué sistema la usará. & Notas personales con uso en TA-IND-01, pero alguna queda general («el sistema elegido»); o la redacción fue asistida por IA según la declaración (tope de nivel). & Notas breves o genéricas; el uso en TA-IND-01 no se concreta. & Las notas hablan del autor en tercera persona o repiten el resumen. & Sin notas. \\
+	\addlinespace
+	\textbf{D5. Comunicación: documento \LaTeX{} (10\,\%)} & Documento limpio, sin desbordes ni citas sin resolver; carátula con datos correctos (facultad, asignatura, código, fecha); sin erratas. & Defectos menores: nombre de la asignatura o de la facultad equivocado, una errata, carátula incompleta. & Varios defectos: erratas, celdas cortadas, una cita sin resolver, código de actividad o fecha equivocados. & Documento desordenado o difícil de leer. & No hay documento legible. \\
+	\addlinespace
+	\textbf{D6. Referencias, ética e integridad (10\,\%)} & Referencias IEEE generadas con \texttt{biblatex} desde el \texttt{.bib}, con todos los campos y autores correctos; fuentes recientes de revistas Q1 o Q2 o de editoriales reconocidas; declaración de IA completa. & Reales y correctas, con algún campo omitido (por ejemplo, el DOI), generadas con BibTeX en lugar de \texttt{biblatex}, o con una fuente de baja calidad. & Reales, pero con autores recortados sin «et al.», una fuente fuera del periodo, o pocas revistas. & Escritas a mano sin \texttt{.bib}, mal citadas, o sin declaración de IA. & Formato distinto de IEEE (por ejemplo, APA). Una referencia con datos que no corresponden activa P4. \\
+	\bottomrule
+\end{xltabular}
+\end{landscape}
+
+
+
+%============================================================
+\section{Hoja de valoración del docente}
+%============================================================
+
+\begin{xltabular}{\linewidth}{@{}L{6.0cm}C{1.1cm}C{1.1cm}C{1.5cm}Y@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Dimensión} & \hdr{Nivel} & \hdr{Peso} & \hdr{Puntos} & \hdr{Observación} \\
+	\midrule
+	\endhead
+	D1. Cumplimiento y completitud & & 10\,\% & & \\
+	D2. Resúmenes & & 25\,\% & & \\
+	D3. Datos concretos & & 20\,\% & & \\
+	D4. Notas personales & & 25\,\% & & \\
+	D5. Documento \LaTeX & & 10\,\% & & \\
+	D6. Referencias, ética e integridad & & 10\,\% & & \\
+	\midrule
+	\textbf{Nota previa (sobre 10)} & & & & \\
+	\textbf{Penalizaciones} & & & & Indicios encontrados: \\
+	\textbf{Criterios de piso P1 a P4} & \multicolumn{4}{L{8.2cm}}{Cumple / No cumple (indicar cuál y la evidencia)} \\
+	\textbf{Nota final referencial} & & & & \\
+	\textbf{Entregada para P5 de TA-IND-01} & \multicolumn{4}{L{8.2cm}}{Sí / No} \\
+	\bottomrule
+\end{xltabular}
+
+\begin{okBox}[title={Lista de verificación antes del cierre}]
+	\begin{itemize}
+		\item[$\square$] Tengo cinco fuentes de 2021 a 2026 y al menos tres son artículos de revista indexada.
+		\item[$\square$] Abrí cada DOI y comparé autores, año, título, revista, volumen, número y páginas con Crossref o con la página del editor.
+		\item[$\square$] Cada ficha muestra la referencia completa con \verb|\fullcite|, no solo un número.
+		\item[$\square$] Escribí los resúmenes y las notas yo mismo, después de leer cada fuente.
+		\item[$\square$] Cada dato concreto está en la página que cito y significa lo que digo.
+		\item[$\square$] Cada nota dice en qué sección de TA-IND-01 usaré la fuente.
+		\item[$\square$] El documento incluye la declaración de uso de IA.
+		\item[$\square$] El PDF se compila desde un clon limpio siguiendo el \texttt{README.md} y no muestra claves sin resolver.
+		\item[$\square$] El repositorio es público y no contiene libros completos ni mi número de cédula.
+		\item[$\square$] En el SGA está solo el PDF de una página con la URL escrita en una sola línea.
+	\end{itemize}
+\end{okBox}
+
+\Needspace{14\baselineskip}
+\printbibliography[heading=bibintoc,title={Referencias}]
+
+\end{document}
