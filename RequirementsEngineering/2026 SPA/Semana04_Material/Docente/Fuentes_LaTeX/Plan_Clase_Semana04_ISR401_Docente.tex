@@ -1,0 +1,268 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% Plan de clase — Semana 4 (uso exclusivo del docente)
+% Ingeniería de Requerimientos (ISR-401) · UTEQ · SPA 2026-2027
+% Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage[scaled]{helvet}
+\usepackage{courier}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{amssymb}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage{needspace}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ \,$\cdot$\, Ingeniería de Requerimientos (ISR-401)}
+\rhead{\footnotesize Plan de clase de la semana 4 \,$\cdot$\, Uso del docente}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.25}
+
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\seccion}[1]{\section{\textcolor{utegreendk}{#1}}}
+\renewcommand{\thesection}{\arabic{section}.}
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajaaviso}[1][]{colback=lightgold,colframe=gold!80!black,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newcommand{\caja}{$\square$}
+
+\begin{document}
+
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\begin{center}
+	{\LARGE\textbf{\textcolor{utegreendk}{PLAN DE CLASE DE LA SEMANA 4}}}\\[4pt]
+	{\large Unidad 2, Tema 1: Elicitación de requisitos}\\[4pt]
+	{\small Documento interno: no se publica a los estudiantes}
+\end{center}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+% ============================================================
+\seccion{Datos de la semana según el sílabo}
+% ============================================================
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Detalle}\\
+	\hline
+	Semana y fechas & 4: lunes 16 a domingo 22 de noviembre de 2026 (sin feriados)\\
+	\hline
+	\rowcolor{rowgray} Unidad & 2. Elicitación y Análisis de Requisitos\\
+	\hline
+	Resultado de aprendizaje & Aplica técnicas de elicitación y análisis de requisitos para identificar, clasificar y modelar requisitos.\\
+	\hline
+	\rowcolor{rowgray} Contenidos (Tema 1) & Fuentes de requisitos: stakeholders, documentos, sistemas existentes y estándares. Técnicas: entrevista, taller (workshop), focus group, observación y etnografía. Técnicas: cuestionario, lectura basada en perspectivas, design thinking. Técnicas de apoyo: brainstorming, prototipado, KJ, mapas mentales y checklists.\\
+	\hline
+	Estrategias metodológicas & Aprendizaje basado en problemas, aula invertida y design thinking.\\
+	\hline
+	\rowcolor{rowgray} Habilidades blandas & Comunicación efectiva, creatividad y empatía.\\
+	\hline
+	TAC & LMS (SGA), herramientas de ideación y prototipado, plataformas de comunicación y gestión grupal.\\
+	\hline
+	\rowcolor{rowgray} Recursos didácticos & Cuestionario en línea, libros de texto, material audiovisual y presentaciones.\\
+	\hline
+	Evaluación & GA-TL-02 (formativa, taller) y TA-PFC-E1 (sumativa, 1.75 puntos del corte 1). Ambas cierran el sábado 21 de noviembre de 2026 a las 23:59.\\
+	\hline
+	\rowcolor{rowgray} Horas & 3 en contacto con el docente, 2 práctico-experimentales y 4 autónomas.\\
+	\hline
+\end{tabularx}
+
+% ============================================================
+\seccion{Material de la semana}
+% ============================================================
+
+{\small
+	\begin{longtable}{|L{0.40\linewidth}|L{0.14\linewidth}|L{0.38\linewidth}|}
+		\caption{Paquete de la semana 4 y su destino.}\\
+		\hline
+		\thdr{Archivo} & \thdr{Para} & \thdr{Uso}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{Archivo} & \thdr{Para} & \thdr{Uso}\\
+		\hline
+		\endhead
+		\texttt{Semana04\_\allowbreak{}Elicitacion\_\allowbreak{}ISR401.pdf} (y .tex) & Estudiantes & Lectura de aula invertida (16 páginas); se publica en el SGA el lunes 16 antes de la primera sesión.\\
+		\hline
+		\rowcolor{rowgray} \texttt{ISR401\_\allowbreak{}Semana04.pptx} & Docente y estudiantes & Diapositivas de las dos sesiones (20 diapositivas, con notas del orador). Reemplaza a la versión anterior, que no correspondía al sílabo.\\
+		\hline
+		\texttt{Plantilla\_\allowbreak{}GA-TL-02/FORM/TL-02/} & Estudiantes & Plantilla \LaTeX{} del taller (\texttt{main.tex}, \texttt{referencias.bib}, \texttt{evidencias/MANIFIESTO.md}, instrucciones de compilación) y su PDF; la página del mapa de empatía sirve para imprimir.\\
+		\hline
+		\rowcolor{rowgray} \texttt{Guia\_\allowbreak{}Rubrica\_\allowbreak{}GA-TL-02\_\allowbreak{}Entrevista\_\allowbreak{}DesignThinking.pdf} & Estudiantes & Guía y lista de cotejo del taller (ya existente, sin cambios).\\
+		\hline
+		\texttt{Guia\_\allowbreak{}Rubrica\_\allowbreak{}TA-PFC-E1\_\allowbreak{}Planificacion\_\allowbreak{}Elicitacion.pdf} & Estudiantes & Guía y rúbrica de la entrega 1 del PFC (ya publicada, sin cambios).\\
+		\hline
+		\rowcolor{rowgray} \texttt{Consentimiento\_\allowbreak{}Informado\_\allowbreak{}PFC\_\allowbreak{}ISR401.pdf} & Estudiantes & Modelo de consentimiento para el ensayo y para el trabajo de campo del PFC (ya existente).\\
+		\hline
+		\texttt{referencias\_\allowbreak{}semana04.bib} & Docente & Referencias verificadas de la semana, en BibTeX.\\
+		\hline
+		\rowcolor{rowgray} Este plan & Docente & Secuencia, cuestionario con clave y observaciones de alineación.\\
+		\hline
+	\end{longtable}
+}
+
+\begin{cajaclave}[title={Lista de verificación antes del lunes 16}]
+	\begin{itemize}[leftmargin=18pt,itemsep=2pt,label=\caja]
+		\item Publicar en el SGA la lectura y el cuestionario de aula invertida (sección 5), con cierre antes de la primera sesión.
+		\item Confirmar que las guías de GA-TL-02 y TA-PFC-E1 están visibles en el SGA y publicar la plantilla de GA-TL-02.
+		\item Imprimir una hoja del mapa de empatía (página 3 de la plantilla) por equipo y llevar notas adhesivas para el método KJ.
+		\item Llevar copias del modelo de consentimiento informado para el ensayo en juego de roles.
+		\item Verificar qué equipos ya tienen la carta de aceptación de su organización (TA-PFC-E1).
+	\end{itemize}
+\end{cajaclave}
+
+% ============================================================
+\seccion{Sesión de contacto con el docente (3 horas)}
+% ============================================================
+
+Estrategia: aula invertida y aprendizaje basado en problemas. El problema conductor es el sistema del PFC de cada equipo: cada concepto se aplica inmediatamente a la organización real del equipo.
+
+{\small
+	\begin{longtable}{|C{0.08\linewidth}|L{0.30\linewidth}|L{0.38\linewidth}|C{0.13\linewidth}|}
+		\caption{Secuencia de la sesión de contacto.}\\
+		\hline
+		\thdr{Min.} & \thdr{Actividad} & \thdr{Qué hacen docente y estudiantes} & \thdr{Diapos.}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{Min.} & \thdr{Actividad} & \thdr{Qué hacen docente y estudiantes} & \thdr{Diapos.}\\
+		\hline
+		\endhead
+		0--15 & Inicio y cuestionario & Agenda y resultado de aprendizaje; revisión de las preguntas del cuestionario con más errores. & 1--3\\
+		\hline
+		\rowcolor{rowgray} 15--45 & Dificultad y fuentes & Conocimiento tácito con el ejemplo del cajero; cada equipo nombra una fuente de cada tipo para su PFC y tres roles de partes interesadas. & 4--6\\
+		\hline
+		45--55 & Mapa de técnicas & Clasificación IREB; los estudiantes ubican cada técnica del sílabo. & 7\\
+		\hline
+		\rowcolor{rowgray} 55--100 & Técnicas de recolección & Entrevista y tipos de preguntas; ejercicio de 5 minutos: cada equipo escribe una pregunta defectuosa sobre su PFC y el equipo vecino la corrige. Cuestionario, taller, grupo focal, observación, etnografía y lectura basada en perspectivas. & 8--12\\
+		\hline
+		100--110 & Receso & --- & ---\\
+		\hline
+		\rowcolor{rowgray} 110--150 & Design thinking y apoyo & Fases y mapa de empatía; ejemplo bueno y malo de «¿Cómo podríamos\ldots?». Dinámica KJ de 10 minutos con notas adhesivas sobre problemas típicos de una cooperativa. & 13--14\\
+		\hline
+		150--170 & Selección, IA y ética & Tabla de selección; cada equipo elige la técnica para tres de sus partes interesadas. Demostración de \texttt{Get-FileHash} y del manifiesto. & 15--16\\
+		\hline
+		\rowcolor{rowgray} 170--180 & Cierre & Requisitos de TA-PFC-E1 y anuncio del taller; dudas. & 18--19\\
+		\hline
+	\end{longtable}
+}
+
+% ============================================================
+\seccion{Sesión práctico-experimental (2 horas): taller GA-TL-02}
+% ============================================================
+
+Estrategia: design thinking. Los equipos trabajan en su repositorio con la plantilla. Para que el ensayo se parezca a una entrevista real, la parte interesada la representa un integrante de otro equipo, que no conoce el guion.
+
+{\small
+	\begin{longtable}{|C{0.10\linewidth}|L{0.25\linewidth}|L{0.55\linewidth}|}
+		\caption{Secuencia del taller.}\\
+		\hline
+		\thdr{Min.} & \thdr{Paso} & \thdr{Indicaciones}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{Min.} & \thdr{Paso} & \thdr{Indicaciones}\\
+		\hline
+		\endhead
+		0--10 & Organización & Repaso de la diapositiva 17; emparejar equipos (A entrevista a un integrante de B y viceversa).\\
+		\hline
+		\rowcolor{rowgray} 10--40 & 1. Guion & 12 a 15 preguntas con apertura, bloques y cierre, marcando el tipo de cada una. El docente recorre los equipos y señala preguntas inductivas o dobles sin corregirlas.\\
+		\hline
+		40--80 & 2. Ensayo & Dos rondas de 20 minutos (cada equipo entrevista y es entrevistado). Lectura y firma del consentimiento; grabación solo de audio; un integrante pregunta y otro registra.\\
+		\hline
+		\rowcolor{rowgray} 80--110 & 3. Mapa y problema & Mapa de empatía en papel con lo dicho en el ensayo; declaración del problema y pregunta «¿Cómo podríamos\ldots?»; foto del mapa a \texttt{figuras/}.\\
+		\hline
+		110--120 & 4. Ajustes y commit & Tabla de preguntas que fallaron y su corrección; primer commit del día en \texttt{FORM/TL-02/}.\\
+		\hline
+	\end{longtable}
+}
+
+\begin{cajaaviso}[title={Puntos a observar durante el taller (lista de cotejo de GA-TL-02)}]
+	\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+		\item Guion con estructura y preguntas abiertas, neutrales y simples.
+		\item Ensayo con consentimiento y registrado en el manifiesto (no audios en el repositorio).
+		\item Mapa de empatía coherente con lo dicho en el ensayo, no con lo que el equipo supone.
+		\item Definición del problema centrada en el usuario, no en la solución.
+		\item Preguntas defectuosas identificadas y corregidas.
+	\end{enumerate}
+	La lista de cotejo se devuelve en el SGA antes de la sesión siguiente, para que los indicadores EP o NL se corrijan antes de GA-PE-02 y TA-PFC-02.
+\end{cajaaviso}
+
+% ============================================================
+\seccion{Cuestionario de aula invertida (formativo, SGA)}
+% ============================================================
+
+Diez preguntas de opción múltiple sobre la lectura, con una sola respuesta correcta (marcada con \textbf{*}). Configuración sugerida: un intento, 20 minutos, cierre antes de la primera sesión de la semana, sin calificación.
+
+\begin{enumerate}[leftmargin=20pt,itemsep=6pt]
+	\item Según ISO/IEC/IEEE 29148 (6.3.3.3), identificar las necesidades de las partes interesadas incluye: a) solo lo que el cliente dicta; \textbf{b) obtenerlas de las personas y descubrir las necesidades implícitas del dominio y el contexto*}; c) copiar requisitos de sistemas similares; d) priorizar con MoSCoW.
+	\item El conocimiento tácito es: a) lo que figura en el reglamento; b) un requisito no funcional; \textbf{c) lo que una persona sabe y usa pero no expresa porque le parece obvio*}; d) un dato confidencial.
+	\item La norma 29148 advierte que consultar a una sola clase de partes interesadas: \textbf{a) produce información sesgada*}; b) acelera el proyecto sin riesgos; c) es lo recomendado en proyectos pequeños; d) reemplaza la observación.
+	\item ¿Cuál es una pregunta abierta y neutral? a) ¿Verdad que una app sería mejor?; b) ¿El sistema es lento?; \textbf{c) ¿Cómo registra hoy una entrega, desde que llega el socio hasta que se le paga?*}; d) ¿Cuánto tarda el pesaje y quién revisa la humedad?
+	\item El cuestionario es más útil para: a) descubrir requisitos desconocidos al inicio; \textbf{b) medir cuántas personas comparten algo ya identificado*}; c) acordar requisitos entre roles; d) observar el trabajo real.
+	\item La diferencia principal entre un taller de requisitos y un grupo focal es que el grupo focal: a) dura varios días; b) lo conduce el gerente; \textbf{c) busca conocer percepciones y no tomar decisiones*}; d) no necesita moderador.
+	\item La técnica más indicada cuando el trabajo es rutinario y las personas no saben explicarlo es: a) el cuestionario; \textbf{b) la observación*}; c) la lluvia de ideas; d) la lectura de normas.
+	\item En la lectura basada en perspectivas: a) un solo lector revisa todo el documento; \textbf{b) se lee el mismo documento desde el punto de vista de distintos usuarios, cada uno con sus preguntas*}; c) se leen solo los títulos; d) se reemplaza a las entrevistas.
+	\item ¿Cuál pregunta «¿Cómo podríamos\ldots?» está bien formulada? a) ¿Cómo podríamos hacer una app móvil para el acopio?; \textbf{b) ¿Cómo podríamos lograr que el técnico registre una entrega sin hacer esperar al socio más de cinco minutos?*}; c) ¿Cómo podríamos usar inteligencia artificial?; d) ¿Cómo podríamos terminar el proyecto?
+	\item En el repositorio público del PFC se registra: a) el audio de cada entrevista; b) los consentimientos firmados; \textbf{c) un manifiesto con archivo, fecha, duración y huella SHA-256*}; d) los nombres y teléfonos de los participantes.
+\end{enumerate}
+
+% ============================================================
+\seccion{Observaciones de alineación con el sílabo}
+% ============================================================
+
+\begin{enumerate}[leftmargin=20pt,itemsep=4pt]
+	\item \textbf{Material anterior no alineado.} Las diapositivas \texttt{ISR401\_\allowbreak{}Semana04.pptx} (carpetas \texttt{ISR401\_\allowbreak{}Diapositivas}, \texttt{\_\allowbreak{}v2} y \texttt{Semanas01-18\_\allowbreak{}Mejoradas}) y la lectura \texttt{Semana\_\allowbreak{}04\_\allowbreak{}ISR401.pdf} tratan prototipado, i*, KAOS, BPMN e historias de usuario y anuncian una «PE-4»; corresponden al plan anterior y no a la semana 4 del sílabo. Este paquete las reemplaza. Lo mismo ocurre con la semana 3 anterior (técnicas clásicas de elicitación), que en el sílabo es contexto y perspectivas.
+	\item \textbf{Sumativas vinculadas a GA-TL-02.} La guía dice «Prepara: GA-PE-02, TA-PFC-02», conforme a las notas de alineación del 4 de noviembre; el cronograma del encuadre v3 dice «(TA-PFC-E1, GA-PE-02)». Como GA-TL-02 y TA-PFC-E1 cierran el mismo sábado, la formativa no puede ser requisito de E1; conviene corregir el encuadre a «GA-PE-02, TA-PFC-02».
+	\item \textbf{Publicación de TA-PFC-E1.} La guía indica publicación el lunes 9 de noviembre; la tabla de tareas del encuadre indica el lunes 16. La publicación anticipada favorece a los estudiantes; basta unificar la fecha en el encuadre.
+	\item \textbf{Referencia IREB del proyecto.} La entrada \texttt{ireb\_\allowbreak{}cpre\_\allowbreak{}fl\_\allowbreak{}2026} del \texttt{referencias.bib} de las guías lista solo a Bühne y Glinz; el temario 3.3.0 (1 de abril de 2026) tiene cuatro autores: Bühne, Glinz, van Loenhoud y Staal. La entrada está corregida en \texttt{referencias\_\allowbreak{}semana04.bib} y conviene reemplazarla en el \texttt{referencias.bib} de las guías. La entrada de ISO/IEC/IEEE 29148 se completó con su DOI.
+	\item \textbf{Horario.} Los tiempos asumen una sesión de 3 horas y otra de 2; si el paralelo tiene otra distribución, mover el taller completo a la sesión práctico-experimental y conservar su orden.
+\end{enumerate}
+
+\nocite{iso29148_2018,ireb_cpre_fl_2026,bano_2019,pohl_2025}
+\bibliographystyle{unsrtnat}
+\bibliography{referencias_semana04}
+
+\end{document}

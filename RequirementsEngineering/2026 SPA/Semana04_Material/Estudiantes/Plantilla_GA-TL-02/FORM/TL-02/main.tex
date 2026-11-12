@@ -1,0 +1,226 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+% PLANTILLA GA-TL-02 · Taller de entrevista estructurada y design thinking aplicados al PFC
+% Ingeniería de Requerimientos (ISR-401) · UTEQ · SPA 2026-2027
+% Ruta en el repositorio del equipo: FORM/TL-02/main.tex
+% Compilación (ver README.md): pdflatex main -> biber main -> pdflatex main -> pdflatex main
+% Reemplace todo lo que está entre corchetes [ ] y borre estas instrucciones de los comentarios si desea.
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noquoting,es-tabla]{babel}
+\usepackage{mathptmx}
+\usepackage[scaled]{helvet}
+\usepackage{courier}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.2cm,right=2.2cm]{geometry}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{referencias.bib}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\pendiente}[1]{\textcolor{gray}{[#1]}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{document}
+
+% ============================================================
+\begin{center}
+	{\large\bfseries Universidad Técnica Estatal de Quevedo \,$\cdot$\, Ingeniería de Requerimientos (ISR-401)}\\[6pt]
+	{\Large\bfseries\textcolor{utegreen}{GA-TL-02 \,$\cdot$\, Entrevista estructurada y design thinking aplicados al PFC}}\\[6pt]
+	Equipo \pendiente{SIGLA} \,$\cdot$\, Sistema del PFC: \pendiente{nombre del sistema} \,$\cdot$\, Organización: \pendiente{nombre de la organización real}
+\end{center}
+
+\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Dato}\\
+	\hline
+	Integrantes & \pendiente{Apellidos y nombres de cada integrante}\\
+	\hline
+	Fecha del ensayo en clase & \pendiente{dd/mm/2026}\\
+	\hline
+	Repositorio & \pendiente{https://github.com/usuario/ISR401-SIGLA}\\
+	\hline
+\end{tabularx}
+
+% ============================================================
+\section{Parte interesada y objetivo de la entrevista}
+% ============================================================
+
+\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Respuesta del equipo}\\
+	\hline
+	Rol entrevistado (rol, no nombre) & \pendiente{Por ejemplo: técnico de acopio del centro de la cooperativa}\\
+	\hline
+	Por qué este rol & \pendiente{Qué sabe este rol que otros no saben; relación con el problema del PFC}\\
+	\hline
+	Objetivo de la entrevista & \pendiente{Qué se quiere saber al terminar, en una oración}\\
+	\hline
+	Duración prevista & \pendiente{minutos}\\
+	\hline
+\end{tabularx}
+
+% ============================================================
+\section{Guion de la entrevista estructurada}
+% ============================================================
+
+Escriba de 12 a 15 preguntas en total. Use preguntas abiertas, neutrales y de una sola idea, sin términos técnicos; marque el tipo de cada una (A: abierta, C: cerrada, S: de sondeo o repregunta) y ordénelas de lo general a lo particular \cite{bano_2019,iso29148_2018}.
+
+\subsection{Apertura}
+
+\pendiente{Saludo, presentación del equipo, propósito de la entrevista, tiempo estimado, lectura del consentimiento informado y pedido de permiso para grabar el audio.}
+
+\subsection{Bloques temáticos}
+
+{\small
+	\begin{longtable}{|C{0.06\linewidth}|L{0.20\linewidth}|L{0.56\linewidth}|C{0.07\linewidth}|}
+		\hline
+		\thdr{N.\textsuperscript{o}} & \thdr{Bloque} & \thdr{Pregunta} & \thdr{Tipo}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{N.\textsuperscript{o}} & \thdr{Bloque} & \thdr{Pregunta} & \thdr{Tipo}\\
+		\hline
+		\endhead
+		1 & \pendiente{Trabajo actual} & \pendiente{Pregunta} & \pendiente{A}\\
+		\hline
+		2 & \pendiente{Trabajo actual} & \pendiente{Pregunta} & \pendiente{A}\\
+		\hline
+		3 & \pendiente{Trabajo actual} & \pendiente{Pregunta} & \pendiente{S}\\
+		\hline
+		4 & \pendiente{Problemas y excepciones} & \pendiente{Pregunta} & \pendiente{A}\\
+		\hline
+		5 & \pendiente{Problemas y excepciones} & \pendiente{Pregunta} & \pendiente{S}\\
+		\hline
+		6 & \pendiente{Problemas y excepciones} & \pendiente{Pregunta} & \pendiente{C}\\
+		\hline
+		7 & \pendiente{Datos e información} & \pendiente{Pregunta} & \pendiente{A}\\
+		\hline
+		8 & \pendiente{Datos e información} & \pendiente{Pregunta} & \pendiente{C}\\
+		\hline
+		9 & \pendiente{Calidad esperada} & \pendiente{Pregunta sobre tiempos, seguridad, facilidad de uso, disponibilidad\ldots} & \pendiente{A}\\
+		\hline
+		10 & \pendiente{Calidad esperada} & \pendiente{Pregunta} & \pendiente{S}\\
+		\hline
+		11 & \pendiente{Expectativas} & \pendiente{Pregunta} & \pendiente{A}\\
+		\hline
+		12 & \pendiente{Expectativas} & \pendiente{Pregunta} & \pendiente{A}\\
+		\hline
+	\end{longtable}
+}
+
+\subsection{Cierre}
+
+\pendiente{Resumen de lo entendido para que el entrevistado lo confirme; pregunta final («¿Qué no le pregunté y debí preguntarle?»); a quién más conviene entrevistar; agradecimiento.}
+
+% ============================================================
+\section{Registro del ensayo en clase}
+% ============================================================
+
+El audio y el consentimiento firmado se guardan en la carpeta institucional privada del equipo (cuenta @uteq.edu.ec) compartida con el docente; aquí solo se registran sus datos. La huella SHA-256 se obtiene en PowerShell con \texttt{Get-FileHash .\textbackslash archivo.m4a -Algorithm SHA256} \cite{lopdp_2021}.
+
+\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Dato}\\
+	\hline
+	Entrevistador / quien registra & \pendiente{Integrante} / \pendiente{Integrante}\\
+	\hline
+	Compañero que hizo el rol (código) & \pendiente{P01}\\
+	\hline
+	Archivo de audio & \pendiente{TL02\_ensayo\_P01.m4a} \,$\cdot$\, duración \pendiente{mm:ss}\\
+	\hline
+	Huella SHA-256 del audio & \pendiente{64 caracteres}\\
+	\hline
+	Consentimiento firmado & \pendiente{TL02\_consentimiento\_P01.pdf} \,$\cdot$\, SHA-256 \pendiente{64 caracteres}\\
+	\hline
+\end{tabularx}
+
+\textbf{Hallazgos principales del ensayo} (con citas textuales entre comillas): \pendiente{De tres a cinco hallazgos, cada uno con la pregunta del guion que lo produjo.}
+
+% ============================================================
+\section{Mapa de empatía}
+% ============================================================
+
+Llene cada cuadrante solo con lo que dijo u observó en el ensayo; cite frases textuales cuando pueda.
+
+\begin{center}
+	\begin{tikzpicture}[x=1cm,y=1cm]
+		\draw[thick,utegreen] (0,0) rectangle (16,10);
+		\draw[thick,utegreen] (8,4) -- (8,10);
+		\draw[thick,utegreen] (0,7) -- (16,7);
+		\draw[thick,utegreen] (0,4) -- (16,4);
+		\draw[thick,utegreen] (8,0) -- (8,4);
+		\node[anchor=north west,font=\bfseries] at (0.15,9.9) {DICE};
+		\node[anchor=north west,font=\bfseries] at (8.15,9.9) {PIENSA};
+		\node[anchor=north west,font=\bfseries] at (0.15,6.9) {HACE};
+		\node[anchor=north west,font=\bfseries] at (8.15,6.9) {SIENTE};
+		\node[anchor=north west,font=\bfseries] at (0.15,3.9) {DOLORES (problemas, frustraciones)};
+		\node[anchor=north west,font=\bfseries] at (8.15,3.9) {GANANCIAS (lo que espera lograr)};
+		\node[anchor=north west,text width=7.5cm,font=\small] at (0.15,9.3) {\pendiente{Frases textuales}};
+		\node[anchor=north west,text width=7.5cm,font=\small] at (8.15,9.3) {\pendiente{Preocupaciones e ideas que expresó}};
+		\node[anchor=north west,text width=7.5cm,font=\small] at (0.15,6.3) {\pendiente{Acciones y pasos de su trabajo}};
+		\node[anchor=north west,text width=7.5cm,font=\small] at (8.15,6.3) {\pendiente{Emociones que mostró}};
+		\node[anchor=north west,text width=7.5cm,font=\small] at (0.15,3.3) {\pendiente{Dolores}};
+		\node[anchor=north west,text width=7.5cm,font=\small] at (8.15,3.3) {\pendiente{Ganancias}};
+	\end{tikzpicture}
+\end{center}
+
+% ============================================================
+\section{Definición del problema}
+% ============================================================
+
+\textbf{Declaración del problema} (usuario, necesidad y hallazgo que la sustenta): \pendiente{Quién (rol) necesita qué, porque (hallazgo del mapa de empatía).}
+
+\textbf{Pregunta de diseño}: \pendiente{¿Cómo podríamos\ldots? (centrada en la persona y su necesidad; sin nombrar tecnología ni solución)} \cite{hehn_2020}.
+
+% ============================================================
+\section{Ajustes al guion}
+% ============================================================
+
+Liste las preguntas que fallaron en el ensayo y su versión corregida. El guion corregido es el que se usará en el plan de elicitación de TA-PFC-E1.
+
+{\small
+	\begin{longtable}{|C{0.06\linewidth}|L{0.28\linewidth}|L{0.22\linewidth}|L{0.32\linewidth}|}
+		\hline
+		\thdr{N.\textsuperscript{o}} & \thdr{Pregunta original} & \thdr{Defecto} & \thdr{Versión corregida}\\
+		\hline
+		\endfirsthead
+		\hline
+		\thdr{N.\textsuperscript{o}} & \thdr{Pregunta original} & \thdr{Defecto} & \thdr{Versión corregida}\\
+		\hline
+		\endhead
+		\pendiente{n} & \pendiente{Pregunta} & \pendiente{Inductiva / doble / cerrada sin necesidad / técnica / vaga} & \pendiente{Corrección}\\
+		\hline
+		\pendiente{n} & \pendiente{Pregunta} & \pendiente{Defecto} & \pendiente{Corrección}\\
+		\hline
+	\end{longtable}
+}
+
+% ============================================================
+\section{Declaración de uso de inteligencia artificial}
+% ============================================================
+
+\pendiente{Indique herramienta, versión, para qué la usó y cómo verificó lo obtenido; o declare expresamente que no usó herramientas de IA. Las preguntas, hallazgos, citas y el mapa de empatía deben ser propios y provenir del ensayo real.}
+
+\printbibliography[title={Referencias}]
+
+\end{document}
