@@ -1,0 +1,467 @@
+EVALUACION FORM-FB-01 - Fichas bibliograficas - ISR-701 Aplicaciones Distribuidas - SPA 2026-2027 - PARALELO B
+Evaluado el 16 de noviembre de 2026 con la guia-rubrica FORM-FB-01. Cierre de la actividad: domingo 8 de noviembre de 2026, 23:59. Ninguna entrega tiene commits posteriores al cierre.
+
+RESUMEN - PARALELO B
+Grupo  Estudiante                               Previa   Penal.        Piso  Final
+ABZ    Benites Perez Dariem Alberto               8.8     -1.5           -    7.3
+ABZ    Apunte Pazmino Washington German           8.5     -3.0           -    5.5
+ABZ    Zambrano Trivino Leonel Leonidas           8.5     -1.5           -    7.0
+BMP    Bueno Troya Erwin Daniel                   8.4        -           -    8.4
+BMP    Pozo Castillo Steven Fernando              7.1     -3.0           -    4.1
+BMP    Mendoza Bermello Angello Agustin           0.0        -  No entrego    0.0
+CLM    Castro Coello Mario Sebastian              9.5        -           -    9.5
+CLM    Loor Suarez Jordan Josue                   7.9     -1.5           -    6.4
+CLM    Mendoza Villarroel Elian Jossue            8.0        -           -    8.0
+CMS    Cedeno Intriago Jilmar Jesus               7.8     -3.0           -    4.8
+CMS    Macias Vasquez Cesar Abrahan               3.1        -          P4    0.0
+CMS    Sanchez Vera Darwin Joel                   8.8     -3.0           -    5.8
+LMR    Loor Suarez Steffanny del Rocio            8.0        -           -    8.0
+LMR    Munoz Vera Melanie Michelle                6.1        -           -    6.1
+LMR    Rivas Piloso Dayver Yahir                  0.0        -  No entrego    0.0
+QZ     Zambrano Yong Angel Daniel                 9.8        -           -    9.8
+
+OBSERVACIONES GENERALES PARA EL DOCENTE
+- Instrumento aplicado: guia-rubrica FORM-FB-01 (2026 SPA/FORM-FB-01/FORM-FB-01_Guia_Rubrica.pdf), la misma aplicada al paralelo A en la reevaluacion del 12 nov: dimensiones D1-D6 con pesos TA-IND 10/25/20/25/10/10, criterios de piso P1-P5 y penalizaciones por indicios de IA (1 indicio no se penaliza; 2 = nivel B, -1.5; 3 o mas = nivel C, -3.0). La declaracion de que la IA redacto o propuso resumenes o notas cuenta como indicio y limita D2 y D4 al nivel 3.
+- Entregas: 6 caratulas en el SGA (ABZ, BMP, CLM, CMS, LMR, QZ) con 15 estudiantes; el grupo BMP tiene un tercer integrante, Mendoza Bermello Angello Agustin, que no aparece en su caratula. ABZ trabajo en un repositorio con una rama por estudiante; BMP en dos repositorios individuales; CLM, CMS y LMR en un repositorio de grupo con una carpeta o archivo por estudiante; QZ en un repositorio de practicas.
+- P1: las seis caratulas tienen una sola pagina A4 y la URL escrita en una sola linea; todos los repositorios son publicos (git ls-remote del 16 nov). La URL de CMS termina en guion (FORM-FB-01-) porque ese es el nombre real del repositorio. Nadie incurre en P1.
+- P2: el 16 nov clone los siete repositorios (incluidas las tres ramas de ABZ) y compile los 12 documentos con pdflatex -> biber (o bibtex si el .tex usa backend=bibtex) -> pdflatex -> pdflatex. Los 12 generan PDF; nadie incurre en P2. Pozo usa backend=bibtex y compila con sus referencias completas. Macias no tiene README propio; el README raiz de CMS da los requisitos generales.
+- P3: cierre domingo 8 nov 2026, 23:59 (Guayaquil). El ultimo commit de cada repositorio es anterior al cierre; el mas tardio es el de Luis Quintero en QZ (23:48). Nadie incurre en P3.
+- P4: verifique las 70 referencias contra Crossref (y ISBN en la pagina del editor). Incumple solo Macias: inicial del primer autor de Blinowski et al. (S. por Grzegorz) y subtitulo del libro de Ford et al.; ademas, dos datos que no existen en las fuentes (Blinowski 40 % y escalado lineal; Alelyani 18 % y 12 %).
+- Verificacion de datos concretos: los contraste en 14 de 14 entregas con texto completo de acceso abierto (PDF de SpringerOpen, arXiv, DORAS, Research Square, repositorio de Padova, tesis de UWA, Leeds Beckett, Springer en linea) o con los PDF que subio el propio estudiante (Apunte). Fuera de Macias, no encontre datos fabricados. Los que no pude abrir (IEEE Xplore bloquea la descarga) quedan anotados en cada estudiante como no verificables.
+- P5 (requisito de TA-IND-01): dos estudiantes no entregaron. Rivas Piloso Dayver Yahir figura en la caratula de LMR, pero su carpeta solo tiene un .gitkeep y no hay ningun commit suyo. Mendoza Bermello Angello Agustin (grupo BMP) no figura en la caratula BMP.pdf, no tiene commits ni archivos en los repositorios de Bueno y Pozo y no hay en GitHub un repositorio FORM-FB-01 suyo. Los otros 14 entregaron y pueden presentar TA-IND-01.
+- Luis Quintero (lquinteror@uteq.edu.ec), integrante habitual del grupo QZ, subio el .tex y el .bib de Zambrano Yong a las 23:47, pero no aparece en la caratula ni tiene fichas propias. Si es estudiante del paralelo B, no entrego FORM-FB-01 y le corresponde P5 en TA-IND-01; conviene confirmarlo en la lista del SGA.
+- Coincidencias entre grupos (I7): Loor Suarez Jordan (CLM) y Loor Suarez Steffanny (LMR) comparten frases en la ficha de Lercher et al.; Pozo Castillo (BMP) y Cedeno Intriago (CMS) comparten titulo de ficha y la frase del dato de Ayas et al.
+- Resultado: 1 estudiante con nota final 0 por P4 (Macias) y 2 sin entrega (Rivas y Mendoza Bermello). De los 13 restantes, 7 quedan en logrado (7.0 o mas) y 6 en proceso (4.0 a 6.9); ninguno queda por debajo de 4.0.
+- Decision pendiente 1: Apunte y Sanchez declaran que la IA extrajo los datos y redacto los primeros borradores de resumenes y notas (Sanchez sin decir que los reescribio). Los trate como nivel C, igual que Giraldo y Piguave en el paralelo A. Si prefieres la definicion del encuadre (contenido generado por IA presentado como propio, P4), su nota final seria 0.
+- Decision pendiente 2: las dos coincidencias I7 son parciales (una ficha cada una). Las conte como un indicio; en el caso de los dos Loor Suarez conviene preguntar si trabajaron juntos.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Benites Perez Dariem Alberto | Paralelo B | Grupo ABZ | Repositorio: https://github.com/DALBEZ-ROG/AD-FORM-FB-01-ABZ (rama "main", documento/main.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 4 = 1.00 pts. Tus cinco fichas tienen la referencia IEEE completa, DOI, resumen, dato con seccion y pagina, y una nota que dice en que parte de TA-IND-01 usaras la fuente; el repositorio tiene README con instrucciones y declaracion de IA.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 3 = 1.88 pts. Tus resumenes son claros y explican problema, metodo y resultado (38 estudios en Bacao y Guerreiro, Eblocks frente a Istio, cuatro categorias de algoritmos en Senjab et al.); bajo un nivel porque declaras que Claude corrigio y aclaro partes de tus borradores.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 4 = 2.00 pts. Tus datos son citas textuales con seccion y pagina, y las que comprobe son exactas: 124 y 47 estudios en Senjab et al. (pp. 4-5), la frase de Nicolas-Plata et al. sobre Istio (Sec. 6) y las conclusiones de Blinowski et al.
+- D4 Analisis critico (notas personales) (25 %): nivel 3 = 1.88 pts. Tus notas dicen la seccion de TA-IND-01 (CAP y PACELC, modelos de comunicacion, transparencias, analisis comparativo), pero no nombran el sistema que analizaras; ademas declaras que la IA te ayudo a decidir en que seccion usar cada fuente, asi que aplico el tope del nivel 3.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 4 = 1.00 pts. El documento esta limpio y tiene los datos de identificacion correctos.
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Tus cinco referencias son articulos de revista de 2022 a 2026, generadas con biblatex desde tu .bib y con todos sus campos correctos; tu declaracion de IA esta completa.
+- Nota previa: 8.8
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro dos indicios: tu declaracion dice que Claude corrigio y aclaro partes de los borradores y te ayudo a decidir el uso de cada fuente, y el main.tex entro completo en un solo commit ("Agrego el documento", 98 lineas) (I6). Corresponde nivel B (-1.5).
+- Penalizaciones: -1.5
+- Nota final: 7.3
+3. PARA TA-IND-01
+- Redacta tu mismo las notas, incluida la decision de donde usar cada fuente; es la parte que muestra tu criterio.
+- Elige ya el sistema de TA-IND-01 y nombralo en cada nota.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Benites Perez Dariem Alberto (ABZ, paralelo B)
+- Rubrica: 4-3-4-3-4-4 = 8.75 -> 8.8; nivel B (declaracion de correccion de borradores y propuesta de secciones + I6); 8.75 - 1.5 = 7.25 -> 7.3.
+- Verificacion: 5/5 DOI correctos en Crossref. Senjab (124 y 47 estudios) comprobado en el PDF de SpringerOpen; frase de Nicolas-Plata en la Sec. 6 comprobada en Springer; frases de Blinowski coinciden con el resumen publicado. No verificable por acceso: frase de Bacao y Guerreiro (Sec. 2.6) y la de Velepucha y Flores sobre Amazon.
+- Repositorio: rama main con 11 commits de DALBEZ-ROG entre el 6 y el 8 nov (mas uno de Apunte en el README); los commits "Archivo final ultra pro max" y "Este si es el archivo final" solo cambian una o dos lineas.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Apunte Pazmino Washington German | Paralelo B | Grupo ABZ | Repositorio: https://github.com/DALBEZ-ROG/AD-FORM-FB-01-ABZ (rama "apunte-washington", documento/main.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 4 = 1.00 pts. Tus cinco fichas estan completas, con referencia IEEE, DOI, resumen, dato con seccion y pagina, nota con seccion de TA-IND-01 y una tabla de uso previsto; ademas subiste los PDF de las cinco fuentes.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 3 = 1.88 pts. Tus resumenes son precisos (607 a 88 estudios en Pournazari et al.; 200 escenarios en Ferreira et al.); bajo un nivel porque declaras que Claude preparo el primer borrador de los resumenes.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 4 = 2.00 pts. Tus datos son exactos y tienen seccion y pagina; los comprobe todos en los PDF que subiste (37.5 % y 14.8 % en Pournazari et al.; 2.24 s frente a 364.66 s en Landau et al.; -95.12 % y +3454.34 % en la Tabla 8 de Ferreira et al.; 23 %, 87 % y 17 % en Al-Said Ahmad et al.).
+- D4 Analisis critico (notas personales) (25 %): nivel 3 = 1.88 pts. Tus notas son muy buenas y dicen la seccion de TA-IND-01; aplico el tope del nivel 3 porque declaras que la IA preparo el primer borrador de las notas.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 3 = 0.75 pts. La caratula dice "Facultad de Ciencias de la Computacion y Diseno Digital", que no es el nombre de la facultad.
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Tus cinco referencias son articulos de revista de 2024 a 2026, generadas con biblatex y con todos sus campos correctos; tu declaracion es detallada.
+- Nota previa: 8.5
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro tres indicios: tu declaracion dice que Claude extrajo y redacto cada dato concreto, redacto la introduccion y la tabla de uso previsto y preparo el primer borrador de los resumenes y las notas; el .bib, el README y el main.tex entraron en tres commits dentro del mismo segundo (16:58:31 y 16:58:32), una huella de envio automatizado (I6); y la redaccion es uniforme y muy pulida de principio a fin (I1). Corresponde nivel C (-3.0).
+- Valoro la honestidad de la declaracion; aun asi, la guia pide que los resumenes, los datos y las notas sean tuyos, y declararlo no exime de la penalizacion.
+- Penalizaciones: -3.0
+- Nota final: 5.5
+3. PARA TA-IND-01
+- En TA-IND-01 lee tu las fuentes y escribe tu el primer borrador; usa la IA solo para revisar.
+- Corrige el nombre de la facultad en la caratula.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Apunte Pazmino Washington German (ABZ, paralelo B)
+- Rubrica: 4-3-4-3-3-4 = 8.5; nivel C (declaracion de que la IA extrajo los datos y redacto borradores, intro y tabla + I6 con tres commits en el mismo segundo + I1); 8.5 - 3.0 = 5.5.
+- Verificacion: 5/5 DOI correctos; todos los datos comprobados en los PDF de acceso abierto que subio a referencias-pdf/.
+- Decision para el docente: la declaracion admite que la IA hizo buena parte del trabajo evaluado (datos, borradores de resumenes y notas). Lo trate como nivel C, igual que en el paralelo A. Si se considera contenido generado por IA presentado como propio (encuadre, P4), la nota seria 0.
+- Estructura de ficha ("Tipo de fuente ... ISSN, e-ISSN") igual a la de Benites, del mismo grupo; ambos declaran Claude Opus 5.5. No la cuento como I7 porque el texto no coincide.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Zambrano Trivino Leonel Leonidas | Paralelo B | Grupo ABZ | Repositorio: https://github.com/DALBEZ-ROG/AD-FORM-FB-01-ABZ (rama "zambrano-leonel", documento/main.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 4 = 1.00 pts. Tus cinco fichas estan completas, con referencia IEEE, DOI, resumen, dato con seccion o pagina y nota con su uso en TA-IND-01; tu rama tiene README con instrucciones.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 3 = 1.88 pts. Tus resumenes son correctos y con cifras reales (5022 a 35 estudios; 3625 a 37 articulos; 427 a 54 publicaciones); bajo un nivel porque declaras que los escribiste a partir de datos que extrajo Claude.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 4 = 2.00 pts. Tus datos son exactos y tienen pagina o seccion; comprobe 29 de 35 estudios (82 %) en Abgaz et al., 59.5 %, 29.7 %, 5.4 % y 2.7 % en Araujo et al., y 14 de 54 en Haindl et al.
+- D4 Analisis critico (notas personales) (25 %): nivel 3 = 1.88 pts. Tus notas son personales y dicen la seccion de TA-IND-01, aunque no nombran el sistema que analizaras; aplico el tope del nivel 3 por la ayuda declarada.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 3 = 0.75 pts. La portada dice "FORM-FB-01 - Sistemas Distribuidos" y "Septimo semestre", en lugar de Aplicaciones Distribuidas y septimo nivel.
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Tus cinco referencias son articulos de revista de 2023 a 2025, generadas con biblatex y correctas; tu declaracion esta completa.
+- Nota previa: 8.5
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro dos indicios: tu declaracion dice que Claude extrajo de los articulos los datos con su pagina y que los usaste como base para los resumenes y las notas, y tu documento entro en un solo "Add files via upload" que reemplazo el de Benites (I6). Corresponde nivel B (-1.5).
+- Penalizaciones: -1.5
+- Nota final: 7.0
+3. PARA TA-IND-01
+- Busca tu los datos en el articulo; asi sabras defenderlos en TA-IND-01.
+- Corrige el nombre de la asignatura en la portada y define el sistema que analizaras.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Zambrano Trivino Leonel Leonidas (ABZ, paralelo B)
+- Rubrica: 4-3-4-3-3-4 = 8.5; nivel B (datos extraidos por la IA como base de resumenes y notas + I6); 8.5 - 1.5 = 7.0.
+- Verificacion: 5/5 DOI correctos. Abgaz (29/35, 82 %) comprobado en la version de DORAS; Araujo (59.5/29.7/5.4/2.7) en Research Square; Haindl (14 de 54) ya verificado en el paralelo A. No verificable por acceso: Islam et al. (PoW y DBFT) y Faseeha et al. (OpenTelemetry 5, Jaeger y Zipkin 4).
+- Repositorio: la rama zambrano-leonel parte de los commits de Benites; su aporte son 5 commits del 8 nov (17:35-17:56) con cuenta lzambranot6-sys.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Bueno Troya Erwin Daniel | Paralelo B | Grupo BMP | Repositorio: https://github.com/Troyano2004/FORM-FB-01 ((main.tex))
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 3 = 0.75 pts. Tus cinco fichas tienen DOI, resumen, dato con seccion y nota con su uso en TA-IND-01, pero la "Referencia (IEEE)" de cada ficha es solo el numero [n]; la referencia completa aparece al final.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 4 = 2.50 pts. Tus resumenes estan escritos con tus palabras y son fieles a cada fuente (5022 a 35 en Abgaz et al.; 168 = 35 + 133 en Oumoussa y Saidi; 72 estudios y 19 tacticas en Li et al.).
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 3 = 1.50 pts. Tus datos son exactos y tienen seccion, pero el de Velepucha y Flores es un resumen general de la conclusion y el de Li et al. sale del abstract.
+- D4 Analisis critico (notas personales) (25 %): nivel 3 = 1.88 pts. Tus notas son personales y dicen la seccion de TA-IND-01 (Arquitectura del sistema, Postura critica, Tolerancia a fallos), aunque no nombran el sistema que analizaras.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 3 = 0.75 pts. La portada dice "Asignatura: Sistemas Distribuidos" y no tiene la facultad; la fecha usa \today y cambia cada vez que se compila.
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Tus referencias son correctas, generadas con biblatex desde tu .bib, de revistas indexadas; tu declaracion esta completa e incluye un ejemplo de instruccion.
+- Nota previa: 8.4
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro un solo indicio: el main.tex entro completo en un "Add files via upload" (I6); con uno solo no hay penalizacion.
+- Nota final: 8.4
+3. PARA TA-IND-01
+- Muestra la referencia completa en cada ficha con \fullcite{clave}.
+- Corrige el nombre de la asignatura y fija la fecha de entrega en lugar de \today.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Bueno Troya Erwin Daniel (BMP, paralelo B)
+- Rubrica: 3-4-3-3-3-4 = 8.375 -> 8.4; sin penalizacion (un solo indicio).
+- Verificacion: 5/5 DOI correctos; Abgaz (M2MDF de seis fases) y Oumoussa (35 + 133 = 168) coinciden con lo verificado en el paralelo A. Li et al. no verificable por acceso (Elsevier).
+- Repositorio propio con 7 commits del 7 nov (11:08-15:02), todos "Add files via upload"; el README nombra archivos que no existen con ese nombre (FORM-FB-01.pdf, evidencias/).
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Pozo Castillo Steven Fernando | Paralelo B | Grupo BMP | Repositorio: https://github.com/Redsito1215/FORM-FB-01 ((main.tex))
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 4 = 1.00 pts. Tus cinco fichas tienen referencia IEEE completa, DOI, resumen, dato con ubicacion, nota y uso en TA-IND-01; el repositorio tiene README con instrucciones.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 3 = 1.88 pts. Tus resumenes son correctos, pero tienen el mismo tono y estructura en las cinco fichas; bajo un nivel porque declaras que ChatGPT apoyo la redaccion inicial.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 3 = 1.50 pts. Tus datos son exactos (81 estudios en Trabelsi et al.; 269 articulos, cerca de 80 % y 16 temas en Moreschini et al.), pero las ubicaciones son vagas: "resumen y Sec. IV, pp. 2972-2995" abarca el articulo entero.
+- D4 Analisis critico (notas personales) (25 %): nivel 2 = 1.25 pts. Tus notas tienen una o dos lineas genericas ("La fuente amplio mi vision...") y el uso en TA-IND-01 no dice que sistema ni que seccion.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 2 = 0.50 pts. El documento no tiene caratula ni tu nombre: borraste la caratula en el commit "Eliminar caratula de las fichas bibliograficas".
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Tus referencias son articulos de revista de 2021 a 2025, correctas y generadas con biblatex; tu declaracion esta completa.
+- Nota previa: 7.1
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro cuatro indicios: tu declaracion dice que ChatGPT apoyo la redaccion inicial; tu README termina con una instruccion de un asistente que no editaste ("Antes de entregar, el estudiante debe abrir nuevamente los enlaces y comprobar que los resumenes y notas expresen su propia lectura y voz") (I6); la redaccion es uniforme (I1); y tu ficha 3 tiene el mismo titulo y la misma frase del dato que la ficha 2 de Cedeno Intriago, de otro grupo (I7). Corresponde nivel C (-3.0).
+- Penalizaciones: -3.0
+- Nota final: 4.1
+3. PARA TA-IND-01
+- Escribe tu las notas: que aprendiste, en que seccion de TA-IND-01 y sobre que sistema.
+- Pon tu nombre y los datos de la asignatura en el documento, y la pagina exacta de cada dato.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Pozo Castillo Steven Fernando (BMP, paralelo B)
+- Rubrica: 4-3-3-2-2-4 = 7.125 -> 7.1; nivel C (redaccion inicial con ChatGPT + I6 resto de asistente en README + I1 + I7 con Cedeno); 7.125 - 3.0 = 4.125 -> 4.1.
+- Verificacion: 5/5 DOI correctos; Trabelsi (81 PS) en arXiv 2508.15941; Moreschini (269, ~80 %, 16 temas) en arXiv 2305.16092; Ayas (19/215) coincide con Cedeno y con lo verificado en el paralelo A.
+- Repositorio: 7 commits del 8 nov en 40 minutos (11:59-12:38), con mensajes pulidos.
+- I7: "Migracion sistemica y tecnica hacia microservicios" (titulo de ficha) y "14 actividades y 53 resultados de solucion. Ubicacion: resumen" aparecen identicos en Cedeno Intriago (grupo CMS).
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Mendoza Bermello Angello Agustin | Paralelo B | Grupo BMP | Repositorio: ninguno (sin entrega)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 0 = 0.00 pts. No encuentro ninguna entrega tuya: tu nombre no aparece en la caratula que el grupo BMP subio al SGA (solo figuran Bueno Troya y Pozo Castillo, cada uno con su repositorio) y no hay un repositorio ni commits tuyos.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 0 = 0.00 pts. No hay resumenes.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 0 = 0.00 pts. No hay datos concretos.
+- D4 Analisis critico (notas personales) (25 %): nivel 0 = 0.00 pts. No hay notas.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 0 = 0.00 pts. No hay documento.
+- D6 Referencias, etica e integridad (10 %): nivel 0 = 0.00 pts. No hay referencias.
+- Nota previa: 0.0
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Revise los dos repositorios del grupo (Troyano2004/FORM-FB-01 y Redsito1215/FORM-FB-01): todos los commits son de Bueno Troya y de Pozo Castillo, y ningun archivo menciona tu nombre. Tampoco hay en GitHub un repositorio FORM-FB-01 creado a tu nombre antes del cierre (domingo 8 de noviembre, 23:59).
+- Segun la guia, la formativa se considera no entregada; por el criterio de piso P5 del encuadre, no puedes presentar TA-IND-01 y tu nota en ese informe sera 0, salvo justificacion aprobada.
+- Nota final: 0 (formativa no entregada)
+3. PARA TA-IND-01
+- Si subiste algo al SGA por otra via o tienes una justificacion, comunicalo al docente por el canal reglamentario.
+- Revisa la guia de FORM-FB-01: localizar y leer cinco fuentes es la base de TA-IND-01.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Mendoza Bermello Angello Agustin (BMP, paralelo B)
+- Sin entrega: no figura en la caratula BMP.pdf (solo Bueno y Pozo, con dos URL individuales); ninguno de los dos repositorios tiene commits ni archivos suyos; la busqueda en GitHub de repositorios FORM-FB-01 creados entre el 25 oct y el 16 nov no muestra uno suyo. Formativa no entregada -> P5 en TA-IND-01.
+- Conviene confirmar en el SGA que no subio un documento propio fuera de la carpeta Entregas/FORM-FB-01/B.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Castro Coello Mario Sebastian | Paralelo B | Grupo CLM | Repositorio: https://github.com/jloors13/form-fb-01-fichas-bibliograficas (fichas/castro.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 4 = 1.00 pts. Tus cinco fichas tienen referencia IEEE completa, DOI con fecha de verificacion, resumen, dato con seccion y pagina, y nota con la seccion de TA-IND-01 y el sistema que analizaras (Discord).
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 4 = 2.50 pts. Tus resumenes son precisos y propios: explican problema, metodo y resultado de cada fuente (los tres agentes de PerformERL, las tecnicas reactivas y proactivas de Rehman et al.).
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 3 = 1.50 pts. Tus datos son exactos (hasta 95 % y mas de 20 veces en Ferreira et al.; 6x que baja a 2x, 1.4x y 5x en Cazzola et al.), pero el de Velepucha y Flores es una idea general del abstract.
+- D4 Analisis critico (notas personales) (25 %): nivel 4 = 2.50 pts. Tus notas son excelentes: aplican cada fuente a Discord con hechos concretos (servicios en Rust frente a ScyllaDB, replicacion en tres nodos, procesos de guild) y reconocen el limite de cada estudio.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 4 = 1.00 pts. El documento del grupo esta limpio, con caratula completa, indice y referencias resueltas.
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Tus referencias son articulos de revista de 2022 a 2025, generadas con biblatex desde el .bib de doi.org; tu declaracion es detallada.
+- Nota previa: 9.5
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro un solo indicio: el contenido de las cinco fichas entro en un commit ("Completa resumen, dato concreto y nota personal de mis cinco fichas") (I6); con uno solo no hay penalizacion. Tu declaracion describe usos de apoyo (busqueda, .bib, formato y revision) y no de redaccion.
+- Nota final: 9.5
+3. PARA TA-IND-01
+- Cambia el dato de Velepucha y Flores por un resultado concreto del estudio, con su pagina.
+- Haz commits por ficha, como hicieron tus companeros; tu historial es la evidencia de tu autoria.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Castro Coello Mario Sebastian (CLM, paralelo B)
+- Rubrica: 4-4-3-4-4-4 = 9.5; sin penalizacion.
+- Verificacion: 5/5 DOI correctos; Cazzola (6 -> 2, 1.4, 5) comprobado en Springer; Ferreira 2025 (95 %, 20x) en el abstract publicado. Rehman (five 9 = 5 min 15 s) no verificable por acceso.
+- Declara Claude Code para busqueda, scripts doi2bib/verificar-referencias, estructura del repositorio y revision de sus textos; no declara redaccion por IA.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Loor Suarez Jordan Josue | Paralelo B | Grupo CLM | Repositorio: https://github.com/jloors13/form-fb-01-fichas-bibliograficas (fichas/loor.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 3 = 0.75 pts. Tus cinco fichas tienen referencia IEEE completa, DOI, resumen, dato con pagina y nota, pero ninguna nota dice en que seccion de TA-IND-01 usaras la fuente.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 3 = 1.88 pts. Tus resumenes son correctos y con cifras reales (62 estudios y 126 vulnerabilidades; 17 entrevistas en 11 empresas; 9.8 millones de mensajes); bajo un nivel porque declaras que ChatGPT te apoyo para identificar el problema, el metodo y los resultados.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 4 = 2.00 pts. Tus datos son exactos y tienen pagina y seccion; comprobe 1667 vulnerabilidades (Jayalath et al.), 66.8 % de API REST (Lercher et al.) y mas de 90 ms por imagen con 10 000 nodos (Franco et al.).
+- D4 Analisis critico (notas personales) (25 %): nivel 2 = 1.25 pts. Tus notas repiten la misma formula ("Esta investigacion me permitio comprender... En TA-IND-01 utilizare estos conocimientos para analizar...") y no concretan que seccion ni que aspecto de WhatsApp sostiene cada fuente.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 4 = 1.00 pts. El documento del grupo esta limpio, con caratula completa y referencias resueltas.
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Tus referencias son correctas, de revistas y un congreso indexado (ICWSM), generadas con biblatex; tu declaracion esta completa.
+- Nota previa: 7.9
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro dos indicios: tu declaracion dice que ChatGPT te apoyo para identificar problemas, metodos y resultados y para localizar los datos, y tu ficha de Lercher et al. comparte frases con la de Loor Suarez Steffanny, de otro grupo ("mantener la compatibilidad con versiones anteriores, coordinar los cambios entre equipos y mejorar la comunicacion para evitar") (I7). Corresponde nivel B (-1.5).
+- Penalizaciones: -1.5
+- Nota final: 6.4
+3. PARA TA-IND-01
+- En cada nota escribe la seccion de TA-IND-01 y que aspecto de WhatsApp sostiene la fuente.
+- Redacta tus resumenes sin partir de lo que te proponga la IA.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Loor Suarez Jordan Josue (CLM, paralelo B)
+- Rubrica: 3-3-4-2-4-4 = 7.875 -> 7.9; nivel B (apoyo declarado en contenido + I7 con Loor Suarez Steffanny); 7.875 - 1.5 = 6.375 -> 6.4.
+- Verificacion: 5/5 DOI correctos; Jayalath (1667) en arXiv 2408.03960, Lercher (66.8 %, 17 entrevistas, 11 empresas) en arXiv 2311.08175 y Franco (>90 ms, 10 000 nodos) en el repositorio de Padova. Melo et al. (612 855, 59 %) y Colarusso et al. (61 %) no verificados.
+- I7: su ficha 2 (commit del 8 nov, 02:05 UTC) es anterior a la ficha 3 de Steffanny Loor (7 nov, 23:56 -05, que es 04:56 UTC del 8 nov). Comparten un mismo apellido; conviene preguntar si trabajaron juntos.
+- Historial incremental: 13 commits propios, una ficha por commit.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Mendoza Villarroel Elian Jossue | Paralelo B | Grupo CLM | Repositorio: https://github.com/jloors13/form-fb-01-fichas-bibliograficas (fichas/mendoza.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 4 = 1.00 pts. Tus cinco fichas estan completas y cada nota dice la seccion de TA-IND-01 y el sistema que analizaras (Netflix).
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 3 = 1.88 pts. Tus resumenes son correctos (168 articulos; 35 estudios; 74 profesionales; 71 herramientas), aunque el de Gortney et al. queda pobre ("probaron con 37 consultas") y el de Oumoussa y Saidi sigue de cerca el abstract.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 3 = 1.50 pts. Tus datos de Rezaei Nasab et al. (70.27 % y 25.68 %) y Giamattei et al. (58 %, 21 % y 21 %) son concretos y con ubicacion, pero los de Abgaz et al. y Gortney et al. solo repiten las fases o las tecnicas de la conclusion.
+- D4 Analisis critico (notas personales) (25 %): nivel 3 = 1.88 pts. Tus notas son breves y dicen seccion y sistema; aplico el tope del nivel 3 porque declaras que Claude sugirio ideas y estructura para las notas.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 4 = 1.00 pts. El documento del grupo esta limpio y completo.
+- D6 Referencias, etica e integridad (10 %): nivel 3 = 0.75 pts. Tus referencias son correctas y salen del BibTeX de doi.org, pero imprimen campos que IEEE no usa (ISSN y "direccion: http://dx.doi.org/...").
+- Nota previa: 8.0
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro un solo indicio: tu declaracion dice que Claude sugirio ideas y estructura para las notas; con uno solo no hay penalizacion. Tu historial muestra trabajo incremental (11 commits).
+- Nota final: 8.0
+3. PARA TA-IND-01
+- Como dato elige un resultado del estudio, no la lista de fases de la conclusion.
+- Quita los campos issn y url del .bib para que la referencia quede en IEEE limpio.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Mendoza Villarroel Elian Jossue (CLM, paralelo B)
+- Rubrica: 4-3-3-3-4-3 = 8.0; sin penalizacion (un indicio).
+- Verificacion: 5/5 DOI correctos (BibTeX exportado de doi.org). Oumoussa (168) coincide con lo verificado en el paralelo A. No verificables por acceso: Rezaei Nasab et al. (PA4 70.27 %), Giamattei et al. (58/21/21) y Gortney et al.
+- Commits por la web ("Update mendoza.tex") repartidos entre el 7 y el 8 nov.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Cedeno Intriago Jilmar Jesus | Paralelo B | Grupo CMS | Repositorio: https://github.com/jcedenoi4/FORM-FB-01- (carpeta JilmarCedeno/Semana2AD.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 4 = 1.00 pts. Tus cinco fichas tienen referencia IEEE completa, DOI, sintesis, dato con ubicacion y aporte con su uso en TA-IND-01; tu carpeta tiene README con instrucciones.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 3 = 1.88 pts. Tus sintesis son correctas (35 trabajos; 19 entrevistas y 215 discusiones; 17 entrevistas y 295 recursos); bajo un nivel porque declaras que ChatGPT dio borradores de las sintesis.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 3 = 1.50 pts. Tus datos son exactos (5022, 33 y 35 en Abgaz et al.; 1667 = 618 + 128 + 477 + 444 en Jayalath et al.), pero tres salen del abstract y el de Velepucha y Flores es una descripcion general.
+- D4 Analisis critico (notas personales) (25 %): nivel 3 = 1.88 pts. Tus notas dicen el uso en TA-IND-01 (division de responsabilidades, riesgos, mantenimiento), aunque sin un sistema definido; aplico el tope del nivel 3 por los borradores declarados.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 2 = 0.50 pts. El documento no tiene tu nombre, ni la facultad, ni la asignatura, ni la fecha: no se puede saber de quien es sin abrir el repositorio.
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Tus referencias son correctas, de revistas indexadas de 2021 a 2024, generadas con biblatex; tu declaracion es honesta y completa.
+- Nota previa: 7.8
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro tres indicios: tu declaracion dice que ChatGPT dio borradores de la introduccion, las sintesis y las notas; todo el trabajo entro en un solo commit ("feat: Semana2AD con README, .tex, .pdf y .bib") (I6); y tu ficha 2 tiene el mismo titulo y la misma frase del dato que la ficha 3 de Pozo Castillo, de otro grupo (I7). Corresponde nivel C (-3.0).
+- Penalizaciones: -3.0
+- Nota final: 4.8
+3. PARA TA-IND-01
+- Pon tu nombre, la asignatura y la fecha en el documento.
+- Redacta tu el primer borrador de cada sintesis y nota.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Cedeno Intriago Jilmar Jesus (CMS, paralelo B)
+- Rubrica: 4-3-3-3-2-4 = 7.75 -> 7.8; nivel C (borradores de ChatGPT + I6 + I7 con Pozo); 7.75 - 3.0 = 4.75 -> 4.8.
+- Verificacion: 5/5 DOI correctos; Bogner (17 entrevistas, 10 empresas, 14 sistemas, 295 recursos) comprobado en Springer; Jayalath (618, 128, 477, 444 = 1667) en arXiv; Abgaz (5022, 33, 35) en DORAS.
+- I7 con Pozo Castillo (grupo BMP): mismo titulo "Migracion sistemica y tecnica hacia microservicios" y misma frase "14 actividades y 53 resultados de solucion. Ubicacion: resumen".
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Macias Vasquez Cesar Abrahan | Paralelo B | Grupo CMS | Repositorio: https://github.com/jcedenoi4/FORM-FB-01- (carpeta CesarMacias/main.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 3 = 0.75 pts. Tienes cinco fichas con referencia, DOI o ISBN, resumen, dato y nota, pero tu carpeta no tiene README propio con instrucciones y el documento no tiene datos de la asignatura.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 1 = 0.63 pts. El resumen de Blinowski et al. dice que "cuando la carga sube de golpe, los microservicios escalan mucho mejor", y el articulo concluye lo contrario: en una sola maquina el monolito rinde mejor y escalar mas alla de cierto numero de instancias degrada el rendimiento.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 0 = 0.00 pts. Varios de tus datos no estan en la fuente (ver criterio de piso P4).
+- D4 Analisis critico (notas personales) (25 %): nivel 2 = 1.25 pts. Tus notas dicen la seccion de TA-IND-01 en algunas fichas, pero hablan de "mi caso de estudio" sin decir cual es.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 2 = 0.50 pts. El documento no tiene facultad, asignatura ni docente; la fecha usa \today, y hay comillas rotas ("pagar el precio", "Common Information Model").
+- D6 Referencias, etica e integridad (10 %): nivel 0 = 0.00 pts. Dos referencias tienen datos que no corresponden a la obra real (ver criterio de piso P4).
+- Nota previa: 3.1
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Criterio de piso P4: en la referencia [1] escribes "S. Blinowski" y el primer autor es Grzegorz Blinowski; en [5] el subtitulo real del libro de Ford et al. es "Modern Trade-Off Analyses for Distributed Architectures" y tu escribes "Modern Trade-Offs in Distributed Architectures".
+- Ademas, dos datos no existen en la fuente: Blinowski et al. no reportan que el monolito sea "hasta un 40 % mas rapido" ni que los microservicios "escalen de forma lineal sin colapsar", y Alelyani et al. no reportan una reduccion del 18 % del trafico ni una mejora del 12 % de tolerancia a fallos (su resultado es una reduccion del 36 % frente a la estrategia de Alibaba). La cita de Ford et al. atribuida a "Capitulo 7: Managing Distributed Transactions" tampoco corresponde: el capitulo 7 de ese libro es "Service Granularity".
+- Tu declaracion dice que Gemini se uso para buscar y generar el formato; datos que no existen en la fuente son la huella de contenido generado por IA.
+- Nota final: 0 (en una sumativa, P4 la anula) (sin el criterio de piso seria 3.1)
+3. PARA TA-IND-01
+- Copia cada dato directamente de la pagina que citas y vuelve a leerlo antes de entregar.
+- Copia autores y titulo desde la pagina del editor al abrir el DOI o el ISBN, nunca desde una respuesta de IA.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Macias Vasquez Cesar Abrahan (CMS, paralelo B)
+- Rubrica: 3-1-0-2-2-0 = 3.125 -> 3.1; P4 por dos referencias con datos que no corresponden (inicial del primer autor de Blinowski; subtitulo de Ford et al.) y por datos fabricados (Blinowski 40 %, Alelyani 18 % y 12 %) -> 0.
+- Verificacion: Blinowski contrastado con el resumen publicado (hallazgos 1 y 4, contrarios a lo que afirma); Alelyani contrastado con la tesis doctoral del primer autor (UWA, 2024), que reporta 36 % y 11 004 replicas, igual que Loor Suarez Steffanny. Sharma et al.: 7 de 11 autores sin "et al.". Ghosh y Ghosh (cap. 5, p. 91) no verificable.
+- Repositorio: .bib el 8 nov 09:38-09:58; main.tex en un commit de 60 lineas (15:49).
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Sanchez Vera Darwin Joel | Paralelo B | Grupo CMS | Repositorio: https://github.com/jcedenoi4/FORM-FB-01- (carpeta DarwinSanchez/FORM_FB_01_SanchezDarwin.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 4 = 1.00 pts. Tus cinco fichas estan completas, con referencia IEEE, DOI, resumen, dato con seccion, nota con seccion de TA-IND-01, tabla de fuentes y procedimiento de verificacion; tu carpeta tiene README con instrucciones.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 3 = 1.88 pts. Los resumenes son precisos (801 a 29 estudios; 24 configuraciones en tres nubes; 300 articulos, 9 aplicaciones y mas de 120 profesionales); bajo un nivel porque declaras que Claude propuso su redaccion.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 4 = 2.00 pts. Los datos son exactos y tienen seccion; comprobe 43 % en Laigner et al., las definiciones de Henning y Hasselbring (Sec. 2.2.1) y de Soldani y Brogi.
+- D4 Analisis critico (notas personales) (25 %): nivel 3 = 1.88 pts. Las notas son buenas y dicen la seccion de TA-IND-01; aplico el tope del nivel 3 porque declaras que Claude propuso su redaccion.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 4 = 1.00 pts. El documento esta limpio, con datos de identificacion completos.
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Las referencias son articulos de revistas de primer nivel (ACM Computing Surveys, PVLDB, JSS, EMSE) de 2021 a 2025, generadas con biblatex; tu declaracion es detallada y honesta.
+- Nota previa: 8.8
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro tres indicios: tu declaracion dice que Claude busco y preselecciono las fuentes, localizo los datos, propuso la redaccion de los resumenes y de las notas y preparo los archivos, y que tu dirigiste y revisaste; todo el trabajo entro en 27 minutos y el .tex en un solo commit (I6); y la redaccion es uniforme de principio a fin (I1). Corresponde nivel C (-3.0).
+- Valoro la honestidad de la declaracion, pero en esta actividad los resumenes, los datos y las notas debian ser tuyos.
+- Penalizaciones: -3.0
+- Nota final: 5.8
+3. PARA TA-IND-01
+- En TA-IND-01 escribe tu el texto desde el primer borrador; la IA solo puede revisar.
+- Lee completas las fuentes que vas a citar.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Sanchez Vera Darwin Joel (CMS, paralelo B)
+- Rubrica: 4-3-4-3-4-4 = 8.75 -> 8.8; nivel C (declaracion de trabajo conjunto en el que Claude redacto resumenes y notas y localizo los datos + I6 + I1); 8.75 - 3.0 = 5.75 -> 5.8.
+- Verificacion: 5/5 DOI correctos; Laigner (43 %, 300 articulos, mas de 120 profesionales) en arXiv 2103.00170; Henning (24 SUT, 3 nubes, definiciones) en Springer; Soldani (terminologia) en arXiv 2105.12378; Rodrigues (801 a 29) en el resumen publicado.
+- Decision para el docente: la declaracion admite que el contenido evaluado (resumenes, notas y datos) lo propuso la IA y no dice que lo haya reescrito. Lo trate como nivel C por coherencia con el paralelo A (Giraldo, Piguave). Si se aplica la definicion del encuadre (contenido generado por IA presentado como propio, P4), la nota seria 0.
+- Repositorio: 7 commits del 8 nov entre 20:22 y 20:49, con dos reverts.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Loor Suarez Steffanny del Rocio | Paralelo B | Grupo LMR | Repositorio: https://github.com/Melanir/isr701-form-fb-01 (docs/rocio-loor/fichas-steffanny-loor.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 2 = 0.50 pts. Tus fichas tienen resumen, dato con ubicacion muy precisa y nota, pero la referencia de cada ficha es solo "Freitas et al. [1]" (la referencia IEEE completa esta al final), no muestras el DOI en la ficha y las notas no dicen en que seccion de TA-IND-01 usaras la fuente.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 4 = 2.50 pts. Tus resumenes son precisos, completos y propios (cuatro estrategias de consistencia causal; 17 profesionales de 11 empresas; PSO modificado con Round Robin).
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 4 = 2.00 pts. Tus datos son exactos y con ubicacion detallada; comprobe 43.98 % y 28.3 % en Reitz y Fohry, 36 % y 11 004 replicas en Alelyani et al., y los 17 participantes en Lercher et al.
+- D4 Analisis critico (notas personales) (25 %): nivel 2 = 1.25 pts. Tus notas explican bien lo que aprendiste, pero el uso queda general ("analizar como un sistema distribuido mantiene la consistencia") y no nombras el sistema ni la seccion.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 3 = 0.75 pts. El documento esta limpio, pero no tiene caratula con la asignatura, la facultad ni el docente.
+- D6 Referencias, etica e integridad (10 %): nivel 4 = 1.00 pts. Tus referencias son articulos de revistas de 2023 a 2025 (ACM Computing Surveys, JSS, IEEE Access), correctas y generadas con biblatex; tu declaracion incluye un ejemplo de instruccion.
+- Nota previa: 8.0
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro un indicio: tu ficha de Lercher et al. comparte frases con la de Loor Suarez Jordan, de otro grupo ("mantener la compatibilidad con versiones anteriores, coordinar los cambios entre equipos y mejorar la comunicacion para evitar") (I7). Con uno solo no hay penalizacion; tu historial muestra una ficha por commit entre el 7 y el 8 de noviembre.
+- Nota final: 8.0
+3. PARA TA-IND-01
+- Pon en cada ficha la referencia completa con \fullcite{clave} y el DOI.
+- Elige el sistema de TA-IND-01 y di en cada nota en que seccion usaras la fuente.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Loor Suarez Steffanny del Rocio (LMR, paralelo B)
+- Rubrica: 2-4-4-2-3-4 = 8.0; sin penalizacion (un indicio, I7).
+- Verificacion: 5/5 DOI correctos; Reitz y Fohry (28.3 % y 43.98 %) en Springer; Alelyani (36 %, 11 004 replicas) en la tesis del autor; Lercher (17 entrevistas) en arXiv. Freitas et al. y Du et al. (19 divisiones de votos, 10 %) no verificables por acceso.
+- I7 con Loor Suarez Jordan (CLM): la ficha de Jordan es anterior; conviene preguntarles si trabajaron juntos.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Munoz Vera Melanie Michelle | Paralelo B | Grupo LMR | Repositorio: https://github.com/Melanir/isr701-form-fb-01 (docs/melanie-munoz/fichas.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 2 = 0.50 pts. Tus fichas tienen resumen, dato e identificador, pero la referencia de cada ficha es solo el numero [n] y las notas no mencionan TA-IND-01 ni en que seccion usaras la fuente.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 3 = 1.88 pts. Tus resumenes son correctos y propios, aunque coloquiales ("meterle mas servidores a lo loco", "compus"), un registro poco adecuado para un informe academico.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 2 = 1.00 pts. Los datos de los libros (capitulo 3 sobre el sidecar; capitulo 6 con los tres enfoques de replicacion) y el de Blinowski et al. son enunciados generales; solo los de Schwarz et al. (15 transcripciones) y Genfer et al. (70 participantes) son datos del estudio.
+- D4 Analisis critico (notas personales) (25 %): nivel 2 = 1.25 pts. Tus notas dicen lo que aprendiste, pero el uso es general ("la parte de arquitectura", "si es que llego a usar este patron en mi proyecto") y no hay un sistema elegido.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 3 = 0.75 pts. El documento esta limpio, pero no tiene caratula con la asignatura, la facultad ni el docente.
+- D6 Referencias, etica e integridad (10 %): nivel 3 = 0.75 pts. Tus referencias son correctas, generadas con biblatex, con tres articulos de revista y dos libros de O'Reilly con ISBN; tu declaracion no dice como verificaste lo obtenido ni que tradujo Gemini.
+- Nota previa: 6.1
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- No encuentro indicios relevantes: tu historial muestra trabajo entre el 5 y el 8 de noviembre.
+- Nota final: 6.1
+3. PARA TA-IND-01
+- Pon la referencia completa en cada ficha y di en cada nota en que seccion de TA-IND-01 la usaras.
+- Completa la declaracion de IA: que herramienta, para que y como verificaste.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Munoz Vera Melanie Michelle (LMR, paralelo B)
+- Rubrica: 2-3-2-2-3-3 = 6.125 -> 6.1; sin penalizacion.
+- Verificacion: 5/5 identificadores correctos; Schwarz (15 transcripciones, 13 buenas practicas) comprobado en Springer; ISBN de Burns (2.a ed.) y de Kleppmann y Riccomini (2.a ed.) correctos. Genfer et al. no verificable por acceso.
+- La declaracion menciona "Gemini para las traducciones" sin decir de que textos; conviene preguntarle si tradujo resumenes escritos por otra herramienta.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Rivas Piloso Dayver Yahir | Paralelo B | Grupo LMR | Repositorio: https://github.com/Melanir/isr701-form-fb-01 (docs/dayver-rivas/ (solo .gitkeep))
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 0 = 0.00 pts. Tu carpeta docs/dayver-rivas del repositorio del grupo solo tiene un archivo .gitkeep: no hay fichas, ni .tex, ni .bib, ni PDF.
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 0 = 0.00 pts. No hay resumenes.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 0 = 0.00 pts. No hay datos concretos.
+- D4 Analisis critico (notas personales) (25 %): nivel 0 = 0.00 pts. No hay notas.
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 0 = 0.00 pts. No hay documento.
+- D6 Referencias, etica e integridad (10 %): nivel 0 = 0.00 pts. No hay referencias.
+- Nota previa: 0.0
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Tu nombre aparece en la caratula que el grupo subio al SGA, pero el repositorio no tiene ningun commit tuyo ni ninguna ficha tuya antes del cierre (domingo 8 de noviembre, 23:59).
+- Segun la guia, la formativa se considera no entregada; por el criterio de piso P5 del encuadre, no puedes presentar TA-IND-01 y tu nota en ese informe sera 0, salvo justificacion aprobada.
+- Nota final: 0 (formativa no entregada)
+3. PARA TA-IND-01
+- Si tienes una justificacion, presentala por el canal reglamentario.
+- Revisa la guia de FORM-FB-01: localizar y leer cinco fuentes es la base de TA-IND-01.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Rivas Piloso Dayver Yahir (LMR, paralelo B)
+- Sin entrega: carpeta con .gitkeep (commit de Melanir del 5 nov); ningun commit con su identidad en el repositorio. Formativa no entregada -> P5 en TA-IND-01.
+
+====================================================================================================
+INFORME INDIVIDUAL - FORM-FB-01 Fichas bibliograficas: fundamentos de SD y arquitecturas distribuidas
+Estudiante: Zambrano Yong Angel Daniel | Paralelo B | Grupo QZ | Repositorio: https://github.com/Kinetro/QZ-Practicas_Experimentales (Semana 2/FORM-FB-01/fichas.tex)
+Actividad formativa: no se registra en el SGA; la nota es referencial, para que sepas como estaria tu trabajo en una sumativa.
+Aplique la guia-rubrica FORM-FB-01 (dimensiones D1-D6 con los pesos de informe individual TA-IND), que detalla los indicadores de cada dimension para esta actividad.
+1. VALORACION DEL TRABAJO (nivel 0-4 y puntos obtenidos)
+- D1 Cumplimiento y completitud (10 %): nivel 4 = 1.00 pts. Tus cinco fichas estan completas, con referencia IEEE, DOI, tipo de fuente, resumen, dato con seccion y pagina y nota; la presentacion define el sistema de TA-IND-01 (Cassandra frente a MongoDB).
+- D2 Fundamentacion conceptual (resumenes) (25 %): nivel 4 = 2.50 pts. Tus resumenes son precisos y propios, y explican problema, metodo y resultado de cada fuente.
+- D3 Desarrollo y evidencia (datos concretos) (20 %): nivel 4 = 2.00 pts. Tus datos son exactos y tienen tabla y pagina; comprobe en la Tabla 2 de Gorbenko et al. los 16 830 y 13 735 ops/s en el escenario (a) y los 15 160 y 355 ops/s en el (c), la clasificacion PA/EL y PA/EC en Ahmed et al. y los quorums de 2f+1 en Zhang et al.
+- D4 Analisis critico (notas personales) (25 %): nivel 4 = 2.50 pts. Tus notas son excelentes: dicen la seccion de TA-IND-01, lo que no esperabas encontrar y hasta una contradiccion que piensas discutir (MongoDB como CP y como PA/EC).
+- D5 Comunicacion (documento LaTeX) (10 %): nivel 4 = 1.00 pts. El documento esta limpio y la caratula esta completa.
+- D6 Referencias, etica e integridad (10 %): nivel 3 = 0.75 pts. Tus referencias son correctas y generadas con biblatex, pero dos de las cinco son de Radioelectronic and Computer Systems, una revista regional que no es Q1 ni Q2.
+- Nota previa: 9.8
+2. INTEGRIDAD Y CRITERIOS DE PISO
+- Encuentro un indicio: tu unico aporte de contenido al repositorio fue el PDF (commit "Angel: completa las 5 fichas", 8 nov 14:00); el fichas.tex y el referencias.bib los subio Luis Quintero a las 23:47 y 23:48 (I6). El texto del PDF que subiste coincide con el final, asi que no hay penalizacion.
+- Nota final: 9.8
+3. PARA TA-IND-01
+- Sube tu mismo el .tex y el .bib, con commits frecuentes; el historial es la evidencia de tu autoria.
+- Sustituye las fuentes de Radioelectronic and Computer Systems por articulos de revistas Q1 o Q2.
+Ing. Gleiston Guerrero Ulloa, PhD - Aplicaciones Distribuidas
+
+OBSERVACIONES PARA EL DOCENTE - Zambrano Yong Angel Daniel (QZ, paralelo B)
+- Rubrica: 4-4-4-4-4-3 = 9.75 -> 9.8; sin penalizacion (un indicio).
+- Verificacion: 5/5 DOI correctos; Gorbenko (Tabla 2) en el repositorio de Leeds Beckett; Ahmed (PA/EL, PA/EC) en la revista; Zhang (quorums) en arXiv 2204.03181. Ferreira 2025 (Tabla 4: 64.3 %, 700.71 %, 60.49 %, 719.8 %) no verificable por acceso.
+- Autoria: el PDF que Angel subio a las 14:00 (compilado a las 13:58 con pdfTeX 1.40.29) tiene el mismo texto que el final; Luis Quintero recompilo (pdfTeX 1.40.25) y subio .tex y .bib antes del cierre.
+- Luis Quintero (lquinteror@uteq.edu.ec) tiene commits en este repositorio, pero no aparece en la caratula QZ ni tiene fichas propias. Si es estudiante del paralelo B, no entrego FORM-FB-01 (P5 en TA-IND-01).
