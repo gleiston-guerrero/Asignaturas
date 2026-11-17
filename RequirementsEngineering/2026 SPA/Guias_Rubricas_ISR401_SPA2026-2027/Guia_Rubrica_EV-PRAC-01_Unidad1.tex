@@ -1,0 +1,590 @@
+% =====================================================================
+%  GUÍA-RÚBRICA · EVALUACIÓN DE LA UNIDAD I (EV-PRAC-01, en el SGA: EV-SUM-01)
+%  Fundamentos de Ingeniería de Requisitos · Caso FRÍOVAC
+%  Ingeniería de Requerimientos (ISR-401) · UTEQ · SPA 2026-2027
+%  Versión ESTUDIANTE:  pdflatex -> bibtex -> pdflatex -> pdflatex  (Guia_Rubrica_EV-PRAC-01_Unidad1.tex)
+%  Versión DOCENTE:     el archivo Guia_Rubrica_EV-PRAC-01_Unidad1_Docente.tex define \conclave y carga este archivo
+% =====================================================================
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% babel no disponible en este entorno
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage{needspace}
+\usepackage[hypcap=false]{caption}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Textos en español (sin babel) ----------
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+% ---------- Interruptor de versión ----------
+\newif\ifclave
+\ifdefined\conclave
+	\clavetrue
+\fi
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+\definecolor{lightgreen}{HTML}{DCEFE3}
+
+% ---------- Columnas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ \,$\cdot$\, Ingeniería de Requerimientos (ISR-401) \,$\cdot$\, SPA 2026--2027}
+\rhead{\footnotesize EV-PRAC-01 \,$\cdot$\, Unidad I\ifclave\ \,$\cdot$\, \textcolor{red!60!black}{\textbf{VERSIÓN DOCENTE}}\fi}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\bhdr}[1]{\cellcolor{midblue}\textcolor{white}{\textbf{#1}}}
+\newcommand{\seccion}[1]{\section{\textcolor{utegreendk}{#1}}}
+\newcommand{\subseccion}[1]{\subsection{\textcolor{midblue}{#1}}}
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajapiso}[1][]{colback=lightred,colframe=red!60!black,boxrule=1pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajaaviso}[1][]{colback=lightgold,colframe=gold!80!black,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajacaso}[1][]{colback=lightblue,colframe=midblue,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajatarea}[1][]{colback=white,colframe=midblue,boxrule=0.7pt,arc=1.5mm,fonttitle=\bfseries,coltitle=white,colbacktitle=midblue,breakable,#1}
+
+\begin{document}
+
+% =====================================================================
+% PORTADA Y DATOS
+% =====================================================================
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\vspace{6pt}
+\begin{center}
+	{\large Facultad de Ciencias de la Computación \,$\cdot$\, Carrera de Software}\\[10pt]
+	{\LARGE\textbf{\textcolor{utegreendk}{GUÍA-RÚBRICA}}}\\[4pt]
+	{\Large\textbf{Evaluación de la Unidad I (EV-PRAC-01)}}\\[4pt]
+	{\large Fundamentos de Ingeniería de Requisitos --- Caso «FRÍOVAC»}\\[2pt]
+	\ifclave{\normalsize\textbf{\textcolor{red!60!black}{VERSIÓN DOCENTE: incluye la clave orientativa. No distribuir.}}}\\[2pt]\fi
+\end{center}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+\vspace{4pt}
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Detalle}\\
+	\hline
+	Asignatura & Ingeniería de Requerimientos (ISR-401) --- 4.\textsuperscript{o} nivel, paralelo A\\
+	\hline
+	\rowcolor{rowgray} Docente & Gleiston Cicerón Guerrero Ulloa, PhD \,$\cdot$\, \texttt{gguerrero@uteq.edu.ec}\\
+	\hline
+	Unidad & Unidad I. Fundamentos de Ingeniería de Requisitos y Proceso de Requisitos (semanas 1 a 3)\\
+	\hline
+	\rowcolor{rowgray} Resultado de aprendizaje & Aplica los fundamentos teóricos de la IR identificando tipos, propiedades y el proceso de requisitos para analizar su aplicabilidad en proyectos de software reales.\\
+	\hline
+	Contenidos evaluados & Definición y propiedades de los requisitos; proceso de IR (elicitación, análisis, especificación, validación y gestión); tipos de requisitos (funcionales, no funcionales, de dominio y restricciones); requisitos de producto y de proceso; perspectiva de sistemas (StRS, SyRS y SRS); calidad de los requisitos (SMART, verificabilidad, consistencia y no ambigüedad); introducción a los estándares.\\
+	\hline
+	\rowcolor{rowgray} Componente y tipo & Evaluaciones (EV) \,$\cdot$\, sumativa \,$\cdot$\, individual \,$\cdot$\, presencial\\
+	\hline
+	Peso en el corte & 1,00 de los 10 puntos del primer corte (encuadre, tabla del primer corte)\\
+	\hline
+	\rowcolor{rowgray} Composición de la nota & $\text{EV-PRAC-01} = 0{,}40\,Q + 0{,}60\,P$. Q: cuestionario EV-CUE-01 en el SGA (en línea, individual, tiempo limitado, 25 minutos). P: prueba práctica de esta guía, escrita a mano, con documentos cerrados (75 minutos).\\
+	\hline
+	Semana & Semana 3 del sílabo, en la sesión de clase registrada en el SGA\\
+	\hline
+	\rowcolor{rowgray} Cierre & Prueba escrita: al término de la sesión. Digitalización en el repositorio: el mismo día de la sesión, a las 23:59.\\
+	\hline
+	Formativas vinculadas & GA-TL-01 Identificación y clasificación de tipos de requisitos (semana 1) y GA-PRAC-01 Comparación entre modelos de proceso de requisitos (semana 2)\\
+	\hline
+	\rowcolor{rowgray} Referentes & ISO/IEC/IEEE 29148:2018 \citep{iso29148_2018}; SWEBOK v4.0, capítulo de requisitos \citep{swebok_v4_2024}; ISO/IEC 25010:2023 \citep{iso25010_2023}; Pohl \citep{pohl_2025}, capítulos 1 a 3; requisitos SMART \citep{mannion_smart_1995}.\\
+	\hline
+\end{tabularx}
+
+\vspace{6pt}
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\bhdr{Apellidos y nombres} & \rule{0pt}{14pt}\\
+	\hline
+	\bhdr{URL del repositorio} & \rule{0pt}{14pt}\\
+	\hline
+	\bhdr{Fecha} & \rule{0pt}{14pt}\\
+	\hline
+\end{tabularx}
+
+% =====================================================================
+\seccion{Propósito y alineación}
+% =====================================================================
+
+La prueba práctica comprueba si usted sabe usar los fundamentos de la unidad sobre un problema concreto: no se le pide repetir definiciones, sino decidir, con argumentos, qué es y qué no es un requisito, de qué tipo es, en qué documento va, qué defectos tiene y cómo se redacta bien. Todas las tareas usan el mismo caso, de modo que los identificadores (E1, B3, H2\ldots) y las decisiones deben ser coherentes entre una tarea y otra.
+
+Las cinco dimensiones y sus pesos son los publicados en la tarea del SGA y coinciden con los pesos que el encuadre fija para las evaluaciones (10, 30, 30, 20 y 10\,\%). La Tabla~\ref{tab:alineacion} muestra qué tarea alimenta cada dimensión.
+
+\noindent\begin{minipage}{\linewidth}
+{\small
+\noindent\begin{tabularx}{\linewidth}{|L{0.27\linewidth}|Y|L{0.17\linewidth}|C{0.08\linewidth}|C{0.08\linewidth}|}
+	\hline
+	\thdr{Dimensión} & \thdr{Dónde se evalúa} & \thdr{Nivel cognitivo} & \thdr{Peso} & \thdr{Tiempo}\\
+	\hline
+	D1 Comprensión conceptual & T1. Requisito, documentos StRS/SyRS/SRS y actividades del proceso & Comprender & 10\,\% & 10 min\\
+	\hline
+	\rowcolor{rowgray} D2 Aplicación y análisis & T2. Clasificación de doce enunciados y auditoría de seis requisitos & Aplicar y analizar & 30\,\% & 25 min\\
+	\hline
+	D3 Síntesis y producción & T3. Redacción de seis requisitos bien formados & Crear & 30\,\% & 25 min\\
+	\hline
+	\rowcolor{rowgray} D4 Uso de estándares y referencias & T4 y las justificaciones de T1 a T3 & Evaluar & 20\,\% & 10 min\\
+	\hline
+	D5 Presentación y rigor técnico & Hojas de la prueba y su digitalización en \LaTeX{} & --- & 10\,\% & 5 min\\
+	\hline
+	\multicolumn{3}{|r|}{\cellcolor{lightgold}\textbf{Prueba práctica (P)}} & \cellcolor{lightgold}\textbf{100\,\%} & \cellcolor{lightgold}\textbf{75 min}\\
+	\hline
+\end{tabularx}
+}
+\captionof{table}{Dimensiones, tareas y tiempos de la prueba práctica.}\label{tab:alineacion}
+\end{minipage}
+
+% =====================================================================
+\seccion{Cómo se rinde y cómo se entrega}
+% =====================================================================
+
+La prueba tiene dos momentos. Primero se resuelve \textbf{a mano, en clase y con documentos cerrados}. Después, ese mismo día, el estudiante la \textbf{digitaliza tal como la escribió} en \LaTeX{} y la sube a su repositorio. Lo que se califica es lo que está escrito en las hojas; la versión digital sirve para que el trabajo quede en el repositorio y para comprobar que la transcripción es fiel.
+
+\subseccion{Antes de la sesión}
+
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+	\item Tenga su repositorio personal público de GitHub con una carpeta \texttt{EV-PRAC-01/} y verifique que puede compilar \LaTeX{} y hacer commits desde su computadora.
+	\item Lleve esferográfico azul o negro. No se permite lápiz ni corrector líquido: si se equivoca, tache con una línea y escriba al lado.
+	\item Haber entregado las formativas GA-TL-01 y GA-PRAC-01, que son requisito de esta evaluación (criterio de piso P5).
+\end{enumerate}
+
+\subseccion{Durante la sesión}
+
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+	\item Rinda primero el cuestionario Q en el SGA (25 minutos). Al terminarlo, cierre la computadora y guarde el teléfono.
+	\item Reciba el enunciado y las hojas de respuesta. Escriba sus apellidos y nombres en cada hoja y numere las hojas (1 de $n$, 2 de $n$\ldots).
+	\item Lea el caso completo antes de empezar. Responda cada tarea con su número (T1a, T1b\ldots) y en el orden del enunciado. Puede dibujar las tablas a mano; no es necesario que sean perfectas, pero sí legibles.
+	\item Documentos cerrados: no se permite consultar apuntes, libros, normas, internet, asistentes de inteligencia artificial ni a otras personas. El recuadro «Referencias que puede citar» de la sección~4 trae los nombres de las cláusulas y características que puede necesitar.
+	\item Al terminar, y antes de entregar, fotografíe con su teléfono cada hoja, completa, de frente y con buena luz, en presencia del docente. Luego entregue las hojas y el enunciado: el docente conserva los originales.
+\end{enumerate}
+
+\subseccion{Después de la sesión: digitalización}
+
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+	\item Suba las fotografías a \texttt{EV-PRAC-01/evidencias/} con los nombres \texttt{hoja-01.jpg}, \texttt{hoja-02.jpg}\ldots{} en su primer commit, antes de empezar la transcripción.
+	\item Transcriba la prueba en \texttt{EV-PRAC-01/main.tex} \textbf{exactamente igual} a lo que escribió, siguiendo las reglas del recuadro siguiente, y compile \texttt{main.pdf}. Al final del PDF incluya un anexo con todas las fotografías.
+	\item Actualice el \texttt{README.md} del repositorio con el compilador, el archivo principal, el orden de comandos y las dependencias de \texttt{EV-PRAC-01}.
+	\item Haga al menos dos commits: uno con las fotografías y otro, o varios, con la transcripción.
+	\item Suba al SGA un PDF de una sola página con sus datos, el código de la tarea, la fecha y la URL del repositorio en una sola línea. Todo esto debe estar hecho hasta las 23:59 del día de la sesión.
+\end{enumerate}
+
+\begin{cajaaviso}[title={Reglas de la transcripción fiel}]
+	\begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=24pt,itemsep=2pt]
+		\item Se transcribe todo lo que está en las hojas, en el mismo orden y con la misma numeración. Lo tachado no se transcribe.
+		\item No se agrega, completa, corrige ni mejora nada: ni respuestas, ni palabras, ni filas de tablas, ni justificaciones. Los errores de ortografía también se transcriben tal como están.
+		\item Las tablas hechas a mano se reproducen como tablas de \LaTeX{} con las mismas filas y columnas.
+		\item Una palabra que no se puede leer en la fotografía se escribe como \texttt{[ilegible]}.
+		\item Al inicio del documento se declara: «Esta es la transcripción fiel de la prueba escrita a mano el [fecha]; las fotografías de las hojas están en el anexo».
+	\end{enumerate}
+	El docente compara la transcripción con las hojas originales. Una diferencia que no da ventaja (por ejemplo, un error de tipeo) baja el nivel de D5. Contenido agregado o corregido que no está en las hojas es deshonestidad académica (criterio de piso P4): la calificación es CERO.
+\end{cajaaviso}
+
+\noindent\begin{minipage}{\linewidth}
+{\small
+\noindent\begin{tabularx}{\linewidth}{|L{0.43\linewidth}|Y|}
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido}\\
+	\hline
+	\texttt{EV-PRAC-01/\allowbreak{}evidencias/\allowbreak{}hoja-01.jpg}, \ldots & Fotografía de cada hoja, tomada antes de entregar los originales\\
+	\hline
+	\rowcolor{rowgray} \texttt{EV-PRAC-01/main.tex} & Transcripción fiel de la prueba, con el anexo de fotografías\\
+	\hline
+	\texttt{EV-PRAC-01/main.pdf} & PDF compilado desde \texttt{main.tex}\\
+	\hline
+	\rowcolor{rowgray} \texttt{README.md} & Instrucciones de compilación de \texttt{EV-PRAC-01}\\
+	\hline
+\end{tabularx}
+}
+\captionof{table}{Productos que deben estar en el repositorio a las 23:59 del día de la sesión.}
+\end{minipage}
+
+\begin{cajapiso}[title={Criterios de piso: el incumplimiento de cualquiera implica calificación 0,0/10}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{PDF de una página con la URL.} El estudiante debe subir al LMS (SGA) un documento PDF de una sola página con carátula (datos de identificación) que muestre claramente, en una sola línea, la URL del repositorio personal donde se encuentra el trabajo desarrollado. Si la URL está rota, el repositorio no es accesible, o no se cumple esta directriz, la calificación es CERO.
+		\item \textbf{PDF reproducible.} Si el PDF no se genera correctamente a partir del \LaTeX{} mediante clonación del repositorio y compilación del archivo \texttt{.tex}, la calificación es CERO. Las instrucciones de compilación (compilador, orden de comandos, archivo principal, dependencias) deben estar documentadas en el archivo \texttt{README.md} del repositorio.
+		\item \textbf{Plazo.} La prueba escrita se entrega al término de la sesión, y la digitalización hasta las 23:59 del mismo día. La inasistencia no justificada a la sesión, o una digitalización subida después del cierre, implica CERO.
+		\item \textbf{Integridad.} Copia, suplantación, uso de inteligencia artificial o de material no permitido durante la prueba, cualquiera de los indicios graves G1 a G6 del encuadre, o una transcripción con contenido que no está en las hojas originales implica CERO, sin perjuicio de las acciones disciplinarias que correspondan.
+		\item \textbf{Formativa prerrequisito.} Las formativas GA-TL-01 y GA-PRAC-01 deben haberse entregado. La primera vez que un estudiante no entrega una formativa vinculada, la sumativa se califica con una penalización del 25\,\% de su nota y la retroalimentación lo advierte; a partir de la segunda vez en el periodo, la calificación de la sumativa vinculada es CERO.
+	\end{enumerate}
+\end{cajapiso}
+
+% =====================================================================
+\seccion{Caso de estudio: Sistema de Monitoreo de la Cadena de Frío «FRÍOVAC»}
+% =====================================================================
+
+\begin{cajacaso}[title={El problema que hay que resolver}]
+	\textbf{Quién tiene el problema.} Una dirección distrital de salud de la provincia de Los Ríos administra 16 establecimientos: un centro de acopio distrital, donde se reciben y almacenan las vacunas, y 15 centros de salud con vacunatorio, 9 urbanos y 6 rurales. Cada vacunatorio tiene una refrigeradora exclusiva para vacunas. La norma técnica nacional de inmunizaciones exige que las vacunas se conserven entre +2\,°C y +8\,°C desde que llegan hasta que se aplican; a eso se le llama \textbf{cadena de frío}, y a cada salida de ese rango, \textbf{excursión térmica}.\par\smallskip
+	\textbf{Cómo se trabaja hoy.} En cada vacunatorio, el responsable lee el termómetro de la refrigeradora a las 08:00 y a las 16:00 y anota la temperatura en una hoja de papel que se archiva en un cartapacio. Por la noche, los fines de semana y los feriados nadie mide. A fin de mes cada vacunatorio envía por correo una hoja de cálculo con sus anotaciones, y la coordinadora distrital de inmunizaciones tarda unos seis días en consolidar las 16 hojas a mano. En los centros rurales los cortes de energía eléctrica son frecuentes y pueden durar hasta 8 horas.\par\smallskip
+	\textbf{Por qué es un problema.} En 2026 se desecharon 1\,340 dosis de vacunas porque una refrigeradora se apagó un sábado por la noche y la excursión térmica se descubrió el lunes a las 08:00. Además, la última auditoría observó que en 4 de los 16 establecimientos faltaban registros de temperatura de varios días, y que no hay forma de saber quién anotó cada valor. Cada dosis desechada es dinero público perdido y un niño o un adulto que se queda sin vacunar a tiempo.\par\smallskip
+	\textbf{Qué se quiere lograr.} La directora distrital decidió implantar FRÍOVAC. El distrito ya compró un sensor de temperatura TL-40 para cada refrigeradora: el sensor tiene batería propia y envía su lectura por la red celular. Falta el software: una plataforma web para la coordinación distrital y una aplicación móvil para los responsables de vacunatorio, que reciban las lecturas, avisen a tiempo cuando haya una excursión térmica, permitan registrar lo que se hizo para corregirla (\textbf{acción correctiva}) y generen los informes para la auditoría. Usted es el analista de requisitos del proyecto.
+\end{cajacaso}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Interesado} & \thdr{Qué le interesa}\\
+	\hline
+	Directora distrital & Patrocina el proyecto; responde por las dosis perdidas y por la auditoría.\\
+	\hline
+	\rowcolor{rowgray} Coordinadora de inmunizaciones & Vigila los 16 establecimientos; consolida los informes mensuales.\\
+	\hline
+	Responsables de vacunatorio y del centro de acopio (16) & Cuidan la refrigeradora; deben actuar cuando hay una excursión térmica.\\
+	\hline
+	\rowcolor{rowgray} Técnico de TIC del distrito & Administra el servidor y la red del distrito; instalará los sensores.\\
+	\hline
+	Proveedor de los sensores TL-40 & Da soporte técnico al sensor y a su forma de comunicación.\\
+	\hline
+\end{tabularx}
+
+\subseccion{Insumo A --- Enunciados recopilados en entrevistas y documentos}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.06\linewidth}|L{0.21\linewidth}|Y|}
+	\hline
+	\thdr{ID} & \thdr{Fuente} & \thdr{Enunciado}\\
+	\hline
+	E1 & Coordinadora de inmunizaciones & «Necesitamos enterarnos de inmediato cuando una refrigeradora se salga del rango, aunque sea de madrugada.»\\
+	\hline
+	\rowcolor{rowgray} E2 & Norma técnica nacional de inmunizaciones & Las vacunas deben conservarse entre +2\,°C y +8\,°C.\\
+	\hline
+	E3 & Técnico de TIC & «El sensor TL-40 que ya compramos envía una lectura cada 10 minutos usando el protocolo MQTT.»\\
+	\hline
+	\rowcolor{rowgray} E4 & Directora distrital & «El sistema debe estar funcionando antes del 30 de junio de 2027 y no puede costar más de USD 48\,000.»\\
+	\hline
+	E5 & Coordinadora de inmunizaciones & El sistema generará en formato PDF el informe mensual de temperaturas de cada establecimiento.\\
+	\hline
+	\rowcolor{rowgray} E6 & Responsable de un vacunatorio rural & El sistema deberá seguir registrando las lecturas de temperatura durante cortes de energía eléctrica de hasta 8 horas.\\
+	\hline
+	E7 & Responsable de un vacunatorio urbano & «Ahora anotamos la temperatura a las 8 y a las 4 de la tarde en una hoja que se guarda en un cartapacio.»\\
+	\hline
+	\rowcolor{rowgray} E8 & Coordinadora de inmunizaciones & El historial de temperaturas de un establecimiento deberá mostrarse en menos de 3 segundos aunque haya 50 usuarios conectados al mismo tiempo.\\
+	\hline
+	E9 & Técnico de TIC & La plataforma web deberá instalarse en el servidor del centro de datos del distrito, que usa el sistema operativo Linux.\\
+	\hline
+	\rowcolor{rowgray} E10 & Directora distrital & Solo el personal autorizado de cada vacunatorio podrá registrar acciones correctivas, y cada registro quedará asociado al usuario que lo hizo.\\
+	\hline
+	E11 & Responsable de un vacunatorio rural & Un responsable que nunca usó la aplicación deberá poder registrar una acción correctiva en no más de 2 minutos en su primer intento.\\
+	\hline
+	\rowcolor{rowgray} E12 & Plan del proyecto & Las entrevistas con los 16 responsables se harán por videollamada, y el acta de requisitos la firmará la directora distrital.\\
+	\hline
+\end{tabularx}
+
+\subseccion{Insumo B --- Borrador de requisitos escrito por un analista principiante}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.06\linewidth}|Y|}
+	\hline
+	\thdr{ID} & \thdr{Enunciado}\\
+	\hline
+	B1 & El sistema debe ser rápido y fácil de usar.\\
+	\hline
+	\rowcolor{rowgray} B2 & El sistema enviará alertas oportunas cuando la temperatura sea inadecuada.\\
+	\hline
+	B3 & El sistema registrará la temperatura de todas las refrigeradoras en todo momento, incluso sin energía ni conexión, indefinidamente.\\
+	\hline
+	\rowcolor{rowgray} B4 & El sistema usará una base de datos MongoDB alojada en la nube de AWS.\\
+	\hline
+	B5 & Si es posible, el sistema permitirá exportar los datos a Excel, CSV, etc.\\
+	\hline
+	\rowcolor{rowgray} B6 & Cuando una lectura de temperatura sea mayor que +8,0\,°C, el sistema deberá enviar un mensaje SMS al responsable del establecimiento en un plazo máximo de 5 minutos desde la recepción de la lectura.\\
+	\hline
+\end{tabularx}
+
+\subseccion{Insumo C --- Bitácora del proyecto}
+
+\noindent\begin{tabularx}{\linewidth}{|C{0.06\linewidth}|Y|}
+	\hline
+	\thdr{ID} & \thdr{Hecho registrado}\\
+	\hline
+	H1 & La analista entrevistó a la coordinadora de inmunizaciones y a dos responsables de vacunatorio rural para conocer cómo controlan hoy la temperatura.\\
+	\hline
+	\rowcolor{rowgray} H2 & La directora quería las alertas por SMS y el técnico de TIC por correo electrónico; en una reunión se compararon ambas opciones y se acordó usar SMS.\\
+	\hline
+	H3 & La analista escribió los requisitos acordados en la plantilla del documento, con un identificador único para cada uno.\\
+	\hline
+	\rowcolor{rowgray} H4 & La coordinadora y dos responsables leyeron el documento y encontraron que no decía qué hacer durante los cortes de energía.\\
+	\hline
+	H5 & Tres semanas después el distrito compró diez sensores de otro modelo; se registró el cambio, se analizó a qué requisitos afectaba y se publicó la versión 1.1 del documento.\\
+	\hline
+\end{tabularx}
+
+% =====================================================================
+\seccion{Tareas}
+% =====================================================================
+
+\begin{cajaclave}[title={Referencias que puede citar (sin consultar los documentos)}]
+	\textbf{ISO/IEC/IEEE 29148:2018} \citep{iso29148_2018}: 5.2.4 Construcción de un requisito; 5.2.5 Características de los requisitos individuales; 5.2.6 Características de un conjunto de requisitos; 5.2.7 Criterios del lenguaje de los requisitos.\par
+	\textbf{ISO/IEC 25010:2023} \citep{iso25010_2023}, características de calidad del producto: adecuación funcional, eficiencia de desempeño, compatibilidad, capacidad de interacción, fiabilidad, seguridad, mantenibilidad, flexibilidad y protección (\emph{safety}).\par
+	\textbf{SWEBOK v4.0} \citep{swebok_v4_2024}: capítulo 1, Requisitos del software. \textbf{Pohl} \citep{pohl_2025}: marco de la IR con actividades centrales y transversales. \textbf{SMART} \citep{mannion_smart_1995}: \emph{Specific, Measurable, Attainable, Realisable, Traceable}.\par
+	Cite la norma y la cláusula o característica que sustenta cada justificación, por ejemplo: «incumple la característica \emph{verificable} (29148, 5.2.5)». Citar una cláusula que no existe o que no dice lo afirmado es el indicio grave G2 del encuadre.
+\end{cajaclave}
+
+\begin{cajatarea}[title={T1. Conceptos aplicados al caso \hfill D1 · 10\,\%}]
+	\textbf{(a)} Explique con sus palabras qué es un requisito según ISO/IEC/IEEE 29148 y, con esa explicación, decida si E7 y E12 son requisitos del producto FRÍOVAC. Justifique cada decisión en una o dos líneas.\\[4pt]
+	\textbf{(b)} Explique qué describe la especificación de requisitos de los interesados (StRS), la especificación de requisitos del sistema (SyRS) y la especificación de requisitos del software (SRS) en este proyecto. Para cada una dé un enunciado del Insumo A que iría en ella y diga por qué.\\[4pt]
+	\textbf{(c)} Para cada hecho H1 a H5 indique a qué actividad del proceso de IR corresponde (elicitación, análisis y negociación, especificación, validación o gestión) y si en el marco de Pohl es una actividad central o transversal.
+\end{cajatarea}
+
+\begin{cajatarea}[title={T2. Clasificación y auditoría \hfill D2 · 30\,\%}]
+	\textbf{(a) Clasificación.} Dibuje una tabla con las columnas ID, Tipo, Documento y Justificación, y complétela para E1 a E12. \textbf{Tipo}: funcional; no funcional (diga la característica de ISO/IEC 25010:2023); restricción; requisito de dominio; requisito de proceso; o no es requisito. \textbf{Documento}: StRS, SyRS, SRS o ninguno de ellos (diga dónde se registra entonces). La justificación cabe en una línea.\\[4pt]
+	\textbf{(b) Auditoría.} Dibuje una tabla con las columnas ID, Término o construcción problemática, Característica de 29148 que incumple, Propiedad SMART que incumple y Justificación, y complétela para B1 a B6. Si un requisito está bien formado, dígalo y explique por qué con la cláusula 5.2.4.
+\end{cajatarea}
+
+\begin{cajatarea}[title={T3. Redacción de requisitos bien formados \hfill D3 · 30\,\%}]
+	Redacte \textbf{seis requisitos} bien formados para FRÍOVAC: (i) reescriba B1, B2, B3 y B5; si uno contiene más de un requisito, divídalo y numere cada parte (B1a, B1b\ldots); y (ii) complete los seis con requisitos nuevos que cubran un vacío que usted detecte en el conjunto. Use la estructura de 5.2.4: \emph{[condición] [sujeto] [acción] [objeto] [restricción de la acción]}, con valores medibles tomados del caso.\\[4pt]
+	Presente los seis en una tabla con las columnas: ID, Enunciado, Tipo (con característica de 25010 si es no funcional), Documento (SyRS o SRS), Fuente (E o B de origen) y Método de verificación (inspección, análisis, demostración o prueba).
+\end{cajatarea}
+
+\begin{cajatarea}[title={T4. Sustento normativo de la calidad \hfill D4 · 20\,\% (junto con las citas de T1 a T3)}]
+	\textbf{(a)} Dibuje una tabla con las cinco propiedades SMART. Para cada una escriba qué exige, en una línea, y qué característica o características de 29148 (5.2.5) le corresponden. Luego indique qué propiedad SMART no tiene una característica equivalente en 5.2.5 y nombre dos características de 5.2.5 que SMART no cubre.\\[4pt]
+	\textbf{(b)} Identifique \textbf{dos defectos del conjunto} formado por E1 a E12 y B1 a B6 según las características de un conjunto de requisitos (29148, 5.2.6). Para cada defecto diga la característica afectada, los identificadores que lo prueban y cómo lo corregiría.
+\end{cajatarea}
+
+% =====================================================================
+\seccion{Rúbrica de evaluación}
+% =====================================================================
+
+Cada dimensión se califica con un nivel de 0 a 4. Que una respuesta esté presente no basta: se califica la calidad con que se cumple, con los aspectos de calidad del encuadre (completitud, veracidad, precisión técnica, claridad, verificabilidad, profundidad, pertinencia y coherencia), y el nivel asignado es el del aspecto peor cumplido \citep{brookhart_2018,panadero_jonsson_2020}. Una respuesta ausente, ilegible en el original o que no corresponde a lo pedido vale 0.
+\begin{gather*}
+	P = \frac{\sum_{i=1}^{5} n_i \times w_i}{4} \times \frac{10}{100}, \qquad \text{EV-PRAC-01} = 0{,}40\,Q + 0{,}60\,P,\\
+	\text{Nota final} = \max(0,\ \text{EV-PRAC-01} - \text{Penalizaciones})
+\end{gather*}
+donde $n_i \in \{0,1,2,3,4\}$ es el nivel de la dimensión $i$ y $w_i$ su peso en porcentaje ($\sum w_i = 100$). Si se incumple un criterio de piso, la nota final es cero. En la retroalimentación se informan $Q$, $P$, la nota previa y la nota final.
+
+\begin{landscape}
+	{\footnotesize\renewcommand{\arraystretch}{1.12}
+		\begin{longtable}{|L{2.6cm}|L{4.3cm}|L{3.5cm}|L{3.2cm}|L{3.2cm}|L{3.0cm}|L{1.8cm}|}
+			\caption{Rúbrica analítica de la prueba práctica (P).}\label{tab:rubrica}\\
+			\hline
+			\thdr{Dimensión (peso)} & \thdr{Qué se observa en esta prueba} & \thdr{4 Excelente} & \thdr{3 Bueno} & \thdr{2 Aceptable} & \thdr{1 Insuficiente} & \thdr{0 Ausente}\\
+			\hline
+			\endfirsthead
+			\hline
+			\thdr{Dimensión (peso)} & \thdr{Qué se observa en esta prueba} & \thdr{4 Excelente} & \thdr{3 Bueno} & \thdr{2 Aceptable} & \thdr{1 Insuficiente} & \thdr{0 Ausente}\\
+			\hline
+			\endhead
+			\hline
+			\multicolumn{7}{r}{\footnotesize\textit{Continúa en la página siguiente\ldots}}\\
+			\endfoot
+			\hline
+			\endlastfoot
+			\textbf{D1 Comprensión conceptual} (10\,\%) & T1: definición de requisito aplicada a E7 y E12; diferencia entre StRS, SyRS y SRS con un enunciado del caso para cada una; actividad del proceso y tipo de actividad (central o transversal) de H1 a H5. & Define con precisión los conceptos de requisito, StRS/SyRS/SRS y proceso de IR y los aplica al caso; los cinco hechos bien asignados; sin errores conceptuales. & Definiciones correctas con omisiones menores, o un hecho mal asignado. & Definiciones parciales o con algún error; dos hechos mal asignados o ejemplos que no corresponden al documento. & Confusión conceptual grave (por ejemplo, toma StRS, SyRS y SRS como versiones del mismo documento) o tres o más hechos mal asignados. & No responde T1.\\
+			\hline
+			\textbf{D2 Aplicación y análisis} (30\,\%) & T2(a): tipo y documento de E1 a E12, distinguiendo producto de proceso y contexto de requisito. T2(b): término problemático, característica de 29148 y propiedad SMART incumplidas en B1 a B6; reconoce el requisito bien formado. & Clasifica correctamente todos los enunciados (funcional, no funcional con su característica, restricción, dominio, proceso, no requisito); identifica las violaciones de propiedades de B1 a B6 y las justifica con la norma. & Clasifica bien con uno o dos errores menores; justificación adecuada. & Clasificación parcial (tres a cinco errores) o justificaciones débiles que repiten el enunciado; confunde características en varios casos. & Clasificación incorrecta en seis o más enunciados, o sin justificación; auditoría del tipo «está mal redactado». & No responde T2.\\
+			\hline
+			\textbf{D3 Síntesis y producción} (30\,\%) & T3: seis requisitos con la estructura de 5.2.4; B1 dividido; valores medibles del caso; al menos uno nuevo que cubra un vacío real; tipo, documento, fuente y método de verificación coherentes. & Redacta los seis requisitos bien formados (estructura indicada, nivel de detalle apropiado, singulares, verificables y sin ambigüedad) a partir del caso; mínimo requerido completo. & Redacción correcta con una o dos deficiencias menores (un valor sin cuantificar, un atributo incoherente). & Requisitos parcialmente formulados o con ambigüedad notoria; menos de seis; o reescrituras que conservan términos vagos. & Requisitos mal formulados que conservan el defecto original, o sin relación con el caso. & No responde T3.\\
+			\hline
+			\textbf{D4 Uso de estándares y referencias} (20\,\%) & T4(a): correspondencia SMART--29148. T4(b): dos defectos de conjunto con la característica de 5.2.6 y los identificadores que lo prueban. Citas de norma y cláusula o característica en las justificaciones de T1 a T3. & Cita explícitamente IEEE 29148:2018 y/o SWEBOK v4.0 para sustentar definiciones y clasificaciones, con la cláusula o característica precisa; correspondencia SMART--29148 correcta; dos defectos de conjunto bien tipificados; notación correcta. & Cita los estándares con omisiones menores, o un defecto de conjunto mal tipificado. & Referencia genérica a «la norma» sin precisión de sección o característica; confunde defectos individuales con defectos de conjunto. & Sin uso de estándares, o con citas de cláusulas que no corresponden. & No responde T4 ni cita estándares.\\
+			\hline
+			\textbf{D5 Presentación y rigor técnico} (10\,\%) & Hojas legibles, numeradas y respondidas por tarea; transcripción fiel en \LaTeX{} con el anexo de fotografías; terminología técnica apropiada. & Documento en \LaTeX{} compilable, fiel a las hojas, con estructura clara, anexo completo y terminología técnica apropiada; sin errores ortográficos en el original. & Presentación adecuada con deficiencias menores (algún error de tipeo en la transcripción, una fotografía poco nítida). & Presentación deficiente o errores frecuentes de ortografía o de transcripción; falta parte del anexo. & Sin estructura, hojas ilegibles o transcripción sin fotografías. & Sin transcripción.\\
+			\hline
+		\end{longtable}
+	}
+\end{landscape}
+
+\subseccion{Hoja de cálculo}
+
+{\small
+\noindent\begin{tabularx}{\linewidth}{|C{0.07\linewidth}|Y|C{0.10\linewidth}|C{0.13\linewidth}|C{0.18\linewidth}|}
+	\hline
+	\bhdr{Dim.} & \bhdr{Descripción} & \bhdr{Peso (\%)} & \bhdr{Nivel (0--4)} & \bhdr{$w_i \times n_i$}\\
+	\hline
+	D1 & Comprensión conceptual (T1) & 10 & & \\
+	\hline
+	\rowcolor{rowgray} D2 & Aplicación y análisis (T2) & 30 & & \\
+	\hline
+	D3 & Síntesis y producción (T3) & 30 & & \\
+	\hline
+	\rowcolor{rowgray} D4 & Uso de estándares y referencias (T4 y citas) & 20 & & \\
+	\hline
+	D5 & Presentación y rigor técnico & 10 & & \\
+	\hline
+	\multicolumn{2}{|r|}{\cellcolor{lightgold}\textbf{Suma}} & \cellcolor{lightgold}\textbf{100} & \cellcolor{lightgold} & \cellcolor{lightgold}\rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\cellcolor{lightblue}\textbf{P = Suma / 4 $\times$ 0,1}} & \cellcolor{lightblue}\rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\textbf{Q: cuestionario EV-CUE-01 del SGA (sobre 10)}} & \rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\cellcolor{lightblue}\textbf{Nota previa = 0,40\,Q + 0,60\,P}} & \cellcolor{lightblue}\rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\textbf{Penalizaciones (tabla siguiente)}} & \rule{0pt}{12pt}\\
+	\hline
+	\multicolumn{4}{|r|}{\cellcolor{lightgreen}\textbf{Nota final de EV-PRAC-01 (sobre 10)}} & \cellcolor{lightgreen}\rule{0pt}{12pt}\\
+	\hline
+\end{tabularx}
+}
+
+\begin{cajaclave}[title=Ejemplo de cálculo]
+	Niveles D1 a D5: 3, 3, 2, 3, 4. Suma: $10 \times 3 + 30 \times 3 + 30 \times 2 + 20 \times 3 + 10 \times 4 = 280$. Entonces $P = 280 / 4 \times 0{,}1 = 7{,}0$. Con $Q = 8{,}0$: $\text{EV-PRAC-01} = 0{,}40 \times 8{,}0 + 0{,}60 \times 7{,}0 = 3{,}2 + 4{,}2 = 7{,}4$.
+\end{cajaclave}
+
+\subseccion{Penalizaciones que no anulan la nota}
+
+\noindent\begin{tabularx}{\linewidth}{|Y|C{0.22\linewidth}|C{0.10\linewidth}|}
+	\hline
+	\thdr{Situación detectada} & \thdr{Efecto} & \thdr{Aplica}\\
+	\hline
+	Primera vez en el periodo que no entrega una formativa vinculada (GA-TL-01 o GA-PRAC-01) & $-25\,\%$ de la nota previa & \\
+	\hline
+	\rowcolor{rowgray} Dos indicios complementarios de uso de IA o de autoría no propia, I1 a I7 del encuadre (nivel B) & $-1{,}5$ & \\
+	\hline
+	Tres o más indicios complementarios (nivel C) & $-3{,}0$ & \\
+	\hline
+\end{tabularx}
+
+\subseccion{Criterios transversales}
+
+\begin{itemize}[leftmargin=18pt,itemsep=2pt]
+	\item \textbf{Pertinencia:} las respuestas usan los datos de FRÍOVAC; una respuesta genérica, que serviría para cualquier sistema, no pasa del nivel 1 en la dimensión en que aparece.
+	\item \textbf{Coherencia:} un mismo enunciado no puede recibir dos tipos contradictorios en T1 y T2, y los requisitos de T3 deben corregir los defectos que usted mismo señaló en T2(b).
+	\item \textbf{Cuantificación:} todo requisito de T3 lleva un valor medible tomado del caso; un término vago que se mantenga baja el nivel de D3.
+	\item \textbf{Autoría:} el docente puede pedirle, en la sesión siguiente, que explique cualquier respuesta; no poder hacerlo es el indicio grave G6 del encuadre.
+	\item \textbf{Revisión:} la evaluación se analiza con los estudiantes antes de registrar la nota en el SGA.
+\end{itemize}
+
+% =====================================================================
+\ifclave
+% =====================================================================
+\newpage
+\seccion{Para el docente: clave orientativa}
+
+La clave describe la respuesta esperada; se aceptan alternativas bien justificadas con la norma.
+
+\subseccion{T1. Conceptos aplicados al caso}
+
+\textbf{(a)} Un requisito es un enunciado que traduce o expresa una necesidad, con sus restricciones y condiciones asociadas \citep{iso29148_2018}. E7 no es requisito: describe cómo se trabaja hoy (contexto del sistema); a lo sumo es la fuente de E1 y E6. E12 no es requisito del producto: es información del proceso de IR (plan de elicitación y aprobación), que se registra en los registros del proceso o en el plan del proyecto.
+
+\textbf{(b)} StRS: necesidades de los interesados, en su lenguaje y desde la perspectiva del negocio (E1, E2). SyRS: el sistema completo, es decir sensores TL-40, red celular, servidor, software y personas; ejemplo E6, porque seguir registrando durante 8 horas sin energía depende de la batería del sensor y no solo del software (también E3). SRS: solo el software, la plataforma web y la aplicación móvil (E5, E8, E9, E10, E11).
+
+\textbf{(c)} H1 elicitación, central. H2 análisis y negociación (conflicto SMS frente a correo resuelto por acuerdo), central. H3 especificación o documentación, central. H4 validación, transversal. H5 gestión (control de cambios y análisis de impacto), transversal \citep{pohl_2025}.
+
+\subseccion{T2(a). Clasificación esperada}
+
+{\small
+\noindent\begin{tabularx}{\linewidth}{|C{0.05\linewidth}|L{0.32\linewidth}|L{0.18\linewidth}|Y|}
+	\hline
+	\thdr{ID} & \thdr{Tipo} & \thdr{Documento} & \thdr{Clave de la justificación}\\
+	\hline
+	E1 & Funcional (necesidad del interesado) & StRS & Necesidad en lenguaje del interesado; origina B6 y el requisito de alerta. «De inmediato» todavía no es verificable.\\
+	\hline
+	\rowcolor{rowgray} E2 & Requisito de dominio & StRS (origina requisitos de SyRS y SRS) & Regla del dominio de la salud que el sistema debe respetar; fija los umbrales de las alertas.\\
+	\hline
+	E3 & Restricción (interfaz con un sistema externo) & SyRS & Hecho tecnológico impuesto por el sensor ya comprado; condiciona la frecuencia y el protocolo de recepción.\\
+	\hline
+	\rowcolor{rowgray} E4 & Requisito de proceso (restricción del proyecto: plazo y costo) & Ninguno: plan del proyecto (se acepta StRS como restricción del proyecto) & Limita cómo se desarrolla, no lo que hace el producto.\\
+	\hline
+	E5 & Funcional & SRS & Capacidad del software, singular y verificable.\\
+	\hline
+	\rowcolor{rowgray} E6 & No funcional: fiabilidad (disponibilidad y tolerancia a fallos) & SyRS & Depende del sensor con batería y del software; nivel de sistema.\\
+	\hline
+	E7 & No es requisito (situación actual, contexto) & Ninguno: descripción del contexto & No expresa una necesidad ni una capacidad del sistema futuro.\\
+	\hline
+	\rowcolor{rowgray} E8 & No funcional: eficiencia de desempeño (comportamiento temporal y capacidad) & SRS & Medible: 3 segundos con 50 usuarios simultáneos.\\
+	\hline
+	E9 & Restricción (de diseño e implementación) & SRS & Fija la plataforma de despliegue.\\
+	\hline
+	\rowcolor{rowgray} E10 & No funcional: seguridad (autenticidad y responsabilidad) & SRS & Se acepta funcional de control de acceso si se justifica.\\
+	\hline
+	E11 & No funcional: capacidad de interacción (aprendibilidad) & SRS & Medible: 2 minutos en el primer intento.\\
+	\hline
+	\rowcolor{rowgray} E12 & No es requisito del producto (información del proceso de IR) & Ninguno: registros del proceso de IR & Planifica la elicitación y la aprobación.\\
+	\hline
+\end{tabularx}
+}
+
+\subseccion{T2(b). Auditoría esperada}
+
+{\small
+\noindent\begin{tabularx}{\linewidth}{|C{0.05\linewidth}|L{0.24\linewidth}|L{0.25\linewidth}|C{0.09\linewidth}|Y|}
+	\hline
+	\thdr{ID} & \thdr{Término o construcción} & \thdr{Característica (5.2.5)} & \thdr{SMART} & \thdr{Clave}\\
+	\hline
+	B1 & «rápido», «fácil de usar»; dos requisitos en uno & Singular, no ambiguo, verificable & S, M & Lenguaje subjetivo y enunciado compuesto (5.2.7).\\
+	\hline
+	\rowcolor{rowgray} B2 & «oportunas», «inadecuada» & No ambiguo, verificable, completo & S, M & No dice umbral, plazo, destinatario ni medio.\\
+	\hline
+	B3 & «todas», «en todo momento», «indefinidamente», «sin energía» & Factible, verificable & A, R, M & Términos de totalidad; contradice E6 (8 horas).\\
+	\hline
+	\rowcolor{rowgray} B4 & «MongoDB», «nube de AWS» & Apropiado (fija una solución de diseño) & R & Además es inconsistente con E9 (defecto de conjunto).\\
+	\hline
+	B5 & «Si es posible», «etc.» & Verificable, completo, no ambiguo & S, M & Resquicio y lista abierta (5.2.7).\\
+	\hline
+	\rowcolor{rowgray} B6 & --- & Bien formado & --- & Tiene condición, sujeto, acción, objeto y restricción (5.2.4); singular y verificable. Solo cubre el límite superior: eso es un defecto del conjunto, no del requisito.\\
+	\hline
+\end{tabularx}
+}
+
+\subseccion{T3. Requisitos modelo}
+
+\begin{itemize}[leftmargin=18pt,itemsep=3pt]
+	\item \textbf{B1a (eficiencia de desempeño, SRS, prueba):} El sistema deberá mostrar el historial de temperaturas de un establecimiento en no más de 3 segundos con 50 usuarios conectados simultáneamente.
+	\item \textbf{B1b (capacidad de interacción, SRS, prueba con usuarios):} El sistema deberá permitir que un responsable de vacunatorio sin capacitación previa registre una acción correctiva en no más de 2 minutos en su primer intento.
+	\item \textbf{B2 (funcional, SRS, prueba):} Cuando una lectura de temperatura sea menor que +2,0\,°C, el sistema deberá enviar un mensaje SMS al responsable del establecimiento en un plazo máximo de 5 minutos desde la recepción de la lectura. (Complementa a B6, que cubre el límite superior.)
+	\item \textbf{B3 (fiabilidad, SyRS, prueba):} El sistema deberá registrar la lectura de cada sensor cada 10 minutos durante cortes de energía eléctrica de hasta 8 horas.
+	\item \textbf{B5 (funcional, SRS, demostración):} El sistema deberá permitir exportar en formato CSV las lecturas de un establecimiento para el rango de fechas que elija el usuario.
+	\item \textbf{Nuevo (funcional, SRS, prueba):} Si el sistema no recibe lecturas de un sensor durante 30 minutos consecutivos, el sistema deberá enviar una alerta de sensor sin comunicación al responsable del establecimiento y al técnico de TIC.
+\end{itemize}
+
+\subseccion{T4. Sustento normativo}
+
+\textbf{(a)} Según Mannion y Keepence \citep{mannion_smart_1995}: \emph{Specific} (claro, sin ambigüedad ni términos vagos) $\rightarrow$ no ambiguo, singular y completo; \emph{Measurable} (se puede comprobar si se cumplió) $\rightarrow$ verificable; \emph{Attainable} (es físicamente posible) $\rightarrow$ factible; \emph{Realisable} (se puede lograr con los recursos y restricciones del proyecto) $\rightarrow$ factible y apropiado; \emph{Traceable} (se puede seguir desde su origen hasta su implementación) $\rightarrow$ no tiene equivalente entre las características individuales de 5.2.5; la norma la trata con los atributos de los requisitos y la gestión de la trazabilidad. Características de 5.2.5 que SMART no cubre: necesario, correcto y conforme (y apropiado, en la parte de nivel de abstracción).
+
+\textbf{(b)} Defectos aceptables: (1) inconsistencia B4--E9 (nube de AWS frente al servidor del distrito); (2) incompletitud: B6 cubre solo el límite superior y falta el inferior de E2 (+2\,°C); (3) incompletitud: no hay requisito para un sensor que deja de enviar lecturas (E3); (4) inconsistencia o falta de factibilidad B3--E6 (indefinidamente frente a 8 horas); (5) comprensibilidad: «acción correctiva», «excursión térmica» y «responsable» se usan sin glosario.
+
+\subseccion{Decisiones del docente antes de aplicar la prueba}
+
+\begin{enumerate}[leftmargin=18pt,itemsep=2pt]
+	\item La semana 3 del sílabo ya transcurrió: confirme la fecha de la sesión en el SGA y escríbala en la fila «Semana» de la portada.
+	\item El encuadre asigna a EV-PRAC-01 un peso de 1,00 en el primer corte; la guía anterior del repositorio (EV-SUM-01) decía 1,50. Esta guía usa 1,00.
+	\item El criterio de piso P5 aplica la regla vigente del SPA 2026--2027 (25\,\% la primera vez y CERO desde la segunda); la descripción publicada en el SGA dice CERO desde la primera vez y conviene igualarla.
+	\item La descripción del SGA menciona IREB CPRE FL v3.1; no se pudo verificar la versión vigente del temario, por lo que esta guía no lo cita.
+\end{enumerate}
+
+% =====================================================================
+\fi
+% =====================================================================
+
+\bibliographystyle{unsrtnat}
+\bibliography{referencias}
+
+\end{document}
