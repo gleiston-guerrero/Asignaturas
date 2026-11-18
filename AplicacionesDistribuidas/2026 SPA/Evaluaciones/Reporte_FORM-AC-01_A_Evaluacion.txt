@@ -1,0 +1,825 @@
+INFORMES DE VALORACION - FORM-AC-01 Analisis de caso (paralelo A)
+Aplicaciones Distribuidas (ISR-701) - SPA 2026-2027 - Docente: Gleiston C. Guerrero-Ulloa, PhD
+
+RESUMEN
+Equipo | Estudiante | Equipo | Aporte | Valoracion final
+CGLS | Coronel Gomez Khriz Alexander | 3.75 | 0.00 | 0.0
+CGLS | Giraldo Cagua Diego Jose | 3.75 | 7.38 | 5.2
+CGLS | Loor Mendoza Byron Daniel | 3.75 | 8.75 | 5.8
+CGLS | Silva Trivino John Jairo | 3.75 | 6.38 | 4.8
+CGMZ | Zambrano Parraga Luis Mario | 9.44 | 8.75 | 9.2
+CGMZ | Calderon Saltos Joseph Alexander | 9.44 | 8.12 | 8.9
+CGMZ | Mera Jumbo Allison Michelle | 9.44 | 6.75 | 8.4
+CGMZ | Garcia Sangoquiza Roger Steven | 9.44 | 6.38 | 8.2
+EHPT | Herrera Barco Humberto Aldair | 8.75 | 8.12 | 8.5
+EHPT | Piguave Montano Nixon Antonio | 8.75 | 8.25 | 8.6
+EHPT | Toaquiza Zambrano Belinda Betzabeth | 8.75 | 8.25 | 8.6
+EHPT | Emanuel Pino Juliana Romina | 8.75 | 5.88 | 7.6
+EJPZ | Espana Vera Kenny Isaias | 7.92 | 8.75 | 8.2
+EJPZ | Jaramillo Acosta Luis Jeremy | 7.92 | 7.38 | 7.7
+EJPZ | Paca Pilataza Luis Alberto | 7.92 | 7.38 | 7.7
+EJPZ | Zambrano Ronquillo Heiner Ariel | 7.92 | 7.38 | 7.7
+GLMR | Reinoso Velez Eduardo David | 9.03 | 9.75 | 9.3
+GLMR | Garcia Bazurto Kevin Leonel | 9.03 | 6.00 | 7.8
+GLMR | Manotoa Alava Carlos Alexander | 9.03 | 6.75 | 8.1
+GLMR | Lombeida Escaleras Bryan Humberto | 9.03 | 5.88 | 7.8
+
+====================================================================================================
+CGLS - Coronel Gomez Khriz Alexander (equipo 3.75 - final 0.0)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Coronel Gomez Khriz Alexander
+Equipo: CGLS. Caso: Google Cloud, incidente de red del 2 de junio de 2019 (caso 7 de reserva).
+Repositorio revisado: https://github.com/Danxxx777/CGLS-
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 3, 0.75 de 1.00. La tabla de cronologia tiene ocho eventos con su hora en PDT y en UTC, citados al informe oficial; en el apartado de impacto varias horas aparecen sin indicar la zona horaria.
+C2 Causas raiz con diagrama propio: nivel 1, 0.38 de 1.50. El arbol de fallos esta en el repositorio en draw.io, pero no aparece en el documento; el apartado se reduce a un parrafo que no separa con claridad detonante, causas que amplificaron y defensas que fallaron.
+C3 Impacto cuantificado y citado: nivel 3, 0.75 de 1.00. El impacto por servicio y por region es amplio y esta citado al informe oficial, pero no distingue lo temporal de lo irrecuperable ni declara que la fuente no reporta perdidas economicas ni SLA.
+C4 Relacion con la Unidad 1: nivel 2, 1.00 de 2.00. La transparencia de fallos y la de ubicacion estan bien justificadas, pero se usa una "transparencia de fallo parcial" que no existe, el analisis CAP se limita a Spanner y no se clasifica el fallo con un modelo de fallo.
+C5 Mitigacion aplicada por la empresa: nivel 0, 0.00 de 1.00. No hay apartado de mitigacion: el documento indica que la parte asignada a un integrante no se entrego.
+C6 Lecciones y riesgos para el PFC: nivel 0, 0.00 de 1.50. No hay lecciones ni riesgos para los PFC del equipo.
+C9 Fuentes, formato y evidencia de autoria: nivel 2, 0.50 de 1.00. Hay cuatro fuentes reales, IEEE y declaracion de IA, pero buena parte del texto esta sin tildes y todos los commits del analisis son del ultimo dia.
+Valoracion del equipo: 3.38 de 9.00, reescalada a 3.75 sobre 10 (no logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 0, 0.00 de 2.50. No tienes ningun commit en el repositorio del equipo.
+A2 Tiempo invertido y continuidad (15 %): nivel 0, 0.00 de 1.50. No hay sesiones de trabajo registradas a tu nombre.
+A3 Complejidad tecnica (20 %): nivel 0, 0.00 de 2.00. No hay aporte tecnico verificable.
+A4 Importancia para la entrega (30 %): nivel 0, 0.00 de 3.00. El documento indica que tu apartado no se entrego.
+A5 Autoria verificable (10 %): nivel 0, 0.00 de 1.00. No hay ninguna evidencia de autoria a tu nombre.
+Valoracion de tu aporte individual: 0.00 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 3.75 + 0.40 x 0.00 = 2.25.
+Por no tener aportes verificables en el repositorio (criterio de piso P6), tu valoracion es 0.0 y la formativa queda como NO ENTREGADA para ti; segun el encuadre, no puedes presentar EXP-1 ni TA-PFC-E1, salvo justificacion aprobada.
+Criterio de piso registrado (sin descontar): P4 contenido minimo: faltan los apartados 5 (mitigacion) y 6 (lecciones para el PFC).
+Criterio de piso registrado (sin descontar): P6 aporte individual: Coronel Gomez Khriz Alexander no tiene ningun commit en el repositorio.
+Valoracion final: 0.0 sobre 10 (no logrado).
+Recomendacion personal: Coordina tu apartado con el equipo desde el primer dia y subelo con tu propia cuenta; sin commits propios la formativa queda como no entregada para ti.
+Recomendacion de equipo: Como equipo, acuerden un corte interno un dia antes del cierre para integrar todos los apartados y detectar a tiempo una parte faltante.
+Recomendacion de equipo: Como equipo, incluyan el diagrama de causas dentro del documento, no solo en el repositorio.
+
+====================================================================================================
+CGLS - Giraldo Cagua Diego Jose (equipo 3.75 - final 5.2)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Giraldo Cagua Diego Jose
+Equipo: CGLS. Caso: Google Cloud, incidente de red del 2 de junio de 2019 (caso 7 de reserva).
+Repositorio revisado: https://github.com/Danxxx777/CGLS-
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 3, 0.75 de 1.00. La tabla de cronologia tiene ocho eventos con su hora en PDT y en UTC, citados al informe oficial; en el apartado de impacto varias horas aparecen sin indicar la zona horaria.
+C2 Causas raiz con diagrama propio: nivel 1, 0.38 de 1.50. El arbol de fallos esta en el repositorio en draw.io, pero no aparece en el documento; el apartado se reduce a un parrafo que no separa con claridad detonante, causas que amplificaron y defensas que fallaron.
+C3 Impacto cuantificado y citado: nivel 3, 0.75 de 1.00. El impacto por servicio y por region es amplio y esta citado al informe oficial, pero no distingue lo temporal de lo irrecuperable ni declara que la fuente no reporta perdidas economicas ni SLA.
+C4 Relacion con la Unidad 1: nivel 2, 1.00 de 2.00. La transparencia de fallos y la de ubicacion estan bien justificadas, pero se usa una "transparencia de fallo parcial" que no existe, el analisis CAP se limita a Spanner y no se clasifica el fallo con un modelo de fallo.
+C5 Mitigacion aplicada por la empresa: nivel 0, 0.00 de 1.00. No hay apartado de mitigacion: el documento indica que la parte asignada a un integrante no se entrego.
+C6 Lecciones y riesgos para el PFC: nivel 0, 0.00 de 1.50. No hay lecciones ni riesgos para los PFC del equipo.
+C9 Fuentes, formato y evidencia de autoria: nivel 2, 0.50 de 1.00. Hay cuatro fuentes reales, IEEE y declaracion de IA, pero buena parte del texto esta sin tildes y todos los commits del analisis son del ultimo dia.
+Valoracion del equipo: 3.38 de 9.00, reescalada a 3.75 sobre 10 (no logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 10 commits con unas 697 lineas: el apartado de impacto, el analisis CAP de Spanner y el diagrama de impacto en draw.io.
+A2 Tiempo invertido y continuidad (15 %): nivel 1, 0.38 de 1.50. Todo tu trabajo se concentra entre las 21:16 y las 22:00 del 14 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Reuniste las cifras por servicio y region y las relacionaste con Spanner.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu impacto es la parte mas extensa del documento.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits son propios, pero tu texto quedo sin tildes y con una "transparencia de fallo parcial" que no existe.
+Valoracion de tu aporte individual: 7.38 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 3.75 + 0.40 x 7.38 = 2.25 + 2.95 = 5.20.
+Penalizaciones: no se aplican en esta formativa.
+Criterio de piso registrado (sin descontar): P4 contenido minimo: faltan los apartados 5 (mitigacion) y 6 (lecciones para el PFC).
+Valoracion final: 5.2 sobre 10 (en proceso).
+Recomendacion personal: Revisa la terminologia de la Unidad 1 antes de usarla y cuida la ortografia del texto que integras.
+Recomendacion de equipo: Como equipo, acuerden un corte interno un dia antes del cierre para integrar todos los apartados y detectar a tiempo una parte faltante.
+Recomendacion de equipo: Como equipo, incluyan el diagrama de causas dentro del documento, no solo en el repositorio.
+
+====================================================================================================
+CGLS - Loor Mendoza Byron Daniel (equipo 3.75 - final 5.8)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Loor Mendoza Byron Daniel
+Equipo: CGLS. Caso: Google Cloud, incidente de red del 2 de junio de 2019 (caso 7 de reserva).
+Repositorio revisado: https://github.com/Danxxx777/CGLS-
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 3, 0.75 de 1.00. La tabla de cronologia tiene ocho eventos con su hora en PDT y en UTC, citados al informe oficial; en el apartado de impacto varias horas aparecen sin indicar la zona horaria.
+C2 Causas raiz con diagrama propio: nivel 1, 0.38 de 1.50. El arbol de fallos esta en el repositorio en draw.io, pero no aparece en el documento; el apartado se reduce a un parrafo que no separa con claridad detonante, causas que amplificaron y defensas que fallaron.
+C3 Impacto cuantificado y citado: nivel 3, 0.75 de 1.00. El impacto por servicio y por region es amplio y esta citado al informe oficial, pero no distingue lo temporal de lo irrecuperable ni declara que la fuente no reporta perdidas economicas ni SLA.
+C4 Relacion con la Unidad 1: nivel 2, 1.00 de 2.00. La transparencia de fallos y la de ubicacion estan bien justificadas, pero se usa una "transparencia de fallo parcial" que no existe, el analisis CAP se limita a Spanner y no se clasifica el fallo con un modelo de fallo.
+C5 Mitigacion aplicada por la empresa: nivel 0, 0.00 de 1.00. No hay apartado de mitigacion: el documento indica que la parte asignada a un integrante no se entrego.
+C6 Lecciones y riesgos para el PFC: nivel 0, 0.00 de 1.50. No hay lecciones ni riesgos para los PFC del equipo.
+C9 Fuentes, formato y evidencia de autoria: nivel 2, 0.50 de 1.00. Hay cuatro fuentes reales, IEEE y declaracion de IA, pero buena parte del texto esta sin tildes y todos los commits del analisis son del ultimo dia.
+Valoracion del equipo: 3.38 de 9.00, reescalada a 3.75 sobre 10 (no logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 12 commits: causas raiz, arbol de fallos, referencias, README, declaracion de IA e integracion del informe.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Creaste el repositorio el 11 de noviembre y trabajaste el 14.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Integraste el documento grupal y el arbol de fallos editable.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. Sin tu integracion el equipo no habria tenido documento.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios y con tu correo institucional.
+Valoracion de tu aporte individual: 8.75 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 3.75 + 0.40 x 8.75 = 2.25 + 3.50 = 5.75.
+Penalizaciones: no se aplican en esta formativa.
+Criterio de piso registrado (sin descontar): P4 contenido minimo: faltan los apartados 5 (mitigacion) y 6 (lecciones para el PFC).
+Valoracion final: 5.8 sobre 10 (en proceso).
+Recomendacion personal: Incluye el diagrama en el documento y explica en el texto la jerarquia entre detonante, amplificadores y defensas.
+Recomendacion de equipo: Como equipo, acuerden un corte interno un dia antes del cierre para integrar todos los apartados y detectar a tiempo una parte faltante.
+Recomendacion de equipo: Como equipo, incluyan el diagrama de causas dentro del documento, no solo en el repositorio.
+
+====================================================================================================
+CGLS - Silva Trivino John Jairo (equipo 3.75 - final 4.8)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Silva Trivino John Jairo
+Equipo: CGLS. Caso: Google Cloud, incidente de red del 2 de junio de 2019 (caso 7 de reserva).
+Repositorio revisado: https://github.com/Danxxx777/CGLS-
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 3, 0.75 de 1.00. La tabla de cronologia tiene ocho eventos con su hora en PDT y en UTC, citados al informe oficial; en el apartado de impacto varias horas aparecen sin indicar la zona horaria.
+C2 Causas raiz con diagrama propio: nivel 1, 0.38 de 1.50. El arbol de fallos esta en el repositorio en draw.io, pero no aparece en el documento; el apartado se reduce a un parrafo que no separa con claridad detonante, causas que amplificaron y defensas que fallaron.
+C3 Impacto cuantificado y citado: nivel 3, 0.75 de 1.00. El impacto por servicio y por region es amplio y esta citado al informe oficial, pero no distingue lo temporal de lo irrecuperable ni declara que la fuente no reporta perdidas economicas ni SLA.
+C4 Relacion con la Unidad 1: nivel 2, 1.00 de 2.00. La transparencia de fallos y la de ubicacion estan bien justificadas, pero se usa una "transparencia de fallo parcial" que no existe, el analisis CAP se limita a Spanner y no se clasifica el fallo con un modelo de fallo.
+C5 Mitigacion aplicada por la empresa: nivel 0, 0.00 de 1.00. No hay apartado de mitigacion: el documento indica que la parte asignada a un integrante no se entrego.
+C6 Lecciones y riesgos para el PFC: nivel 0, 0.00 de 1.50. No hay lecciones ni riesgos para los PFC del equipo.
+C9 Fuentes, formato y evidencia de autoria: nivel 2, 0.50 de 1.00. Hay cuatro fuentes reales, IEEE y declaracion de IA, pero buena parte del texto esta sin tildes y todos los commits del analisis son del ultimo dia.
+Valoracion del equipo: 3.38 de 9.00, reescalada a 3.75 sobre 10 (no logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 2, 1.25 de 2.50. Hiciste 3 commits: el parrafo y la linea de tiempo del incidente y el arbol de fallos en draw.io.
+A2 Tiempo invertido y continuidad (15 %): nivel 1, 0.38 de 1.50. Trabajaste el 14 de noviembre por la manana.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. La cronologia con la conversion de PDT a UTC esta bien hecha.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu linea de tiempo es la base del apartado 1.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios y con tu correo institucional.
+Valoracion de tu aporte individual: 6.38 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 3.75 + 0.40 x 6.38 = 2.25 + 2.55 = 4.80.
+Penalizaciones: no se aplican en esta formativa.
+Criterio de piso registrado (sin descontar): P4 contenido minimo: faltan los apartados 5 (mitigacion) y 6 (lecciones para el PFC).
+Valoracion final: 4.8 sobre 10 (en proceso).
+Recomendacion personal: Amplia tu aporte mas alla de un apartado: revisa e integra con el equipo el documento completo.
+Recomendacion de equipo: Como equipo, acuerden un corte interno un dia antes del cierre para integrar todos los apartados y detectar a tiempo una parte faltante.
+Recomendacion de equipo: Como equipo, incluyan el diagrama de causas dentro del documento, no solo en el repositorio.
+
+====================================================================================================
+CGMZ - Zambrano Parraga Luis Mario (equipo 9.44 - final 9.2)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Zambrano Parraga Luis Mario
+Equipo: CGMZ. Caso: Cloudflare, 19 centros de datos, 21 de junio de 2022 (caso 3).
+Repositorio revisado: https://github.com/Yukisan-uwo/FORM-AC-01-Analisis-de-Caso-Fallo-en-Sistema-Distribuido-Real
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La tabla 1 tiene ocho eventos en UTC, cada uno citado al informe oficial, con inicio, restauracion y cierre.
+C2 Causas raiz con diagrama propio: nivel 4, 1.50 de 1.50. El diagrama de Ishikawa es propio, esta en draw.io y separa detonante, causa raiz, defensas que fallaron y amplificadores, cada causa con su cita.
+C3 Impacto cuantificado y citado: nivel 3, 0.75 de 1.00. Cuantificas 19 centros (4 % de la red), 50 % de las peticiones y 75 y 93 minutos, con el calculo de disponibilidad; falta declarar que el informe no reporta perdidas economicas ni SLA.
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la transparencia de ubicacion y la de fallos, discutes que la particion es solo una analogia en CAP, explicas la causa comun que anulo la redundancia y clasificas el fallo como omision.
+C5 Mitigacion aplicada por la empresa: nivel 4, 1.00 de 1.00. Separas medidas inmediatas y permanentes, y la tabla 2 vincula cada medida con la causa del diagrama que ataca.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. La tabla 3 tiene cuatro riesgos, uno por cada PFC, con componente, escenario, relacion con el caso, medida para TA-PFC-E1 y forma de verificarla.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Hay seis fuentes reales, cinco con DOI, en IEEE, con declaracion de IA; todos los commits son del 14 de noviembre y no estan las etiquetas v1-preliminar y v2-final.
+Valoracion del equipo: 8.50 de 9.00, reescalada a 9.44 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 8 commits: la estructura LaTeX, las referencias y tu parte del analisis.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 14 de noviembre desde la manana.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Montaste el documento y verificaste las fuentes.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. Sin la estructura y las referencias el equipo no habria podido integrar.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 8.75 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 9.44 + 0.40 x 8.75 = 5.66 + 3.50 = 9.16.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 9.2 sobre 10 (logrado).
+Recomendacion personal: Empieza antes: la estructura podia estar lista dias antes del cierre.
+Recomendacion de equipo: Como equipo, distribuyan el trabajo en varios dias y marquen las versiones con las etiquetas v1-preliminar y v2-final.
+Recomendacion de equipo: Como equipo, declaren siempre lo que la fuente oficial no reporta, por ejemplo perdidas economicas o SLA.
+
+====================================================================================================
+CGMZ - Calderon Saltos Joseph Alexander (equipo 9.44 - final 8.9)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Calderon Saltos Joseph Alexander
+Equipo: CGMZ. Caso: Cloudflare, 19 centros de datos, 21 de junio de 2022 (caso 3).
+Repositorio revisado: https://github.com/Yukisan-uwo/FORM-AC-01-Analisis-de-Caso-Fallo-en-Sistema-Distribuido-Real
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La tabla 1 tiene ocho eventos en UTC, cada uno citado al informe oficial, con inicio, restauracion y cierre.
+C2 Causas raiz con diagrama propio: nivel 4, 1.50 de 1.50. El diagrama de Ishikawa es propio, esta en draw.io y separa detonante, causa raiz, defensas que fallaron y amplificadores, cada causa con su cita.
+C3 Impacto cuantificado y citado: nivel 3, 0.75 de 1.00. Cuantificas 19 centros (4 % de la red), 50 % de las peticiones y 75 y 93 minutos, con el calculo de disponibilidad; falta declarar que el informe no reporta perdidas economicas ni SLA.
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la transparencia de ubicacion y la de fallos, discutes que la particion es solo una analogia en CAP, explicas la causa comun que anulo la redundancia y clasificas el fallo como omision.
+C5 Mitigacion aplicada por la empresa: nivel 4, 1.00 de 1.00. Separas medidas inmediatas y permanentes, y la tabla 2 vincula cada medida con la causa del diagrama que ataca.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. La tabla 3 tiene cuatro riesgos, uno por cada PFC, con componente, escenario, relacion con el caso, medida para TA-PFC-E1 y forma de verificarla.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Hay seis fuentes reales, cinco con DOI, en IEEE, con declaracion de IA; todos los commits son del 14 de noviembre y no estan las etiquetas v1-preliminar y v2-final.
+Valoracion del equipo: 8.50 de 9.00, reescalada a 9.44 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 6 commits: la rama Personas del diagrama, cronologia, causas e impacto, la version final y el README.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 14 de noviembre por la tarde.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Integraste la version final y corregiste la ruta del diagrama.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. Tu integracion dejo el documento compilable.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 8.12 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 9.44 + 0.40 x 8.12 = 5.66 + 3.25 = 8.91.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 8.9 sobre 10 (logrado).
+Recomendacion personal: Agrega al README las instrucciones para pdflatex, ademas de XeLaTeX.
+Recomendacion de equipo: Como equipo, distribuyan el trabajo en varios dias y marquen las versiones con las etiquetas v1-preliminar y v2-final.
+Recomendacion de equipo: Como equipo, declaren siempre lo que la fuente oficial no reporta, por ejemplo perdidas economicas o SLA.
+
+====================================================================================================
+CGMZ - Mera Jumbo Allison Michelle (equipo 9.44 - final 8.4)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Mera Jumbo Allison Michelle
+Equipo: CGMZ. Caso: Cloudflare, 19 centros de datos, 21 de junio de 2022 (caso 3).
+Repositorio revisado: https://github.com/Yukisan-uwo/FORM-AC-01-Analisis-de-Caso-Fallo-en-Sistema-Distribuido-Real
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La tabla 1 tiene ocho eventos en UTC, cada uno citado al informe oficial, con inicio, restauracion y cierre.
+C2 Causas raiz con diagrama propio: nivel 4, 1.50 de 1.50. El diagrama de Ishikawa es propio, esta en draw.io y separa detonante, causa raiz, defensas que fallaron y amplificadores, cada causa con su cita.
+C3 Impacto cuantificado y citado: nivel 3, 0.75 de 1.00. Cuantificas 19 centros (4 % de la red), 50 % de las peticiones y 75 y 93 minutos, con el calculo de disponibilidad; falta declarar que el informe no reporta perdidas economicas ni SLA.
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la transparencia de ubicacion y la de fallos, discutes que la particion es solo una analogia en CAP, explicas la causa comun que anulo la redundancia y clasificas el fallo como omision.
+C5 Mitigacion aplicada por la empresa: nivel 4, 1.00 de 1.00. Separas medidas inmediatas y permanentes, y la tabla 2 vincula cada medida con la causa del diagrama que ataca.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. La tabla 3 tiene cuatro riesgos, uno por cada PFC, con componente, escenario, relacion con el caso, medida para TA-PFC-E1 y forma de verificarla.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Hay seis fuentes reales, cinco con DOI, en IEEE, con declaracion de IA; todos los commits son del 14 de noviembre y no estan las etiquetas v1-preliminar y v2-final.
+Valoracion del equipo: 8.50 de 9.00, reescalada a 9.44 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 2, 1.25 de 2.50. Hiciste 4 commits: la rama Procesos del diagrama, impacto, CAP, una fila de mitigacion y un riesgo.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 14 de noviembre al mediodia.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Aportaste al analisis CAP y a la rama Procesos.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu parte cubre varios apartados con cambios puntuales.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 6.75 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 9.44 + 0.40 x 6.75 = 5.66 + 2.70 = 8.36.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 8.4 sobre 10 (logrado).
+Recomendacion personal: Amplia tu aporte con un apartado completo a tu cargo.
+Recomendacion de equipo: Como equipo, distribuyan el trabajo en varios dias y marquen las versiones con las etiquetas v1-preliminar y v2-final.
+Recomendacion de equipo: Como equipo, declaren siempre lo que la fuente oficial no reporta, por ejemplo perdidas economicas o SLA.
+
+====================================================================================================
+CGMZ - Garcia Sangoquiza Roger Steven (equipo 9.44 - final 8.2)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Garcia Sangoquiza Roger Steven
+Equipo: CGMZ. Caso: Cloudflare, 19 centros de datos, 21 de junio de 2022 (caso 3).
+Repositorio revisado: https://github.com/Yukisan-uwo/FORM-AC-01-Analisis-de-Caso-Fallo-en-Sistema-Distribuido-Real
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La tabla 1 tiene ocho eventos en UTC, cada uno citado al informe oficial, con inicio, restauracion y cierre.
+C2 Causas raiz con diagrama propio: nivel 4, 1.50 de 1.50. El diagrama de Ishikawa es propio, esta en draw.io y separa detonante, causa raiz, defensas que fallaron y amplificadores, cada causa con su cita.
+C3 Impacto cuantificado y citado: nivel 3, 0.75 de 1.00. Cuantificas 19 centros (4 % de la red), 50 % de las peticiones y 75 y 93 minutos, con el calculo de disponibilidad; falta declarar que el informe no reporta perdidas economicas ni SLA.
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la transparencia de ubicacion y la de fallos, discutes que la particion es solo una analogia en CAP, explicas la causa comun que anulo la redundancia y clasificas el fallo como omision.
+C5 Mitigacion aplicada por la empresa: nivel 4, 1.00 de 1.00. Separas medidas inmediatas y permanentes, y la tabla 2 vincula cada medida con la causa del diagrama que ataca.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. La tabla 3 tiene cuatro riesgos, uno por cada PFC, con componente, escenario, relacion con el caso, medida para TA-PFC-E1 y forma de verificarla.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Hay seis fuentes reales, cinco con DOI, en IEEE, con declaracion de IA; todos los commits son del 14 de noviembre y no estan las etiquetas v1-preliminar y v2-final.
+Valoracion del equipo: 8.50 de 9.00, reescalada a 9.44 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 2, 1.25 de 2.50. Hiciste 2 commits: la rama Entorno con los amplificadores y tus aportes al apartado 4 y a las lecciones del CLAB.
+A2 Tiempo invertido y continuidad (15 %): nivel 1, 0.38 de 1.50. Trabajaste el 14 de noviembre por la tarde.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. La rama Entorno explica bien la concentracion de trafico.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu parte completa el diagrama y una fila de riesgos.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 6.38 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 9.44 + 0.40 x 6.38 = 5.66 + 2.55 = 8.22.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 8.2 sobre 10 (logrado).
+Recomendacion personal: Haz commits mas frecuentes: dos commits no reflejan el trabajo de una semana.
+Recomendacion de equipo: Como equipo, distribuyan el trabajo en varios dias y marquen las versiones con las etiquetas v1-preliminar y v2-final.
+Recomendacion de equipo: Como equipo, declaren siempre lo que la fuente oficial no reporta, por ejemplo perdidas economicas o SLA.
+
+====================================================================================================
+EHPT - Herrera Barco Humberto Aldair (equipo 8.75 - final 8.5)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Herrera Barco Humberto Aldair
+Equipo: EHPT. Caso: GitHub, cluster MySQL, 21 y 22 de octubre de 2018 (caso 4).
+Repositorio revisado: https://github.com/aldairHub/FORM-AC-01-EHPT
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La linea de tiempo tiene dieciseis eventos en UTC organizados en cuatro fases, con la duracion de 24 h 11 min y la cita del informe oficial.
+C2 Causas raiz con diagrama propio: nivel 3, 1.12 de 1.50. El diagrama de Ishikawa es propio y editable, y el texto separa el detonante de las causas que agravaron el incidente, pero desde un clon limpio la imagen no aparece porque el .tex la busca en otra carpeta.
+C3 Impacto cuantificado y citado: nivel 4, 1.00 de 1.00. El impacto distingue servicios afectados, trabajo acumulado, integridad de datos, webhooks descartados y lo que el informe no cuantifica (economia y SLA).
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la ruptura de la transparencia de replicacion y de fallos, analizas la particion real de 43 s antes de aplicar CAP y clasificas el fallo como omision con efectos de temporizacion y de respuesta.
+C5 Mitigacion aplicada por la empresa: nivel 3, 0.75 de 1.00. Separas medidas inmediatas y permanentes con citas, pero no las vinculas con las causas del diagrama.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. Hay cuatro riesgos de los PFC con componente, escenario, relacion con el caso, medida y prueba de verificacion.
+C9 Fuentes, formato y evidencia de autoria: nivel 2, 0.50 de 1.00. Las fuentes son reales y en IEEE, pero la declaracion de IA no indica version ni como se verifico, el README no tiene instrucciones de compilacion, el contenido ocupa cerca de cuatro paginas cuando el maximo es dos y no hay etiquetas de version.
+Valoracion del equipo: 7.88 de 9.00, reescalada a 8.75 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 6 commits: README, estructura, descripcion y linea de tiempo, impacto, un riesgo y la caratula.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 14 de noviembre por la tarde y noche.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. La linea de tiempo de dieciseis eventos es el apartado mas completo del documento.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. Tus apartados 1 y 3 son centrales.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 8.12 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 8.75 + 0.40 x 8.12 = 5.25 + 3.25 = 8.50.
+Penalizaciones: no se aplican en esta formativa.
+Criterio de piso registrado (sin descontar): P1 PDF del SGA: la URL del repositorio no esta escrita completa, solo aparece como enlace bajo el titulo de la actividad.
+Criterio de piso registrado (sin descontar): P2 PDF reproducible: desde un clon limpio la compilacion falla porque el .tex no encuentra la imagen del diagrama, y el README no tiene instrucciones de compilacion.
+Valoracion final: 8.5 sobre 10 (logrado).
+Recomendacion personal: Escribe la URL completa en el PDF del SGA y agrega al README las instrucciones de compilacion.
+Recomendacion de equipo: Como equipo, compilen desde un clon limpio antes de entregar y documenten en el README el compilador y el orden de comandos.
+Recomendacion de equipo: Como equipo, respeten el maximo de dos paginas: sintetizar tambien es una competencia que se evalua.
+
+====================================================================================================
+EHPT - Piguave Montano Nixon Antonio (equipo 8.75 - final 8.6)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Piguave Montano Nixon Antonio
+Equipo: EHPT. Caso: GitHub, cluster MySQL, 21 y 22 de octubre de 2018 (caso 4).
+Repositorio revisado: https://github.com/aldairHub/FORM-AC-01-EHPT
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La linea de tiempo tiene dieciseis eventos en UTC organizados en cuatro fases, con la duracion de 24 h 11 min y la cita del informe oficial.
+C2 Causas raiz con diagrama propio: nivel 3, 1.12 de 1.50. El diagrama de Ishikawa es propio y editable, y el texto separa el detonante de las causas que agravaron el incidente, pero desde un clon limpio la imagen no aparece porque el .tex la busca en otra carpeta.
+C3 Impacto cuantificado y citado: nivel 4, 1.00 de 1.00. El impacto distingue servicios afectados, trabajo acumulado, integridad de datos, webhooks descartados y lo que el informe no cuantifica (economia y SLA).
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la ruptura de la transparencia de replicacion y de fallos, analizas la particion real de 43 s antes de aplicar CAP y clasificas el fallo como omision con efectos de temporizacion y de respuesta.
+C5 Mitigacion aplicada por la empresa: nivel 3, 0.75 de 1.00. Separas medidas inmediatas y permanentes con citas, pero no las vinculas con las causas del diagrama.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. Hay cuatro riesgos de los PFC con componente, escenario, relacion con el caso, medida y prueba de verificacion.
+C9 Fuentes, formato y evidencia de autoria: nivel 2, 0.50 de 1.00. Las fuentes son reales y en IEEE, pero la declaracion de IA no indica version ni como se verifico, el README no tiene instrucciones de compilacion, el contenido ocupa cerca de cuatro paginas cuando el maximo es dos y no hay etiquetas de version.
+Valoracion del equipo: 7.88 de 9.00, reescalada a 8.75 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 3 commits: el diagrama de Ishikawa en draw.io, el apartado de causas raiz y una leccion.
+A2 Tiempo invertido y continuidad (15 %): nivel 1, 0.38 de 1.50. Trabajaste el 14 de noviembre por la tarde y noche.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. El diagrama de Ishikawa es la parte tecnica mas exigente.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. Sin el diagrama el apartado 2 no existiria.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 8.25 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 8.75 + 0.40 x 8.25 = 5.25 + 3.30 = 8.55.
+Penalizaciones: no se aplican en esta formativa.
+Criterio de piso registrado (sin descontar): P1 PDF del SGA: la URL del repositorio no esta escrita completa, solo aparece como enlace bajo el titulo de la actividad.
+Criterio de piso registrado (sin descontar): P2 PDF reproducible: desde un clon limpio la compilacion falla porque el .tex no encuentra la imagen del diagrama, y el README no tiene instrucciones de compilacion.
+Valoracion final: 8.6 sobre 10 (logrado).
+Recomendacion personal: Pon la imagen del diagrama en la misma carpeta que el .tex o ajusta la ruta para que compile desde un clon limpio.
+Recomendacion de equipo: Como equipo, compilen desde un clon limpio antes de entregar y documenten en el README el compilador y el orden de comandos.
+Recomendacion de equipo: Como equipo, respeten el maximo de dos paginas: sintetizar tambien es una competencia que se evalua.
+
+====================================================================================================
+EHPT - Toaquiza Zambrano Belinda Betzabeth (equipo 8.75 - final 8.6)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Toaquiza Zambrano Belinda Betzabeth
+Equipo: EHPT. Caso: GitHub, cluster MySQL, 21 y 22 de octubre de 2018 (caso 4).
+Repositorio revisado: https://github.com/aldairHub/FORM-AC-01-EHPT
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La linea de tiempo tiene dieciseis eventos en UTC organizados en cuatro fases, con la duracion de 24 h 11 min y la cita del informe oficial.
+C2 Causas raiz con diagrama propio: nivel 3, 1.12 de 1.50. El diagrama de Ishikawa es propio y editable, y el texto separa el detonante de las causas que agravaron el incidente, pero desde un clon limpio la imagen no aparece porque el .tex la busca en otra carpeta.
+C3 Impacto cuantificado y citado: nivel 4, 1.00 de 1.00. El impacto distingue servicios afectados, trabajo acumulado, integridad de datos, webhooks descartados y lo que el informe no cuantifica (economia y SLA).
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la ruptura de la transparencia de replicacion y de fallos, analizas la particion real de 43 s antes de aplicar CAP y clasificas el fallo como omision con efectos de temporizacion y de respuesta.
+C5 Mitigacion aplicada por la empresa: nivel 3, 0.75 de 1.00. Separas medidas inmediatas y permanentes con citas, pero no las vinculas con las causas del diagrama.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. Hay cuatro riesgos de los PFC con componente, escenario, relacion con el caso, medida y prueba de verificacion.
+C9 Fuentes, formato y evidencia de autoria: nivel 2, 0.50 de 1.00. Las fuentes son reales y en IEEE, pero la declaracion de IA no indica version ni como se verifico, el README no tiene instrucciones de compilacion, el contenido ocupa cerca de cuatro paginas cuando el maximo es dos y no hay etiquetas de version.
+Valoracion del equipo: 7.88 de 9.00, reescalada a 8.75 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 3 commits: el documento base con 181 lineas y la bibliografia, el apartado 4 y una leccion.
+A2 Tiempo invertido y continuidad (15 %): nivel 1, 0.38 de 1.50. Trabajaste el 14 de noviembre por la tarde.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. El apartado 4 con la particion real y los modelos de fallo es el mas solido.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. Montaste la base del documento.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 8.25 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 8.75 + 0.40 x 8.25 = 5.25 + 3.30 = 8.55.
+Penalizaciones: no se aplican en esta formativa.
+Criterio de piso registrado (sin descontar): P1 PDF del SGA: la URL del repositorio no esta escrita completa, solo aparece como enlace bajo el titulo de la actividad.
+Criterio de piso registrado (sin descontar): P2 PDF reproducible: desde un clon limpio la compilacion falla porque el .tex no encuentra la imagen del diagrama, y el README no tiene instrucciones de compilacion.
+Valoracion final: 8.6 sobre 10 (logrado).
+Recomendacion personal: Ayuda al equipo a sintetizar: el contenido supera las dos paginas permitidas.
+Recomendacion de equipo: Como equipo, compilen desde un clon limpio antes de entregar y documenten en el README el compilador y el orden de comandos.
+Recomendacion de equipo: Como equipo, respeten el maximo de dos paginas: sintetizar tambien es una competencia que se evalua.
+
+====================================================================================================
+EHPT - Emanuel Pino Juliana Romina (equipo 8.75 - final 7.6)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Emanuel Pino Juliana Romina
+Equipo: EHPT. Caso: GitHub, cluster MySQL, 21 y 22 de octubre de 2018 (caso 4).
+Repositorio revisado: https://github.com/aldairHub/FORM-AC-01-EHPT
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La linea de tiempo tiene dieciseis eventos en UTC organizados en cuatro fases, con la duracion de 24 h 11 min y la cita del informe oficial.
+C2 Causas raiz con diagrama propio: nivel 3, 1.12 de 1.50. El diagrama de Ishikawa es propio y editable, y el texto separa el detonante de las causas que agravaron el incidente, pero desde un clon limpio la imagen no aparece porque el .tex la busca en otra carpeta.
+C3 Impacto cuantificado y citado: nivel 4, 1.00 de 1.00. El impacto distingue servicios afectados, trabajo acumulado, integridad de datos, webhooks descartados y lo que el informe no cuantifica (economia y SLA).
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la ruptura de la transparencia de replicacion y de fallos, analizas la particion real de 43 s antes de aplicar CAP y clasificas el fallo como omision con efectos de temporizacion y de respuesta.
+C5 Mitigacion aplicada por la empresa: nivel 3, 0.75 de 1.00. Separas medidas inmediatas y permanentes con citas, pero no las vinculas con las causas del diagrama.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. Hay cuatro riesgos de los PFC con componente, escenario, relacion con el caso, medida y prueba de verificacion.
+C9 Fuentes, formato y evidencia de autoria: nivel 2, 0.50 de 1.00. Las fuentes son reales y en IEEE, pero la declaracion de IA no indica version ni como se verifico, el README no tiene instrucciones de compilacion, el contenido ocupa cerca de cuatro paginas cuando el maximo es dos y no hay etiquetas de version.
+Valoracion del equipo: 7.88 de 9.00, reescalada a 8.75 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 2, 1.25 de 2.50. Hiciste 2 commits: las medidas de mitigacion y una leccion del SGL.
+A2 Tiempo invertido y continuidad (15 %): nivel 1, 0.38 de 1.50. Trabajaste el 14 de noviembre por la noche.
+A3 Complejidad tecnica (20 %): nivel 2, 1.00 de 2.00. Separaste medidas inmediatas y permanentes.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu apartado 5 esta completo.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 5.88 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 8.75 + 0.40 x 5.88 = 5.25 + 2.35 = 7.60.
+Penalizaciones: no se aplican en esta formativa.
+Criterio de piso registrado (sin descontar): P1 PDF del SGA: la URL del repositorio no esta escrita completa, solo aparece como enlace bajo el titulo de la actividad.
+Criterio de piso registrado (sin descontar): P2 PDF reproducible: desde un clon limpio la compilacion falla porque el .tex no encuentra la imagen del diagrama, y el README no tiene instrucciones de compilacion.
+Valoracion final: 7.6 sobre 10 (logrado).
+Recomendacion personal: Vincula cada medida permanente con la causa del diagrama que ataca.
+Recomendacion de equipo: Como equipo, compilen desde un clon limpio antes de entregar y documenten en el README el compilador y el orden de comandos.
+Recomendacion de equipo: Como equipo, respeten el maximo de dos paginas: sintetizar tambien es una competencia que se evalua.
+
+====================================================================================================
+EJPZ - Espana Vera Kenny Isaias (equipo 7.92 - final 8.2)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Espana Vera Kenny Isaias
+Equipo: EJPZ. Caso: Meta (Facebook, Instagram y WhatsApp), 4 de octubre de 2021 (caso 2).
+Repositorio revisado: https://github.com/Luis-paca/FORM-AC-01-_An-lisis-de-Caso-_Fallo-en-Sistema-Distribuido-Real
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La tabla 1 tiene siete eventos en UTC con la conversion a la hora de Ecuador, citados al informe oficial y a la medicion de Cloudflare.
+C2 Causas raiz con diagrama propio: nivel 4, 1.50 de 1.50. El arbol de fallos es propio y editable, con tres ramas (red troncal, DNS y BGP, y recuperacion), eventos basicos y la explicacion del fallo de modo comun.
+C3 Impacto cuantificado y citado: nivel 2, 0.50 de 1.00. La tabla 2 incluye cifras de usuarios, ingresos y bolsa tomadas de prensa economica que la propia nota excluye de las referencias; esas cifras quedan sin fuente verificable.
+C4 Relacion con la Unidad 1: nivel 3, 1.50 de 2.00. Justificas la transparencia de acceso, de ubicacion y de fallos, y tratas CAP como analogia, pero no clasificas el fallo con un modelo de fallo (caida, omision o temporizacion).
+C5 Mitigacion aplicada por la empresa: nivel 3, 0.75 de 1.00. Separas medidas inmediatas y estructurales con citas, sin vincularlas con las ramas del arbol.
+C6 Lecciones y riesgos para el PFC: nivel 3, 1.12 de 1.50. Tienes tres riesgos concretos de la Bolsa de Empleos con su medida, pero falta la forma de verificar cada medida.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Hay diez fuentes reales, siete con DOI, en IEEE, con declaracion de IA; el README indica biber aunque el documento usa BibTeX, todos los commits son del 14 de noviembre y no hay etiquetas de version.
+Valoracion del equipo: 7.12 de 9.00, reescalada a 7.92 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 8 commits: referencias, la primera fase del arbol de fallos, su PNG y la primera version del documento LaTeX.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 14 de noviembre por la tarde y noche.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Estructuraste el arbol de fallos y el documento.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. Tu primera version fue la base del informe.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 8.75 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 7.92 + 0.40 x 8.75 = 4.75 + 3.50 = 8.25.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 8.2 sobre 10 (logrado).
+Recomendacion personal: Corrige el README para que indique BibTeX, que es lo que usa el documento.
+Recomendacion de equipo: Como equipo, usen solo cifras con fuente verificable en las referencias; si una cifra solo aparece en prensa, busquen su fuente original o no la usen.
+Recomendacion de equipo: Como equipo, agreguen a cada riesgo la prueba con la que verificaran la medida en TA-PFC-E1.
+
+====================================================================================================
+EJPZ - Jaramillo Acosta Luis Jeremy (equipo 7.92 - final 7.7)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Jaramillo Acosta Luis Jeremy
+Equipo: EJPZ. Caso: Meta (Facebook, Instagram y WhatsApp), 4 de octubre de 2021 (caso 2).
+Repositorio revisado: https://github.com/Luis-paca/FORM-AC-01-_An-lisis-de-Caso-_Fallo-en-Sistema-Distribuido-Real
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La tabla 1 tiene siete eventos en UTC con la conversion a la hora de Ecuador, citados al informe oficial y a la medicion de Cloudflare.
+C2 Causas raiz con diagrama propio: nivel 4, 1.50 de 1.50. El arbol de fallos es propio y editable, con tres ramas (red troncal, DNS y BGP, y recuperacion), eventos basicos y la explicacion del fallo de modo comun.
+C3 Impacto cuantificado y citado: nivel 2, 0.50 de 1.00. La tabla 2 incluye cifras de usuarios, ingresos y bolsa tomadas de prensa economica que la propia nota excluye de las referencias; esas cifras quedan sin fuente verificable.
+C4 Relacion con la Unidad 1: nivel 3, 1.50 de 2.00. Justificas la transparencia de acceso, de ubicacion y de fallos, y tratas CAP como analogia, pero no clasificas el fallo con un modelo de fallo (caida, omision o temporizacion).
+C5 Mitigacion aplicada por la empresa: nivel 3, 0.75 de 1.00. Separas medidas inmediatas y estructurales con citas, sin vincularlas con las ramas del arbol.
+C6 Lecciones y riesgos para el PFC: nivel 3, 1.12 de 1.50. Tienes tres riesgos concretos de la Bolsa de Empleos con su medida, pero falta la forma de verificar cada medida.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Hay diez fuentes reales, siete con DOI, en IEEE, con declaracion de IA; el README indica biber aunque el documento usa BibTeX, todos los commits son del 14 de noviembre y no hay etiquetas de version.
+Valoracion del equipo: 7.12 de 9.00, reescalada a 7.92 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 5 commits: referencias, mejoras del diagrama, actualizacion del documento y el README final.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 14 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Mejoraste el arbol de fallos y documentaste el repositorio.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu aporte complementa varios apartados.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 7.38 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 7.92 + 0.40 x 7.38 = 4.75 + 2.95 = 7.70.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 7.7 sobre 10 (logrado).
+Recomendacion personal: Agrega a los riesgos la forma de verificar cada medida.
+Recomendacion de equipo: Como equipo, usen solo cifras con fuente verificable en las referencias; si una cifra solo aparece en prensa, busquen su fuente original o no la usen.
+Recomendacion de equipo: Como equipo, agreguen a cada riesgo la prueba con la que verificaran la medida en TA-PFC-E1.
+
+====================================================================================================
+EJPZ - Paca Pilataza Luis Alberto (equipo 7.92 - final 7.7)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Paca Pilataza Luis Alberto
+Equipo: EJPZ. Caso: Meta (Facebook, Instagram y WhatsApp), 4 de octubre de 2021 (caso 2).
+Repositorio revisado: https://github.com/Luis-paca/FORM-AC-01-_An-lisis-de-Caso-_Fallo-en-Sistema-Distribuido-Real
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La tabla 1 tiene siete eventos en UTC con la conversion a la hora de Ecuador, citados al informe oficial y a la medicion de Cloudflare.
+C2 Causas raiz con diagrama propio: nivel 4, 1.50 de 1.50. El arbol de fallos es propio y editable, con tres ramas (red troncal, DNS y BGP, y recuperacion), eventos basicos y la explicacion del fallo de modo comun.
+C3 Impacto cuantificado y citado: nivel 2, 0.50 de 1.00. La tabla 2 incluye cifras de usuarios, ingresos y bolsa tomadas de prensa economica que la propia nota excluye de las referencias; esas cifras quedan sin fuente verificable.
+C4 Relacion con la Unidad 1: nivel 3, 1.50 de 2.00. Justificas la transparencia de acceso, de ubicacion y de fallos, y tratas CAP como analogia, pero no clasificas el fallo con un modelo de fallo (caida, omision o temporizacion).
+C5 Mitigacion aplicada por la empresa: nivel 3, 0.75 de 1.00. Separas medidas inmediatas y estructurales con citas, sin vincularlas con las ramas del arbol.
+C6 Lecciones y riesgos para el PFC: nivel 3, 1.12 de 1.50. Tienes tres riesgos concretos de la Bolsa de Empleos con su medida, pero falta la forma de verificar cada medida.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Hay diez fuentes reales, siete con DOI, en IEEE, con declaracion de IA; el README indica biber aunque el documento usa BibTeX, todos los commits son del 14 de noviembre y no hay etiquetas de version.
+Valoracion del equipo: 7.12 de 9.00, reescalada a 7.92 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 5 commits: el repositorio inicial, referencias, avance del diagrama, actualizacion del documento y la matriz de trazabilidad.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Creaste el repositorio el 14 por la manana y trabajaste por la noche.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Construiste la tabla de trazabilidad de observaciones.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu matriz documenta la revision interna.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 7.38 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 7.92 + 0.40 x 7.38 = 4.75 + 2.95 = 7.70.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 7.7 sobre 10 (logrado).
+Recomendacion personal: Busca la fuente original de las cifras de prensa o retiralas del documento.
+Recomendacion de equipo: Como equipo, usen solo cifras con fuente verificable en las referencias; si una cifra solo aparece en prensa, busquen su fuente original o no la usen.
+Recomendacion de equipo: Como equipo, agreguen a cada riesgo la prueba con la que verificaran la medida en TA-PFC-E1.
+
+====================================================================================================
+EJPZ - Zambrano Ronquillo Heiner Ariel (equipo 7.92 - final 7.7)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Zambrano Ronquillo Heiner Ariel
+Equipo: EJPZ. Caso: Meta (Facebook, Instagram y WhatsApp), 4 de octubre de 2021 (caso 2).
+Repositorio revisado: https://github.com/Luis-paca/FORM-AC-01-_An-lisis-de-Caso-_Fallo-en-Sistema-Distribuido-Real
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 4, 1.00 de 1.00. La tabla 1 tiene siete eventos en UTC con la conversion a la hora de Ecuador, citados al informe oficial y a la medicion de Cloudflare.
+C2 Causas raiz con diagrama propio: nivel 4, 1.50 de 1.50. El arbol de fallos es propio y editable, con tres ramas (red troncal, DNS y BGP, y recuperacion), eventos basicos y la explicacion del fallo de modo comun.
+C3 Impacto cuantificado y citado: nivel 2, 0.50 de 1.00. La tabla 2 incluye cifras de usuarios, ingresos y bolsa tomadas de prensa economica que la propia nota excluye de las referencias; esas cifras quedan sin fuente verificable.
+C4 Relacion con la Unidad 1: nivel 3, 1.50 de 2.00. Justificas la transparencia de acceso, de ubicacion y de fallos, y tratas CAP como analogia, pero no clasificas el fallo con un modelo de fallo (caida, omision o temporizacion).
+C5 Mitigacion aplicada por la empresa: nivel 3, 0.75 de 1.00. Separas medidas inmediatas y estructurales con citas, sin vincularlas con las ramas del arbol.
+C6 Lecciones y riesgos para el PFC: nivel 3, 1.12 de 1.50. Tienes tres riesgos concretos de la Bolsa de Empleos con su medida, pero falta la forma de verificar cada medida.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Hay diez fuentes reales, siete con DOI, en IEEE, con declaracion de IA; el README indica biber aunque el documento usa BibTeX, todos los commits son del 14 de noviembre y no hay etiquetas de version.
+Valoracion del equipo: 7.12 de 9.00, reescalada a 7.92 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 5 commits con dos cuentas: dos referencias, la version final del diagrama, el avance del analisis y el PDF.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 14 de noviembre por la tarde y noche.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Cerraste el arbol de fallos.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu aporte completa el diagrama y el analisis.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios, aunque usas dos identidades; configura una sola.
+Valoracion de tu aporte individual: 7.38 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 7.92 + 0.40 x 7.38 = 4.75 + 2.95 = 7.70.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 7.7 sobre 10 (logrado).
+Recomendacion personal: Configura una sola identidad de Git con tu correo institucional.
+Recomendacion de equipo: Como equipo, usen solo cifras con fuente verificable en las referencias; si una cifra solo aparece en prensa, busquen su fuente original o no la usen.
+Recomendacion de equipo: Como equipo, agreguen a cada riesgo la prueba con la que verificaran la medida en TA-PFC-E1.
+
+====================================================================================================
+GLMR - Reinoso Velez Eduardo David (equipo 9.03 - final 9.3)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Reinoso Velez Eduardo David
+Equipo: GLMR. Caso: Amazon S3, region US-EAST-1, 28 de febrero de 2017 (caso 1).
+Repositorio revisado: https://github.com/ereinosov/app-dist-form-ac-01
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 3, 0.75 de 1.00. La tabla 1 tiene cinco eventos en PST y UTC, cada uno citado al informe oficial, con la duracion calculada; la guia pedia al menos seis.
+C2 Causas raiz con diagrama propio: nivel 3, 1.12 de 1.50. El diagrama separa detonante, defensas que fallaron y causas que amplificaron, y aplica la prueba de "si no hubiera existido"; la declaracion indica que la version final del diagrama la genero un script de IA a partir del borrador del grupo.
+C3 Impacto cuantificado y citado: nivel 4, 1.00 de 1.00. Cuantificas la duracion de 257 min, distingues la recuperacion parcial de GET, LIST y DELETE de la de PUT, calculas la disponibilidad y declaras lo que el informe no reporta.
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la ruptura de la transparencia de fallos, argumentas que no hubo particion y que CAP no describe la causa, y aplicas la cadena falta, error y fallo con un fallo de omision.
+C5 Mitigacion aplicada por la empresa: nivel 4, 1.00 de 1.00. Separas medidas inmediatas y permanentes y vinculas cada cambio permanente con la rama del diagrama que ataca.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. La tabla 2 tiene cuatro riesgos, uno por cada PFC, con componente, escenario, relacion con el caso, medida y verificacion.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Las fuentes son reales y en IEEE, la declaracion de IA es completa y hay etiquetas v1-preliminar y v2-final; sin embargo, la declaracion reconoce que la IA reescribio el apartado 2, ajusto los apartados 1, 3 y 5 e integro el documento.
+Valoracion del equipo: 8.12 de 9.00, reescalada a 9.03 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 7 commits: estructura, esqueleto de los seis apartados, referencias, apartado 4, declaracion de IA e integracion.
+A2 Tiempo invertido y continuidad (15 %): nivel 4, 1.50 de 1.50. Trabajaste el 12, el 13 y el 14 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. El apartado 4 sobre la cadena falta, error y fallo es el mas exigente.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. Sin tu integracion el documento no existiria.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits son propios, pero la declaracion reconoce que Claude reescribio e integro apartados.
+Valoracion de tu aporte individual: 9.75 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 9.03 + 0.40 x 9.75 = 5.42 + 3.90 = 9.32.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 9.3 sobre 10 (logrado).
+Recomendacion personal: Integra tu mismo los borradores del grupo; la IA puede verificar, no reescribir.
+Recomendacion de equipo: Como equipo, usen la IA para verificar, no para reescribir apartados: la redaccion integrada debe ser del equipo.
+Recomendacion de equipo: Como equipo, completen la linea de tiempo con al menos seis eventos.
+
+====================================================================================================
+GLMR - Garcia Bazurto Kevin Leonel (equipo 9.03 - final 7.8)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Garcia Bazurto Kevin Leonel
+Equipo: GLMR. Caso: Amazon S3, region US-EAST-1, 28 de febrero de 2017 (caso 1).
+Repositorio revisado: https://github.com/ereinosov/app-dist-form-ac-01
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 3, 0.75 de 1.00. La tabla 1 tiene cinco eventos en PST y UTC, cada uno citado al informe oficial, con la duracion calculada; la guia pedia al menos seis.
+C2 Causas raiz con diagrama propio: nivel 3, 1.12 de 1.50. El diagrama separa detonante, defensas que fallaron y causas que amplificaron, y aplica la prueba de "si no hubiera existido"; la declaracion indica que la version final del diagrama la genero un script de IA a partir del borrador del grupo.
+C3 Impacto cuantificado y citado: nivel 4, 1.00 de 1.00. Cuantificas la duracion de 257 min, distingues la recuperacion parcial de GET, LIST y DELETE de la de PUT, calculas la disponibilidad y declaras lo que el informe no reporta.
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la ruptura de la transparencia de fallos, argumentas que no hubo particion y que CAP no describe la causa, y aplicas la cadena falta, error y fallo con un fallo de omision.
+C5 Mitigacion aplicada por la empresa: nivel 4, 1.00 de 1.00. Separas medidas inmediatas y permanentes y vinculas cada cambio permanente con la rama del diagrama que ataca.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. La tabla 2 tiene cuatro riesgos, uno por cada PFC, con componente, escenario, relacion con el caso, medida y verificacion.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Las fuentes son reales y en IEEE, la declaracion de IA es completa y hay etiquetas v1-preliminar y v2-final; sin embargo, la declaracion reconoce que la IA reescribio el apartado 2, ajusto los apartados 1, 3 y 5 e integro el documento.
+Valoracion del equipo: 8.12 de 9.00, reescalada a 9.03 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 2, 1.25 de 2.50. Hiciste 4 commits: el borrador de mitigacion, su correccion, un riesgo y la revision de referencias.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste la madrugada y el mediodia del 14 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 2, 1.00 de 2.00. Tu aporte es puntual.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu fila de riesgo y la mitigacion forman parte del documento final.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Los commits son de la cuenta "YASER SX"; conviene que uses una cuenta con tu nombre.
+Valoracion de tu aporte individual: 6.00 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 9.03 + 0.40 x 6.00 = 5.42 + 2.40 = 7.82.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 7.8 sobre 10 (logrado).
+Recomendacion personal: Usa una cuenta de GitHub con tu nombre para que tu aporte sea verificable.
+Recomendacion de equipo: Como equipo, usen la IA para verificar, no para reescribir apartados: la redaccion integrada debe ser del equipo.
+Recomendacion de equipo: Como equipo, completen la linea de tiempo con al menos seis eventos.
+
+====================================================================================================
+GLMR - Manotoa Alava Carlos Alexander (equipo 9.03 - final 8.1)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Manotoa Alava Carlos Alexander
+Equipo: GLMR. Caso: Amazon S3, region US-EAST-1, 28 de febrero de 2017 (caso 1).
+Repositorio revisado: https://github.com/ereinosov/app-dist-form-ac-01
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 3, 0.75 de 1.00. La tabla 1 tiene cinco eventos en PST y UTC, cada uno citado al informe oficial, con la duracion calculada; la guia pedia al menos seis.
+C2 Causas raiz con diagrama propio: nivel 3, 1.12 de 1.50. El diagrama separa detonante, defensas que fallaron y causas que amplificaron, y aplica la prueba de "si no hubiera existido"; la declaracion indica que la version final del diagrama la genero un script de IA a partir del borrador del grupo.
+C3 Impacto cuantificado y citado: nivel 4, 1.00 de 1.00. Cuantificas la duracion de 257 min, distingues la recuperacion parcial de GET, LIST y DELETE de la de PUT, calculas la disponibilidad y declaras lo que el informe no reporta.
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la ruptura de la transparencia de fallos, argumentas que no hubo particion y que CAP no describe la causa, y aplicas la cadena falta, error y fallo con un fallo de omision.
+C5 Mitigacion aplicada por la empresa: nivel 4, 1.00 de 1.00. Separas medidas inmediatas y permanentes y vinculas cada cambio permanente con la rama del diagrama que ataca.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. La tabla 2 tiene cuatro riesgos, uno por cada PFC, con componente, escenario, relacion con el caso, medida y verificacion.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Las fuentes son reales y en IEEE, la declaracion de IA es completa y hay etiquetas v1-preliminar y v2-final; sin embargo, la declaracion reconoce que la IA reescribio el apartado 2, ajusto los apartados 1, 3 y 5 e integro el documento.
+Valoracion del equipo: 8.12 de 9.00, reescalada a 9.03 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 3 commits: tu fila de riesgo, causas raiz con referencias y el diagrama en draw.io.
+A2 Tiempo invertido y continuidad (15 %): nivel 1, 0.38 de 1.50. Trabajaste el 14 de noviembre por la tarde.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Elaboraste el diagrama de causas raiz.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tu diagrama fue la base del apartado 2.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits son propios, pero subiste archivos de compilacion (.aux, .log) que luego tuviste que borrar.
+Valoracion de tu aporte individual: 6.75 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 9.03 + 0.40 x 6.75 = 5.42 + 2.70 = 8.12.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 8.1 sobre 10 (logrado).
+Recomendacion personal: Agrega un .gitignore para no subir archivos de compilacion.
+Recomendacion de equipo: Como equipo, usen la IA para verificar, no para reescribir apartados: la redaccion integrada debe ser del equipo.
+Recomendacion de equipo: Como equipo, completen la linea de tiempo con al menos seis eventos.
+
+====================================================================================================
+GLMR - Lombeida Escaleras Bryan Humberto (equipo 9.03 - final 7.8)
+====================================================================================================
+FORM-AC-01 - Analisis de caso: fallo real en un sistema distribuido (formativa grupal, Unidad 1)
+Estudiante: Lombeida Escaleras Bryan Humberto
+Equipo: GLMR. Caso: Amazon S3, region US-EAST-1, 28 de febrero de 2017 (caso 1).
+Repositorio revisado: https://github.com/ereinosov/app-dist-form-ac-01
+Formula del encuadre: Valoracion individual = 0.60 x valoracion del equipo + 0.40 x valoracion de tu aporte individual.
+Aclaracion: esta actividad es formativa; la valoracion es orientativa y no se registra como nota, pero su entrega completa es requisito para presentar EXP-1 y TA-PFC-E1.
+Criterios excluidos: C7 (exposicion) y C8 (retroalimentacion incorporada) no se evaluaron porque no hubo sesion de exposicion ni evaluacion entre pares; la valoracion del equipo se reescala de 9.0 a 10.
+Regla adicional: un integrante sin aportes verificables en el repositorio tiene valoracion CERO y la formativa como no entregada.
+
+PARTE 1. VALORACION DEL EQUIPO
+C1 Descripcion del incidente y linea de tiempo: nivel 3, 0.75 de 1.00. La tabla 1 tiene cinco eventos en PST y UTC, cada uno citado al informe oficial, con la duracion calculada; la guia pedia al menos seis.
+C2 Causas raiz con diagrama propio: nivel 3, 1.12 de 1.50. El diagrama separa detonante, defensas que fallaron y causas que amplificaron, y aplica la prueba de "si no hubiera existido"; la declaracion indica que la version final del diagrama la genero un script de IA a partir del borrador del grupo.
+C3 Impacto cuantificado y citado: nivel 4, 1.00 de 1.00. Cuantificas la duracion de 257 min, distingues la recuperacion parcial de GET, LIST y DELETE de la de PUT, calculas la disponibilidad y declaras lo que el informe no reporta.
+C4 Relacion con la Unidad 1: nivel 4, 2.00 de 2.00. Justificas la ruptura de la transparencia de fallos, argumentas que no hubo particion y que CAP no describe la causa, y aplicas la cadena falta, error y fallo con un fallo de omision.
+C5 Mitigacion aplicada por la empresa: nivel 4, 1.00 de 1.00. Separas medidas inmediatas y permanentes y vinculas cada cambio permanente con la rama del diagrama que ataca.
+C6 Lecciones y riesgos para el PFC: nivel 4, 1.50 de 1.50. La tabla 2 tiene cuatro riesgos, uno por cada PFC, con componente, escenario, relacion con el caso, medida y verificacion.
+C9 Fuentes, formato y evidencia de autoria: nivel 3, 0.75 de 1.00. Las fuentes son reales y en IEEE, la declaracion de IA es completa y hay etiquetas v1-preliminar y v2-final; sin embargo, la declaracion reconoce que la IA reescribio el apartado 2, ajusto los apartados 1, 3 y 5 e integro el documento.
+Valoracion del equipo: 8.12 de 9.00, reescalada a 9.03 sobre 10 (logrado).
+
+PARTE 2. VALORACION DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 2, 1.25 de 2.50. Hiciste 2 commits: los borradores del incidente y del impacto, y tu fila de riesgo del SGRA.
+A2 Tiempo invertido y continuidad (15 %): nivel 1, 0.38 de 1.50. Trabajaste el 14 de noviembre por la manana.
+A3 Complejidad tecnica (20 %): nivel 2, 1.00 de 2.00. Tu aporte es breve.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. Tus borradores alimentaron los apartados 1 y 3.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits son propios.
+Valoracion de tu aporte individual: 5.88 sobre 10.
+
+PARTE 3. VALORACION FINAL
+Valoracion previa: 0.60 x 9.03 + 0.40 x 5.88 = 5.42 + 2.35 = 7.77.
+Penalizaciones: no se aplican en esta formativa.
+Criterios de piso: no registre incumplimientos del equipo.
+Valoracion final: 7.8 sobre 10 (logrado).
+Recomendacion personal: Haz commits mas frecuentes y con mas contenido propio.
+Recomendacion de equipo: Como equipo, usen la IA para verificar, no para reescribir apartados: la redaccion integrada debe ser del equipo.
+Recomendacion de equipo: Como equipo, completen la linea de tiempo con al menos seis eventos.
+
+####################################################################################################
+OBSERVACIONES PARA EL DOCENTE - FORM-AC-01 paralelo A (SPA 2026-2027)
+Revision: 18 de noviembre de 2026. Cierre aplicado: sabado 14 de noviembre de 2026, 23:59; ningun repositorio tiene commits posteriores (el ultimo de EJPZ, 04:13 UTC, corresponde a las 23:13 del 14 en Ecuador).
+1. Criterios excluidos: CGMZ declara que no hubo sesion de exposicion ni evaluacion entre pares y ningun repositorio tiene la carpeta pares/; por eso no evalue C7 ni C8 y reescale la valoracion del equipo de 9.0 a 10. Si la sesion si se realizo, digamelo y recalculo con C7 y C8.
+2. Por la misma razon no considere como incumplimiento de P4 la falta de hojas de pares ni de tabla de retroalimentacion; CGMZ y EJPZ incluyeron una tabla de revision interna, que es una buena practica.
+3. Casos sin repetir: CGLS Google Cloud 2019 (reserva 7), CGMZ Cloudflare 2022 (3), EHPT GitHub 2018 (4), EJPZ Meta 2021 (2) y GLMR Amazon S3 2017 (1).
+4. Criterios de piso registrados sin descontar: CGLS P4 (faltan los apartados 5 y 6) y P6 (Coronel sin commits); EHPT P1 (URL sin escribir en el PDF del SGA) y P2 (no compila desde clon limpio por la ruta de la imagen y el README no tiene instrucciones).
+5. Consecuencia segun la guia: con P1, P2 o P4 la formativa se considera no entregada para el equipo y bloquea EXP-1 y TA-PFC-E1; con P6 solo para el integrante. Si los aplica, quedan bloqueados los 4 de CGLS y los 4 de EHPT; si no, solo Coronel por la regla de cero aportes.
+6. Referencias: verifique en Crossref las 18 referencias con DOI; todas coinciden con la obra citada. Las diferencias marcadas eran titulos con subtitulo y el numero de articulo de ACM en Corbett et al. No hay P5.
+7. EJPZ incluye cifras de prensa (Reuters, Fortune) que su propia nota excluye de las referencias; lo trate en C3 y no como P5.
+8. Compilacion: CGLS, CGMZ, EJPZ y GLMR compilan desde un clon limpio. En EJPZ instale IEEEtran.bst en mi entorno, y el error "Incompatible glue units" de babel-spanish con \% en tabularx es propio de mi TeX Live 2023; no lo atribui al equipo.
+9. Uso de IA: GLMR declara que Claude reescribio el apartado 2, ajusto los apartados 1, 3 y 5, genero la version final del diagrama e integro el documento; CGLS declara que Codex redacto; EJPZ, redaccion tecnica con Claude y Gemini. Como es formativa no aplique penalizaciones; quedan anotadas en C2 o C9 y en A5.
+10. Extension: el contenido de EHPT ocupa cerca de cuatro paginas; segun la guia, lo que pasa de la segunda pagina no se lee. Lo evalue completo y lo registre en C9; si aplica la regla al pie de la letra, C4 a C6 de EHPT bajarian a 0.
+11. Identidades: en GLMR la cuenta "YASER SX" corresponde a los commits firmados como Kevin Garcia; Heiner Zambrano usa dos identidades.

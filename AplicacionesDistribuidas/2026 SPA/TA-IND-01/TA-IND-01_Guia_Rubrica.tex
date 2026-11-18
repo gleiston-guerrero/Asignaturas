@@ -1,0 +1,483 @@
+%============================================================
+% TA-IND-01 -- Informe academico grupal: analisis critico de un sistema distribuido real
+% Guia y rubrica para el estudiante (modalidad GRUPAL)
+% Aplicaciones Distribuidas (ISR-701) -- UTEQ -- SPA 2026-2027
+% Compilacion: pdflatex -> biber -> pdflatex -> pdflatex
+%============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noquoting]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.2cm,headheight=15pt]{geometry}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{pdflscape}
+\usepackage{needspace}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xurl}
+\usepackage{csquotes}
+\usepackage{listings}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+
+\addbibresource{referencias_TA-IND-01.bib}
+
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{7000}
+
+\newcommand{\doccode}{TA-IND-01 $\cdot$ Guía y rúbrica (grupal)}
+
+%------------------------------------------------------------
+% Paleta institucional UTEQ
+%------------------------------------------------------------
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqRed}{HTML}{B02418}
+\definecolor{uteqSoft}{HTML}{EAF1FA}
+\definecolor{uteqGray}{HTML}{F3F4F6}
+
+%------------------------------------------------------------
+% Encabezado y pie
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{uteqBlue}UTEQ $\cdot$ Aplicaciones Distribuidas (ISR-701)}
+\fancyhead[R]{\footnotesize\color{uteqBlue}\textbf{\doccode}}
+\fancyfoot[L]{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\fancyfoot[R]{\footnotesize Página \thepage}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyfoot[R]{\footnotesize Página \thepage}
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+%------------------------------------------------------------
+% Titulos
+%------------------------------------------------------------
+\titleformat{\section}{\normalfont\large\bfseries\color{uteqBlue}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\color{uteqMid}}{\thesubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.2em}
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+%------------------------------------------------------------
+% Cajas semanticas
+%------------------------------------------------------------
+\newtcolorbox{infoBox}[1][]{enhanced,breakable,colback=uteqSoft,colframe=uteqMid,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{avisoBox}[1][]{enhanced,breakable,colback=uteqAmber!10,colframe=uteqAmber!85!black,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{pisoBox}[1][]{enhanced,breakable,colback=uteqRed!6,colframe=uteqRed,fonttitle=\bfseries,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{okBox}[1][]{enhanced,breakable,colback=uteqGreen!8,colframe=uteqGreen!80!black,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+
+\newcommand{\hdr}[1]{\textcolor{white}{\textbf{#1}}}
+
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{uteqMid},backgroundcolor=\color{uteqGray},breaklines=true,xleftmargin=4pt,xrightmargin=4pt,aboveskip=6pt,belowskip=6pt}
+
+\begin{document}
+
+%============================================================
+% ENCABEZADO
+%============================================================
+\begin{center}
+	{\color{uteqBlue}\rule{\linewidth}{1pt}}\\[0.2cm]
+	{\large\bfseries\color{uteqBlue} UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[0.05cm]
+	{\normalsize Facultad de Ciencias de la Computación $\cdot$ Carrera de Software}\\[0.1cm]
+	{\color{uteqBlue}\rule{\linewidth}{1pt}}\\[0.35cm]
+	{\LARGE\bfseries\color{uteqBlue} Informe académico grupal:}\\[0.1cm]
+	{\LARGE\bfseries\color{uteqBlue} análisis crítico de un sistema distribuido real}\\[0.15cm]
+	{\large\bfseries TA-IND-01 $\cdot$ Guía para el estudiante y rúbrica de calificación}\\[0.1cm]
+	{\normalsize Aplicaciones Distribuidas (ISR-701) $\cdot$ SPA 2026--2027}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{xltabular}{\linewidth}{@{}L{4.6cm}Y@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Campo} & \hdr{Detalle} \\
+	\midrule
+	\endhead
+	Código & TA-IND-01 (se conserva el código del encuadre y del SGA) \\
+	Componente & Trabajo Autónomo (TA) \\
+	Modalidad & \textbf{Grupal}: equipos de 3 o 4 estudiantes, los mismos del Proyecto Fin de Curso (PFC) \\
+	Carácter & Sumativa \\
+	Unidad & Unidad 1, Generalidades de los sistemas distribuidos \\
+	Semana & 3 (9 al 15 de noviembre de 2026) \\
+	Cierre & \textbf{Viernes 13 de noviembre de 2026, 00:00} (es decir, al terminar el jueves 12) \\
+	Peso en la nota & 0,75 de los 10 puntos del primer corte \\
+	Formativas previas obligatorias & FORM-FB-01 Fichas bibliográficas (individual) y FORM-AC-01 Análisis de caso de fallo real (grupal) \\
+	Extensión & Mínimo 5 páginas de contenido, sin contar la carátula, los anexos ni las referencias \\
+	Versión & 17 de noviembre de 2026: la modalidad se corrige a grupal, que es como se ejecutó la actividad; se conservan los requisitos y cantidades publicados \\
+	Docente & Gleiston C. Guerrero-Ulloa, PhD (\texttt{gguerrero@uteq.edu.ec}) \\
+	\bottomrule
+\end{xltabular}
+
+%============================================================
+\section{Propósito del informe}
+%============================================================
+
+Este es el primer trabajo autónomo sumativo de la asignatura. El equipo demuestra su capacidad de investigación académica, de análisis crítico y de escritura técnica en \LaTeX{} sobre los contenidos de la Unidad 1. No se trata de resumir la teoría, sino de aplicarla a un sistema real y existente y de juzgar con argumentos cómo ese sistema resuelve los problemas propios de la distribución.
+
+Aunque el informe es de equipo, la nota es individual: cada integrante recibe la nota del trabajo del equipo y una nota de su propio aporte, medido en el historial del repositorio, en la bitácora y en el video (sección \ref{sec:nota}). Por eso cada integrante debe dejar huella verificable de lo que hizo.
+
+El informe aplica el resultado de aprendizaje de la Unidad 1: \emph{analiza las características y principios de los sistemas distribuidos, evaluando sus ventajas, limitaciones y retos desde una perspectiva crítica e interdisciplinaria}.
+
+\begin{infoBox}[title={Lo que distingue un análisis de una descripción}]
+	Describir es decir «Cassandra replica los datos en varios nodos». Analizar es explicar qué transparencia logra con eso, qué deja de garantizar cuando hay una partición de red, qué observó el equipo al detener un nodo en su propia máquina y en qué casos ese diseño no sería la mejor opción. En la práctica, cada afirmación del informe debe responder a un «¿por qué?» con una fuente citada o con un dato observado por el equipo.
+\end{infoBox}
+
+%============================================================
+\section{Elección del sistema}\label{sec:eleccion}
+%============================================================
+
+\begin{enumerate}
+	\item El equipo elige un sistema distribuido \textbf{real y en uso}, por ejemplo Apache Cassandra, Google Spanner, Apache Kafka, Discord, Netflix o Amazon DynamoDB.
+	\item Cada equipo analiza un sistema distinto al de los demás equipos. Un integrante registra la elección en el foro del SGA a nombre del equipo; si dos equipos eligen el mismo sistema, se respeta el orden de registro.
+	\item El sistema elegido se compara con \textbf{al menos otro sistema real} que resuelva el mismo problema de forma distinta (por ejemplo, Cassandra frente a Spanner, o Kafka frente a RabbitMQ).
+	\item El sistema no puede ser el mismo del caso de fallo analizado por el equipo en FORM-AC-01, aunque ese caso puede usarse como incidente documentado en la sección de tolerancia a fallos.
+\end{enumerate}
+
+%============================================================
+\section{Conceptos de la Unidad 1 que se aplican}\label{sec:conceptos}
+%============================================================
+
+\subsection{Transparencias de distribución}
+
+Una transparencia es la capacidad del sistema de ocultar al usuario un aspecto de la distribución. Se analizan las siete del texto base: acceso, ubicación, migración, reubicación, replicación, concurrencia y fallos \cite{vansteen2023distributed}. En la práctica, para cada una el equipo responde si el sistema la ofrece, con qué mecanismo concreto, y cuál no ofrece y por qué (a veces ocultar todo cuesta demasiado rendimiento).
+
+\subsection{Teorema CAP y su extensión PACELC}
+
+El teorema CAP establece que, si ocurre una partición de red, el sistema debe elegir entre consistencia y disponibilidad \cite{gilbert2002brewer,brewer2012cap}. PACELC añade lo que ocurre cuando no hay partición: el sistema elige entre latencia y consistencia \cite{abadi2012consistency}. En la práctica, el equipo clasifica el sistema (por ejemplo PA/EL o PC/EC), lo respalda con la documentación técnica o con artículos, y señala si la elección es configurable por operación.
+
+\subsection{Modelos de comunicación}
+
+El equipo identifica la arquitectura (cliente-servidor, entre pares o \emph{peer-to-peer}, o híbrida), si la comunicación es sincrónica o asincrónica, y el mecanismo (\emph{sockets}, llamada a procedimiento remoto o RPC, o mensajería) \cite{vansteen2023distributed,aksakalli2021deployment}. En la práctica, se muestra con un diagrama de secuencia o con la ruta de una operación concreta del sistema.
+
+\subsection{Tolerancia a fallos}
+
+Se analiza qué fallos soporta el sistema, cómo los detecta y cómo se recupera (replicación, consenso, reintentos), usando la terminología de falla, error y avería \cite{avizienis2004basic,kleppmann2017designing}. En la práctica, se acompaña de al menos un incidente real documentado, si existe; los estudios de incidentes en servicios a gran escala muestran que las causas suelen combinar varios factores y no un solo componente \cite{ghosh2022fight,huang2022metastable}.
+
+%============================================================
+\section{Estructura del documento}\label{sec:estructura}
+%============================================================
+
+El informe se escribe en \LaTeX{} con al menos 5 páginas de contenido (sin carátula, anexos ni referencias) y sigue este orden:
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=1.8em]
+	\item \textbf{Carátula:} universidad, facultad, carrera, asignatura, código de la actividad, nombre del equipo del PFC, nombres completos de todos los integrantes, paralelo, fecha y URL del repositorio en una sola línea.
+	\item \textbf{Resumen:} de 150 a 200 palabras, con el sistema analizado, el enfoque y las conclusiones principales.
+	\item \textbf{Introducción:} qué problema resuelve el sistema, quién lo usa, a qué escala opera (con cifras citadas) y por qué el equipo lo eligió.
+	\item \textbf{Arquitectura del sistema:} componentes y cómo se comunican, con un diagrama de arquitectura elaborado por el equipo (draw.io o TikZ, no copiado de internet) y su evolución desde el esquema a mano (Anexo A).
+	\item \textbf{Análisis con los conceptos de la Unidad 1}, en cuatro subsecciones:
+	\begin{itemize}
+		\item transparencias de distribución: cuáles ofrece el sistema y cuáles no, y por qué;
+		\item CAP y PACELC: qué prioriza cuando hay una partición de red y qué prioriza cuando no la hay, con evidencia de la documentación técnica o de artículos;
+		\item modelos de comunicación: arquitectura, sincronía y mecanismo;
+		\item tolerancia a fallos: fallos que soporta, detección y recuperación, con al menos un incidente real documentado si existe.
+	\end{itemize}
+	\item \textbf{Experimentación propia:} las capturas y el experimento de las evidencias de autoría 1 y 2, con su interpretación a la luz de los conceptos de la sección anterior.
+	\item \textbf{Ejemplos del entorno de los integrantes:} los ejemplos de la evidencia de autoría 3.
+	\item \textbf{Análisis comparativo:} una tabla que compara el sistema elegido con al menos otro sistema real usando como mínimo cinco criterios de la Unidad 1, y su discusión.
+	\item \textbf{Postura crítica:} fortalezas, limitaciones y compromisos (\emph{trade-offs}) del diseño, y en qué contextos no sería la mejor opción. Toda afirmación debe estar argumentada y respaldada.
+	\item \textbf{Conclusiones:} afirmaciones concretas derivadas del análisis y de lo observado en el experimento, no repeticiones de la teoría.
+	\item \textbf{Declaración de uso de inteligencia artificial:} herramienta, versión, quién la usó, para qué y cómo se verificó lo obtenido, o declaración de que no se usó.
+	\item \textbf{Referencias:} mínimo 6 fuentes en formato IEEE con \texttt{biblatex}, de los últimos 5 años y con prioridad para las más recientes; al menos 3 deben ser artículos de revistas indexadas con DOI verificable. Se pueden reutilizar las fuentes verificadas por los integrantes en FORM-FB-01.
+	\item \textbf{Anexos:} Anexo A, fotografía del esquema a mano; Anexo B, capturas de lectura de las fuentes.
+\end{enumerate}
+
+\begin{avisoBox}[title={Referencias: verifique cada una antes de entregar}]
+	Cada referencia debe existir y todos sus datos deben corresponder exactamente a la obra real: autores, año, título, revista o editorial, volumen, número, páginas y DOI o ISBN. Antes de entregar, abra cada DOI y compruebe que lleva a la obra que citan, con esos mismos datos. Los asistentes de IA generativa inventan o mezclan datos bibliográficos con frecuencia \cite{walters2023fabrication}. Basta una sola referencia inexistente, o cuyo DOI lleve a una obra con datos diferentes, para que la calificación sea CERO para todo el equipo (criterio de piso P4): el documento es de autoría conjunta y todos sus integrantes responden por él.
+\end{avisoBox}
+
+%============================================================
+\section{Evidencias de autoría}\label{sec:evidencias}
+%============================================================
+
+El informe debe demostrar que lo hizo el equipo, y cada integrante su parte, y no una IA generativa. Estas evidencias forman parte de la dimensión D3 (Desarrollo técnico y evidencia) y de la nota del aporte individual.
+
+\begin{enumerate}[label=\textbf{E\arabic*.},leftmargin=2.2em]
+	\item \textbf{Interacción propia con el sistema analizado.} Al menos 4 capturas de pantalla de la ejecución real del sistema o de una versión local de prueba. Por ejemplo: levantar Cassandra, Kafka o Redis con Docker, consultar el estado de los nodos, detener un nodo y observar qué ocurre, o enviar y recibir mensajes. En cada captura deben verse datos propios de quien la tomó: su usuario en el \emph{prompt} de la terminal, la fecha y hora del equipo, el nombre de su máquina o su usuario de GitHub. Si el sistema no se puede ejecutar localmente (por ejemplo, Spanner o Netflix), se usa su capa gratuita, su simulador o un servicio equivalente de código abierto, y se justifica la elección.
+	\item \textbf{Experimento propio que respalde el análisis.} Al menos una prueba realizada por el equipo que ilustre uno de los conceptos de la Unidad 1; por ejemplo, provocar la caída de una réplica para observar la tolerancia a fallos, o medir la latencia de una lectura con consistencia fuerte frente a una con consistencia eventual. Se incluyen los comandos usados, la salida obtenida y su interpretación; los comandos y los resultados van en el repositorio.
+	\item \textbf{Ejemplos del entorno de los integrantes.} Al menos dos ejemplos de sistemas reales que usa o conoce de primera mano: el SGA de la UTEQ, la banca móvil que usa, WhatsApp, una plataforma de pagos local o un sistema de su trabajo o de su familia. Cada ejemplo relaciona lo observado como usuario (una caída, un mensaje que llegó tarde, un saldo que tardó en actualizarse) con un concepto de la unidad.
+	\item \textbf{Lectura demostrable de las fuentes.} Al menos 3 capturas de los artículos citados con los fragmentos subrayados o anotados, indicando la página. Cada captura debe corresponder a una cita del texto.
+	\item \textbf{Bitácora de trabajo.} Un archivo \texttt{BITACORA.md} en el repositorio, con entradas fechadas de cada sesión: qué se hizo, qué problema encontró, cómo lo resolvió y cuánto tiempo dedicó. Debe haber al menos una entrada por cada día trabajado, y las fechas deben coincidir con los \emph{commits}.
+	\item \textbf{Historial de \emph{commits} progresivo.} El trabajo se construye en el repositorio en al menos 3 días distintos, con al menos 8 \emph{commits} de mensajes descriptivos. Un repositorio con el informe subido en uno o dos \emph{commits} finales es un indicio de autoría no propia. Cada integrante hace sus \emph{commits} con su propia cuenta de GitHub: es la evidencia principal de su aporte individual (sección \ref{sec:aporte}).
+	\item \textbf{Esquema inicial a mano.} Una fotografía del primer bosquejo de la arquitectura del sistema, dibujado a mano por el equipo en papel o en pizarra, con los nombres de los integrantes y la fecha visibles. Va en el Anexo A para mostrar cómo evolucionó hasta el diagrama final.
+	\item \textbf{Video de sustentación.} Un video de 3 a 5 minutos, con el rostro y la voz de los integrantes, en el que se explica sin leer una de las capturas y la conclusión principal. La participación de cada integrante en el video es evidencia de su aporte individual. El enlace (YouTube no listado o Google Drive con acceso abierto) va en el \texttt{README.md}.
+	\item \textbf{Verificación oral.} El docente puede pedir a cualquier integrante, en clase y sin aviso previo, que explique o modifique en el momento una parte del informe o del experimento, incluida una parte que no hizo él. Si no puede justificar lo que su equipo entregó, se aplica a ese integrante el indicio I8 del encuadre (incapacidad de explicar lo entregado).
+\end{enumerate}
+
+\begin{avisoBox}[title={Capturas originales}]
+	Una captura tomada de internet, de otro equipo o de un compañero que la presenta como propia, o editada para cambiar los datos, se trata como evidencia fabricada y lleva a calificación CERO (criterio de piso P4) para el equipo.
+\end{avisoBox}
+
+%============================================================
+\section{Entregables}\label{sec:entregables}
+%============================================================
+
+\begin{enumerate}
+	\item \textbf{Repositorio GitHub público del equipo}, con todos los integrantes como colaboradores. Debe contener:
+	\begin{itemize}
+		\item el \texttt{.tex}, el \texttt{.bib}, las figuras, las capturas y el PDF compilado;
+		\item los comandos y resultados del experimento;
+		\item \texttt{BITACORA.md} y un \texttt{README.md} con el enlace al video y las instrucciones de compilación: compilador, archivo principal, orden de comandos y dependencias.
+	\end{itemize}
+	\item \textbf{Documento en el SGA:} \textbf{cada integrante} sube en su tarea del SGA \textbf{solamente un documento PDF de UNA SOLA página} con los datos identificativos (universidad, facultad, carrera, asignatura, código y nombre de la actividad, nombres de todos los integrantes, paralelo y fecha) y la URL del repositorio escrita completa en una sola línea. Es el mismo PDF para todos los integrantes. Quien no lo sube no tiene calificación en la actividad.
+	\item \textbf{Cierre:} viernes 13 de noviembre de 2026, a las 00:00. Lo subido al repositorio después de esa hora no se considera.
+\end{enumerate}
+
+\begin{lstlisting}
+pdflatex informe.tex
+biber informe
+pdflatex informe.tex
+pdflatex informe.tex
+\end{lstlisting}
+
+%============================================================
+\section{Criterios de piso}\label{sec:piso}
+%============================================================
+
+\begin{pisoBox}[title={Su incumplimiento implica calificación CERO}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=2.2em]
+		\item \textbf{PDF de una sola página con carátula y URL.} Cada estudiante debe subir al SGA solamente un documento PDF de UNA SOLA página con los datos identificativos y, en una sola línea, la URL del repositorio donde está todo el trabajo. Si el PDF tiene más de una página, si se suben otros archivos en lugar de este PDF, si la URL no cabe en una sola línea o está rota, o si el repositorio no es accesible (privado o inexistente), la calificación es CERO. Este criterio se aplica a cada integrante por separado.
+		\item \textbf{PDF reproducible.} Si el PDF no se genera correctamente al clonar el repositorio y compilar el archivo \texttt{.tex}, la calificación es CERO para todo el equipo. Las instrucciones de compilación (compilador, orden de comandos, archivo principal y dependencias) deben estar en el \texttt{README.md}.
+		\item \textbf{Plazo.} Si el contenido evaluable se subió al repositorio después del viernes 13 de noviembre de 2026 a las 00:00, la calificación es CERO para todo el equipo.
+		\item \textbf{Integridad.} Plagio, contenido generado por IA generativa presentado como propio, capturas fabricadas, una referencia inexistente o \textbf{una sola} referencia cuyo DOI lleve a una obra con datos diferentes a los citados (autores, año, título, revista, volumen o páginas) implican calificación CERO para todo el equipo \cite{acm2018ethics}. Esto prueba que el contenido fue generado con IA, porque quien consultó la fuente tiene sus datos reales a la vista.
+		\item \textbf{Formativas vinculadas.} El integrante que no entregó FORM-FB-01 obtiene CERO; si el equipo no entregó FORM-AC-01, la calificación es CERO para todos sus integrantes, salvo justificación aprobada.
+	\end{enumerate}
+\end{pisoBox}
+
+%============================================================
+\section{Cómo se calcula la nota}\label{sec:nota}
+%============================================================
+
+Conforme al encuadre de la asignatura, en toda actividad grupal la nota es individual:
+
+\[ \text{Nota individual} = 0.60 \times \text{Nota del equipo} + 0.40 \times \text{Nota del aporte individual} \]
+
+\textbf{Nota del equipo.} Se calcula con la rúbrica de la sección \ref{sec:rubrica}. Cada indicador se califica con un nivel de 0 a 4 según su calidad, no por su sola presencia: el nivel es el que corresponde al aspecto de calidad peor cumplido (veracidad, precisión técnica, profundidad, pertinencia, suficiencia de la evidencia, coherencia, originalidad, reproducibilidad y actualidad de las fuentes). Conocer de antemano estos criterios permite revisar el propio trabajo antes de entregarlo \cite{panadero2020critical,brookhart2018appropriate}.
+
+\[ \text{Nota del equipo} = \sum_{i} \frac{w_i \times n_i}{4} \times \frac{10}{100} - \text{Penalizaciones del equipo} \]
+
+\textbf{Nota del aporte individual.} Se mide con evidencia verificable en el repositorio, en \texttt{BITACORA.md} y en el video (sección \ref{sec:aporte}). Un integrante sin aportes verificables obtiene cero en este componente.
+
+\[ \text{Nota individual final} = \max\bigl(0,\ 0.60\,N_{\text{equipo}} + 0.40\,N_{\text{aporte}} - \text{Penalizaciones individuales}\bigr) \]
+
+En la retroalimentación se informan siempre la nota previa y la nota final. La nota aporta al primer corte con su peso: $\text{Nota}/10 \times 0.75$.
+
+%============================================================
+\section{Rúbrica del trabajo del equipo}\label{sec:rubrica}
+%============================================================
+
+Los pesos de las dimensiones son los del encuadre para los informes (TA-IND): D1 10\,\%, D2 25\,\%, D3 20\,\%, D4 25\,\%, D5 10\,\% y D6 10\,\%.
+
+\begin{xltabular}{\linewidth}{@{}L{1.0cm}L{5.0cm}YC{1.0cm}@{}}
+	\caption{Indicadores del informe}\label{tab:indicadores}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Ind.} & \hdr{Indicador} & \hdr{Sección y evidencia} & \hdr{Peso} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Ind.} & \hdr{Indicador} & \hdr{Sección y evidencia} & \hdr{Peso} \\
+	\midrule
+	\endhead
+	\multicolumn{4}{@{}l}{\cellcolor{uteqSoft}\textbf{D1 Cumplimiento y completitud (10)}} \\
+	1.1 & Estructura, extensión y entregables & Trece apartados en orden, mínimo 5 páginas, repositorio con lo pedido & 10 \\
+	\multicolumn{4}{@{}l}{\cellcolor{uteqSoft}\textbf{D2 Fundamentación conceptual (25)}} \\
+	2.1 & Transparencias de distribución & Sección 5: las siete, ofrecidas o no, con mecanismo y razón & 7 \\
+	2.2 & CAP y PACELC & Sección 5: comportamiento con y sin partición, con evidencia & 7 \\
+	2.3 & Modelos de comunicación & Sección 5: arquitectura, sincronía y mecanismo & 5 \\
+	2.4 & Tolerancia a fallos & Sección 5: fallos, detección, recuperación e incidente real & 6 \\
+	\multicolumn{4}{@{}l}{\cellcolor{uteqSoft}\textbf{D3 Desarrollo técnico y evidencia (20)}} \\
+	3.1 & Arquitectura y diagrama propio & Sección 4 y Anexo A: diagrama del equipo y evolución desde el esquema a mano & 5 \\
+	3.2 & Interacción y experimento propios & Sección 6 y repositorio: evidencias E1 y E2 & 10 \\
+	3.3 & Entorno propio y lectura de fuentes & Sección 7 y Anexo B: evidencias E3 y E4 & 5 \\
+	\multicolumn{4}{@{}l}{\cellcolor{uteqSoft}\textbf{D4 Análisis crítico y resultados (25)}} \\
+	4.1 & Interpretación del experimento & Sección 6: lo observado explicado con los conceptos de la unidad & 7 \\
+	4.2 & Análisis comparativo & Sección 8: tabla con al menos cinco criterios y discusión & 9 \\
+	4.3 & Postura crítica y conclusiones & Secciones 9 y 10: \emph{trade-offs}, contextos no adecuados, conclusiones derivadas & 9 \\
+	\multicolumn{4}{@{}l}{\cellcolor{uteqSoft}\textbf{D5 Comunicación (10)}} \\
+	5.1 & Documento \LaTeX{} & Redacción técnica clara y homogénea en calidad, sin desbordes ni referencias sin resolver & 10 \\
+	\multicolumn{4}{@{}l}{\cellcolor{uteqSoft}\textbf{D6 Referencias, ética e integridad (10)}} \\
+	6.1 & Referencias y declaración de IA & Al menos 6 fuentes IEEE, 3 indexadas con DOI, citadas donde se usan; declaración de IA & 10 \\
+	\midrule
+	& \textbf{Total} & & \textbf{100} \\
+	\bottomrule
+\end{xltabular}
+
+\begin{landscape}
+{\footnotesize\renewcommand{\arraystretch}{1.05}\setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\linewidth}{@{}L{3.0cm}YYYYL{2.4cm}@{}}
+	\caption{Rúbrica del trabajo del equipo: descriptores de nivel por indicador}\label{tab:rubrica}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Indicador (peso)} & \hdr{4 Excelente} & \hdr{3 Bueno} & \hdr{2 Aceptable} & \hdr{1 Insuficiente} & \hdr{0 Ausente} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Indicador (peso)} & \hdr{4 Excelente} & \hdr{3 Bueno} & \hdr{2 Aceptable} & \hdr{1 Insuficiente} & \hdr{0 Ausente} \\
+	\midrule
+	\endhead
+	\textbf{1.1 Estructura y entregables (10)} & Los trece apartados en orden, al menos 5 páginas de contenido, resumen de 150 a 200 palabras, repositorio con fuentes, PDF, experimento, \texttt{BITACORA.md} y \texttt{README.md} completos. & Falta un elemento menor. & Falta un apartado o el contenido tiene menos de 5 páginas. & Solo una parte mínima de lo pedido. & No hay informe o no corresponde a la actividad. \\
+	\addlinespace
+	\textbf{2.1 Transparencias (7)} & Analiza las siete transparencias aplicadas al sistema, con el mecanismo concreto que logra cada una y la razón de las que no ofrece, con fuente. & Las siete aplicadas, alguna sin mecanismo o sin fuente. & Menos de siete, o definidas en general sin aplicarlas al sistema. & Concepto de transparencia confuso o incorrecto. & Ausente. \\
+	\addlinespace
+	\textbf{2.2 CAP y PACELC (7)} & Clasifica el sistema con y sin partición (por ejemplo PA/EL), lo respalda con la documentación técnica o con artículos, y señala si la elección es configurable. & Clasificación correcta con evidencia parcial. & Solo CAP, sin PACELC, o clasificación sin evidencia. & Clasificación errónea o contradictoria. & Ausente. \\
+	\addlinespace
+	\textbf{2.3 Comunicación (5)} & Identifica arquitectura, sincronía y mecanismo, y los muestra con la ruta de una operación concreta o un diagrama de secuencia. & Correcto sin ejemplo concreto. & Identificación incompleta. & Errores conceptuales. & Ausente. \\
+	\addlinespace
+	\textbf{2.4 Tolerancia a fallos (6)} & Fallos soportados, detección y recuperación explicados con la terminología correcta y al menos un incidente real documentado y citado. & Completo sin incidente, cuando sí existía uno documentado. & Lista de mecanismos sin explicar cómo funcionan. & Genérico o erróneo. & Ausente. \\
+	\addlinespace
+	\textbf{3.1 Arquitectura (5)} & Diagrama propio (draw.io o TikZ) con componentes y comunicación, coherente con el texto, y evolución explicada desde el esquema a mano del Anexo A. & Diagrama propio sin explicar la evolución. & Diagrama incompleto o sin Anexo A. & Diagrama copiado o adaptado de internet. & Sin diagrama. \\
+	\addlinespace
+	\textbf{3.2 Interacción y experimento (10)} & Al menos 4 capturas con datos propios de quien las tomó; experimento con comandos, salidas e interpretación, reproducible desde el repositorio. & Completo con un detalle faltante (una salida o un comando). & Capturas sin datos propios, o experimento sin salidas en el repositorio. & Experimento descrito pero no ejecutado o no reproducible. & Sin capturas o sin experimento. \\
+	\addlinespace
+	\textbf{3.3 Entorno y lectura (5)} & Al menos dos ejemplos de primera mano relacionados con un concepto; al menos 3 capturas anotadas con página, cada una con su cita. & Completo con un ejemplo débil o una captura sin página. & Falta un ejemplo o una captura. & Ejemplos genéricos o capturas sin anotaciones. & Ausente. \\
+	\addlinespace
+	\textbf{4.1 Interpretación (7)} & Explica lo observado en el experimento con los conceptos de la unidad (qué transparencia, qué decisión CAP o PACELC, qué mecanismo de recuperación) y contrasta con la documentación. & Correcta con una conclusión sin sustento. & Describe la salida sin interpretarla. & Interpretación errónea. & Ausente. \\
+	\addlinespace
+	\textbf{4.2 Comparación (9)} & Tabla con al menos cinco criterios de la Unidad 1 frente a otro sistema real, con fuente para cada celda relevante, y discusión que explica las diferencias de diseño. & Tabla completa con discusión breve. & Menos de cinco criterios, o tabla sin discusión. & Describe cada sistema por separado sin confrontarlos. & Ausente. \\
+	\addlinespace
+	\textbf{4.3 Postura y conclusiones (9)} & Fortalezas, limitaciones y \emph{trade-offs} argumentados con fuente o dato propio; contextos en que no es la mejor opción; conclusiones que se derivan del análisis y del experimento. & Correcta con una afirmación sin respaldo. & Postura descriptiva o conclusiones que repiten la teoría. & Opiniones sin argumentos. & Ausente. \\
+	\addlinespace
+	\textbf{5.1 Documento (10)} & Redacción técnica clara y propia, de calidad homogénea entre secciones de distintos autores; sin desbordes ni referencias sin resolver; figuras y tablas numeradas y citadas. & Defectos menores. & Varios defectos que dificultan la lectura. & Documento desordenado o secciones pegadas sin integración. & Sin documento legible. \\
+	\addlinespace
+	\textbf{6.1 Referencias e integridad (10)} & Seis referencias IEEE o más, de los últimos 5 años, al menos tres indexadas con DOI, todas citadas donde se usan; declaración de IA completa. & Reales y correctas con algún campo omitido. & Menos de seis, menos de tres indexadas o antiguas. & Mal citadas en el texto, o sin declaración de IA. & Sin referencias o en formato distinto de IEEE. \\
+	\bottomrule
+\end{xltabular}
+\textbf{Nota sobre 6.1:} una referencia inexistente, o cuyo DOI lleve a una obra con datos diferentes a los citados, no se califica aquí: implica calificación CERO para el equipo (criterio de piso P4).
+}
+\end{landscape}
+
+\subsection{Reglas para asignar los niveles}
+
+\begin{enumerate}
+	\item Cada indicador se valora por su calidad (veracidad, precisión, profundidad, pertinencia, suficiencia de la evidencia, coherencia, originalidad, reproducibilidad y actualidad de las fuentes), no por su sola presencia.
+	\item Un trabajo que expone teoría general sin analizar un sistema real se califica con nivel 1 o 0 en todos los indicadores de D3 y D4.
+	\item Si falta alguna de las evidencias E1 (interacción), E2 (experimento), E5 (bitácora) u E8 (video), los indicadores de D3 valen 0. Por cada una de las demás evidencias que falte, cada indicador de D3 baja un nivel.
+	\item En 6.1 solo se califican referencias reales y correctas. Las referencias en formato APA hacen que 6.1 valga 0.
+\end{enumerate}
+
+%============================================================
+\section{Nota del aporte individual}\label{sec:aporte}
+%============================================================
+
+Cada integrante se califica con cinco criterios en escala de 0 a 4, medidos en el historial del repositorio (\texttt{git log}), en \texttt{BITACORA.md}, en las capturas y ejemplos que cada integrante tomó o aportó, y en el video:
+
+\[ N_{\text{aporte}} = \sum_{j=1}^{5} \frac{w_j \times n_j}{4} \times \frac{10}{100} \]
+
+\begin{xltabular}{\linewidth}{@{}L{3.6cm}C{1.0cm}Y@{}}
+	\caption{Criterios del aporte individual}\label{tab:aporte}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Criterio} & \hdr{Peso} & \hdr{Nivel 4 (excelente)} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Criterio} & \hdr{Peso} & \hdr{Nivel 4 (excelente)} \\
+	\midrule
+	\endhead
+	A1 Cantidad de trabajo & 25 & Aporta una parte proporcional o mayor del contenido del informe y de las evidencias (secciones, figuras, capturas, comandos), comprobable en los \emph{commits}. \\
+	\addlinespace
+	A2 Tiempo invertido y continuidad & 15 & Trabaja en al menos 2 días distintos, con sesiones registradas en la bitácora que coinciden con sus \emph{commits}. \\
+	\addlinespace
+	A3 Complejidad técnica & 20 & Sus aportes incluyen partes técnicas exigentes: ejecución del sistema, el experimento, el diagrama o el análisis CAP y PACELC. \\
+	\addlinespace
+	A4 Importancia para la entrega & 30 & Sin su aporte, una sección central del informe (análisis, experimento o comparación) quedaría incompleta. \\
+	\addlinespace
+	A5 Autoría verificable & 10 & Lo que hizo está respaldado por \emph{commits} con su propia cuenta de GitHub y por su intervención en el video, sin leer. \\
+	\bottomrule
+\end{xltabular}
+
+Los niveles 3 a 0 de cada criterio corresponden a la escala general del encuadre: 3 si cumple al menos el 75\,\% de lo descrito, 2 entre el 50\,\% y el 74\,\%, 1 menos del 50\,\%, y 0 si no hay evidencia verificable. Quien no aparece en el video no puede pasar del nivel 2 en A5. Lo que un integrante afirma haber hecho y no está respaldado en el historial no se le reconoce.
+
+%============================================================
+\Needspace{12\baselineskip}
+\section{Penalizaciones que no anulan la nota}\label{sec:penalizaciones}
+%============================================================
+
+\begin{xltabular}{\linewidth}{@{}YL{2.8cm}C{2.0cm}@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Situación detectada} & \hdr{Se aplica a} & \hdr{Efecto (sobre 10)} \\
+	\midrule
+	\endhead
+	Falta la declaración de uso de inteligencia artificial & Nota del equipo & $-0.3$ \\
+	Referencias en formato APA u otro distinto de IEEE & Nota del equipo & 6.1 $=0$ \\
+	Dos indicios de uso de IA generativa o de autoría no propia en el documento o el repositorio, I1 e I3 a I8 del encuadre (nivel B) & Nota del equipo & $-1.5$ \\
+	Tres o más indicios, o resultados no verificados presentados como verificados (nivel C) & Nota del equipo & $-3.0$ \\
+	Dos indicios en las partes atribuidas a un integrante, o el indicio I8 en la verificación oral (nivel B) & Nota individual & $-1.5$ \\
+	Tres o más indicios en las partes atribuidas a un integrante (nivel C) & Nota individual & $-3.0$ \\
+	\bottomrule
+\end{xltabular}
+
+Los indicios son, entre otros: redacción uniforme, conectores repetidos, contenido genérico, afirmaciones sin respaldo en el repositorio, \emph{commits} masivos al final, todos los \emph{commits} hechos por un solo integrante y secciones muy similares a las de otro equipo. Una referencia con datos que no corresponden a la obra real no cuenta como indicio: es prueba de contenido generado por IA y lleva a calificación CERO (P4).
+
+%============================================================
+\section{Ejemplo de cálculo (datos ficticios)}
+%============================================================
+
+Un equipo obtiene los niveles 1.1 = 4; 2.1 = 3; 2.2 = 4; 2.3 = 3; 2.4 = 3; 3.1 = 4; 3.2 = 3; 3.3 = 2; 4.1 = 3; 4.2 = 4; 4.3 = 3; 5.1 = 3; 6.1 = 3, y no tiene penalizaciones de equipo:
+\begin{align*}
+	\sum_i w_i\,n_i &= 10\cdot4 + 7\cdot3 + 7\cdot4 + 5\cdot3 + 6\cdot3 + 5\cdot4 + 10\cdot3 \\
+	&\quad + 5\cdot2 + 7\cdot3 + 9\cdot4 + 9\cdot3 + 10\cdot3 + 10\cdot3 = 326 \\
+	N_{\text{equipo}} &= \frac{326}{4}\times\frac{10}{100} = 8.15
+\end{align*}
+
+Una integrante obtiene en su aporte A1 = 3, A2 = 4, A3 = 4, A4 = 3, A5 = 4:
+\[ N_{\text{aporte}} = \frac{25\cdot3 + 15\cdot4 + 20\cdot4 + 30\cdot3 + 10\cdot4}{4}\times\frac{10}{100} = \frac{345}{4}\times 0.1 = 8.63 \]
+\[ \text{Nota individual} = 0.60 \times 8.15 + 0.40 \times 8.63 = 4.89 + 3.45 = 8.3 \]
+
+Otro integrante del mismo equipo solo hizo dos \emph{commits} el último día y no aparece en el video: A1 = 1, A2 = 1, A3 = 1, A4 = 1, A5 = 1, de modo que $N_{\text{aporte}} = 100/4 \times 0.1 = 2.50$ y su nota es $0.60 \times 8.15 + 0.40 \times 2.50 = 4.89 + 1.00 = 5.9$.
+
+%============================================================
+\section{Lista de verificación antes de entregar}
+%============================================================
+
+\begin{okBox}[title={Revisen su informe con esta lista}]
+	\begin{itemize}
+		\item[$\square$] El sistema está registrado en el foro del SGA y no es el de otro equipo.
+		\item[$\square$] La carátula tiene el código TA-IND-01, los nombres de todos los integrantes y la URL del repositorio en una sola línea.
+		\item[$\square$] Las siete transparencias, CAP y PACELC, comunicación y tolerancia a fallos se aplican al sistema, no a un caso genérico.
+		\item[$\square$] Hay al menos 4 capturas con datos propios, dos ejemplos del entorno y tres capturas de lectura anotadas.
+		\item[$\square$] El experimento se repite con los comandos y resultados del repositorio.
+		\item[$\square$] La tabla comparativa tiene al menos cinco criterios de la Unidad 1 y se discute.
+		\item[$\square$] Las fechas de \texttt{BITACORA.md} coinciden con los \emph{commits}, y hay al menos 8 \emph{commits} en 3 días distintos.
+		\item[$\square$] Cada integrante hizo sus \emph{commits} con su propia cuenta de GitHub.
+		\item[$\square$] Hay al menos seis referencias IEEE, tres indexadas, y abrimos cada DOI para comprobar sus datos.
+		\item[$\square$] El video dura de 3 a 5 minutos, con el rostro y la voz de los integrantes, sin leer.
+		\item[$\square$] El PDF se compila desde un clon limpio y no tiene \texttt{??} ni desbordes.
+		\item[$\square$] Cada integrante subió al SGA el PDF de una sola página antes del viernes 13 de noviembre a las 00:00.
+	\end{itemize}
+\end{okBox}
+
+%============================================================
+\section{Retroalimentación y revisión}
+%============================================================
+
+El docente publica en el SGA la calificación con la retroalimentación individual de cada integrante, que incluye la nota del equipo, la nota del aporte individual, la nota previa y la nota final. Ante un desacuerdo, el estudiante lo plantea primero al docente, que responde en tres días; si persiste, acude a la Coordinación de Carrera \cite{uteq2021reglamento}.
+
+\printbibliography[heading=bibintoc,title={Referencias}]
+
+\end{document}

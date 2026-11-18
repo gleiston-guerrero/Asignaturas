@@ -1,0 +1,1005 @@
+INFORMES DE EVALUACION - TA-IND-01 Informe Academico (modalidad grupal)
+Aplicaciones Distribuidas (ISR-701) - SPA 2026-2027 - Docente: Gleiston C. Guerrero-Ulloa, PhD
+
+RESUMEN
+Equipo | Estudiante | Nota del trabajo | Nota del aporte | Nota final
+CGMT | Calderon Saltos Joseph Alexander | 8.38 | 9.38 | 8.8
+CGMT | Giraldo Cagua Diego Jose | 3.50 | 6.38 | 1.7
+CGMT | Manotoa Alava Carlos Alexander | 7.90 | 8.25 | 8.0
+CGMT | Toaquiza Zambrano Belinda Betzabeth | 9.38 | 10.00 | 9.6
+CGPR | Coronel Gomez Khriz Alexander | 4.42 | 1.88 | 0.4
+CGPR | Garcia Sangoquiza Roger Steven | 8.47 | 8.75 | 8.6
+CGPR | Piguave Montano Nixon Antonio | 8.90 | 8.75 | 8.8
+CGPR | Reinoso Velez Eduardo David | 8.75 | 8.62 | 8.7
+EJPZ | Espana Vera Kenny Isaias | 9.28 | 9.25 | 9.3
+EJPZ | Jaramillo Acosta Luis Jeremy | 6.35 | 7.12 | 6.7
+EJPZ | Paca Pilataza Luis Alberto | 4.33 | 5.62 | 3.3
+EJPZ | Zambrano Ronquillo Heiner Ariel | 7.35 | 8.75 | 6.4
+ELMS | Emanuel Pino Juliana Romina | 5.53 | 7.12 | 4.7
+ELMS | Lombeida Escaleras Bryan Humberto | 8.20 | 8.12 | 8.2
+ELMS | Mera Jumbo Allison Michelle | 8.85 | 10.00 | 9.3
+ELMS | Silva Trivino John Jairo | 9.25 | 10.00 | 9.6
+GHLZ | Garcia Bazurto Kevin Leonel | 7.10 | 7.88 | 7.4
+GHLZ | Herrera Barco Humberto Aldair | 5.42 | 6.25 | 2.8
+GHLZ | Loor Mendoza Byron Daniel | 6.75 | 7.25 | 5.5
+GHLZ | Zambrano Parraga Luis Mario | 8.95 | 10.00 | 9.4
+
+====================================================================================================
+CGMT - Calderon Saltos Joseph Alexander (trabajo 8.38 - final 8.8)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Calderon Saltos Joseph Alexander
+Equipo: CGMT. Sistema analizado: etcd comparado con Apache ZooKeeper.
+Repositorio revisado: https://github.com/BelindaTZ/TA-IND-01-Informe-Acad-mico-Individual---CGMT (carpeta Calderon Joseph).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes las secciones pedidas en orden, 18 paginas que compilan sin errores, README con instrucciones, BITACORA, compose del experimento y anexos.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Recorres las siete transparencias con el comportamiento de la API v3 y de los miembros, pero varias quedan en una frase sin el mecanismo concreto.
+2.2 CAP y PACELC: nivel 4, 0.70 de 0.70. Explicas con precision que el lado mayoritario elige lider y el minoritario no confirma escrituras, y distingues la lectura linealizable de la serializable para PACELC.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Identificas cliente-servidor con gRPC sobre HTTP/2 hacia la API y comunicacion entre pares dentro del cluster, sin un diagrama de secuencia de una operacion.
+2.4 Tolerancia a fallos: nivel 4, 0.60 de 0.60. Explicas eleccion por temporizador, mayoria con tres votantes y recuperacion, y documentas un incidente real con el postmortem de inconsistencia de etcd 3.5.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. Tu diagrama en draw.io parte del bosquejo del Anexo A, aunque no explicas que cambiaste entre el bosquejo y la version final.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Las cinco capturas muestran tu usuario Horat y la fecha del 12 de noviembre, y el experimento de caida del lider se reproduce con Experimento/compose.yaml.
+3.3 Entorno propio y lectura de fuentes: nivel 2, 0.25 de 0.50. Las tres capturas de lectura estan anotadas, pero los ejemplos del SGA y de WhatsApp son descripciones generales de uso, sin un episodio concreto que hayas vivido.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. Interpretas el cambio de termino de 3 a 4, la escritura con dos votantes y el indice aplicado 16 tras la reincorporacion con los conceptos de la unidad.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. El cuadro 2 compara etcd y ZooKeeper con varios criterios, pero la discusion se reduce a un parrafo de 109 palabras.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Tu postura reconoce el costo de las escrituras en enlaces lentos y cuando no conviene anadir replicas, aunque varias conclusiones repiten resultados del experimento.
+5.1 Documento LaTeX: nivel 3, 0.75 de 1.00. El documento esta ordenado y compila desde un clon limpio, con dos desbordes de linea menores.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 19 referencias son reales y verificadas, con 6 articulos con DOI; casi todo el resto es documentacion oficial de etcd y ZooKeeper; incluyes la declaracion de IA.
+Nota del trabajo: 8.38 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 23 commits en tu carpeta con unas 1732 lineas de texto, codigo y configuracion.
+A2 Tiempo invertido y continuidad (15 %): nivel 4, 1.50 de 1.50. Trabajaste el 11, el 12 y el 13 de noviembre, con sesiones registradas en la bitacora.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Montaste un cluster etcd de tres miembros y provocaste la caida del lider, que es la parte tecnica mas exigente.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe completo, el experimento y el video son tuyos.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits con la cuenta JosephACS y tu video respaldan lo entregado.
+Nota de tu aporte individual: 9.38 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 8.38 + 0.40 x 9.38 = 5.03 + 3.75 = 8.78.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que ChatGPT preparo borradores en LaTeX del informe; por si solo no alcanza para penalizar.
+Criterio de piso registrado (sin descontar): P1: en el PDF del SGA del grupo la URL del repositorio no esta escrita completa, solo aparece como enlace bajo un texto; la guia exige la URL completa en una sola linea.
+Nota final: 8.8 sobre 10.
+Recomendacion personal: Profundiza la comparacion: cada criterio de la tabla merece una discusion con su consecuencia de diseno.
+Recomendacion de equipo: Como grupo, revisen que el PDF del SGA tenga la URL escrita completa en una sola linea, no oculta bajo un enlace.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio antes del cierre.
+
+====================================================================================================
+CGMT - Giraldo Cagua Diego Jose (trabajo 3.50 - final 1.7)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Giraldo Cagua Diego Jose
+Equipo: CGMT. Sistema analizado: Facebook TAO comparado con Amazon DynamoDB (experimento con DynamoDB Local).
+Repositorio revisado: https://github.com/BelindaTZ/TA-IND-01-Informe-Acad-mico-Individual---CGMT (carpeta DIEGO JOSE GIRALDO CAGUA).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 2, 0.50 de 1.00. Tienes las secciones, pero los anexos A, B y C dicen "Archivo pendiente" en lugar de mostrar el bosquejo, las lecturas y las capturas.
+2.1 Transparencias de distribucion: nivel 2, 0.35 de 0.70. Desarrollas acceso, ubicacion, concurrencia y fallos de forma general; migracion, reubicacion y replicacion no se aplican con un mecanismo concreto de cada sistema.
+2.2 CAP y PACELC: nivel 2, 0.35 de 0.70. Describes CAP y las lecturas fuertes y eventuales de DynamoDB, pero TAO queda sin clasificacion PACELC sustentada en una fuente.
+2.3 Modelos de comunicacion: nivel 2, 0.25 de 0.50. Dices que ambos son cliente-servidor sin mostrar la ruta de una operacion ni el protocolo concreto.
+2.4 Tolerancia a fallos: nivel 2, 0.30 de 0.60. La tolerancia a fallos se explica en terminos generales y el incidente citado de Meta 2021 no se relaciona con TAO.
+3.1 Arquitectura y diagrama propio: nivel 0, 0.00 de 0.50. El diagrama existe en figuras, pero el PDF no muestra el bosquejo del Anexo A; ademas faltan dos evidencias y D3 baja dos niveles.
+3.2 Interaccion y experimento propios: nivel 0, 0.00 de 1.00. Las capturas de DynamoDB Local estan en capturas/ con tu usuario, pero el .tex pide archivos con otros nombres y el PDF no las muestra; con dos evidencias faltantes D3 baja a 0.
+3.3 Entorno propio y lectura de fuentes: nivel 0, 0.00 de 0.50. Los ejemplos del SGA y de la banca son genericos y no hay capturas de lectura de fuentes, asi que faltan las evidencias 3 y 4.
+4.1 Interpretacion del experimento: nivel 2, 0.35 de 0.70. Interpretas que la tabla se perdio al reiniciar el contenedor por ser en memoria, aunque no lo relacionas con la persistencia ni con la replicacion del servicio real.
+4.2 Analisis comparativo: nivel 2, 0.45 de 0.90. La tabla 3 compara TAO y DynamoDB con criterios generales de modelo de datos y administracion, no con los conceptos de la unidad.
+4.3 Postura critica y conclusiones: nivel 2, 0.45 de 0.90. La postura y las conclusiones son descriptivas y aplicables a cualquier sistema.
+5.1 Documento LaTeX: nivel 1, 0.25 de 1.00. La compilacion desde el clon limpio da 20 errores por las imagenes que no existen y el PDF muestra "Archivo pendiente" en tres anexos.
+6.1 Referencias y declaracion de IA: nivel 1, 0.25 de 1.00. Las referencias son reales, pero solo 2 son articulos con DOI y ninguna es de los ultimos 5 anos; incluyes la declaracion de IA.
+Nota del trabajo: 3.50 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 46 commits en tu carpeta con unas 1839 lineas, aunque muchos son ajustes pequenos.
+A2 Tiempo invertido y continuidad (15 %): nivel 4, 1.50 de 1.50. Trabajaste el 11, el 12 y el 13 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 2, 1.00 de 2.00. El experimento es basico: crear, consultar, borrar y reiniciar un DynamoDB Local de un solo nodo.
+A4 Importancia para la entrega (30 %): nivel 2, 1.50 de 3.00. El informe se entrega con anexos vacios y capturas que no aparecen, lo que resta valor a la entrega.
+A5 Autoria verificable (10 %): nivel 2, 0.50 de 1.00. Tus commits son propios, pero el informe conserva textos de asistente como "Las afirmaciones tecnicas deben contrastarse antes de la entrega".
+Nota de tu aporte individual: 6.38 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 3.50 + 0.40 x 6.38 = 2.10 + 2.55 = 4.65.
+Penalizacion: Tres o mas indicios de autoria no propia (nivel C), -3.0.
+Indicio I1: redaccion uniforme y generica en todo el informe.
+Indicio I4: ejemplos y postura aplicables a cualquier sistema.
+Indicio I5: el .tex cita capturas con nombres que no existen en el repositorio.
+Indicio I6: restos de asistente en el texto ("Archivo pendiente", "deben contrastarse antes de la entrega").
+Criterio de piso registrado (sin descontar): P1: en el PDF del SGA del grupo la URL del repositorio no esta escrita completa, solo aparece como enlace bajo un texto; la guia exige la URL completa en una sola linea.
+Criterio de piso registrado (sin descontar): P2: el PDF no se regenera correctamente desde el clon limpio (20 errores por imagenes inexistentes).
+Nota final: 1.7 sobre 10.
+Recomendacion personal: Antes de entregar, compila desde un clon limpio y revisa pagina por pagina que no quede ningun texto de relleno.
+Recomendacion de equipo: Como grupo, revisen que el PDF del SGA tenga la URL escrita completa en una sola linea, no oculta bajo un enlace.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio antes del cierre.
+
+====================================================================================================
+CGMT - Manotoa Alava Carlos Alexander (trabajo 7.90 - final 8.0)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Manotoa Alava Carlos Alexander
+Equipo: CGMT. Sistema analizado: TiDB comparado con YugabyteDB.
+Repositorio revisado: https://github.com/BelindaTZ/TA-IND-01-Informe-Acad-mico-Individual---CGMT (carpeta Manotoa Alava Carlos Alexander).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones en orden, 18 paginas que compilan sin errores, README, BITACORA y la carpeta experimento con el docker-compose.
+2.1 Transparencias de distribucion: nivel 4, 0.70 de 0.70. Analizas las siete transparencias en TiDB y YugabyteDB, con el componente que oculta cada una y sus limites.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Explicas CAP y PACELC con Raft y las diferencias entre TSO y HLC, pero no citas una fuente que clasifique cada sistema.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Separas el acceso SQL con el protocolo MySQL de la coordinacion interna, sin mostrar la ruta completa de una transaccion.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas Raft por region y la dependencia de PD, y citas el incidente de TiDB Cloud de mayo de 2025, sin analizar sus causas.
+3.1 Arquitectura y diagrama propio: nivel 2, 0.25 de 0.50. El diagrama parte del boceto y lo explicas, pero tu propio texto reconoce que el bosquejo no muestra nombre ni fecha; D3 baja un nivel.
+3.2 Interaccion y experimento propios: nivel 2, 0.50 de 1.00. Las cuatro capturas muestran tu hostname y la fecha, y el experimento de terminar un TiKV se reproduce con el compose; D3 baja un nivel por el bosquejo.
+3.3 Entorno propio y lectura de fuentes: nivel 2, 0.25 de 0.50. Tienes dos ejemplos propios y tres capturas de lectura anotadas; D3 baja un nivel por el bosquejo.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas con cautela la insercion aceptada tras la caida de un TiKV y la relacionas con las replicas supervivientes.
+4.2 Analisis comparativo: nivel 4, 0.90 de 0.90. La tabla 1 compara ocho criterios de la unidad entre TiDB y YugabyteDB y discutes sus diferencias.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Reconoces el costo operativo de administrar varios servicios y cuando no conviene; las conclusiones son algo generales.
+5.1 Documento LaTeX: nivel 4, 1.00 de 1.00. El documento esta limpio, sin errores ni desbordes.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 18 referencias son reales, con 4 articulos con DOI y documentacion oficial; incluyes la declaracion de IA.
+Nota del trabajo: 7.90 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 11 commits en tu carpeta con unas 1592 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 3, 1.12 de 1.50. Trabajaste del 11 al 13 de noviembre, con un commit final a las 00:01 del 14.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Montaste TiDB con PD, TiDB Server y tres TiKV en Docker y provocaste la caida de uno.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y el experimento son tuyos y estan completos.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits son propios; declaras que Codex reviso y adapto el texto.
+Nota de tu aporte individual: 8.25 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 7.90 + 0.40 x 8.25 = 4.74 + 3.30 = 8.04.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que OpenAI Codex reviso y adapto el texto del informe; por si solo no alcanza para penalizar.
+Criterio de piso registrado (sin descontar): P1: en el PDF del SGA del grupo la URL del repositorio no esta escrita completa, solo aparece como enlace bajo un texto; la guia exige la URL completa en una sola linea.
+Criterio de piso registrado (sin descontar): P3: un commit "Compilacion final del documento" a las 00:01 del sabado 14, despues del cierre.
+Nota final: 8.0 sobre 10.
+Recomendacion personal: Fotografia el bosquejo con tu nombre y la fecha visibles: es una evidencia de autoria que no puede faltar.
+Recomendacion de equipo: Como grupo, revisen que el PDF del SGA tenga la URL escrita completa en una sola linea, no oculta bajo un enlace.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio antes del cierre.
+
+====================================================================================================
+CGMT - Toaquiza Zambrano Belinda Betzabeth (trabajo 9.38 - final 9.6)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Toaquiza Zambrano Belinda Betzabeth
+Equipo: CGMT. Sistema analizado: CockroachDB comparado con Apache Cassandra.
+Repositorio revisado: https://github.com/BelindaTZ/TA-IND-01-Informe-Acad-mico-Individual---CGMT (carpeta Toaquiza Belinda).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tu informe tiene todas las secciones, 33 paginas que compilan sin errores, README completo, BITACORA y dos experimentos con sus archivos de composicion.
+2.1 Transparencias de distribucion: nivel 4, 0.70 de 0.70. Analizas las siete transparencias en ambos motores y distingues las que son parciales y por que.
+2.2 CAP y PACELC: nivel 4, 0.70 de 0.70. Delimitas CAP y PACELC por tipo de operacion y respaldas la clasificacion con la documentacion y con tus pruebas de aislamiento.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Explicas el protocolo PostgreSQL y la coordinacion por rangos, y para Cassandra el protocolo nativo, sin un diagrama de secuencia.
+2.4 Tolerancia a fallos: nivel 4, 0.60 de 0.60. Explicas la perdida de mayoria por rango y su efecto, con evidencia propia de "replica unavailable" y "lost quorum".
+3.1 Arquitectura y diagrama propio: nivel 4, 0.50 de 0.50. Tu diagrama corresponde al esquema a mano firmado y fechado del Anexo A.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Tienes mas de 30 capturas con tu usuario, el equipo DESKTOP-OCH81AB y la fecha, y dos experimentos completos de caida y de particion.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Tus dos ejemplos, la app de Banco Pichincha y la plataforma del CNE, son vivencias concretas, y las cinco capturas de lectura estan subrayadas.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. Contrastas cada resultado con la hipotesis y explicas las diferencias entre ONE, QUORUM y la regla de mayoria.
+4.2 Analisis comparativo: nivel 4, 0.90 de 0.90. La tabla 3 compara ambos motores con los criterios de la unidad y la discusion es solida.
+4.3 Postura critica y conclusiones: nivel 4, 0.90 de 0.90. Fortalezas, limitaciones y contextos no adecuados estan argumentados con tus datos.
+5.1 Documento LaTeX: nivel 3, 0.75 de 1.00. El documento es muy extenso (33 paginas, conclusiones de 1440 palabras) y tiene un desborde; conviene sintetizar.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 17 referencias son reales, pero solo 3 son articulos con DOI y el resto es documentacion; incluyes la declaracion de IA.
+Nota del trabajo: 9.38 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 29 commits en tu carpeta con unas 2736 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 4, 1.50 de 1.50. Trabajaste el 11, el 12 y el 13 de noviembre, con 24 entradas de bitacora.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Hiciste dos experimentos, de caida de nodos y de particion de red, en dos motores distintos.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. Tu informe esta completo y sustentado.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits como BelindaTZ y tu video respaldan lo entregado.
+Nota de tu aporte individual: 10.00 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 9.38 + 0.40 x 10.00 = 5.63 + 4.00 = 9.63.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que la IA colaboro en la redaccion formal; por si solo no alcanza para penalizar.
+Criterio de piso registrado (sin descontar): P1: en el PDF del SGA del grupo la URL del repositorio no esta escrita completa, solo aparece como enlace bajo un texto; la guia exige la URL completa en una sola linea.
+Nota final: 9.6 sobre 10.
+Recomendacion personal: Sintetiza: un informe de 33 paginas con conclusiones de 1440 palabras diluye tus mejores hallazgos.
+Recomendacion de equipo: Como grupo, revisen que el PDF del SGA tenga la URL escrita completa en una sola linea, no oculta bajo un enlace.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio antes del cierre.
+
+====================================================================================================
+CGPR - Coronel Gomez Khriz Alexander (trabajo 4.42 - final 0.4)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Coronel Gomez Khriz Alexander
+Equipo: CGPR. Sistema analizado: Apache Kafka comparado con RabbitMQ.
+Repositorio revisado: https://github.com/NixonPiguave/app-dist-TA-IND-01- (carpeta KhrizCoronel).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 1, 0.25 de 1.00. El propio documento dice que conserva espacios obligatorios pendientes: falta el bosquejo, faltan las capturas de lectura y la seccion C se titula "Estado de preparacion".
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. La tabla de transparencias es correcta, pero no se apoya en ninguna observacion tuya.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Precisas que operacion se analiza en CAP y explicas acks y min.insync.replicas en PACELC.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes el protocolo binario de Kafka sobre TCP y la cooperacion entre brokers.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Analizas el reporte 1358 de kafka-go como fallo real, aunque es un problema de la biblioteca cliente y no del cluster.
+3.1 Arquitectura y diagrama propio: nivel 0, 0.00 de 0.50. No hay bosquejo a mano; faltan las capturas de ejecucion (evidencia 1) y el video (evidencia 8), asi que D3 vale 0.
+3.2 Interaccion y experimento propios: nivel 0, 0.00 de 1.00. No hay ninguna captura en tu carpeta, y el experimento declara que lo ejecuto "--operador asistente-IA"; D3 vale 0.
+3.3 Entorno propio y lectura de fuentes: nivel 0, 0.00 de 0.50. Los ejemplos estan escritos como "escenarios ilustrativos" que el texto aclara que no son experiencias tuyas, y no hay capturas de lectura.
+4.1 Interpretacion del experimento: nivel 1, 0.17 de 0.70. La interpretacion corresponde a una validacion automatizada del asistente, no a una prueba tuya.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. Comparas Kafka y RabbitMQ con colas de quorum de forma acotada y con fuentes.
+4.3 Postura critica y conclusiones: nivel 2, 0.45 de 0.90. La postura es correcta, pero las conclusiones no se derivan de una experiencia propia.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. Compila sin errores, pero el texto incluye avisos como "Pendiente obligatorio" que no deben llegar a una entrega.
+6.1 Referencias y declaracion de IA: nivel 2, 0.50 de 1.00. Las 12 referencias son reales, con solo 3 articulos con DOI; la declaracion de IA reconoce que el agente preparo el borrador.
+Nota del trabajo: 4.42 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 1, 0.62 de 2.50. Hiciste un solo commit, que sube 50 archivos de una vez.
+A2 Tiempo invertido y continuidad (15 %): nivel 0, 0.00 de 1.50. Todo tu trabajo aparece el 13 de noviembre a las 21:45, sin continuidad.
+A3 Complejidad tecnica (20 %): nivel 1, 0.50 de 2.00. La parte tecnica la ejecuto el asistente, segun tu propio informe.
+A4 Importancia para la entrega (30 %): nivel 1, 0.75 de 3.00. El informe esta incompleto y sin evidencias personales.
+A5 Autoria verificable (10 %): nivel 0, 0.00 de 1.00. No hay video y el contenido se declara generado por el agente; no puedo atribuirte la autoria.
+Nota de tu aporte individual: 1.88 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 4.42 + 0.40 x 1.88 = 2.65 + 0.75 = 3.40.
+Penalizacion: Tres o mas indicios de autoria no propia (nivel C), -3.0.
+Indicio I1: el informe lo preparo el agente Codex segun tu declaracion.
+Indicio I4: ejemplos genericos declarados como no propios.
+Indicio I6: un unico commit masivo y restos del asistente ("Pendiente obligatorio", "Estado de preparacion").
+Criterio de piso registrado (sin descontar): P4 (riesgo): el informe declara que el contenido lo genero un agente de IA y que la evidencia personal queda pendiente.
+Nota final: 0.4 sobre 10.
+Recomendacion personal: Haz tu el trabajo desde el inicio y usa la IA solo para consultar: lo que se evalua es tu ejecucion y tu analisis.
+Recomendacion de equipo: Como grupo, fijen un corte interno antes del cierre: varios commits llegaron despues de la hora.
+Recomendacion de equipo: Como grupo, verifiquen que cada integrante tenga su video y sus capturas antes de entregar.
+
+====================================================================================================
+CGPR - Garcia Sangoquiza Roger Steven (trabajo 8.47 - final 8.6)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Garcia Sangoquiza Roger Steven
+Equipo: CGPR. Sistema analizado: MongoDB (conjunto de replicas) comparado con CouchDB.
+Repositorio revisado: https://github.com/NixonPiguave/app-dist-TA-IND-01- (carpeta RogerGarcia).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 18 paginas que compilan sin errores, README, BITACORA y el experimento con sus salidas.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Clasificas las siete transparencias como totales o parciales, aunque algunas quedan solo en el juicio, sin evidencia.
+2.2 CAP y PACELC: nivel 4, 0.70 de 0.70. Explicas CAP como tension durante la particion y PACELC con write concern y read concern, con documentacion de la version 8.0.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Identificas el protocolo propio sobre TCP y la replicacion asincrona del oplog, sin diagrama de secuencia.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas los heartbeats y la eleccion, y analizas el incidente de Hugging Face de 2024, aunque no profundizas en sus causas.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. Tu diagrama TikZ parte del bosquejo firmado y fechado.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Las capturas muestran tu usuario roger, el equipo y la fecha, y el apagado del primario con escritura w=majority se puede repetir; parte de lo agregado al repositorio es posterior al cierre.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Tus ejemplos de YouTube y Discord son vivencias concretas y tienes tres capturas de lectura con su pagina.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. Interpretas con cuidado que la prueba confirma continuidad con dos miembros y no la ausencia de interrupcion.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla distingue MongoDB de CouchDB por mecanismos documentados, con discusion adecuada.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura es honesta sobre lo que el ensayo prueba y lo que no, y las conclusiones son concretas.
+5.1 Documento LaTeX: nivel 4, 1.00 de 1.00. El documento esta limpio y compila sin errores.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 16 referencias son reales, con 3 articulos con DOI y el resto documentacion oficial; incluyes la declaracion de IA.
+Nota del trabajo: 8.47 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 8 commits en tu carpeta, incluidos datos y salidas del experimento.
+A2 Tiempo invertido y continuidad (15 %): nivel 3, 1.12 de 1.50. Trabajaste el 12 y el 13 de noviembre, y el 14 despues del cierre.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Montaste un conjunto de replicas de tres miembros y provocaste la eleccion de un nuevo primario.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y el experimento son tuyos.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits y tu video respaldan lo entregado; dos commits son posteriores al cierre.
+Nota de tu aporte individual: 8.75 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 8.47 + 0.40 x 8.75 = 5.08 + 3.50 = 8.58.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que OpenCode redacto el borrador del informe; por si solo no alcanza para penalizar.
+Criterio de piso registrado (sin descontar): P3: commits del 14 de noviembre a las 00:30 y 00:43 (anexos, sustentacion y bitacora), despues del cierre.
+Nota final: 8.6 sobre 10.
+Recomendacion personal: Escribe tu el informe a partir de tus salidas: la IA puede revisar, pero no redactar el borrador.
+Recomendacion de equipo: Como grupo, fijen un corte interno antes del cierre: varios commits llegaron despues de la hora.
+Recomendacion de equipo: Como grupo, verifiquen que cada integrante tenga su video y sus capturas antes de entregar.
+
+====================================================================================================
+CGPR - Piguave Montano Nixon Antonio (trabajo 8.90 - final 8.8)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Piguave Montano Nixon Antonio
+Equipo: CGPR. Sistema analizado: NATS JetStream comparado con Apache Pulsar.
+Repositorio revisado: https://github.com/NixonPiguave/app-dist-TA-IND-01- (carpeta nixon).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 18 paginas que compilan sin errores, README, BITACORA y las evidencias de ejecucion.
+2.1 Transparencias de distribucion: nivel 4, 0.70 de 0.70. La tabla 1 revisa las siete transparencias desde el cliente y desde la operacion.
+2.2 CAP y PACELC: nivel 4, 0.70 de 0.70. Defines que operacion debe seguir siendo correcta en CAP y explicas la latencia del acuerdo del grupo en PACELC.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Explicas la mensajeria por asuntos y la comunicacion entre pares con lider y seguidores.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas Raft en JetStream y usas el analisis de Jepsen sobre NATS 2.12.1 como evidencia de fallos reales.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. El diagrama parte del bosquejo firmado y fechado, aunque se subio despues del cierre.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Siete capturas con tu usuario y la fecha muestran la caida de nats1, el cambio de lider y la recuperacion.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Tus ejemplos de WhatsApp y del SGA son vivencias concretas y tienes cuatro capturas de lectura con su pagina.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. La tabla 2 interpreta cada salida y separas lo que la prueba permite concluir de lo que no.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. Comparas con Pulsar por capas y fuentes, sin una tabla de al menos cinco criterios con discusion por criterio.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura es adecuada y acotada a tu prueba.
+5.1 Documento LaTeX: nivel 4, 1.00 de 1.00. El documento esta limpio y compila sin errores.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 14 referencias son reales, con 3 articulos con DOI y el resto documentacion y analisis tecnicos; incluyes la declaracion de IA.
+Nota del trabajo: 8.90 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 10 commits en tu carpeta con unas 1649 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 3, 1.12 de 1.50. Trabajaste el 12 y el 13, pero el informe comparativo se subio el 14 a la 01:42.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Montaste un cluster NATS de tres nodos con JetStream y provocaste la caida del lider.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y el experimento son tuyos.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits y tu video respaldan lo entregado, pero el informe llego despues del cierre.
+Nota de tu aporte individual: 8.75 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 8.90 + 0.40 x 8.75 = 5.34 + 3.50 = 8.84.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que Codex redacto borradores del informe; por si solo no alcanza para penalizar.
+Criterio de piso registrado (sin descontar): P3: el informe comparativo, la arquitectura, el README y el video se subieron el 14 de noviembre entre las 00:43 y las 02:54, despues del cierre.
+Nota final: 8.8 sobre 10.
+Recomendacion personal: Organiza el tiempo para subir el informe antes del cierre: lo agregado despues no deberia contar.
+Recomendacion de equipo: Como grupo, fijen un corte interno antes del cierre: varios commits llegaron despues de la hora.
+Recomendacion de equipo: Como grupo, verifiquen que cada integrante tenga su video y sus capturas antes de entregar.
+
+====================================================================================================
+CGPR - Reinoso Velez Eduardo David (trabajo 8.75 - final 8.7)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Reinoso Velez Eduardo David
+Equipo: CGPR. Sistema analizado: Redis Cluster comparado con Memcached.
+Repositorio revisado: https://github.com/NixonPiguave/app-dist-TA-IND-01- (carpeta reinoso).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 14 paginas que compilan sin errores, README, BITACORA y el experimento con sus salidas.
+2.1 Transparencias de distribucion: nivel 4, 0.70 de 0.70. Revisas las siete transparencias con lo que observaste en tu cluster.
+2.2 CAP y PACELC: nivel 4, 0.70 de 0.70. Explicas con la especificacion por que la replicacion asincrona abre ventanas de perdida de escrituras confirmadas, y lo mides.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Muestras el modelo cliente-servidor sincrono con tiempos reales de tu prueba C.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Clasificas las tecnicas con Kumari y Kaur y mides la promocion de la replica, sin un incidente real de produccion.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. Tu diagrama parte del boceto firmado y fechado; D3 baja un nivel porque trabajaste solo dos dias.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Tus capturas muestran tu usuario y la fecha, y tus tres pruebas miden datos reales (8,02 s de promocion, 38 de 39 escrituras); D3 baja un nivel por los dias de trabajo.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Tus ejemplos de WhatsApp y del SGA son propios y con datos, y tienes capturas de lectura con su pagina; D3 baja un nivel por los dias de trabajo.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. Interpretas cada medicion y reconoces que el tiempo de promocion se midio una sola vez.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La comparacion con Memcached indica la procedencia de cada dato, pero no supera el nivel documental.
+4.3 Postura critica y conclusiones: nivel 4, 0.90 de 0.90. Tu postura es concreta y honesta: lo que funciono, lo que te preocupa y cuando usar cada uno.
+5.1 Documento LaTeX: nivel 3, 0.75 de 1.00. El documento es claro; tiene dos desbordes de linea.
+6.1 Referencias y declaracion de IA: nivel 4, 1.00 de 1.00. Tus 9 referencias son reales y recientes, con 6 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 8.75 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 13 commits en tu carpeta con unas 1082 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 12 y el 13 de noviembre; la guia pedia al menos 3 dias.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Montaste Redis Cluster con seis nodos y mediste promocion y escrituras durante la caida.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y las mediciones son tuyos.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits y tu video respaldan lo entregado.
+Nota de tu aporte individual: 8.62 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 8.75 + 0.40 x 8.62 = 5.25 + 3.45 = 8.70.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que Claude redacto borradores del informe; por si solo no alcanza para penalizar.
+Criterios de piso: no registre incumplimientos.
+Nota final: 8.7 sobre 10.
+Recomendacion personal: Distribuye el trabajo en al menos tres dias: la continuidad tambien es evidencia de autoria.
+Recomendacion de equipo: Como grupo, fijen un corte interno antes del cierre: varios commits llegaron despues de la hora.
+Recomendacion de equipo: Como grupo, verifiquen que cada integrante tenga su video y sus capturas antes de entregar.
+
+====================================================================================================
+EJPZ - Espana Vera Kenny Isaias (trabajo 9.28 - final 9.3)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Espana Vera Kenny Isaias
+Equipo: EJPZ. Sistema analizado: Apache Kafka (modo KRaft) comparado con RabbitMQ.
+Repositorio revisado: https://github.com/Luispaca2002/TA-IND-01-Informe-Acad-mico-Individual-An-lisis-Cr-tico-de-Sistemas-Distribuidos-Unidad-1- (carpeta KENNY ISAIAS ESPANA VERA).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 23 paginas que compilan sin errores, README, BITACORA y anexos.
+2.1 Transparencias de distribucion: nivel 4, 0.70 de 0.70. Analizas las siete transparencias con la definicion de van Steen y Tanenbaum y sus limites en Kafka.
+2.2 CAP y PACELC: nivel 4, 0.70 de 0.70. Explicas que la posicion de Kafka en CAP y PACELC depende de la configuracion (acks, min.insync.replicas) y lo sustentas con Abadi.
+2.3 Modelos de comunicacion: nivel 4, 0.50 de 0.50. Distingues cliente-servidor con protocolo binario sobre TCP y la replicacion entre brokers.
+2.4 Tolerancia a fallos: nivel 4, 0.60 de 0.60. Explicas ISR y la reeleccion con KRaft, y analizas el incidente de PagerDuty de 2025.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. Tu diagrama parte del bosquejo firmado y fechado; D3 baja un nivel porque trabajaste solo dos dias.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Las capturas muestran tu usuario y la fecha, y el experimento de caida del nodo 1 con reeleccion e ISR 2,3 es claro; D3 baja un nivel por los dias de trabajo.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Tus ejemplos del SGA y de la banca son propios y tienes cuatro capturas de lectura; D3 baja un nivel por los dias de trabajo.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. Interpretas la reeleccion y descubres que la transparencia de fallos termina en el cliente con un solo servidor de arranque.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla 1 compara seis criterios de la unidad; la discusion es buena, aunque algunas celdas no citan fuente.
+4.3 Postura critica y conclusiones: nivel 4, 0.90 de 0.90. Tu postura distingue fortalezas reales, limitaciones y contextos, y las conclusiones se derivan del experimento.
+5.1 Documento LaTeX: nivel 4, 1.00 de 1.00. El documento esta limpio, sin errores ni desbordes.
+6.1 Referencias y declaracion de IA: nivel 4, 1.00 de 1.00. Tus 18 referencias son reales, con 8 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 9.28 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 23 commits en tu carpeta con unas 1375 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 12 y el 13 de noviembre; la guia pedia al menos 3 dias.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Montaste un cluster Kafka KRaft de tres nodos y provocaste la caida del lider de particion.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y el experimento son tuyos.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits como KennyVera y tu video respaldan lo entregado.
+Nota de tu aporte individual: 9.25 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 9.28 + 0.40 x 9.25 = 5.57 + 3.70 = 9.27.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que Claude genero el borrador de la redaccion; por si solo no alcanza para penalizar.
+Criterios de piso: no registre incumplimientos.
+Nota final: 9.3 sobre 10.
+Recomendacion personal: Redacta tu el texto a partir de tus resultados; tu experimento ya tiene hallazgos propios que merecen tu voz.
+Recomendacion de equipo: Como grupo, distribuyan el trabajo en al menos tres dias.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio antes del cierre.
+
+====================================================================================================
+EJPZ - Jaramillo Acosta Luis Jeremy (trabajo 6.35 - final 6.7)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Jaramillo Acosta Luis Jeremy
+Equipo: EJPZ. Sistema analizado: ClickHouse comparado con Apache Cassandra.
+Repositorio revisado: https://github.com/Luispaca2002/TA-IND-01-Informe-Acad-mico-Individual-An-lisis-Cr-tico-de-Sistemas-Distribuidos-Unidad-1- (carpeta TA-IND-01-Luis Jeremy Jaramillo Acosta).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 15 paginas que compilan sin errores, README, BITACORA y anexos.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Analizas las transparencias que ClickHouse prioriza y las que no, con algunas afirmaciones sin evidencia propia.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas ClickHouse como CP en metadatos y PC/EL en datos, con poca discusion de fuentes.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Distingues cliente-servidor TCP y HTTP, la dispersion y recoleccion entre shards y el consenso con Keeper.
+2.4 Tolerancia a fallos: nivel 2, 0.30 de 0.60. Explicas la tolerancia a caidas de replicas, pero no documentas un incidente real.
+3.1 Arquitectura y diagrama propio: nivel 1, 0.12 de 0.50. El diagrama es propio, pero el bosquejo no muestra tu nombre ni la fecha y trabajaste solo dos dias; D3 baja dos niveles.
+3.2 Interaccion y experimento propios: nivel 1, 0.25 de 1.00. Las capturas muestran whoami jeremy y la fecha, con un experimento de latencia y caida de nodo; D3 baja dos niveles.
+3.3 Entorno propio y lectura de fuentes: nivel 1, 0.12 de 0.50. Tus dos ejemplos son de tu entorno y tienes tres capturas de lectura; D3 baja dos niveles.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas las mediciones con los principios de diseno, aunque con afirmaciones mas amplias que tu prueba.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara siete criterios con Cassandra y la discusion es adecuada.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura reconoce fortalezas y compromisos; las conclusiones son extensas.
+5.1 Documento LaTeX: nivel 3, 0.75 de 1.00. El documento compila desde el clon limpio y tiene dos desbordes.
+6.1 Referencias y declaracion de IA: nivel 2, 0.50 de 1.00. Cumples el minimo con 6 referencias reales y 4 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 6.35 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 20 commits con dos cuentas, con unas 1645 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 12 y el 13 de noviembre; la guia pedia al menos 3 dias.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Montaste dos nodos ClickHouse y mediste consultas sobre un millon de filas.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. El informe y el experimento son tuyos.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits y tu video respaldan lo entregado.
+Nota de tu aporte individual: 7.12 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 6.35 + 0.40 x 7.12 = 3.81 + 2.85 = 6.66.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: redaccion uniforme y muy formal; declaras uso de Gemini solo como apoyo editorial.
+Criterios de piso: no registre incumplimientos.
+Nota final: 6.7 sobre 10.
+Recomendacion personal: Firma y fecha tu bosquejo y trabaja en al menos tres dias: son evidencias que suman sin costo.
+Recomendacion de equipo: Como grupo, distribuyan el trabajo en al menos tres dias.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio antes del cierre.
+
+====================================================================================================
+EJPZ - Paca Pilataza Luis Alberto (trabajo 4.33 - final 3.3)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Paca Pilataza Luis Alberto
+Equipo: EJPZ. Sistema analizado: MongoDB (Replica Set) comparado con Apache Cassandra.
+Repositorio revisado: https://github.com/Luispaca2002/TA-IND-01-Informe-Acad-mico-Individual-An-lisis-Cr-tico-de-Sistemas-Distribuidos-Unidad-1- (carpeta TA-IND-01-Luis Alberto Paca Pilataza).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 2, 0.50 de 1.00. El informe tiene 9 paginas con unas 1700 palabras: no llega a 5 paginas de contenido y la postura y la comparacion son minimas.
+2.1 Transparencias de distribucion: nivel 2, 0.35 de 0.70. Solo mencionas acceso y ubicacion en 79 palabras; las demas transparencias no se analizan.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas MongoDB como CP y explicas la eleccion de un nuevo primario, de forma breve.
+2.3 Modelos de comunicacion: nivel 2, 0.25 de 0.50. Describes cliente-servidor por TCP y la replicacion por oplog en 50 palabras.
+2.4 Tolerancia a fallos: nivel 2, 0.30 de 0.60. Explicas los heartbeats y la eleccion en 51 palabras, sin incidente real.
+3.1 Arquitectura y diagrama propio: nivel 1, 0.12 de 0.50. El Anexo A no aparece porque el .tex pide anexoA.jpg y el archivo es anexoA.jpeg; ademas faltan los ejemplos propios y D3 baja un nivel.
+3.2 Interaccion y experimento propios: nivel 1, 0.25 de 1.00. Las capturas muestran tu usuario y la fecha y el experimento de caida del primario es correcto pero breve; D3 baja un nivel.
+3.3 Entorno propio y lectura de fuentes: nivel 0, 0.00 de 0.50. Los ejemplos (Jovenes en Accion) estan escritos en tercera persona y no son vivencias tuyas, y faltan capturas de lectura en el anexo; D3 baja un nivel.
+4.1 Interpretacion del experimento: nivel 2, 0.35 de 0.70. Interpretas la eleccion en menos de 10 segundos, sin relacionarla con CAP ni con la configuracion.
+4.2 Analisis comparativo: nivel 2, 0.45 de 0.90. La tabla compara con Cassandra, pero la discusion es una sola oracion.
+4.3 Postura critica y conclusiones: nivel 1, 0.23 de 0.90. La postura tiene 59 palabras y las conclusiones repiten la teoria.
+5.1 Documento LaTeX: nivel 1, 0.25 de 1.00. La compilacion desde el clon limpio falla por la imagen inexistente y el README no indica el orden de compilacion con biber.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 6 referencias son reales y recientes, 5 con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 4.33 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 2, 1.25 de 2.50. Hiciste 21 commits, pero solo unas 417 lineas de contenido.
+A2 Tiempo invertido y continuidad (15 %): nivel 3, 1.12 de 1.50. Trabajaste el 11, el 12 y el 13 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 2, 1.00 de 2.00. El experimento de caida del primario es correcto pero sencillo.
+A4 Importancia para la entrega (30 %): nivel 2, 1.50 de 3.00. El informe esta incompleto en varias secciones.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits como Luispaca2002 y tu video respaldan lo entregado.
+Nota de tu aporte individual: 5.62 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 4.33 + 0.40 x 5.62 = 2.60 + 2.25 = 4.85.
+Penalizacion: Dos indicios de autoria no propia (nivel B), -1.5.
+Indicio I1: redaccion uniforme y generica ("En el panorama actual de la gestion de datos...").
+Indicio I4: ejemplos genericos en tercera persona, aplicables a cualquier sistema.
+Criterio de piso registrado (sin descontar): P2: el PDF no se regenera correctamente desde el clon limpio (anexoA.jpg no existe) y el README no documenta el orden de compilacion.
+Nota final: 3.3 sobre 10.
+Recomendacion personal: Desarrolla cada seccion con tu experiencia y tus datos: cinco paginas de contenido es el minimo, no la meta.
+Recomendacion de equipo: Como grupo, distribuyan el trabajo en al menos tres dias.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio antes del cierre.
+
+====================================================================================================
+EJPZ - Zambrano Ronquillo Heiner Ariel (trabajo 7.35 - final 6.4)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Zambrano Ronquillo Heiner Ariel
+Equipo: EJPZ. Sistema analizado: MinIO comparado con Apache HDFS.
+Repositorio revisado: https://github.com/Luispaca2002/TA-IND-01-Informe-Acad-mico-Individual-An-lisis-Cr-tico-de-Sistemas-Distribuidos-Unidad-1- (carpeta TA-IND-01-Heiner Ariel Zambrano Ronquillo).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 26 paginas que compilan sin errores, README, BITACORA y anexos.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. La tabla 1 sintetiza las transparencias, aunque varias se afirman sin evidencia de tu laboratorio.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas MinIO en CAP y PACELC con el quorum de escritura, con poca discusion de fuentes.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes la API S3 sobre HTTP y la comunicacion interna entre nodos, sin diagrama de secuencia.
+2.4 Tolerancia a fallos: nivel 2, 0.30 de 0.60. Explicas erasure coding y la autorreparacion, pero el "incidente real" es un estudio academico y no un incidente documentado.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. Tu diagrama draw.io parte del bosquejo firmado y fechado; D3 baja un nivel porque trabajaste solo dos dias.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Las capturas muestran tu prompt [Heiner@HP] y la fecha, y las seis fases del laboratorio estan documentadas; D3 baja un nivel por los dias de trabajo.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Tus ejemplos del SGA y de DeUna son propios y tienes cinco capturas de lectura; D3 baja un nivel por los dias de trabajo.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. La tabla 2 resume las metricas y las interpretas, con afirmaciones grandilocuentes que tu prueba no sostiene ("erradica con exito").
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. Comparas MinIO con HDFS con criterios tecnicos y una discusion razonable.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura tiene fortalezas, compromisos y contextos, pero las conclusiones son extensas (1178 palabras) y repetitivas.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. Compila, pero tiene tres desbordes y restos de formato Markdown (**...**) en la declaracion de IA.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 7 referencias son reales, con 6 con DOI, una de ellas de arXiv; incluyes la declaracion de IA.
+Nota del trabajo: 7.35 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 28 commits en tu carpeta con unas 1990 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 12 y el 13 de noviembre; la guia pedia al menos 3 dias.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Montaste MinIO distribuido de cuatro nodos y probaste caida, acceso degradado y autorreparacion.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y el laboratorio son tuyos.
+A5 Autoria verificable (10 %): nivel 2, 0.50 de 1.00. Tus commits son propios, pero el texto conserva marcas de asistente que debilitan la autoria.
+Nota de tu aporte individual: 8.75 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 7.35 + 0.40 x 8.75 = 4.41 + 3.50 = 7.91.
+Penalizacion: Dos indicios de autoria no propia (nivel B), -1.5.
+Indicio I1: redaccion uniforme y grandilocuente, ajena al estilo de tus commits.
+Indicio I6: restos de formato Markdown del asistente (**Antigravity (motor Gemini 3.8 Flash)**) dentro del PDF.
+Criterios de piso: no registre incumplimientos.
+Nota final: 6.4 sobre 10.
+Recomendacion personal: Revisa el PDF final buscando restos del asistente y escribe las conclusiones con tus palabras y en pocas lineas.
+Recomendacion de equipo: Como grupo, distribuyan el trabajo en al menos tres dias.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio antes del cierre.
+
+====================================================================================================
+ELMS - Emanuel Pino Juliana Romina (trabajo 5.53 - final 4.7)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Emanuel Pino Juliana Romina
+Equipo: ELMS. Sistema analizado: Redis Cluster comparado con Valkey.
+Repositorio revisado: https://github.com/ameraj2-bit/ta-ind-01-sistemas-distribuidos (carpeta Emanuel Pino Juliana Romina).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 2, 0.50 de 1.00. Faltan los ejemplos de tu entorno y el Anexo A con el bosquejo a mano.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Analizas las transparencias de acceso, ubicacion y replicacion como parciales, sin cubrir las siete.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Analizas Redis Cluster con CAP y PACELC por separado, con la especificacion oficial.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes RESP y el bus del cluster con su puerto, sin ruta de una operacion completa.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas la promocion de replicas y pruebas dos failover, sin un incidente real documentado.
+3.1 Arquitectura y diagrama propio: nivel 0, 0.00 de 0.50. Tu diagrama es propio, pero no hay bosquejo a mano, faltan los ejemplos del entorno y trabajaste solo dos dias; D3 baja tres niveles.
+3.2 Interaccion y experimento propios: nivel 0, 0.00 de 1.00. Las capturas muestran tu usuario Juliana y el failover se repite con el compose; D3 baja tres niveles.
+3.3 Entorno propio y lectura de fuentes: nivel 0, 0.00 de 0.50. La seccion "Ejemplos del entorno" contiene comandos de redis-cli en lugar de vivencias tuyas; tienes tres capturas de lectura.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas la cobertura de slots y la promocion de la replica.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La comparacion con Valkey es documental y tiene una discusion razonable.
+4.3 Postura critica y conclusiones: nivel 2, 0.45 de 0.90. La postura es breve y las conclusiones repiten el experimento.
+5.1 Documento LaTeX: nivel 3, 0.75 de 1.00. El documento compila sin errores.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 21 referencias son reales, con 8 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 5.53 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 20 commits en tu carpeta con unas 1158 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 13 de noviembre y agregaste el video el 14 despues del cierre.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Montaste Redis Cluster con seis nodos y provocaste dos failover.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. El informe es tuyo, pero le faltan secciones obligatorias.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits como JulianaEmanuel respaldan lo entregado.
+Nota de tu aporte individual: 7.12 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 5.53 + 0.40 x 7.12 = 3.32 + 2.85 = 6.17.
+Penalizacion: Dos indicios de autoria no propia (nivel B), -1.5.
+Indicio I1: declaras que la IA propuso y redacto parrafos del informe y que su intervencion fue mas amplia que una correccion.
+Indicio I4: la seccion de ejemplos del entorno no tiene contenido propio.
+Criterio de piso registrado (sin descontar): P3: el enlace del video se agrego el 14 de noviembre a las 00:16, despues del cierre.
+Nota final: 4.7 sobre 10.
+Recomendacion personal: Completa siempre los ejemplos de tu entorno y el bosquejo a mano: son las evidencias que solo tu puedes aportar.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio: dos informes dependen de nombres de archivos.
+Recomendacion de equipo: Como grupo, fijen un corte interno antes del cierre.
+
+====================================================================================================
+ELMS - Lombeida Escaleras Bryan Humberto (trabajo 8.20 - final 8.2)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Lombeida Escaleras Bryan Humberto
+Equipo: ELMS. Sistema analizado: Google Spanner comparado con DynamoDB Global Tables.
+Repositorio revisado: https://github.com/ameraj2-bit/ta-ind-01-sistemas-distribuidos (carpeta Lombeida Escaleras Bryan Humberto).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 16 paginas, README detallado, BITACORA y la carpeta del experimento.
+2.1 Transparencias de distribucion: nivel 4, 0.70 de 0.70. Analizas las transparencias por pares con su mecanismo en Spanner.
+2.2 CAP y PACELC: nivel 4, 0.70 de 0.70. Analizas la configuracion regional con tres replicas ante una particion y el costo de latencia sin particion.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Explicas el acceso por bibliotecas cliente y API, y la comunicacion con la replica lider.
+2.4 Tolerancia a fallos: nivel 4, 0.60 de 0.60. Explicas la recuperacion y analizas el incidente de Spanner de julio de 2023.
+3.1 Arquitectura y diagrama propio: nivel 2, 0.25 de 0.50. Tu diagrama draw.io parte del bosquejo firmado y fechado; D3 baja un nivel porque trabajaste solo dos dias.
+3.2 Interaccion y experimento propios: nivel 2, 0.50 de 1.00. Usaste el emulador de Spanner, que es lo que permite la guia, con capturas de whoami bryan y la fecha; D3 baja un nivel por los dias de trabajo.
+3.3 Entorno propio y lectura de fuentes: nivel 2, 0.25 de 0.50. Tu ejemplo del SGA en matricula es propio y tienes tres capturas de lectura; D3 baja un nivel por los dias de trabajo.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas la cancelacion y la confirmacion de la transferencia con los saldos, aunque el emulador no replica.
+4.2 Analisis comparativo: nivel 4, 0.90 de 0.90. La tabla 1 compara Spanner multirregional con DynamoDB MREC con criterios de la unidad y una buena discusion.
+4.3 Postura critica y conclusiones: nivel 4, 0.90 de 0.90. La postura tiene fortalezas, limitaciones y contextos en que no conviene, bien argumentados.
+5.1 Documento LaTeX: nivel 3, 0.75 de 1.00. Compila sin errores y sin desbordes.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 14 referencias son reales, con 3 articulos con DOI y dos articulos de USENIX ATC sin DOI; incluyes la declaracion de IA.
+Nota del trabajo: 8.20 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 12 commits en tu carpeta con unas 1105 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 2, 0.75 de 1.50. Trabajaste el 12 y el 13 de noviembre; la guia pedia al menos 3 dias.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Montaste el emulador y escribiste un programa de transferencias con cancelacion y confirmacion.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y el experimento son tuyos.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits como BryanLomb y tu video respaldan lo entregado.
+Nota de tu aporte individual: 8.12 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 8.20 + 0.40 x 8.12 = 4.92 + 3.25 = 8.17.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que Codex organizo y reviso la redaccion; por si solo no alcanza para penalizar.
+Criterios de piso: no registre incumplimientos.
+Nota final: 8.2 sobre 10.
+Recomendacion personal: Distribuye tu trabajo en al menos tres dias y explica en el informe las limitaciones del emulador.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio: dos informes dependen de nombres de archivos.
+Recomendacion de equipo: Como grupo, fijen un corte interno antes del cierre.
+
+====================================================================================================
+ELMS - Mera Jumbo Allison Michelle (trabajo 8.85 - final 9.3)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Mera Jumbo Allison Michelle
+Equipo: ELMS. Sistema analizado: HashiCorp Consul comparado con etcd.
+Repositorio revisado: https://github.com/ameraj2-bit/ta-ind-01-sistemas-distribuidos (carpeta mera-jumbo-allison).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 25 paginas, README, BITACORA y anexos.
+2.1 Transparencias de distribucion: nivel 4, 0.70 de 0.70. La tabla 1 justifica las siete transparencias en Consul.
+2.2 CAP y PACELC: nivel 4, 0.70 de 0.70. Explicas el consenso Raft de Consul y el modo de lectura, con la documentacion oficial.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes la API HTTP y DNS y la comunicacion Raft y gossip.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas la perdida de quorum y la retirada automatica de un servidor, sin un incidente real de produccion.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. Tu diagrama es propio, pero el Anexo A no aparece porque el .tex pide un archivo que no existe con ese nombre.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Tus capturas muestran tu usuario y la fecha, y probaste caida del lider, perdida de quorum y recuperacion.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Tus ejemplos del SGA y de WhatsApp son propios y tienes tres capturas de lectura.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. Interpretas que sin mayoria Consul rechazo escrituras y lecturas, y explicas la retirada automatica.
+4.2 Analisis comparativo: nivel 4, 0.90 de 0.90. Comparas con etcd con buen criterio y una discusion amplia.
+4.3 Postura critica y conclusiones: nivel 4, 0.90 de 0.90. La postura y las conclusiones se derivan de tus resultados.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. La compilacion desde el clon limpio da un error por la imagen inexistente y tiene tres desbordes.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 7 referencias son reales, con 4 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 8.85 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 33 commits en tu carpeta con unas 1796 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 4, 1.50 de 1.50. Trabajaste el 11, el 12 y el 13 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Montaste Consul con tres servidores y probaste perdida y recuperacion del quorum.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y el experimento son tuyos.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits como ameraj2-bit y tu video respaldan lo entregado.
+Nota de tu aporte individual: 10.00 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 8.85 + 0.40 x 10.00 = 5.31 + 4.00 = 9.31.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que Claude propuso el esqueleto del documento y los comandos; por si solo no alcanza para penalizar.
+Criterio de piso registrado (sin descontar): P2: el PDF no se regenera correctamente desde el clon limpio (figuras/anexo-a-esquema-mano.png no existe).
+Nota final: 9.3 sobre 10.
+Recomendacion personal: Compila desde un clon limpio antes de entregar: un nombre de archivo distinto te quita el anexo.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio: dos informes dependen de nombres de archivos.
+Recomendacion de equipo: Como grupo, fijen un corte interno antes del cierre.
+
+====================================================================================================
+ELMS - Silva Trivino John Jairo (trabajo 9.25 - final 9.6)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Silva Trivino John Jairo
+Equipo: ELMS. Sistema analizado: HDFS comparado con Ceph.
+Repositorio revisado: https://github.com/ameraj2-bit/ta-ind-01-sistemas-distribuidos (carpeta Silva Trivino John Jairo).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 16 paginas que compilan sin errores, README, BITACORA y la carpeta del experimento.
+2.1 Transparencias de distribucion: nivel 4, 0.70 de 0.70. Tu tabla de transparencias justifica cada una con tu experimento y las fuentes.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Analizas CAP y PACELC con fuentes, aunque partes de la version simplificada de "dos de tres".
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Explicas la comunicacion del cliente con el NameNode y los DataNodes.
+2.4 Tolerancia a fallos: nivel 4, 0.60 de 0.60. Explicas heartbeats y re-replicacion, y analizas el incidente de Hadoop documentado por LinkedIn.
+3.1 Arquitectura y diagrama propio: nivel 4, 0.50 de 0.50. Tu diagrama TikZ parte del boceto firmado y fechado y explicas su evolucion.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Once capturas muestran tu usuario, DESKTOP-HUCUSME y la fecha, y la caida de un DataNode se repite con el compose.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Tus ejemplos del SGA y de WhatsApp son propios, y tus capturas de lectura indican la pagina de cada cita.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. Interpretas que los tres bloques con tres replicas bastaron para leer sin cambiar el comando.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La comparacion con Ceph y CRUSH es buena, pero documental.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura dice donde HDFS es buena decision y donde no; las conclusiones son concretas.
+5.1 Documento LaTeX: nivel 4, 1.00 de 1.00. El documento esta limpio y compila sin errores.
+6.1 Referencias y declaracion de IA: nivel 4, 1.00 de 1.00. Tus 10 referencias son reales y recientes, con 6 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 9.25 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 45 commits en tu carpeta con unas 1287 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 4, 1.50 de 1.50. Trabajaste el 12, el 13 y el 14 de noviembre, con bitacora detallada.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Montaste HDFS con un NameNode y cuatro DataNodes con factor de replicacion 3.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y el experimento son tuyos.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits y tu video respaldan lo entregado.
+Nota de tu aporte individual: 10.00 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 9.25 + 0.40 x 10.00 = 5.55 + 4.00 = 9.55.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que Claude redacto un borrador del informe; por si solo no alcanza para penalizar.
+Criterio de piso registrado (sin descontar): P3: el enlace del video y entradas de bitacora se agregaron el 14 de noviembre a las 00:34 y 00:37, despues del cierre.
+Nota final: 9.6 sobre 10.
+Recomendacion personal: Precisa CAP: no es elegir dos de tres, sino que hacer cuando ocurre una particion.
+Recomendacion de equipo: Como grupo, compilen cada carpeta desde un clon limpio: dos informes dependen de nombres de archivos.
+Recomendacion de equipo: Como grupo, fijen un corte interno antes del cierre.
+
+====================================================================================================
+GHLZ - Garcia Bazurto Kevin Leonel (trabajo 7.10 - final 7.4)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Garcia Bazurto Kevin Leonel
+Equipo: GHLZ. Sistema analizado: Apache Cassandra comparado con CockroachDB.
+Repositorio revisado: https://github.com/Yukisan-uwo/TA-IND-01-Informe-Academico-Individual-Analisis-Critico-de-Sistemas-Distribuidos-Grupo (carpeta TA-IND-01- Garcia Bazurto Kevin Leonel).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 3, 0.75 de 1.00. Tienes las secciones pedidas en 14 paginas, pero el README no documenta el orden de compilacion.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Tu cuadro de transparencias se centra en el acceso a los datos y algunas quedan sin mecanismo concreto.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Explicas CAP y PACELC con ONE y QUORUM y la distancia entre replicas, con Ferreira et al.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes CQL sobre el protocolo nativo y el coordinador.
+2.4 Tolerancia a fallos: nivel 2, 0.30 de 0.60. Explicas las replicas y los niveles de consistencia, sin un incidente real documentado.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. Tu diagrama parte del esquema firmado y fechado.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Las capturas muestran tu usuario y la fecha, y el experimento con tres, dos y una replica activa es claro y reproducible.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Tus ejemplos del SGA y de Banco Pichincha son propios; las capturas de lectura son pocas.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas que ONE mantuvo la disponibilidad con una replica y QUORUM no.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La comparacion con CockroachDB es correcta y centrada en la lectura.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura sobre la consistencia ajustable es adecuada.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. Compila con tres desbordes y el README no indica el compilador ni el orden pdflatex, biber, pdflatex, pdflatex.
+6.1 Referencias y declaracion de IA: nivel 2, 0.50 de 1.00. Tus 7 referencias son reales, con solo 3 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 7.10 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 28 commits en tu carpeta con unas 719 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 4, 1.50 de 1.50. Trabajaste el 12 y el 13 de noviembre, y el 14 agregaste un enlace.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Montaste Cassandra con tres nodos y probaste ONE y QUORUM con fallos.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. El informe y el experimento son tuyos.
+A5 Autoria verificable (10 %): nivel 3, 0.75 de 1.00. Tus commits (cuenta YASER SX) y tu video respaldan lo entregado.
+Nota de tu aporte individual: 7.88 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 7.10 + 0.40 x 7.88 = 4.26 + 3.15 = 7.41.
+Penalizaciones: ninguna.
+Observacion (sin descuento): I1: declaras que Codex mejoro la redaccion de algunas secciones; por si solo no alcanza para penalizar.
+Criterio de piso registrado (sin descontar): P1: en el PDF del SGA del grupo la URL aparece solo como enlace "Ver en GitHub", no escrita completa en una sola linea.
+Criterio de piso registrado (sin descontar): P2: el README no documenta el orden de compilacion.
+Criterio de piso registrado (sin descontar): P3: un commit del 14 de noviembre a las 13:29 ("link adicional para redirigir al pdf"), despues del cierre.
+Nota final: 7.4 sobre 10.
+Recomendacion personal: Documenta en el README como compilar: compilador, archivo principal, orden de comandos y dependencias.
+Recomendacion de equipo: Como grupo, escriban la URL completa en el PDF del SGA en una sola linea.
+Recomendacion de equipo: Como grupo, revisen que ningun informe tenga textos de plantilla ni instrucciones sin completar.
+
+====================================================================================================
+GHLZ - Herrera Barco Humberto Aldair (trabajo 5.42 - final 2.8)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Herrera Barco Humberto Aldair
+Equipo: GHLZ. Sistema analizado: Elasticsearch comparado con Apache Solr.
+Repositorio revisado: https://github.com/Yukisan-uwo/TA-IND-01-Informe-Academico-Individual-Analisis-Critico-de-Sistemas-Distribuidos-Grupo (carpeta TA-IND-01-Herrera Barco Humberto Aldair).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 2, 0.50 de 1.00. La seccion 5 de ejemplos quedo con la plantilla sin completar ("[Completar: nombre del sistema observado]") y no hay video.
+2.1 Transparencias de distribucion: nivel 4, 0.70 de 0.70. Analizas las siete transparencias en Elasticsearch con documentacion y con tu experimento.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Separas el comportamiento ante particion y sin particion con fuentes.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Explicas la comunicacion entre nodos y el coordinador.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas la caida y recuperacion de un nodo y citas el incidente de Elastic Cloud de 2019.
+3.1 Arquitectura y diagrama propio: nivel 0, 0.00 de 0.50. Tu diagrama parte del esquema firmado, pero falta el video (evidencia 8), asi que D3 vale 0.
+3.2 Interaccion y experimento propios: nivel 0, 0.00 de 1.00. Las capturas muestran DESKTOP-3123BEK y la fecha con la caida y recuperacion de un nodo, pero sin video D3 vale 0.
+3.3 Entorno propio y lectura de fuentes: nivel 0, 0.00 de 0.50. No hay ejemplos propios y sin video D3 vale 0.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas la redistribucion de shards tras la caida.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara Elasticsearch y SolrCloud con estudios academicos.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura tiene fortalezas, limitaciones y contextos.
+5.1 Documento LaTeX: nivel 1, 0.25 de 1.00. El PDF contiene textos de plantilla sin completar y la nota "verificar que en la imagen se aprecien nombre y...", y tiene cinco desbordes.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tus 16 referencias son reales, con 6 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 5.42 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 24 commits con dos cuentas, con unas 1136 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 3, 1.12 de 1.50. Trabajaste el 11, el 12 y el 13 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Montaste Elasticsearch con tres nodos y provocaste la caida de uno.
+A4 Importancia para la entrega (30 %): nivel 2, 1.50 de 3.00. El informe queda incompleto en una seccion obligatoria.
+A5 Autoria verificable (10 %): nivel 1, 0.25 de 1.00. No hay video y el informe conserva instrucciones de la plantilla generada.
+Nota de tu aporte individual: 6.25 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 5.42 + 0.40 x 6.25 = 3.25 + 2.50 = 5.75.
+Penalizacion: Tres o mas indicios de autoria no propia (nivel C), -3.0.
+Indicio I1: estructura y redaccion de plantilla generada.
+Indicio I4: seccion de ejemplos vacia.
+Indicio I6: restos de instrucciones del asistente ("[Completar: ...]", "Nota: verificar que en la imagen...").
+Criterio de piso registrado (sin descontar): P1: en el PDF del SGA del grupo la URL aparece solo como enlace "Ver en GitHub", no escrita completa en una sola linea.
+Criterio de piso registrado (sin descontar): P4 (riesgo): el informe es una plantilla generada con instrucciones sin reemplazar.
+Nota final: 2.8 sobre 10.
+Recomendacion personal: Lee tu PDF completo antes de entregar: ninguna instruccion de plantilla debe quedar en el documento.
+Recomendacion de equipo: Como grupo, escriban la URL completa en el PDF del SGA en una sola linea.
+Recomendacion de equipo: Como grupo, revisen que ningun informe tenga textos de plantilla ni instrucciones sin completar.
+
+====================================================================================================
+GHLZ - Loor Mendoza Byron Daniel (trabajo 6.75 - final 5.5)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Loor Mendoza Byron Daniel
+Equipo: GHLZ. Sistema analizado: Discord comparado con Zulip.
+Repositorio revisado: https://github.com/Yukisan-uwo/TA-IND-01-Informe-Academico-Individual-Analisis-Critico-de-Sistemas-Distribuidos-Grupo (carpeta TA-IND-01-Loor Mendoza Byron Daniel).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 2, 0.50 de 1.00. El informe tiene 8 paginas a dos columnas y varias secciones quedan cortas, como la introduccion y la arquitectura.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Analizas las transparencias desde el cliente de Discord y Zulip.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Analizas que puede responder una operacion si parte de las replicas queda incomunicada.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes el Gateway por WebSocket y el envio por API.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Analizas la caida de autenticacion de Discord de noviembre de 2023.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. Tu bosquejo esta firmado y fechado y lo digitalizaste.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Tu prueba de corte y reconexion tiene capturas con fecha; el piloto, segun tu informe, lo opero Codex.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Tu ejemplo de reconexion en Discord es propio y tienes tres capturas de lectura.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas el orden M1, M2 y M3 tras la reconexion y reconoces que no mediste el tiempo.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla 1 compara Discord y Zulip en recuperacion de mensajes.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura y las conclusiones son concretas.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. Compila sin errores, pero la maquetacion a dos columnas mezcla el texto de secciones distintas al leerlo.
+6.1 Referencias y declaracion de IA: nivel 2, 0.50 de 1.00. Tus 11 referencias son reales, con solo 3 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 6.75 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 3, 1.88 de 2.50. Hiciste 22 commits con dos cuentas, con unas 1265 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 3, 1.12 de 1.50. Trabajaste el 11, el 12 y el 13 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 3, 1.50 de 2.00. Disenaste una prueba de corte y reconexion con dos clientes.
+A4 Importancia para la entrega (30 %): nivel 3, 2.25 de 3.00. El informe es tuyo pero breve.
+A5 Autoria verificable (10 %): nivel 2, 0.50 de 1.00. Tus commits y tu video respaldan la prueba principal; el piloto lo ejecuto el asistente.
+Nota de tu aporte individual: 7.25 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 6.75 + 0.40 x 7.25 = 4.05 + 2.90 = 6.95.
+Penalizacion: Dos indicios de autoria no propia (nivel B), -1.5.
+Indicio I1: declaras que Codex redacto partes del borrador.
+Indicio I6: el piloto del experimento lo opero el asistente, segun tu propio texto.
+Criterio de piso registrado (sin descontar): P1: en el PDF del SGA del grupo la URL aparece solo como enlace "Ver en GitHub", no escrita completa en una sola linea.
+Nota final: 5.5 sobre 10.
+Recomendacion personal: Ejecuta tu todas las pruebas y amplia el informe a una columna para que se lea en orden.
+Recomendacion de equipo: Como grupo, escriban la URL completa en el PDF del SGA en una sola linea.
+Recomendacion de equipo: Como grupo, revisen que ningun informe tenga textos de plantilla ni instrucciones sin completar.
+
+====================================================================================================
+GHLZ - Zambrano Parraga Luis Mario (trabajo 8.95 - final 9.4)
+====================================================================================================
+TA-IND-01 - Informe Academico: analisis critico de un sistema distribuido real (modalidad grupal, Unidad 1)
+Estudiante: Zambrano Parraga Luis Mario
+Equipo: GHLZ. Sistema analizado: RabbitMQ (colas de quorum) comparado con Apache Kafka.
+Repositorio revisado: https://github.com/Yukisan-uwo/TA-IND-01-Informe-Academico-Individual-Analisis-Critico-de-Sistemas-Distribuidos-Grupo (carpeta TA-IND-01-Zambrano Parraga Luis Mario).
+Formula del encuadre: Nota individual = 0.60 x nota del trabajo + 0.40 x nota de tu aporte individual.
+Aclaracion: el repositorio es del grupo, pero cada integrante tiene su propio informe; por eso la nota del trabajo corresponde a tu informe, calificado con la rubrica de la guia.
+Regla adicional: un estudiante sin aportes verificables en el repositorio obtiene nota final CERO.
+
+PARTE 1. NOTA DEL TRABAJO (tu informe)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. Tienes todas las secciones, 23 paginas que compilan sin errores, README, BITACORA y una carpeta de experimento muy completa.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Analizas las transparencias con Chalabi y Slimani, con algunas sin evidencia propia.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Explicas CAP y PACELC con las colas de quorum, sin una clasificacion final explicita.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes AMQP, el intercambio y las colas, y la comunicacion del cluster.
+2.4 Tolerancia a fallos: nivel 4, 0.60 de 0.60. Explicas la recuperacion de la cola de quorum y analizas el postmortem de Clever Cloud de agosto de 2024.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. Tu diagrama parte del esquema; podrias explicar mejor la evolucion.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Veintisiete capturas muestran tu usuario y la fecha, con mensajeria, caida del lider y perdida y recuperacion del quorum.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Tus ejemplos del SGA y del repositorio compartido son propios y tienes nueve capturas de lectura.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. Interpretas cada falla controlada y la recuperacion de mensajes confirmados.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. Comparas con Kafka con fuentes cientificas y aclaras que Kafka no lo ejecutaste.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura es concreta; las conclusiones son algo extensas.
+5.1 Documento LaTeX: nivel 4, 1.00 de 1.00. El documento esta limpio y compila sin errores.
+6.1 Referencias y declaracion de IA: nivel 4, 1.00 de 1.00. Tus 10 referencias son reales y recientes, con 7 articulos con DOI; incluyes la declaracion de IA.
+Nota del trabajo: 8.95 sobre 10.
+
+PARTE 2. NOTA DE TU APORTE INDIVIDUAL (medida en el historial del repositorio)
+A1 Cantidad de trabajo (25 %): nivel 4, 2.50 de 2.50. Hiciste 32 commits en tu carpeta con unas 1673 lineas.
+A2 Tiempo invertido y continuidad (15 %): nivel 4, 1.50 de 1.50. Trabajaste el 11, el 12 y el 13 de noviembre.
+A3 Complejidad tecnica (20 %): nivel 4, 2.00 de 2.00. Montaste RabbitMQ con tres nodos, colas de quorum y scripts en Python.
+A4 Importancia para la entrega (30 %): nivel 4, 3.00 de 3.00. El informe y el experimento son tuyos.
+A5 Autoria verificable (10 %): nivel 4, 1.00 de 1.00. Tus commits y tu video respaldan lo entregado.
+Nota de tu aporte individual: 10.00 sobre 10.
+
+PARTE 3. NOTA FINAL
+Nota previa: 0.60 x 8.95 + 0.40 x 10.00 = 5.37 + 4.00 = 9.37.
+Penalizaciones: ninguna.
+Criterio de piso registrado (sin descontar): P1: en el PDF del SGA del grupo la URL aparece solo como enlace "Ver en GitHub", no escrita completa en una sola linea.
+Nota final: 9.4 sobre 10.
+Recomendacion personal: Cierra el analisis CAP y PACELC con una clasificacion explicita para tu configuracion.
+Recomendacion de equipo: Como grupo, escriban la URL completa en el PDF del SGA en una sola linea.
+Recomendacion de equipo: Como grupo, revisen que ningun informe tenga textos de plantilla ni instrucciones sin completar.
+
+####################################################################################################
+OBSERVACIONES PARA EL DOCENTE - TA-IND-01 grupal (SPA 2026-2027)
+Fecha de revision: 17 de noviembre de 2026. Repositorios clonados ese dia; se evaluaron los commits hasta esa fecha.
+
+1. Criterios aplicados
+Los 5 grupos usaron un repositorio compartido con una carpeta y un informe propio por estudiante (20 informes, cada uno sobre un sistema distinto).
+Por su indicacion, la rubrica de la guia se aplico al informe de cada estudiante como nota del trabajo (60 %), y el aporte A1-A5 se midio con sus propios commits (40 %).
+Regla adicional aplicada: cero aportes verificables implica nota final cero; ningun estudiante quedo en ese caso (Coronel tiene un solo commit, que sube 50 archivos).
+Los criterios de piso se registraron sin descontar, como en las evaluaciones anteriores; la tabla del punto 3 muestra a quienes les corresponderia CERO si se aplican.
+Penalizaciones por indicios: nivel B (-1.5) con dos indicios y nivel C (-3.0) con tres o mas, segun el encuadre.
+
+2. Hora de cierre
+La guia dice "viernes 13 de noviembre, 00:00", pero todos los grupos trabajaron la noche del viernes 13 y sus PDF del SGA estan fechados el 13.
+Tome como cierre efectivo el sabado 14 a las 00:00 (fin del viernes 13); con el cierre literal del viernes a las 00:00, los 20 estudiantes tendrian contenido fuera de plazo.
+Recomiendo corregir en la guia y en el SGA el texto del cierre a "viernes 13 de noviembre de 2026, 23:59" para que coincida con lo ejecutado.
+
+3. Criterios de piso registrados (sin descontar)
+P1 PDF del SGA: CGMT y GHLZ muestran la URL solo como enlace bajo un texto, no escrita completa (8 estudiantes); CGPR, EJPZ y ELMS cumplen.
+P2 PDF reproducible: Giraldo (20 errores, capturas con nombres inexistentes), Paca (anexoA.jpg no existe; README sin orden de compilacion), Mera (anexo-a-esquema-mano.png no existe), Garcia Bazurto (README sin orden de compilacion).
+P3 fuera de plazo (despues del sabado 14 00:00): Piguave (informe subido 01:42 del 14), Garcia Sangoquiza (anexos 00:30 y 00:43), Manotoa (00:01), Emanuel (video 00:16), Silva (00:34 y 00:37), Garcia Bazurto (13:29 del 14).
+P4 riesgo: Coronel (informe declarado como borrador del agente Codex con evidencia personal "pendiente", sin capturas, sin video, un solo commit) y Herrera (plantilla con "[Completar: ...]" sin reemplazar).
+P5 formativas: no lo verifique; conviene cruzar con las entregas de FORM-FB-01 (individual) y FORM-AC-01 (grupal), en especial los 8 casos con piso en FORM-FB-01.
+
+4. Verificacion de referencias
+Se verificaron en Crossref las 102 referencias citadas con DOI; 84 coinciden sin observaciones.
+Las otras 18 se resolvieron en la fuente oficial y ninguna es P4: autores completos en JISEM (Dubey y Saxena) y JSW (Shi et al., 6 autores), titulo con subtitulo (Dynamo, DynamoDB), numeros de articulo ACM, arXiv 2502.01981 (DataCite) y Journal of Software chino 10.13328 (ChinaDOI).
+Revise por muestreo referencias web (Jepsen NATS 2.12.1, CouchDB 3.5.3, incidente TiDB Cloud 2025); todas existen.
+
+5. Compilacion
+Compile los 20 informes desde clones limpios con pdflatex y biber.
+Siete informes usan la cadena "artno" de biblatex-ieee reciente, que no existe en mi TeX Live 2023; la emule para no atribuir a los estudiantes un error de mi entorno.
+Los errores reales de los estudiantes son solo los de P2.
+
+6. Integridad y uso de IA
+Casi todos declaran que un asistente (Codex, Claude, OpenCode, Gemini) redacto borradores del informe; con un solo indicio no corresponde descuento, pero lo deje anotado en cada informe.
+Penalizaciones aplicadas: nivel C a Giraldo, Coronel y Herrera; nivel B a Zambrano Ronquillo, Paca, Emanuel y Loor.
+Sistemas repetidos entre estudiantes: Kafka (Coronel y Espana), Redis Cluster (Reinoso y Emanuel), MongoDB (Garcia Sangoquiza y Paca), y el mismo par Cassandra-CockroachDB (Toaquiza y Garcia Bazurto); hay que revisar el orden de registro en el foro.
+La cuenta "YASER SX" hizo los commits de la carpeta de Garcia Bazurto; conviene confirmar que es su cuenta.
+
+7. Videos
+Hay enlace de video en 18 carpetas; no lo hay en Coronel (dice "PENDIENTE") ni en Herrera.
+No vi el contenido de los videos: conviene confirmar el rostro, la voz y que el estudiante no lea.
+
+8. Notas si se aplicaran los criterios de piso (columna "con pisos")
+CGMT | Calderon Saltos Joseph Alexander | final 8.8 | pisos: P1 | con pisos: 0.0
+CGMT | Giraldo Cagua Diego Jose | final 1.7 | pisos: P1,P2 | con pisos: 0.0
+CGMT | Manotoa Alava Carlos Alexander | final 8.0 | pisos: P1,P3 | con pisos: 0.0
+CGMT | Toaquiza Zambrano Belinda Betzabeth | final 9.6 | pisos: P1 | con pisos: 0.0
+CGPR | Coronel Gomez Khriz Alexander | final 0.4 | pisos: P4 (riesgo) | con pisos: 0.0
+CGPR | Garcia Sangoquiza Roger Steven | final 8.6 | pisos: P3 | con pisos: 0.0
+CGPR | Piguave Montano Nixon Antonio | final 8.8 | pisos: P3 | con pisos: 0.0
+CGPR | Reinoso Velez Eduardo David | final 8.7 | pisos: - | con pisos: 8.7
+EJPZ | Espana Vera Kenny Isaias | final 9.3 | pisos: - | con pisos: 9.3
+EJPZ | Jaramillo Acosta Luis Jeremy | final 6.7 | pisos: - | con pisos: 6.7
+EJPZ | Paca Pilataza Luis Alberto | final 3.3 | pisos: P2 | con pisos: 0.0
+EJPZ | Zambrano Ronquillo Heiner Ariel | final 6.4 | pisos: - | con pisos: 6.4
+ELMS | Emanuel Pino Juliana Romina | final 4.7 | pisos: P3 | con pisos: 0.0
+ELMS | Lombeida Escaleras Bryan Humberto | final 8.2 | pisos: - | con pisos: 8.2
+ELMS | Mera Jumbo Allison Michelle | final 9.3 | pisos: P2 | con pisos: 0.0
+ELMS | Silva Trivino John Jairo | final 9.6 | pisos: P3 | con pisos: 0.0
+GHLZ | Garcia Bazurto Kevin Leonel | final 7.4 | pisos: P1,P2,P3 | con pisos: 0.0
+GHLZ | Herrera Barco Humberto Aldair | final 2.8 | pisos: P1,P4 (riesgo) | con pisos: 0.0
+GHLZ | Loor Mendoza Byron Daniel | final 5.5 | pisos: P1 | con pisos: 0.0
+GHLZ | Zambrano Parraga Luis Mario | final 9.4 | pisos: P1 | con pisos: 0.0

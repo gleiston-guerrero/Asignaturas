@@ -1,0 +1,696 @@
+INFORMES DE EVALUACION - TA-IND-01 Informe academico individual (paralelo B)
+Aplicaciones Distribuidas (ISR-701) - SPA 2026-2027 - Docente: Gleiston C. Guerrero-Ulloa, PhD
+
+RESUMEN
+Estudiante | Sistema | Previa | Penal. | Piso registrado | Final
+Apunte Pazmino Washington German | ClickHouse frente a Elasticsearch | 8.00 | -1.5 | - | 6.5
+Benites Perez Dariem Alberto | Kubernetes frente a Docker Swarm | 7.75 | -3.0 | - | 4.8
+Bueno Troya Erwin Daniel | CockroachDB frente a Google Spanner | 8.13 | -1.5 | - | 6.6
+Castro Coello Mario Sebastian | Discord frente a Matrix | 8.00 | -3.0 | - | 5.0
+Cedeno Intriago Jilmar Jesus | SeaweedFS frente a MinIO | 5.80 | -3.0 | - | 2.8
+Loor Suarez Jordan Josue | etcd frente a Apache ZooKeeper | 5.25 | -3.0 | P3 | 2.3
+Loor Suarez Steffanny del Rocio | Syncthing frente a Unison | 5.90 | - | - | 5.9
+Macias Vasquez Cesar Abrahan | InfluxDB frente a Prometheus | 3.05 | -3.0 | P1, P4 | 0.1
+Mendoza Bermello Angello Agustin | HDFS frente a Ceph | 8.33 | - | P3, P5 | 8.3
+Mendoza Villarroel Elian Jossue | Netflix frente a Spotify | 8.03 | - | P1 | 8.0
+Munoz Vera Melanie Michelle | Apache Cassandra frente a MongoDB | 7.50 | -1.5 | - | 6.0
+Pozo Castillo Steven Fernando | Apache HDFS frente a Ceph | 7.98 | -1.5 | P5 (riesgo) | 6.5
+Quintero Rico Luis David | NATS JetStream frente a Apache Pulsar | 7.25 | -3.0 | P5 (riesgo) | 4.3
+Rivas Piloso Dayver Yahir | Apache Kafka frente a RabbitMQ | 7.50 | -3.0 | P3, P5 | 4.5
+Sanchez Vera Darwin Joel | Redis Cluster frente a Hazelcast | 7.63 | -1.5 | - | 6.1
+Zambrano Trivino Leonel Leonidas | HashiCorp Consul frente a Netflix Eureka | 6.63 | -1.5 | P1, P3 | 5.1
+Zambrano Yong Angel Daniel | Apache Cassandra frente a Apache HBase | 7.63 | -1.5 | P3 | 6.1
+
+====================================================================================================
+B - Apunte Pazmino Washington German (final 6.5)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Apunte Pazmino Washington German
+Paralelo B, modalidad individual. Sistema analizado: ClickHouse frente a Elasticsearch.
+Repositorio revisado: https://github.com/Washinton-Apunte/TA-IND-01-ClickHouse
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados en orden, unas 14 paginas de contenido, resumen de 182 palabras y un repositorio con fuentes, PDF, experimento, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. La Tabla 1 recorre las siete transparencias con su mecanismo y explicas con tu prueba A y con [1, p. 3736] por que la de replicacion se rompe. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas ClickHouse como PA/EL, lo respaldas con el articulo de VLDB y muestras que insert_quorum hace la eleccion configurable por escritura. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Distingues cliente-servidor sincrono, copia asincrona entre replicas coordinada por Keeper y Raft entre nodos de Keeper, con puertos de tu propio cluster. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas la dependencia de Keeper y su mayoria y analizas el incidente de Cloudflare del 18 de noviembre de 2025 con su fuente. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+3.1 Arquitectura y diagrama propio: nivel 4, 0.50 de 0.50. El diagrama en draw.io es propio y explicas como evoluciono desde el bosquejo a mano del Anexo A.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Hay once capturas con tu usuario C:\Users\Washington y la fecha del 13 de noviembre, y cuatro pruebas (A a D) con comandos y salidas en la carpeta experimento.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Das tres ejemplos de primera mano (SGA, WhatsApp y banca movil) ligados a un concepto, y tres capturas de lectura con la pagina indicada.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas el atraso de 46 s como consistencia eventual y el aumento de latencia de 4,1 veces con quorum como el costo de PACELC. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara ClickHouse con Elasticsearch en mas de cinco criterios con fuente por celda, y la discusion explica las diferencias de diseno. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas fortalezas, limitaciones y contextos no adecuados, pero la afirmacion de que lo comprobaste en un proyecto con mas de 3 millones de registros no tiene respaldo en el repositorio. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento compila sin errores ni referencias sin resolver, pero tu declaracion dice que Claude redacto los textos a partir de tus respuestas; la redaccion no es propia.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes siete referencias IEEE, seis con DOI verificado y todas recientes; la declaracion de IA nombra herramienta y modelo, pero solo explica la verificacion de las referencias y no la del texto.
+Nota del informe: 320 de 400 puntos ponderados = 8.00 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 8.00 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 2.
+Indicio: tu declaracion dice que Claude redacto los textos del informe a partir de tus respuestas (redaccion por IA declarada).
+Indicio: la redaccion es uniforme y pulida de principio a fin, sin variaciones de estilo propias de un borrador (I1).
+Penalizacion: nivel B, -1.5. Calculo: 8.00 - 1.5 = 6.50.
+Criterios de piso: no registre incumplimientos.
+Nota final: 6.5 sobre 10 (en proceso). Aporte al primer corte: 6.5 / 10 x 0.75 = 0.49 puntos.
+Recomendacion: Redacta tu mismo cada seccion y usa la IA solo para revisar; asi tu buen experimento se refleja tambien en la nota de redaccion.
+Recomendacion: Respalda en el repositorio toda afirmacion sobre experiencias previas, como el proyecto de 3 millones de registros.
+Recomendacion: Explica en la declaracion de IA como verificaste el texto generado, no solo las referencias.
+
+====================================================================================================
+B - Benites Perez Dariem Alberto (final 4.8)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Benites Perez Dariem Alberto
+Paralelo B, modalidad individual. Sistema analizado: Kubernetes frente a Docker Swarm.
+Repositorio revisado: https://github.com/DALBEZ-ROG/AD-TA-IND-01-Benites
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 11 paginas de contenido, resumen de 193 palabras y un repositorio completo con experimento, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Analizas las siete transparencias aplicadas a Kubernetes con su mecanismo (Services, DNS de CoreDNS, Deployments) y fuente. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas el plano de control como PC/EC por etcd linealizable y senalas que las lecturas serializables cambian consistencia por latencia. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Explicas la API HTTP sincrona y la reconciliacion asincrona del plano de control con el ejemplo de kubectl create y rollout status. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas la deteccion por latidos (50 s) y la tolerancia de 300 s con sus fuentes y citas el incidente de Datadog del 8 de marzo de 2023. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+3.1 Arquitectura y diagrama propio: nivel 2, 0.25 de 0.50. El diagrama en draw.io es coherente con el texto, pero tu declaracion dice que Claude hizo una imagen de referencia de la arquitectura que luego redibujaste a mano; el esquema del Anexo A no es tu primer bosquejo propio.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Hay diez capturas con tu usuario dbeni y tu equipo DALBEZ-ROG-PC, y el experimento de caida de un nodo tiene comandos y la salida completa del monitor en el repositorio.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Das dos ejemplos de primera mano (SGA y banca movil de Banco Pichincha) y tres capturas de lectura con su pagina.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Contrastas los 50 s y los 300 s medidos con los valores documentados y explicas la transparencia de fallos parcial durante 5 min 52 s. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara Kubernetes con Docker Swarm en mas de cinco criterios con fuente y la discusion explica cuando conviene cada uno. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas fortalezas, limitaciones y el compromiso de reducir la tolerancia a la marca unreachable, con conclusiones derivadas del experimento. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento compila sin errores ni desbordes, pero tu declaracion dice que Claude redacto el borrador del informe; la redaccion no es propia.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes dieciocho referencias, siete con DOI verificado, pero diez paginas de documentacion sin fecha y una fuente de 2012; la declaracion de IA es completa.
+Nota del informe: 310 de 400 puntos ponderados = 7.75 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 7.75 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 3.
+Indicio: tu declaracion dice que Claude redacto el borrador del informe a partir de tus datos (redaccion por IA declarada).
+Indicio: la redaccion es uniforme y pulida en todas las secciones (I1).
+Indicio: el esquema "a mano" del Anexo A redibuja una imagen de referencia que hizo Claude, por lo que la evidencia E7 no muestra tu propio primer bosquejo.
+Penalizacion: nivel C, -3.0. Calculo: 7.75 - 3.0 = 4.75.
+Criterios de piso: no registre incumplimientos.
+Nota final: 4.8 sobre 10 (en proceso). Aporte al primer corte: 4.8 / 10 x 0.75 = 0.36 puntos.
+Recomendacion: Dibuja tu primer bosquejo antes de consultar a la IA: esa evidencia debe mostrar como pensaste tu la arquitectura.
+Recomendacion: Redacta tu mismo el informe a partir de tus datos; tu experimento es solido y merece una redaccion propia.
+Recomendacion: Agrega fecha de consulta y version a cada pagina de documentacion que citas.
+
+====================================================================================================
+B - Bueno Troya Erwin Daniel (final 6.6)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Bueno Troya Erwin Daniel
+Paralelo B, modalidad individual. Sistema analizado: CockroachDB frente a Google Spanner.
+Repositorio revisado: https://github.com/Troyano2004/TA-IND-01
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 10 paginas de contenido, resumen de 196 palabras y un repositorio completo con docker-compose, scripts, salidas, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Recorres las siete transparencias con su mecanismo, como el gateway que reenvia al leaseholder y la localidad declarada en multirregion. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas CockroachDB como PC/EC, lo respaldas con tus mediciones y senalas que AS OF SYSTEM TIME permite elegir latencia. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes el protocolo PostgreSQL entre cliente y gateway, RPC y gossip entre nodos y la ronda de consenso de cada escritura. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas el quorum de Raft por rango, pero como incidente usas la caida de la banca movil de Banco Pichincha, que no es un incidente de CockroachDB.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. El diagrama en TikZ representa tu cluster, pero tu declaracion dice que Claude paso tu bosquejo a TikZ; no es un diagrama elaborado por ti.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Hay siete capturas con tu usuario erwin y las fechas del 13 y 14 de noviembre, y los scripts 01 a 04 con sus salidas y latencias.csv estan en el repositorio.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Das dos ejemplos de primera mano (SGA y banca movil) y tres capturas de lectura con su pagina.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Explicas por que con dos nodos caidos la consulta se cancelo a los 11,2 s y por que la lectura consistente espero 5,4 s mas que la historica. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara CockroachDB con Spanner en mas de cinco criterios con fuente y la discusion senala el reloj como diferencia de fondo. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas la garantia serializable frente al costo de latencia y los contextos en que no conviene, con datos de tu experimento. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento esta ordenado y tu PDF no tiene referencias sin resolver, pero tu declaracion dice que Claude redacto un borrador del informe; la redaccion no es propia.
+6.1 Referencias y declaracion de IA: nivel 4, 1.00 de 1.00. Tienes siete referencias IEEE, seis con DOI verificado y todas recientes; la declaracion de IA es completa.
+Nota del informe: 325 de 400 puntos ponderados = 8.13 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 8.13 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 2.
+Indicio: tu declaracion dice que Claude redacto un borrador del informe a partir de tus capturas y resultados (redaccion por IA declarada).
+Indicio: la redaccion es uniforme y pulida en todas las secciones (I1).
+Penalizacion: nivel B, -1.5. Calculo: 8.13 - 1.5 = 6.63.
+Criterios de piso: no registre incumplimientos.
+Nota final: 6.6 sobre 10 (en proceso). Aporte al primer corte: 6.6 / 10 x 0.75 = 0.49 puntos.
+Recomendacion: Redacta tu mismo cada seccion; usa la IA solo para revisar lo que escribiste.
+Recomendacion: Elabora tu mismo el diagrama final a partir de tu bosquejo.
+Recomendacion: Agrega \usetikzlibrary{babel} al preambulo: con babel en espanol el diagrama TikZ puede fallar al compilar en otras instalaciones.
+
+====================================================================================================
+B - Castro Coello Mario Sebastian (final 5.0)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Castro Coello Mario Sebastian
+Paralelo B, modalidad individual. Sistema analizado: Discord frente a Matrix.
+Repositorio revisado: https://github.com/reyshadow0/isr701-ta-ind-01
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 12 paginas de contenido, resumen de 191 palabras y un repositorio completo con experimento, resultados, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. La Tabla 1 recorre las siete transparencias en Discord con su mecanismo y su fuente. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas el uso de QUORUM como PC/EC y reconoces con honestidad que tu experimento no mide ese costo porque la mediana contradice al promedio. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Muestras el recorrido de un mensaje: HTTPS hacia la API y WebSocket desde la gateway, con tus capturas de Discord web. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Clasificas las tecnicas en reactivas y proactivas y analizas el incidente documentado de las colas de los guilds. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+3.1 Arquitectura y diagrama propio: nivel 4, 0.50 de 0.50. El diagrama en draw.io es propio y explicas su evolucion desde el esquema a mano, incluido lo que marcaste con signo de pregunta.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Hay capturas con tu usuario PC@REYSHADOW y fechas del 11 al 13 de noviembre, y el experimento con ScyllaDB tiene comandos y seis archivos de resultados.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Das dos ejemplos de primera mano (GitHub y la subida de tu caratula al SGA) y tres capturas de lectura con su pagina.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas la falla de QUORUM con dos nodos caidos frente a ONE, y explicas por que la latencia no es concluyente en una sola maquina. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara Discord con Matrix en mas de cinco criterios y la discusion contrasta el control centralizado con la federacion. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas fortalezas y tres limitaciones con fuente, y las conclusiones salen de las capturas y del experimento. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento compila sin errores, pero tu declaracion dice que Claude redacto el borrador de las secciones, y la tabla de la declaracion de IA se descuadra y mezcla las columnas.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes once referencias, siete con DOI verificado; dos entradas de blog son de 2017, aunque las usas como fuente historica; la declaracion de IA es detallada.
+Nota del informe: 320 de 400 puntos ponderados = 8.00 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 8.00 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 3.
+Indicio: tu declaracion dice que Claude redacto el borrador de las secciones del informe (redaccion por IA declarada).
+Indicio: la redaccion es uniforme y pulida en todas las secciones (I1).
+Indicio: tu declaracion dice que Claude redacto la bitacora del 13 de noviembre, que es evidencia de tu propio trabajo (E5).
+Penalizacion: nivel C, -3.0. Calculo: 8.00 - 3.0 = 5.00.
+Criterios de piso: no registre incumplimientos.
+Nota final: 5.0 sobre 10 (en proceso). Aporte al primer corte: 5.0 / 10 x 0.75 = 0.38 puntos.
+Recomendacion: Escribe tu mismo la bitacora y las secciones; son la evidencia de que el trabajo es tuyo.
+Recomendacion: Revisa en el PDF que las tablas largas no se descuadren; usa xltabular con columnas de ancho fijo.
+Recomendacion: Repite la medicion de latencia con mas corridas antes de concluir sobre PACELC.
+
+====================================================================================================
+B - Cedeno Intriago Jilmar Jesus (final 2.8)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Cedeno Intriago Jilmar Jesus
+Paralelo B, modalidad individual. Sistema analizado: SeaweedFS frente a MinIO.
+Repositorio revisado: https://github.com/jcedenoi4/TA-IND-01
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 3, 0.75 de 1.00. El informe tiene los apartados pedidos y el resumen tiene 179 palabras, pero el contenido llega justo a cinco paginas muy comprimidas y el repositorio se construyo en solo dos dias.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. El Cuadro 1 cubre las siete transparencias, pero casi todas quedan como "no comprobada" o "parcial" sin explicar el mecanismo de SeaweedFS.
+2.2 CAP y PACELC: nivel 2, 0.35 de 0.70. No llegas a clasificar el sistema: dices que la prueba "no demuestra CAP" y no ubicas a SeaweedFS en PACELC con evidencia de la documentacion.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Identificas HTTP/JSON, gRPC y la coordinacion entre roles, pero sin la ruta de una operacion concreta.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas la replicacion 001, los latidos y el issue 6700 como incidente, aunque en forma de lista de salvedades.
+3.1 Arquitectura y diagrama propio: nivel 2, 0.25 de 0.50. El diagrama existe y hay esquema a mano, pero tu declaracion dice que usaste la guia de Codex para el bosquejo; ademas falta el historial en tres dias (E6), por lo que baja un nivel.
+3.2 Interaccion y experimento propios: nivel 1, 0.25 de 1.00. Las capturas muestran DESKTOP-GTVSQ58 y la fecha, pero tu declaracion dice que Codex configuro y ejecuto el laboratorio; el experimento no es tuyo, y por la falta de E6 baja un nivel mas.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Das dos ejemplos de tu entorno (SGA y WhatsApp) y tres capturas de lectura, y por la falta de E6 baja un nivel.
+4.1 Interpretacion del experimento: nivel 2, 0.35 de 0.70. La interpretacion esta llena de salvedades ("no demuestra", "sin demostrar") y tu declaracion dice que Codex asistio en la interpretacion.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla tiene mas de cinco criterios, pero es documental, sin fuente por celda, y la discusion es breve.
+4.3 Postura critica y conclusiones: nivel 2, 0.45 de 0.90. La postura y las conclusiones repiten las salvedades del experimento, y tu declaracion dice que Codex asistio en las conclusiones.
+5.1 Documento LaTeX: nivel 1, 0.25 de 1.00. El documento compila, pero la redaccion es telegrafica, comprimida y uniforme, con el estilo de un asistente y no el tuyo.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes nueve referencias, seis con DOI verificado; la declaracion de IA nombra un modelo ("GPT-6.1 Sol") pero no explica como verificaste lo que produjo.
+Nota del informe: 232 de 400 puntos ponderados = 5.80 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 5.80 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 4.
+Indicio: tu declaracion dice que Codex asistio en la redaccion, la interpretacion, la comparacion y las conclusiones (redaccion por IA declarada).
+Indicio: tu declaracion dice que Codex configuro y ejecuto el laboratorio, que debia ser tu experimento propio.
+Indicio: todo el repositorio entro en dos dias con nueve commits (I6).
+Indicio: la redaccion es telegrafica y uniforme, con salvedades repetidas propias de un asistente (I1).
+Penalizacion: nivel C, -3.0. Calculo: 5.80 - 3.0 = 2.80.
+Criterios de piso: no registre incumplimientos.
+Nota final: 2.8 sobre 10 (no logrado). Aporte al primer corte: 2.8 / 10 x 0.75 = 0.21 puntos.
+Recomendacion: Ejecuta tu mismo cada comando del experimento y guarda la salida tal como la ves en tu terminal.
+Recomendacion: Escribe con tus palabras la interpretacion y las conclusiones; toma una posicion y respaldala con tus datos.
+Recomendacion: Empieza el repositorio desde el primer dia y haz commits en al menos tres dias distintos.
+
+====================================================================================================
+B - Loor Suarez Jordan Josue (final 2.3)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Loor Suarez Jordan Josue
+Paralelo B, modalidad individual. Sistema analizado: etcd frente a Apache ZooKeeper.
+Repositorio revisado: https://github.com/jloors13/TA-IND-01-etcd-zookeeper
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 2, 0.50 de 1.00. Tienes los apartados, pero el Anexo B son tres recuadros que dicen "PENDIENTE" y las salidas del experimento en REGISTRO.md dicen "SALIDA ORIGINAL PENDIENTE"; ademas el contenido se extiende a 33 paginas repetitivas.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Analizas las siete transparencias en subsecciones aplicadas a etcd, aunque varias repiten la misma idea.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Explicas la preferencia por consistencia con quorum y las lecturas serializables, aplicadas a tu cluster.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes gRPC, el lider de Raft y la comparacion con ZooKeeper, pero sin la ruta de una operacion concreta.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas quorum, caida del lider y recuperacion, y citas el analisis del defecto de datos de etcd 3.5.
+3.1 Arquitectura y diagrama propio: nivel 1, 0.12 de 0.50. Hay diagrama, pero el Anexo A es una "reconstruccion manual del bosquejo", no tu primer esquema, y falta la lectura demostrable (E4), por lo que baja un nivel.
+3.2 Interaccion y experimento propios: nivel 1, 0.25 de 1.00. Las capturas muestran tu usuario jhosu, pero las salidas del experimento no estan en el repositorio y falta E4, por lo que baja un nivel.
+3.3 Entorno propio y lectura de fuentes: nivel 1, 0.12 de 0.50. Das dos ejemplos (SGA y WhatsApp), pero no hay ninguna captura de lectura: el anexo solo tiene marcadores pendientes.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas la caida de etcd3 con el quorum de dos nodos y los indices de Raft.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara etcd y ZooKeeper en mas de cinco criterios con fuente, con una discusion breve.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. La postura identifica fortalezas y limites, pero las conclusiones son generales ("permitio comprender").
+5.1 Documento LaTeX: nivel 1, 0.25 de 1.00. El documento compila, pero esta inflado, repite ideas, usa "nuestra implementacion" en un trabajo individual y deja texto de asistente sin editar.
+6.1 Referencias y declaracion de IA: nivel 1, 0.25 de 1.00. Tienes catorce referencias, cinco con DOI verificado, pero la declaracion de IA dice que la version "queda pendiente de confirmacion por el estudiante" y que "el estudiante debe verificar personalmente" las fuentes y salidas: no declaras haberlo hecho.
+Nota del informe: 210 de 400 puntos ponderados = 5.25 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 5.25 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 4.
+Indicio: tu declaracion dice que Codex preparo apartados y reviso referencias (redaccion por IA declarada).
+Indicio: el informe y el repositorio conservan instrucciones de un asistente sin editar: los recuadros "PENDIENTE" del Anexo B, "SALIDA ORIGINAL PENDIENTE" en REGISTRO.md y la frase "el estudiante debe verificar personalmente" en la declaracion.
+Indicio: la declaracion reconoce que comandos, salidas, capturas y fuentes estaban pendientes de verificar (resultados no verificados, nivel C directo).
+Indicio: la redaccion es uniforme y usa "nuestra implementacion" en un trabajo individual (I1).
+Penalizacion: nivel C, -3.0. Calculo: 5.25 - 3.0 = 2.25.
+Criterio de piso registrado (sin descontar): P3 plazo: el commit que actualiza el enlace del video en el README es del 15 de noviembre a las 00:00, despues del cierre.
+Nota final: 2.3 sobre 10 (no logrado). Aporte al primer corte: 2.3 / 10 x 0.75 = 0.17 puntos.
+Recomendacion: Nunca entregues un documento con marcadores pendientes: revisa el PDF completo antes de subirlo.
+Recomendacion: Guarda en el repositorio la salida real de cada comando del experimento.
+Recomendacion: Toma tus propias capturas de lectura con el fragmento subrayado y la pagina visible.
+
+====================================================================================================
+B - Loor Suarez Steffanny del Rocio (final 5.9)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Loor Suarez Steffanny del Rocio
+Paralelo B, modalidad individual. Sistema analizado: Syncthing frente a Unison.
+Repositorio revisado: https://github.com/SteffannyLoorSuarez1/TA-IND-01
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 2, 0.50 de 1.00. El informe no tiene el apartado de ejemplos de tu entorno y el resumen tiene 371 palabras (pedido: 150 a 200), aunque el repositorio tiene experimentos, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Analizas las siete transparencias en subsecciones aplicadas a Syncthing, pero varias sin fuente para el mecanismo.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Relacionas CAP y PACELC con la sincronizacion eventual de Syncthing, con evidencia parcial.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes el modelo entre pares y el protocolo BEP con tu entorno de dos procesos.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas disponibilidad local y recuperacion de la sincronizacion, pero sin un incidente real documentado.
+3.1 Arquitectura y diagrama propio: nivel 2, 0.25 de 0.50. El diagrama es propio y hay bosquejo, pero falta la evidencia E3 (ejemplos de tu entorno), por lo que baja un nivel.
+3.2 Interaccion y experimento propios: nivel 1, 0.25 de 1.00. Hay veinte capturas, pero solo tres muestran tu usuario stefy y la mayoria son pantallas de la interfaz sin datos propios; ademas falta E3, por lo que baja un nivel.
+3.3 Entorno propio y lectura de fuentes: nivel 1, 0.12 de 0.50. Tienes tres capturas de lectura, pero no hay ningun ejemplo de sistemas que uses de primera mano.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas los hashes SHA-256 distintos e iguales como consistencia eventual y recuperacion.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara Syncthing con Unison en varios criterios, documental y con discusion breve.
+4.3 Postura critica y conclusiones: nivel 2, 0.45 de 0.90. La valoracion critica es breve y las conclusiones repiten lo aprendido ("permitio comprender") en lugar de afirmaciones derivadas.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento compila, pero el resumen duplica la extension pedida e incluye una version en ingles que no se pidio, y el informe se alarga a 23 paginas.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes diez referencias, tres con DOI verificado (el minimo), y cinco paginas de documentacion sin fecha; la declaracion de IA es completa.
+Nota del informe: 236 de 400 puntos ponderados = 5.90 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 5.90 sobre 10.
+Indicios de IA o de autoria no propia: quince de tus veinte commits son del ultimo dia (I6); con un solo indicio no corresponde penalizacion.
+Penalizacion: no corresponde (se penaliza desde dos indicios).
+Criterios de piso: no registre incumplimientos.
+Nota final: 5.9 sobre 10 (en proceso). Aporte al primer corte: 5.9 / 10 x 0.75 = 0.44 puntos.
+Recomendacion: Agrega el apartado de ejemplos de tu entorno: dos sistemas que uses y lo que observaste como usuaria.
+Recomendacion: Toma las capturas de forma que se vea tu usuario, tu equipo o la fecha.
+Recomendacion: Ajusta el resumen a 150-200 palabras y escribe conclusiones concretas derivadas de tus pruebas.
+
+====================================================================================================
+B - Macias Vasquez Cesar Abrahan (final 0.1)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Macias Vasquez Cesar Abrahan
+Paralelo B, modalidad individual. Sistema analizado: InfluxDB frente a Prometheus.
+Repositorio revisado: https://github.com/CesarMacias007/TA-IND-01-Informe-Acad-mico-Individual-An-lisis-Cr-tico-de-Sistemas-Distribuidos
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 2, 0.50 de 1.00. El contenido ocupa unas cuatro paginas (minimo cinco), la caratula dice "Facultad de Ciencias de la Ingenieria" y "Sistemas Distribuidos", y no hay comandos ni salidas del experimento en el repositorio.
+2.1 Transparencias de distribucion: nivel 1, 0.17 de 0.70. Solo mencionas tres transparencias y de forma general, sin aplicar las siete al sistema.
+2.2 CAP y PACELC: nivel 2, 0.35 de 0.70. Dices que InfluxDB es CP en topologia y AP en datos y PA/EL, sin evidencia de la documentacion ni de un experimento.
+2.3 Modelos de comunicacion: nivel 2, 0.25 de 0.50. Describes el modelo push por HTTP, pero sin sincronia ni la ruta de una operacion concreta.
+2.4 Tolerancia a fallos: nivel 2, 0.30 de 0.60. Mencionas Hinted Handoff y una caida de InfluxDB Cloud citada a una pagina de estado, sin explicar deteccion ni recuperacion.
+3.1 Arquitectura y diagrama propio: nivel 1, 0.12 de 0.50. Hay bosquejo con tu nombre y fecha, pero el diagrama muestra nodos Meta con Raft que no existen en la imagen influxdb:1.8 de un solo nodo que usaste; ademas faltan E4 y E6, por lo que baja dos niveles.
+3.2 Interaccion y experimento propios: nivel 0, 0.00 de 1.00. El experimento es un solo contenedor en Codespaces: no hay replicas ni nodos que fallen, solo una captura muestra tu usuario y no hay salidas en el repositorio; faltan E4 y E6.
+3.3 Entorno propio y lectura de fuentes: nivel 0, 0.00 de 0.50. Los ejemplos son genericos (Valorant, SGA en terminos de CAP) y hay solo dos capturas de lectura; faltan E4 y E6.
+4.1 Interpretacion del experimento: nivel 1, 0.17 de 0.70. Afirmas que "los experimentos comprobaron empiricamente" la transparencia y la disponibilidad con un solo nodo, lo que es una interpretacion erronea.
+4.2 Analisis comparativo: nivel 2, 0.45 de 0.90. La tabla tiene cuatro dimensiones sin fuente y la discusion es una opinion.
+4.3 Postura critica y conclusiones: nivel 1, 0.23 de 0.90. La postura usa afirmaciones sin argumento ("domina el teorema CAP", "es invencible").
+5.1 Documento LaTeX: nivel 1, 0.25 de 1.00. El documento tiene desbordes, una URL partida y una redaccion grandilocuente y uniforme ("diseccion arquitectonica avanzada").
+6.1 Referencias y declaracion de IA: nivel 1, 0.25 de 1.00. Tienes siete referencias sin ningun DOI, una con autor "Student Thesis" y otra con autores que no son los del articulo; la declaracion de IA dice que todo lo demas lo hiciste "integralmente", lo que no coincide con el contenido.
+Nota del informe: 122 de 400 puntos ponderados = 3.05 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 3.05 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 4.
+Indicio: la referencia [4] tiene como autor "Student Thesis", un dato de relleno.
+Indicio: la redaccion es grandilocuente y uniforme (I1).
+Indicio: todo el repositorio entro en dos dias (I6).
+Indicio: la declaracion de IA dice que el analisis y el experimento los hiciste "integralmente", pero solo nombra a Gemini para la sintaxis y la bibliografia, y la bibliografia tiene datos inventados.
+Penalizacion: nivel C, -3.0. Calculo: 3.05 - 3.0 = 0.05.
+Criterio de piso registrado (sin descontar): P1 PDF del SGA: la URL del repositorio no cabe en una sola linea; esta partida en dos.
+Criterio de piso registrado (sin descontar): P4 integridad: la referencia [1] tiene autores que no corresponden al articulo real (Khattach, Moussaoui y Hassine, Sensors 2025, DOI 10.3390/s25092945).
+Nota final: 0.1 sobre 10 (no logrado). Aporte al primer corte: 0.1 / 10 x 0.75 = 0.01 puntos.
+Recomendacion: Abre cada referencia y copia sus datos desde la fuente real; una sola referencia con datos falsos anula el trabajo.
+Recomendacion: Monta un cluster de al menos tres nodos para que el experimento muestre un comportamiento distribuido.
+Recomendacion: Escribe con tus palabras y respalda cada afirmacion con una fuente o un dato tuyo.
+
+====================================================================================================
+B - Mendoza Bermello Angello Agustin (final 8.3)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Mendoza Bermello Angello Agustin
+Paralelo B, modalidad individual. Sistema analizado: HDFS frente a Ceph.
+Repositorio revisado: https://github.com/Amendozab5/ta-ind-01-HDFS-Ceph
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 11 paginas de contenido, resumen de 198 palabras y un repositorio completo con experimento, fuentes, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 2, 0.35 de 0.70. Analizas con fuente ubicacion, acceso, replicacion, fallos y persistencia, pero declaras que no puedes pronunciarte sobre migracion, reubicacion y concurrencia: menos de siete.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas la capa de metadatos con CAP y reconoces que la ubicacion en PACELC "apuntaria a la latencia, aunque sin evidencia directa".
+2.3 Modelos de comunicacion: nivel 4, 0.50 de 0.50. Separas el canal de control por RPC al NameNode y el canal de datos por sockets a los DataNodes, con pagina citada, y contrastas con CRUSH en Ceph.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas redundancia, codificacion de borrado y deteccion por tiempo de espera con fuente, y declaras que no encontraste un incidente publico de HDFS.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. El diagrama es propio y coherente, pero el historial entra en dos dias dentro del plazo (13 y 14; el commit del 15 es posterior), por lo que baja un nivel.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Hay capturas con tu usuario aamen@SOGE y fechas del 13 y 14, con comandos y salidas en el repositorio; baja un nivel por E6.
+3.3 Entorno propio y lectura de fuentes: nivel 1, 0.12 de 0.50. Los ejemplos ("el portal de la universidad", "el almacenamiento en la nube") estan escritos de forma impersonal y no como experiencia propia; hay tres capturas de lectura; baja un nivel por E6.
+4.1 Interpretacion del experimento: nivel 4, 0.70 de 0.70. Explicas por que la deteccion tardo veinte minutos frente al umbral calculado y por que el numero de bloques bajo replicacion dice mas que el estado general.
+4.2 Analisis comparativo: nivel 4, 0.90 de 0.90. La tabla compara HDFS y Ceph en cinco criterios con pagina citada en cada celda y la discusion explica las diferencias de diseno.
+4.3 Postura critica y conclusiones: nivel 4, 0.90 de 0.90. La postura argumenta fortalezas y el techo del NameNode con fuente, y las conclusiones salen del experimento.
+5.1 Documento LaTeX: nivel 3, 0.75 de 1.00. La redaccion es clara y propia, con defectos menores de extension en algunas secciones.
+6.1 Referencias y declaracion de IA: nivel 4, 1.00 de 1.00. Tienes once referencias, las once con DOI verificado, y la declaracion de IA es completa.
+Nota del informe: 333 de 400 puntos ponderados = 8.33 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 8.33 sobre 10.
+Indicios de IA o de autoria no propia: no encontre indicios.
+Penalizacion: no corresponde (se penaliza desde dos indicios).
+Criterio de piso registrado (sin descontar): P3 plazo: el commit que agrega el enlace del video y la entrada de bitacora del 15 es del 15 de noviembre a las 00:00, despues del cierre.
+Criterio de piso registrado (sin descontar): P5 formativas vinculadas: no entregaste FORM-FB-01 (registro del paralelo B del 16 de noviembre).
+Nota final: 8.3 sobre 10 (logrado). Aporte al primer corte: 8.3 / 10 x 0.75 = 0.62 puntos.
+Recomendacion: Escribe los ejemplos de tu entorno en primera persona, con lo que tu observaste.
+Recomendacion: Distribuye el trabajo en al menos tres dias dentro del plazo.
+Recomendacion: Investiga migracion, reubicacion y concurrencia en la documentacion para completar las siete transparencias.
+
+====================================================================================================
+B - Mendoza Villarroel Elian Jossue (final 8.0)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Mendoza Villarroel Elian Jossue
+Paralelo B, modalidad individual. Sistema analizado: Netflix frente a Spotify.
+Repositorio revisado: https://github.com/Elianmen123/ta-ind-01-sistemas-distribuidos
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 10 paginas de contenido, resumen de 170 palabras y un repositorio completo con el codigo del experimento, salidas, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Analizas las siete transparencias en Netflix, aunque varias sin el mecanismo concreto ni fuente.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas a Netflix como AP/EL y lo muestras con la retencion del registro de Eureka, con evidencia parcial.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Identificas cliente-servidor y comunicacion asincrona, con un ejemplo parcial.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas Chaos Monkey y Hystrix y citas incidentes reales, aunque sin detallar la deteccion.
+3.1 Arquitectura y diagrama propio: nivel 4, 0.50 de 0.50. El diagrama en draw.io es propio y hay esquema a mano con su evolucion.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Hay capturas con tu usuario ASUS y tu equipo DESKTOP-7PPDV1J, y el experimento con Eureka tiene codigo, comandos y salidas en el repositorio.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Das dos ejemplos de primera mano (banca movil del Pichincha y WhatsApp) y tres capturas de lectura.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas los 30 s de retencion en Eureka como prioridad de la disponibilidad, con una conclusion parcialmente sustentada.
+4.2 Analisis comparativo: nivel 2, 0.45 de 0.90. La tabla tiene celdas de Spotify que dicen "No documentado en mis fuentes": no hay comparacion real en esos criterios.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas fortalezas y costos de los microservicios con fuente, con alguna afirmacion sin respaldo.
+5.1 Documento LaTeX: nivel 3, 0.75 de 1.00. La redaccion es clara y propia segun tu declaracion (tus borradores corregidos por la IA), con defectos menores.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes quince referencias, seis con DOI verificado, pero varias fuentes de 2014, 2016 y 2018 y algunas sin fecha; la declaracion de IA es completa.
+Nota del informe: 321 de 400 puntos ponderados = 8.03 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 8.03 sobre 10.
+Indicios de IA o de autoria no propia: treinta de tus treinta y ocho commits son del ultimo dia (I6); con un solo indicio no corresponde penalizacion.
+Penalizacion: no corresponde (se penaliza desde dos indicios).
+Criterio de piso registrado (sin descontar): P1 PDF del SGA: el PDF que subiste tiene dos paginas, y la caratula dice "7mo Software A" aunque tu entrega esta en el paralelo B.
+Nota final: 8.0 sobre 10 (logrado). Aporte al primer corte: 8.0 / 10 x 0.75 = 0.60 puntos.
+Recomendacion: Sube al SGA un PDF de una sola pagina con tu paralelo correcto.
+Recomendacion: Busca fuentes de Spotify para cada criterio de la tabla o cambia el sistema de comparacion.
+Recomendacion: Usa fuentes de los ultimos cinco anos siempre que existan.
+
+====================================================================================================
+B - Munoz Vera Melanie Michelle (final 6.0)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Munoz Vera Melanie Michelle
+Paralelo B, modalidad individual. Sistema analizado: Apache Cassandra frente a MongoDB.
+Repositorio revisado: https://github.com/Melanir/isr701-ta-ind-01
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 9 paginas de contenido, resumen de 160 palabras y un repositorio completo con experimento, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Agrupas las siete transparencias en pares y las aplicas a tu prueba, pero de forma breve.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Distingues ONE y QUORUM y el costo de la latencia, con evidencia parcial.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes el nodo coordinador y gossip y la comunicacion con MongoDB, sin la ruta completa de una operacion.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas lo que soporta el factor de replicacion tres y citas el incidente de Discord. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. El diagrama del recorrido de una consulta parte de tu bosquejo, pero no explicas como evoluciono.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Hay cuatro capturas con la fecha del 12 de noviembre pero en PowerShell de administrador, sin tu usuario; los comandos y resultados estan en el repositorio.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Tus ejemplos son debiles (avisar tu tema por WhatsApp y clonar en GitHub); hay tres capturas de lectura con pagina.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas con claridad por que ONE respondio y QUORUM fallo con dos nodos caidos. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. El cuadro compara Cassandra y MongoDB en seis criterios con fuente y la discusion explica las diferencias. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas fortalezas y limitaciones con tu experimento y tus conclusiones salen de el. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento compila sin errores, pero tu declaracion dice que Codex apoyo la redaccion y la correccion del texto; la redaccion no es del todo propia.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes catorce referencias, seis con DOI verificado, dos clasicas de 2002 y 2012 y varias paginas sin fecha; la declaracion no indica la version de Codex.
+Nota del informe: 300 de 400 puntos ponderados = 7.50 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 7.50 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 2.
+Indicio: tu declaracion dice que Codex apoyo la redaccion y la correccion del texto (redaccion por IA declarada).
+Indicio: la redaccion es uniforme y pulida en todas las secciones (I1).
+Penalizacion: nivel B, -1.5. Calculo: 7.50 - 1.5 = 6.00.
+Criterios de piso: no registre incumplimientos.
+Nota final: 6.0 sobre 10 (en proceso). Aporte al primer corte: 6.0 / 10 x 0.75 = 0.45 puntos.
+Recomendacion: Redacta tu misma el informe y usa la IA solo para revisar.
+Recomendacion: Elige ejemplos de tu entorno donde hayas visto una falla, una demora o una inconsistencia.
+Recomendacion: Registra la version exacta de cada herramienta de IA que uses.
+
+====================================================================================================
+B - Pozo Castillo Steven Fernando (final 6.5)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Pozo Castillo Steven Fernando
+Paralelo B, modalidad individual. Sistema analizado: Apache HDFS frente a Ceph.
+Repositorio revisado: https://github.com/Redsito1215/TA-IND-01-Apache-Hadoop-HDFS-comparado-con-Ceph
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 11 paginas de contenido, resumen de 187 palabras y un repositorio con docker-compose, comandos, resultados, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 2, 0.35 de 0.70. Analizas acceso, ubicacion, replicacion, fallos y concurrencia, pero no tratas migracion y reubicacion por separado.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Aplicas CAP con cuidado a la capa de metadatos y PACELC a la escritura en cadena, con evidencia parcial.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes RPC para metadatos y TCP directo con los DataNodes, sin la ruta de una operacion concreta.
+2.4 Tolerancia a fallos: nivel 4, 0.60 de 0.60. Explicas la recuperacion de replicas y citas el incidente documentado por Wikimedia.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. El diagrama en TikZ es propio, pero todo el repositorio se hizo en un solo dia (falta E6), por lo que baja un nivel.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Hay capturas con tu usuario redsito y la fecha del 14, con comandos y resultados en el repositorio; baja un nivel por E6.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Das dos ejemplos de primera mano (SGA y WhatsApp) y tres capturas de lectura; baja un nivel por E6.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas que la lectura continuo con un DataNode pausado y delimitas lo que la prueba no demuestra.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara HDFS y Ceph en varios criterios, sin fuente por celda y con discusion breve.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas fortalezas y el costo de la replicacion, con alguna afirmacion sin respaldo.
+5.1 Documento LaTeX: nivel 3, 0.75 de 1.00. La redaccion es clara, con defectos menores.
+6.1 Referencias y declaracion de IA: nivel 4, 1.00 de 1.00. Tienes siete referencias IEEE, seis con DOI verificado y todas recientes; la declaracion de IA es completa.
+Nota del informe: 319 de 400 puntos ponderados = 7.98 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 7.98 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 2.
+Indicio: los dieciseis commits entraron el 14 de noviembre entre las 14:59 y las 22:59 (I6).
+Indicio: la declaracion de IA habla de ti en tercera persona ("observaciones del estudiante"), lo que indica texto escrito por un asistente.
+Penalizacion: nivel B, -1.5. Calculo: 7.98 - 1.5 = 6.48.
+Criterio de piso registrado (sin descontar): P5 riesgo: tu sistema (HDFS frente a Ceph) es el mismo que analizo Mendoza Bermello en este paralelo; conviene confirmar el registro en el foro.
+Nota final: 6.5 sobre 10 (en proceso). Aporte al primer corte: 6.5 / 10 x 0.75 = 0.49 puntos.
+Recomendacion: Trabaja el repositorio en al menos tres dias distintos y registra cada sesion en la bitacora.
+Recomendacion: Escribe tu mismo la declaracion de IA, en primera persona.
+Recomendacion: Analiza las siete transparencias por separado, incluidas migracion y reubicacion.
+
+====================================================================================================
+B - Quintero Rico Luis David (final 4.3)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Quintero Rico Luis David
+Paralelo B, modalidad individual. Sistema analizado: NATS JetStream frente a Apache Pulsar.
+Repositorio revisado: https://github.com/Kinetro/TA-IND-01-Unidad1
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 15 paginas de contenido, resumen de 169 palabras y un repositorio con experimento, resultados, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. La Tabla 2 evalua las siete transparencias con su grado y su analisis. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Relacionas el quorum de Raft del flujo R3 con CAP y PACELC, con evidencia parcial. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes cliente-servidor y publicacion/suscripcion por asuntos, sin la ruta completa de una operacion. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas la reeleccion del lider y citas el issue de perdida de datos publicado por aphyr, aclarando que no es un incidente de produccion. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. El diagrama en draw.io es propio y hay esquema a mano, pero el repositorio entro en dos dias (falta E6), por lo que baja un nivel.
+3.2 Interaccion y experimento propios: nivel 2, 0.50 de 1.00. Las capturas tienen fecha pero no muestran tu usuario ni tu equipo, y falta E6, por lo que baja un nivel.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Das dos ejemplos de primera mano (Jovenes en Accion y WhatsApp) y tres capturas de lectura; baja un nivel por E6.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas el cambio de lider y la conservacion de los mensajes con el quorum de dos nodos. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara JetStream con Pulsar en mas de cinco criterios, con discusion breve. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas compromisos de diseno y condiciones de la disponibilidad. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento compila sin errores, pero tu declaracion dice que ChatGPT elaboro borradores de varias secciones; la redaccion no es propia.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes once referencias, cuatro con DOI verificado y seis paginas de documentacion sin autor ni fecha; la declaracion de IA nombra la herramienta.
+Nota del informe: 290 de 400 puntos ponderados = 7.25 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 7.25 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 4.
+Indicio: tu declaracion dice que ChatGPT elaboro borradores de varias secciones (redaccion por IA declarada).
+Indicio: la redaccion es uniforme y pulida en todas las secciones (I1).
+Indicio: el repositorio entro en dos dias con diez commits (I6).
+Indicio: la declaracion dice que los ejemplos "proceden de experiencias comunicadas por el estudiante", una frase escrita por un asistente sobre ti.
+Penalizacion: nivel C, -3.0. Calculo: 7.25 - 3.0 = 4.25.
+Criterio de piso registrado (sin descontar): P5 riesgo: no figuras en la caratula de FORM-FB-01 ni tienes fichas propias en el registro del paralelo B; si no la entregaste, aplica P5.
+Nota final: 4.3 sobre 10 (en proceso). Aporte al primer corte: 4.3 / 10 x 0.75 = 0.32 puntos.
+Recomendacion: Redacta tu mismo las secciones y la declaracion de IA, en primera persona.
+Recomendacion: Toma las capturas de forma que se vean tu usuario o tu equipo.
+Recomendacion: Empieza el repositorio desde el primer dia y haz commits en al menos tres dias distintos.
+
+====================================================================================================
+B - Rivas Piloso Dayver Yahir (final 4.5)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Rivas Piloso Dayver Yahir
+Paralelo B, modalidad individual. Sistema analizado: Apache Kafka frente a RabbitMQ.
+Repositorio revisado: https://github.com/drivasp/TA-IND-01-Kafka
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 11 paginas de contenido, resumen de 186 palabras y un repositorio con experimento, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Recorres las siete transparencias en Kafka con su mecanismo (bootstrap.servers, reasignacion de particiones).
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas Kafka como CP con acks=all y min.insync.replicas=2 y explicas que PACELC depende de la configuracion. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes publicar/suscribir con modelo pull por offsets frente al push de RabbitMQ, sin la ruta completa de una operacion.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas lider, ISR y KRaft y analizas el incidente de PagerDuty con su fuente. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. El diagrama es propio y hay esquema a mano, pero el historial entra en dos dias dentro del plazo (12 y 14; lo del 15 es posterior), por lo que baja un nivel.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Hay capturas con tu usuario Deyver y tu equipo DESKTOP-I6FPVOL, con comandos en el repositorio; baja un nivel por E6.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Das dos ejemplos de primera mano (SGA y WhatsApp) y tres capturas de lectura resaltadas; baja un nivel por E6.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas la eleccion de nuevo lider y el rechazo NOT_ENOUGH_REPLICAS como el compromiso entre durabilidad y disponibilidad. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara Kafka y RabbitMQ en mas de cinco criterios con fuente y la discusion explica el modelo de datos. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas en que contextos conviene cada uno y tus conclusiones salen del experimento. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento compila sin errores, pero tu declaracion dice que Claude redacto el resumen y reescribio la seccion 4; la redaccion no es propia.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes catorce referencias, siete con DOI verificado, una de 2015 y algunas paginas sin fecha; la declaracion de IA es detallada.
+Nota del informe: 300 de 400 puntos ponderados = 7.50 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 7.50 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 3.
+Indicio: tu declaracion dice que Claude redacto el resumen, propuso la redaccion de la introduccion y reescribio la seccion 4 (redaccion por IA declarada).
+Indicio: tu declaracion dice que Claude ayudo a redactar las entradas de BITACORA.md, que es evidencia de tu propio trabajo (E5).
+Indicio: la redaccion es uniforme y pulida en todas las secciones (I1).
+Penalizacion: nivel C, -3.0. Calculo: 7.50 - 3.0 = 4.50.
+Criterio de piso registrado (sin descontar): P3 plazo: los commits que agregan el enlace del video y la bitacora del domingo son del 15 de noviembre a las 00:05 y 00:09, despues del cierre.
+Criterio de piso registrado (sin descontar): P5 formativas vinculadas: no entregaste FORM-FB-01 (registro del paralelo B del 16 de noviembre).
+Nota final: 4.5 sobre 10 (en proceso). Aporte al primer corte: 4.5 / 10 x 0.75 = 0.34 puntos.
+Recomendacion: Escribe tu mismo la bitacora: es la evidencia de tus sesiones de trabajo.
+Recomendacion: Redacta las secciones con tus palabras y usa la IA solo para revisar.
+Recomendacion: Sube el video y el enlace antes del cierre.
+
+====================================================================================================
+B - Sanchez Vera Darwin Joel (final 6.1)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Sanchez Vera Darwin Joel
+Paralelo B, modalidad individual. Sistema analizado: Redis Cluster frente a Hazelcast.
+Repositorio revisado: https://github.com/DarwinDevCode/REPO-TA-IND-01
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 3, 0.75 de 1.00. El informe tiene casi todos los apartados, pero los ejemplos de tu entorno estan como subseccion 4.3 dentro de la experimentacion y no como apartado propio; el repositorio esta completo.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. La Tabla 2 valora las siete transparencias con su nivel y la justificacion, incluidas las redirecciones MOVED y ASK. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Discutes con argumentos por que Redis Cluster no es CP aunque una fuente lo clasifique asi. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes peticion-respuesta con redireccion y el bus del cluster con gossip. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas la promocion de la replica en 7,8 s y analizas el incidente de ChatGPT de marzo de 2023. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+3.1 Arquitectura y diagrama propio: nivel 3, 0.38 de 0.50. El diagrama final en draw.io es tuyo, pero tu declaracion dice que Claude genero un diagrama de referencia visual previo.
+3.2 Interaccion y experimento propios: nivel 4, 1.00 de 1.00. Hay capturas con tu usuario djsan@PC-DARWIN y la fecha, con el despliegue y el experimento E1 documentados en el repositorio.
+3.3 Entorno propio y lectura de fuentes: nivel 4, 0.50 de 0.50. Das dos ejemplos de primera mano con capturas propias (Git y GitHub, y una web con y sin red) y cuatro capturas de lectura subrayadas.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas la promocion de la replica y el estado de fallo global con los conceptos de la unidad. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara Redis Cluster y Hazelcast en mas de cinco criterios con fuente, con discusion. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas tu desacuerdo con la clasificacion CP y declaras limitaciones y trabajo futuro. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento compila, pero tu declaracion dice que Claude apoyo la redaccion de todas las secciones; la redaccion no es propia.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes diecisiete referencias, solo cuatro con DOI verificado y nueve paginas de documentacion sin fecha; la declaracion de IA es completa.
+Nota del informe: 305 de 400 puntos ponderados = 7.63 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 7.63 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 2.
+Indicio: tu declaracion dice que Claude apoyo la redaccion de la introduccion, la arquitectura, el analisis, la experimentacion, los ejemplos, la comparacion, la postura, el resumen y las conclusiones (redaccion por IA declarada).
+Indicio: la redaccion es uniforme y pulida en todas las secciones (I1).
+Penalizacion: nivel B, -1.5. Calculo: 7.63 - 1.5 = 6.13.
+Criterios de piso: no registre incumplimientos.
+Nota final: 6.1 sobre 10 (en proceso). Aporte al primer corte: 6.1 / 10 x 0.75 = 0.46 puntos.
+Recomendacion: Redacta tu mismo el informe; tu analisis critico de la clasificacion CAP es valioso y debe estar en tus palabras.
+Recomendacion: Pon los ejemplos de tu entorno en su propio apartado, como pide la estructura.
+Recomendacion: Aumenta las fuentes indexadas con DOI frente a la documentacion sin fecha.
+
+====================================================================================================
+B - Zambrano Trivino Leonel Leonidas (final 5.1)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Zambrano Trivino Leonel Leonidas
+Paralelo B, modalidad individual. Sistema analizado: HashiCorp Consul frente a Netflix Eureka.
+Repositorio revisado: https://github.com/lzambranot6-sys/TA-IND-01-Consul-vs-Eureka
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 3, 0.75 de 1.00. Tienes los apartados, pero el de ejemplos de tu entorno son dos oraciones, y el informe completo (main.tex) entro al repositorio el 15 de noviembre.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. Recorres las siete transparencias en Consul de forma breve y sin fuente.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas Consul como CP y PC/EC, lo verificas con el error "No cluster leader" y senalas las lecturas stale. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Identificas HTTP, DNS, RPC y gossip, sin la ruta de una operacion concreta.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas la reincorporacion de un server y analizas el incidente de Roblox de 2021. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+3.1 Arquitectura y diagrama propio: nivel 2, 0.25 de 0.50. Tu declaracion dice que Claude genero la primera version del diagrama, y el historial no tiene tres dias dentro del plazo (falta E6), por lo que baja un nivel.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Hay capturas con tu usuario y DESKTOP-R3605LN, con dos experimentos documentados; baja un nivel por E6.
+3.3 Entorno propio y lectura de fuentes: nivel 1, 0.12 de 0.50. Tus ejemplos son dos lineas sin relacion con un concepto ("entre al sga y estaba lento"); hay tres capturas de lectura; baja un nivel por E6.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas la eleccion del nuevo lider y el rechazo sin quorum como prioridad de la consistencia.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara Consul y Eureka en mas de cinco criterios, con discusion breve.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas fortalezas y limitaciones con el caso de Roblox.
+5.1 Documento LaTeX: nivel 1, 0.25 de 1.00. La calidad es muy desigual: secciones pulidas a partir de un texto base de Claude junto a una seccion 5 escrita sin tildes ni puntuacion.
+6.1 Referencias y declaracion de IA: nivel 3, 0.75 de 1.00. Tienes siete referencias, cinco con DOI verificado; la declaracion de IA es completa.
+Nota del informe: 265 de 400 puntos ponderados = 6.63 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 6.63 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 2.
+Indicio: tu declaracion dice que Claude propuso una plantilla y un texto base para el informe (redaccion por IA declarada).
+Indicio: el informe completo entro en un solo commit ("doc, y mas cosas", 290 lineas) el 15 de noviembre (I6).
+Penalizacion: nivel B, -1.5. Calculo: 6.63 - 1.5 = 5.13.
+Criterio de piso registrado (sin descontar): P1 PDF del SGA: la URL del repositorio no cabe en una sola linea y termina en /tree/main.
+Criterio de piso registrado (sin descontar): P3 plazo: el informe (main.tex, main.pdf y referencias) se subio el 15 de noviembre a las 17:00, despues del cierre.
+Nota final: 5.1 sobre 10 (en proceso). Aporte al primer corte: 5.1 / 10 x 0.75 = 0.38 puntos.
+Recomendacion: Sube tu trabajo de forma progresiva desde el primer dia y antes del cierre.
+Recomendacion: Escribe tus ejemplos con detalle y relacionalos con un concepto de la unidad.
+Recomendacion: Revisa la ortografia de todo el documento antes de entregar.
+
+====================================================================================================
+B - Zambrano Yong Angel Daniel (final 6.1)
+====================================================================================================
+TA-IND-01 - Informe academico individual: analisis critico de un sistema distribuido real (sumativa, Unidad 1)
+Estudiante: Zambrano Yong Angel Daniel
+Paralelo B, modalidad individual. Sistema analizado: Apache Cassandra frente a Apache HBase.
+Repositorio revisado: https://github.com/iMouraad/TA-IND-01-Cassandra
+Formula: Nota = suma de (peso x nivel / 4) / 10 - penalizaciones. En el paralelo B la actividad se ejecuto de forma individual, por eso tu nota sale solo de la rubrica del informe.
+Cierre aplicado: sabado 14 de noviembre de 2026, 23:59. Revise tu repositorio completo y registro aparte lo que se subio despues del cierre.
+
+PARTE 1. NOTA DEL INFORME (13 indicadores, escala 0 a 4)
+1.1 Estructura, extension y entregables: nivel 4, 1.00 de 1.00. El informe tiene los trece apartados, unas 11 paginas de contenido, resumen de 195 palabras y un repositorio con experimento, resultados, BITACORA.md y README.md con el video.
+2.1 Transparencias de distribucion: nivel 3, 0.53 de 0.70. La Tabla 1 resume las siete transparencias con lo que observaste en tu experimento. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.2 CAP y PACELC: nivel 3, 0.53 de 0.70. Clasificas Cassandra como PA/EL con pagina citada y lo confirmas con la caida de cass3. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+2.3 Modelos de comunicacion: nivel 3, 0.38 de 0.50. Describes peer-to-peer entre nodos y CQL entre cliente y coordinador, sin la ruta completa de una operacion.
+2.4 Tolerancia a fallos: nivel 3, 0.45 de 0.60. Explicas el comportamiento segun el nivel de consistencia, pero sin un incidente real documentado.
+3.1 Arquitectura y diagrama propio: nivel 2, 0.25 de 0.50. Tu declaracion dice que Claude paso tu esquema a draw.io, y el historial no tiene tres dias dentro del plazo (falta E6), por lo que baja un nivel.
+3.2 Interaccion y experimento propios: nivel 3, 0.75 de 1.00. Hay capturas con tu usuario angel y la fecha del 14, con comandos y resultados en el repositorio; baja un nivel por E6.
+3.3 Entorno propio y lectura de fuentes: nivel 3, 0.38 de 0.50. Das dos ejemplos de primera mano (SGA y WhatsApp) y tres capturas de lectura con su pagina; baja un nivel por E6.
+4.1 Interpretacion del experimento: nivel 3, 0.53 de 0.70. Interpretas las latencias de ONE, QUORUM y ALL y la falla de ALL con un nodo caido. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.2 Analisis comparativo: nivel 3, 0.68 de 0.90. La tabla compara Cassandra y HBase en mas de cinco criterios con fuente, con discusion. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+4.3 Postura critica y conclusiones: nivel 3, 0.68 de 0.90. Argumentas fortalezas y limitaciones con tus mediciones. Tu declaracion dice que la IA redacto el texto, por eso este indicador no puede pasar del nivel 3.
+5.1 Documento LaTeX: nivel 2, 0.50 de 1.00. El documento compila, pero tu declaracion dice que Claude redacto la introduccion, los parrafos de apertura de las secciones 3 y 4 y los cambios del resumen.
+6.1 Referencias y declaracion de IA: nivel 4, 1.00 de 1.00. Tienes ocho referencias, las ocho con DOI verificado y recientes; la declaracion de IA es completa.
+Nota del informe: 305 de 400 puntos ponderados = 7.63 sobre 10.
+
+PARTE 2. NOTA FINAL
+Nota previa: 7.63 sobre 10.
+Indicios de IA o de autoria no propia encontrados: 2.
+Indicio: tu declaracion dice que Claude redacto la introduccion, aperturas de secciones y los cambios del resumen y de las secciones 3.2 y 6 (redaccion por IA declarada).
+Indicio: el repositorio entro en dos dias, el 14 y el 15 de noviembre (I6).
+Penalizacion: nivel B, -1.5. Calculo: 7.63 - 1.5 = 6.13.
+Criterio de piso registrado (sin descontar): P3 plazo: el 15 de noviembre (14:53 a 14:58) cambiaste el sistema de comparacion de MongoDB a HBase, con sus referencias y la bitacora, despues del cierre.
+Nota final: 6.1 sobre 10 (en proceso). Aporte al primer corte: 6.1 / 10 x 0.75 = 0.46 puntos.
+Recomendacion: Elige y registra tu sistema de comparacion desde el inicio para no rehacer secciones al final.
+Recomendacion: Redacta tu mismo la introduccion y las secciones; usa la IA solo para revisar.
+Recomendacion: Trabaja el repositorio en al menos tres dias dentro del plazo.
+
+####################################################################################################
+OBSERVACIONES PARA EL DOCENTE - TA-IND-01 paralelo B (SPA 2026-2027)
+Revision: 18 de noviembre de 2026. Entregas: 17 PDF del SGA en 2026 SPA\Entregas\TA-IND-GRUPAL-01\B; los 17 repositorios son publicos y se clonaron completos.
+1. Modalidad: en el paralelo B la actividad se ejecuto de forma individual (las caratulas dicen "Modalidad: Individual" y Castro escribe que "la tarea paso a ser individual" el 12 de noviembre). Por eso la nota es solo la de la rubrica del informe (13 indicadores, pesos 10/7/7/5/6/5/10/5/7/9/9/10/10), sin el componente 0.60/0.40 del paralelo A.
+2. Cierre: la guia publicada dice viernes 13 de noviembre, 00:00, pero ese cierre se fijo para el paralelo A. En B casi todo el trabajo es del 13 y 14 (las caratulas tienen fechas del 12 al 15), asi que aplique el cierre por defecto del sabado 14 de noviembre, 23:59. Con el cierre del viernes 13, 00:00, todos tendrian P3, porque 16 de los 17 repositorios tienen commits del 13 o del 14.
+3. Revise los repositorios completos hasta hoy y registre aparte lo posterior al cierre (P3): Loor Suarez Jordan (enlace del video, 15 nov 00:00), Mendoza Bermello (video y bitacora, 15 nov 00:00), Rivas (video y bitacora, 15 nov 00:05 y 00:09), Zambrano Yong (cambio de MongoDB a HBase, 15 nov 14:53) y Zambrano Trivino (el informe completo entro el 15 nov a las 17:00).
+4. Criterios de piso registrados sin descontar: P1 en Macias (URL partida), Zambrano Trivino (URL partida y con /tree/main) y Mendoza Villarroel (PDF de dos paginas); P4 en Macias; P5 en Mendoza Bermello y Rivas (no entregaron FORM-FB-01 segun la evaluacion del 16 nov). Riesgo de P5: Quintero no figura en la caratula de FORM-FB-01 ni tiene fichas propias.
+5. Si aplicas los criterios de piso al pie de la letra, quedan en 0: Macias (P1 y P4), Zambrano Trivino (P1 y P3), Mendoza Villarroel (P1), Mendoza Bermello (P3 y P5), Rivas (P3 y P5), Loor Suarez Jordan y Zambrano Yong (P3). En FORM-FB-01 B el P4 de Macias si anulo la nota; aqui su nota ya es 0.1.
+6. Referencias: verifique en Crossref los 97 DOI citados y en DataCite los dos de arXiv (Tchaye-Kondi 2019 y Owotogbe 2024); todos llevan a la obra citada. Las diferencias marcadas eran autores partidos por saltos de linea en el .bib, el numero "2 (106)", el ano de volumen 2023 de Future Internet y el titulo con subtitulo de Hazelcast Jet. Sin DOI revise los articulos de Macias: el de Sensors 25(9):2945 es de Khattach, Moussaoui y Hassine, no de "O. Kopp, O. Mhamedi y M. Hassine" (P4), y [4] tiene como autor "Student Thesis". El de Ding et al. (NSDI 2025) que cita Loor Jordan es real.
+7. Compilacion desde clon limpio (pdflatex, biber, pdflatex x2): compilan los 17. Bueno falla en mi TeX Live 2023 por babel-spanish con ">=Stealth" de TikZ y compila al agregar \usetikzlibrary{babel}; su PDF del repositorio se genero bien, asi que no lo atribui como P2. Como en evaluaciones anteriores, emule la cadena artno de biblatex-ieee.
+8. Indicios de IA (regla de FORM-FB-01: 1 indicio no se penaliza, 2 = nivel B -1.5, 3 o mas = nivel C -3.0). La declaracion de que la IA redacto el informe cuenta como indicio y limita D2 y D4 al nivel 3, y la redaccion uniforme (I1) como otro. Sin penalizacion: Mendoza Bermello, Mendoza Villarroel y Loor Suarez Steffanny. Nivel B: Apunte, Bueno, Munoz, Pozo, Sanchez, Zambrano Trivino y Zambrano Yong. Nivel C: Benites, Castro, Cedeno, Loor Suarez Jordan, Macias, Quintero y Rivas.
+9. Casos graves. Loor Suarez Jordan entrego el Anexo B con tres recuadros "PENDIENTE", REGISTRO.md con "SALIDA ORIGINAL PENDIENTE" y una declaracion que dice "el estudiante debe verificar personalmente" las fuentes y salidas: es texto de asistente sin revisar. Cedeno declara que Codex configuro y ejecuto el laboratorio. Benites declara que Claude hizo una imagen de la arquitectura que el redibujo "a mano", asi que su Anexo A no es su primer bosquejo.
+10. Decision para el docente: doce estudiantes declaran que la IA redacto todo o parte del informe. Los trate como indicios, igual que en FORM-FB-01 B. Si aplicas la definicion del encuadre (contenido generado por IA presentado como propio, P4), el criterio se discute, porque la redaccion esta declarada; en Loor Suarez Jordan, Cedeno y Macias el contenido no verificado si sostiene un P4.
+11. Sistemas repetidos: Mendoza Bermello y Pozo analizan ambos HDFS frente a Ceph, pero sus textos no coinciden (semejanza de 8-gramas por debajo del 1 %). Zambrano Yong cambio de MongoDB a HBase el 15 de noviembre porque Munoz ya habia tomado Cassandra frente a MongoDB.
+12. Similitud textual: compare los 17 informes entre si y con los 20 informes del paralelo A usando 8-gramas; el maximo es 2.2 % (Sanchez y Munoz con Paca y Garcia B. del paralelo A, por frases comunes de la guia). No hay copia entre estudiantes.
+13. Paralelo declarado: Pozo escribe paralelo "A" en su caratula del SGA y Mendoza Villarroel "7mo Software A"; los dos estan en la carpeta B. Conviene confirmar su paralelo en el SGA.
+14. Videos: los 17 README tienen un enlace (YouTube o Google Drive). No pude abrirlos desde aqui, asi que no verifique duracion, rostro ni que no se lea; si alguno falta o no muestra al estudiante, los indicadores de D3 bajan a 0.
+15. Extension: Loor Suarez Jordan tiene 39 paginas (unas 33 de contenido) y Sanchez 29; Macias tiene unas cuatro paginas de contenido (minimo cinco) y Cedeno justo cinco.
