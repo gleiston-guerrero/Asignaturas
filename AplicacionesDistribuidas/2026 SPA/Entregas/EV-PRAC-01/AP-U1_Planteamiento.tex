@@ -1,0 +1,275 @@
+%============================================================
+% AP-U1 -- Aporte practico de la Unidad I -- Planteamiento
+% Aplicaciones Distribuidas (ISR-701) -- UTEQ -- SPA 2026-2027
+% Compilacion: pdflatex -> pdflatex
+%============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noquoting]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,top=2.3cm,bottom=2.3cm,left=2.5cm,right=2.2cm,headheight=15pt]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{needspace}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+
+%------------------------------------------------------------
+% Paleta institucional UTEQ
+%------------------------------------------------------------
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqRed}{HTML}{B02418}
+\definecolor{uteqSoft}{HTML}{EAF1FA}
+\definecolor{uteqGray}{HTML}{F3F4F6}
+
+\newcommand{\codigo}{AP-U1}
+\newcommand{\doccode}{\codigo{} $\cdot$ Planteamiento}
+
+%------------------------------------------------------------
+% Encabezado y pie
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{uteqBlue}UTEQ $\cdot$ Ingeniería de Software $\cdot$ Aplicaciones Distribuidas (ISR-701)}
+\fancyhead[R]{\footnotesize\color{uteqBlue}\textbf{\doccode}}
+\fancyfoot[L]{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\fancyfoot[R]{\footnotesize Página \thepage}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyfoot[R]{\footnotesize Página \thepage}
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+%------------------------------------------------------------
+% Titulos y espaciado
+%------------------------------------------------------------
+\titleformat{\section}{\normalfont\large\bfseries\color{uteqBlue}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\color{uteqMid}}{\thesubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{12pt}{5pt}
+\titlespacing*{\subsection}{0pt}{8pt}{3pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=1pt,topsep=2pt,leftmargin=1.4em}
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+%------------------------------------------------------------
+% Cajas semanticas
+%------------------------------------------------------------
+\newtcolorbox{infoBox}[1][]{enhanced,breakable,colback=uteqSoft,colframe=uteqMid,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{avisoBox}[1][]{enhanced,breakable,colback=uteqAmber!10,colframe=uteqAmber!85!black,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{pisoBox}[1][]{enhanced,breakable,colback=uteqRed!6,colframe=uteqRed,fonttitle=\bfseries,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+
+\newcommand{\hdr}[1]{\textcolor{white}{\textbf{#1}}}
+
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{uteqMid},backgroundcolor=\color{uteqGray},breaklines=true,xleftmargin=4pt,xrightmargin=4pt,aboveskip=5pt,belowskip=5pt}
+
+\begin{document}
+
+%============================================================
+% ENCABEZADO
+%============================================================
+\begin{center}
+	{\color{uteqBlue}\rule{\linewidth}{1pt}}\\[0.2cm]
+	{\large\bfseries\color{uteqBlue} UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[0.05cm]
+	{\normalsize Facultad de Ciencias de la Computación $\cdot$ Carrera de Software}\\[0.1cm]
+	{\color{uteqBlue}\rule{\linewidth}{1pt}}\\[0.3cm]
+	{\LARGE\bfseries\color{uteqBlue} Aporte práctico de la Unidad I}\\[0.12cm]
+	{\large\bfseries \codigo{} $\cdot$ AforoSeguro: control de aforo distribuido}\\[0.08cm]
+	{\normalsize Aplicaciones Distribuidas (ISR-701) $\cdot$ SPA 2026--2027 $\cdot$ Individual $\cdot$ 2 horas sin Internet}
+\end{center}
+
+\begin{xltabular}{\linewidth}{@{}L{5.2cm}Y@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Datos del estudiante} & \hdr{(llenar al inicio de la sesión)} \\
+	\midrule
+	\endhead
+	Apellidos y nombres & \\[1pt]
+	Fecha y hora de inicio & \\[1pt]
+	Código de sesión 1 (inicio) & \\[1pt]
+	Código de sesión 2 (minuto 60) & \\[1pt]
+	Firma del estudiante & \\[1pt]
+	Visto bueno del docente (red desconectada) & \\[1pt]
+	\bottomrule
+\end{xltabular}
+
+\begin{pisoBox}[title={Reglas de la sesión (su incumplimiento implica calificación CERO)}]
+	\begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=2.2em]
+		\item \textbf{Sin Internet durante los 120 minutos.} Antes de empezar desactive el Wi-Fi y desconecte el cable de red. Cualquier conexión a Internet durante el desarrollo, por cualquier medio (computadora, celular como módem, navegador, IDE, Maven, \texttt{git push}), anula el aporte.
+		\item \textbf{Solo código propio.} Puede reutilizar únicamente código de proyectos que usted mismo hizo y que ya están en un repositorio suyo de GitHub con fecha anterior a hoy. Todo lo reutilizado se declara en el \texttt{README.md} (tabla de la sección \ref{sec:readme}). Código de Internet, de una inteligencia artificial (IA) o de un compañero anula el aporte.
+		\item \textbf{Repositorio nuevo y \emph{commits} durante la sesión.} El repositorio local se crea vacío al inicio. Todos los \emph{commits} se hacen dentro de los 120 minutos; el primero lleva en su mensaje el código de sesión 1 y uno posterior al minuto 60 lleva el código de sesión 2, ambos escritos en la pizarra por el docente.
+		\item \textbf{Explicación en el puesto.} Durante la sesión el docente puede pedirle que explique una parte de su código o que cambie un parámetro y lo ejecute delante de él. Si no puede hacerlo, se presume que el código no es suyo.
+	\end{enumerate}
+\end{pisoBox}
+
+%============================================================
+\section{Contexto}
+%============================================================
+
+El Coliseo de Quevedo recibe ferias y conciertos con un aforo máximo autorizado. La gente entra y sale por tres puertas, y hoy cada portero lleva la cuenta en una libreta: nadie sabe cuántas personas hay dentro en total y, en los eventos llenos, el aforo se supera porque cada puerta deja pasar gente sin saber lo que dejaron pasar las otras dos.
+
+La administración quiere un prototipo llamado \textbf{AforoSeguro}: un coordinador central lleva la cuenta global; cada puerta pide permiso al coordinador antes de dejar entrar a una persona y le avisa cuando alguien sale; el coordinador sabe en todo momento qué puertas están activas; y todos los procesos registran sus eventos en un orden coherente para poder reconstruir lo que pasó.
+
+No se evalúan la interfaz gráfica, la persistencia en disco ni la escala, sino la aplicación correcta de los mecanismos de la Unidad I: comunicación entre procesos, autenticación, control de concurrencia, detección de fallos con latidos y relojes lógicos de Lamport.
+
+%============================================================
+\section{Arquitectura mínima}
+%============================================================
+
+\begin{itemize}
+	\item \textbf{Un coordinador} (identificador 0) y \textbf{tres puertas}: P1 Norte, P2 Sur y P3 Este (identificadores 1, 2 y 3), cada una como un proceso independiente en la misma computadora.
+	\item \textbf{Lenguaje y comunicación:} Java 21 con Java RMI o con \emph{sockets} TCP (recomendado: no requieren bibliotecas externas). gRPC solo si las dependencias ya están en su caché local de Maven por un proyecto propio anterior y compila con \texttt{mvn -o}. También se admite Python 3.11 o superior con la biblioteca estándar.
+	\item \textbf{Archivo de configuración} \texttt{config.properties} (o equivalente) con, al menos: el aforo máximo (\texttt{aforo=10} para las pruebas), el token de acceso, el host y los puertos.
+	\item Cada puerta se maneja por consola con tres órdenes: \texttt{entrar}, \texttt{salir} y \texttt{estado} (personas dentro y aforo).
+\end{itemize}
+
+Formato sugerido de los mensajes si usa \emph{sockets} (puede adaptarlo, pero debe documentarlo en el \texttt{README.md}):
+
+\begin{lstlisting}
+{"tipo":"ENTRAR","token":"...","puerta":2,"lamport":17}
+{"tipo":"RESPUESTA","resultado":"PERMITIDA","dentro":8,"aforo":10,"lamport":19}
+\end{lstlisting}
+
+%============================================================
+\section{Requerimientos}
+%============================================================
+
+\subsection*{Parte A. Comunicación y autenticación}
+
+\begin{enumerate}[label=A\arabic*.]
+	\item La puerta envía al coordinador las solicitudes \texttt{ENTRAR}, \texttt{SALIR} y \texttt{ESTADO}, y recibe una respuesta: \texttt{PERMITIDA}, o \texttt{RECHAZADA} con su motivo (aforo completo, token inválido, nadie dentro).
+	\item Si usa \emph{sockets}, los mensajes se delimitan (por longitud previa o por separador de línea) de modo que varias solicitudes enviadas seguidas nunca se mezclen ni se corten. Si usa RMI o gRPC, explique en el informe qué hace el \emph{middleware} en lugar de usted.
+	\item Toda solicitud lleva el token del archivo de configuración. El coordinador rechaza cualquier solicitud sin token o con un token incorrecto y lo registra en su bitácora.
+\end{enumerate}
+
+\subsection*{Parte B. Aforo sin desbordes (control de concurrencia)}
+
+\begin{enumerate}[label=B\arabic*.]
+	\item El número de personas dentro nunca supera el aforo ni baja de cero, aunque varias puertas pidan entrar exactamente al mismo tiempo.
+	\item Construya un programa \texttt{PruebaCarga} que lance 30 solicitudes \texttt{ENTRAR} simultáneas (10 hilos por puerta) con aforo 10, y que muestre al final cuántas fueron permitidas, cuántas rechazadas y cuántas personas registra el coordinador.
+	\item Agregue al coordinador un modo \texttt{--inseguro} (argumento de arranque) en el que la consulta y la actualización del contador se hagan por separado, con una pausa de 50 ms entre ambas. Este modo existe solo para comparar en el escenario E3.
+\end{enumerate}
+
+\subsection*{Parte C. Latidos y detección de puertas caídas}
+
+\begin{enumerate}[label=C\arabic*.]
+	\item Cada puerta envía un latido al coordinador cada 2 segundos.
+	\item Si el coordinador no recibe latidos de una puerta durante 6 segundos, la marca como \texttt{CAIDA} y lo registra. Cuando la puerta vuelve a enviar latidos, la marca como \texttt{ACTIVA} y lo registra.
+	\item La orden \texttt{estado} muestra también qué puertas están activas y cuáles caídas.
+\end{enumerate}
+
+\subsection*{Parte D. Relojes de Lamport y orden total}
+
+\begin{enumerate}[label=D\arabic*.]
+	\item Cada proceso (coordinador y puertas) mantiene un reloj de Lamport: lo incrementa en 1 antes de cada evento local o envío y, al recibir un mensaje, lo fija en $\max(\text{local}, \text{recibido}) + 1$. Todo mensaje, incluidos los latidos, lleva el valor del reloj del emisor.
+	\item Cada proceso escribe sus eventos en \texttt{logs/<proceso>.log}, una línea por evento, con el formato \texttt{lamport;id\_proceso;evento;detalle}.
+	\item Un programa \texttt{OrdenTotal} une los cuatro registros y produce \texttt{logs/orden\_total.log}, ordenado por marca de Lamport y, en caso de empate, por identificador de proceso.
+\end{enumerate}
+
+%============================================================
+\section{Escenarios que debe ejecutar y documentar}
+%============================================================
+
+Para cada escenario tome al menos una captura de pantalla en la que se vean la consola, su nombre de usuario de Windows, el nombre del equipo y la fecha y hora del sistema (por ejemplo, ejecutando antes \texttt{whoami; hostname; Get-Date} en PowerShell). Guarde las capturas en \texttt{docs/img/} y conserve los registros en \texttt{logs/}.
+
+\begin{xltabular}{\linewidth}{@{}C{0.9cm}Y@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{E} & \hdr{Escenario} \\
+	\midrule
+	\endhead
+	E0 & Sin red: al inicio, captura de \texttt{Get-NetAdapter | Format-Table Name,Status} con todos los adaptadores desconectados, y \emph{commit} con el código de sesión 1. \\
+	E1 & Operación normal: entran personas por las tres puertas, sale una por P2, y la orden \texttt{estado} muestra el mismo total desde cualquier puerta. \\
+	E2 & Aforo completo y token inválido: con aforo 10, la undécima solicitud \texttt{ENTRAR} es rechazada con su motivo; luego una solicitud con un token incorrecto es rechazada y registrada. \\
+	E3 & Carga concurrente: \texttt{PruebaCarga} con el coordinador normal (deben permitirse exactamente 10) y con el coordinador en modo \texttt{--inseguro}. Registre las cifras de ambas ejecuciones. \\
+	E4 & Puerta caída: detenga P3; el coordinador la marca como caída en el tiempo fijado; vuelva a iniciarla y el coordinador la marca como activa. \\
+	E5 & Coordinador caído: con las puertas activas, detenga el coordinador e intente \texttt{entrar} desde P1. Muestre qué hace su puerta y explique por qué decidió que haga eso. \\
+	E6 & Orden total: ejecute \texttt{OrdenTotal} sobre los registros de E1 a E5 y señale en el informe dos pares de eventos en los que el orden respeta la causalidad (un envío antes de su recepción). \\
+	\bottomrule
+\end{xltabular}
+
+%============================================================
+\section{Preguntas de análisis}
+%============================================================
+
+Responda en el informe en pocas líneas por pregunta, apoyándose en lo que observó en su propio prototipo, no en definiciones generales:
+
+\begin{enumerate}
+	\item En E3, ¿por qué el modo \texttt{--inseguro} permitió más entradas que el aforo (o por qué no lo hizo en su ejecución)? ¿Qué mecanismo de su código evita el desborde en el modo normal y qué costo tiene?
+	\item En E5, ¿qué priorizó su sistema, la consistencia del aforo o la disponibilidad de las puertas? Relaciónelo con el teorema CAP y diga qué consecuencia tiene esa decisión para el público y para la administración.
+	\item Su coordinador es un punto único de fallo. ¿Qué mecanismo de la Unidad I usaría para que el sistema siga funcionando si el coordinador cae, y qué problema nuevo aparecería al haber varias réplicas del contador?
+	\item ¿Qué falacia de la computación distribuida tuvo en cuenta al fijar los tiempos de 2 y 6 segundos? ¿Qué pasaría en su sistema si la red tuviera una latencia de 7 segundos?
+\end{enumerate}
+
+%============================================================
+\section{Entregables}\label{sec:readme}
+%============================================================
+
+Repositorio local con nombre \texttt{AP-U1-Apellido-Nombre} y esta estructura:
+
+\begin{lstlisting}
+AP-U1-Apellido-Nombre/
+  src/                 codigo del coordinador, las puertas, PruebaCarga y OrdenTotal
+  config.properties    aforo, token, host y puertos
+  logs/                registros de cada proceso y orden_total.log
+  docs/informe.tex     informe en LaTeX (y su PDF compilado, informe.pdf)
+  docs/img/            capturas de E0 a E6
+  docs/entrega_SGA.tex pagina unica para el SGA (y su PDF)
+  README.md
+\end{lstlisting}
+
+El \texttt{README.md} contiene: cómo compilar y ejecutar cada proceso (orden de arranque y argumentos); el formato de los mensajes; cómo compilar el informe (compilador, archivo principal y orden de comandos, por ejemplo \texttt{pdflatex informe.tex} dos veces); y la tabla de código reutilizado:
+
+\begin{lstlisting}
+| Archivo de este repo | Repositorio propio de origen (URL) | Archivo y commit de origen | Que se cambio |
+\end{lstlisting}
+
+Si no reutilizó código, escriba en esa sección «No se reutilizó código».
+
+El \textbf{informe} (\texttt{docs/informe.tex}, de 2 a 4 páginas) tiene: una tabla con cada escenario, su captura y la interpretación de lo observado; las cifras de E3; los dos pares causales de E6; y las respuestas a las cuatro preguntas. No lleva marco teórico ni referencias. Use solo los paquetes de \LaTeX{} que ya usó en sus trabajos anteriores, porque sin Internet su distribución no podrá descargar paquetes nuevos.
+
+%============================================================
+\section{Organización del tiempo y entrega}
+%============================================================
+
+\begin{xltabular}{\linewidth}{@{}L{2.6cm}Y@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Minuto} & \hdr{Actividad sugerida} \\
+	\midrule
+	\endhead
+	0 -- 5 & Desconectar la red, escenario E0, \texttt{git init}, \texttt{git config user.name} y \texttt{user.email} con sus datos, primer \emph{commit} con el código de sesión 1. \\
+	5 -- 35 & Parte A y configuración: coordinador, una puerta y token. \emph{Commit}. \\
+	35 -- 60 & Parte B, \texttt{PruebaCarga} y modo \texttt{--inseguro}. \emph{Commit}. \\
+	60 -- 80 & Partes C y D: latidos, relojes, registros y \texttt{OrdenTotal}. \emph{Commit} con el código de sesión 2. \\
+	80 -- 100 & Escenarios E1 a E6 y capturas. \emph{Commit}. \\
+	100 -- 120 & Informe, \texttt{README.md}, compilación de los PDF y \emph{commit} final. \\
+	\bottomrule
+\end{xltabular}
+
+\begin{avisoBox}[title={Ventana de entrega (después de los 120 minutos)}]
+	Cuando el docente lo indique, y solo entonces, conecte la red durante 10 minutos para: (1) crear el repositorio público \texttt{AP-U1-Apellido-Nombre} en su GitHub, (2) hacer \texttt{git push} de todo su historial sin \emph{commits} nuevos, y (3) subir al SGA solamente un PDF de UNA SOLA página, compilado desde \texttt{docs/entrega\_SGA.tex}, con sus datos identificativos y la URL del repositorio escrita completa en una sola línea. Ningún \emph{commit} puede tener fecha posterior al minuto 120. La rúbrica y los criterios de piso están en la guía \codigo{} publicada en el SGA.
+\end{avisoBox}
+
+\end{document}
