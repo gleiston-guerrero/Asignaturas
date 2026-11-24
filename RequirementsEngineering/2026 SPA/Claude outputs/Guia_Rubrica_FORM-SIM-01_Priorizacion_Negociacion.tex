@@ -1,0 +1,375 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% FORM-SIM-01 (GA-SIM-01) — Simulación: priorización y negociación entre roles
+% Ingeniería de Requerimientos (ISR-401) · UTEQ · SPA 2026-2027
+% Rúbrica adaptada de la rúbrica PC2 (2026-2027 PPA) a la guía reducida FORM-SIM-01
+% Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Textos en español (sin babel) ----------
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+% ---------- Paleta institucional ----------
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+\definecolor{lightblue}{HTML}{EAF1F7}
+
+% ---------- Columnas personalizadas ----------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ \,$\cdot$\, Ingeniería de Requerimientos (ISR-401)}
+\rhead{\footnotesize FORM-SIM-01 \,$\cdot$\, SPA 2026--2027}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Atajos ----------
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\seccion}[1]{\section{\textcolor{utegreendk}{#1}}}
+\renewcommand{\thesection}{\arabic{section}.}
+
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajapiso}[1][]{colback=lightred,colframe=red!60!black,boxrule=1pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+\newtcolorbox{cajaaviso}[1][]{colback=lightgold,colframe=gold!80!black,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+
+\begin{document}
+
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\vspace{4pt}
+\begin{center}
+	{\small Facultad de Ciencias de la Computación \,\textcolor{gold}{$\bullet$}\, Carrera de Software \,\textcolor{gold}{$\bullet$}\, Ingeniería de Requerimientos (ISR-401)}\\[8pt]
+	{\LARGE\textbf{\textcolor{utegreendk}{GUÍA Y RÚBRICA DE EVALUACIÓN}}}\\[4pt]
+	{\large\textbf{\textcolor{midblue}{ACTIVIDAD FORMATIVA}}}\\[6pt]
+	{\Large\textbf{FORM-SIM-01}}\\[2pt]
+	{\large Simulación: priorización y negociación entre roles}
+\end{center}
+
+\vspace{2pt}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+\seccion{Datos generales}
+
+\noindent\begin{tabularx}{\linewidth}{|L{0.30\linewidth}|Y|}
+	\hline
+	\thdr{Campo} & \thdr{Detalle}\\
+	\hline
+	Asignatura & Ingeniería de Requerimientos (ISR-401) \,$\cdot$\, 4.\textsuperscript{o} nivel \,$\cdot$\, Paralelos A y B\\
+	\hline
+	\rowcolor{rowgray} Docente & Gleiston Cicerón Guerrero Ulloa, PhD \,$\cdot$\, \texttt{gguerrero@uteq.edu.ec}\\
+	\hline
+	Código en el sílabo & GA-SIM-01\\
+	\hline
+	\rowcolor{rowgray} Unidad & Unidad 2. Elicitación y análisis de requisitos (priorización y negociación)\\
+	\hline
+	Resultado de aprendizaje & Aplica técnicas de elicitación y análisis de requisitos para identificar, clasificar y modelar requisitos.\\
+	\hline
+	\rowcolor{rowgray} Carácter & Formativo: sin calificación; su entrega válida es requisito de las sumativas vinculadas\\
+	\hline
+	Prepara (sumativas vinculadas) & GA-PE-02 (práctica experimental de la unidad 2) y EV-PRAC-02 (evaluación parcial de las unidades 1 y 2)\\
+	\hline
+	\rowcolor{rowgray} Modalidad & Grupal en clase, con los grupos tal como están constituidos; los cuatro roles se reparten entre los integrantes\\
+	\hline
+	Semana & 5 (23 -- 29 de noviembre de 2026)\\
+	\hline
+	\rowcolor{rowgray} Publicación de la guía & lunes 23 de noviembre de 2026\\
+	\hline
+	Cierre & sábado 28 de noviembre de 2026, a las 23:59\\
+	\hline
+	\rowcolor{rowgray} Repositorio & Repositorio del grupo, carpeta \texttt{/formativas/FORM-SIM-01/}\\
+	\hline
+\end{tabularx}
+
+\seccion{Propósito}
+
+Vivenciar la dinámica de negociación de requisitos en conflicto entre distintas partes interesadas, como preparación para aplicar MoSCoW y votación ponderada de forma fundamentada en las sumativas vinculadas.
+
+\seccion{Fundamento}
+
+Priorizar es decidir qué requisitos se implementan primero cuando los recursos no alcanzan para todos; la prioridad es un atributo del requisito \citep{iso29148_2018}. MoSCoW clasifica cada requisito en imprescindible (Must), importante (Should), deseable (Could) o fuera de esta entrega (Won't), y la votación ponderada (o análisis multicriterio) combina varios criterios con pesos para ordenar los requisitos \citep{wiegers_beatty_2013,ireb_cpre_fl_2026}. La negociación es una actividad central del proceso de requisitos: busca un acuerdo entre partes interesadas cuyas posiciones chocan \citep{pohl_2025}. En la práctica, se espera una solución en la que todos ganen algo (win-win): cada rol cede en un punto a cambio de obtener otro, y nadie impone su posición.
+
+\seccion{Caso: sistema «Inscripciones universitarias»}
+
+Una universidad pública realiza hoy la inscripción en asignaturas con formularios en papel y hojas de cálculo. Cada inicio de periodo se forman filas en las secretarías, las excepciones (sobrecupos y prerrequisitos pendientes) se aprueban a mano y no queda registro de quién autorizó cada cambio. La universidad decidió construir un sistema web de inscripciones que debe estar en funcionamiento para el próximo periodo académico. No todo lo que piden las partes interesadas cabe en esa primera versión: el grupo debe decidir qué entra, qué espera y qué queda fuera por ahora.
+
+{\small
+\begin{longtable}{|C{0.08\linewidth}|L{0.68\linewidth}|C{0.14\linewidth}|}
+	\caption{Requisitos candidatos de la primera versión.}\label{tab:requisitos}\\
+	\hline
+	\thdr{ID} & \thdr{Requisito} & \thdr{Tipo}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{ID} & \thdr{Requisito} & \thdr{Tipo}\\
+	\hline
+	\endhead
+	R-01 & El estudiante se inscribe en línea en las asignaturas de su malla para el periodo vigente. & Funcional\\
+	\hline
+	\rowcolor{rowgray} R-02 & El sistema valida de forma automática los prerrequisitos aprobados y el cupo disponible de cada paralelo antes de confirmar la inscripción. & Funcional\\
+	\hline
+	R-03 & El estudiante paga en línea, con tarjeta, los valores de matrícula a través de una pasarela de pagos externa. & Funcional\\
+	\hline
+	\rowcolor{rowgray} R-04 & El sistema registra en una bitácora no modificable cada inscripción, modificación y anulación, con usuario, fecha, hora y motivo. & Funcional\\
+	\hline
+	R-05 & El coordinador de carrera aprueba o rechaza en el sistema las solicitudes de excepción (sobrecupo o prerrequisito pendiente). & Funcional\\
+	\hline
+	\rowcolor{rowgray} R-06 & El sistema obtiene las mallas, las notas y los paralelos del sistema académico institucional existente. & Restricción de interfaz\\
+	\hline
+	R-07 & El sistema atiende 3000 usuarios concurrentes el primer día de inscripciones con un tiempo de respuesta menor a 3 segundos en el 95 \% de las solicitudes. & De calidad (rendimiento)\\
+	\hline
+	\rowcolor{rowgray} R-08 & El estudiante se inscribe desde una aplicación móvil nativa para Android e iOS. & Funcional\\
+	\hline
+	R-09 & La gerencia consulta reportes de inscritos por carrera, asignatura y paralelo. & Funcional\\
+	\hline
+	\rowcolor{rowgray} R-10 & Los datos personales se almacenan cifrados y se tratan con consentimiento informado, conforme a la normativa de protección de datos personales. & De calidad (seguridad) y legal\\
+	\hline
+\end{longtable}
+}
+
+Las tarjetas de rol contienen información que solo conoce cada rol (por ejemplo, plazos, riesgos técnicos u obligaciones legales). Esa información debe revelarse durante la negociación: forma parte de lo que el grupo tiene que descubrir para llegar a un acuerdo fundamentado.
+
+\seccion{Desarrollo de la actividad}
+
+La actividad se realiza con los grupos tal como están constituidos. El docente asigna los cuatro roles (gerente, usuario operativo, desarrollador y auditor), y cada rol recibe una tarjeta con su posición respecto a los 10 requisitos de la Tabla~\ref{tab:requisitos}; nadie muestra su tarjeta a los demás. Si el grupo tiene menos de cuatro integrantes, uno o más asumen dos roles y presentan cada posición por separado; si tiene más de cuatro, los integrantes adicionales actúan como relatores, registran los conflictos y redactan la lista de conflictos resueltos. El número de integrantes no origina ninguna penalización: los cuatro roles deben estar representados en la negociación.
+
+\begin{enumerate}[leftmargin=20pt,itemsep=4pt]
+	\item \textbf{Posiciones.} Cada rol presenta su posición (2 minutos por rol).
+	\item \textbf{MoSCoW colectivo.} El grupo clasifica los 10 requisitos con MoSCoW hasta llegar a un acuerdo.
+	\item \textbf{Votación ponderada.} El grupo puntúa cada requisito de 1 a 5 en tres criterios: valor de negocio (40 \%), riesgo técnico (30 \%) y esfuerzo (30 \%). El riesgo y el esfuerzo se puntúan de forma inversa: 5 significa riesgo bajo o esfuerzo bajo. El puntaje es $P = 0{,}40\,V + 0{,}30\,R + 0{,}30\,E$, entre 1 y 5, y ordena los requisitos de mayor a menor.
+	\item \textbf{Conflictos.} El grupo documenta los conflictos surgidos y cómo se resolvieron: requisito, roles implicados, posición de cada uno, tipo de conflicto y acuerdo alcanzado.
+\end{enumerate}
+
+\seccion{Productos entregables}
+
+{\small
+\begin{longtable}{|L{0.27\linewidth}|L{0.43\linewidth}|L{0.21\linewidth}|}
+	\caption{Productos que deben estar en el repositorio al cierre.}\\
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Ruta en el repositorio} & \thdr{Contenido} & \thdr{Mínimo exigido}\\
+	\hline
+	\endhead
+	\texttt{formativas/\allowbreak{}FORM-SIM-01/\allowbreak{}main.tex y main.pdf} & Tabla MoSCoW acordada con la justificación de cada clasificación & Los 10 requisitos\\
+	\hline
+	\rowcolor{rowgray} (mismo documento) & Tabla de votación ponderada con las tres puntuaciones, el puntaje y el orden & Los 10 requisitos\\
+	\hline
+	(mismo documento) & Lista de conflictos resueltos: requisito, roles, posiciones, tipo de conflicto y acuerdo & 2 conflictos\\
+	\hline
+\end{longtable}
+}
+
+\seccion{Normas de entrega}
+
+\begin{enumerate}[leftmargin=20pt,itemsep=3pt]
+	\item \textbf{Repositorio.} Todo el trabajo se desarrolla en el repositorio del grupo, que debe ser público en GitHub. Allí deben estar los fuentes (\texttt{.tex}, \texttt{.bib} y figuras) y el PDF compilado, dentro de \texttt{/formativas/FORM-SIM-01/}.
+	\item \textbf{Documento en el SGA.} En la tarea del SGA se sube solamente un PDF de \textbf{una sola página} con los datos informativos: integrantes, código y nombre de la tarea, fecha límite de entrega y la URL del repositorio escrita completa en una sola línea. No se sube ningún otro archivo.
+	\item \textbf{\LaTeX{} reproducible.} El PDF debe poder regenerarse clonando el repositorio y compilando el archivo \texttt{.tex}. El \texttt{README.md} documenta compilador, archivo principal, orden de comandos y dependencias.
+	\item \textbf{Referencias.} Estilo IEEE. Toda referencia debe existir y sus datos (autores, año, título, revista o editorial, volumen, número, páginas y DOI o ISBN) deben corresponder exactamente a la obra real.
+	\item \textbf{Plazo.} El cierre es el sábado 28 de noviembre de 2026, a las 23:59. Se evalúa el contenido del repositorio hasta ese momento; lo agregado después no se considera.
+	\item \textbf{Aportes individuales.} Cada integrante sube con su propia cuenta lo que redactó. La retroalimentación individual se basa en los commits de cada estudiante y en su participación en el rol asignado durante la sesión.
+	\item \textbf{Datos personales.} Ningún dato personal de terceros se publica en el repositorio \citep{lopdp_2021}.
+	\item \textbf{Uso de IA como apoyo.} Si se usa una herramienta de IA solo como apoyo (ortografía, error de compilación), se declara en una sección del documento: herramienta, versión, propósito y cómo se verificó lo obtenido.
+\end{enumerate}
+
+\seccion{Criterios de piso: condiciones de entrega válida}
+
+\begin{cajapiso}[title={Criterios de piso: su incumplimiento equivale a no entregar (CERO en la sumativa vinculada)}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{PDF con carátula y URL en una sola línea.} En el SGA se sube solamente un PDF de UNA SOLA página con los datos de identificación (integrantes, código y nombre de la tarea, fecha límite de entrega) y, en una sola línea, la URL del repositorio donde está el trabajo. Si el PDF tiene más de una página, si se suben otros archivos, si la URL no cabe en una sola línea o está rota, o si el repositorio no es accesible, la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar las sumativas vinculadas, en las que obtiene CERO.
+		\item \textbf{PDF reproducible.} Si el PDF no se genera correctamente a partir del \LaTeX{} al clonar el repositorio y compilar el archivo \texttt{.tex} siguiendo el \texttt{README.md} (compilador, orden de comandos, archivo principal y dependencias), la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar las sumativas vinculadas, en las que obtiene CERO.
+		\item \textbf{Plazo.} Si el contenido evaluable se sube después de la fecha y hora de cierre, la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar las sumativas vinculadas, en las que obtiene CERO.
+		\item \textbf{Integridad.} Plagio verificado, cualquiera de los indicios graves G1 a G6 de uso de IA, o contenido generado por IA presentado como propio: la actividad formativa se considera \textbf{NO ENTREGADA} y el estudiante no puede presentar las sumativas vinculadas, en las que obtiene CERO, sin perjuicio de las acciones disciplinarias que correspondan.
+	\end{enumerate}
+	Un integrante sin aportes verificables en el repositorio y sin participación en su rol durante la sesión se considera como no entregado, aunque el grupo cumpla P1 a P4.
+\end{cajapiso}
+
+\seccion{Integridad académica e indicios de uso de IA}
+
+Todo trabajo debe ser de autoría propia. Se aplica el Código de Ética de la ACM \citep{acm_code_2018} y la sección 6.1 del encuadre.
+
+\begin{cajapiso}[title={Indicios graves de uso de IA: cada uno, por sí solo, implica NO ENTREGADA (P4)}]
+	\begin{enumerate}[label=\textbf{G\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item \textbf{Referencias con datos que no corresponden a la obra real:} DOI que lleva a una obra con autores, título, año, revista, volumen o páginas diferentes; DOI, ISBN o URL inexistentes; obras que no existen.
+		\item \textbf{Citas que la fuente no respalda:} afirmaciones, cifras o citas textuales atribuidas a una fuente que no las contiene.
+		\item \textbf{Restos de un asistente de IA} en el documento, el código, los comentarios o los commits (por ejemplo, «Claro, aquí tienes\ldots», «Como modelo de lenguaje\ldots»).
+		\item \textbf{Negociación fabricada:} conflictos, posiciones o acuerdos que no ocurrieron en la sesión o que no corresponden a las tarjetas de rol entregadas.
+		\item \textbf{Resultados inexistentes:} el texto describe tablas, puntajes o acuerdos que no están en el documento o no coinciden con él.
+		\item \textbf{Incapacidad de explicar lo entregado:} el estudiante no puede justificar, cuando se le pide, una clasificación, un puntaje o un acuerdo del documento.
+	\end{enumerate}
+\end{cajapiso}
+
+\begin{cajaaviso}[title={Indicios complementarios (se acumulan)}]
+	\begin{enumerate}[label=\textbf{I\arabic*.},leftmargin=24pt,itemsep=3pt]
+		\item Redacción uniforme de principio a fin, o estilo distinto al del estudiante en otras entregas.
+		\item Uso excesivo de los mismos conectores y fórmulas («además», «cabe destacar», «es importante señalar», «en conclusión»).
+		\item Contenido genérico: justificaciones o conflictos aplicables a cualquier sistema, sin relación con «Inscripciones universitarias».
+		\item Entrega en uno o pocos commits masivos, o mensajes de commit idénticos o automáticos.
+		\item Residuos de formato ajeno a \LaTeX{} (marcas de Markdown, emojis) o metadatos del PDF de otra herramienta.
+		\item Estructura, redacción o errores muy similares entre grupos distintos.
+		\item Traducción literal o mezcla de idiomas sin justificación.
+	\end{enumerate}
+	Con dos indicios complementarios la retroalimentación baja un nivel en el criterio R5, y con tres o más R5 queda en No logrado. La declaración de uso de IA no exime de responsabilidad ni anula estos indicios.
+\end{cajaaviso}
+
+\seccion{Rúbrica analítica para la retroalimentación}
+
+La actividad no tiene calificación. Cada criterio se valora en tres niveles: \textbf{L} = Logrado (cumple con la calidad descrita); \textbf{EP} = En proceso (presente pero incompleto, impreciso o con errores que se señalan); \textbf{NL} = No logrado (ausente, incorrecto o no verificable). Que un elemento esté presente no basta: se valora su calidad. La rúbrica se aplica solo si se cumplen los criterios de piso P1 a P4.
+
+{\small
+\begin{longtable}{|L{0.16\linewidth}|L{0.27\linewidth}|L{0.24\linewidth}|L{0.20\linewidth}|}
+	\caption{Rúbrica de FORM-SIM-01.}\\
+	\hline
+	\thdr{Criterio} & \thdr{Logrado (L)} & \thdr{En proceso (EP)} & \thdr{No logrado (NL)}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{Criterio} & \thdr{Logrado (L)} & \thdr{En proceso (EP)} & \thdr{No logrado (NL)}\\
+	\hline
+	\endhead
+	\textbf{R1. Tabla MoSCoW acordada} \newline \textit{(Aplicar)} & Los 10 requisitos están clasificados; se usan las cuatro categorías (la lista no es solo Must); cada Must y cada Won't se justifica con datos del caso y con la posición de al menos un rol; ningún Must depende de un requisito con menor prioridad. & Los 10 requisitos están clasificados, pero 1 o 2 clasificaciones no tienen justificación, falta una categoría o se viola una dependencia. & Faltan requisitos, casi todo es Must, o las clasificaciones no tienen justificación.\\
+	\hline
+	\rowcolor{rowgray} \textbf{R2. Votación ponderada} \newline \textit{(Aplicar)} & Los 10 requisitos tienen puntuación de 1 a 5 en valor, riesgo y esfuerzo; se usan los pesos 40/30/30; riesgo y esfuerzo se puntúan de forma inversa; el cálculo y el orden son correctos; se explican las diferencias entre el orden obtenido y la tabla MoSCoW. & Un error de cálculo que no cambia el orden, la escala inversa aplicada de forma irregular, o no se contrasta el resultado con MoSCoW. & No se aplica, se usan otros pesos, o los errores de cálculo cambian el orden.\\
+	\hline
+	\textbf{R3. Conflictos identificados} \newline \textit{(Analizar)} & Al menos 2 conflictos ocurridos en la sesión, cada uno con requisito, roles implicados, posición de cada rol y tipo de conflicto (de intereses, de datos, de valores, estructural o de relación) bien nombrado. & Se registran conflictos, pero con el tipo mal nombrado, sin las posiciones de los roles, o solo uno. & No se registran conflictos, o son genéricos y no corresponden al caso.\\
+	\hline
+	\rowcolor{rowgray} \textbf{R4. Resolución win-win} \newline \textit{(Evaluar)} & Cada conflicto se resuelve con cesiones recíprocas explícitas (qué cede y qué gana cada rol); se respetan las exigencias no negociables del auditor (normativa, protección de datos); el acuerdo se refleja en la tabla MoSCoW. & El acuerdo es un compromiso parcial o asimétrico, no explicita qué cede cada rol, o no se refleja en la tabla. & Un rol impone su posición, o el conflicto queda sin resolver.\\
+	\hline
+	\textbf{R5. Coherencia, contexto y trabajo del grupo} \newline \textit{(Transversal)} & Las tres tablas son coherentes entre sí; se usa el caso «Inscripciones universitarias» y sus 10 requisitos; la terminología de IR es precisa; todos los integrantes tienen aportes verificables en los commits. & Una inconsistencia menor entre tablas, terminología imprecisa, o aportes muy desiguales entre integrantes. & Tablas contradictorias, contenido genérico, o un solo integrante con aportes cuando el grupo tiene varios.\\
+	\hline
+\end{longtable}
+}
+
+\seccion{Lista de retroalimentación para el SGA}
+
+{\small
+\begin{longtable}{|C{0.06\linewidth}|L{0.42\linewidth}|C{0.04\linewidth}|C{0.04\linewidth}|C{0.04\linewidth}|L{0.22\linewidth}|}
+	\caption{Registro de la retroalimentación de FORM-SIM-01.}\\
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Criterio} & \thdr{L} & \thdr{EP} & \thdr{NL} & \thdr{Observación}\\
+	\hline
+	\endfirsthead
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Criterio} & \thdr{L} & \thdr{EP} & \thdr{NL} & \thdr{Observación}\\
+	\hline
+	\endhead
+	R1 & Tabla MoSCoW acordada, completa y justificada. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	R2 & Votación ponderada 40/30/30 con escala inversa y cálculo correcto. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	R3 & Conflictos identificados con roles, posiciones y tipo. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	R4 & Resolución win-win con cesiones recíprocas. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+	R5 & Coherencia, contexto del caso y aportes de todos. & $\square$ & $\square$ & $\square$ & \\
+	\hline
+\end{longtable}
+}
+
+\begin{cajaclave}[title={Cómo se usa esta retroalimentación}]
+	El docente devuelve la lista en el SGA y, al inicio de la semana 6, hace una puesta en común sobre los patrones de conflicto más frecuentes y su equivalente en proyectos reales. Cada criterio marcado como EP o NL debe corregirse antes de presentar GA-PE-02 y EV-PRAC-02; el docente verificará esa corrección al calificarlas. Entregar esta formativa de forma válida es requisito para presentar GA-PE-02 y EV-PRAC-02.
+\end{cajaclave}
+
+\seccion{Plantillas para el documento}
+
+Copie estas tablas en su \texttt{main.tex} y complételas. Las justificaciones deben citar datos del caso o de las posiciones de los roles.
+
+\textbf{Plantilla 1. Tabla MoSCoW acordada.}
+
+{\small
+\noindent\begin{tabularx}{\linewidth}{|C{0.08\linewidth}|C{0.13\linewidth}|Y|L{0.22\linewidth}|}
+	\hline
+	\thdr{ID} & \thdr{Categoría} & \thdr{Justificación del acuerdo} & \thdr{Roles a favor / en contra}\\
+	\hline
+	R-01 & & & \\
+	\hline
+	\ldots & & & \\
+	\hline
+	R-10 & & & \\
+	\hline
+\end{tabularx}
+}
+
+\vspace{6pt}
+\textbf{Plantilla 2. Votación ponderada.} V = valor de negocio; R = riesgo técnico (5 = riesgo bajo); E = esfuerzo (5 = esfuerzo bajo); $P = 0{,}40\,V + 0{,}30\,R + 0{,}30\,E$.
+
+{\small
+\noindent\begin{tabularx}{\linewidth}{|C{0.08\linewidth}|C{0.10\linewidth}|C{0.10\linewidth}|C{0.10\linewidth}|C{0.10\linewidth}|C{0.08\linewidth}|Y|}
+	\hline
+	\thdr{ID} & \thdr{V (1--5)} & \thdr{R (1--5)} & \thdr{E (1--5)} & \thdr{P} & \thdr{Orden} & \thdr{Diferencia con MoSCoW y su explicación}\\
+	\hline
+	R-01 & & & & & & \\
+	\hline
+	\ldots & & & & & & \\
+	\hline
+	R-10 & & & & & & \\
+	\hline
+\end{tabularx}
+}
+
+\vspace{6pt}
+\textbf{Plantilla 3. Lista de conflictos resueltos.}
+
+{\small
+\noindent\begin{tabularx}{\linewidth}{|C{0.05\linewidth}|L{0.15\linewidth}|L{0.17\linewidth}|L{0.15\linewidth}|Y|}
+	\hline
+	\thdr{N.\textsuperscript{o}} & \thdr{Requisitos y roles} & \thdr{Posición de cada rol} & \thdr{Tipo de conflicto} & \thdr{Acuerdo: qué cede y qué gana cada rol}\\
+	\hline
+	1 & & & & \\
+	\hline
+	2 & & & & \\
+	\hline
+\end{tabularx}
+}
+
+\seccion{Recursos}
+
+IREB CPRE, nivel básico, capítulo de gestión de requisitos (priorización) \citep{ireb_cpre_fl_2026}; Wiegers y Beatty, capítulo 16 \citep{wiegers_beatty_2013}; Pohl, negociación de requisitos \citep{pohl_2025}.
+
+\bibliographystyle{unsrtnat}
+\bibliography{referencias_FORM-SIM-01}
+
+\end{document}

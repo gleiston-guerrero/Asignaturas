@@ -1,0 +1,171 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% FORM-SIM-01 (GA-SIM-01) — Tarjetas de rol y clave del docente
+% Ingeniería de Requerimientos (ISR-401) · UTEQ · SPA 2026-2027
+% Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,top=2.6cm,bottom=2.3cm,left=2cm,right=2cm,headheight=34pt]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Referencias}
+
+\definecolor{utegreen}{HTML}{0B7A3B}
+\definecolor{utegreendk}{HTML}{075C2C}
+\definecolor{midblue}{HTML}{1F5C8B}
+\definecolor{gold}{HTML}{D4A017}
+\definecolor{rowgray}{HTML}{EFEFEF}
+\definecolor{boxgray}{HTML}{F4F6F4}
+\definecolor{lightred}{HTML}{FBEAEA}
+\definecolor{lightgold}{HTML}{FBF3DC}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize UTEQ \,$\cdot$\, Ingeniería de Requerimientos (ISR-401)}
+\rhead{\footnotesize FORM-SIM-01 \,$\cdot$\, Uso del docente}
+\lfoot{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.25}
+
+\newcommand{\thdr}[1]{\cellcolor{utegreen}\textcolor{white}{\textbf{#1}}}
+\newcommand{\seccion}[1]{\section{\textcolor{utegreendk}{#1}}}
+\renewcommand{\thesection}{\arabic{section}.}
+
+\newtcolorbox{tarjeta}[1][]{enhanced,colback=white,colframe=midblue,boxrule=1pt,borderline={0.4pt}{2pt}{midblue!50,dashed},arc=2mm,fonttitle=\bfseries,breakable=false,#1}
+\newtcolorbox{cajaclave}[1][]{colback=boxgray,colframe=utegreen,boxrule=0.8pt,arc=2mm,fonttitle=\bfseries,breakable,#1}
+
+\begin{document}
+
+\noindent\includegraphics[width=\linewidth]{logoband.png}
+
+\begin{center}
+	{\LARGE\textbf{\textcolor{utegreendk}{TARJETAS DE ROL Y CLAVE DEL DOCENTE}}}\\[4pt]
+	{\large FORM-SIM-01 (GA-SIM-01) \,$\cdot$\, Simulación: priorización y negociación entre roles}\\[4pt]
+	{\small Sistema «Inscripciones universitarias» \,$\cdot$\, Actividad grupal (grupos tal como están constituidos)}
+\end{center}
+\noindent\textcolor{gold}{\rule{\linewidth}{1.5pt}}
+
+\seccion{Instrucciones de uso}
+
+Imprima un juego de cuatro tarjetas por grupo, con los grupos tal como están constituidos. Si el grupo tiene menos de cuatro integrantes, entregue dos tarjetas a uno o más estudiantes, evitando juntar roles con intereses opuestos en la misma persona (por ejemplo, no combine gerente y auditor; combine usuario operativo con auditor, o gerente con desarrollador según convenga); si tiene más de cuatro, los integrantes adicionales son relatores. El número de integrantes no origina penalización. Cada estudiante recibe solo su tarjeta y no la muestra; la información asimétrica (cada rol sabe algo que los demás no saben) es lo que genera los conflictos. La sección de clave no se entrega a los estudiantes.
+
+\begin{tarjeta}[title={ROL 1 \,$\cdot$\, GERENTE (directora académica, patrocinadora del proyecto)}]
+	\textbf{Tu objetivo:} que el sistema esté listo para el próximo periodo y que mejore la imagen de la universidad. Tú decides el presupuesto.
+	\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=2pt]
+		\item El Consejo exige que la primera versión funcione en 8 semanas; no hay prórroga.
+		\item Las filas de pago en tesorería son la queja principal de los estudiantes: quieres R-03 (pago en línea) como imprescindible.
+		\item Quieres R-09 (reportes) para justificar la inversión ante el Consejo y R-08 (aplicación móvil) porque «da imagen moderna».
+		\item El presupuesto es ajustado: prefieres pocas funciones, pero visibles.
+	\end{itemize}
+	\textbf{Tu tendencia:} marcar como Must todo lo que se ve. Cuidado: no todo cabe en 8 semanas.
+\end{tarjeta}
+
+\begin{tarjeta}[title={ROL 2 \,$\cdot$\, USUARIO OPERATIVO (secretaria académica)}]
+	\textbf{Tu objetivo:} dejar de procesar excepciones en papel y que el sistema no se caiga el primer día.
+	\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=2pt]
+		\item Cada periodo atiendes unas 400 solicitudes de sobrecupo y prerrequisito a mano: R-05 y R-02 son lo que más tiempo te ahorra.
+		\item El periodo pasado el portal de notas colapsó el primer día y tuviste que inscribir a mano durante una semana: para ti R-07 es crítico.
+		\item La aplicación móvil (R-08) no te sirve: los estudiantes ya usan el navegador del teléfono.
+		\item Los reportes (R-09) hoy los armas tú en una hoja de cálculo en una tarde; pueden esperar.
+	\end{itemize}
+	\textbf{Tu tendencia:} defender lo operativo y restar valor a lo que pide la gerencia.
+\end{tarjeta}
+
+\begin{tarjeta}[title={ROL 3 \,$\cdot$\, DESARROLLADOR (líder técnico)}]
+	\textbf{Tu objetivo:} entregar en 8 semanas algo estable y mantenible. Defiendes la viabilidad técnica.
+	\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=2pt]
+		\item R-06 (integración con el sistema académico) es el mayor riesgo: la interfaz no está documentada. Sin R-06 no funcionan R-01 ni R-02.
+		\item R-03 depende de un contrato con la pasarela que tarda unas 6 semanas en firmarse; integrar y probar los pagos no cabe en el plazo.
+		\item R-08 (aplicación nativa) duplica el esfuerzo; propones una web adaptable al teléfono, que cubre la misma necesidad.
+		\item R-07 exige pruebas de carga y servidores adicionales: esfuerzo medio, pero imposible de añadir al final.
+	\end{itemize}
+	\textbf{Tu tendencia:} pasar a Could o Won't lo complejo. Cuidado: la universidad también debe ganar.
+\end{tarjeta}
+
+\begin{tarjeta}[title={ROL 4 \,$\cdot$\, AUDITOR (control interno y protección de datos)}]
+	\textbf{Tu objetivo:} que el sistema cumpla la normativa y deje evidencia de cada decisión.
+	\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=2pt]
+		\item El último informe de auditoría observó que las excepciones se aprobaban sin dejar constancia de quién las autorizó: R-04 (bitácora) es obligatorio.
+		\item R-05 solo es aceptable si cada aprobación queda en la bitácora (R-04) con el responsable y el motivo.
+		\item La Ley Orgánica de Protección de Datos Personales obliga a proteger los datos y a contar con consentimiento: R-10 no es negociable.
+		\item Si se acepta el pago en línea (R-03), también se tratan datos de pago: R-10 debe estar operativo antes.
+	\end{itemize}
+	\textbf{Tu tendencia:} bloquear acuerdos que no dejan evidencia. Cuidado: también debes proponer, no solo vetar.
+\end{tarjeta}
+
+\newpage
+\seccion{Clave del docente (no se entrega)}
+
+\begin{cajaclave}[title={Conflictos esperados}]
+	{\small
+	\noindent\begin{tabularx}{\linewidth}{|L{0.27\linewidth}|L{0.19\linewidth}|Y|}
+		\hline
+		\thdr{Conflicto} & \thdr{Tipo y causa} & \thdr{Resolución win-win esperable}\\
+		\hline
+		Gerente quiere R-03 como Must; el desarrollador sabe que el contrato con la pasarela no llega a tiempo. & De datos (información que solo tiene un rol) e intereses. & R-03 pasa a la segunda versión con fecha comprometida; en la primera, el sistema genera la orden de pago para cancelar en banco o tesorería. La gerente obtiene menos filas desde el inicio y el pago en línea con fecha cierta.\\
+		\hline
+		\rowcolor{rowgray} Gerente quiere R-08 (aplicación nativa); usuario operativo y desarrollador no la valoran. & De valores (imagen frente a utilidad). & Web adaptable al teléfono como Must dentro de R-01; R-08 queda en Won't para esta versión. La gerente conserva el acceso móvil que buscaba.\\
+		\hline
+		Usuario operativo quiere R-05 ya; el auditor exige que deje evidencia. & Estructural (dependencia R-05 $\rightarrow$ R-04). & R-04 y R-05 entran juntos como Must; el auditor gana trazabilidad y la secretaria deja el papel.\\
+		\hline
+		\rowcolor{rowgray} Desarrollador quiere posponer R-07; usuario operativo lo considera crítico. & De intereses (plazo frente a operación). & R-07 como Must con alcance acotado (pruebas de carga y escalado para el día de inscripción); el desarrollador lo planifica desde el inicio en lugar de añadirlo al final.\\
+		\hline
+		Gerente quiere R-09; usuario operativo dice que puede esperar. & De valores. & R-09 como Should o Could, con una exportación simple como alternativa si sobra capacidad.\\
+		\hline
+	\end{tabularx}
+	}
+\end{cajaclave}
+
+\begin{cajaclave}[title={Consenso MoSCoW de referencia (se aceptan otros si están justificados)}]
+	\textbf{Must:} R-01, R-02, R-04, R-05, R-06, R-07 y R-10. \textbf{Should:} R-09. \textbf{Could:} R-03 (si el contrato con la pasarela se firma antes). \textbf{Won't (esta versión):} R-08.
+
+	Reglas de coherencia que debe cumplir cualquier solución: R-01 y R-02 no pueden ser Must sin R-06; R-05 no puede ser Must sin R-04; si R-03 es Must, R-10 también debe serlo; la lista no puede ser solo de Must.
+
+	En la votación ponderada se espera que R-06 tenga valor alto pero riesgo desfavorable (R bajo), y que R-08 obtenga el menor puntaje. Si el orden de la votación contradice el MoSCoW (por ejemplo, R-06 queda abajo pese a ser Must por dependencia), el grupo debe explicarlo: la votación no reemplaza el análisis de dependencias.
+\end{cajaclave}
+
+\begin{cajaclave}[title={Errores típicos a vigilar}]
+	\begin{enumerate}[leftmargin=18pt,itemsep=1pt,topsep=2pt]
+		\item Marcar R-01 o R-02 como Must y dejar R-06 en otra categoría.
+		\item Aceptar R-05 sin R-04, o R-03 sin R-10.
+		\item Sumar riesgo y esfuerzo sin invertir la escala (premia lo más riesgoso y costoso).
+		\item Resolver por imposición del gerente («yo pago, yo decido») en lugar de win-win.
+		\item Registrar conflictos genéricos que no ocurrieron en la sesión.
+	\end{enumerate}
+\end{cajaclave}
+
+Fundamento: tipos de conflicto y negociación \citep{pohl_2025}; priorización por valor, costo y riesgo \citep{wiegers_beatty_2013}; protección de datos \citep{lopdp_2021}.
+
+\bibliographystyle{unsrtnat}
+\bibliography{referencias_FORM-SIM-01}
+
+\end{document}
