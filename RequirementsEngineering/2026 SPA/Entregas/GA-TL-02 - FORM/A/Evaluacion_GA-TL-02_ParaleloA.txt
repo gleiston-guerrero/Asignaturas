@@ -1,0 +1,372 @@
+EVALUACIÓN GA-TL-02 - FORM · Taller de entrevista estructurada y design thinking aplicados al PFC · ISR-401 · Paralelo A · SPA 2026-2027 · Versión 2 (25 de noviembre de 2026)
+Instrumento: guía y rúbrica Guia_Rubrica_GA-TL-02-FORM_Entrevista_DesignThinking.pdf (fuente Guia_Rubrica_FORM-TL-02_Entrevista_DesignThinking.tex), con su lista de cotejo de 5 indicadores: 1 guion con apertura, bloques y cierre, y preguntas abiertas, neutrales y simples; 2 ensayo con consentimiento y registrado en el manifiesto; 3 mapa de empatía coherente con lo dicho en la entrevista; 4 definición del problema centrada en el usuario; 5 preguntas defectuosas identificadas y corregidas.
+Escala de la lista de cotejo: L (logrado), EP (en proceso) y NL (no logrado).
+Condiciones de entrega válida de la guía: P1 PDF del SGA de una sola página con estudiantes, tarea, fecha límite y URL en una línea; P2 PDF reproducible desde un clon siguiendo el README; P3 plazo; P4 integridad (plagio, indicios graves G1 a G6 o contenido de IA presentado como propio).
+Carácter: la guía y la descripción del SGA dicen que la actividad no se califica; por eso cada informe registra el estado de la entrega y los indicadores, y la valoración de 0 a 10 del aporte individual es solo referencial (importancia, profundidad, complejidad, amplitud y tiempo dedicado, de 0 a 2 cada una, según los commits).
+Se consideró también la descripción reducida publicada en el SGA; cuando difiere de la guía, no se penaliza al equipo que siguió la descripción del SGA (ver observaciones para el docente).
+Cierre aplicado: sábado 21 de noviembre de 2026, 23:59 (UTC-5); cada repositorio se evaluó en su último commit anterior al cierre y se compiló desde un clon con TeX Live siguiendo su README.
+Sumativas vinculadas: GA-PE-02 y TA-PFC-02 según el sílabo (la guía y el SGA las nombran GA-SUM-03 y TA-PFC-E2).
+
+RESUMEN POR GRUPO
+Grupo | Estado | Ind. 1 | Ind. 2 | Ind. 3 | Ind. 4 | Ind. 5
+ANY | NO ENTREGADA (P2, P4-G3) | NL | NL | NL | NL | NL
+BFLM | VÁLIDA | EP | L | L | L | L
+CEV | NO ENTREGADA (P4) | L | EP | NL | EP | EP
+CHR | NO ENTREGADA (P4-G4, G3) | EP | EP | EP | L | EP
+HLMS | NO ENTREGADA (P2) | L | EP | EP | L | L
+AAC | NO ENTREGADA (P4-G4) | L | NL | NL | L | L
+ABR | VÁLIDA (según la descripción del SGA; G6 pendiente) | EP | NL | NL | EP | NL
+
+RESUMEN INDIVIDUAL (valoración referencial del aporte; la actividad no se califica)
+N.º | Estudiante | Grupo | Estado | I | P | C | A | T | Descuento | Aporte referencial | Consecuencia en la sumativa vinculada
+1 | Yépez Guagua Luis Antonio | ANY | NO ENTREGADA | 0 | 0 | 0 | 0 | 0 | - | 0,0 | CERO (segunda formativa no entregada)
+2 | Basurto Anchaguano Jordan Steven | BFLM | VÁLIDA | 2 | 2 | 2 | 1 | 2 | - | 9,0 | Ninguna
+3 | Fuertes Calvo Landy Lorena | BFLM | VÁLIDA | 2 | 2 | 2 | 2 | 0 | - | 8,0 | Ninguna
+4 | Llerena Abril Angelina Julexy | BFLM | VÁLIDA | 2 | 2 | 1 | 1 | 1 | - | 7,0 | Ninguna
+5 | Monserrate Ochoa Erick Ariel | BFLM | VÁLIDA | 2 | 1 | 1 | 1 | 1 | - | 6,0 | Ninguna
+6 | Espinoza Pivaque Angelo Maximiliano | CEV | NO ENTREGADA | 2 | 1 | 1 | 2 | 1 | - | 7,0 | 25 % de penalización
+7 | Contreras Chávez Kevin Germán | CEV | NO ENTREGADA | 2 | 1 | 1 | 2 | 0 | - | 6,0 | CERO (segunda formativa no entregada)
+8 | Córdova Carreño Mayra Lucila | CHR | NO ENTREGADA | 2 | 1 | 1 | 2 | 1 | - | 7,0 | CERO (segunda formativa no entregada)
+9 | Herrera Morán Gilmar Javier | CHR | NO ENTREGADA | 2 | 1 | 1 | 2 | 1 | - | 7,0 | CERO (segunda formativa no entregada)
+10 | Rivas Bodero Jordy Fabián | CHR | NO ENTREGADA | 1 | 0 | 1 | 1 | 0 | - | 3,0 | CERO (segunda formativa no entregada)
+11 | Holguín Mendoza Jonathan Alexander | HLMS | NO ENTREGADA | 2 | 1 | 2 | 2 | 2 | - | 9,0 | 25 % de penalización
+12 | Lavayen Bone Cristopher Javier | HLMS | NO ENTREGADA | 2 | 1 | 2 | 2 | 2 | - | 9,0 | 25 % de penalización
+13 | Saltos Tello Joseph Orlando | HLMS | NO ENTREGADA | 2 | 1 | 1 | 1 | 1 | - | 6,0 | CERO (segunda formativa no entregada)
+14 | Morán Pilaguano Frixon Fernando | HLMS | NO ENTREGADA | 1 | 1 | 0 | 0 | 0 | - | 2,0 | CERO (segunda formativa no entregada)
+15 | Alvia Villegas Erick Adalberto | AAC | NO ENTREGADA | 2 | 1 | 1 | 2 | 0 | - | 6,0 | CERO (segunda formativa no entregada)
+16 | Chalacán Toala Yerai David | AAC | NO ENTREGADA | 2 | 1 | 2 | 2 | 0 | - | 7,0 | 25 % de penalización
+17 | Alcívar Vélez Anderson Adonis | AAC | NO ENTREGADA | 1 | 0 | 0 | 0 | 0 | - | 1,0 | 25 % de penalización
+18 | Álvarez Rubio Rai Eduardo | ABR | VÁLIDA | 1 | 1 | 1 | 1 | 0 | -1,5 (nivel B) | 2,5 | Ninguna, salvo que no explique el mapa (G6)
+19 | Briones Solórzano William Adrián | ABR | VÁLIDA | 1 | 2 | 1 | 0 | 0 | -1,5 (nivel B) | 2,5 | Ninguna, salvo que no explique el mapa (G6)
+20 | Rivera Rodríguez Joseph Jeremy | ABR | VÁLIDA | 1 | 0 | 0 | 1 | 0 | -1,5 (nivel B) | 0,5 | Ninguna, salvo que no explique el mapa (G6)
+Sin commits en la carpeta del taller (sin valoración ni informe): Aldas Zambrano Alan Andrés y Naranjo Flores Anderson Jeampiere (ANY); Vaca Romero David Octavio (CEV).
+
+======================================================================
+1. Yépez Guagua Luis Antonio (grupo ANY)
+======================================================================
+Estudiante: Yépez Guagua Luis Antonio · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo ANY
+Estado de la entrega: NO ENTREGADA por P2 (no hay PDF del taller) y P4 (restos de un asistente de IA en el PDF del SGA, indicio grave G3).
+Valoración referencial de tu aporte: 0,0/10 (la actividad no se califica).
+P4: el PDF que subiste al SGA conserva la nota «Reemplazar la URL; comprobar integrantes según el equipo asignado en el SGA. Este borrador no se debe subir así.», que es una instrucción de un asistente y no parte de tu entrega; además, la URL aparece entre corchetes.
+P2: en GA/TL-02 no hay main.pdf, y el main.tex compila una sola página con la portada y los títulos de las seis secciones, sin contenido.
+Tus commits del 17 de noviembre crearon la estructura del repositorio, y el 20 de noviembre agregaste en el README la distribución del trabajo, que termina con «Ensayo pendiente de realizar».
+Indicadores: 1 (NL), 2 (NL), 3 (NL), 4 (NL), 5 (NL).
+Te faltó todo el taller: el guion de 12 a 15 preguntas con apertura, bloques y cierre, el ensayo con consentimiento y su manifiesto, el mapa de empatía, la definición del problema y la corrección de las preguntas que fallaron; debes hacerlo como parte de tu formación porque es la base de la elicitación de tu PFC.
+Como esta es tu segunda formativa no entregada en el periodo (también FORM-TL-01), tu nota en la sumativa vinculada (GA-PE-02 y TA-PFC-02) será CERO.
+Luis, revisa el PDF del SGA antes de subirlo; un texto que dice «no se debe subir así» no puede llegar al docente.
+
+======================================================================
+2. Basurto Anchaguano Jordan Steven (grupo BFLM)
+======================================================================
+Estudiante: Basurto Anchaguano Jordan Steven · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo BFLM
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Valoración referencial de tu aporte: 9,0/10 (la actividad no se califica).
+Importancia (2/2): la revisión de las preguntas defectuosas es una parte central del taller, y además fuiste la parte interesada en el ensayo.
+Profundidad (2/2): identificaste bien siete defectos (P1 doble, P3 inductiva y doble, P5 cerrada, P9 inductiva, P11 doble, P12 inductiva y P13 doble) y tus versiones corregidas son abiertas y neutrales.
+Complejidad (2/2): separas las preguntas dobles en (a) y (b) y distinguiste las correcciones de la revisión previa de las que salieron del ensayo.
+Amplitud (1/2): el resto de tu aporte es la estructura inicial del documento, la fecha del ensayo y la corrección de roles.
+Tiempo dedicado (2/2): trabajaste el 17, el 18, el 19 y el 20 de noviembre.
+Indicadores del grupo: 1 (EP), 2 (L), 3 (L), 4 (L), 5 (L).
+El ensayo se hizo por Meet y duró 6 minutos; la guía pide aplicarlo en clase y la descripción del SGA indica un juego de roles de 10 minutos.
+Jordan, en la entrevista real del PFC aplica tus correcciones antes de ir al campo; así evitas los defectos que tú mismo encontraste.
+
+======================================================================
+3. Fuertes Calvo Landy Lorena (grupo BFLM)
+======================================================================
+Estudiante: Fuertes Calvo Landy Lorena · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo BFLM
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Valoración referencial de tu aporte: 8,0/10 (la actividad no se califica).
+Importancia (2/2): el manifiesto de evidencias, el mapa de empatía y la definición del problema son partes centrales del taller.
+Profundidad (2/2): cada elemento del mapa indica la pregunta del ensayo de donde sale, y la pregunta «¿Cómo podríamos...?» se centra en el promotor y no impone una solución.
+Complejidad (2/2): la sección «Lo que mostró el ensayo» relaciona las respuestas con los defectos del guion (P5, P9 y P13), que es justo lo que pide el taller.
+Amplitud (2/2): tu commit integra el manifiesto con la huella SHA-256, el registro en tabla, el mapa, el problema y la conclusión del ensayo.
+Tiempo dedicado (0/2): todo entró en un solo commit el 20 de noviembre a las 20:52 (143 líneas agregadas y 124 cambiadas), lo que la guía pide evitar con trabajo distribuido en la semana.
+Indicadores del grupo: 1 (EP), 2 (L), 3 (L), 4 (L), 5 (L).
+En ese mismo commit cambiaste la fecha límite de la portada a «20 de noviembre», y el PDF del SGA también la tiene; la fecha vigente era el sábado 21 de noviembre a las 23:59.
+Además, el registro dice que el ensayo fue por Meet y la primera versión de tu compañera decía Zoom; aclara cuál fue.
+Landy, tu análisis es el más sólido del grupo; súbelo por partes y con commits graduales para que tu avance quede registrado.
+
+======================================================================
+4. Llerena Abril Angelina Julexy (grupo BFLM)
+======================================================================
+Estudiante: Llerena Abril Angelina Julexy · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo BFLM
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Valoración referencial de tu aporte: 7,0/10 (la actividad no se califica).
+Importancia (2/2): redactaste el protocolo de consentimiento y el primer registro del ensayo, que son centrales.
+Profundidad (2/2): el protocolo explica propósito, grabación solo de audio, uso, resguardo y derecho a retirarse, y tu registro recoge las respuestas del promotor pregunta por pregunta.
+Complejidad (1/2): tu registro es un resumen narrativo; tu compañera lo pasó después a una tabla con citas textuales.
+Amplitud (1/2): también aportaste la declaración de uso de IA y el reparto de la participación.
+Tiempo dedicado (1/2): cuatro commits graduales el 20 de noviembre, de 14:20 a 17:05.
+Indicadores del grupo: 1 (EP), 2 (L), 3 (L), 4 (L), 5 (L).
+Te faltó dejar en el registro las frases textuales del entrevistado, que son las que sostienen el mapa de empatía; practícalo para la entrevista real del PFC.
+Julexy, tu protocolo de consentimiento sirve tal como está para el trabajo de campo; úsalo.
+
+======================================================================
+5. Monserrate Ochoa Erick Ariel (grupo BFLM)
+======================================================================
+Estudiante: Monserrate Ochoa Erick Ariel · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo BFLM
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Valoración referencial de tu aporte: 6,0/10 (la actividad no se califica).
+Importancia (2/2): escribiste el guion de 13 preguntas, el contexto del proyecto y fuiste el entrevistador.
+Profundidad (1/2): el guion tiene apertura, tres bloques y cierre, pero siete de las trece preguntas resultaron dobles, inductivas o cerradas (P1, P3, P5, P9, P11, P12 y P13).
+Complejidad (1/2): la columna «Qué se quiere saber» está bien pensada, pero no marcaste el tipo de cada pregunta (abierta, cerrada o de sondeo).
+Amplitud (1/2): tu aporte se limita al guion, al contexto y a los nombres de los participantes.
+Tiempo dedicado (1/2): cuatro commits graduales el 17 de noviembre, de 14:44 a 19:53.
+Indicadores del grupo: 1 (EP), 2 (L), 3 (L), 4 (L), 5 (L).
+Te faltó revisar cada pregunta antes del ensayo con la regla «una sola idea, sin suponer la respuesta»; practícalo como parte de tu formación porque el guion del PFC se evalúa en GA-PE-02.
+Erick, compara tus preguntas originales con las versiones corregidas de tu compañero; esa diferencia es lo que debes dominar.
+
+======================================================================
+6. Espinoza Pivaque Angelo Maximiliano (grupo CEV)
+======================================================================
+Estudiante: Espinoza Pivaque Angelo Maximiliano · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo CEV
+Estado de la entrega: NO ENTREGADA por P4 (las respuestas del ensayo fueron preparadas con IA).
+Valoración referencial de tu aporte: 7,0/10 sin P4 (la actividad no se califica).
+P4: el informe dice que «el participante confirmó que utilizó respuestas preparadas previamente con apoyo de inteligencia artificial», y cada pregunta del guion trae una «Respuesta de apoyo (P01)»; tú fuiste el participante.
+La guía solo admite la IA como apoyo (ortografía o errores de compilación); usarla para redactar las respuestas del entrevistado convierte el ensayo en contenido generado por IA, aunque se declare.
+El mapa de empatía, la definición del problema y la síntesis se construyeron con esas respuestas, así que no muestran lo que piensa una persona, sino lo que redactó la herramienta.
+Tu aporte habría sido: importancia 2 (contexto, guion de 13 preguntas, mapa, problema y revisión del guion), profundidad 1, complejidad 1, amplitud 2 y tiempo 1 (commits del 19 y del 20 de noviembre).
+Indicadores del grupo: 1 (L), 2 (EP), 3 (NL), 4 (EP), 5 (EP).
+El documento describe el consentimiento, pero no incluye el protocolo de una carilla que pide la descripción del SGA.
+Te faltó un ensayo en el que el entrevistado responda con sus propias palabras; debes hacerlo como parte de tu formación antes de la entrevista real del PFC.
+Por ser tu primera formativa no entregada, la sumativa vinculada (GA-PE-02 y TA-PFC-02) se penaliza con el 25 %; la próxima formativa que no entregues anulará la sumativa vinculada.
+Angelo, tu guion es claro y está bien organizado en bloques; úsalo con una persona real y deja que ella hable.
+
+======================================================================
+7. Contreras Chávez Kevin Germán (grupo CEV)
+======================================================================
+Estudiante: Contreras Chávez Kevin Germán · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo CEV
+Estado de la entrega: NO ENTREGADA por P4 (las respuestas del ensayo fueron preparadas con IA).
+Valoración referencial de tu aporte: 6,0/10 sin P4 (la actividad no se califica).
+P4: tu commit del 20 de noviembre a las 23:40 insertó en el guion las «Respuestas de apoyo (P01)» preparadas con IA, y tu síntesis de respuestas reconoce que el participante las leyó durante el ensayo.
+Fuiste el entrevistador; la síntesis, el manifiesto y la declaración de IA que escribiste parten de un ensayo con respuestas redactadas por una herramienta, y la guía solo admite la IA como apoyo de ortografía o compilación.
+Tu aporte habría sido: importancia 2 (registro, síntesis y manifiesto con SHA-256), profundidad 1, complejidad 1, amplitud 2 y tiempo 0 (cinco commits entre las 22:26 y las 23:52 del 20 de noviembre).
+Indicadores del grupo: 1 (L), 2 (EP), 3 (NL), 4 (EP), 5 (EP).
+Te faltó registrar respuestas reales y espontáneas, con citas textuales tomadas del audio; debes hacerlo como parte de tu formación en la entrevista del PFC.
+Como esta es tu segunda formativa no entregada en el periodo (también FORM-TL-01), tu nota en la sumativa vinculada (GA-PE-02 y TA-PFC-02) será CERO.
+Kevin, como entrevistador tu trabajo es escuchar y repreguntar; con respuestas leídas no hay nada que descubrir.
+
+======================================================================
+8. Córdova Carreño Mayra Lucila (grupo CHR)
+======================================================================
+Estudiante: Córdova Carreño Mayra Lucila · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo CHR
+Estado de la entrega: NO ENTREGADA por P4 (resultados del ensayo escritos antes del ensayo, G4, y restos de un asistente de IA, G3).
+Valoración referencial de tu aporte: 7,0/10 sin P4 (la actividad no se califica).
+P4: la versión del 20 de noviembre ya tenía una tabla de observaciones del ensayo con respuestas, tiempos («06:20») y valoraciones de P1 a P15, cuando el propio documento decía «Guion preparado; ensayo pendiente de ejecución»; tu audio es del 21 de noviembre a las 19:31.
+Además, el README que subiste a las 22:23 conserva frases de un asistente, como «Pendiente de verificación externa antes de considerar la entrega conforme» y «La decisión sobre el cumplimiento del requisito de ensayo en clase corresponde al docente», y el informe dice «Antes de entregar, deben verificarse la compilación...».
+El informe también dice que las respuestas del ensayo son «respuestas simuladas del libreto que la entrevistadora confirma haber seguido íntegramente», así que la participante leyó un guion de respuestas.
+Tu aporte habría sido: importancia 2 (guion de 15 preguntas, consentimiento y conducción del ensayo), profundidad 1, complejidad 1, amplitud 2 y tiempo 1 (commits graduales el 20 y el 21 de noviembre).
+Indicadores del grupo: 1 (EP), 2 (EP), 3 (EP), 4 (L), 5 (EP).
+El enlace del audio está abierto a cualquier cuenta de la UTEQ que lo tenga; la guía pide una carpeta privada compartida solo con el docente.
+Te faltó un ensayo con respuestas espontáneas y un registro escrito después del ensayo, no antes; debes hacerlo como parte de tu formación.
+Como esta es tu segunda formativa no entregada en el periodo (también FORM-TL-01), tu nota en la sumativa vinculada (GA-PE-02 y TA-PFC-02) será CERO.
+Mayra, tu guion de cinco bloques es de los mejores del paralelo; lo que falló fue el registro.
+
+======================================================================
+9. Herrera Morán Gilmar Javier (grupo CHR)
+======================================================================
+Estudiante: Herrera Morán Gilmar Javier · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo CHR
+Estado de la entrega: NO ENTREGADA por P4 (resultados del ensayo escritos antes del ensayo, G4, y restos de un asistente de IA, G3).
+Valoración referencial de tu aporte: 7,0/10 sin P4 (la actividad no se califica).
+P4: el grupo presentó una tabla de resultados del ensayo el 20 de noviembre, un día antes de que existiera el audio, y el informe y el README conservan instrucciones de un asistente dirigidas a quien entrega.
+El informe reconoce que las respuestas son de un libreto que la participante siguió íntegramente, así que el mapa de empatía y la definición del problema que te tocaban se basan en respuestas guionizadas.
+Tus commits del 21 de noviembre, de 20:06 a 22:12, borraron y volvieron a subir el main.tex completo («Documento editado Final», «DOCUMENTO FINAL») y luego actualizaron el registro y el manifiesto.
+Tu aporte habría sido: importancia 2 (mapa de empatía, problema, registro e integración), profundidad 1, complejidad 1, amplitud 2 y tiempo 1 (solo el 21 de noviembre).
+Indicadores del grupo: 1 (EP), 2 (EP), 3 (EP), 4 (L), 5 (EP).
+Te faltó trabajar con commits que muestren tu avance; subir el archivo entero no deja ver qué escribiste tú.
+Como esta es tu segunda formativa no entregada en el periodo (también FORM-TL-01), tu nota en la sumativa vinculada (GA-PE-02 y TA-PFC-02) será CERO.
+Gilmar, tu pregunta «¿Cómo podríamos...?» no impone una solución; ese es el criterio correcto.
+
+======================================================================
+10. Rivas Bodero Jordy Fabián (grupo CHR)
+======================================================================
+Estudiante: Rivas Bodero Jordy Fabián · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo CHR
+Estado de la entrega: NO ENTREGADA por P4 (resultados del ensayo escritos antes del ensayo, G4).
+Valoración referencial de tu aporte: 3,0/10 sin P4 (la actividad no se califica).
+P4: tus commits del 20 de noviembre, de 20:00 a 20:29, agregaron una tabla de observaciones con la duración del ensayo («06:20»), la respuesta del entrevistado a cada bloque y valoraciones como «Recorrido completo con respuestas detalladas», cuando el documento decía «ensayo pendiente de ejecución» y el audio se grabó el 21 de noviembre.
+Registrar resultados de un ensayo que no se ha hecho es fabricar evidencias de campo, y la guía lo trata como indicio grave G4.
+Tu aporte habría sido: importancia 1, profundidad 0, complejidad 1, amplitud 1 y tiempo 0 (cuatro commits en 29 minutos).
+Indicadores del grupo: 1 (EP), 2 (EP), 3 (EP), 4 (L), 5 (EP).
+Te faltó participar en el ensayo y escribir el registro a partir de lo que realmente se dijo; debes hacerlo como parte de tu formación.
+Como esta es tu segunda formativa no entregada en el periodo (también FORM-TL-01), tu nota en la sumativa vinculada (GA-PE-02 y TA-PFC-02) será CERO.
+Jordy, en la próxima sesión te pediré que expliques de dónde salieron esas respuestas.
+
+======================================================================
+11. Holguín Mendoza Jonathan Alexander (grupo HLMS)
+======================================================================
+Estudiante: Holguín Mendoza Jonathan Alexander · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo HLMS
+Estado de la entrega: NO ENTREGADA por P2 (el PDF no se reproduce siguiendo el README).
+Valoración referencial de tu aporte: 9,0/10 sin P2 (la actividad no se califica).
+P2: el README del repositorio solo explica cómo compilar FORM-PC-01 con compilar.py; no hay instrucciones para GA/TL-02, y la guía exige compilador, archivo principal, orden de comandos y dependencias.
+Además, al compilar el main.tex con pdflatex aparece el error «There's no line here to end» por el «\\section{Uso de inteligencia artificial}» de la línea 342, y el main.pdf del repositorio muestra ese título roto.
+Tu manifiesto también conserva «PENDIENTE: confirmar que el archivo esté compartido con su correo institucional»; esa verificación debías hacerla antes de entregar.
+Tu aporte habría sido: importancia 2 (estructura, guion, ensayo, manifiesto, problema y declaración de IA), profundidad 1, complejidad 2, amplitud 2 y tiempo 2 (commits graduales el 17 y el 20 de noviembre).
+Indicadores del grupo: 1 (L), 2 (EP), 3 (EP), 4 (L), 5 (L).
+El ensayo de tu grupo es de los más auténticos del paralelo: el participante no entendió las preguntas 8 y 14 y eso se usó para corregirlas.
+El consentimiento se pidió de forma verbal y está transcrito en el manifiesto, pero no hay un protocolo escrito, que la descripción del SGA pide como entregable.
+Te faltó un README con las instrucciones de compilación de GA-TL-02 y compilar desde un clon limpio antes de entregar; debes hacerlo como parte de tu formación.
+Por ser tu primera formativa no entregada, la sumativa vinculada (GA-PE-02 y TA-PFC-02) se penaliza con el 25 %; la próxima formativa que no entregues anulará la sumativa vinculada.
+Jonathan, tu trabajo merecía ser válido; lo perdió un detalle de reproducibilidad.
+
+======================================================================
+12. Lavayen Bone Cristopher Javier (grupo HLMS)
+======================================================================
+Estudiante: Lavayen Bone Cristopher Javier · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo HLMS
+Estado de la entrega: NO ENTREGADA por P2 (el PDF no se reproduce siguiendo el README).
+Valoración referencial de tu aporte: 9,0/10 sin P2 (la actividad no se califica).
+P2: el README no tiene instrucciones para GA/TL-02, y tu commit del 20 de noviembre a las 20:00 introdujo «\\section{Uso de inteligencia artificial}», que produce un error al compilar y deja el título roto en el PDF.
+Tu aporte habría sido: importancia 2 (preguntas de horarios, ajustes al guion y pregunta de definición), profundidad 1, complejidad 2, amplitud 2 y tiempo 2 (commits del 17 y del 20 de noviembre).
+Tus ajustes a las preguntas 8, 9 y 14 parten de lo que pasó en el ensayo, explican la dificultad y proponen una versión concreta; es el indicador 5 mejor resuelto del paralelo.
+Indicadores del grupo: 1 (L), 2 (EP), 3 (EP), 4 (L), 5 (L).
+Te faltó compilar y revisar el PDF después de tu último cambio; debes hacerlo siempre como parte de tu formación.
+Por ser tu primera formativa no entregada, la sumativa vinculada (GA-PE-02 y TA-PFC-02) se penaliza con el 25 %; la próxima formativa que no entregues anulará la sumativa vinculada.
+Cristopher, una barra invertida de más anuló el trabajo de tu grupo; compila y revisa antes de cada commit.
+
+======================================================================
+13. Saltos Tello Joseph Orlando (grupo HLMS)
+======================================================================
+Estudiante: Saltos Tello Joseph Orlando · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo HLMS
+Estado de la entrega: NO ENTREGADA por P2 (el PDF no se reproduce siguiendo el README).
+Valoración referencial de tu aporte: 6,0/10 sin P2 (la actividad no se califica).
+P2: el README no tiene instrucciones para GA/TL-02 y el main.tex produce un error al compilar en la línea 342.
+Tu aporte habría sido: importancia 2 (mapa de empatía), profundidad 1, complejidad 1, amplitud 1 y tiempo 1.
+Tu mapa tiene los seis cuadrantes, pero ningún elemento indica de qué respuesta del ensayo sale, y el informe no tiene un registro de las respuestas que permita comprobarlo.
+Tu commit del 17 de noviembre («Actualización de TL-02») solo cambió espacios en blanco y paquetes; tu aporte de contenido es del 20 de noviembre.
+Indicadores del grupo: 1 (L), 2 (EP), 3 (EP), 4 (L), 5 (L).
+Te faltó relacionar cada elemento del mapa con la pregunta y la frase del ensayo que lo respalda; debes hacerlo como parte de tu formación porque el mapa del PFC debe salir de entrevistas reales.
+Como esta es tu segunda formativa no entregada en el periodo (también FORM-TL-01), tu nota en la sumativa vinculada (GA-PE-02 y TA-PFC-02) será CERO.
+Joseph, un mapa sin trazabilidad no se distingue de uno supuesto; anota siempre de dónde sale cada idea.
+
+======================================================================
+14. Morán Pilaguano Frixon Fernando (grupo HLMS)
+======================================================================
+Estudiante: Morán Pilaguano Frixon Fernando · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo HLMS
+Estado de la entrega: NO ENTREGADA por P2 (el PDF no se reproduce siguiendo el README).
+Valoración referencial de tu aporte: 2,0/10 sin P2 (la actividad no se califica).
+P2: el README no tiene instrucciones para GA/TL-02 y el main.tex produce un error al compilar en la línea 342.
+Tu aporte habría sido: importancia 1, profundidad 1, complejidad 0, amplitud 0 y tiempo 0.
+Tu único commit, del 17 de noviembre a las 15:13 («Add questions about attendance in main.tex»), agregó 11 líneas con las preguntas sobre asistencia; no hay aportes tuyos al ensayo, al mapa, al problema ni a los ajustes.
+Indicadores del grupo: 1 (L), 2 (EP), 3 (EP), 4 (L), 5 (L).
+Te faltó participar en el resto del taller; debes hacerlo como parte de tu formación, porque en el PFC tendrás que conducir tú mismo una entrevista.
+Como esta es tu segunda formativa no entregada en el periodo (también FORM-TL-01), tu nota en la sumativa vinculada (GA-PE-02 y TA-PFC-02) será CERO.
+Frixon, en la próxima actividad grupal toma una parte central y deja tu avance en varios commits.
+
+======================================================================
+15. Alvia Villegas Erick Adalberto (grupo AAC)
+======================================================================
+Estudiante: Alvia Villegas Erick Adalberto · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo AAC
+Estado de la entrega: NO ENTREGADA por P4 (transcripción del ensayo sin respaldo original y con respuestas apoyadas en IA, G4).
+Valoración referencial de tu aporte: 6,0/10 sin P4 (la actividad no se califica).
+P4: tu commit del 21 de noviembre a las 20:09 subió en un solo bloque el diálogo completo del ensayo, con respuestas largas y pulidas del «propietario».
+La declaración de IA del informe dice que la herramienta se usó para «sugerir puntos clave para el personaje del propietario en la simulación», y el MANIFIESTO.md tiene «COMPLETAR» en el nombre del audio, la fecha, la duración y la huella, así que no hay respaldo original de que el ensayo se grabara.
+Además, el anexo de consentimiento publica el nombre del participante en el repositorio, lo que la guía prohíbe.
+Tu aporte habría sido: importancia 2, profundidad 1, complejidad 1, amplitud 2 y tiempo 0 (un solo volcado el último día).
+Indicadores del grupo: 1 (L), 2 (NL), 3 (NL), 4 (L), 5 (L).
+El PDF del repositorio muestra «[?]» en lugar de las citas, porque no se volvió a compilar con BibTeX; el README dice que hay un main.bbl, pero no está en el repositorio.
+Te faltó grabar el ensayo, registrar el audio en el manifiesto con su huella SHA-256 y transcribir solo lo que se dijo; debes hacerlo como parte de tu formación.
+Como esta es tu segunda formativa no entregada en el periodo (también FORM-TL-01), tu nota en la sumativa vinculada (GA-PE-02 y TA-PFC-02) será CERO.
+Erick, tus preguntas del ensayo se corrigieron bien; ahora necesitas una conversación real que las ponga a prueba.
+
+======================================================================
+16. Chalacán Toala Yerai David (grupo AAC)
+======================================================================
+Estudiante: Chalacán Toala Yerai David · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo AAC
+Estado de la entrega: NO ENTREGADA por P4 (transcripción del ensayo sin respaldo original y con respuestas apoyadas en IA, G4).
+Valoración referencial de tu aporte: 7,0/10 sin P4 (la actividad no se califica).
+P4: representaste al propietario con respuestas que, según la declaración de IA, se apoyaron en «puntos clave para el personaje» sugeridos por la herramienta, y no hay audio registrado.
+Tu commit «Registra evidencias privadas del ensayo en el manifiesto» dejó el MANIFIESTO.md con «COMPLETAR» en todos los campos, así que el mensaje del commit no corresponde a lo que contiene.
+Tu aporte habría sido: importancia 2 (guion corregido, consentimiento, trazabilidad del mapa y definición del problema), profundidad 1, complejidad 2 (tabla de trazabilidad con respaldo directo, parcial o inferencia, y tipología de once defectos), amplitud 2 y tiempo 0 (cinco commits entre las 22:15 y las 22:19 del 21 de noviembre).
+Indicadores del grupo: 1 (L), 2 (NL), 3 (NL), 4 (L), 5 (L).
+Te faltó completar el manifiesto con el audio real y trabajar con commits graduales; debes hacerlo como parte de tu formación.
+Por ser tu primera formativa no entregada, la sumativa vinculada (GA-PE-02 y TA-PFC-02) se penaliza con el 25 %; la próxima formativa que no entregues anulará la sumativa vinculada.
+Yerai, tu tabla de trazabilidad es honesta al marcar lo que el ensayo no dice; aplica ese mismo rigor a las evidencias.
+
+======================================================================
+17. Alcívar Vélez Anderson Adonis (grupo AAC)
+======================================================================
+Estudiante: Alcívar Vélez Anderson Adonis · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo AAC
+Estado de la entrega: NO ENTREGADA por P4 (transcripción del ensayo sin respaldo original y con respuestas apoyadas en IA, G4).
+Valoración referencial de tu aporte: 1,0/10 sin P4 (la actividad no se califica).
+P4: el ensayo de tu grupo no tiene audio registrado y las respuestas del propietario se apoyaron en puntos sugeridos por una herramienta de IA.
+Tu único aporte es la imagen figuras/mapa-empatia.jpeg (21 de noviembre a las 21:45), un mapa genérico: la propia tabla de trazabilidad del grupo marca muchos de sus elementos como «Parcial» o «Inferencia», es decir, no salen del ensayo.
+Tu aporte habría sido: importancia 1, profundidad 0, complejidad 0, amplitud 0 y tiempo 0.
+Indicadores del grupo: 1 (L), 2 (NL), 3 (NL), 4 (L), 5 (L).
+Te faltó construir el mapa con lo que dijo el entrevistado, citando la pregunta de donde sale cada elemento; debes hacerlo como parte de tu formación.
+Por ser tu primera formativa no entregada, la sumativa vinculada (GA-PE-02 y TA-PFC-02) se penaliza con el 25 %; la próxima formativa que no entregues anulará la sumativa vinculada.
+Anderson, usa lo que escuchaste en el ensayo para llenar el mapa, no ideas generales sobre propietarios.
+
+======================================================================
+18. Álvarez Rubio Rai Eduardo (grupo ABR)
+======================================================================
+Estudiante: Álvarez Rubio Rai Eduardo · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo ABR
+Estado de la entrega: VÁLIDA según la descripción publicada en el SGA (guía de entrevista, protocolo de consentimiento y mapa de empatía en /formativas/FORM-TL-02/), con la verificación G6 pendiente.
+Valoración referencial de tu aporte: 2,5/10 (4,0 menos 1,5 por dos indicios complementarios; la actividad no se califica).
+Tu aporte es la guía de entrevista de 15 preguntas en bloques temáticos, el README y el script de compilación, que funciona.
+La guía del taller pide un guion estructurado de 12 a 15 preguntas; el tuyo es semiestructurado, como decía la descripción del SGA, y no se penaliza por eso.
+La pregunta E2 («Si contáramos con un sistema...») ya propone la solución, y eso es lo que el taller enseña a evitar.
+Importancia 1, profundidad 1, complejidad 1, amplitud 1 y tiempo 0: hiciste catorce commits en 18 minutos el 17 de noviembre, cuatro de ellos en el mismo minuto (13:57).
+Indicios complementarios del grupo: commits masivos o automáticos (I4) y contenido genérico en el mapa de empatía (I3); con dos indicios se descuentan 1,5 puntos.
+Indicadores del grupo: 1 (EP), 2 (NL), 3 (NL), 4 (EP), 5 (NL).
+El informe no registra ningún ensayo (fecha, participante, consentimiento ni manifiesto), pero el mapa de empatía atribuye frases a un entrevistado; en la próxima sesión el grupo deberá explicar de dónde salieron, y si no puede hacerlo la entrega pasará a NO ENTREGADA por G6.
+Te faltó aplicar tu guía en un ensayo, registrarlo con consentimiento y manifiesto, y corregir las preguntas que fallaron; debes hacerlo como parte de tu formación antes de la entrevista real del PFC.
+Rai, tus bloques temáticos están bien elegidos; ahora aplícalos y registra lo que te respondan.
+
+======================================================================
+19. Briones Solórzano William Adrián (grupo ABR)
+======================================================================
+Estudiante: Briones Solórzano William Adrián · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo ABR
+Estado de la entrega: VÁLIDA según la descripción publicada en el SGA, con la verificación G6 pendiente.
+Valoración referencial de tu aporte: 2,5/10 (4,0 menos 1,5 por dos indicios complementarios; la actividad no se califica).
+Tu aporte es el protocolo de consentimiento informado (17 de noviembre a las 14:46): propósito, voluntariedad, confidencialidad, grabación solo de audio y casillas separadas para participar y grabar; está bien hecho y cumple lo que pide la descripción del SGA.
+Importancia 1, profundidad 2, complejidad 1, amplitud 0 y tiempo 0 (un commit de contenido y otro del PDF).
+Indicios complementarios del grupo: commits masivos o automáticos (I4) y contenido genérico en el mapa de empatía (I3); con dos indicios se descuentan 1,5 puntos.
+Indicadores del grupo: 1 (EP), 2 (NL), 3 (NL), 4 (EP), 5 (NL).
+El grupo no registró el ensayo, pero el mapa de empatía atribuye frases a un entrevistado; en la próxima sesión deberán explicar de dónde salieron, y si no pueden hacerlo la entrega pasará a NO ENTREGADA por G6.
+Te faltó usar ese consentimiento en un ensayo real y participar en el mapa, el problema y los ajustes; debes hacerlo como parte de tu formación.
+William, tu consentimiento está listo para el trabajo de campo del PFC; lo que faltó fue usarlo.
+
+======================================================================
+20. Rivera Rodríguez Joseph Jeremy (grupo ABR)
+======================================================================
+Estudiante: Rivera Rodríguez Joseph Jeremy · GA-TL-02 - FORM · ISR-401, Paralelo A · Grupo ABR
+Estado de la entrega: VÁLIDA según la descripción publicada en el SGA, con la verificación G6 pendiente.
+Valoración referencial de tu aporte: 0,5/10 (2,0 menos 1,5 por dos indicios complementarios; la actividad no se califica).
+Tu commit del 20 de noviembre a las 17:53 agregó el mapa de empatía, la definición del problema y la tabla de preguntas defectuosas.
+El mapa dice que el entrevistado «dice frases como "todo lo anotamos a mano y se nos arman filas"», pero el grupo no registró ningún ensayo que respalde esas frases.
+Tu tabla corrige preguntas que no están en la guía de entrevista de tu grupo (por ejemplo, «¿Verdad que el sistema actual en papel es muy lento y causa filas?»), así que no son defectos detectados en un ensayo.
+Tu pregunta «¿Cómo podríamos...?» propone ya la solución («evitando la dependencia de procesos manuales») en lugar de centrarse en la necesidad del usuario.
+Importancia 1, profundidad 0, complejidad 0, amplitud 1 y tiempo 0 (un solo commit).
+Indicios complementarios del grupo: commits masivos o automáticos (I4) y contenido genérico en el mapa de empatía (I3); con dos indicios se descuentan 1,5 puntos.
+Indicadores del grupo: 1 (EP), 2 (NL), 3 (NL), 4 (EP), 5 (NL).
+En la próxima sesión te pediré que expliques de dónde salieron las frases del mapa y las preguntas de la tabla; si no puedes hacerlo, la entrega pasará a NO ENTREGADA por G6 y, como sería tu segunda formativa no entregada (también FORM-TL-01), tu nota en la sumativa vinculada sería CERO.
+Te faltó partir de un ensayo real para el mapa, el problema y los ajustes; debes hacerlo como parte de tu formación.
+Joseph, un mapa de empatía solo vale si cada frase salió de alguien que la dijo.
+
+======================================================================
+OBSERVACIONES PARA EL DOCENTE
+======================================================================
+Cambios respecto de la versión 1 (24-11): se usó la guía real (Guia_Rubrica_FORM-TL-02_Entrevista_DesignThinking.tex, compilada el 17-11 a las 13:31) en lugar de la lista del plan de clase; se reemplazó «Tu calificación» por el estado de la entrega y una valoración referencial, porque la guía y el SGA dicen que la actividad no se califica; se retiró la observación de que la parte interesada debía ser de otro equipo, porque la guía no lo exige y el SGA permite que el cliente sea un integrante; ABR pasa de NO VÁLIDA a VÁLIDA porque siguió la descripción del SGA, con G6 pendiente; las consecuencias en la sumativa siguen tu regla del SPA (25 % la primera vez y CERO desde la segunda), no la de la guía (CERO desde la primera).
+Discrepancias entre la guía y la descripción del SGA, que conviene unificar antes de GA-PE-02:
+1. Tipo y tamaño del guion: el SGA pide una guía semiestructurada de al menos 10 preguntas; la guía pide una entrevista estructurada de 12 a 15 preguntas con apertura, bloques y cierre, y el título del taller dice «estructurada».
+2. Ruta de entrega: el SGA dice /formativas/FORM-TL-02/; la guía dice GA/TL-02/ (main.tex y main.pdf); el plan de clase dice FORM/TL-02/. Seis grupos usaron GA/TL-02 y ABR usó /formativas/FORM-TL-02/.
+3. Productos: el SGA pide guía de entrevista, protocolo de consentimiento de una carilla y mapa de empatía; la guía pide guion, mapa de empatía, definición del problema («¿Cómo podríamos...?») y ajustes de preguntas, y no pide el protocolo como entregable. Los indicadores 4 y 5 de la lista de cotejo no aparecen en el SGA.
+4. Ensayo: el SGA pide un juego de roles de 10 minutos en clase con tres roles (cliente, entrevistador y registrador) y no pide registrarlo; la guía pide aplicarlo en clase, grabar solo audio con consentimiento y registrarlo en un manifiesto con SHA-256 (indicador 2). Ningún grupo documentó los tres roles con 10 minutos; BFLM y CEV lo hicieron por Meet o Zoom, fuera de clase.
+5. Formato del mapa: el SGA admite «captura limpia del mapa»; la guía exige el PDF generado desde LaTeX y reproducible (P2).
+6. Revisión: el SGA dice «se revisa la presencia para habilitar GA-SUM-03»; la guía aplica las condiciones P1 a P4 y la lista de cotejo de calidad. El SGA no menciona P1 a P4, aunque están en el encuadre.
+7. Consecuencia de no entregar: la guía dice CERO en la sumativa vinculada desde la primera vez; tu regla del SPA es 25 % la primera vez y CERO desde la segunda. Apliqué tu regla; corrige la caja de P1 a P4 en la guía.
+8. Plazo de la retroalimentación: el SGA dice «antes del inicio de S5» (lunes 23-11) y la guía «antes de la sesión siguiente»; ambos plazos ya vencieron, conviene publicar estos informes cuanto antes.
+9. Códigos: la guía y el SGA dicen «Prepara: GA-SUM-03 y TA-PFC-E2»; en el sílabo son GA-PE-02 y TA-PFC-02. El encuadre v3 decía «TA-PFC-E1, GA-PE-02».
+10. Recursos: el SGA cita IREB CPRE FL v3.1 y Wiegers y Beatty (2013); la guía cita el temario IREB vigente (3.3.0, 2026), Pohl (2025), la LOPDP y el código ACM. Unifica la versión del IREB.
+11. Uso de IA: la guía solo admite IA para ortografía o errores de compilación; el SGA no dice nada. CEV y AAC la usaron para redactar o sugerir las respuestas del entrevistado.
+Decisiones que dejé a tu criterio:
+ABR: siguió el SGA al pie de la letra (ruta, entrevista semiestructurada, protocolo), por eso no apliqué P4 por la falta de ensayo. Pero su mapa atribuye frases a un entrevistado sin ensayo registrado y su tabla corrige preguntas que no están en su guía; si en clase hicieron el juego de roles, las frases pueden venir de ahí. Pregúntales en la próxima sesión (G6); si no pueden explicarlo, pasa a NO ENTREGADA (P4-G4) y Rivera llegaría a su segunda formativa no entregada. Los dos indicios complementarios (I3 e I4) dan nivel B (-1,5) en la valoración referencial.
+CEV: el ensayo fue real (20-11, Zoom, con SHA-256), pero el entrevistado (Espinoza) leyó respuestas preparadas con IA, declaradas. Lo mantengo como P4 porque la guía restringe la IA a ortografía y compilación. Alternativa si lo aceptas por estar declarado: VÁLIDA con indicador 3 en NL.
+AAC: el manifiesto con «COMPLETAR» puede venir de tu plantilla, pero el ensayo sigue sin respaldo y la IA sugirió el personaje; lo mantengo como P4-G4. Alternativa: VÁLIDA con indicadores 2 y 3 en NL. El anexo publica el nombre de Chalacán como participante.
+HLMS: el contenido es bueno y el ensayo parece auténtico; lo anula P2 (README sin instrucciones de GA/TL-02 y error de compilación en la línea 342, confirmado en una compilación limpia con TeX Live). Si no aplicas P2 por ser un error menor, la entrega es VÁLIDA y nadie de HLMS tendría consecuencias por esta formativa.
+CHR: lo más grave del paralelo; la tabla del ensayo con «06:20» se escribió el 20-11 mientras el documento decía «ensayo pendiente de ejecución» (confirmado en el commit 886fa04), y el README e informe conservan frases de asistente (G3). Recomiendo verificar con G6, sobre todo a Rivas.
+ANY: solo un esqueleto (main.tex de una página sin contenido y sin main.pdf) y un PDF del SGA con una instrucción de asistente.
+BFLM: única entrega VÁLIDA sin reservas; el PDF del SGA tiene «20 de noviembre» como fecha límite (no lo apliqué como P1).
+P1 menor no aplicado: HLMS y ABR ponen «00:00» como hora de cierre en el PDF del SGA; ANY pone la URL entre corchetes.
+Reincidencia (FORM-TL-01 no entregada en el paralelo A): Yépez, Contreras, Córdova, Herrera, Rivas, Morán, Saltos, Alvia y Rivera; con esta, los ocho primeros tienen CERO en GA-PE-02 y TA-PFC-02. Espinoza, Holguín, Lavayen, Chalacán y Alcívar tienen 25 % de penalización.
+Compilación: todas las demás carpetas compilan sin errores ni referencias sin resolver con TeX Live 2023 (incluidos babel-spanish, biblatex, biber e IEEEtran).
+Sin informe: Aldas y Naranjo (ANY) y Vaca (CEV) no tienen commits en la carpeta del taller.
