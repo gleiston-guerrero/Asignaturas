@@ -1,0 +1,189 @@
+EVALUACIÓN EV-PRAC-01 · Evaluación de la Unidad I (caso ALERTARÍO) · ISR-401 · Paralelo B · SPA 2026-2027
+Instrumento: Guia_Rubrica_EV-PRAC-01_Unidad1_ParaleloB (criterios de piso P1-P4; P5 no aplicado, igual que en el paralelo A) y Solucionario_EV-PRAC-01_Unidad1_ParaleloB.
+Nota: EV-PRAC-01 = 0,40 Q + 0,60 P; P = suma(w_i x n_i) / 4 x 0,1 con pesos D1 10, D2 30, D3 30, D4 20, D5 10.
+Cierre aplicado: miércoles 18 de noviembre de 2026, 23:59. Cada repositorio se evaluó en su estado a esa hora y se compiló desde un clon limpio siguiendo su README.
+Lo calificado son las hojas manuscritas (fotografías en evidencias/); la transcripción se comparó línea por línea con ellas.
+
+RESUMEN
+N.º | Estudiante | Estado | Q | D1 | D2 | D3 | D4 | D5 | P | Nota final
+1 | Arteaga Alava Danela Dayana | VÁLIDA | 8,50 | 3 | 2 | 3 | 1 | 3 | 5,75 | 6,85
+2 | Cedeño Avila Winston Damian | VÁLIDA | 5,67 | 3 | 3 | 0 | 1 | 2 | 4,00 | 4,67
+3 | Chavarría Cuenca Tahiny Mel | CERO (P1, P4) | no consta | - | - | - | - | - | - | 0,00
+4 | Gilces Carranza José Ignacio | CERO (P4) | 8,83 | - | - | - | - | - | - | 0,00
+5 | Mendoza Palma Allan Jeremy | CERO (P2) | 7,50 | - | - | - | - | - | - | 0,00
+6 | Paca Pilataza Luis Alberto | VÁLIDA | 4,67 | 1 | 0 | 0 | 0 | 3 | 1,00 | 2,47
+7 | Rivera Suárez Jonathan Javier | VÁLIDA | 4,17 | 3 | 1 | 0 | 0 | 3 | 2,25 | 3,02
+8 | Robinson Espinoza Jeanpierre | CERO (P1, P4) | no consta | - | - | - | - | - | - | 0,00
+9 | Rochina Rochina Freddy David | VÁLIDA | 3,67 | 3 | 1 | 0 | 1 | 3 | 2,75 | 3,12
+10 | Sánchez Centeno Roselyn Andreina | VÁLIDA | 6,33 | 1 | 1 | 1 | 1 | 3 | 3,00 | 4,33
+11 | Vélez Vinces Jostin Gustavo | VÁLIDA | 6,17 | 4 | 2 | 0 | 1 | 3 | 3,75 | 4,72
+
+======================================================================
+1. Arteaga Alava Danela Dayana
+======================================================================
+Estudiante: Arteaga Alava Danela Dayana · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Q: 8,50/10. P: 5,75/10. Nota final: 6,85/10.
+D1 Comprensión conceptual (3/4): decides bien que E7 y E12 no son requisitos del producto y tus ejemplos de StRS, SyRS (E3) y SRS (E5) son correctos, pero marcas H4 (validación) como central, cuando en el marco de Pohl es transversal.
+D2 Aplicación y análisis (2/4): tu clasificación es en general correcta (E2 dominio, E3 restricción, E12 proceso), pero en E6, E8 y E11 no dices la característica de ISO/IEC 25010 que se pide, y E2 va en StRS; en T2(b) dices que B4 está «bien formado», cuando impone una solución (Firebase en la nube de Google) que incumple apropiado y contradice E9, y a B1 le falta singular.
+D3 Síntesis y producción (3/4): tus seis requisitos tienen condición, sujeto, acción y valor medible, y R6 (cancelar una alerta) cubre el vacío que muestra H4; pero tu B2 repite B6 (5,5 m) con «2 segundos» en lugar de 2 minutos y deja sin cubrir la alerta naranja de 4,5 m, B1a y B1b no dicen la característica de 25010 y B3 es de fiabilidad, no funcional.
+D4 Uso de estándares (1/4): nombras 29148 en la definición y las características de 5.2.5 en T2(b), pero sin cláusula, y no respondiste la T4.
+D5 Presentación (3/4): hojas legibles y numeradas del 1 al 4 y transcripción fiel; tu nombre está solo en la primera hoja.
+Te faltó toda la T4 (correspondencia 29148-SMART y dos defectos del conjunto); debes practicarla como parte de tu formación porque se evalúa de nuevo en el parcial.
+Danela, tu prueba es la más equilibrada del paralelo; al redactar, revisa que cada requisito nuevo no repita ni contradiga uno que ya existe.
+
+======================================================================
+2. Cedeño Avila Winston Damian
+======================================================================
+Estudiante: Cedeño Avila Winston Damian · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Q: 5,67/10. P: 4,00/10. Nota final: 4,67/10.
+D1 Comprensión conceptual (3/4): E7 y E12 bien decididos, ejemplos acertados (E1 en StRS, E6 en SyRS y E5 en SRS) y los cinco hechos bien asignados; pero describes cada documento en una línea («Requisito del sistema completo») sin explicar qué cubre en este proyecto.
+D2 Aplicación y análisis (3/4): tu clasificación de E1 a E12 es de las mejores del paralelo (E6 fiabilidad en SyRS, E8 eficiencia de desempeño, E11 capacidad de interacción); pero justificas E2 con «El UF demostró dominio en su área», que no es lo que define un requisito de dominio, varias justificaciones solo repiten el tipo («el enunciado describe un RF»), y en B4 marcas necesario y Traceable, cuando incumple apropiado y contradice E9.
+D3 Síntesis y producción (0/4): no respondiste la T3.
+D4 Uso de estándares (1/4): citas la cláusula 5.2.4 en B6 y nombras bien las características de 29148 y las propiedades SMART, pero no respondiste la T4.
+D5 Presentación (2/4): las fotografías de las hojas 2 y 3 cortan la columna de justificación, por lo que esa parte de la transcripción no se puede comprobar con ellas; además, las hojas no están numeradas y tu nombre está solo en la primera.
+Te faltó toda la T3 (seis requisitos bien formados) y toda la T4; debes practicarlas como parte de tu formación porque se evalúan de nuevo en el parcial.
+Winston, tu análisis es bueno; fotografía cada hoja completa y distribuye el tiempo para llegar a la redacción de requisitos, que vale el 30 %.
+
+======================================================================
+3. Chavarría Cuenca Tahiny Mel
+======================================================================
+Estudiante: Chavarría Cuenca Tahiny Mel · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: NO VÁLIDA por P1 (hoja del SGA) y P4 (transcripción con contenido que no está en las hojas).
+Tu calificación: 0,00/10.
+P1: el PDF que subiste al SGA no tiene la captura del resumen del cuestionario EV-CUE-01, así que no consta tu nota Q; tampoco indica nivel, paralelo ni fecha de la sesión.
+P4: en la hoja tu B5 dice «Cuando una persona solicite descargar un archivo en el sistema, este debe de permitirle poder exportarlos en EXCEL, PDF (distintos formatos)», y la transcripción dice «Cuando el jefe de la Unidad solicite el informe mensual, el sistema generará en PDF los niveles del mes de cada una de las 6 estaciones».
+La transcripción también cambia E11 de «capacidad de desempeño» a «capacidad de interacción», el método de verificación de B3 de «Demostración» a «Prueba», agrega «y alcanzable» a tu definición de requisito y agrega tres notas que no están en las hojas («B4 se descarta por chocar con E9», «Excel se elimina de B5 porque no tiene fuente» y «N1 cubre el vacío que detectó H4»).
+La guía establece que el contenido agregado o corregido que no está en las hojas es deshonestidad académica y anula la prueba.
+En las hojas respondiste las cuatro tareas, y la mayoría de tus respuestas estaban bien encaminadas; solo H4 (validación) es transversal y no central.
+Tahiny, la transcripción debe copiar tus hojas tal como están, incluso con sus errores; corregirla después anuló una prueba que en papel era de las más completas del paralelo.
+
+======================================================================
+4. Gilces Carranza José Ignacio
+======================================================================
+Estudiante: Gilces Carranza José Ignacio · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: NO VÁLIDA por P4 (transcripción con contenido que no está en las hojas).
+Tu calificación: 0,00/10 (cuestionario Q: 8,83/10).
+P4: en la hoja el tipo de B1a dice «No funcional (Usabilidad / Operatibilidad)» y el de B2-R «No funcional (Eficiencia / Comportamiento temporal)», y la transcripción los cambia por «Capacidad de interacción» y «Eficiencia de desempeño», que son los nombres de ISO/IEC 25010:2023.
+La transcripción también reemplaza tu justificación de B5 («Utiliza modismos y abreviaturas que no permiten ajustar un alcance») por «Usa expresiones opcionales y listas abiertas que impiden delimitar el alcance», llena la fuente de NVO-01 y NVO-02, que en la hoja es «—», con «Vacío (Seguridad)» y «Vacío (H4)», y agrega una cita bibliográfica en E10 que no escribiste.
+Además, tu sección se titula «Desarrollo de la prueba (Respuestas resumidas)»; la transcripción no resume, copia.
+La guía establece que el contenido agregado o corregido que no está en las hojas es deshonestidad académica y anula la prueba.
+En las hojas respondiste las cuatro tareas con buen nivel; te faltó dividir B1 en dos requisitos (B1a y B1b), y E1 y E3 tienen tipo incorrecto («Requisito de usuario» y «Requisito de sistema» no son tipos de la lista), y E6 va en SyRS; debes corregirlo como parte de tu formación.
+José, tu trabajo en papel merecía una buena nota; transcribe exactamente lo que escribiste, incluidos los términos que después sepas que no eran los correctos.
+
+======================================================================
+5. Mendoza Palma Allan Jeremy
+======================================================================
+Estudiante: Mendoza Palma Allan Jeremy · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: NO VÁLIDA por P2 (PDF no reproducible).
+Tu calificación: 0,00/10 (cuestionario Q: 7,50/10).
+P2: tu main.tex es la guía completa con tus respuestas dentro, y conserva las citas de la guía y el comando \bibliography{referencias}, pero no hay archivo referencias.bib; al compilar siguiendo tu README, bibtex falla y las 12 citas salen como [?] en el PDF.
+Tu transcripción tampoco tiene la declaración de la regla R5 («Esta es la transcripción fiel...»), y la carpeta se llama Evidencias/ en lugar de evidencias/.
+En las hojas tu clasificación de E1 a E12 está en general bien encaminada (E2 dominio, E4 restricción del proyecto, E12 proceso), pero dices que E7 sí es requisito y no decides E12 en T1(a), describes SyRS como «requisitos funcionales y no funcionales» y SRS como «la metodología o documentación», no dices la característica de 25010 en E6, E8 y E11, y en B4 marcas «correcto y necesario».
+Te faltó toda la T3 y toda la T4; debes practicarlas como parte de tu formación porque se evalúan de nuevo en el parcial.
+Sin P2, tu nota habría sido 4,65/10 (P = 2,75).
+Allan, no uses la guía como plantilla de tu transcripción; escribe un main.tex propio con tus respuestas y compílalo desde un clon limpio antes de entregar.
+
+======================================================================
+6. Paca Pilataza Luis Alberto
+======================================================================
+Estudiante: Paca Pilataza Luis Alberto · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Q: 4,67/10. P: 1,00/10. Nota final: 2,47/10.
+D1 Comprensión conceptual (1/4): en lugar de explicar qué es un requisito describes la norma («consta en análisis, elicitación, validación y gestión»), dices que E7 sí es requisito, en T1(b) repartes los doce enunciados sin explicar qué describe cada documento (pones E4 y E7 en StRS y E12 en SRS) y asignas H1 a análisis, H3 a negociación y H5 a elicitación.
+D2 Aplicación y análisis (0/4): no respondiste la T2.
+D3 Síntesis y producción (0/4): no respondiste la T3.
+D4 Uso de estándares (0/4): no respondiste la T4 ni citas cláusulas de la norma.
+D5 Presentación (3/4): hojas legibles, numeradas («hoja 1» y «hoja 2») y transcripción fiel; tu nombre está solo en la primera hoja, las fotografías se llaman «hoja-01.jpg.jpeg» y tu declaración omite la palabra «fiel».
+Te faltó la T2, la T3 y la T4, y la captura del cuestionario en tu hoja del SGA no muestra tu nombre; debes practicarlas como parte de tu formación porque se evalúan de nuevo en el parcial.
+Luis, repasa la diferencia entre requisito, documento y actividad del proceso antes del parcial, y lee las cuatro tareas al empezar para responder primero lo que sabes.
+
+======================================================================
+7. Rivera Suárez Jonathan Javier
+======================================================================
+Estudiante: Rivera Suárez Jonathan Javier · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Q: 4,17/10. P: 2,25/10. Nota final: 3,02/10.
+D1 Comprensión conceptual (3/4): tu definición de requisito es precisa, E7 y E12 están bien decididos y explicas bien StRS, SyRS y SRS con E1, E3 y E8; asignas bien la actividad de H1 a H5, pero solo en H1 dices si es central o transversal.
+D2 Aplicación y análisis (1/4): clasificaste solo E1 a E7, aunque con buenas justificaciones (E6 fiabilidad en SyRS, E4 restricción del proyecto); E2 va en StRS y no en SRS, y no hiciste E8 a E12 ni la T2(b).
+D3 Síntesis y producción (0/4): no respondiste la T3.
+D4 Uso de estándares (0/4): no respondiste la T4 ni citas cláusulas de la norma.
+D5 Presentación (3/4): hojas numeradas (#1 a #4) y transcripción fiel, que respeta incluso la tinta roja; tu nombre está solo en la primera hoja y la letra es difícil de leer.
+Te faltó E8 a E12, la auditoría de B1 a B6, la T3 y la T4, y la captura del cuestionario en tu hoja del SGA no muestra tu nombre; debes practicarlas como parte de tu formación porque se evalúan de nuevo en el parcial.
+Jonathan, copiar a mano los enunciados de cada pregunta te consumió casi la mitad de la prueba; responde directamente con el número de la tarea.
+
+======================================================================
+8. Robinson Espinoza Jeanpierre
+======================================================================
+Estudiante: Robinson Espinoza Jeanpierre · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: NO VÁLIDA por P1 (hoja del SGA) y P4 (transcripción con contenido que no está en las hojas).
+Tu calificación: 0,00/10.
+P1: el PDF que subiste al SGA no tiene la captura del resumen del cuestionario EV-CUE-01; la quitaste tú mismo en el commit «Quitar captura del cuestionario de la caratula del SGA» (18-11, 22:51), así que no consta tu nota Q.
+P4: tu transcripción agrega un requisito completo, N1 («Cuando un operador autorizado cancele una alerta...»), que no está en las hojas, y también la columna Tipo de la T3 y la fila «Factible» de la T4(a).
+Además completa tus requisitos: a B2 le agrega «cuando supere los 5,5 metros, deberá clasificarla como alerta roja», a B3 «cada 5 minutos mediante el protocolo LoRaWAN» y a B5 «con los niveles registrados por cada una de las seis estaciones»; agrega la solución del defecto 2 y citas como «ISO/IEC/IEEE 29148:2018, cláusula 5.2.6»; y cambia tu justificación de H4 («se verificó si se realizaron los cambios») por «detectan que falta explicar cómo cancelar una alerta».
+La guía establece que el contenido agregado o corregido que no está en las hojas es deshonestidad académica y anula la prueba.
+En las hojas respondiste T1 completa, T2(a) sin justificaciones (solo E1), cinco requisitos y parte de la T4, y no hiciste la T2(b); debes practicar lo que faltó como parte de tu formación.
+Jeanpierre, la transcripción debe copiar tus hojas tal como están, y la hoja del SGA debe llevar siempre la captura del cuestionario, sea cual sea la nota.
+
+======================================================================
+9. Rochina Rochina Freddy David
+======================================================================
+Estudiante: Rochina Rochina Freddy David · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Q: 3,67/10. P: 2,75/10. Nota final: 3,12/10.
+D1 Comprensión conceptual (3/4): tu definición de requisito es precisa, E7 y E12 están bien decididos y explicas bien StRS, SyRS y SRS con E1, E3 y E5; pero marcas H4 (validación) como central, cuando es transversal.
+D2 Aplicación y análisis (1/4): clasificaste solo E1 a E6, en general bien (E6 fiabilidad en SyRS, E4 restricción); no hiciste E7 a E12 ni la T2(b).
+D3 Síntesis y producción (0/4): no respondiste la T3.
+D4 Uso de estándares (1/4): citas «(29148)» y «SWEBOK v4.0, cap. 1» sin cláusula, y escribes «ISO/IEC/IEEE 25010», cuando la norma es ISO/IEC 25010:2023; no respondiste la T4.
+D5 Presentación (3/4): hojas legibles, numeradas (1 y 2) y transcripción fiel; tu nombre está solo en la primera hoja.
+Te faltó E7 a E12, la auditoría de B1 a B6, la T3 y la T4; debes practicarlas como parte de tu formación porque se evalúan de nuevo en el parcial.
+Además, tu README contiene las marcas «[cite: 17]» y «[cite: 3, 4]», que no pertenecen a una documentación escrita por ti; revísalo y corrígelo.
+Freddy, tus respuestas largas muestran que entiendes los conceptos, pero te quitaron el tiempo; en una prueba de 75 minutos responde en una o dos líneas, como pide cada tarea.
+
+======================================================================
+10. Sánchez Centeno Roselyn Andreina
+======================================================================
+Estudiante: Sánchez Centeno Roselyn Andreina · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Q: 6,33/10. P: 3,00/10. Nota final: 4,33/10.
+D1 Comprensión conceptual (1/4): defines requisito como «un escrito formal de las necesidades del cliente», dices que E7 puede ser requisito, das E4 (plazo y presupuesto del proyecto) como ejemplo de SyRS, y asignas mal cuatro de los cinco hechos (H1 especificación, H2 transversal, H3 elicitación, H4 central).
+D2 Aplicación y análisis (1/4): clasificas E1 como no funcional, E2 como funcional (es de dominio), E3 como proceso (es restricción) y E6 como eficiencia en SRS (es fiabilidad en SyRS), y pones E8 y E11 en StRS; en T2(b) la columna de términos no tiene las palabras problemáticas («Se refiere a la calidad», «Restricción»), no hay propiedades SMART ni justificaciones, y falta B6.
+D3 Síntesis y producción (1/4): tus requisitos conservan los defectos originales: R-1 «funcionar en una velocidad de máximo 5 segundos» no dice qué operación, R-3 mantiene «incluso sin energía eléctrica, ni señal» y habla del «nivel del mar», R-4 mantiene Firebase, R-5 agrega Word y R-6 copia B6; no hay requisito nuevo.
+D4 Uso de estándares (1/4): tu tabla de T4(a) tiene «qué exige» en cuatro filas, pero no tiene propiedades SMART y deja vacía la fila singular; no hiciste la T4(b) ni citas cláusulas.
+D5 Presentación (3/4): hojas legibles, numeradas y transcripción fiel; tu nombre está solo en la primera hoja.
+Te faltó corregir la base conceptual de T1 y T2, redactar requisitos con valores medibles del caso y la T4(b); debes repasarlas como parte de tu formación porque se evalúan de nuevo en el parcial.
+Roselyn, fuiste de las pocas que llegó a las cuatro tareas; ahora reescribe cada requisito eliminando el término vago que señalaste, no copiándolo.
+
+======================================================================
+11. Vélez Vinces Jostin Gustavo
+======================================================================
+Estudiante: Vélez Vinces Jostin Gustavo · EV-PRAC-01 (Evaluación de la Unidad I) · ISR-401, Paralelo B
+Estado de la entrega: VÁLIDA. Cumple P1, P2, P3 y P4.
+Q: 6,17/10. P: 3,75/10. Nota final: 4,72/10.
+D1 Comprensión conceptual (4/4): definición correcta, E7 y E12 bien decididos, StRS, SyRS y SRS bien explicados con E1, E6 y E5, y los cinco hechos bien asignados; tu T1 es la mejor del paralelo.
+D2 Aplicación y análisis (2/4): los tipos de E1 a E12 son en general correctos, pero en E6, E8, E10 y E11 no dices la característica de ISO/IEC 25010, y E5 va en SRS (tu propia justificación dice «función del software»); en T2(b) identificas bien las características (B4 apropiado), pero solo justificas B1 y B2, y en B6 escribes «cumple» sin explicarlo con la cláusula 5.2.4.
+D3 Síntesis y producción (0/4): no respondiste la T3.
+D4 Uso de estándares (1/4): nombras las características de 29148 y las propiedades SMART, sin cláusula, y no respondiste la T4.
+D5 Presentación (3/4): hojas numeradas y transcripción fiel; las fotografías tienen baja resolución y la letra apenas se lee, tu nombre está solo en la primera hoja y tu PDF mezcla la guía completa con tus respuestas.
+Tu prueba usa varias expresiones muy cercanas a la clave del docente (por ejemplo, la lista de componentes del SyRS y «No dice el umbral, el plazo ni a quién se avisa»); en la próxima sesión te pediré que expliques tus respuestas.
+Te faltó la T3 y la T4; debes practicarlas como parte de tu formación porque se evalúan de nuevo en el parcial.
+Jostin, tu comprensión es sólida; ahora necesitas llegar a la redacción de requisitos, que vale el 30 %.
+
+======================================================================
+OBSERVACIONES PARA EL DOCENTE
+======================================================================
+Fechas de la clave del paralelo B en el repositorio público gleiston-guerrero/Asignaturas: Guia_Rubrica_EV-PRAC-01_Unidad1_ParaleloB.tex (con la clave dentro de \ifclave) entra el 18-11 a las 18:03 (commit 5c0a8e3, «Sincronizacion automatica desde DESKTOP-G4EC55F»), es decir, después de la prueba pero antes del cierre de la digitalización; la versión Docente del B (PDF y .tex) entra el 19-11 a las 06:01 (commit 7c6f82e).
+Gilces y Mendoza usaron ese .tex como plantilla y su main.tex conserva el bloque «Para el docente: clave orientativa»; Chavarría y Vélez usaron la misma plantilla sin el texto de la clave.
+Las correcciones de transcripción de Chavarría y Gilces van en la dirección de la clave (por ejemplo «capacidad de interacción» y «eficiencia de desempeño»), lo que es coherente con haberla consultado al transcribir.
+P4 aplicado a Chavarría, Gilces y Robinson. El caso más grave es Robinson: agrega un requisito completo (N1), una columna y una fila que no existen en las hojas. Gilces es el más sensible: en papel tenía una de las mejores pruebas del paralelo (nota hipotética 7,73 con D1 4, D2 2, D3 3, D4 3, D5 3); la decisión final es tuya.
+Parecido de las hojas con la clave: Chavarría (E1 «"a tiempo" es vago», E6 «depende de baterías y estaciones, no del software», defectos B4-E9, B3-E3/E6 y cancelación por H4), Vélez (SyRS «seis estaciones HL-20, antena, LoRaWAN, servidor municipal, plataforma web, app móvil y servicio SMS», B2 «No dice el umbral, el plazo ni a quién se avisa», B5 «cláusula de escape y término abierto»), Rivera (lista de componentes del SyRS, E1 «aún no es medible») y Rochina (definición «traduce o expresa una necesidad»). La clave del B no era pública antes de la prueba, pero la del A (FRÍOVAC, ítems análogos) lo era desde el 17-11 (commit b3ce6c2), así que pudieron estudiarla; esto no prueba copia. Sugiero una defensa oral breve (G6) a Chavarría y Vélez; ya avisé a Vélez en su informe.
+Cedeño: las fotografías de las hojas 2 y 3 cortan la columna de justificación; conviene comparar esa columna de la transcripción con los originales que conservas antes de registrar la nota.
+P1 aplicado a Chavarría (sin captura, sin nivel, paralelo ni fecha de sesión) y Robinson (sin captura). Robinson sí tenía la captura en su repositorio (sga/nota-ev.png, Q = 3,33/10) y la retiró de la carátula a las 22:51; no la tomé como Q porque no está en el SGA.
+P1 secundario no aplicado: las capturas de Paca (foto del teléfono) y Rivera no muestran el nombre del estudiante; Rochina escribe «2026-2027 PPA». En el paralelo A tampoco anulé por este motivo; si aplicas P1 en sentido estricto, Paca y Rivera serían CERO.
+P2 aplicado a Mendoza: compila, pero sus 12 citas quedan sin resolver porque no hay referencias.bib, igual que en los casos del paralelo A que copiaron la plantilla de la guía. Nota hipotética sin P2: 4,65.
+Todos los demás compilan desde un clon limpio siguiendo su README. Todas las digitalizaciones están dentro del plazo (la última, Gilces, a las 23:39).
+Rochina: su README contiene marcas «[cite: 17]» y «[cite: 3, 4]», típicas de un texto generado con un asistente de IA (Gemini); es documentación del repositorio, no la prueba, así que no resté puntos, pero se lo señalé.
+Vélez: el PDF del SGA tiene como productor iLovePDF; solo es la carátula, no lo considero indicio.
+Patrón general: 5 de 11 escribieron requisitos en la T3 (Arteaga, Chavarría, Gilces, Robinson, Sánchez) y 4 respondieron algo de la T4 (Chavarría, Gilces, Robinson, Sánchez); varios (Rivera, Rochina) consumieron el tiempo copiando enunciados o escribiendo respuestas muy largas. Los errores más repetidos son marcar H4 (validación) como central (Arteaga, Chavarría, Robinson, Rochina, Sánchez), no nombrar la característica de ISO/IEC 25010 en los no funcionales (Arteaga, Mendoza, Robinson, Vélez) y no ver que B4 incumple apropiado y contradice E9 (Arteaga, Cedeño, Mendoza).
+Q se tomó de la captura de cada hoja del SGA; Chavarría y Robinson no la incluyeron.
