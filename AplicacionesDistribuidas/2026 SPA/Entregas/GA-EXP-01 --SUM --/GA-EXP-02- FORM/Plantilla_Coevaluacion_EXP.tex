@@ -1,0 +1,88 @@
+%============================================================
+% PLANTILLA -- INFORME DE COEVALUACION DE EXPOSICIONES (GA-EXP-02 - FORM)
+% Aplicaciones Distribuidas (ISR-701) -- UTEQ -- SPA 2026-2027
+% Compilacion: pdflatex -> pdflatex
+% Instrucciones: copie el bloque "INFORME DE UN EQUIPO" una vez por cada
+% equipo observado (todos menos el suyo) y reemplace los textos entre [ ].
+%============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noquoting]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.2cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{amsmath}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqGray}{HTML}{F3F4F6}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcommand{\hdr}[1]{\textcolor{white}{\textbf{#1}}}
+
+\begin{document}
+
+\begin{center}
+	{\Large\bfseries\color{uteqBlue} Informe de coevaluación de exposiciones}\\[4pt]
+	{\large Aplicaciones Distribuidas (ISR-701) --- GA-EXP-02 - FORM}\\[4pt]
+	Evaluador: [Nombre completo] \quad $\cdot$ \quad Equipo: [Nombre del equipo] (tema [T?]) \quad $\cdot$ \quad Fecha de la sesión: [dd/mm/aaaa]
+\end{center}
+
+%============================================================
+% INFORME DE UN EQUIPO (copiar este bloque por cada equipo observado)
+%============================================================
+\section{Equipo [nombre] --- [T?] [título del tema]}
+
+\textbf{Hora de inicio:} [hh:mm] \quad \textbf{Hora de fin:} [hh:mm] \quad \textbf{Duración:} [n] min \quad \textbf{Tiempo asignado $T$:} [n] min
+
+\begin{tabularx}{\linewidth}{|C{0.9cm}|L{3.4cm}|C{1.1cm}|Y|}
+	\hline
+	\rowcolor{uteqBlue}\hdr{D} & \hdr{Dimensión (peso)} & \hdr{Nivel} & \hdr{Evidencia concreta observada} \\
+	\hline
+	D1 & Cumplimiento de la guía (10) & [0--4] & [Qué elementos de la ficha cubrió o le faltaron.] \\
+	\hline
+	D2 & Fundamentación conceptual (20) & [0--4] & [Conceptos explicados correctamente y errores, con diapositiva o minuto.] \\
+	\hline
+	D3 & Desarrollo técnico y demostración (15) & [0--4] & [Qué se ejecutó, en cuántos procesos, caso de fallo; criterios de comparación.] \\
+	\hline
+	D4 & Análisis crítico y recomendación (20) & [0--4] & [Recomendación, razones, caso concreto y limitaciones.] \\
+	\hline
+	D5 & Comunicación oral y visual (25) & [0--4] & [Indicadores (a) a (e); pregunta formulada y calidad de la respuesta.] \\
+	\hline
+	D6 & Fuentes y créditos (10) & [0--4] & [Fuentes visibles, tipo de fuente, datos sin fuente.] \\
+	\hline
+\end{tabularx}
+
+\textbf{Nota sugerida:}
+\[
+	\frac{10 \cdot n_1 + 20 \cdot n_2 + 15 \cdot n_3 + 20 \cdot n_4 + 25 \cdot n_5 + 10 \cdot n_6}{4} \times \frac{10}{100} = [\text{cuenta con sus valores}] = [x.x]
+\]
+
+\textbf{Fortaleza:} [Qué hicieron bien y dónde, con un elemento específico.]
+
+\textbf{Mejora:} [Qué deben cambiar y cómo, con un elemento específico.]
+
+\textbf{Hoja de campo:} \texttt{hojas\_campo/[archivo].jpg}
+
+\clearpage
+%============================================================
+% FIN DEL BLOQUE
+%============================================================
+
+\section*{Declaración de uso de inteligencia artificial}
+
+[Indique herramienta, versión, para qué la usó y cómo verificó lo obtenido; o declare que no la usó. Las evidencias y la retroalimentación deben ser de su propia observación.]
+
+\end{document}

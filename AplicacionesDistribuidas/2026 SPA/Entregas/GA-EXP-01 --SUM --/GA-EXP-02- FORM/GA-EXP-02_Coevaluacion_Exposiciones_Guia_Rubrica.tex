@@ -1,0 +1,600 @@
+%============================================================
+% GUIA-RUBRICA -- COEVALUACION (EVALUACION DE PARES) DE LAS EXPOSICIONES
+% Aplicaciones Distribuidas (ISR-701) -- UTEQ -- SPA 2026-2027
+% Actividad del estudiante evaluador: GA-EXP-02 - FORM
+% Exposicion evaluada: EXP-1 (GA-SUM-02), dimensiones y pesos EXP del encuadre
+% Compilacion: pdflatex -> biber -> pdflatex -> pdflatex
+%============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noquoting]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.2cm,headheight=15pt]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{pdflscape}
+\usepackage{needspace}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{titlesec}
+\usepackage{xurl}
+\usepackage{csquotes}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+
+\addbibresource{referencias_GA-EXP-02_Coevaluacion.bib}
+
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{7000}
+
+%------------------------------------------------------------
+% Paleta institucional UTEQ
+%------------------------------------------------------------
+\definecolor{uteqBlue}{HTML}{0E3F7E}
+\definecolor{uteqMid}{HTML}{1E5AA8}
+\definecolor{uteqTeal}{HTML}{2E86A1}
+\definecolor{uteqGreen}{HTML}{4FAE60}
+\definecolor{uteqAmber}{HTML}{F2A413}
+\definecolor{uteqRed}{HTML}{B02418}
+\definecolor{uteqSoft}{HTML}{EAF1FA}
+\definecolor{uteqGray}{HTML}{F3F4F6}
+
+%------------------------------------------------------------
+% Encabezado y pie
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{uteqBlue}UTEQ $\cdot$ Aplicaciones Distribuidas (ISR-701)}
+\fancyhead[R]{\footnotesize\color{uteqBlue}\textbf{GA-EXP-02 $\cdot$ Coevaluación de exposiciones}}
+\fancyfoot[L]{\footnotesize Prof. Gleiston C. Guerrero-Ulloa, PhD}
+\fancyfoot[R]{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyfoot[R]{\footnotesize Página \thepage\ de \pageref{LastPage}}
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+%------------------------------------------------------------
+% Titulos y espaciado
+%------------------------------------------------------------
+\titleformat{\section}{\normalfont\large\bfseries\color{uteqBlue}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\color{uteqMid}}{\thesubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.2em}
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+%------------------------------------------------------------
+% Cajas semanticas
+%------------------------------------------------------------
+\newtcolorbox{infoBox}[1][]{enhanced,breakable,colback=uteqSoft,colframe=uteqMid,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{avisoBox}[1][]{enhanced,breakable,colback=uteqAmber!10,colframe=uteqAmber!85!black,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{pisoBox}[1][]{enhanced,breakable,colback=uteqRed!6,colframe=uteqRed,fonttitle=\bfseries,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{okBox}[1][]{enhanced,breakable,colback=uteqGreen!8,colframe=uteqGreen!80!black,fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+\newtcolorbox{fichaBox}[1][]{enhanced,breakable,colback=white,colframe=uteqTeal,colbacktitle=uteqTeal,coltitle=white,fonttitle=\bfseries,boxrule=0.8pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,#1}
+
+\newcommand{\hdr}[1]{\textcolor{white}{\textbf{#1}}}
+\newcommand{\campo}[1]{\par\smallskip\textbf{\color{uteqBlue}#1}\par}
+
+\begin{document}
+
+%============================================================
+% PORTADA
+%============================================================
+\begin{titlepage}
+	\centering
+	\vspace*{0.4cm}
+	{\color{uteqBlue}\rule{\linewidth}{1.2pt}}\\[0.4cm]
+	{\Large\bfseries\color{uteqBlue} UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[0.25cm]
+	{\large Facultad de Ciencias de la Computación}\\[0.1cm]
+	{\large Carrera de Software}\\[0.4cm]
+	{\color{uteqBlue}\rule{\linewidth}{1.2pt}}\\[1.4cm]
+	{\Huge\bfseries\color{uteqBlue} GUÍA-RÚBRICA}\\[0.4cm]
+	{\LARGE\bfseries Coevaluación de las exposiciones técnicas}\\[0.25cm]
+	{\large (evaluación entre pares del informe de exposición)}\\[0.5cm]
+	{\Large Aplicaciones Distribuidas (ISR-701)}\\[0.2cm]
+	{\large Segundo Periodo Académico Ordinario (SPA) 2026--2027}\\[1.2cm]
+	\begin{tcolorbox}[enhanced,colback=uteqSoft,colframe=uteqBlue,boxrule=0.8pt,arc=3pt,width=0.9\linewidth,left=8pt,right=8pt]
+		\small
+		\begin{tabularx}{\linewidth}{@{}L{4.4cm}Y@{}}
+			\textbf{Actividad del evaluador} & GA-EXP-02 - FORM: informe de coevaluación (formativa, individual) \\
+			\textbf{Exposición observada} & EXP-1 (GA-SUM-02), dimensiones D1 a D6 con los pesos EXP del encuadre \\
+			\textbf{Temas expuestos} & RPC; gRPC; RMI; sockets TCP y UDP y WebSockets; mensajería publicador/suscriptor (MQTT y JMS); servicios y microservicios (SOAP y REST); computación paralela \\
+			\textbf{Rol del estudiante} & Evaluador individual de cada equipo que NO es el suyo \\
+			\textbf{Docente} & Gleiston Cicerón Guerrero Ulloa, PhD \\
+			\textbf{Correo institucional} & \texttt{gguerrero@uteq.edu.ec} \\
+		\end{tabularx}
+	\end{tcolorbox}
+	\vfill
+	{\small\color{uteqBlue} La nota de cada \emph{exposición} la asigna el docente con la rúbrica del encuadre. La \emph{nota sugerida} que calcula cada evaluador es un insumo para el docente, no una nota. El \emph{informe de coevaluación} del estudiante se califica aparte con la sección \ref{sec:rubricaInforme} de esta guía.}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+%============================================================
+\section{Propósito y contexto}
+%============================================================
+
+Cada vez que un equipo expone, los integrantes de los demás equipos actúan como evaluadores pares: observan, registran lo que ven y oyen (evidencia) y emiten un juicio fundamentado sobre la calidad técnica de la exposición. Evaluar el trabajo de un compañero con una rúbrica conocida de antemano mejora el aprendizaje del propio evaluador, y ese efecto es mayor cuando la evaluación se hace con criterios explícitos \cite{double2020impact}; además, publicar los criterios antes de la actividad hace transparente cómo se califica \cite{panadero2020critical}, siempre que los criterios describan calidad y no la simple presencia de elementos \cite{brookhart2018appropriate}.
+
+En la práctica, esto significa dos cosas. Primero, el evaluador aprende a mirar una tecnología distribuida con ojo crítico: no basta con que el equipo «nombre» gRPC o MQTT, hay que comprobar que lo que dice es correcto y que la demostración hace lo que se afirma. Segundo, el equipo expositor recibe retroalimentación adicional a la del docente.
+
+\begin{infoBox}[title={Cómo se organiza la sesión}]
+	\begin{itemize}
+		\item Cada equipo expone uno de los siete temas de la tabla \ref{tab:temas}.
+		\item Durante la sesión, cada estudiante llena a mano una \textbf{hoja de campo} (apéndice \ref{sec:hoja}) por cada equipo que observa. La hoja de campo es la prueba de que la observación se hizo en vivo.
+		\item Después de la sesión, cada estudiante pasa sus hojas de campo a un único documento \LaTeX{} (el \textbf{informe de coevaluación}), con una sección por equipo observado, en su repositorio de GitHub.
+	\end{itemize}
+\end{infoBox}
+
+\begin{infoBox}[title={Regla de exclusión}]
+	El estudiante \textbf{no evalúa} a su propio equipo. Si en la sesión exponen siete equipos y el evaluador pertenece al equipo que expone RPC, entrega informes de los otros seis equipos.
+\end{infoBox}
+
+\begin{avisoBox}[title={Qué NO debe hacer el evaluador}]
+	\begin{itemize}
+		\item No filma ni graba audio o video a los expositores.
+		\item No interrumpe la exposición; pregunta solo en el turno de preguntas que habilita el docente.
+		\item No se pone de acuerdo con otros compañeros en los niveles ni en las evidencias.
+		\item No copia ni comparte su informe, y no pide a una inteligencia artificial generativa que redacte las evidencias o la retroalimentación: la evidencia es lo que \emph{él} observó.
+		\item No evalúa una exposición que no presenció.
+	\end{itemize}
+\end{avisoBox}
+
+%============================================================
+\Needspace{16\baselineskip}
+\section{Temas y equipos expositores}\label{sec:temas}
+%============================================================
+
+El docente completa esta tabla al inicio de la sesión. El evaluador copia en su informe el código del tema (T1 a T7) y el nombre del equipo tal como aparecen aquí.
+
+{\small
+\begin{xltabular}{\linewidth}{@{}C{1.5cm}L{6.4cm}YC{1.6cm}@{}}
+	\caption{Temas de la sesión de exposiciones}\label{tab:temas}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Código} & \hdr{Tema} & \hdr{Equipo expositor} & \hdr{Orden} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Código} & \hdr{Tema} & \hdr{Equipo expositor} & \hdr{Orden} \\
+	\midrule
+	\endhead
+	T1 & Llamada a procedimiento remoto (RPC) & & \\
+	T2 & gRPC y Protocol Buffers & & \\
+	T3 & Invocación de métodos remotos en Java (RMI) & & \\
+	T4 & Sockets TCP y UDP, y WebSockets & & \\
+	T5 & Mensajería publicador/suscriptor: MQTT y JMS (Jakarta Messaging) & & \\
+	T6 & Servicios y microservicios: SOAP y REST & & \\
+	T7 & Computación paralela & & \\
+	\bottomrule
+\end{xltabular}
+}
+
+\textbf{Tiempo de cada exposición.} Cada equipo dispone del tiempo $T$ que fija el docente al inicio de la sesión; si no se indica otro, $T = 15$ minutos de exposición más 5 minutos de preguntas. El evaluador anota en su hoja de campo la hora de inicio y de fin, porque el tiempo es un indicador de la dimensión D5.
+
+%============================================================
+\section{Fichas de observación por tema}\label{sec:fichas}
+%============================================================
+
+Cada ficha dice qué debería aparecer en una exposición completa y correcta del tema. Sirve para que la evaluación sea objetiva: el evaluador compara lo que ve con la ficha, no con su opinión. Cada fila de la ficha indica entre paréntesis la dimensión de la rúbrica (sección \ref{sec:criterios}) a la que aporta evidencia.
+
+\begin{infoBox}[title={Cómo usar las fichas}]
+	\begin{itemize}
+		\item \textbf{Conceptos clave (D2):} marque en la hoja de campo cada concepto que el equipo nombra \emph{y explica correctamente}. Nombrarlo sin explicarlo no cuenta.
+		\item \textbf{Errores frecuentes (D2):} si el equipo comete uno, anótelo con el número de diapositiva o el minuto; es evidencia directa para bajar el nivel.
+		\item \textbf{Demostración mínima (D1, D3):} verifique que la demostración se ejecuta en vivo y que muestra lo que la ficha pide, incluido un caso de fallo o de límite.
+		\item \textbf{Comparación esperada (D3, D4):} verifique que haya criterios explícitos y medibles, no solo adjetivos.
+		\item \textbf{Preguntas para el turno (D5):} puede usarlas si el docente le da la palabra; anote la pregunta y si la respuesta fue correcta.
+		\item \textbf{Fuentes primarias (D2, D6):} son la especificación oficial del tema; si el equipo afirma algo que contradice la fuente, es un error conceptual.
+	\end{itemize}
+\end{infoBox}
+
+%------------------------------------------------------------
+\subsection{T1. Llamada a procedimiento remoto (RPC)}
+%------------------------------------------------------------
+\begin{fichaBox}[title={Ficha T1 --- RPC}]
+	\campo{Conceptos clave (D2)}
+	Transparencia de la llamada (que una llamada remota se escriba como una local) y por qué no puede ser total \cite{waldo1997note}; \emph{stub} del cliente y del servidor (\emph{skeleton}); empaquetado de parámetros (\emph{marshalling}) y formato externo de datos (XDR en ONC RPC); lenguaje de definición de interfaces (IDL); enlace (\emph{binding}): cómo el cliente encuentra al servidor; número de programa y de versión; semánticas ante fallos: «al menos una vez» y «a lo sumo una vez», e imposibilidad general de «exactamente una vez»; operaciones idempotentes; llamada síncrona frente a asíncrona \cite{birrell1984rpc,rfc5531,vansteen2023distributed}.
+	\campo{Errores frecuentes (D2)}
+	Afirmar que una llamada remota «es igual» a una local (ignora latencia, fallos parciales y ausencia de memoria compartida); confundir RPC (modelo) con una implementación concreta; decir que el \emph{stub} «ejecuta el procedimiento»; prometer semántica «exactamente una vez» sin explicar cómo.
+	\campo{Demostración mínima (D1, D3)}
+	Cliente y servidor en procesos distintos (idealmente en dos equipos de la red) donde el cliente invoca al menos un procedimiento con parámetros y recibe el resultado; se muestra qué ocurre si el servidor no responde (tiempo de espera o \emph{timeout}) y cómo se reintenta.
+	\campo{Comparación esperada (D3, D4)}
+	RPC construido sobre sockets o ONC RPC frente a una alternativa actual (gRPC o REST) con criterios medibles: formato y tamaño del mensaje, forma de definir el contrato, manejo de errores, latencia observada.
+	\campo{Preguntas para el turno (D5)}
+	¿Por qué una llamada remota no puede ser totalmente transparente? ¿Qué semántica ante fallos implementa su demostración y cómo lo comprobaron? ¿Qué hace exactamente el \emph{stub} del cliente? ¿Qué operación de su ejemplo es idempotente y cuál no?
+	\campo{Fuentes primarias (D2, D6)}
+	\cite{birrell1984rpc,rfc5531,waldo1997note,seemakhupt2023rpc,vansteen2023distributed}.
+\end{fichaBox}
+
+%------------------------------------------------------------
+\subsection{T2. gRPC y Protocol Buffers}
+%------------------------------------------------------------
+\begin{fichaBox}[title={Ficha T2 --- gRPC}]
+	\campo{Conceptos clave (D2)}
+	Protocol Buffers como lenguaje de definición de interfaces (archivo \texttt{.proto}) y formato binario; código generado (\emph{stubs}); los cuatro tipos de llamada: unaria, flujo del servidor, flujo del cliente y flujo bidireccional (\emph{streaming}); transporte sobre HTTP/2 (multiplexación de flujos sobre una conexión) \cite{rfc9113}; plazos (\emph{deadlines}) y su propagación; códigos de estado (\texttt{OK}, \texttt{DEADLINE\_EXCEEDED}, \texttt{UNAVAILABLE}, entre otros); canal y metadatos; evolución del esquema mediante números de campo \cite{grpc2026concepts,grpc2026deadlines,protobuf2026proto3}.
+	\campo{Errores frecuentes (D2)}
+	Decir que gRPC «usa JSON» o «funciona sobre HTTP/1.1»; confundir el número de campo de Protocol Buffers con el valor del campo; afirmar que gRPC se consume directamente desde el navegador sin intermediario; presentar el plazo (\emph{deadline}) como un simple \emph{timeout} del cliente sin explicar que viaja al servidor.
+	\campo{Demostración mínima (D1, D3)}
+	Archivo \texttt{.proto} mostrado en pantalla, servidor y cliente en procesos distintos, al menos una llamada unaria y una de flujo (\emph{streaming}); un caso de fallo: plazo vencido (\texttt{DEADLINE\_EXCEEDED}) o servidor caído (\texttt{UNAVAILABLE}).
+	\campo{Comparación esperada (D3, D4)}
+	gRPC frente a REST con JSON (o frente a RPC sobre sockets): tamaño del mensaje en bytes, latencia medida o citada, forma del contrato, soporte en navegadores, facilidad de depuración.
+	\campo{Preguntas para el turno (D5)}
+	¿Qué pasa con los clientes antiguos si cambian el número de un campo del \texttt{.proto}? ¿En qué se diferencia un \emph{deadline} de un \emph{timeout}? ¿Qué aporta HTTP/2 que no tenga HTTP/1.1? ¿Qué tipo de llamada usarían para un chat y por qué?
+	\campo{Fuentes primarias (D2, D6)}
+	\cite{grpc2026concepts,grpc2026deadlines,protobuf2026proto3,rfc9113,seemakhupt2023rpc}.
+\end{fichaBox}
+
+%------------------------------------------------------------
+\subsection{T3. Invocación de métodos remotos en Java (RMI)}
+%------------------------------------------------------------
+\begin{fichaBox}[title={Ficha T3 --- RMI}]
+	\campo{Conceptos clave (D2)}
+	Objeto remoto e interfaz que extiende \texttt{java.rmi.Remote}; métodos que declaran \texttt{RemoteException}; exportación del objeto (\texttt{UnicastRemoteObject}); registro RMI (\texttt{rmiregistry} o \texttt{LocateRegistry}) y búsqueda por nombre; \emph{stub} dinámico generado en tiempo de ejecución (ya no se usa \texttt{rmic}); paso de argumentos por valor (objetos serializables) frente a paso por referencia (objetos remotos); recolección de basura distribuida; riesgos de la deserialización y filtros de serialización; eliminación de RMI Activation en JDK 17 \cite{oracle2023rmiarch,wollrath1996distributed,oracle2023serialfilter,openjdk2021jep407}.
+	\campo{Errores frecuentes (D2)}
+	Afirmar que RMI es interoperable con otros lenguajes; decir que todos los objetos se pasan por referencia; presentar \texttt{rmic} y RMI Activation como vigentes; ignorar que deserializar datos no confiables es un riesgo de seguridad.
+	\campo{Demostración mínima (D1, D3)}
+	Registro, servidor y cliente en procesos distintos; el cliente obtiene el \emph{stub} desde el registro e invoca métodos; se muestra la diferencia entre pasar un objeto serializable (copia) y un objeto remoto (referencia), y qué ocurre si el servidor cae (\texttt{RemoteException}).
+	\campo{Comparación esperada (D3, D4)}
+	RMI frente a gRPC o REST: interoperabilidad entre lenguajes, mecanismo de serialización, configuración de red y cortafuegos (puertos), madurez y soporte actual.
+	\campo{Preguntas para el turno (D5)}
+	¿Qué ocurre si pasan como argumento un objeto que no implementa \texttt{Serializable}? ¿Por qué se eliminó RMI Activation? ¿Qué riesgo de seguridad tiene la deserialización y cómo lo mitigan? ¿Cuándo elegirían RMI hoy?
+	\campo{Fuentes primarias (D2, D6)}
+	\cite{oracle2023rmiarch,wollrath1996distributed,oracle2023serialfilter,openjdk2021jep407,waldo1997note}.
+\end{fichaBox}
+
+%------------------------------------------------------------
+\subsection{T4. Sockets TCP y UDP, y WebSockets}
+%------------------------------------------------------------
+\begin{fichaBox}[title={Ficha T4 --- Sockets y WebSockets}]
+	\campo{Conceptos clave (D2)}
+	Socket como punto final de comunicación (dirección IP y puerto); TCP orientado a conexión: establecimiento en tres pasos (\emph{three-way handshake}), entrega fiable y ordenada, control de flujo y de congestión, flujo de bytes sin límites de mensaje y, por tanto, necesidad de delimitar mensajes (\emph{framing}) \cite{rfc9293}; UDP sin conexión: datagramas independientes, sin garantía de entrega ni de orden, cabecera de 8 bytes \cite{rfc768}; WebSocket: apertura con una petición HTTP \texttt{Upgrade} y respuesta \texttt{101 Switching Protocols}, cabeceras \texttt{Sec-WebSocket-Key} y \texttt{Sec-WebSocket-Accept}, comunicación bidireccional simultánea (\emph{full-duplex}) sobre una conexión TCP, tramas (\emph{frames}) de datos y de control (\emph{ping}, \emph{pong}, cierre) \cite{rfc6455}.
+	\campo{Errores frecuentes (D2)}
+	Hablar de «WebSockets sobre UDP» (WebSocket funciona sobre TCP \cite{rfc6455}); decir que TCP conserva los límites de cada mensaje enviado; afirmar que UDP «es inseguro» como sinónimo de «no fiable»; confundir WebSocket con HTTP de sondeo (\emph{polling}).
+	\campo{Demostración mínima (D1, D3)}
+	Servidor y cliente TCP con varios clientes simultáneos (hilos o E/S no bloqueante); intercambio UDP en el que se evidencie la pérdida o el desorden de datagramas (simulada o real); cliente WebSocket en el navegador con el \emph{handshake} visible en las herramientas de desarrollador.
+	\campo{Comparación esperada (D3, D4)}
+	TCP frente a UDP frente a WebSocket con criterios medibles: fiabilidad, latencia, sobrecarga de cabeceras en bytes, soporte en navegador y casos de uso (transferencia de archivos, voz y video, notificaciones en tiempo real).
+	\campo{Preguntas para el turno (D5)}
+	¿Cómo saben dónde termina un mensaje en TCP? ¿Qué pasó en su demostración cuando se perdió un datagrama UDP? ¿Por qué WebSocket empieza con una petición HTTP? ¿Qué elegirían para un videojuego en línea y por qué?
+	\campo{Fuentes primarias (D2, D6)}
+	\cite{rfc9293,rfc768,rfc6455,vansteen2023distributed}.
+\end{fichaBox}
+
+%------------------------------------------------------------
+\subsection{T5. Mensajería publicador/suscriptor: MQTT y JMS}
+%------------------------------------------------------------
+\begin{fichaBox}[title={Ficha T5 --- MQTT y JMS (Jakarta Messaging)}]
+	\campo{Conceptos clave (D2)}
+	Desacoplamiento del modelo publicador/suscriptor en espacio (no se conocen), tiempo (no tienen que estar activos a la vez) y sincronización (no se bloquean) \cite{eugster2003many}; intermediario (\emph{broker}); tópicos. En MQTT: niveles de calidad de servicio QoS 0, 1 y 2; comodines \texttt{+} y \texttt{\#}; mensaje retenido (\emph{retained}); sesión persistente; mensaje de última voluntad (\emph{Last Will}); \emph{keep alive}; novedades de MQTT 5 como códigos de razón y suscripciones compartidas \cite{oasis2019mqtt,mishra2020mqtt}. En JMS: cola (punto a punto) frente a tópico (publicador/suscriptor); \texttt{ConnectionFactory}, sesión, productor y consumidor; modos de acuse de recibo; suscripción durable; mensajes persistentes y transacciones \cite{jakarta2022messaging}.
+	\campo{Errores frecuentes (D2)}
+	Presentar JMS como un protocolo de red (es una API de Java; el protocolo lo define cada proveedor); confundir cola con tópico; afirmar que QoS 2 «no tiene costo»; decir que el publicador conoce a sus suscriptores.
+	\campo{Demostración mínima (D1, D3)}
+	Un \emph{broker} en ejecución (por ejemplo, Mosquitto o ActiveMQ Artemis), un publicador y al menos dos suscriptores; uso de comodines o de dos niveles de QoS; un suscriptor que se desconecta y, al volver, recibe lo publicado gracias a la sesión persistente o a la suscripción durable.
+	\campo{Comparación esperada (D3, D4)}
+	MQTT frente a JMS (protocolo frente a API, tamaño de cabecera, entorno IoT frente a empresarial, garantías de entrega, interoperabilidad) y, si aplica, frente a la comunicación síncrona petición/respuesta.
+	\campo{Preguntas para el turno (D5)}
+	¿Qué garantiza QoS 2 y cuántos mensajes intercambia? ¿En qué se diferencian una cola y un tópico en JMS? ¿Por qué se dice que JMS no es un protocolo? ¿Qué pasa con los mensajes si el \emph{broker} se reinicia?
+	\campo{Fuentes primarias (D2, D6)}
+	\cite{oasis2019mqtt,jakarta2022messaging,eugster2003many,mishra2020mqtt}.
+\end{fichaBox}
+
+%------------------------------------------------------------
+\subsection{T6. Servicios y microservicios: SOAP y REST}
+%------------------------------------------------------------
+\begin{fichaBox}[title={Ficha T6 --- SOAP, REST y microservicios}]
+	\campo{Conceptos clave (D2)}
+	SOAP: sobre (\emph{Envelope}), cabecera (\emph{Header}), cuerpo (\emph{Body}) y falla (\emph{Fault}) en XML; contrato WSDL; independencia del transporte (enlace con HTTP) \cite{w3c2007soap}. REST: estilo arquitectónico con restricciones (cliente-servidor, sin estado, caché, interfaz uniforme, sistema en capas y código bajo demanda opcional); recursos identificados por URI; métodos HTTP y su idempotencia (GET, PUT y DELETE son idempotentes; POST no); códigos de estado; hipermedia (HATEOAS) \cite{fielding2002principled}. Microservicios: despliegue independiente, base de datos propia por servicio, puerta de enlace de API (\emph{API gateway}), descubrimiento de servicios, comunicación síncrona y asíncrona \cite{newman2021building,aksakalli2021deployment}.
+	\campo{Errores frecuentes (D2)}
+	Decir que REST es un protocolo o que «REST es JSON»; usar GET para modificar datos; afirmar que SOAP solo funciona sobre HTTP; llamar microservicios a varios módulos que comparten una misma base de datos y se despliegan juntos.
+	\campo{Demostración mínima (D1, D3)}
+	Un servicio SOAP con su WSDL consumido por un cliente; una API REST con al menos las operaciones de crear, leer, actualizar y eliminar (CRUD) probadas con \texttt{curl} o Postman, mostrando los códigos de estado; idealmente dos microservicios que se comunican entre sí.
+	\campo{Comparación esperada (D3, D4)}
+	SOAP frente a REST (contrato, formato, tamaño del mensaje, seguridad, herramientas) y monolito frente a microservicios con datos de rendimiento o escalabilidad citados o medidos \cite{blinowski2022monolithic}.
+	\campo{Preguntas para el turno (D5)}
+	¿Es PUT idempotente y por qué importa? ¿Qué restricción de REST se rompe si el servidor guarda la sesión del usuario? ¿En qué caso elegirían SOAP hoy? ¿Qué problema aparece cuando dos microservicios comparten la base de datos?
+	\campo{Fuentes primarias (D2, D6)}
+	\cite{w3c2007soap,fielding2002principled,newman2021building,blinowski2022monolithic,aksakalli2021deployment}.
+\end{fichaBox}
+
+%------------------------------------------------------------
+\subsection{T7. Computación paralela}
+%------------------------------------------------------------
+\begin{fichaBox}[title={Ficha T7 --- Computación paralela}]
+	\campo{Conceptos clave (D2)}
+	Concurrencia frente a paralelismo; paralelismo de datos frente a paralelismo de tareas; hilos y procesos; memoria compartida frente a memoria distribuida (paso de mensajes); condiciones de carrera y sincronización; aceleración (\emph{speedup}) $S_p = T_1/T_p$ y eficiencia $E_p = S_p/p$; ley de Amdahl $S_p \leq 1/\bigl((1-f) + f/p\bigr)$, donde $f$ es la fracción paralelizable \cite{amdahl1967validity}; ley de Gustafson para problemas que crecen con $p$ \cite{gustafson1988reevaluating}; fracción serial estimada a partir de mediciones \cite{karp1990measuring}; costo de comunicación y sincronización \cite{hill2008amdahl}.
+	\campo{Errores frecuentes (D2)}
+	Usar «concurrente» y «paralelo» como sinónimos; esperar aceleración lineal sin límite; reportar una sola ejecución como resultado; calcular el \emph{speedup} contra una versión paralela con un hilo en lugar de contra la mejor versión secuencial, sin advertirlo.
+	\campo{Demostración mínima (D1, D3)}
+	Un mismo problema resuelto en versión secuencial y paralela, ejecutado con $p = 1, 2, 4$ (y más si el equipo lo permite), con varias repeticiones por configuración y una tabla o gráfica de tiempo, aceleración y eficiencia comparada con la predicción de Amdahl \cite{hoefler2015scientific}.
+	\campo{Comparación esperada (D3, D4)}
+	Dos enfoques o herramientas (por ejemplo, hilos de Java frente a procesos, o un marco de procesamiento distribuido) con criterios medibles: aceleración, eficiencia, facilidad de programación y costo de comunicación.
+	\campo{Preguntas para el turno (D5)}
+	¿Qué fracción serial estiman con sus datos? ¿Por qué la aceleración no crece linealmente con los núcleos? ¿Cuántas repeticiones hicieron y qué valor reportan (media o mediana)? ¿Qué condición de carrera tuvieron que evitar?
+	\campo{Fuentes primarias (D2, D6)}
+	\cite{amdahl1967validity,gustafson1988reevaluating,karp1990measuring,hill2008amdahl,hoefler2015scientific,kleppmann2026designing}.
+\end{fichaBox}
+
+%============================================================
+\section{Estructura del informe de coevaluación}\label{sec:estructura}
+%============================================================
+
+El informe se escribe en \LaTeX{} a partir de la plantilla \texttt{Plantilla\_Coevaluacion\_EXP.tex} que el docente publica en el SGA, y se entrega en el repositorio público del estudiante. Es \textbf{un solo documento} que contiene una sección por cada equipo observado, de aproximadamente una página cada una. Cada sección contiene los cuatro bloques siguientes.
+
+\subsection{Bloque 1 --- Identificación}
+
+{\small
+\begin{xltabular}{\linewidth}{@{}L{5.0cm}Y@{}}
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Campo} & \hdr{Descripción} \\
+	\midrule
+	\endhead
+	Evaluador & Nombre completo de quien escribe el informe. \\
+	Equipo del evaluador & Nombre del equipo al que pertenece y tema que expuso. \\
+	Equipo evaluado & Nombre del equipo que expuso, como aparece en la tabla \ref{tab:temas}. \\
+	Tema & Código (T1 a T7) y título que el equipo declaró al inicio. \\
+	Fecha y horas & Fecha de la sesión, hora de inicio y hora de fin de la exposición. \\
+	\bottomrule
+\end{xltabular}
+}
+
+\subsection{Bloque 2 --- Niveles y evidencias}
+
+Para cada dimensión D1 a D6 de la tabla \ref{tab:criterios}, el evaluador registra:
+\begin{enumerate}
+	\item \textbf{Nivel asignado} (0, 1, 2, 3 o 4) según los descriptores de la tabla \ref{tab:criterios} y la escala de la tabla \ref{tab:niveles}.
+	\item \textbf{Evidencia concreta}: al menos una oración que diga qué observó y que justifique el nivel. La evidencia debe ser observable y verificable: número de diapositiva, minuto, concepto de la ficha que se explicó o que se omitió, error de la lista de errores frecuentes, comando o salida de la demostración, pregunta formulada y calidad de la respuesta. No sirven opiniones como «estuvo bien» o «fue interesante».
+\end{enumerate}
+
+\subsection{Bloque 3 --- Nota sugerida}
+
+El evaluador calcula la nota sugerida con la fórmula de la sección \ref{sec:formula}, escribe la cuenta completa y el resultado con un decimal.
+
+\subsection{Bloque 4 --- Retroalimentación al equipo}
+
+Dos o tres oraciones dirigidas al equipo expositor: \textbf{una fortaleza} concreta (qué hicieron bien y dónde) y \textbf{una mejora} accionable (qué cambiar y cómo). Cada oración debe referirse a un elemento específico de la exposición.
+
+\begin{infoBox}[title={Contenido obligatorio del repositorio}]
+	\begin{itemize}
+		\item \texttt{README.md} con las instrucciones de compilación (compilador, archivo principal, orden de comandos y dependencias).
+		\item El archivo \texttt{.tex} del informe y el PDF compilado.
+		\item La carpeta \texttt{hojas\_campo/} con la fotografía o el escaneo legible de cada hoja de campo llenada a mano durante la sesión (una por equipo observado).
+		\item Una sección final de declaración de uso de inteligencia artificial, conforme al encuadre.
+	\end{itemize}
+\end{infoBox}
+
+%============================================================
+\section{Plazo y forma de entrega}\label{sec:plazo}
+%============================================================
+
+\begin{enumerate}
+	\item \textbf{Durante la sesión:} el estudiante llena a mano una hoja de campo por cada equipo observado.
+	\item \textbf{Cierre:} el mismo día de la sesión de exposiciones, a las \textbf{23:59}. Lo que se suba al repositorio después de esa hora no se considera. Un plazo corto protege la fidelidad de lo observado y evita que los informes se pongan de acuerdo.
+	\item \textbf{En el SGA:} se sube solamente un PDF de UNA SOLA página con la carátula (universidad, facultad, carrera, asignatura, código y nombre de la actividad, estudiante, paralelo y fecha) y la URL del repositorio escrita completa en una sola línea.
+\end{enumerate}
+
+%============================================================
+\section{Criterios para evaluar la exposición}\label{sec:criterios}
+%============================================================
+
+Las dimensiones y los pesos son los de una exposición (EXP) en el encuadre de la asignatura: D1 = 10, D2 = 20, D3 = 15, D4 = 20, D5 = 25 y D6 = 10. Los descriptores de la tabla \ref{tab:criterios} concretan cada nivel con indicadores observables; las fichas de la sección \ref{sec:fichas} dicen, para cada tema, qué conceptos, demostración y comparación se esperan.
+
+\begin{avisoBox}[title={Regla para elegir el nivel}]
+	Que un indicador esté presente no basta: se califica la calidad con que se cumple. El nivel 4 se asigna solo si se cumplen todos sus indicadores sin ninguna omisión ni imprecisión. Si lo observado queda entre dos niveles, asigne el \textbf{inferior} y explique en la evidencia qué faltó para el superior.
+\end{avisoBox}
+
+\begin{landscape}
+{\footnotesize\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{3.5pt}
+\begin{xltabular}{\linewidth}{@{}L{2.7cm}C{0.8cm}YYYYL{2.4cm}@{}}
+	\caption{Descriptores de nivel para evaluar la exposición}\label{tab:criterios}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Dimensión} & \hdr{Peso} & \hdr{4 Excelente} & \hdr{3 Bueno} & \hdr{2 Aceptable} & \hdr{1 Insuficiente} & \hdr{0 Ausente} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Dimensión} & \hdr{Peso} & \hdr{4 Excelente} & \hdr{3 Bueno} & \hdr{2 Aceptable} & \hdr{1 Insuficiente} & \hdr{0 Ausente} \\
+	\midrule
+	\endhead
+	\midrule
+	\multicolumn{7}{r}{\textit{Continúa en la página siguiente}} \\
+	\endfoot
+	\bottomrule
+	\endlastfoot
+	\textbf{D1 Cumplimiento de la guía} (estructura y contenido mínimo de la ficha) & 10 & Cubre todos los elementos de la ficha del tema: conceptos clave, demostración en vivo, comparación y recomendación. & Falta un elemento menor (por ejemplo, la recomendación es superficial); los demás están completos. & Falta un elemento requerido (demostración o comparación) o faltan varios menores. & Cubre la mitad o menos de la ficha (por ejemplo, solo teoría, sin demostración ni comparación). & No expone o el tema no corresponde al asignado. \\
+	\addlinespace
+	\rowcolor{uteqGray}\textbf{D2 Fundamentación conceptual} (precisión técnica frente a la fuente primaria) & 20 & Explica correctamente al menos 5 conceptos clave de la ficha; ningún error de la lista de errores frecuentes; lo afirmado coincide con la especificación primaria (RFC, OASIS, W3C, Jakarta EE o documentación oficial). & Explica al menos 4 conceptos clave; una imprecisión menor que no invalida el contenido. & Explica 3 conceptos clave, o comete dos imprecisiones, o un error de la lista de errores frecuentes. & Explica menos de 3 conceptos, o comete dos o más errores de la lista, o confunde conceptos centrales (por ejemplo, TCP con UDP, o JMS con un protocolo). & No hay fundamentación o el contenido no es del tema. \\
+	\addlinespace
+	\textbf{D3 Desarrollo técnico y demostración} & 15 & Demostración en vivo con procesos distintos que muestra el comportamiento central de la ficha y un caso de fallo o de límite; el código mostrado es el que se ejecuta; compara al menos 2 alternativas con al menos 3 criterios medibles, con datos medidos o citados. & Demostración en vivo que funciona pero sin caso de fallo o de límite, o comparación con solo 2 criterios medibles. & Demostración parcial, grabada o solo con capturas, o comparación descriptiva sin criterios medibles. & No hay demostración; solo enumera características sin comparar ni analizar. & No hay contenido técnico evaluable. \\
+	\addlinespace
+	\rowcolor{uteqGray}\textbf{D4 Análisis crítico y recomendación} & 20 & Dice cuándo usar y cuándo no usar la tecnología, con al menos 2 razones ligadas a un caso concreto (su Proyecto Fin de Curso u otro sistema real nombrado); reconoce al menos una limitación con evidencia. & Recomendación con 1 argumento ligado a un caso; limitaciones ausentes o superficiales. & Recomendación genérica (por ejemplo, «es mejor porque es más rápido») sin caso ni datos. & No hay recomendación, o contradice el propio análisis. & Ausente. \\
+	\addlinespace
+	\textbf{D5 Comunicación oral y visual} (cinco indicadores) & 25 & Cumple los cinco indicadores: (a) expone con fluidez sin leer las diapositivas; (b) termina dentro de $T \pm 2$ minutos; (c) responde con precisión al menos una pregunta técnica; (d) diapositivas legibles desde el fondo del aula (letra de 18 puntos o más y buen contraste); (e) todos los integrantes exponen una parte técnica. & Un indicador cumplido solo en parte (por ejemplo, lee en un tramo corto, o termina en $T \pm 3$ minutos, o una diapositiva ilegible). & Dos indicadores cumplidos solo en parte. & Tres o más indicadores en parte, o no responde correctamente ninguna pregunta, o un integrante no expone. & No expone o la exposición es ininteligible. \\
+	\addlinespace
+	\rowcolor{uteqGray}\textbf{D6 Fuentes y créditos} & 10 & Cada dato, figura, captura o cifra ajena tiene su fuente visible en la diapositiva; las fuentes son primarias (especificaciones, documentación oficial) o artículos indexados; hay diapositiva de referencias en formato IEEE. & Hasta 2 datos sin fuente, o referencias completas pero con algún campo omitido. & Varias fuentes ausentes, o solo blogs y tutoriales. & Solo una o ninguna fuente visible en todo el conjunto de diapositivas. & Ninguna fuente, o contenido copiado sin atribución. \\
+\end{xltabular}
+}
+\end{landscape}
+
+%============================================================
+\section{Escala de desempeño}\label{sec:niveles}
+%============================================================
+
+{\small
+\begin{xltabular}{\linewidth}{@{}C{1.2cm}L{2.8cm}Y@{}}
+	\caption{Escala de desempeño para el evaluador par}\label{tab:niveles}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Nivel} & \hdr{Denominación} & \hdr{Descripción operacional} \\
+	\midrule
+	\endhead
+	4 & Excelente & Cumple el 100\,\% de los indicadores del descriptor; no se observa ninguna omisión ni imprecisión. \\
+	3 & Bueno & Cumple al menos el 75\,\%; hay una deficiencia menor que no afecta la comprensión ni la validez técnica. \\
+	2 & Aceptable & Cumple entre el 50\,\% y el 74\,\%; hay deficiencias que limitan la comprensión, pero no la anulan. \\
+	1 & Insuficiente & Cumple menos del 50\,\%, o hay errores graves que comprometen la validez técnica. \\
+	0 & Ausente & El elemento no se presentó o no fue observable. \\
+	\bottomrule
+\end{xltabular}
+}
+
+%============================================================
+\section{Cálculo de la nota sugerida}\label{sec:formula}
+%============================================================
+
+El evaluador calcula una \textbf{nota sugerida} sobre 10 que el docente toma como insumo; la nota definitiva de la exposición la asigna el docente.
+
+\[
+	\text{Nota sugerida} = \frac{\displaystyle\sum_{i=1}^{6} w_i \times n_i}{4} \times \frac{10}{100}
+\]
+
+donde $w_i$ es el peso de la dimensión $i$ (D1 = 10, D2 = 20, D3 = 15, D4 = 20, D5 = 25, D6 = 10) y $n_i$ el nivel asignado (0 a 4). El resultado se redondea a un decimal.
+
+\begin{okBox}[title={Ejemplo de cálculo}]
+	Niveles observados: D1 = 4, D2 = 3, D3 = 3, D4 = 3, D5 = 4, D6 = 2.
+	\begin{align*}
+		\text{Nota sugerida} &= \frac{10 \cdot 4 + 20 \cdot 3 + 15 \cdot 3 + 20 \cdot 3 + 25 \cdot 4 + 10 \cdot 2}{4} \times \frac{10}{100}\\
+		&= \frac{40 + 60 + 45 + 60 + 100 + 20}{4} \times 0.1 = \frac{325}{4} \times 0.1 = 8.125 \approx 8.1
+	\end{align*}
+\end{okBox}
+
+\subsection{Uso que hace el docente de las notas sugeridas}
+
+Para cada equipo expositor, el docente calcula la mediana de las notas sugeridas que recibió (la mediana es el valor central y no se deja arrastrar por un evaluador que puntúa demasiado alto o demasiado bajo) y la contrasta con su propia evaluación. Las evidencias de los pares que el docente comprueba pueden respaldar la retroalimentación al equipo. Cuando un evaluador asigna en una dimensión un nivel que difiere en 2 o más del observado por el docente, y su evidencia no lo justifica, ese criterio cuenta como incoherente en el criterio I3 de su propio informe (sección \ref{sec:rubricaInforme}).
+
+%============================================================
+\section{Calificación del informe de coevaluación}\label{sec:rubricaInforme}
+%============================================================
+
+El informe que entrega el evaluador es en sí mismo una actividad evaluada (GA-EXP-02 - FORM). Se califica sobre 10 con los criterios de piso y la rúbrica de esta sección. Por ser una actividad formativa, su nota se comunica al estudiante como retroalimentación conforme a la regla de las formativas del encuadre.
+
+\begin{pisoBox}[title={Criterios de piso del informe: su incumplimiento implica calificación CERO}]
+	\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=2.2em]
+		\item \textbf{PDF de una sola página con carátula y URL en el SGA.} El estudiante debe subir al SGA solamente un documento PDF de UNA SOLA página, con la carátula (datos de identificación) y, en una sola línea, la URL del repositorio donde está el informe. Si el PDF tiene más de una página, si se suben otros archivos en su lugar, si la URL no cabe en una sola línea o está rota, o si el repositorio no es accesible (privado o inexistente), la calificación es CERO.
+		\item \textbf{PDF reproducible desde \LaTeX.} Si el PDF no se genera correctamente al clonar el repositorio y compilar el archivo \texttt{.tex}, la calificación es CERO. Las instrucciones de compilación (compilador, orden de comandos, archivo principal y dependencias) deben estar en el \texttt{README.md} del repositorio.
+		\item \textbf{Plazo.} Si el contenido del informe se sube al repositorio después de las 23:59 del día de la sesión, la calificación es CERO.
+		\item \textbf{Integridad.} Informes con evidencias idénticas o muy parecidas (misma redacción, mismos ejemplos, mismos errores) reciben CERO en todos los evaluadores implicados. También es CERO el informe con evidencias generadas por inteligencia artificial y presentadas como propias, con evidencias de hechos que no ocurrieron en la exposición, o con una referencia inexistente o cuyos datos no corresponden a la obra real \cite{walters2023fabrication}.
+		\item \textbf{Presencia, cobertura y hojas de campo.} El estudiante debe haber asistido a la sesión y entregar un informe por cada equipo observado (todos menos el suyo), con la fotografía o el escaneo de la hoja de campo manuscrita de cada uno en la carpeta \texttt{hojas\_campo/}. Si falta el informe o la hoja de campo de algún equipo, la calificación es CERO.
+		\item \textbf{Evidencia mínima.} Si en el informe de algún equipo tres o más dimensiones carecen de evidencia observable (solo hay nivel, sin texto que lo justifique), la calificación es CERO.
+	\end{enumerate}
+\end{pisoBox}
+
+\begin{avisoBox}[title={Cómo se asigna cada nivel cuando hay varios informes}]
+	Cada criterio I1 a I5 se califica sobre el conjunto de informes del estudiante, y el nivel asignado es el del informe peor resuelto en ese criterio. Así, un solo informe descuidado no queda oculto por los demás. Los indicios de uso de inteligencia artificial generativa del encuadre (I1 e I3 a I8) se aplican también aquí, con las penalizaciones de nivel B ($-1.5$) y nivel C ($-3.0$).
+\end{avisoBox}
+
+\begin{landscape}
+{\footnotesize\renewcommand{\arraystretch}{1.12}\setlength{\tabcolsep}{3.5pt}
+\begin{xltabular}{\linewidth}{@{}L{3.0cm}C{0.8cm}YYYYL{2.2cm}@{}}
+	\caption{Rúbrica de calificación del informe de coevaluación}\label{tab:rubricaInforme}\\
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Criterio} & \hdr{Peso} & \hdr{4 Excelente} & \hdr{3 Bueno} & \hdr{2 Aceptable} & \hdr{1 Insuficiente} & \hdr{0 Ausente} \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\rowcolor{uteqBlue}\hdr{Criterio} & \hdr{Peso} & \hdr{4 Excelente} & \hdr{3 Bueno} & \hdr{2 Aceptable} & \hdr{1 Insuficiente} & \hdr{0 Ausente} \\
+	\midrule
+	\endhead
+	\midrule
+	\multicolumn{7}{r}{\textit{Continúa en la página siguiente}} \\
+	\endfoot
+	\bottomrule
+	\endlastfoot
+	\textbf{I1 Completitud} (todos los bloques en todos los informes) & 20 & En todos los informes: identificación completa con horas, las 6 dimensiones con nivel y evidencia, nota calculada con su cuenta, fortaleza y mejora. & En algún informe falta un campo de identificación o una dimensión no tiene evidencia. & En algún informe dos dimensiones no tienen evidencia, o falta la retroalimentación. & En dos o más informes falta la nota calculada o la retroalimentación. & No entregó o entregó un documento vacío. \\
+	\addlinespace
+	\rowcolor{uteqGray}\textbf{I2 Objetividad y base observable} (evidencias concretas, no opiniones) & 30 & Cada nivel se respalda con al menos una observación concreta y verificable: diapositiva, minuto, concepto de la ficha, error de la lista, salida de la demostración o pregunta y respuesta; ninguna frase vacía como «estuvo bien». & En el peor informe, al menos 4 de 6 dimensiones tienen evidencia concreta; las demás son superficiales. & En el peor informe, solo 2 o 3 dimensiones tienen evidencia concreta. & En el peor informe, las evidencias son genéricas u opinativas. & Sin ninguna evidencia observable. \\
+	\addlinespace
+	\textbf{I3 Coherencia entre nivel y evidencia} (y con lo observado por el docente) & 25 & En todas las dimensiones de todos los informes el nivel corresponde a la evidencia y al descriptor; ningún nivel difiere en 2 o más del observado por el docente sin justificación. & Entre 1 y 2 dimensiones incoherentes en el conjunto de informes. & Entre 3 y 5 dimensiones incoherentes en el conjunto de informes. & Seis o más dimensiones incoherentes, o patrón de asignar 4 en todo sin evidencia de nivel 4. & No se puede verificar ninguna coherencia. \\
+	\addlinespace
+	\rowcolor{uteqGray}\textbf{I4 Cálculo correcto} (nota sugerida) & 10 & Todas las notas sugeridas usan la fórmula y los pesos correctos, con la cuenta escrita y sin error aritmético. & Error aritmético de hasta 0.2 puntos en algún informe, con fórmula y pesos correctos. & Error en un peso o en la fórmula en algún informe. & Nota sugerida sin cuenta o ausente en algún informe. & Ninguna nota calculada. \\
+	\addlinespace
+	\textbf{I5 Retroalimentación constructiva} (específica y accionable) & 15 & En todos los informes hay una fortaleza y una mejora concretas, ligadas a un elemento específico de la exposición, y la mejora dice qué cambiar y cómo. & En algún informe, una de las dos (fortaleza o mejora) es genérica. & En algún informe, ambas son genéricas aunque estén presentes. & En algún informe falta la fortaleza o la mejora. & Ausente en todos los informes. \\
+\end{xltabular}
+}
+\end{landscape}
+
+\subsection{Fórmula de la nota del informe}
+
+\begin{align*}
+	\text{Nota previa del informe} &= \frac{20\,n_{I1} + 30\,n_{I2} + 25\,n_{I3} + 10\,n_{I4} + 15\,n_{I5}}{4} \times \frac{10}{100}\\
+	\text{Nota final} &= \max\bigl(0,\ \text{Nota previa} - \text{Penalizaciones}\bigr)
+\end{align*}
+
+\begin{okBox}[title={Ejemplo de cálculo de la nota del informe}]
+	Niveles: I1 = 4, I2 = 3, I3 = 3, I4 = 4, I5 = 4, sin penalizaciones.
+	\begin{align*}
+		\text{Nota previa} &= \frac{20 \cdot 4 + 30 \cdot 3 + 25 \cdot 3 + 10 \cdot 4 + 15 \cdot 4}{4} \times 0.1\\
+		&= \frac{80 + 90 + 75 + 40 + 60}{4} \times 0.1 = \frac{345}{4} \times 0.1 = 8.625 \approx 8.6
+	\end{align*}
+	En la retroalimentación el docente informa siempre la nota previa y la nota final.
+\end{okBox}
+
+\printbibliography[heading=bibintoc,title={Referencias}]
+
+%============================================================
+% APENDICE: HOJA DE CAMPO
+%============================================================
+\clearpage
+\appendix
+\section{Hoja de campo (imprimir una por cada equipo observado)}\label{sec:hoja}
+
+\begin{tcolorbox}[enhanced,colback=uteqSoft,colframe=uteqBlue,boxrule=0.8pt,arc=2pt,title={\bfseries Hoja de campo --- Coevaluación de exposiciones ISR-701},left=6pt,right=6pt]
+	\small
+	\textbf{Evaluador:}~\rule{6.0cm}{0.4pt}\hfill\textbf{Equipo del evaluador:}~\rule{3.2cm}{0.4pt}\\[8pt]
+	\textbf{Equipo evaluado:}~\rule{4.6cm}{0.4pt}\hfill\textbf{Tema (T1--T7):}~\rule{1.4cm}{0.4pt}\hfill\textbf{Fecha:}~\rule{2.2cm}{0.4pt}\\[8pt]
+	\textbf{Inicio:}~\rule{1.8cm}{0.4pt}\hfill\textbf{Fin:}~\rule{1.8cm}{0.4pt}\hfill\textbf{Duración (min):}~\rule{1.5cm}{0.4pt}\hfill\textbf{$T$ asignado (min):}~\rule{1.3cm}{0.4pt}\\[8pt]
+	\textbf{Conceptos de la ficha explicados correctamente (D2):}\\[4pt]
+	\rule{\linewidth}{0.4pt}\\[10pt]
+	\rule{\linewidth}{0.4pt}\\[6pt]
+	\textbf{Errores de la lista u otras imprecisiones (diapositiva o minuto):}\\[4pt]
+	\rule{\linewidth}{0.4pt}\\[10pt]
+	\rule{\linewidth}{0.4pt}\\[6pt]
+	\textbf{Demostración: qué se ejecutó, en cuántos procesos o equipos, caso de fallo mostrado (D1, D3):}\\[4pt]
+	\rule{\linewidth}{0.4pt}\\[10pt]
+	\rule{\linewidth}{0.4pt}\\[6pt]
+	\textbf{Comparación: alternativas y criterios medibles; recomendación y caso concreto (D3, D4):}\\[4pt]
+	\rule{\linewidth}{0.4pt}\\[10pt]
+	\rule{\linewidth}{0.4pt}\\[6pt]
+	\textbf{Comunicación (D5):} \quad (a) sin leer $\square$ \quad (b) tiempo $T\pm2$ $\square$ \quad (c) respuesta precisa $\square$\\[3pt]
+	\hspace*{3.3cm}(d) diapositivas legibles $\square$ \quad (e) todos exponen $\square$\\[6pt]
+	\textbf{Pregunta formulada y calidad de la respuesta:}\\[4pt]
+	\rule{\linewidth}{0.4pt}\\[10pt]
+	\rule{\linewidth}{0.4pt}\\[6pt]
+	\textbf{Fuentes visibles en las diapositivas (D6):}\\[4pt]
+	\rule{\linewidth}{0.4pt}\\[8pt]
+
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabularx}{\linewidth}{|C{1.2cm}|*{6}{>{\centering\arraybackslash}X|}C{2.6cm}|}
+		\hline
+		& \textbf{D1} & \textbf{D2} & \textbf{D3} & \textbf{D4} & \textbf{D5} & \textbf{D6} & \textbf{Nota sugerida} \\
+		\hline
+		\textbf{Peso} & 10 & 20 & 15 & 20 & 25 & 10 & \\
+		\hline
+		\textbf{Nivel} & & & & & & & \\
+		\hline
+	\end{tabularx}
+
+	\vspace{8pt}
+	\textbf{Fortaleza:}~\hrulefill\\[10pt]
+	\textbf{Mejora:}~\hrulefill
+\end{tcolorbox}
+
+\end{document}
